@@ -21,4 +21,6 @@ public class JsonFileFilter implements FileFilter
 	{
 		return pathname.getName().toLowerCase().endsWith(DOTJSON);
 	}
+	
+	private JsonFileFilter() {}
 }
