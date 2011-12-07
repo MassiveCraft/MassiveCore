@@ -1,5 +1,6 @@
-MassiveCraftCore - This bukkit plugin contains components for developing other bukkit plugins. 
+MassiveCraftCore - A bukkit plugin development framework in a bukkit plugin
 ====================
+This bukkit plugin contains components for developing other bukkit plugins.
 
 License
 ----------
