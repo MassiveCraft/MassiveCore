@@ -400,7 +400,7 @@ public final class Gson {
    * @return Json representation of {@code src}
    * @since 1.4
    */
-  @SuppressWarnings({"unchecked", "rawtypes"}) // the caller is required to make src and typeOfSrc consistent
+  // the caller is required to make src and typeOfSrc consistent
   public JsonElement toJsonTree(Object src, Type typeOfSrc) {
     JsonElementWriter writer = new JsonElementWriter();
     toJson(src, typeOfSrc, writer);
@@ -682,7 +682,8 @@ public final class Gson {
    * @throws JsonSyntaxException if json is not a valid representation for an object of type
    * @since 1.2
    */
-  public <T> T fromJson(Reader json, Type typeOfT) throws JsonIOException, JsonSyntaxException {
+  @SuppressWarnings("unchecked")
+public <T> T fromJson(Reader json, Type typeOfT) throws JsonIOException, JsonSyntaxException {
     JsonReader jsonReader = new JsonReader(json);
     T object = (T) fromJson(jsonReader, typeOfT);
     assertFullConsumption(object, jsonReader);
@@ -777,7 +778,8 @@ public final class Gson {
    * @throws JsonSyntaxException if json is not a valid representation for an object of type typeOfT
    * @since 1.3
    */
-  public <T> T fromJson(JsonElement json, Type typeOfT) throws JsonSyntaxException {
+  @SuppressWarnings("unchecked")
+public <T> T fromJson(JsonElement json, Type typeOfT) throws JsonSyntaxException {
     if (json == null) {
       return null;
     }
