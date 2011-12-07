@@ -1,0 +1,8 @@
+name: mcore
+version: 1.0.0
+main: com.massivecraft.core.MCore
+authors: [Olof Larsson]
+softdepend: [Vault, Spout]
+commands:
+  mcore:
+    description: Reference command for mcore.
