@@ -9,19 +9,35 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.TextWrapper;
 
-import com.massivecraft.core.plugin.MCore;
-
 public class TextUtil
 {
+	// Global Default Design TODO: Assign it somehow!
+	private static TextDesign defaultDesign = new TextDesign();
+	public static TextDesign getDefaultDesign() { return defaultDesign; }
+	public static void setDefaultDesign(TextDesign val) { defaultDesign = val; }
+	
+	// Local Desgin Choice
 	private TextDesign design = null;
 	public TextDesign getDesign()
 	{
 		if (design != null) return design;
-		return MCore.persist.getManager(TextDesign.class).get("default");
-		// TODO: The default should not have the name default.
-		// The default is set somewhere... as a static field?... in the MCore plugin???
+		return getDefaultDesign();
 	}
 	public void setDesign(TextDesign design)
+	{
+		this.design = design;
+	}
+	
+	// -------------------------------------------- //
+	// CONSTRUCTORS
+	// -------------------------------------------- //
+	
+	public TextUtil()
+	{
+		
+	}
+	
+	public TextUtil(TextDesign design)
 	{
 		this.design = design;
 	}
@@ -44,13 +60,8 @@ public class TextUtil
 	// Tag parsing
 	// -------------------------------------------- //
 	
-	public String parseTags(String str)
-	{
-		return replaceTags(str, this.getDesign().getTags());
-	}
-	
 	public static final transient Pattern patternTag = Pattern.compile("<([a-zA-Z0-9_]*)>");
-	public static String replaceTags(String str, Map<String, String> tags)
+	public String replaceTags(String str, Map<String, String> tags)
 	{
 		StringBuffer ret = new StringBuffer();
 		Matcher matcher = patternTag.matcher(str);
@@ -71,11 +82,16 @@ public class TextUtil
 		return ret.toString();
 	}
 	
+	public String parseTags(String str)
+	{
+		return replaceTags(str, this.getDesign().getTags());
+	}
+	
 	// -------------------------------------------- //
 	// Color parsing
 	// -------------------------------------------- //
 	
-	public static String parseColor(String string)
+	public String parseColor(String string)
 	{
 		string = parseColorAmp(string);
 		string = parseColorAcc(string);
@@ -83,7 +99,7 @@ public class TextUtil
 		return string;
 	}
 	
-	public static String parseColorAmp(String string)
+	public String parseColorAmp(String string)
 	{
 		string = string.replaceAll("(§([a-z0-9]))", "\u00A7$2");
 	    string = string.replaceAll("(&([a-z0-9]))", "\u00A7$2");
@@ -91,7 +107,7 @@ public class TextUtil
 	    return string;
 	}
 	
-    public static String parseColorAcc(String string)
+    public String parseColorAcc(String string)
     {
         return string.replace("`e", "")
 		.replace("`r", ChatColor.RED.toString()) .replace("`R", ChatColor.DARK_RED.toString())
@@ -104,7 +120,7 @@ public class TextUtil
 		.replace("`S", ChatColor.DARK_GRAY.toString()) .replace("`w", ChatColor.WHITE.toString());
     }
 	
-	public static String parseColorTags(String string)
+	public String parseColorTags(String string)
 	{
         return string.replace("<empty>", "")
         .replace("<black>", "\u00A70")
@@ -129,18 +145,18 @@ public class TextUtil
 	// Standard utils like UCFirst, implode and repeat.
 	// -------------------------------------------- //
 	
-	public static String upperCaseFirst(String string)
+	public String upperCaseFirst(String string)
 	{
 		return string.substring(0, 1).toUpperCase()+string.substring(1);
 	}
 	
-	public static String repeat(String s, int times)
+	public String repeat(String s, int times)
 	{
 	    if (times <= 0) return "";
 	    else return s + repeat(s, times-1);
 	}
 	
-	public static String implode(List<String> list, String glue)
+	public String implode(List<String> list, String glue)
 	{
 	    StringBuilder ret = new StringBuilder();
 	    for (int i=0; i<list.size(); i++)
@@ -154,7 +170,7 @@ public class TextUtil
 	    return ret.toString();
 	}
 	
-	public static String implodeCommaAnd(List<String> list, String comma, String and)
+	public String implodeCommaAnd(List<String> list, String comma, String and)
 	{
 	    if (list.size() == 0) return "";
 		if (list.size() == 1) return list.get(0);
@@ -167,21 +183,27 @@ public class TextUtil
 		
 		return implode(list, comma);
 	}
-	public static String implodeCommaAnd(List<String> list)
+	
+	public String implodeCommaAnd(List<String> list, String color)
 	{
-	    return implodeCommaAnd(list, ", ", " and ");
+	    return implodeCommaAnd(list, color+", ", color+" and ");
+	}
+	
+	public String implodeCommaAnd(List<String> list)
+	{
+		return implodeCommaAnd(list, "");
 	}
 	
 	// -------------------------------------------- //
 	// Material name tools
 	// -------------------------------------------- //
 	
-	public static String getMaterialName(Material material)
+	public String getMaterialName(Material material)
 	{
 		return material.toString().replace('_', ' ').toLowerCase();
 	}
 	
-	public static String getMaterialName(int materialId)
+	public String getMaterialName(int materialId)
 	{
 		return getMaterialName(Material.getMaterial(materialId));
 	}
@@ -190,20 +212,20 @@ public class TextUtil
 	// Paging and chrome-tools like titleize
 	// -------------------------------------------- //
 	
-	private final static String titleizeLine = repeat("_", 52);
-	private final static int titleizeBalance = -1;
+	private final String titleizeLine = repeat("_", 52);
+	private final int titleizeBalance = -1;
 	public String titleize(String str)
 	{
-		String center = ".[ "+ parseTags("<l>") + str + parseTags("<a>")+ " ].";
+		String center = ".[ "+ this.getDesign().getColorLogo() + str + this.getDesign().getColorArt() + " ].";
 		int centerlen = ChatColor.stripColor(center).length();
 		int pivot = titleizeLine.length() / 2;
 		int eatLeft = (centerlen / 2) - titleizeBalance;
 		int eatRight = (centerlen - eatLeft) + titleizeBalance;
 
 		if (eatLeft < pivot)
-			return parseTags("<a>")+titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
+			return this.getDesign().getColorArt()+titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
 		else
-			return parseTags("<a>")+center;
+			return this.getDesign().getColorArt()+center;
 	}
 	
 	public ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title)
@@ -268,7 +290,7 @@ public class TextUtil
 		unitMillis.put("seconds", millisPerSecond);
 	}
 	
-	public static String getTimeDeltaDescriptionRelNow(long millis)
+	public String getTimeDeltaDescriptionRelNow(long millis)
 	{
 		String ret = "";
 		
@@ -306,7 +328,7 @@ public class TextUtil
 	// String comparison
 	// -------------------------------------------- //
 	
-	public static String getBestCIStart(Collection<String> candidates, String start)
+	public String getBestCIStart(Collection<String> candidates, String start)
 	{
 		String ret = null;
 		int best = 0;
@@ -336,7 +358,7 @@ public class TextUtil
 	// -------------------------------------------- //
 	// Wrapping the Craftbukkit TextWrapper
 	// -------------------------------------------- //
-	public static ArrayList<String> wrapText(final String text)
+	public ArrayList<String> wrap(final String text)
 	{
 		return new ArrayList<String>(Arrays.asList(TextWrapper.wrapText(text)));
 	}

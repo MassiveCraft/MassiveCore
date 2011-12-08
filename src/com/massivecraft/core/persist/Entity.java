@@ -6,7 +6,7 @@ package com.massivecraft.core.persist;
  * Entity class. It just contains a set of shortcut methods.  
  */
 
-// Self referencing generics using the "getThis trick".
+// Self referencing generic using the "getThis trick".
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
 public abstract class Entity<T extends Entity<T>>
 {

@@ -16,25 +16,6 @@ public class TextDesign
 	}
 	
 	// -------------------------------------------- //
-	// TITLE DESIGN
-	// -------------------------------------------- //
-	private String titleLeftInner;
-	public String getTitleLeftInner() { return this.titleLeftInner; }
-	public void setTitleLeftInner(String val) { this.titleLeftInner = val; }
-	
-	private String titleLeftOuter;
-	public String getTitleLeftOuter() { return this.titleLeftOuter; }
-	public void setTitleLeftOuter(String val) { this.titleLeftOuter = val; }
-
-	private String titleRightInner;
-	public String getTitleRightInner() { return this.titleRightInner; }
-	public void setTitleRightInner(String val) { this.titleRightInner = val; }
-	
-	private String titleRightOuter;
-	public String getTitleRightOuter() { return this.titleRightOuter; }
-	public void setTitleRightOuter(String val) { this.titleRightOuter = val; }
-	
-	// -------------------------------------------- //
 	// COLOR THEME
 	// -------------------------------------------- //
 	private ChatColor logo = ChatColor.DARK_GREEN;
@@ -89,31 +70,31 @@ public class TextDesign
 		{
 			this.tag2color = new HashMap<String, String>();
 		}
-		this.tag2color.put("<l>", this.getColorLogo().toString());
-		this.tag2color.put("<logo>", this.getColorLogo().toString());
+		this.tag2color.put("l", this.getColorLogo().toString());
+		this.tag2color.put("logo", this.getColorLogo().toString());
 		
-		this.tag2color.put("<a>", this.getColorArt().toString());
-		this.tag2color.put("<art>", this.getColorArt().toString());
+		this.tag2color.put("a", this.getColorArt().toString());
+		this.tag2color.put("art", this.getColorArt().toString());
 		
-		this.tag2color.put("<n>", this.getColorNotice().toString());
-		this.tag2color.put("<notice>", this.getColorNotice().toString());
+		this.tag2color.put("n", this.getColorNotice().toString());
+		this.tag2color.put("notice", this.getColorNotice().toString());
 		
-		this.tag2color.put("<i>", this.getColorInfo().toString());
-		this.tag2color.put("<info>", this.getColorInfo().toString());
+		this.tag2color.put("i", this.getColorInfo().toString());
+		this.tag2color.put("info", this.getColorInfo().toString());
 		
-		this.tag2color.put("<g>", this.getColorGood().toString());
-		this.tag2color.put("<good>", this.getColorGood().toString());
+		this.tag2color.put("g", this.getColorGood().toString());
+		this.tag2color.put("good", this.getColorGood().toString());
 		
-		this.tag2color.put("<b>", this.getColorBad().toString());
-		this.tag2color.put("<bad>", this.getColorBad().toString());
+		this.tag2color.put("b", this.getColorBad().toString());
+		this.tag2color.put("bad", this.getColorBad().toString());
 		
-		this.tag2color.put("<h>", this.getColorHighlight().toString());
-		this.tag2color.put("<highlight>", this.getColorHighlight().toString());
+		this.tag2color.put("h", this.getColorHighlight().toString());
+		this.tag2color.put("highlight", this.getColorHighlight().toString());
 		
-		this.tag2color.put("<c>", this.getColorCommand().toString());
-		this.tag2color.put("<command>", this.getColorCommand().toString());
+		this.tag2color.put("c", this.getColorCommand().toString());
+		this.tag2color.put("command", this.getColorCommand().toString());
 		
-		this.tag2color.put("<p>", this.getColorParameter().toString());
-		this.tag2color.put("<parameter>", this.getColorParameter().toString());
+		this.tag2color.put("p", this.getColorParameter().toString());
+		this.tag2color.put("parameter", this.getColorParameter().toString());
 	}
 }

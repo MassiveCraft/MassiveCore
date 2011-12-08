@@ -10,6 +10,7 @@ import com.massivecraft.core.persist.PersistRealm;
 import com.massivecraft.core.plugin.listener.PluginPlayerListener;
 import com.massivecraft.core.plugin.listener.PluginServerListener;
 import com.massivecraft.core.plugin.listener.PluginServerListenerMonitor;
+import com.massivecraft.core.text.TextUtil;
 
 public class MCore extends JavaPlugin
 {
@@ -18,13 +19,14 @@ public class MCore extends JavaPlugin
 	PluginPlayerListener playerListener;
 	
 	public static MCore p;
-	public static PersistRealm persist;
+	//public static PersistRealm persist;
+	public static TextUtil text = new TextUtil();
 	
 	public MCore()
 	{
 		p = this;
 		Persist.createRealm(this);
-		persist = Persist.getRealm(this);
+		//persist = Persist.getRealm(this);
 		this.serverListener = new PluginServerListener(this);
 		this.serverListenerMonitor = new PluginServerListenerMonitor(this);
 		this.playerListener = new PluginPlayerListener(this);
