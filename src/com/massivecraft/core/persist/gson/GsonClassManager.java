@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.massivecraft.core.lib.gson2.Gson;
 import com.massivecraft.core.persist.IClassManager;
-import com.massivecraft.core.persist.Persist;
+import com.massivecraft.core.persist.PersistRealm;
 import com.massivecraft.core.persist.Predictate;
 
 public abstract class GsonClassManager<T> implements IClassManager<T>
@@ -259,7 +259,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		{
 			String json = this.getGson().toJson(entity);
 			File file = this.fileFromId(id);
-			return Persist.writeCatch(file, json);
+			return PersistRealm.writeCatch(file, json);
 		}
 		this.removeFile(id);
 		return true;
@@ -305,7 +305,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		if (entity != null) return entity;
 		if ( ! this.containsId(id)) return null;
 		File file = this.fileFromId(id);
-		String json = Persist.readCatch(file);
+		String json = PersistRealm.readCatch(file);
 		if (json == null) return null;
 		entity = this.getGson().fromJson(json, this.getManagedClass());
 		this.attach(entity, id, true);
@@ -415,25 +415,25 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	@Override
 	public Collection<T> getAll(Predictate<T> where)
 	{
-		return Persist.uglySQL(this.entities, where, null, null, null);
+		return PersistRealm.uglySQL(this.entities, where, null, null, null);
 	}
 
 	@Override
 	public Collection<T> getAll(Predictate<T> where, Comparator<T> orderby)
 	{
-		return Persist.uglySQL(this.entities, where, orderby, null, null);
+		return PersistRealm.uglySQL(this.entities, where, orderby, null, null);
 	}
 
 	@Override
 	public Collection<T> getAll(Predictate<T> where, Comparator<T> orderby, Integer limit)
 	{
-		return Persist.uglySQL(this.entities, where, orderby, limit, null);
+		return PersistRealm.uglySQL(this.entities, where, orderby, limit, null);
 	}
 
 	@Override
 	public Collection<T> getAll(Predictate<T> where, Comparator<T> orderby, Integer limit, Integer offset)
 	{
-		return Persist.uglySQL(this.entities, where, orderby, limit, offset);
+		return PersistRealm.uglySQL(this.entities, where, orderby, limit, offset);
 	}
 
 	@Override
@@ -452,7 +452,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	public T getBestMatch(Object oid)
 	{
 		String start = this.idFix(oid);
-		String id = Persist.getBestCIStart(this.ids, start);
+		String id = PersistRealm.getBestCIStart(this.ids, start);
 		return this.get(id);
 	}
 }
