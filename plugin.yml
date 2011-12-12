@@ -1,8 +1,8 @@
-name: mcore
-version: 1.0.0
-main: com.massivecraft.core.plugin.MCore
+name: mcore1
+version: 1
+main: com.massivecraft.core1.MCore
 authors: [Olof Larsson]
 softdepend: [Vault, Spout]
 commands:
-  mcore:
-    description: Reference command for mcore.
+  mcoresilenteater:
+    description: ignore me.
