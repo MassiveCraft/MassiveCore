@@ -129,6 +129,6 @@ public abstract class MPlugin extends JavaPlugin
 	}
 	public void log(Level level, Object... msg)
 	{
-		Logger.getLogger("Minecraft").log(level, this.logPrefix+txt.implode(msg, " "));
+		Logger.getLogger("Minecraft").log(level, this.logPrefix + MCore.txt.implode(msg, " "));
 	}
 }

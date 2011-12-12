@@ -70,6 +70,7 @@ public class MCore extends JavaPlugin
 	// -------------------------------------------- //
 	// TXT
 	// -------------------------------------------- //
+	public static Txt txt = new Txt();
 	private static Map<Object, Txt> txtInstances = new HashMap<Object, Txt>();
 	public static Map<Object, Txt> getTxtInstances() { return txtInstances; }
 	public static Txt getTxt(Object owner) { return txtInstances.get(owner); }
@@ -83,6 +84,7 @@ public class MCore extends JavaPlugin
 	// -------------------------------------------- //
 	// PERM
 	// -------------------------------------------- //
+	public static Perm perm = new Perm(txt);
 	private static Map<Object, Perm> permInstances = new HashMap<Object, Perm>();
 	public static Map<Object, Perm> getPermInstances() { return permInstances; }
 	public static Perm getPerm(Object owner) { return permInstances.get(owner); }

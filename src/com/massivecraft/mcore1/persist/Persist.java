@@ -159,7 +159,7 @@ public class Persist
 		}
 		
 		// Clean args
-		if (fromIndex < 0)
+		if (fromIndex <= 0)
 		{
 			fromIndex = 0;
 		}

@@ -46,14 +46,19 @@ public class Txt
 	// Top-level parsing functions.
 	// -------------------------------------------- //
 	
-	public String parse(String str, Object... args)
+	public String parse(String string, Object... args)
 	{
-		return String.format(this.parse(str), args);
+		return String.format(this.parse(string), args);
 	}
 	
-	public String parse(String str)
+	public String parse(String string)
 	{
-		return this.parseTags(parseColor(str));
+		return this.parseTags(parseColor(string));
+	}
+	
+	public ArrayList<String> parse(Collection<String> strings)
+	{
+		return this.parseTags(parseColor(strings));
 	}
 	
 	// -------------------------------------------- //
@@ -61,10 +66,10 @@ public class Txt
 	// -------------------------------------------- //
 	
 	public static final transient Pattern patternTag = Pattern.compile("<([a-zA-Z0-9_]*)>");
-	public String replaceTags(String str, Map<String, String> tags)
+	public String replaceTags(String string, Map<String, String> tags)
 	{
 		StringBuffer ret = new StringBuffer();
-		Matcher matcher = patternTag.matcher(str);
+		Matcher matcher = patternTag.matcher(string);
 		while (matcher.find())
 		{
 			String tag = matcher.group(1);
@@ -82,9 +87,19 @@ public class Txt
 		return ret.toString();
 	}
 	
-	public String parseTags(String str)
+	public String parseTags(String string)
 	{
-		return replaceTags(str, this.getDesign().getTags());
+		return replaceTags(string, this.getDesign().getTags());
+	}
+	
+	public ArrayList<String> parseTags(Collection<String> strings)
+	{
+		ArrayList<String> ret = new ArrayList<String>(strings.size());
+		for (String string : strings)
+		{
+			ret.add(this.parseTags(string));
+		}
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -97,6 +112,16 @@ public class Txt
 		string = parseColorAcc(string);
 		string = parseColorTags(string);
 		return string;
+	}
+	
+	public ArrayList<String> parseColor(Collection<String> strings)
+	{
+		ArrayList<String> ret = new ArrayList<String>(strings.size());
+		for (String string : strings)
+		{
+			ret.add(this.parseColor(string));
+		}
+		return ret;
 	}
 	
 	public String parseColorAmp(String string)
@@ -150,10 +175,10 @@ public class Txt
 		return string.substring(0, 1).toUpperCase()+string.substring(1);
 	}
 	
-	public String repeat(String s, int times)
+	public String repeat(String string, int times)
 	{
 	    if (times <= 0) return "";
-	    else return s + repeat(s, times-1);
+	    else return string + repeat(string, times-1);
 	}
 	
 	public String implode(List<String> list, String glue)
@@ -363,8 +388,32 @@ public class Txt
 	// -------------------------------------------- //
 	// Wrapping the Craftbukkit TextWrapper
 	// -------------------------------------------- //
-	public ArrayList<String> wrap(final String text)
+	public ArrayList<String> wrap(final String string)
 	{
-		return new ArrayList<String>(Arrays.asList(TextWrapper.wrapText(text)));
+		return new ArrayList<String>(Arrays.asList(TextWrapper.wrapText(string)));
+	}
+	
+	public ArrayList<String> wrap(final Collection<String> strings)
+	{
+		ArrayList<String> ret = new ArrayList<String>();
+		for (String line : strings)
+		{
+			ret.addAll(this.wrap(line));
+		}
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// Parse and Wrap combo
+	// -------------------------------------------- //
+	
+	public ArrayList<String> parseWrap(final String string)
+	{
+		return this.wrap(this.parse(string));
+	}
+	
+	public ArrayList<String> parseWrap(final Collection<String> strings)
+	{
+		return this.wrap(this.parse(strings));
 	}
 }
