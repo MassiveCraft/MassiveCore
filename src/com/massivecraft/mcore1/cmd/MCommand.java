@@ -186,8 +186,6 @@ public abstract class MCommand
 		
 		if ( ! validCall(this.sender, this.args)) return;
 		
-		if ( ! this.isEnabled()) return;
-		
 		perform();
 	}
 	
@@ -222,9 +220,11 @@ public abstract class MCommand
 		return true;
 	}
 	
-	public boolean isEnabled()
+	public boolean visibleTo(CommandSender sender)
 	{
-		return true;
+		if (this.getVisibilityMode() == VisibilityMode.VISIBLE) return true;
+		if (this.getVisibilityMode() == VisibilityMode.INVISIBLE) return false;
+		return this.requirementsAreMet(sender, false);
 	}
 	
 	public boolean requirementsAreMet(CommandSender sender, boolean informSenderIfNot)
