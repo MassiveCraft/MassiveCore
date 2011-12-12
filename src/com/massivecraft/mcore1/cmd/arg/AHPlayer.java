@@ -1,4 +1,4 @@
-package com.massivecraft.mcore1.cmd;
+package com.massivecraft.mcore1.cmd.arg;
 
 import java.util.List;
 
@@ -23,14 +23,17 @@ public class AHPlayer extends AHBase<Player>
 			{
 				return players.get(0);
 			}
-			this.error = "<b>\"<p>"+str+"<b>\" did not match any online player.";
+			this.error = "<b>No online player's name begins with \"<p>"+str+"<b>\".";
 		}
-		
-		Player player = Bukkit.getServer().getPlayer(str);
-		if (player == null)
+		else
 		{
+			Player player = Bukkit.getServer().getPlayer(str);
+			if (player != null)
+			{
+				return player;
+			}
 			this.error = "<b>No player online with the exact name \"<p>"+str+"<b>\".";
 		}
-		return player; 
+		return null;
 	}
 }

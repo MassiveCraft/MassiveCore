@@ -1,4 +1,4 @@
-package com.massivecraft.mcore1.cmd;
+package com.massivecraft.mcore1.cmd.arg;
 
 public class AHFloat extends AHPrimitive<Float>
 {	

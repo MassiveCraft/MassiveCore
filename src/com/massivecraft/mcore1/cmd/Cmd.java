@@ -9,6 +9,13 @@ import java.util.Set;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.cmd.arg.AHBoolean;
+import com.massivecraft.mcore1.cmd.arg.AHDouble;
+import com.massivecraft.mcore1.cmd.arg.AHFloat;
+import com.massivecraft.mcore1.cmd.arg.AHInteger;
+import com.massivecraft.mcore1.cmd.arg.AHPlayer;
+import com.massivecraft.mcore1.cmd.arg.IArgHandler;
+
 public class Cmd
 {
 	protected Map<Class<?>, IArgHandler<?>> argHandlers = new HashMap<Class<?>, IArgHandler<?>>();
