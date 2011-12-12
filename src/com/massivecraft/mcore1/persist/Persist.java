@@ -142,7 +142,10 @@ public class Persist
 		}
 		
 		// ORDERBY
-		Collections.sort(ret, orderby);
+		if (orderby != null)
+		{
+			Collections.sort(ret, orderby);
+		}
 		
 		// LIMIT AND OFFSET
 		// Parse args
