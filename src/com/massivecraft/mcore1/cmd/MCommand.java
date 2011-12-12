@@ -8,15 +8,15 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore1.Lang;
 import com.massivecraft.mcore1.MCore;
+import com.massivecraft.mcore1.MPlugin;
 import com.massivecraft.mcore1.cmd.arg.IArgHandler;
 import com.massivecraft.mcore1.cmd.req.IReq;
 import com.massivecraft.mcore1.persist.IClassManager;
 import com.massivecraft.mcore1.persist.Persist;
-import com.massivecraft.mcore1.plugin.MPlugin;
 
 public abstract class MCommand
 {
-	public abstract MPlugin getPlugin();
+	public abstract MPlugin p();
 	
 	// -------------------------------------------- //
 	// COMMAND BEHAVIOR
@@ -39,6 +39,8 @@ public abstract class MCommand
 	protected List<String> aliases;
 	public List<String> getAliases() { return this.aliases; }
 	public void setAliases(List<String> val) { this.aliases = val; }
+	public void addAliases(String... aliases) { this.aliases.addAll(Arrays.asList(aliases)); }
+	public void addAliases(List<String> aliases) { this.aliases.addAll(aliases); }
 	
 	// FIELD: requiredArgs
 	// These args must always be sent
@@ -76,7 +78,7 @@ public abstract class MCommand
 	{
 		if (this.desc == null)
 		{
-			String pdesc = getPlugin().perm.getPermissionDescription(this.descPermission);
+			String pdesc = p().perm.getPermissionDescription(this.descPermission);
 			if (pdesc != null)
 			{
 				return pdesc;
@@ -261,7 +263,7 @@ public abstract class MCommand
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				msg(Lang.commandToManyArgs, getPlugin().txt.implode(theToMany, " "));
+				msg(Lang.commandToManyArgs, p().txt.implode(theToMany, " "));
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -280,16 +282,16 @@ public abstract class MCommand
 	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc)
 	{
 		StringBuilder ret = new StringBuilder();
-		ret.append(getPlugin().txt.getDesign().getColorCommand());
+		ret.append(p().txt.getDesign().getColorCommand());
 		ret.append('/');
 		
 		for (MCommand mc : commandChain)
 		{
-			ret.append(getPlugin().txt.implode(mc.aliases, ","));
+			ret.append(p().txt.implode(mc.aliases, ","));
 			ret.append(' ');
 		}
 		
-		ret.append(getPlugin().txt.implode(this.aliases, ","));
+		ret.append(p().txt.implode(this.aliases, ","));
 		
 		List<String> args = new ArrayList<String>();
 		
@@ -314,15 +316,15 @@ public abstract class MCommand
 		
 		if (args.size() > 0)
 		{
-			ret.append(getPlugin().txt.getDesign().getColorParameter());
+			ret.append(p().txt.getDesign().getColorParameter());
 			ret.append(' ');
-			ret.append(getPlugin().txt.implode(args, " "));
+			ret.append(p().txt.implode(args, " "));
 		}
 		
 		if (addDesc)
 		{
 			ret.append(' ');
-			ret.append(getPlugin().txt.getDesign().getColorInfo());
+			ret.append(p().txt.getDesign().getColorInfo());
 			ret.append(this.getDesc());
 		}
 		
@@ -345,12 +347,12 @@ public abstract class MCommand
 	
 	public void msg(String str, Object... args)
 	{
-		sender.sendMessage(getPlugin().txt.parse(str, args));
+		sender.sendMessage(p().txt.parse(str, args));
 	}
 	
 	public void msg(String str)
 	{
-		sender.sendMessage(getPlugin().txt.parse(str));
+		sender.sendMessage(p().txt.parse(str));
 	}
 	
 	public void sendMessage(String msg)
@@ -391,8 +393,8 @@ public abstract class MCommand
 		{
 			return defaultNotSet;
 		}
-		IArgHandler<T> handler = getPlugin().cmd.getArgHandler(clazz);
-		T ret = handler.parse(this.arg(idx), style, this.sender, getPlugin());
+		IArgHandler<T> handler = p().cmd.getArgHandler(clazz);
+		T ret = handler.parse(this.arg(idx), style, this.sender, p());
 		if (ret == null)
 		{
 			this.msg(handler.getError());
@@ -409,6 +411,11 @@ public abstract class MCommand
 	public <T> T argAs(int idx, Class<T> clazz,T defaultNotSet)
 	{
 		return this.argAs(idx, clazz, null, defaultNotSet, null);
+	}
+	
+	public <T> T argAs(int idx, Class<T> clazz, String style)
+	{
+		return this.argAs(idx, clazz, style, null, null);
 	}
 	
 	public <T> T argAs(int idx, Class<T> clazz)

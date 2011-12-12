@@ -2,8 +2,8 @@ package com.massivecraft.mcore1.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.mcore1.MPlugin;
 import com.massivecraft.mcore1.persist.IClassManager;
-import com.massivecraft.mcore1.plugin.MPlugin;
 
 public abstract class AHPlayerWrapper<T> extends AHBase<T>
 {

@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore1.plugin.MPlugin;
+import com.massivecraft.mcore1.MPlugin;
 
 public class AHPlayer extends AHBase<Player>
 {

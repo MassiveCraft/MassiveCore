@@ -24,7 +24,7 @@ public class ReqHasPerm implements IReq
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return command.getPlugin().perm.getForbiddenMessage(this.perm);
+		return command.p().perm.getForbiddenMessage(this.perm);
 	}
 
 }

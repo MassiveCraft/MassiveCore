@@ -2,7 +2,7 @@ package com.massivecraft.mcore1.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore1.plugin.MPlugin;
+import com.massivecraft.mcore1.MPlugin;
 
 public abstract class AHPrimitive<T> extends AHBase<T>
 {

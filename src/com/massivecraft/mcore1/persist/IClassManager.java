@@ -67,6 +67,11 @@ public interface IClassManager<T>
 	public T getBestMatch(Object oid);
 	
 	// Get all
+	public Collection<T> getAllLoaded();
+	public Collection<T> getAllLoaded(Predictate<T> where);
+	public Collection<T> getAllLoaded(Predictate<T> where, Comparator<T> orderby);
+	public Collection<T> getAllLoaded(Predictate<T> where, Comparator<T> orderby, Integer limit);
+	public Collection<T> getAllLoaded(Predictate<T> where, Comparator<T> orderby, Integer limit, Integer offset);
 	public Collection<T> getAll();
 	public Collection<T> getAll(Predictate<T> where);
 	public Collection<T> getAll(Predictate<T> where, Comparator<T> orderby);

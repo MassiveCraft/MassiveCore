@@ -1,4 +1,4 @@
-package com.massivecraft.mcore1.perm;
+package com.massivecraft.mcore1.util;
 
 import java.util.Map;
 import java.util.Map.Entry;

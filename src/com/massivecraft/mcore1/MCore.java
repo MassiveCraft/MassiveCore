@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -17,9 +18,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.mcore1.cmd.Cmd;
 import com.massivecraft.mcore1.lib.gson.GsonBuilder;
-import com.massivecraft.mcore1.perm.Perm;
+import com.massivecraft.mcore1.persist.One;
 import com.massivecraft.mcore1.persist.Persist;
 import com.massivecraft.mcore1.text.Txt;
+import com.massivecraft.mcore1.util.Perm;
 
 public class MCore extends JavaPlugin
 {
@@ -93,8 +95,24 @@ public class MCore extends JavaPlugin
 	}
 	
 	// -------------------------------------------- //
+	// ONE
+	// -------------------------------------------- //
+	private static Map<MPlugin, One> oneInstances = new HashMap<MPlugin, One>();
+	public static Map<MPlugin, One> getOneInstances() { return oneInstances; }
+	public static One getOne(MPlugin owner) { return oneInstances.get(owner); }
+	public static void removeOne(MPlugin owner) { oneInstances.remove(owner); }
+	public static void createOne(MPlugin owner)
+	{
+		if (oneInstances.containsKey(owner)) return;
+		createTxt(owner);
+		oneInstances.put(owner, new One(owner));
+	}
+	
+	// -------------------------------------------- //
 	// DERP
 	// -------------------------------------------- //
+	
+	public static Random random = new Random();
 	
 	public MCore()
 	{
@@ -123,7 +141,7 @@ public class MCore extends JavaPlugin
 		Bukkit.getPluginManager().registerEvent(Type.SERVER_COMMAND, this.serverListener, Event.Priority.Lowest, this);
 	}
 	
-	public GsonBuilder getGsonBuilder()
+	public static GsonBuilder getGsonBuilder()
 	{
 		return new GsonBuilder()
 		.setPrettyPrinting()

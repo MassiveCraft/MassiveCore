@@ -409,6 +409,36 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	}
 
 	@Override
+	public Collection<T> getAllLoaded()
+	{
+		return entities;
+	}
+	
+	@Override
+	public Collection<T> getAllLoaded(Predictate<T> where)
+	{
+		return Persist.uglySQL(this.getAllLoaded(), where, null, null, null);
+	}
+
+	@Override
+	public Collection<T> getAllLoaded(Predictate<T> where, Comparator<T> orderby)
+	{
+		return Persist.uglySQL(this.getAllLoaded(), where, orderby, null, null);
+	}
+
+	@Override
+	public Collection<T> getAllLoaded(Predictate<T> where, Comparator<T> orderby, Integer limit)
+	{
+		return Persist.uglySQL(this.getAllLoaded(), where, orderby, limit, null);
+	}
+
+	@Override
+	public Collection<T> getAllLoaded(Predictate<T> where, Comparator<T> orderby, Integer limit, Integer offset)
+	{
+		return Persist.uglySQL(this.getAllLoaded(), where, orderby, limit, offset);
+	}
+	
+	@Override
 	public Collection<T> getAll()
 	{
 		this.loadAll();
@@ -418,25 +448,25 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	@Override
 	public Collection<T> getAll(Predictate<T> where)
 	{
-		return Persist.uglySQL(this.entities, where, null, null, null);
+		return Persist.uglySQL(this.getAll(), where, null, null, null);
 	}
 
 	@Override
 	public Collection<T> getAll(Predictate<T> where, Comparator<T> orderby)
 	{
-		return Persist.uglySQL(this.entities, where, orderby, null, null);
+		return Persist.uglySQL(this.getAll(), where, orderby, null, null);
 	}
 
 	@Override
 	public Collection<T> getAll(Predictate<T> where, Comparator<T> orderby, Integer limit)
 	{
-		return Persist.uglySQL(this.entities, where, orderby, limit, null);
+		return Persist.uglySQL(this.getAll(), where, orderby, limit, null);
 	}
 
 	@Override
 	public Collection<T> getAll(Predictate<T> where, Comparator<T> orderby, Integer limit, Integer offset)
 	{
-		return Persist.uglySQL(this.entities, where, orderby, limit, offset);
+		return Persist.uglySQL(this.getAll(), where, orderby, limit, offset);
 	}
 
 	@Override

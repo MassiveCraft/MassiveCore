@@ -11,7 +11,7 @@ import com.massivecraft.mcore1.Predictate;
 import com.massivecraft.mcore1.lib.gson.Gson;
 import com.massivecraft.mcore1.persist.PlayerEntity;
 
-public abstract class GsonPlayerEntityManager<T extends PlayerEntity> extends GsonClassManager<T>
+public abstract class GsonPlayerEntityManager<T extends PlayerEntity<T>> extends GsonClassManager<T>
 {
 	public GsonPlayerEntityManager(Gson gson, File folder, boolean creative, boolean lazy)
 	{
@@ -43,7 +43,7 @@ public abstract class GsonPlayerEntityManager<T extends PlayerEntity> extends Gs
 	
 	public Collection<T> getAllOnline()
 	{
-		return this.getAll(new Predictate<T>()
+		return this.getAllLoaded(new Predictate<T>()
 		{
 			public boolean apply(T entity)
 			{
