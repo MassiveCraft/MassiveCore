@@ -1,6 +1,6 @@
 name: mcore1
 version: 1
-main: com.massivecraft.core1.MCore
+main: com.massivecraft.mcore1.MCore
 authors: [Olof Larsson]
 softdepend: [Vault, Spout]
 commands:

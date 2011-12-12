@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.mcore1.Lang;
 import com.massivecraft.mcore1.MCore;
 import com.massivecraft.mcore1.cmd.arg.IArgHandler;
+import com.massivecraft.mcore1.cmd.req.IReq;
 import com.massivecraft.mcore1.persist.IClassManager;
 import com.massivecraft.mcore1.persist.Persist;
 import com.massivecraft.mcore1.plugin.MPlugin;
@@ -55,9 +56,16 @@ public abstract class MCommand
 	
 	// FIELD: errorOnToManyArgs
 	// Should an error be thrown if "to many" args are sent.
-	protected boolean errorOnToManyArgs = true;
+	protected boolean errorOnToManyArgs;
 	public boolean getErrorOnToManyArgs() { return this.errorOnToManyArgs; }
 	public void setErrorOnToManyArgs(boolean val) { this.errorOnToManyArgs = val; }
+	
+	// FIELD: requirements
+	// All these requirements must be met for the command to be executable;
+	protected List<IReq> requirements;
+	public List<IReq> getRequirements() { return this.requirements; }
+	public void setRequirements(List<IReq> val) { this.requirements = val; }
+	public void addRequirements(IReq... requirements) { this.requirements.addAll(Arrays.asList(requirements)); }
 	
 	// FIELD: desc
 	// This field may be left blank and will in such case be loaded from the permissions node instead.
@@ -68,7 +76,7 @@ public abstract class MCommand
 	{
 		if (this.desc == null)
 		{
-			String pdesc = getPlugin().perm.getPermissionDescription(this.permission);
+			String pdesc = getPlugin().perm.getPermissionDescription(this.descPermission);
 			if (pdesc != null)
 			{
 				return pdesc;
@@ -77,6 +85,17 @@ public abstract class MCommand
 		}
 		return this.desc;
 	}
+	
+	// FIELD: descPermission
+	// This permission node IS NOT TESTED AT ALL. It is rather used in the method above.
+	protected String descPermission;
+	public String getDescPermission() { return this.descPermission; }
+	public void setDescPermission(String val) { this.descPermission = val; }
+	
+	// FIELD: visibilityMode
+	protected VisibilityMode visibilityMode;
+	public VisibilityMode getVisibilityMode() { return this.visibilityMode; }
+	public void setVisibilityMode(VisibilityMode val) { this.visibilityMode = val; }
 	
 	// -------------------------------------------- //
 	// EXECUTION INFO
@@ -123,18 +142,9 @@ public abstract class MCommand
 		return null;
 	}
 	
-	// -------------------------------------------- //
-	// TODO: PURE DERP
-	// -------------------------------------------- //
-	
-	// Some information on permissions
-	// this is part of validating if the sender is ok...
-	public boolean senderMustBePlayer;
-	public String permission;
-	
 	public MCommand()
 	{
-		this.permission = null;
+		this.descPermission = null;
 		
 		this.subCommands = new ArrayList<MCommand>();
 		this.aliases = new ArrayList<String>();
@@ -142,7 +152,13 @@ public abstract class MCommand
 		this.requiredArgs = new ArrayList<String>();
 		this.optionalArgs = new LinkedHashMap<String, String>();
 		
+		this.requirements = new ArrayList<IReq>();
+		
+		this.errorOnToManyArgs = true;
+		
 		this.desc = null;
+		
+		this.visibilityMode = VisibilityMode.VISIBLE; 
 	}
 	
 	// The commandChain is a list of the parent command chain used to get to this command.
@@ -193,17 +209,12 @@ public abstract class MCommand
 	 */
 	public boolean validCall(CommandSender sender, List<String> args)
 	{
-		if ( ! validSenderType(sender, true))
+		if ( ! this.requirementsAreMet(sender, true))
 		{
 			return false;
 		}
 		
-		if ( ! validSenderPermissions(sender, true))
-		{
-			return false;
-		}
-		
-		if ( ! validArgs(args, sender))
+		if ( ! this.validArgs(args, sender))
 		{
 			return false;
 		}
@@ -216,23 +227,20 @@ public abstract class MCommand
 		return true;
 	}
 	
-	public boolean validSenderType(CommandSender sender, boolean informSenderIfNot)
+	public boolean requirementsAreMet(CommandSender sender, boolean informSenderIfNot)
 	{
-		if (this.senderMustBePlayer && ! (sender instanceof Player))
+		for (IReq req : this.getRequirements())
 		{
-			if (informSenderIfNot)
+			if ( ! req.test(sender, this))
 			{
-				msg(Lang.commandSenderMustBePlayer);
+				if (informSenderIfNot)
+				{
+					this.msg(req.createErrorMessage(sender, this));
+				}
+				return false;
 			}
-			return false;
 		}
 		return true;
-	}
-	
-	public boolean validSenderPermissions(CommandSender sender, boolean informSenderIfNot)
-	{
-		if (this.permission == null) return true;
-		return getPlugin().perm.has(sender, this.permission, informSenderIfNot);
 	}
 	
 	public boolean validArgs(List<String> args, CommandSender sender)
