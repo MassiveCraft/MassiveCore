@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
+import com.massivecraft.mcore1.Predictate;
+
 public interface IClassManager<T>
 {
 	// What do we handle?

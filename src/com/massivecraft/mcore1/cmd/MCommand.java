@@ -7,14 +7,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore1.Lang;
+import com.massivecraft.mcore1.MCore;
+import com.massivecraft.mcore1.persist.IClassManager;
+import com.massivecraft.mcore1.persist.Persist;
 import com.massivecraft.mcore1.plugin.MPlugin;
 
 public abstract class MCommand
 {
 	public abstract MPlugin getPlugin();
 	
+	// -------------------------------------------- //
+	// COMMAND BEHAVIOR
+	// -------------------------------------------- //
+	
+	// FIELD: subCommands
 	// The sub-commands to this command
-	public List<MCommand> subCommands;
+	protected List<MCommand> subCommands;
+	public List<MCommand> getSubCommands() { return this.subCommands; }
+	public void setSubCommands(List<MCommand> val) { this.subCommands = val; }
 	public void addSubCommand(MCommand subCommand)
 	{
 		subCommand.commandChain.addAll(this.commandChain);
@@ -22,22 +32,40 @@ public abstract class MCommand
 		this.subCommands.add(subCommand);
 	}
 	
+	// FIELD: aliases
 	// The different names this commands will react to  
-	public List<String> aliases;
+	protected List<String> aliases;
+	public List<String> getAliases() { return this.aliases; }
+	public void setAliases(List<String> val) { this.aliases = val; }
 	
-	// Information on the args
-	public List<String> requiredArgs;
-	public LinkedHashMap<String, String> optionalArgs;
-	public boolean errorOnToManyArgs = true;
+	// FIELD: requiredArgs
+	// These args must always be sent
+	protected List<String> requiredArgs;
+	public List<String> getRequiredArgs() { return this.requiredArgs; }
+	public void setRequiredArgs(List<String> val) { this.requiredArgs = val; }
+	public void addRequiredArg(String arg) { this.requiredArgs.add(arg); }
 	
-	// FIELD: Help Short
+	// FIELD: optionalArgs
+	// These args are optional
+	protected Map<String, String> optionalArgs;
+	public Map<String, String> getOptionalArgs() { return this.optionalArgs; }
+	public void setOptionalArgs(Map<String, String> val) { this.optionalArgs = val; }
+	public void addOptionalArg(String arg, String def) { this.optionalArgs.put(arg, def); }
+	
+	// FIELD: errorOnToManyArgs
+	// Should an error be thrown if "to many" args are sent.
+	protected boolean errorOnToManyArgs = true;
+	public boolean getErrorOnToManyArgs() { return this.errorOnToManyArgs; }
+	public void setErrorOnToManyArgs(boolean val) { this.errorOnToManyArgs = val; }
+	
+	// FIELD: desc
 	// This field may be left blank and will in such case be loaded from the permissions node instead.
 	// Thus make sure the permissions node description is an action description like "eat hamburgers" or "do admin stuff".
-	private String helpShort;
-	public void setHelpShort(String val) { this.helpShort = val; }
-	public String getHelpShort()
+	protected String desc = null;
+	public void setDesc(String val) { this.desc = val; }
+	public String getDesc()
 	{
-		if (this.helpShort == null)
+		if (this.desc == null)
 		{
 			String pdesc = getPlugin().perm.getPermissionDescription(this.permission);
 			if (pdesc != null)
@@ -46,22 +74,62 @@ public abstract class MCommand
 			}
 			return "*info unavailable*";
 		}
-		return this.helpShort;
+		return this.desc;
 	}
 	
-	public List<String> helpLong;
-	//public CommandVisibility visibility; // ??? abstract method only??
+	// -------------------------------------------- //
+	// EXECUTION INFO
+	// -------------------------------------------- //
+	
+	// FIELD: args
+	// Will contain the arguments, or and empty list if there are none.
+	protected List<String> args;
+	public List<String> getArgs() { return this.args; }
+	public void setArgs(List<String> val) { this.args = val; }
+
+	// FIELD: commandChain
+	// The command chain used to execute this command
+	protected List<MCommand> commandChain = new ArrayList<MCommand>();
+	public List<MCommand> getCommandChain() { return this.commandChain; }
+	public void setCommandChain(List<MCommand> val) { this.commandChain = val; }
+	
+	// FIELD: sender
+	protected CommandSender sender;
+	public CommandSender getSender() { return this.sender; }
+	public boolean getSenderIsConsole() { return ! (this.sender instanceof Player); }
+	public Player getMe()
+	{
+		if (sender instanceof Player)
+		{
+			return (Player) sender;
+		}
+		return null;
+	}
+	@SuppressWarnings("unchecked")
+	public <T> T getSenderAs(Class<T> clazz)
+	{
+		if (clazz.isInstance(sender)) return (T) sender;
+		
+		for (Persist realm : MCore.getPersistInstances().values())
+		{
+			for (IClassManager<?> manager : realm.getClassManagers().values())
+			{
+				if ( ! manager.getManagedClass().equals(clazz)) continue;
+				if (manager.idCanFix(sender.getClass()) == false) continue;
+				return (T) manager.get(sender);
+			}
+		}
+		return null;
+	}
+	
+	// -------------------------------------------- //
+	// TODO: PURE DERP
+	// -------------------------------------------- //
 	
 	// Some information on permissions
+	// this is part of validating if the sender is ok...
 	public boolean senderMustBePlayer;
 	public String permission;
-	
-	// Information available on execution of the command
-	public CommandSender sender; // Will always be set
-	public Player me; // Will only be set when the sender is a player
-	public boolean senderIsConsole;
-	public List<String> args; // Will contain the arguments, or and empty list if there are none.
-	public List<MCommand> commandChain = new ArrayList<MCommand>(); // The command chain used to execute this command
 	
 	public MCommand()
 	{
@@ -73,9 +141,7 @@ public abstract class MCommand
 		this.requiredArgs = new ArrayList<String>();
 		this.optionalArgs = new LinkedHashMap<String, String>();
 		
-		this.helpShort = null;
-		this.helpLong = new ArrayList<String>();
-		//this.visibility = CommandVisibility.VISIBLE;
+		this.desc = null;
 	}
 	
 	// The commandChain is a list of the parent command chain used to get to this command.
@@ -83,16 +149,6 @@ public abstract class MCommand
 	{
 		// Set the execution-time specific variables
 		this.sender = sender;
-		if (sender instanceof Player)
-		{
-			this.me = (Player)sender;
-			this.senderIsConsole = false;
-		}
-		else
-		{
-			this.me = null;
-			this.senderIsConsole = true;
-		}
 		this.args = args;
 		this.commandChain = commandChain;
 
@@ -212,7 +268,7 @@ public abstract class MCommand
 	// Help and Usage information
 	// -------------------------------------------- //
 	
-	public String getUseageTemplate(List<MCommand> commandChain, boolean addShortHelp)
+	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc)
 	{
 		StringBuilder ret = new StringBuilder();
 		ret.append(getPlugin().txt.getDesign().getColorCommand());
@@ -254,19 +310,19 @@ public abstract class MCommand
 			ret.append(getPlugin().txt.implode(args, " "));
 		}
 		
-		if (addShortHelp)
+		if (addDesc)
 		{
 			ret.append(' ');
 			ret.append(getPlugin().txt.getDesign().getColorInfo());
-			ret.append(this.getHelpShort());
+			ret.append(this.getDesc());
 		}
 		
 		return ret.toString();
 	}
 	
-	public String getUseageTemplate(boolean addShortHelp)
+	public String getUseageTemplate(boolean addDesc)
 	{
-		return getUseageTemplate(this.commandChain, addShortHelp);
+		return getUseageTemplate(this.commandChain, addDesc);
 	}
 	
 	public String getUseageTemplate()
@@ -330,7 +386,7 @@ public abstract class MCommand
 		T ret = handler.parse(this.arg(idx), style, this.sender, getPlugin());
 		if (ret == null)
 		{
-			this.msg(handler.error());
+			this.msg(handler.getError());
 			return defaultNotFound;
 		}
 		return ret;

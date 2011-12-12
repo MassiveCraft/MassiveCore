@@ -11,10 +11,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import com.massivecraft.mcore1.Predictate;
 import com.massivecraft.mcore1.lib.gson.Gson;
 import com.massivecraft.mcore1.persist.IClassManager;
 import com.massivecraft.mcore1.persist.Persist;
-import com.massivecraft.mcore1.persist.Predictate;
 
 public abstract class GsonClassManager<T> implements IClassManager<T>
 {

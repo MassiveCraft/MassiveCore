@@ -12,7 +12,7 @@ public abstract class AHBase<T> implements IArgHandler<T>
 	public abstract T parse(String str, String style, CommandSender sender, MPlugin p);
 
 	@Override
-	public String error()
+	public String getError()
 	{
 		return this.error;
 	}

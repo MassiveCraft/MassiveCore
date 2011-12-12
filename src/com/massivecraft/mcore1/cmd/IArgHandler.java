@@ -10,5 +10,5 @@ public interface IArgHandler<T>
 	public T parse(String str, String style, CommandSender sender, MPlugin p);
 	
 	// Error here - or null.
-	public String error();
+	public String getError();
 }

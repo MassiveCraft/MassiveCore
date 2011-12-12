@@ -1,4 +1,4 @@
-package com.massivecraft.mcore1.persist;
+package com.massivecraft.mcore1;
 
 public interface Predictate<T>
 {

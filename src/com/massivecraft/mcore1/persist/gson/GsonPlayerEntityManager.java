@@ -7,9 +7,9 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore1.Predictate;
 import com.massivecraft.mcore1.lib.gson.Gson;
 import com.massivecraft.mcore1.persist.PlayerEntity;
-import com.massivecraft.mcore1.persist.Predictate;
 
 public abstract class GsonPlayerEntityManager<T extends PlayerEntity> extends GsonClassManager<T>
 {

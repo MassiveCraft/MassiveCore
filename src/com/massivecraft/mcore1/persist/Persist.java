@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import com.massivecraft.mcore1.Predictate;
+
 public class Persist
 {
 	private Map<Class<?>, IClassManager<?>> classManagers = new HashMap<Class<?>, IClassManager<?>>();
