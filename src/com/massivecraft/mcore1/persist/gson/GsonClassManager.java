@@ -188,7 +188,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	}
 	
 	@Override
-	public void detachId(Object oid)
+	public synchronized void detachId(Object oid)
 	{
 		String id = this.idFix(oid);
 		if (id == null) return;
@@ -197,11 +197,12 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	}
 	
 	// Assumes the id is correct! For internal use only!
-	private void detach(T entity, String id)
+	private synchronized void detach(T entity, String id)
 	{
 		if (id != null)
 		{
 			this.ids.remove(id);
+			this.id2entity.remove(id);
 			this.removeFile(id);
 		}
 		
@@ -219,7 +220,6 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		{
 			file.delete();
 		}
-		this.id2entity.remove(id);
 	}
 
 	@Override
@@ -262,6 +262,8 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 			return Persist.writeCatch(file, json);
 		}
 		this.removeFile(id);
+		// TODO: Remove if loaded??
+		
 		return true;
 		// TODO: Perhaps implement a logger in the interface?
 	}
@@ -297,7 +299,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	}
 	
 	@Override
-	public T load(Object oid)
+	public synchronized T load(Object oid)
 	{
 		String id = this.idFix(oid);
 		if (id == null) return null;
@@ -485,6 +487,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	public T getBestMatch(Object oid)
 	{
 		String start = this.idFix(oid);
+		if (start == null) return null;
 		String id = Persist.getBestCIStart(this.ids, start);
 		return this.get(id);
 	}
