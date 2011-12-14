@@ -23,7 +23,7 @@ public abstract class AHPlayerWrapper<T> extends AHBase<T>
 		IClassManager<T> manager = this.getManager(p);
 		T ret;
 		
-		if (style.equals("match"))
+		if (style != null && style.equals("match"))
 		{
 			ret = manager.getBestMatch(str);
 			if (ret != null)

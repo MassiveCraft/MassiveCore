@@ -30,25 +30,23 @@ public class Persist
 		return this.classManagers;
 	}
 	
-	protected Timer timer = new Timer();
-	
-	private Map<Class<?>, SaveTask<?>> classSaveTasks = new HashMap<Class<?>, SaveTask<?>>();
-	@SuppressWarnings("unchecked")
-	public <T> void setSaveInterval(Class<T> clazz, long interval)
+	private Map<Class<?>, Timer> classSaveTimers = new HashMap<Class<?>, Timer>();
+	public synchronized <T> void setSaveInterval(Class<T> clazz, long interval)
 	{
-		// Fetch the task or create a new one.
-		SaveTask<T> task = (SaveTask<T>) this.classSaveTasks.get(clazz);
-		if (task == null)
+		// Clear old timer
+		Timer timer = this.classSaveTimers.get(clazz);
+		if (timer != null)
 		{
-			task = new SaveTask<T>(this, clazz);
-			this.classSaveTasks.put(clazz, task);
-		}
-		else
-		{
-			task.cancel();
+			timer.cancel();
+			this.classSaveTimers.remove(clazz);
 		}
 		
-		// Schedule the task
+		// Create new timer
+		timer = new Timer();
+		this.classSaveTimers.put(clazz, timer);
+		
+		// Add the task to the timer
+		SaveTask<T> task = new SaveTask<T>(this, clazz);
 		timer.scheduleAtFixedRate(task, interval, interval);
 	};
 	

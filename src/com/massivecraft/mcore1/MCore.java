@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -117,7 +119,7 @@ public class MCore extends JavaPlugin
 	public static Random random = new Random();
 	
 	public MCore()
-	{
+	{	
 		this.serverListener = new MCoreServerListener(this);
 		this.serverListenerMonitor = new MCoreServerListenerMonitor(this);
 		this.playerListener = new MCorePlayerListener(this);
@@ -134,6 +136,8 @@ public class MCore extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		logPrefix = "["+this.getDescription().getName()+"] ";
+		
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		getPersistInstances().clear();
 		
@@ -149,5 +153,18 @@ public class MCore extends JavaPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT);
+	}
+	
+	// -------------------------------------------- //
+	// LOGGING
+	// -------------------------------------------- //
+	private static String logPrefix = null;
+	public static void log(Object... msg)
+	{
+		log(Level.INFO, msg);
+	}
+	public static void log(Level level, Object... msg)
+	{
+		Logger.getLogger("Minecraft").log(level, logPrefix + MCore.txt.implode(msg, " "));
 	}
 }

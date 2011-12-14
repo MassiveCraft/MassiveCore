@@ -16,7 +16,7 @@ public class AHPlayer extends AHBase<Player>
 		this.error = null;
 		if (str == null) return null;
 		
-		if (style.equals("match"))
+		if (style != null && style.equals("match"))
 		{
 			List<Player> players = Bukkit.getServer().matchPlayer(str);
 			if (players.size() > 0)

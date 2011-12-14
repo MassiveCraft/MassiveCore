@@ -2,6 +2,7 @@ package com.massivecraft.mcore1.cmd;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -119,7 +120,7 @@ public abstract class MCommand
 	protected CommandSender sender;
 	public CommandSender getSender() { return this.sender; }
 	public boolean getSenderIsConsole() { return ! (this.sender instanceof Player); }
-	public Player getMe()
+	public Player me()
 	{
 		if (sender instanceof Player)
 		{
@@ -394,6 +395,12 @@ public abstract class MCommand
 			return defaultNotSet;
 		}
 		IArgHandler<T> handler = p().cmd.getArgHandler(clazz);
+		
+		if (handler == null)
+		{
+			MCore.log(Level.SEVERE, "There is no ArgHandler for " + clazz.getName());
+		}
+		
 		T ret = handler.parse(this.arg(idx), style, this.sender, p());
 		if (ret == null)
 		{
@@ -406,6 +413,11 @@ public abstract class MCommand
 	public <T> T argAs(int idx, Class<T> clazz,T defaultNotSet, T defaultNotFound)
 	{
 		return this.argAs(idx, clazz, null, defaultNotSet, defaultNotFound);
+	}
+	
+	public <T> T argAs(int idx, Class<T> clazz, String style,T defaultNotSet)
+	{
+		return this.argAs(idx, clazz, style, defaultNotSet, null);
 	}
 	
 	public <T> T argAs(int idx, Class<T> clazz,T defaultNotSet)
