@@ -24,6 +24,7 @@ import com.massivecraft.mcore1.persist.One;
 import com.massivecraft.mcore1.persist.Persist;
 import com.massivecraft.mcore1.text.Txt;
 import com.massivecraft.mcore1.util.Perm;
+import com.massivecraft.mcore1.util.PlayerUtil;
 
 public class MCore extends JavaPlugin
 {
@@ -137,6 +138,8 @@ public class MCore extends JavaPlugin
 	public void onEnable()
 	{
 		logPrefix = "["+this.getDescription().getName()+"] ";
+		
+		PlayerUtil.populateAllVisitorNames();
 		
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		getPersistInstances().clear();

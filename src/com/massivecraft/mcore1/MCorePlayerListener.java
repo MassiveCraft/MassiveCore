@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerPreLoginEvent;
 
 import com.massivecraft.mcore1.persist.IClassManager;
 import com.massivecraft.mcore1.persist.Persist;
+import com.massivecraft.mcore1.util.PlayerUtil;
 
 public class MCorePlayerListener extends PlayerListener
 {
@@ -21,6 +22,8 @@ public class MCorePlayerListener extends PlayerListener
 	public void onPlayerPreLogin(PlayerPreLoginEvent event)
 	{
 		String id = event.getName();
+		
+		PlayerUtil.getAllVisitorNames().add(id);
 		
 		for (Persist realm : MCore.getPersistInstances().values())
 		{
