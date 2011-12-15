@@ -95,6 +95,13 @@ public abstract class MCommand
 	public String getDescPermission() { return this.descPermission; }
 	public void setDescPermission(String val) { this.descPermission = val; }
 	
+	// FIELD: help
+	// This is a multi-line help text for the command.
+	protected List<String> help = new ArrayList<String>();
+	public void setHelp(List<String> val) { this.help = val; }
+	public void setHelp(String... val) { this.help = Arrays.asList(val); }
+	public List<String> getHelp() { return this.help; }
+	
 	// FIELD: visibilityMode
 	protected VisibilityMode visibilityMode;
 	public VisibilityMode getVisibilityMode() { return this.visibilityMode; }
