@@ -3,6 +3,7 @@ package com.massivecraft.mcore1.cmd.req;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore1.cmd.MCommand;
+import com.massivecraft.mcore1.util.Perm;
 
 public class ReqHasPerm implements IReq
 {
@@ -24,7 +25,7 @@ public class ReqHasPerm implements IReq
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return command.p().perm.getForbiddenMessage(this.perm);
+		return Perm.getForbiddenMessage(this.perm);
 	}
 
 }

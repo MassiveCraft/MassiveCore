@@ -12,11 +12,8 @@ public class PlayerUtil
 	public static Set<String> getAllVisitorNames() { return allVisitorNames; }
 	public static void populateAllVisitorNames()
 	{
-		// What is the name of the default world?
-		String worldname = Bukkit.getWorlds().get(0).getName();
-		
 		// Find the player folder
-		File playerfolder = new File(worldname, "players");
+		File playerfolder = new File(Bukkit.getWorlds().get(0).getWorldFolder(), "players");
 		
 		// Populate by removing .dat
 		for (File playerfile : playerfolder.listFiles())

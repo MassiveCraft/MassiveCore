@@ -14,6 +14,8 @@ import com.massivecraft.mcore1.cmd.arg.IArgHandler;
 import com.massivecraft.mcore1.cmd.req.IReq;
 import com.massivecraft.mcore1.persist.IClassManager;
 import com.massivecraft.mcore1.persist.Persist;
+import com.massivecraft.mcore1.util.Perm;
+import com.massivecraft.mcore1.util.Txt;
 
 public abstract class MCommand
 {
@@ -79,7 +81,7 @@ public abstract class MCommand
 	{
 		if (this.desc == null)
 		{
-			String pdesc = p().perm.getPermissionDescription(this.descPermission);
+			String pdesc = Perm.getPermissionDescription(this.descPermission);
 			if (pdesc != null)
 			{
 				return pdesc;
@@ -271,7 +273,7 @@ public abstract class MCommand
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				msg(Lang.commandToManyArgs, p().txt.implode(theToMany, " "));
+				msg(Lang.commandToManyArgs, Txt.implode(theToMany, " "));
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -290,16 +292,16 @@ public abstract class MCommand
 	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc)
 	{
 		StringBuilder ret = new StringBuilder();
-		ret.append(p().txt.getDesign().getColorCommand());
+		ret.append(Txt.parse("<c>"));
 		ret.append('/');
 		
 		for (MCommand mc : commandChain)
 		{
-			ret.append(p().txt.implode(mc.aliases, ","));
+			ret.append(Txt.implode(mc.aliases, ","));
 			ret.append(' ');
 		}
 		
-		ret.append(p().txt.implode(this.aliases, ","));
+		ret.append(Txt.implode(this.aliases, ","));
 		
 		List<String> args = new ArrayList<String>();
 		
@@ -324,15 +326,15 @@ public abstract class MCommand
 		
 		if (args.size() > 0)
 		{
-			ret.append(p().txt.getDesign().getColorParameter());
+			ret.append(Txt.parse("<p>"));
 			ret.append(' ');
-			ret.append(p().txt.implode(args, " "));
+			ret.append(Txt.implode(args, " "));
 		}
 		
 		if (addDesc)
 		{
 			ret.append(' ');
-			ret.append(p().txt.getDesign().getColorInfo());
+			ret.append(Txt.parse("<i>"));
 			ret.append(this.getDesc());
 		}
 		
@@ -355,12 +357,12 @@ public abstract class MCommand
 	
 	public void msg(String str, Object... args)
 	{
-		sender.sendMessage(p().txt.parse(str, args));
+		sender.sendMessage(Txt.parse(str, args));
 	}
 	
 	public void msg(String str)
 	{
-		sender.sendMessage(p().txt.parse(str));
+		sender.sendMessage(Txt.parse(str));
 	}
 	
 	public void sendMessage(String msg)

@@ -22,9 +22,9 @@ import com.massivecraft.mcore1.cmd.Cmd;
 import com.massivecraft.mcore1.lib.gson.GsonBuilder;
 import com.massivecraft.mcore1.persist.One;
 import com.massivecraft.mcore1.persist.Persist;
-import com.massivecraft.mcore1.text.Txt;
-import com.massivecraft.mcore1.util.Perm;
+import com.massivecraft.mcore1.util.LibLoader;
 import com.massivecraft.mcore1.util.PlayerUtil;
+import com.massivecraft.mcore1.util.Txt;
 
 public class MCore extends JavaPlugin
 {
@@ -71,35 +71,6 @@ public class MCore extends JavaPlugin
 	}
 	
 	// -------------------------------------------- //
-	// TXT
-	// -------------------------------------------- //
-	public static Txt txt = new Txt();
-	private static Map<Object, Txt> txtInstances = new HashMap<Object, Txt>();
-	public static Map<Object, Txt> getTxtInstances() { return txtInstances; }
-	public static Txt getTxt(Object owner) { return txtInstances.get(owner); }
-	public static void removeTxt(Object owner) { txtInstances.remove(owner); }
-	public static void createTxt(Object owner)
-	{
-		if (txtInstances.containsKey(owner)) return;
-		txtInstances.put(owner, new Txt());
-	}
-	
-	// -------------------------------------------- //
-	// PERM
-	// -------------------------------------------- //
-	public static Perm perm = new Perm(txt);
-	private static Map<Object, Perm> permInstances = new HashMap<Object, Perm>();
-	public static Map<Object, Perm> getPermInstances() { return permInstances; }
-	public static Perm getPerm(Object owner) { return permInstances.get(owner); }
-	public static void removePerm(Object owner) { permInstances.remove(owner); }
-	public static void createPerm(Object owner)
-	{
-		if (permInstances.containsKey(owner)) return;
-		createTxt(owner);
-		permInstances.put(owner, new Perm(getTxt(owner)));
-	}
-	
-	// -------------------------------------------- //
 	// ONE
 	// -------------------------------------------- //
 	private static Map<MPlugin, One> oneInstances = new HashMap<MPlugin, One>();
@@ -109,8 +80,20 @@ public class MCore extends JavaPlugin
 	public static void createOne(MPlugin owner)
 	{
 		if (oneInstances.containsKey(owner)) return;
-		createTxt(owner);
 		oneInstances.put(owner, new One(owner));
+	}
+	
+	// -------------------------------------------- //
+	// LIBLOADER
+	// -------------------------------------------- //
+	private static Map<MPlugin, LibLoader> libLoaderInstances = new HashMap<MPlugin, LibLoader>();
+	public static Map<MPlugin, LibLoader> getLibLoaderInstances() { return libLoaderInstances; }
+	public static LibLoader getLibLoader(MPlugin owner) { return libLoaderInstances.get(owner); }
+	public static void removeLibLoader(MPlugin owner) { libLoaderInstances.remove(owner); }
+	public static void createLibLoader(MPlugin owner)
+	{
+		if (libLoaderInstances.containsKey(owner)) return;
+		libLoaderInstances.put(owner, new LibLoader(owner));
 	}
 	
 	// -------------------------------------------- //
@@ -168,6 +151,6 @@ public class MCore extends JavaPlugin
 	}
 	public static void log(Level level, Object... msg)
 	{
-		Logger.getLogger("Minecraft").log(level, logPrefix + MCore.txt.implode(msg, " "));
+		Logger.getLogger("Minecraft").log(level, logPrefix + Txt.implode(msg, " "));
 	}
 }

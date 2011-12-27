@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.massivecraft.mcore1.MPlugin;
 import com.massivecraft.mcore1.cmd.MCommand;
+import com.massivecraft.mcore1.util.Txt;
 
 public class HelpCommand extends MCommand
 {
@@ -23,7 +24,7 @@ public class HelpCommand extends MCommand
 		
 		ArrayList<String> lines = new ArrayList<String>();
 		
-		lines.addAll(p().txt.parse(parentCommand.getHelp()));
+		lines.addAll(Txt.parse(parentCommand.getHelp()));
 		
 		for(MCommand subCommand : parentCommand.getSubCommands())
 		{
@@ -35,7 +36,7 @@ public class HelpCommand extends MCommand
 		
 		Integer pagenumber = this.argAs(0, Integer.class, 1);
 		if (pagenumber == null) return;
-		sendMessage(p().txt.getPage(lines, pagenumber, "Help for command \""+parentCommand.getAliases().get(0)+"\""));
+		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \""+parentCommand.getAliases().get(0)+"\""));
 	}
 
 	@Override

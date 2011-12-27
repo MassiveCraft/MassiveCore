@@ -13,8 +13,8 @@ import com.massivecraft.mcore1.lib.gson.Gson;
 import com.massivecraft.mcore1.lib.gson.GsonBuilder;
 import com.massivecraft.mcore1.persist.One;
 import com.massivecraft.mcore1.persist.Persist;
-import com.massivecraft.mcore1.text.Txt;
-import com.massivecraft.mcore1.util.Perm;
+import com.massivecraft.mcore1.util.LibLoader;
+import com.massivecraft.mcore1.util.Txt;
 
 
 public abstract class MPlugin extends JavaPlugin
@@ -23,8 +23,7 @@ public abstract class MPlugin extends JavaPlugin
 	public Cmd cmd;
 	public Persist persist;
 	public One one;
-	public Txt txt;
-	public Perm perm;
+	public LibLoader lib;
 	
 	// Gson
 	public Gson gson;
@@ -50,15 +49,13 @@ public abstract class MPlugin extends JavaPlugin
 		MCore.createCmd(this);
 		MCore.createPersist(this);
 		MCore.createOne(this);
-		MCore.createTxt(this);
-		MCore.createPerm(this);
+		MCore.createLibLoader(this);
 		
 		// Assign tool pointers
 		this.cmd = MCore.getCmd(this);
 		this.persist = MCore.getPersist(this);
 		this.one = MCore.getOne(this);
-		this.txt = MCore.getTxt(this);
-		this.perm = MCore.getPerm(this);
+		this.lib = MCore.getLibLoader(this);
 		
 		return true;
 	}
@@ -78,14 +75,12 @@ public abstract class MPlugin extends JavaPlugin
 		MCore.removePersist(this);
 		MCore.removeOne(this);
 		MCore.removeCmd(this);
-		MCore.removePerm(this);
-		MCore.removeTxt(this);
+		MCore.removeLibLoader(this);
 		
 		this.cmd = null;
 		this.persist = null;
 		this.one = null;
-		this.txt = null;
-		this.perm = null;
+		this.lib = null;
 		
 		log("Disabled");
 	}
@@ -129,6 +124,6 @@ public abstract class MPlugin extends JavaPlugin
 	}
 	public void log(Level level, Object... msg)
 	{
-		Logger.getLogger("Minecraft").log(level, this.logPrefix + MCore.txt.implode(msg, " "));
+		Logger.getLogger("Minecraft").log(level, this.logPrefix + Txt.implode(msg, " "));
 	}
 }

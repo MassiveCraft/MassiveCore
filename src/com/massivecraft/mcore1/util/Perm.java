@@ -8,24 +8,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 
 import com.massivecraft.mcore1.Lang;
-import com.massivecraft.mcore1.text.Txt;
 
 public class Perm
 {
-	private Txt txt;
-	public Perm(Txt txt)
-	{
-		this.txt = txt;
-	}
-	
-	public String getPermissionDescription (String perm)
+	public static String getPermissionDescription (String perm)
 	{
 		if (perm == null) return Lang.permDoThat;
 		Permission permission = Bukkit.getPluginManager().getPermission(perm);
 		return getPermissionDescription(permission);
 	}
 	
-	public String getPermissionDescription (Permission perm)
+	public static String getPermissionDescription (Permission perm)
 	{
 		if (perm == null) return Lang.permDoThat;
 		String desc = perm.getDescription();
@@ -33,18 +26,18 @@ public class Perm
 		return desc;
 	}
 	
-	public String getForbiddenMessage(String perm)
+	public static String getForbiddenMessage(String perm)
 	{
-		return txt.parse(Lang.permForbidden, getPermissionDescription(perm));
+		return Txt.parse(Lang.permForbidden, getPermissionDescription(perm));
 	}
 	
-	public boolean has (CommandSender me, String perm)
+	public static boolean has (CommandSender me, String perm)
 	{
 		if (me == null) return false;
 		return me.hasPermission(perm);
 	}
 	
-	public boolean has (CommandSender me, String perm, boolean verbose)
+	public static boolean has (CommandSender me, String perm, boolean verbose)
 	{
 		if (has(me, perm))
 		{
@@ -52,12 +45,12 @@ public class Perm
 		}
 		else if (verbose && me != null)
 		{
-			me.sendMessage(this.getForbiddenMessage(perm));
+			me.sendMessage(getForbiddenMessage(perm));
 		}
 		return false;
 	}
 	
-	public <T> T pickFirstVal(CommandSender me, Map<String, T> perm2val)
+	public static <T> T pickFirstVal(CommandSender me, Map<String, T> perm2val)
 	{
 		if (perm2val == null) return null;
 		T ret = null;
