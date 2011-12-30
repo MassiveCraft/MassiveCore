@@ -12,8 +12,6 @@ import com.massivecraft.mcore1.MCore;
 import com.massivecraft.mcore1.MPlugin;
 import com.massivecraft.mcore1.cmd.arg.IArgHandler;
 import com.massivecraft.mcore1.cmd.req.IReq;
-import com.massivecraft.mcore1.persist.IClassManager;
-import com.massivecraft.mcore1.persist.Persist;
 import com.massivecraft.mcore1.util.Perm;
 import com.massivecraft.mcore1.util.Txt;
 
@@ -125,9 +123,12 @@ public abstract class MCommand
 	public List<MCommand> getCommandChain() { return this.commandChain; }
 	public void setCommandChain(List<MCommand> val) { this.commandChain = val; }
 	
-	// FIELD: sender
-	protected CommandSender sender;
-	public CommandSender getSender() { return this.sender; }
+	// FIELDS: sender, me, senderIsConsole
+	public CommandSender sender;
+	public Player me;
+	public boolean senderIsConsole;
+	
+	/*
 	public boolean getSenderIsConsole() { return ! (this.sender instanceof Player); }
 	public Player me()
 	{
@@ -137,6 +138,9 @@ public abstract class MCommand
 		}
 		return null;
 	}
+	*/
+	
+	/*
 	@SuppressWarnings("unchecked")
 	public <T> T getSenderAs(Class<T> clazz)
 	{
@@ -152,7 +156,7 @@ public abstract class MCommand
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	public MCommand()
 	{
@@ -178,6 +182,16 @@ public abstract class MCommand
 	{
 		// Set the execution-time specific variables
 		this.sender = sender;
+		this.senderIsConsole = true;
+		this.me = null;
+		if (sender instanceof Player)
+		{
+			this.me = (Player) sender;
+			this.senderIsConsole = false;
+		}
+		
+		this.fixSenderVars();
+		
 		this.args = args;
 		this.commandChain = commandChain;
 
@@ -200,6 +214,8 @@ public abstract class MCommand
 		
 		perform();
 	}
+	
+	public void fixSenderVars() {};
 	
 	public void execute(CommandSender sender, List<String> args)
 	{
@@ -442,5 +458,14 @@ public abstract class MCommand
 	public <T> T argAs(int idx, Class<T> clazz)
 	{
 		return this.argAs(idx, clazz, null, null);
+	}
+	
+	public String argConcatFrom(int idx)
+	{
+		if ( ! this.argIsSet(idx)) return null;
+		int from = idx;
+		int to = args.size();
+		if (to <= from) return "";
+		return Txt.implode(args.subList(from, to), " ");
 	}
 }

@@ -210,7 +210,7 @@ public class Txt
 	    return ret.toString();
 	}
 	
-	public static String implodeCommaAnd(List<String> list, String comma, String and)
+	public static String implodeCommaAndDot(List<String> list, String comma, String and, String dot)
 	{
 	    if (list.size() == 0) return "";
 		if (list.size() == 1) return list.get(0);
@@ -221,14 +221,24 @@ public class Txt
 		list.set(list.size()-2, merge);
 		list.remove(list.size()-1);
 		
-		return implode(list, comma);
+		return implode(list, comma)+dot;
 	}
-	
+	public static String implodeCommaAnd(List<String> list, String comma, String and)
+	{
+		return implodeCommaAndDot(list, comma, and, "");
+	}
+	public static String implodeCommaAndDot(List<String> list, String color)
+	{
+	    return implodeCommaAndDot(list, color+", ", color+" and ", color+".");
+	}
 	public static String implodeCommaAnd(List<String> list, String color)
 	{
-	    return implodeCommaAnd(list, color+", ", color+" and ");
+	    return implodeCommaAndDot(list, color+", ", color+" and ", "");
 	}
-	
+	public static String implodeCommaAndDot(List<String> list)
+	{
+		return implodeCommaAndDot(list, "");
+	}
 	public static String implodeCommaAnd(List<String> list)
 	{
 		return implodeCommaAnd(list, "");
@@ -324,7 +334,7 @@ public class Txt
 		
 		if (unitCountParts.size() == 0) return "just now";
 		
-		ret += implodeCommaAnd(unitCountParts);
+		ret += implodeCommaAndDot(unitCountParts);
 		ret += " ";
 		if (millis <= 0)
 		{

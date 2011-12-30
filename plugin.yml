@@ -1,8 +1,8 @@
 name: mcore1
 version: 1
+depend: [Spout]
 main: com.massivecraft.mcore1.MCore
 authors: [Olof Larsson]
-softdepend: [Spout]
 commands:
   mcoresilenteater:
     description: ignore me.
