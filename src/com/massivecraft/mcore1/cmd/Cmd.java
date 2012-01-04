@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,7 @@ import com.massivecraft.mcore1.cmd.arg.AHBoolean;
 import com.massivecraft.mcore1.cmd.arg.AHDouble;
 import com.massivecraft.mcore1.cmd.arg.AHFloat;
 import com.massivecraft.mcore1.cmd.arg.AHInteger;
+import com.massivecraft.mcore1.cmd.arg.AHMaterial;
 import com.massivecraft.mcore1.cmd.arg.AHPlayer;
 import com.massivecraft.mcore1.cmd.arg.IArgHandler;
 
@@ -48,9 +50,10 @@ public class Cmd
 	public Cmd()
 	{
 		this.setArgHandler(Boolean.class, new AHBoolean());
-		this.setArgHandler(Integer.class, new AHInteger());
-		this.setArgHandler(Float.class, new AHFloat());
 		this.setArgHandler(Double.class, new AHDouble());
+		this.setArgHandler(Float.class, new AHFloat());
+		this.setArgHandler(Integer.class, new AHInteger());
+		this.setArgHandler(Material.class, new AHMaterial());
 		this.setArgHandler(Player.class, new AHPlayer());
 	}
 }

@@ -381,12 +381,20 @@ public abstract class MCommand
 		sender.sendMessage(Txt.parse(str));
 	}
 	
+	public void msg(Collection<String> msgs)
+	{
+		for(String msg : msgs)
+		{
+			this.msg(msg);
+		}
+	}
+	
 	public void sendMessage(String msg)
 	{
 		sender.sendMessage(msg);
 	}
 	
-	public void sendMessage(List<String> msgs)
+	public void sendMessage(Collection<String> msgs)
 	{
 		for(String msg : msgs)
 		{

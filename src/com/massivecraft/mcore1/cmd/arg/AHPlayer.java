@@ -13,7 +13,7 @@ public class AHPlayer extends AHBase<Player>
 	@Override
 	public Player parse(String str, String style, CommandSender sender, MPlugin p)
 	{
-		this.error = null;
+		this.error.clear();
 		if (str == null) return null;
 		
 		if (style != null && style.equals("match"))
@@ -23,7 +23,7 @@ public class AHPlayer extends AHBase<Player>
 			{
 				return players.get(0);
 			}
-			this.error = "<b>No online player's name begins with \"<p>"+str+"<b>\".";
+			this.error.add("<b>No online player's name begins with \"<p>"+str+"<b>\".");
 		}
 		else
 		{
@@ -32,7 +32,7 @@ public class AHPlayer extends AHBase<Player>
 			{
 				return player;
 			}
-			this.error = "<b>No player online with the exact name \"<p>"+str+"<b>\".";
+			this.error.add("<b>No player online with the exact name \"<p>"+str+"<b>\".");
 		}
 		return null;
 	}

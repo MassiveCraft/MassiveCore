@@ -13,7 +13,7 @@ public abstract class AHPrimitive<T> extends AHBase<T>
 	@Override
 	public T parse(String str, String style, CommandSender sender, MPlugin p)
 	{
-		this.error = null;
+		this.error.clear();
 		if (str == null) return null;
 		try
 		{
@@ -22,7 +22,7 @@ public abstract class AHPrimitive<T> extends AHBase<T>
 		}
 		catch (Exception e)
 		{
-			this.error = "<b>\"<p>"+str+"<b>\" is not a valid "+this.getPrimitiveName()+".";
+			this.error.add("<b>\"<p>"+str+"<b>\" is not a valid "+this.getPrimitiveName()+".");
 		}
 		return null;
 	}

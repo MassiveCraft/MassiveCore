@@ -19,7 +19,7 @@ public abstract class AHPlayerWrapper<T> extends AHBase<T>
 	@Override
 	public T parse(String str, String style, CommandSender sender, MPlugin p)
 	{
-		this.error = null;
+		this.error.clear();
 		if (str == null) return null;
 		
 		IClassManager<T> manager = this.getManager(p);
@@ -32,7 +32,7 @@ public abstract class AHPlayerWrapper<T> extends AHBase<T>
 			{
 				return ret;
 			}
-			this.error = "<b>No player name begins with \"<p>"+str+"<b>\".";
+			this.error.add("<b>No player name begins with \"<p>"+str+"<b>\".");
 		}
 		else if (style != null && style.equalsIgnoreCase("matchany"))
 		{
@@ -41,7 +41,7 @@ public abstract class AHPlayerWrapper<T> extends AHBase<T>
 			{
 				return ret;
 			}
-			this.error = "<b>No player name begins with \"<p>"+str+"<b>\".";
+			this.error.add("<b>No player name begins with \"<p>"+str+"<b>\".");
 		}
 		else
 		{
@@ -51,7 +51,7 @@ public abstract class AHPlayerWrapper<T> extends AHBase<T>
 				return ret;
 				
 			}
-			this.error = "<b>No player with the exact name \"<p>"+str+"<b>\".";
+			this.error.add("<b>No player with the exact name \"<p>"+str+"<b>\".");
 		}
 		return null;
 	}

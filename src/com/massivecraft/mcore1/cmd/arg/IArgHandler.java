@@ -1,5 +1,7 @@
 package com.massivecraft.mcore1.cmd.arg;
 
+import java.util.Collection;
+
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore1.MPlugin;
@@ -10,5 +12,5 @@ public interface IArgHandler<T>
 	public T parse(String str, String style, CommandSender sender, MPlugin p);
 	
 	// Error here - or null.
-	public String getError();
+	public Collection<String> getError();
 }

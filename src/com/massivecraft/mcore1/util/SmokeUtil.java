@@ -1,10 +1,18 @@
 package com.massivecraft.mcore1.util;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
 
+import net.minecraft.server.ChunkPosition;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.Packet60Explosion;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
 
 // http://mc.kev009.com/Protocol
 // -----------------------------
@@ -81,6 +89,38 @@ public class SmokeUtil
 			spawnCloudRandom(location, thickness);
 		}
 	}
+	
+	// Fake Explosion ========
+	public static void fakeExplosion(Location location, int radius)
+	{
+		if (location == null) return;
+		
+		HashSet<ChunkPosition> blocks = new HashSet<ChunkPosition>();
+		int squRadius = radius * radius;
+		for(int x = -radius; x <= radius; x++)
+		{
+			for(int y = -radius; y <= radius; y++)
+			{
+				for(int z = -radius; z <= radius; z++)
+				{
+					if(x*x+y*y+z*z+x+y+z+0.75 < squRadius) // ???
+					{
+						blocks.add(new ChunkPosition(
+						(int)(location.getX()+x+0.5),
+						(int)(location.getY()+y+0.5),
+						(int)(location.getZ()+z+0.5)));
+					}
+				}
+			}
+		}
+		
+		Packet60Explosion packet = new Packet60Explosion(location.getX(),location.getY(), location.getZ(), 0.1f, blocks);
+		CraftServer craftServer = (CraftServer) Bukkit.getServer();
+		MinecraftServer minecraftServer = craftServer.getServer();
+		
+		minecraftServer.serverConfigurationManager.sendPacketNearby(location.getX(), location.getY(), location.getZ(), 64, ((CraftWorld)location.getWorld()).getHandle().dimension, packet);
+	}
+	
 	
 	// -------------------------------------------- //
 	// Attach continuous effects to or locations

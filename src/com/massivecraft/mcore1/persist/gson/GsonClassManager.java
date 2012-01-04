@@ -21,29 +21,29 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	// -------------------------------------------- //
 	// NON INTERFACE
 	// -------------------------------------------- //
-	private final static String DOTJSON = ".json";
-	private Set<String> ids;
-	private Set<T> entities;
-	private Map<String, T> id2entity;
-	private Map<T, String> entity2id;
-	private long idCurrent = 1;
+	protected final static String DOTJSON = ".json";
+	protected Set<String> ids;
+	protected Set<T> entities;
+	protected Map<String, T> id2entity;
+	protected Map<T, String> entity2id;
+	protected long idCurrent = 1;
 	
-	private Gson gson;
+	protected Gson gson;
 	public Gson getGson() { return gson; }
 	public void setGson(Gson gson) { this.gson = gson; }
 
-	private File folder;
+	protected File folder;
 	public File getFolder() { return folder; }
 	public void setFolder(File val) { this.folder = val; this.folder.mkdirs(); }
 
-	private boolean creative;
+	protected boolean creative;
 	@Override
 	public boolean getIsCreative() { return this.creative; }
 	@Override
 	public void setIsCreative(boolean val) { this.creative = val; }
 	
-	private boolean didLoadAll = false;
-	private void loadIds()
+	protected boolean didLoadAll = false;
+	protected void loadIds()
 	{
 		for(File file : this.getFolder().listFiles(JsonFileFilter.getInstance()))
 		{
@@ -51,14 +51,14 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		}
 	}
 	
-	private String idFromFile(File file)
+	protected String idFromFile(File file)
 	{
 		if (file == null) return null;
 		String name = file.getName();
 		return name.substring(0, name.length()-5);
 	}
 	
-	private File fileFromId(Object oid)
+	protected File fileFromId(Object oid)
 	{
 		String id = this.idFix(oid);
 		if (id == null) return null;
@@ -148,7 +148,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		return this.attach(entity, oid, false);
 	}
 	
-	private synchronized String attach(T entity, Object oid, boolean allowExistingIdUsage)
+	protected synchronized String attach(T entity, Object oid, boolean allowExistingIdUsage)
 	{
 		// Check entity
 		if (entity == null) return null;
@@ -197,7 +197,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	}
 	
 	// Assumes the id is correct! For internal use only!
-	private synchronized void detach(T entity, String id)
+	protected synchronized void detach(T entity, String id)
 	{
 		if (id != null)
 		{
@@ -213,7 +213,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		}
 	}
 	
-	private void removeFile(String id)
+	protected void removeFile(String id)
 	{
 		File file = this.fileFromId(id);
 		if (file.exists())
@@ -251,7 +251,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		return this.save(id, entity);
 	}
 	
-	private boolean save(String id, T entity)
+	protected boolean save(String id, T entity)
 	{
 		if (id == null) return false;
 		if (entity == null) return false;

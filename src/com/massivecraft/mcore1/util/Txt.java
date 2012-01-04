@@ -74,8 +74,15 @@ public class Txt
 		parseReplacements.put("<good>", "\u00A7a");
 		parseReplacements.put("<b>", "\u00A7c");
 		parseReplacements.put("<bad>", "\u00A7c");
+		
+		parseReplacements.put("<k>", "\u00A7b");
+		parseReplacements.put("<key>", "\u00A7b");
+		
+		parseReplacements.put("<v>", "\u00A7d");
+		parseReplacements.put("<value>", "\u00A7d");
 		parseReplacements.put("<h>", "\u00A7d");
 		parseReplacements.put("<highlight>", "\u00A7d");
+		
 		parseReplacements.put("<c>", "\u00A7b");
 		parseReplacements.put("<command>", "\u00A7b");
 		parseReplacements.put("<p>", "\u00A73");
@@ -285,7 +292,7 @@ public class Txt
 		int pageheight = 9;
 		int pagecount = (lines.size() / pageheight)+1;
 		
-		ret.add(titleize(title+" "+pageHumanBased+"/"+pagecount));
+		ret.add(titleize(title+parse("<a>")+" "+pageHumanBased+"/"+pagecount));
 		
 		if (pagecount == 0)
 		{
