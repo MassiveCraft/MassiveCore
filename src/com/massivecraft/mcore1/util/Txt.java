@@ -198,12 +198,12 @@ public class Txt
 	    else return string + repeat(string, times-1);
 	}
 	
-	public static String implode(List<String> list, String glue)
+	public static String implode(final List<? extends Object> list, final String glue)
 	{
-	    return implode(list.toArray(new String[0]), glue);
+		return implode(list.toArray(new Object[0]), glue);
 	}
 	
-	public static String implode(Object[] list, String glue)
+	public static String implode(final Object[] list, final String glue)
 	{
 	    StringBuilder ret = new StringBuilder();
 	    for (int i=0; i<list.length; i++)
@@ -217,38 +217,56 @@ public class Txt
 	    return ret.toString();
 	}
 	
-	public static String implodeCommaAndDot(List<String> list, String comma, String and, String dot)
+	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String comma, final String and, final String dot)
 	{
-	    if (list.size() == 0) return "";
-		if (list.size() == 1) return list.get(0);
+	    if (objects.size() == 0) return "";
+		if (objects.size() == 1) return objects.iterator().next().toString();
 		
-		String lastItem = list.get(list.size()-1);
-		String nextToLastItem = list.get(list.size()-2);
+		List<Object> ourObjects = new ArrayList<Object>(objects);
+		
+		String lastItem = ourObjects.get(ourObjects.size()-1).toString();
+		String nextToLastItem = ourObjects.get(ourObjects.size()-2).toString();
 		String merge = nextToLastItem+and+lastItem;
-		list.set(list.size()-2, merge);
-		list.remove(list.size()-1);
+		ourObjects.set(ourObjects.size()-2, merge);
+		ourObjects.remove(ourObjects.size()-1);
 		
-		return implode(list, comma)+dot;
+		return implode(ourObjects, comma)+dot;
 	}
-	public static String implodeCommaAnd(List<String> list, String comma, String and)
+	public static String implodeCommaAnd(final Collection<? extends Object> objects, final String comma, final String and)
 	{
-		return implodeCommaAndDot(list, comma, and, "");
+		return implodeCommaAndDot(objects, comma, and, "");
 	}
-	public static String implodeCommaAndDot(List<String> list, String color)
+	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String color)
 	{
-	    return implodeCommaAndDot(list, color+", ", color+" and ", color+".");
+	    return implodeCommaAndDot(objects, color+", ", color+" and ", color+".");
 	}
-	public static String implodeCommaAnd(List<String> list, String color)
+	public static String implodeCommaAnd(final Collection<? extends Object> objects, final String color)
 	{
-	    return implodeCommaAndDot(list, color+", ", color+" and ", "");
+	    return implodeCommaAndDot(objects, color+", ", color+" and ", "");
 	}
-	public static String implodeCommaAndDot(List<String> list)
+	public static String implodeCommaAndDot(final Collection<? extends Object> objects)
 	{
-		return implodeCommaAndDot(list, "");
+		return implodeCommaAndDot(objects, "");
 	}
-	public static String implodeCommaAnd(List<String> list)
+	public static String implodeCommaAnd(final Collection<? extends Object> objects)
 	{
-		return implodeCommaAnd(list, "");
+		return implodeCommaAnd(objects, "");
+	}
+	
+	public static Integer indexOfFirstDigit(final String str)
+	{
+		Integer ret = null;
+		for (int i = 0; i < str.length(); i++)
+		{
+			char c = str.charAt(i);
+			boolean isDigit = (c >= '0' && c <= '9');
+			if (isDigit)
+			{
+				ret = i;
+				break;
+			}
+		}
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -290,7 +308,7 @@ public class Txt
 		ArrayList<String> ret = new ArrayList<String>();
 		int pageZeroBased = pageHumanBased - 1;
 		int pageheight = 9;
-		int pagecount = (lines.size() / pageheight)+1;
+		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
 		
 		ret.add(titleize(title+parse("<a>")+" "+pageHumanBased+"/"+pagecount));
 		

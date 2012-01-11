@@ -24,7 +24,10 @@ public class HelpCommand extends MCommand
 		
 		ArrayList<String> lines = new ArrayList<String>();
 		
-		lines.addAll(Txt.parse(parentCommand.getHelp()));
+		for (String helpline : parentCommand.getHelp())
+		{
+			lines.add(Txt.parse("<a>#<i> "+helpline));
+		}
 		
 		for(MCommand subCommand : parentCommand.getSubCommands())
 		{

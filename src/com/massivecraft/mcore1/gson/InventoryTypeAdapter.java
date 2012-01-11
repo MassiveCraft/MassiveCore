@@ -1,4 +1,4 @@
-package com.massivecraft.mcore1.persist.gson.adapter;
+package com.massivecraft.mcore1.gson;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

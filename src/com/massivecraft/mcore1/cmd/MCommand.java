@@ -12,6 +12,7 @@ import com.massivecraft.mcore1.MCore;
 import com.massivecraft.mcore1.MPlugin;
 import com.massivecraft.mcore1.cmd.arg.IArgHandler;
 import com.massivecraft.mcore1.cmd.req.IReq;
+import com.massivecraft.mcore1.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore1.util.Perm;
 import com.massivecraft.mcore1.util.Txt;
 
@@ -77,22 +78,35 @@ public abstract class MCommand
 	public void setDesc(String val) { this.desc = val; }
 	public String getDesc()
 	{
-		if (this.desc == null)
+		if (this.desc != null) return this.desc;
+		
+		String perm = this.getDescPermission();
+		if (perm != null)
 		{
-			String pdesc = Perm.getPermissionDescription(this.descPermission);
+			String pdesc = Perm.getPermissionDescription(this.getDescPermission());
 			if (pdesc != null)
 			{
 				return pdesc;
 			}
-			return "*info unavailable*";
 		}
-		return this.desc;
+			
+		return "*info unavailable*";
 	}
 	
 	// FIELD: descPermission
 	// This permission node IS NOT TESTED AT ALL. It is rather used in the method above.
 	protected String descPermission;
-	public String getDescPermission() { return this.descPermission; }
+	public String getDescPermission()
+	{
+		if (this.descPermission != null) return this.descPermission;
+		// Otherwise we try to find one.
+		for (IReq req : this.requirements)
+		{
+			if ( ! (req instanceof ReqHasPerm)) continue;
+			return ((ReqHasPerm)req).getPerm();
+		}
+		return null;
+	}
 	public void setDescPermission(String val) { this.descPermission = val; }
 	
 	// FIELD: help
@@ -437,7 +451,7 @@ public abstract class MCommand
 		T ret = handler.parse(this.arg(idx), style, this.sender, p());
 		if (ret == null)
 		{
-			this.msg(handler.getError());
+			this.msg(handler.getErrors());
 			return defaultNotFound;
 		}
 		return ret;
