@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,6 +17,7 @@ import com.massivecraft.mcore1.cmd.arg.AHFloat;
 import com.massivecraft.mcore1.cmd.arg.AHInteger;
 import com.massivecraft.mcore1.cmd.arg.AHMaterial;
 import com.massivecraft.mcore1.cmd.arg.AHPlayer;
+import com.massivecraft.mcore1.cmd.arg.AHWorld;
 import com.massivecraft.mcore1.cmd.arg.IArgHandler;
 
 public class Cmd
@@ -55,5 +57,6 @@ public class Cmd
 		this.setArgHandler(Integer.class, new AHInteger());
 		this.setArgHandler(Material.class, new AHMaterial());
 		this.setArgHandler(Player.class, new AHPlayer());
+		this.setArgHandler(World.class, new AHWorld());
 	}
 }
