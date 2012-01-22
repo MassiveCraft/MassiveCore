@@ -457,17 +457,17 @@ public abstract class MCommand
 		return ret;
 	}
 	
-	public <T> T argAs(int idx, Class<T> clazz,T defaultNotSet, T defaultNotFound)
+	public <T> T argAs(int idx, Class<T> clazz, T defaultNotSet, T defaultNotFound)
 	{
 		return this.argAs(idx, clazz, null, defaultNotSet, defaultNotFound);
 	}
 	
-	public <T> T argAs(int idx, Class<T> clazz, String style,T defaultNotSet)
+	public <T> T argAs(int idx, Class<T> clazz, String style, T defaultNotSet)
 	{
 		return this.argAs(idx, clazz, style, defaultNotSet, null);
 	}
 	
-	public <T> T argAs(int idx, Class<T> clazz,T defaultNotSet)
+	public <T> T argAs(int idx, Class<T> clazz, T defaultNotSet)
 	{
 		return this.argAs(idx, clazz, null, defaultNotSet, null);
 	}
@@ -479,7 +479,7 @@ public abstract class MCommand
 	
 	public <T> T argAs(int idx, Class<T> clazz)
 	{
-		return this.argAs(idx, clazz, null, null);
+		return this.argAs(idx, clazz, (T)null, null);
 	}
 	
 	public String argConcatFrom(int idx)
