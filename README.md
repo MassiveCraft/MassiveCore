@@ -1,3 +1,4 @@
+![MCore](http://massivecraft.com/wp-content/uploads/mcore/mcore150.png "MCore")<br>
 MCore - A bukkit plugin dev-framework in a bukkit plugin
 ====================
 <b>[Download Latest Version](https://github.com/MassiveCraft/mcore/downloads) | [Source Code](https://github.com/MassiveCraft/mcore) | [BukkitDev](http://dev.bukkit.org/server-mods/mcore/)</b>
