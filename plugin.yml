@@ -1,6 +1,6 @@
-name: mcore1
+name: mcore2dev
 version: 1.0.0
-main: com.massivecraft.mcore1.MCore
+main: com.massivecraft.mcore2dev.MCore
 authors: [Olof Larsson, Brett Flannigan]
 commands:
   mcoresilenteater:
