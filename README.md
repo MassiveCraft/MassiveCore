@@ -1,5 +1,7 @@
 MCore - A bukkit plugin dev-framework in a bukkit plugin
 ====================
+[Download Latest Version](https://github.com/MassiveCraft/mcore/downloads) | [Source Code](https://github.com/MassiveCraft/mcore) | [BukkitDev](http://dev.bukkit.org/server-mods/mcore/)
+
 This bukkit plugin contains components for developing other bukkit plugins. It offers no new plugin-like features on it's own. It is just a bunch of libraries and features that other plugins can make use of.
 
 Versioning
@@ -8,7 +10,7 @@ It is possible to have more than one version of the mcore plugin installed on yo
 
 When a new version of mcore is released it will take a while before the plugins using it will update. And during that phase you will probably need to have two versions of mcore installed on your server, and that is as mentioned very possible.
 
-For plugin devs
+For plugin developers
 ----------
 There is currently no documantation for mcore. You can learn how to use it by looking at other plugins that do so.
 
