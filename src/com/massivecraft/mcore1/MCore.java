@@ -10,13 +10,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 import com.massivecraft.mcore1.cmd.Cmd;
 import com.massivecraft.mcore1.lib.gson.GsonBuilder;
@@ -28,9 +23,7 @@ import com.massivecraft.mcore1.util.Txt;
 
 public class MCore extends JavaPlugin
 {
-	MCoreServerListener serverListener;
-	MCoreServerListenerMonitor serverListenerMonitor;
-	MCorePlayerListener playerListener;
+	InternalListener listener;
 	
 	// -------------------------------------------- //
 	// PERSIST
@@ -104,9 +97,7 @@ public class MCore extends JavaPlugin
 	
 	public MCore()
 	{	
-		this.serverListener = new MCoreServerListener(this);
-		this.serverListenerMonitor = new MCoreServerListenerMonitor(this);
-		this.playerListener = new MCorePlayerListener(this);
+		
 	}
 	
 	@Override
@@ -128,9 +119,7 @@ public class MCore extends JavaPlugin
 		getPersistInstances().clear();
 		
 		// Register events
-		Bukkit.getPluginManager().registerEvent(Type.PLAYER_PRELOGIN, this.playerListener, Priority.Lowest, this);
-		Bukkit.getPluginManager().registerEvent(Type.PLAYER_COMMAND_PREPROCESS, this.playerListener, Event.Priority.Lowest, this);
-		Bukkit.getPluginManager().registerEvent(Type.SERVER_COMMAND, this.serverListener, Event.Priority.Lowest, this);
+		this.listener = new InternalListener(this);
 	}
 	
 	public static GsonBuilder getGsonBuilder()
@@ -140,6 +129,21 @@ public class MCore extends JavaPlugin
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT);
 	}
+	
+	// -------------------------------------------- //
+	// SPOUT INTEGRATION
+	// -------------------------------------------- //
+	/*protected boolean spoutIsIntegrated = false;
+	protected void integrateSpout()
+	{
+		if (spoutIsIntegrated) return;
+		if ( ! Bukkit.getPluginManager().isPluginEnabled("Spout")) return;
+		
+		// Ok we should be safe :) Lets integrate! 
+		this.spoutIsIntegrated = true;
+		
+		
+	}*/
 	
 	// -------------------------------------------- //
 	// LOGGING

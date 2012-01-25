@@ -1,24 +1,29 @@
 package com.massivecraft.mcore1;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 
 import com.massivecraft.mcore1.persist.IClassManager;
 import com.massivecraft.mcore1.persist.Persist;
 import com.massivecraft.mcore1.util.PlayerUtil;
 
-public class MCorePlayerListener extends PlayerListener
+public class InternalListener implements Listener
 {
 	MCore p;
 	
-	public MCorePlayerListener(MCore p)
+	public InternalListener(MCore p)
 	{
 		this.p = p;
+		Bukkit.getServer().getPluginManager().registerEvents(this, this.p);
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerPreLogin(PlayerPreLoginEvent event)
 	{
 		String id = event.getName();
@@ -36,13 +41,24 @@ public class MCorePlayerListener extends PlayerListener
 		}
 	}
 	
-	@Override
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
 		if (event.isCancelled()) return;
 		if (MCore.handleCommand(event.getPlayer(), event.getMessage().substring(1), false))
 		{
 			event.setCancelled(true);
+		}
+	}
+	
+	private final static String refCommand = "mcoresilenteater";
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onServerCommand(ServerCommandEvent event)
+	{
+		if (event.getCommand().length() == 0) return;
+		if (MCore.handleCommand(event.getSender(), event.getCommand(), false))
+		{
+			event.setCommand(refCommand);
 		}
 	}
 }
