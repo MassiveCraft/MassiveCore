@@ -95,11 +95,6 @@ public class MCore extends JavaPlugin
 	
 	public static Random random = new Random();
 	
-	public MCore()
-	{	
-		
-	}
-	
 	@Override
 	public void onDisable()
 	{
