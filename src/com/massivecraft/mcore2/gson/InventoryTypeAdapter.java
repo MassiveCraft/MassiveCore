@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
 
 import com.massivecraft.mcore2.lib.gson.JsonDeserializationContext;
 import com.massivecraft.mcore2.lib.gson.JsonDeserializer;
@@ -82,7 +82,10 @@ public class InventoryTypeAdapter implements JsonDeserializer<Inventory>, JsonSe
 				itemStacks.add(stack);
 			}
 			
-			return SpoutManager.getInventoryBuilder().construct(itemStacks, "");
+			
+			Inventory ret = new CraftInventoryCustom(null, itemStacks.size(), "items");
+			ret.setContents(itemStacks.toArray(new ItemStack[0]));
+			return ret;
 		}
 		catch (Exception ex)
 		{

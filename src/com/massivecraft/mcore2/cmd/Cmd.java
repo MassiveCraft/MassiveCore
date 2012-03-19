@@ -1,5 +1,6 @@
 package com.massivecraft.mcore2.cmd;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore2.cmd.arg.AHBoolean;
+import com.massivecraft.mcore2.cmd.arg.AHDate;
 import com.massivecraft.mcore2.cmd.arg.AHDouble;
 import com.massivecraft.mcore2.cmd.arg.AHFloat;
 import com.massivecraft.mcore2.cmd.arg.AHInteger;
@@ -53,6 +55,7 @@ public class Cmd
 	{
 		this.setArgHandler(Boolean.class, new AHBoolean());
 		this.setArgHandler(Double.class, new AHDouble());
+		this.setArgHandler(Date.class, new AHDate());
 		this.setArgHandler(Float.class, new AHFloat());
 		this.setArgHandler(Integer.class, new AHInteger());
 		this.setArgHandler(Material.class, new AHMaterial());
