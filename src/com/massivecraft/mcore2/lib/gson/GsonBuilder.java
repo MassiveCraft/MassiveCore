@@ -16,22 +16,35 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
-import com.massivecraft.mcore2.lib.gson.DefaultTypeAdapters.DefaultDateTypeAdapter;
-import com.massivecraft.mcore2.lib.gson.internal.$Gson$Preconditions;
-import com.massivecraft.mcore2.lib.gson.internal.ParameterizedTypeHandlerMap;
-import com.massivecraft.mcore2.lib.gson.internal.Primitives;
-import com.massivecraft.mcore2.lib.gson.internal.bind.TypeAdapter;
-
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+
+import com.massivecraft.mcore2.lib.gson.DefaultDateTypeAdapter;
+import com.massivecraft.mcore2.lib.gson.ExclusionStrategy;
+import com.massivecraft.mcore2.lib.gson.FieldNamingPolicy;
+import com.massivecraft.mcore2.lib.gson.FieldNamingStrategy;
+import com.massivecraft.mcore2.lib.gson.Gson;
+import com.massivecraft.mcore2.lib.gson.GsonBuilder;
+import com.massivecraft.mcore2.lib.gson.InstanceCreator;
+import com.massivecraft.mcore2.lib.gson.JsonDeserializer;
+import com.massivecraft.mcore2.lib.gson.JsonObject;
+import com.massivecraft.mcore2.lib.gson.JsonSerializer;
+import com.massivecraft.mcore2.lib.gson.LongSerializationPolicy;
+import com.massivecraft.mcore2.lib.gson.TreeTypeAdapter;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
+import com.massivecraft.mcore2.lib.gson.TypeAdapterFactory;
+import com.massivecraft.mcore2.lib.gson.internal.$Gson$Preconditions;
+import com.massivecraft.mcore2.lib.gson.internal.Excluder;
+import com.massivecraft.mcore2.lib.gson.internal.Primitives;
+import com.massivecraft.mcore2.lib.gson.internal.bind.TypeAdapters;
+import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 
 /**
  * <p>Use this builder to construct a {@link Gson} instance when you need to set configuration
@@ -65,40 +78,24 @@ import java.util.Set;
  *
  * @author Inderjeet Singh
  * @author Joel Leitch
+ * @author Jesse Wilson
  */
 public final class GsonBuilder {
-  private static final InnerClassExclusionStrategy innerClassExclusionStrategy =
-      new InnerClassExclusionStrategy();
-  private static final ExposeAnnotationDeserializationExclusionStrategy
-  exposeAnnotationDeserializationExclusionStrategy =
-      new ExposeAnnotationDeserializationExclusionStrategy();
-  private static final ExposeAnnotationSerializationExclusionStrategy
-  exposeAnnotationSerializationExclusionStrategy =
-      new ExposeAnnotationSerializationExclusionStrategy();
-
-  private final Set<ExclusionStrategy> serializeExclusionStrategies =
-      new HashSet<ExclusionStrategy>();
-  private final Set<ExclusionStrategy> deserializeExclusionStrategies =
-      new HashSet<ExclusionStrategy>();
-
-  private double ignoreVersionsAfter;
-  private ModifierBasedExclusionStrategy modifierBasedExclusionStrategy;
-  private boolean serializeInnerClasses;
-  private boolean excludeFieldsWithoutExposeAnnotation;
-  private LongSerializationPolicy longSerializationPolicy;
-  private FieldNamingStrategy2 fieldNamingPolicy;
-  private final ParameterizedTypeHandlerMap<InstanceCreator<?>> instanceCreators;
-  private final ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers;
-  private final ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers;
-  private final List<TypeAdapter.Factory> typeAdapterFactories
-      = new ArrayList<TypeAdapter.Factory>();
+  private Excluder excluder = Excluder.DEFAULT;
+  private LongSerializationPolicy longSerializationPolicy = LongSerializationPolicy.DEFAULT;
+  private FieldNamingStrategy fieldNamingPolicy = FieldNamingPolicy.IDENTITY;
+  private final Map<Type, InstanceCreator<?>> instanceCreators
+      = new HashMap<Type, InstanceCreator<?>>();
+  private final List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
+  /** tree-style hierarchy factories. These come after factories for backwards compatibility. */
+  private final List<TypeAdapterFactory> hierarchyFactories = new ArrayList<TypeAdapterFactory>();
   private boolean serializeNulls;
   private String datePattern;
-  private int dateStyle;
-  private int timeStyle;
-  private boolean complexMapKeySerialization = false;
+  private int dateStyle = DateFormat.DEFAULT;
+  private int timeStyle = DateFormat.DEFAULT;
+  private boolean complexMapKeySerialization;
   private boolean serializeSpecialFloatingPointValues;
-  private boolean escapeHtmlChars;
+  private boolean escapeHtmlChars = true;
   private boolean prettyPrinting;
   private boolean generateNonExecutableJson;
 
@@ -109,29 +106,6 @@ public final class GsonBuilder {
    * {@link #create()}.
    */
   public GsonBuilder() {
-    // add default exclusion strategies
-    deserializeExclusionStrategies.add(Gson.DEFAULT_ANON_LOCAL_CLASS_EXCLUSION_STRATEGY);
-    deserializeExclusionStrategies.add(Gson.DEFAULT_SYNTHETIC_FIELD_EXCLUSION_STRATEGY);
-    serializeExclusionStrategies.add(Gson.DEFAULT_ANON_LOCAL_CLASS_EXCLUSION_STRATEGY);
-    serializeExclusionStrategies.add(Gson.DEFAULT_SYNTHETIC_FIELD_EXCLUSION_STRATEGY);
-
-    // setup default values
-    ignoreVersionsAfter = VersionConstants.IGNORE_VERSIONS;
-    serializeInnerClasses = true;
-    prettyPrinting = false;
-    escapeHtmlChars = true;
-    modifierBasedExclusionStrategy = Gson.DEFAULT_MODIFIER_BASED_EXCLUSION_STRATEGY;
-    excludeFieldsWithoutExposeAnnotation = false;
-    longSerializationPolicy = LongSerializationPolicy.DEFAULT;
-    fieldNamingPolicy = Gson.DEFAULT_NAMING_POLICY;
-    instanceCreators = new ParameterizedTypeHandlerMap<InstanceCreator<?>>();
-    serializers = new ParameterizedTypeHandlerMap<JsonSerializer<?>>();
-    deserializers = new ParameterizedTypeHandlerMap<JsonDeserializer<?>>();
-    serializeNulls = false;
-    dateStyle = DateFormat.DEFAULT;
-    timeStyle = DateFormat.DEFAULT;
-    serializeSpecialFloatingPointValues = false;
-    generateNonExecutableJson = false;
   }
 
   /**
@@ -142,7 +116,7 @@ public final class GsonBuilder {
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    */
   public GsonBuilder setVersion(double ignoreVersionsAfter) {
-    this.ignoreVersionsAfter = ignoreVersionsAfter;
+    excluder = excluder.withVersion(ignoreVersionsAfter);
     return this;
   }
 
@@ -158,7 +132,7 @@ public final class GsonBuilder {
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    */
   public GsonBuilder excludeFieldsWithModifiers(int... modifiers) {
-    modifierBasedExclusionStrategy = new ModifierBasedExclusionStrategy(modifiers);
+    excluder = excluder.withModifiers(modifiers);
     return this;
   }
 
@@ -183,7 +157,7 @@ public final class GsonBuilder {
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    */
   public GsonBuilder excludeFieldsWithoutExposeAnnotation() {
-    excludeFieldsWithoutExposeAnnotation = true;
+    excluder = excluder.excludeFieldsWithoutExposeAnnotation();
     return this;
   }
 
@@ -287,7 +261,7 @@ public final class GsonBuilder {
    * @since 1.3
    */
   public GsonBuilder disableInnerClassSerialization() {
-    serializeInnerClasses = false;
+    excluder = excluder.disableInnerClassSerialization();
     return this;
   }
 
@@ -313,7 +287,8 @@ public final class GsonBuilder {
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    */
   public GsonBuilder setFieldNamingPolicy(FieldNamingPolicy namingConvention) {
-    return setFieldNamingStrategy(namingConvention.getFieldNamingPolicy());
+    this.fieldNamingPolicy = namingConvention;
+    return this;
   }
 
   /**
@@ -325,19 +300,7 @@ public final class GsonBuilder {
    * @since 1.3
    */
   public GsonBuilder setFieldNamingStrategy(FieldNamingStrategy fieldNamingStrategy) {
-    return setFieldNamingStrategy(new FieldNamingStrategy2Adapter(fieldNamingStrategy));
-  }
-
-  /**
-   * Configures Gson to apply a specific naming policy strategy to an object's field during
-   * serialization and deserialization.
-   *
-   * @param fieldNamingStrategy the actual naming strategy to apply to the fields
-   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
-   */
-  GsonBuilder setFieldNamingStrategy(FieldNamingStrategy2 fieldNamingStrategy) {
-    this.fieldNamingPolicy =
-        new SerializedNameAnnotationInterceptingNamingPolicy(fieldNamingStrategy);
+    this.fieldNamingPolicy = fieldNamingStrategy;
     return this;
   }
 
@@ -352,9 +315,9 @@ public final class GsonBuilder {
    * @since 1.4
    */
   public GsonBuilder setExclusionStrategies(ExclusionStrategy... strategies) {
-    List<ExclusionStrategy> strategyList = Arrays.asList(strategies);
-    serializeExclusionStrategies.addAll(strategyList);
-    deserializeExclusionStrategies.addAll(strategyList);
+    for (ExclusionStrategy strategy : strategies) {
+      excluder = excluder.withExclusionStrategy(strategy, true, true);
+    }
     return this;
   }
 
@@ -371,7 +334,7 @@ public final class GsonBuilder {
    * @since 1.7
    */
   public GsonBuilder addSerializationExclusionStrategy(ExclusionStrategy strategy) {
-    serializeExclusionStrategies.add(strategy);
+    excluder = excluder.withExclusionStrategy(strategy, true, false);
     return this;
   }
 
@@ -388,7 +351,7 @@ public final class GsonBuilder {
    * @since 1.7
    */
   public GsonBuilder addDeserializationExclusionStrategy(ExclusionStrategy strategy) {
-    deserializeExclusionStrategies.add(strategy);
+    excluder = excluder.withExclusionStrategy(strategy, false, true);
     return this;
   }
 
@@ -481,147 +444,78 @@ public final class GsonBuilder {
 
   /**
    * Configures Gson for custom serialization or deserialization. This method combines the
-   * registration of an {@link InstanceCreator}, {@link JsonSerializer}, and a
+   * registration of an {@link TypeAdapter}, {@link InstanceCreator}, {@link JsonSerializer}, and a
    * {@link JsonDeserializer}. It is best used when a single object {@code typeAdapter} implements
-   * all the required interfaces for custom serialization with Gson. If an instance creator,
-   * serializer or deserializer was previously registered for the specified {@code type}, it is
-   * overwritten.
+   * all the required interfaces for custom serialization with Gson. If a type adapter was
+   * previously registered for the specified {@code type}, it is overwritten.
    *
    * @param type the type definition for the type adapter being registered
-   * @param typeAdapter This object must implement at least one of the {@link InstanceCreator},
-   * {@link JsonSerializer}, and a {@link JsonDeserializer} interfaces.
+   * @param typeAdapter This object must implement at least one of the {@link TypeAdapter},
+   * {@link InstanceCreator}, {@link JsonSerializer}, and a {@link JsonDeserializer} interfaces.
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    */
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public GsonBuilder registerTypeAdapter(Type type, Object typeAdapter) {
-    return registerTypeAdapter(type, typeAdapter, false);
-  }
-
-  private GsonBuilder registerTypeAdapter(Type type, Object typeAdapter, boolean isSystem) {
     $Gson$Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
         || typeAdapter instanceof JsonDeserializer<?>
         || typeAdapter instanceof InstanceCreator<?>
-        || typeAdapter instanceof TypeAdapter.Factory);
+        || typeAdapter instanceof TypeAdapter<?>);
     if (Primitives.isPrimitive(type) || Primitives.isWrapperType(type)) {
       throw new IllegalArgumentException(
           "Cannot register type adapters for " + type);
     }
     if (typeAdapter instanceof InstanceCreator<?>) {
-      registerInstanceCreator(type, (InstanceCreator<?>) typeAdapter, isSystem);
+      instanceCreators.put(type, (InstanceCreator) typeAdapter);
     }
-    if (typeAdapter instanceof JsonSerializer<?>) {
-      registerSerializer(type, (JsonSerializer<?>) typeAdapter, isSystem);
+    if (typeAdapter instanceof JsonSerializer<?> || typeAdapter instanceof JsonDeserializer<?>) {
+      TypeToken<?> typeToken = TypeToken.get(type);
+      factories.add(TreeTypeAdapter.newFactoryWithMatchRawType(typeToken, typeAdapter));
     }
-    if (typeAdapter instanceof JsonDeserializer<?>) {
-      registerDeserializer(type, (JsonDeserializer<?>) typeAdapter, isSystem);
-    }
-    if (typeAdapter instanceof TypeAdapter.Factory) {
-      typeAdapterFactories.add((TypeAdapter.Factory) typeAdapter);
+    if (typeAdapter instanceof TypeAdapter<?>) {
+      factories.add(TypeAdapters.newFactory(TypeToken.get(type), (TypeAdapter)typeAdapter));
     }
     return this;
   }
 
   /**
-   * Configures Gson to use a custom {@link InstanceCreator} for the specified type. If an instance
-   * creator was previously registered for the specified class, it is overwritten. Since this method
-   * takes a type instead of a Class object, it can be used to register a specific handler for a
-   * generic type corresponding to a raw type.
+   * Register a factory for type adapters. Registering a factory is useful when the type
+   * adapter needs to be configured based on the type of the field being processed. Gson
+   * is designed to handle a large number of factories, so you should consider registering
+   * them to be at par with registering an individual type adapter.
    *
-   * @param <T> the type for which instance creator is being registered
-   * @param typeOfT The Type definition for T
-   * @param instanceCreator the instance creator for T
-   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
+   * @since 2.1
    */
-  private <T> GsonBuilder registerInstanceCreator(Type typeOfT,
-      InstanceCreator<? extends T> instanceCreator, boolean isSystem) {
-    instanceCreators.register(typeOfT, instanceCreator, isSystem);
-    return this;
-  }
-
-  /**
-   * Configures Gson to use a custom JSON serializer for the specified type. You should use this
-   * method if you want to register different serializers for different generic types corresponding
-   * to a raw type.
-   *
-   * @param <T> the type for which the serializer is being registered
-   * @param typeOfT The type definition for T
-   * @param serializer the custom serializer
-   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
-   */
-  private <T> GsonBuilder registerSerializer(Type typeOfT, JsonSerializer<T> serializer,
-      boolean isSystem) {
-    serializers.register(typeOfT, serializer, isSystem);
-    return this;
-  }
-
-  /**
-   * Configures Gson to use a custom JSON deserializer for the specified type. You should use this
-   * method if you want to register different deserializers for different generic types
-   * corresponding to a raw type.
-   *
-   * @param <T> the type for which the deserializer is being registered
-   * @param typeOfT The type definition for T
-   * @param deserializer the custom deserializer
-   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
-   */
-  private <T> GsonBuilder registerDeserializer(Type typeOfT, JsonDeserializer<T> deserializer,
-      boolean isSystem) {
-    deserializers.register(typeOfT, new JsonDeserializerExceptionWrapper<T>(deserializer), isSystem);
+  public GsonBuilder registerTypeAdapterFactory(TypeAdapterFactory factory) {
+    factories.add(factory);
     return this;
   }
 
   /**
    * Configures Gson for custom serialization or deserialization for an inheritance type hierarchy.
-   * This method combines the registration of an {@link InstanceCreator}, {@link JsonSerializer},
-   * and a {@link JsonDeserializer}. It is best used when a single object {@code typeAdapter}
-   * implements all the required interfaces for custom serialization with Gson.
-   * If an instance creator, serializer or deserializer was previously registered for the specified
-   * type hierarchy, it is overwritten. If an instance creator, serializer or deserializer is
-   * registered for a specific type in the type hierarchy, it will be invoked instead of the one
-   * registered for the type hierarchy.
+   * This method combines the registration of a {@link TypeAdapter}, {@link JsonSerializer} and
+   * a {@link JsonDeserializer}. If a type adapter was previously registered for the specified
+   * type hierarchy, it is overridden. If a type adapter is registered for a specific type in
+   * the type hierarchy, it will be invoked instead of the one registered for the type hierarchy.
    *
    * @param baseType the class definition for the type adapter being registered for the base class
    *        or interface
-   * @param typeAdapter This object must implement at least one of the {@link InstanceCreator},
-   * {@link JsonSerializer}, and a {@link JsonDeserializer} interfaces.
+   * @param typeAdapter This object must implement at least one of {@link TypeAdapter}, 
+   *        {@link JsonSerializer} or {@link JsonDeserializer} interfaces.
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    * @since 1.7
    */
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public GsonBuilder registerTypeHierarchyAdapter(Class<?> baseType, Object typeAdapter) {
-    return registerTypeHierarchyAdapter(baseType, typeAdapter, false);
-  }
-
-  private GsonBuilder registerTypeHierarchyAdapter(Class<?> baseType, Object typeAdapter,
-      boolean isSystem) {
     $Gson$Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
-        || typeAdapter instanceof JsonDeserializer<?> || typeAdapter instanceof InstanceCreator<?>);
-    if (typeAdapter instanceof InstanceCreator<?>) {
-      registerInstanceCreatorForTypeHierarchy(baseType, (InstanceCreator<?>) typeAdapter, isSystem);
+        || typeAdapter instanceof JsonDeserializer<?>
+        || typeAdapter instanceof TypeAdapter<?>);
+    if (typeAdapter instanceof JsonDeserializer || typeAdapter instanceof JsonSerializer) {
+      hierarchyFactories.add(0,
+          TreeTypeAdapter.newTypeHierarchyFactory(baseType, typeAdapter));
     }
-    if (typeAdapter instanceof JsonSerializer<?>) {
-      registerSerializerForTypeHierarchy(baseType, (JsonSerializer<?>) typeAdapter, isSystem);
+    if (typeAdapter instanceof TypeAdapter<?>) {
+      factories.add(TypeAdapters.newTypeHierarchyFactory(baseType, (TypeAdapter)typeAdapter));
     }
-    if (typeAdapter instanceof JsonDeserializer<?>) {
-      registerDeserializerForTypeHierarchy(baseType, (JsonDeserializer<?>) typeAdapter, isSystem);
-    }
-    return this;
-  }
-
-  private <T> GsonBuilder registerInstanceCreatorForTypeHierarchy(Class<?> classOfT,
-      InstanceCreator<? extends T> instanceCreator, boolean isSystem) {
-    instanceCreators.registerForTypeHierarchy(classOfT, instanceCreator, isSystem);
-    return this;
-  }
-
-  private <T> GsonBuilder registerSerializerForTypeHierarchy(Class<?> classOfT,
-      JsonSerializer<T> serializer, boolean isSystem) {
-    serializers.registerForTypeHierarchy(classOfT, serializer, isSystem);
-    return this;
-  }
-
-  private <T> GsonBuilder registerDeserializerForTypeHierarchy(Class<?> classOfT,
-      JsonDeserializer<T> deserializer, boolean isSystem) {
-    deserializers.registerForTypeHierarchy(classOfT,
-        new JsonDeserializerExceptionWrapper<T>(deserializer), isSystem);
     return this;
   }
 
@@ -657,61 +551,31 @@ public final class GsonBuilder {
    * @return an instance of Gson configured with the options currently set in this builder
    */
   public Gson create() {
-    List<ExclusionStrategy> deserializationStrategies =
-        new LinkedList<ExclusionStrategy>(deserializeExclusionStrategies);
-    List<ExclusionStrategy> serializationStrategies =
-        new LinkedList<ExclusionStrategy>(serializeExclusionStrategies);
-    deserializationStrategies.add(modifierBasedExclusionStrategy);
-    serializationStrategies.add(modifierBasedExclusionStrategy);
+    List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
+    factories.addAll(this.factories);
+    Collections.reverse(factories);
+    factories.addAll(this.hierarchyFactories);
+    addTypeAdaptersForDate(datePattern, dateStyle, timeStyle, factories);
 
-    if (!serializeInnerClasses) {
-      deserializationStrategies.add(innerClassExclusionStrategy);
-      serializationStrategies.add(innerClassExclusionStrategy);
-    }
-    if (ignoreVersionsAfter != VersionConstants.IGNORE_VERSIONS) {
-      VersionExclusionStrategy versionExclusionStrategy =
-          new VersionExclusionStrategy(ignoreVersionsAfter);
-      deserializationStrategies.add(versionExclusionStrategy);
-      serializationStrategies.add(versionExclusionStrategy);
-    }
-    if (excludeFieldsWithoutExposeAnnotation) {
-      deserializationStrategies.add(exposeAnnotationDeserializationExclusionStrategy);
-      serializationStrategies.add(exposeAnnotationSerializationExclusionStrategy);
-    }
-    addTypeAdaptersForDate(datePattern, dateStyle, timeStyle, serializers, deserializers);
-
-    return new Gson(new DisjunctionExclusionStrategy(deserializationStrategies),
-        new DisjunctionExclusionStrategy(serializationStrategies),
-        fieldNamingPolicy, instanceCreators.copyOf().makeUnmodifiable(), serializeNulls,
-        serializers.copyOf().makeUnmodifiable(), deserializers.copyOf().makeUnmodifiable(),
-        complexMapKeySerialization, generateNonExecutableJson, escapeHtmlChars, prettyPrinting,
-        serializeSpecialFloatingPointValues, longSerializationPolicy, typeAdapterFactories);
+    return new Gson(excluder, fieldNamingPolicy, instanceCreators,
+        serializeNulls, complexMapKeySerialization,
+        generateNonExecutableJson, escapeHtmlChars, prettyPrinting,
+        serializeSpecialFloatingPointValues, longSerializationPolicy, factories);
   }
 
-  private static void addTypeAdaptersForDate(String datePattern, int dateStyle, int timeStyle,
-      ParameterizedTypeHandlerMap<JsonSerializer<?>> serializers,
-      ParameterizedTypeHandlerMap<JsonDeserializer<?>> deserializers) {
-    DefaultDateTypeAdapter dateTypeAdapter = null;
+  private void addTypeAdaptersForDate(String datePattern, int dateStyle, int timeStyle,
+      List<TypeAdapterFactory> factories) {
+    DefaultDateTypeAdapter dateTypeAdapter;
     if (datePattern != null && !"".equals(datePattern.trim())) {
       dateTypeAdapter = new DefaultDateTypeAdapter(datePattern);
     } else if (dateStyle != DateFormat.DEFAULT && timeStyle != DateFormat.DEFAULT) {
       dateTypeAdapter = new DefaultDateTypeAdapter(dateStyle, timeStyle);
+    } else {
+      return;
     }
 
-    if (dateTypeAdapter != null) {
-      registerIfAbsent(Date.class, serializers, dateTypeAdapter);
-      registerIfAbsent(Date.class, deserializers, dateTypeAdapter);
-      registerIfAbsent(Timestamp.class, serializers, dateTypeAdapter);
-      registerIfAbsent(Timestamp.class, deserializers, dateTypeAdapter);
-      registerIfAbsent(java.sql.Date.class, serializers, dateTypeAdapter);
-      registerIfAbsent(java.sql.Date.class, deserializers, dateTypeAdapter);
-    }
-  }
-
-  private static <T> void registerIfAbsent(Class<?> type,
-      ParameterizedTypeHandlerMap<T> adapters, T adapter) {
-    if (!adapters.hasSpecificHandlerFor(type)) {
-      adapters.register(type, adapter, false);
-    }
+    factories.add(TreeTypeAdapter.newFactory(TypeToken.get(Date.class), dateTypeAdapter));
+    factories.add(TreeTypeAdapter.newFactory(TypeToken.get(Timestamp.class), dateTypeAdapter));
+    factories.add(TreeTypeAdapter.newFactory(TypeToken.get(java.sql.Date.class), dateTypeAdapter));
   }
 }

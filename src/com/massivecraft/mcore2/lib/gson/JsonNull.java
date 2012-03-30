@@ -16,6 +16,9 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonNull;
+
 /**
  * A class representing a Json {@code null} value.
  *

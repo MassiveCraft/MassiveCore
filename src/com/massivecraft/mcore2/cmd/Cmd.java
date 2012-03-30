@@ -2,17 +2,17 @@ package com.massivecraft.mcore2.cmd;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore2.cmd.arg.AHBoolean;
+import com.massivecraft.mcore2.cmd.arg.AHByte;
 import com.massivecraft.mcore2.cmd.arg.AHDate;
 import com.massivecraft.mcore2.cmd.arg.AHDouble;
 import com.massivecraft.mcore2.cmd.arg.AHFloat;
@@ -30,30 +30,19 @@ public class Cmd
 	public <T> IArgHandler<T> getArgHandler(Class<T> clazz) { return (IArgHandler<T>) this.argHandlers.get(clazz); }
 	public <T> void setArgHandler(Class<T> clazz, IArgHandler<T> handler) { this.argHandlers.put(clazz, handler); }
 	
-	protected Set<MCommand> commands = new HashSet<MCommand>();
-	public Set<MCommand> getCommands() { return this.commands; }
-	public void addCommand(MCommand mcommand) { this.commands.add(mcommand); }
-	public MCommand getCommand(String alias)
+	/**
+	 * @deprecated As of MCore 3, replaced by by {@link MCommand#register()}
+	 */
+	@Deprecated
+	public void addCommand(MCommand mcommand)
 	{
-		for (MCommand command : this.commands)
-		{
-			if (command.aliases.contains(alias)) return command;
-		}
-		return null;
-	}
-	
-	public boolean handleCommand(CommandSender sender, String alias, List<String> args, boolean testOnly)
-	{
-		MCommand mcommand = this.getCommand(alias);
-		if (mcommand == null) return false;
-		if (testOnly) return true;
-		mcommand.execute(sender, args);
-		return true;
+		mcommand.register();
 	}
 	
 	public Cmd()
 	{
 		this.setArgHandler(Boolean.class, new AHBoolean());
+		this.setArgHandler(Byte.class, new AHByte());
 		this.setArgHandler(Double.class, new AHDouble());
 		this.setArgHandler(Date.class, new AHDate());
 		this.setArgHandler(Float.class, new AHFloat());
@@ -61,5 +50,11 @@ public class Cmd
 		this.setArgHandler(Material.class, new AHMaterial());
 		this.setArgHandler(Player.class, new AHPlayer());
 		this.setArgHandler(World.class, new AHWorld());
+	}
+	
+	public static SimpleCommandMap getBukkitCommandMap()
+	{
+		CraftServer craftServer = (CraftServer)Bukkit.getServer();
+		return craftServer.getCommandMap();
 	}
 }

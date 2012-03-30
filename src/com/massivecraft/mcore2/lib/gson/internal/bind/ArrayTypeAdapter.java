@@ -23,6 +23,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.mcore2.lib.gson.internal.bind.ArrayTypeAdapter;
+import com.massivecraft.mcore2.lib.gson.internal.bind.TypeAdapterRuntimeTypeWrapper;
+import com.massivecraft.mcore2.lib.gson.Gson;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
+import com.massivecraft.mcore2.lib.gson.TypeAdapterFactory;
 import com.massivecraft.mcore2.lib.gson.internal.$Gson$Types;
 import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
@@ -33,45 +38,43 @@ import com.massivecraft.mcore2.lib.gson.stream.JsonWriter;
  * Adapt an array of objects.
  */
 public final class ArrayTypeAdapter<E> extends TypeAdapter<Object> {
-  public static final Factory FACTORY = new Factory() {
+  public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> TypeAdapter<T> create(MiniGson context, TypeToken<T> typeToken) {
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
       Type type = typeToken.getType();
       if (!(type instanceof GenericArrayType || type instanceof Class && ((Class<?>) type).isArray())) {
         return null;
       }
 
       Type componentType = $Gson$Types.getArrayComponentType(type);
-      TypeAdapter<?> componentTypeAdapter = context.getAdapter(TypeToken.get(componentType));
-      // create() doesn't define a type parameter
-      TypeAdapter<T> result = new ArrayTypeAdapter(
-          context, componentTypeAdapter, $Gson$Types.getRawType(componentType));
-      return result;
+      TypeAdapter<?> componentTypeAdapter = gson.getAdapter(TypeToken.get(componentType));
+      return new ArrayTypeAdapter(
+              gson, componentTypeAdapter, $Gson$Types.getRawType(componentType));
     }
   };
 
   private final Class<E> componentType;
   private final TypeAdapter<E> componentTypeAdapter;
 
-  public ArrayTypeAdapter(MiniGson context, TypeAdapter<E> componentTypeAdapter, Class<E> componentType) {
+  public ArrayTypeAdapter(Gson context, TypeAdapter<E> componentTypeAdapter, Class<E> componentType) {
     this.componentTypeAdapter =
       new TypeAdapterRuntimeTypeWrapper<E>(context, componentTypeAdapter, componentType);
     this.componentType = componentType;
   }
 
-  public Object read(JsonReader reader) throws IOException {
-    if (reader.peek() == JsonToken.NULL) {
-      reader.nextNull();
+  public Object read(JsonReader in) throws IOException {
+    if (in.peek() == JsonToken.NULL) {
+      in.nextNull();
       return null;
     }
 
     List<E> list = new ArrayList<E>();
-    reader.beginArray();
-    while (reader.hasNext()) {
-      E instance = componentTypeAdapter.read(reader);
+    in.beginArray();
+    while (in.hasNext()) {
+      E instance = componentTypeAdapter.read(in);
       list.add(instance);
     }
-    reader.endArray();
+    in.endArray();
     Object array = Array.newInstance(componentType, list.size());
     for (int i = 0; i < list.size(); i++) {
       Array.set(array, i, list.get(i));
@@ -80,17 +83,17 @@ public final class ArrayTypeAdapter<E> extends TypeAdapter<Object> {
   }
 
   @SuppressWarnings("unchecked")
-  @Override public void write(JsonWriter writer, Object array) throws IOException {
+  @Override public void write(JsonWriter out, Object array) throws IOException {
     if (array == null) {
-      writer.nullValue(); // TODO: better policy here?
+      out.nullValue();
       return;
     }
 
-    writer.beginArray();
+    out.beginArray();
     for (int i = 0, length = Array.getLength(array); i < length; i++) {
-      final E value = (E) Array.get(array, i);
-      componentTypeAdapter.write(writer, value);
+      E value = (E) Array.get(array, i);
+      componentTypeAdapter.write(out, value);
     }
-    writer.endArray();
+    out.endArray();
   }
 }

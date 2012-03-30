@@ -15,6 +15,11 @@
  */
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonIOException;
+import com.massivecraft.mcore2.lib.gson.JsonNull;
+import com.massivecraft.mcore2.lib.gson.JsonParseException;
+import com.massivecraft.mcore2.lib.gson.JsonSyntaxException;
 import com.massivecraft.mcore2.lib.gson.internal.Streams;
 import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
 import com.massivecraft.mcore2.lib.gson.stream.JsonToken;

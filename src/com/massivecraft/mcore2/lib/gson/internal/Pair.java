@@ -16,6 +16,8 @@
 
 package com.massivecraft.mcore2.lib.gson.internal;
 
+import com.massivecraft.mcore2.lib.gson.internal.Pair;
+
 /**
  * A simple object that holds onto a pair of object references, first and second.
  *

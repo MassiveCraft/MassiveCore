@@ -15,6 +15,8 @@
  */
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonParseException;
+
 /**
  * This exception is raised when Gson was unable to read an input stream
  * or write to one.
@@ -23,7 +25,6 @@ package com.massivecraft.mcore2.lib.gson;
  * @author Joel Leitch
  */
 public final class JsonIOException extends JsonParseException {
-
   private static final long serialVersionUID = 1L;
 
   public JsonIOException(String msg) {

@@ -15,33 +15,36 @@
  */
 package com.massivecraft.mcore2.lib.gson.internal.bind;
 
+import com.massivecraft.mcore2.lib.gson.internal.bind.ReflectiveTypeAdapterFactory;
+import com.massivecraft.mcore2.lib.gson.Gson;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
 import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
 import com.massivecraft.mcore2.lib.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 
 final class TypeAdapterRuntimeTypeWrapper<T> extends TypeAdapter<T> {
-
-  private final MiniGson context;
+  private final Gson context;
   private final TypeAdapter<T> delegate;
   private final Type type;
 
-  TypeAdapterRuntimeTypeWrapper(MiniGson context, TypeAdapter<T> delegate, Type type) {
+  TypeAdapterRuntimeTypeWrapper(Gson context, TypeAdapter<T> delegate, Type type) {
     this.context = context;
     this.delegate = delegate;
     this.type = type;
   }
 
   @Override
-  public T read(JsonReader reader) throws IOException {
-    return delegate.read(reader);
+  public T read(JsonReader in) throws IOException {
+    return delegate.read(in);
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
-  public void write(JsonWriter writer, T value) throws IOException {
+  public void write(JsonWriter out, T value) throws IOException {
     // Order of preference for choosing type adapters
     // First preference: a type adapter registered for the runtime type
     // Second preference: a type adapter registered for the declared type
@@ -49,7 +52,7 @@ final class TypeAdapterRuntimeTypeWrapper<T> extends TypeAdapter<T> {
     // Fourth preference: reflective type adapter for the declared type
 
     TypeAdapter chosen = delegate;
-    Type runtimeType = Reflection.getRuntimeTypeIfMoreSpecific(type, value);
+    Type runtimeType = getRuntimeTypeIfMoreSpecific(type, value);
     if (runtimeType != type) {
       TypeAdapter runtimeTypeAdapter = context.getAdapter(TypeToken.get(runtimeType));
       if (!(runtimeTypeAdapter instanceof ReflectiveTypeAdapterFactory.Adapter)) {
@@ -64,6 +67,17 @@ final class TypeAdapterRuntimeTypeWrapper<T> extends TypeAdapter<T> {
         chosen = runtimeTypeAdapter;
       }
     }
-    chosen.write(writer, value);
+    chosen.write(out, value);
+  }
+
+  /**
+   * Finds a compatible runtime type if it is more specific
+   */
+  private Type getRuntimeTypeIfMoreSpecific(Type type, Object value) {
+    if (value != null
+        && (type == Object.class || type instanceof TypeVariable<?> || type instanceof Class<?>)) {
+      type = value.getClass();
+    }
+    return type;
   }
 }

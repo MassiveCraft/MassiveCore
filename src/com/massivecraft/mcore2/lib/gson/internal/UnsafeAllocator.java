@@ -21,6 +21,8 @@ import java.io.ObjectStreamClass;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.massivecraft.mcore2.lib.gson.internal.UnsafeAllocator;
+
 /**
  * Do sneaky things to allocate objects without invoking their constructors.
  *

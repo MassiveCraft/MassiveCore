@@ -18,6 +18,8 @@ package com.massivecraft.mcore2.lib.gson.stream;
 
 import java.io.IOException;
 
+import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
+
 /**
  * Thrown when a reader encounters malformed JSON. Some syntax errors can be
  * ignored by calling {@link JsonReader#setLenient(boolean)}.

@@ -2,6 +2,3 @@ name: mcore2
 version: 1.0.0
 main: com.massivecraft.mcore2.MCore
 authors: [Olof Larsson, Brett Flannigan]
-commands:
-  mcoresilenteater:
-    description: ignore me.

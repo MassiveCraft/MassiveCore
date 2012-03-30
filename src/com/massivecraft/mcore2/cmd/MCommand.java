@@ -142,35 +142,20 @@ public abstract class MCommand
 	public Player me;
 	public boolean senderIsConsole;
 	
-	/*
-	public boolean getSenderIsConsole() { return ! (this.sender instanceof Player); }
-	public Player me()
-	{
-		if (sender instanceof Player)
-		{
-			return (Player) sender;
-		}
-		return null;
-	}
-	*/
+	// -------------------------------------------- //
+	// BUKKIT INTEGRATION
+	// -------------------------------------------- //
 	
-	/*
-	@SuppressWarnings("unchecked")
-	public <T> T getSenderAs(Class<T> clazz)
+	public boolean register()
 	{
-		if (clazz.isInstance(sender)) return (T) sender;
-		
-		for (Persist realm : MCore.getPersistInstances().values())
-		{
-			for (IClassManager<?> manager : realm.getClassManagers().values())
-			{
-				if ( ! manager.getManagedClass().equals(clazz)) continue;
-				if (manager.idCanFix(sender.getClass()) == false) continue;
-				return (T) manager.get(sender);
-			}
-		}
-		return null;
-	}*/
+		// TODO: Save this somewhere? And update it on changes to the aliases?
+		BukkitGlueCommand bgc = new BukkitGlueCommand(this);
+		return Cmd.getBukkitCommandMap().register("mcore", bgc);
+	}
+	
+	// -------------------------------------------- //
+	// CONSTRUCTORS AND EXECUTOR
+	// -------------------------------------------- //
 	
 	public MCommand()
 	{

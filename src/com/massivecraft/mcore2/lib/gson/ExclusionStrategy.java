@@ -16,6 +16,10 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.ExclusionStrategy;
+import com.massivecraft.mcore2.lib.gson.FieldAttributes;
+import com.massivecraft.mcore2.lib.gson.GsonBuilder;
+
 /**
  * A strategy (or policy) definition that is used to decide whether or not a field or top-level
  * class should be serialized or deserialized as part of the JSON output/input. For serialization,

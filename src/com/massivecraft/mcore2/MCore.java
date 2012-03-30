@@ -1,16 +1,12 @@
 package com.massivecraft.mcore2;
 
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.mcore2.cmd.Cmd;
@@ -49,18 +45,6 @@ public class MCore extends JavaPlugin
 	{
 		if (cmdInstances.containsKey(owner)) return;
 		cmdInstances.put(owner, new Cmd());
-	}
-	public static boolean handleCommand(CommandSender sender, String commandString, boolean testOnly)
-	{
-		List<String> args = new ArrayList<String>(Arrays.asList(commandString.split("\\s+")));
-		if (args.size() == 0) return false;
-		String alias = args.get(0);
-		args.remove(0);
-		for (Cmd cmd : cmdInstances.values())
-		{
-			if (cmd.handleCommand(sender, alias, args, testOnly)) return true;
-		}
-		return false;
 	}
 	
 	// -------------------------------------------- //
@@ -124,21 +108,6 @@ public class MCore extends JavaPlugin
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT);
 	}
-	
-	// -------------------------------------------- //
-	// SPOUT INTEGRATION
-	// -------------------------------------------- //
-	/*protected boolean spoutIsIntegrated = false;
-	protected void integrateSpout()
-	{
-		if (spoutIsIntegrated) return;
-		if ( ! Bukkit.getPluginManager().isPluginEnabled("Spout")) return;
-		
-		// Ok we should be safe :) Lets integrate! 
-		this.spoutIsIntegrated = true;
-		
-		
-	}*/
 	
 	// -------------------------------------------- //
 	// LOGGING

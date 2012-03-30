@@ -17,6 +17,7 @@
 package com.massivecraft.mcore2.lib.gson.internal.bind;
 
 import com.massivecraft.mcore2.lib.gson.JsonSyntaxException;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
 import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
 import com.massivecraft.mcore2.lib.gson.stream.JsonToken;
 import com.massivecraft.mcore2.lib.gson.stream.JsonWriter;
@@ -32,20 +33,20 @@ import java.math.BigInteger;
 public final class BigIntegerTypeAdapter extends TypeAdapter<BigInteger> {
 
   @Override
-  public BigInteger read(JsonReader reader) throws IOException {
-    if (reader.peek() == JsonToken.NULL) {
-      reader.nextNull();
+  public BigInteger read(JsonReader in) throws IOException {
+    if (in.peek() == JsonToken.NULL) {
+      in.nextNull();
       return null;
     }
     try {
-      return new BigInteger(reader.nextString());
+      return new BigInteger(in.nextString());
     } catch (NumberFormatException e) {
       throw new JsonSyntaxException(e);
     }
   }
 
   @Override
-  public void write(JsonWriter writer, BigInteger value) throws IOException {
-    writer.value(value);
+  public void write(JsonWriter out, BigInteger value) throws IOException {
+    out.value(value);
   }
 }

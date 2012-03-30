@@ -18,6 +18,8 @@ package com.massivecraft.mcore2.lib.gson;
 
 import java.lang.reflect.Type;
 
+import com.massivecraft.mcore2.lib.gson.GsonBuilder;
+
 /**
  * This interface is implemented to create instances of a class that does not define a no-args
  * constructor. If you can modify the class, you should instead add a private, or public

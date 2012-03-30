@@ -16,6 +16,8 @@
 
 package com.massivecraft.mcore2.lib.gson.internal;
 
+import com.massivecraft.mcore2.lib.gson.internal.ObjectConstructor;
+import com.massivecraft.mcore2.lib.gson.internal.UnsafeAllocator;
 import com.massivecraft.mcore2.lib.gson.InstanceCreator;
 import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 
@@ -24,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -37,14 +40,14 @@ import java.util.TreeSet;
  * Returns a function that can construct an instance of a requested type.
  */
 public final class ConstructorConstructor {
-  private final ParameterizedTypeHandlerMap<InstanceCreator<?>> instanceCreators;
+  private final Map<Type, InstanceCreator<?>> instanceCreators;
 
-  public ConstructorConstructor(ParameterizedTypeHandlerMap<InstanceCreator<?>> instanceCreators) {
+  public ConstructorConstructor(Map<Type, InstanceCreator<?>> instanceCreators) {
     this.instanceCreators = instanceCreators;
   }
 
   public ConstructorConstructor() {
-    this(new ParameterizedTypeHandlerMap<InstanceCreator<?>>());
+    this(Collections.<Type, InstanceCreator<?>>emptyMap());
   }
 
   public <T> ObjectConstructor<T> getConstructor(TypeToken<T> typeToken) {
@@ -54,8 +57,7 @@ public final class ConstructorConstructor {
     // first try an instance creator
 
     @SuppressWarnings("unchecked") // types must agree
-    final InstanceCreator<T> creator
-        = (InstanceCreator<T>) instanceCreators.getHandlerFor(type, false);
+    final InstanceCreator<T> creator = (InstanceCreator<T>) instanceCreators.get(type);
     if (creator != null) {
       return new ObjectConstructor<T>() {
         public T construct() {

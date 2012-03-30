@@ -198,9 +198,9 @@ public class Txt
 	    else return string + repeat(string, times-1);
 	}
 	
-	public static String implode(final List<? extends Object> list, final String glue)
+	public static String implode(final Collection<? extends Object> coll, final String glue)
 	{
-		return implode(list.toArray(new Object[0]), glue);
+		return implode(coll.toArray(new Object[0]), glue);
 	}
 	
 	public static String implode(final Object[] list, final String glue)

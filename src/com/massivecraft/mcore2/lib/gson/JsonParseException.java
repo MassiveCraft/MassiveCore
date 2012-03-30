@@ -16,6 +16,8 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonParseException;
+
 /**
  * This exception is raised if there is a serious issue that occurs during parsing of a Json
  * string.  One of the main usages for this class is for the Gson infrastructure.  If the incoming

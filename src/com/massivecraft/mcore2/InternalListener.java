@@ -5,9 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 
 import com.massivecraft.mcore2.persist.IClassManager;
 import com.massivecraft.mcore2.persist.Persist;
@@ -23,6 +21,7 @@ public class InternalListener implements Listener
 		Bukkit.getServer().getPluginManager().registerEvents(this, this.p);
 	}
 	
+	// TODO: Does this even trigger? If not we have an issue.
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerPreLogin(PlayerPreLoginEvent event)
 	{
@@ -38,28 +37,6 @@ public class InternalListener implements Listener
 				if (manager.containsId(id)) continue;
 				manager.create(id);
 			}
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
-	{
-		if (event.isCancelled()) return;
-		if (MCore.handleCommand(event.getPlayer(), event.getMessage().substring(1), false))
-		{
-			Bukkit.getLogger().info("[PLAYER_COMMAND] "+event.getPlayer().getName()+": "+event.getMessage());
-			event.setCancelled(true);
-		}
-	}
-	
-	private final static String refCommand = "mcoresilenteater";
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onServerCommand(ServerCommandEvent event)
-	{
-		if (event.getCommand().length() == 0) return;
-		if (MCore.handleCommand(event.getSender(), event.getCommand(), false))
-		{
-			event.setCommand(refCommand);
 		}
 	}
 }

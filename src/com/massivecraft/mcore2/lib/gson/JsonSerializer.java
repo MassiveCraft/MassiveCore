@@ -18,6 +18,10 @@ package com.massivecraft.mcore2.lib.gson;
 
 import java.lang.reflect.Type;
 
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonSerializationContext;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
+
 /**
  * Interface representing a custom serializer for Json. You should write a custom serializer, if
  * you are not happy with the default serialization done by Gson. You will also need to register
@@ -59,6 +63,9 @@ import java.lang.reflect.Type;
  * <pre>
  * Gson gson = new GsonBuilder().registerTypeAdapter(Id.class, new IdSerializer()).create();
  * </pre>
+ *
+ * <p>New applications should prefer {@link TypeAdapter}, whose streaming API
+ * is more efficient than this interface's tree API.
  *
  * @author Inderjeet Singh
  * @author Joel Leitch

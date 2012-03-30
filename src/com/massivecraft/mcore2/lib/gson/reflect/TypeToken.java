@@ -16,6 +16,7 @@
 
 package com.massivecraft.mcore2.lib.gson.reflect;
 
+import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 import com.massivecraft.mcore2.lib.gson.internal.$Gson$Preconditions;
 import com.massivecraft.mcore2.lib.gson.internal.$Gson$Types;
 
@@ -46,7 +47,6 @@ import java.util.Map;
  * @author Jesse Wilson
  */
 public class TypeToken<T> {
-
   final Class<? super T> rawType;
   final Type type;
   final int hashCode;

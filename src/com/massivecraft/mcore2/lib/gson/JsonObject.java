@@ -16,6 +16,11 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonArray;
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonNull;
+import com.massivecraft.mcore2.lib.gson.JsonObject;
+import com.massivecraft.mcore2.lib.gson.JsonPrimitive;
 import com.massivecraft.mcore2.lib.gson.internal.$Gson$Preconditions;
 
 import java.util.LinkedHashMap;

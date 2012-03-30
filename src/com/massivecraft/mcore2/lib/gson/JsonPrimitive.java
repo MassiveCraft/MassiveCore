@@ -16,6 +16,8 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonPrimitive;
 import com.massivecraft.mcore2.lib.gson.internal.$Gson$Preconditions;
 import com.massivecraft.mcore2.lib.gson.internal.LazilyParsedNumber;
 

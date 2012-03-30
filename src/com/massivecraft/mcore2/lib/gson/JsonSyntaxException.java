@@ -15,6 +15,8 @@
  */
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonParseException;
+
 /**
  * This exception is raised when Gson attempts to read (or write) a malformed
  * JSON element.

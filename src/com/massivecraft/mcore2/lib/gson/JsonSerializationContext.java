@@ -18,6 +18,10 @@ package com.massivecraft.mcore2.lib.gson;
 
 import java.lang.reflect.Type;
 
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonSerializationContext;
+import com.massivecraft.mcore2.lib.gson.JsonSerializer;
+
 /**
  * Context for serialization that is passed to a custom serializer during invocation of its
  * {@link JsonSerializer#serialize(Object, Type, JsonSerializationContext)} method.

@@ -22,6 +22,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.mcore2.lib.gson.stream.JsonScope;
+import com.massivecraft.mcore2.lib.gson.stream.JsonWriter;
+
 /**
  * Writes a JSON (<a href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627</a>)
  * encoded value to a stream, one token at a time. The stream includes both

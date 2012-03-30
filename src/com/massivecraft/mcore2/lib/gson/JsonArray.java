@@ -22,6 +22,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.massivecraft.mcore2.lib.gson.JsonArray;
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonNull;
+import com.massivecraft.mcore2.lib.gson.JsonPrimitive;
+
 /**
  * A class representing an array type in Json. An array is a list of {@link JsonElement}s each of
  * which can be of a different type. This is an ordered list, meaning that the order in which

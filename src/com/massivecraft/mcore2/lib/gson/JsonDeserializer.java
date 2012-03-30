@@ -18,6 +18,12 @@ package com.massivecraft.mcore2.lib.gson;
 
 import java.lang.reflect.Type;
 
+import com.massivecraft.mcore2.lib.gson.GsonBuilder;
+import com.massivecraft.mcore2.lib.gson.JsonDeserializationContext;
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonParseException;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
+
 /**
  * <p>Interface representing a custom deserializer for Json. You should write a custom
  * deserializer, if you are not happy with the default deserialization done by Gson. You will
@@ -60,6 +66,9 @@ import java.lang.reflect.Type;
  * <pre>
  * Gson gson = new GsonBuilder().registerTypeAdapter(Id.class, new IdDeserializer()).create();
  * </pre>
+ *
+ * <p>New applications should prefer {@link TypeAdapter}, whose streaming API
+ * is more efficient than this interface's tree API.
  *
  * @author Inderjeet Singh
  * @author Joel Leitch

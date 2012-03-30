@@ -16,7 +16,11 @@
 
 package com.massivecraft.mcore2.lib.gson.internal.bind;
 
+import com.massivecraft.mcore2.lib.gson.internal.bind.TimeTypeAdapter;
+import com.massivecraft.mcore2.lib.gson.Gson;
 import com.massivecraft.mcore2.lib.gson.JsonSyntaxException;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
+import com.massivecraft.mcore2.lib.gson.TypeAdapterFactory;
 import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
 import com.massivecraft.mcore2.lib.gson.stream.JsonToken;
@@ -36,29 +40,29 @@ import java.util.Date;
  * to synchronize its read and write methods.
  */
 public final class TimeTypeAdapter extends TypeAdapter<Time> {
-  public static final Factory FACTORY = new Factory() {
+  public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
     @SuppressWarnings("unchecked") // we use a runtime check to make sure the 'T's equal
-    public <T> TypeAdapter<T> create(MiniGson context, TypeToken<T> typeToken) {
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
       return typeToken.getRawType() == Time.class ? (TypeAdapter<T>) new TimeTypeAdapter() : null;
     }
   };
 
   private final DateFormat format = new SimpleDateFormat("hh:mm:ss a");
 
-  @Override public synchronized Time read(JsonReader reader) throws IOException {
-    if (reader.peek() == JsonToken.NULL) {
-      reader.nextNull();
+  @Override public synchronized Time read(JsonReader in) throws IOException {
+    if (in.peek() == JsonToken.NULL) {
+      in.nextNull();
       return null;
     }
     try {
-      Date date = format.parse(reader.nextString());
+      Date date = format.parse(in.nextString());
       return new Time(date.getTime());
     } catch (ParseException e) {
       throw new JsonSyntaxException(e);
     }
   }
 
-  @Override public synchronized void write(JsonWriter writer, Time value) throws IOException {
-    writer.value(value == null ? null : format.format(value));
+  @Override public synchronized void write(JsonWriter out, Time value) throws IOException {
+    out.value(value == null ? null : format.format(value));
   }
 }

@@ -16,6 +16,10 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonArray;
+import com.massivecraft.mcore2.lib.gson.JsonNull;
+import com.massivecraft.mcore2.lib.gson.JsonObject;
+import com.massivecraft.mcore2.lib.gson.JsonPrimitive;
 import com.massivecraft.mcore2.lib.gson.internal.Streams;
 import com.massivecraft.mcore2.lib.gson.stream.JsonWriter;
 

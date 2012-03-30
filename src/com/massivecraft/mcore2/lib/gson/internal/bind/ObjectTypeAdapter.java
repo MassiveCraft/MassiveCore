@@ -16,6 +16,10 @@
 
 package com.massivecraft.mcore2.lib.gson.internal.bind;
 
+import com.massivecraft.mcore2.lib.gson.internal.bind.ObjectTypeAdapter;
+import com.massivecraft.mcore2.lib.gson.Gson;
+import com.massivecraft.mcore2.lib.gson.TypeAdapter;
+import com.massivecraft.mcore2.lib.gson.TypeAdapterFactory;
 import com.massivecraft.mcore2.lib.gson.reflect.TypeToken;
 import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
 import com.massivecraft.mcore2.lib.gson.stream.JsonToken;
@@ -32,54 +36,54 @@ import java.util.Map;
  * serialization and a primitive/Map/List on deserialization.
  */
 public final class ObjectTypeAdapter extends TypeAdapter<Object> {
-  public static final Factory FACTORY = new Factory() {
+  public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
     @SuppressWarnings("unchecked")
-    public <T> TypeAdapter<T> create(MiniGson context, TypeToken<T> type) {
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
       if (type.getRawType() == Object.class) {
-        return (TypeAdapter<T>) new ObjectTypeAdapter(context);
+        return (TypeAdapter<T>) new ObjectTypeAdapter(gson);
       }
       return null;
     }
   };
 
-  private final MiniGson miniGson;
+  private final Gson gson;
 
-  private ObjectTypeAdapter(MiniGson miniGson) {
-    this.miniGson = miniGson;
+  private ObjectTypeAdapter(Gson gson) {
+    this.gson = gson;
   }
 
-  @Override public Object read(JsonReader reader) throws IOException {
-    JsonToken token = reader.peek();
+  @Override public Object read(JsonReader in) throws IOException {
+    JsonToken token = in.peek();
     switch (token) {
     case BEGIN_ARRAY:
       List<Object> list = new ArrayList<Object>();
-      reader.beginArray();
-      while (reader.hasNext()) {
-        list.add(read(reader));
+      in.beginArray();
+      while (in.hasNext()) {
+        list.add(read(in));
       }
-      reader.endArray();
+      in.endArray();
       return list;
 
     case BEGIN_OBJECT:
       Map<String, Object> map = new LinkedHashMap<String, Object>();
-      reader.beginObject();
-      while (reader.hasNext()) {
-        map.put(reader.nextName(), read(reader));
+      in.beginObject();
+      while (in.hasNext()) {
+        map.put(in.nextName(), read(in));
       }
-      reader.endObject();
+      in.endObject();
       return map;
 
     case STRING:
-      return reader.nextString();
+      return in.nextString();
 
     case NUMBER:
-      return reader.nextDouble();
+      return in.nextDouble();
 
     case BOOLEAN:
-      return reader.nextBoolean();
+      return in.nextBoolean();
 
     case NULL:
-      reader.nextNull();
+      in.nextNull();
       return null;
 
     }
@@ -87,19 +91,19 @@ public final class ObjectTypeAdapter extends TypeAdapter<Object> {
   }
 
   @SuppressWarnings("unchecked")
-  @Override public void write(JsonWriter writer, Object value) throws IOException {
+  @Override public void write(JsonWriter out, Object value) throws IOException {
     if (value == null) {
-      writer.nullValue(); // TODO: better policy here?
+      out.nullValue();
       return;
     }
 
-    TypeAdapter<Object> typeAdapter = (TypeAdapter<Object>) miniGson.getAdapter(value.getClass());
+    TypeAdapter<Object> typeAdapter = (TypeAdapter<Object>) gson.getAdapter(value.getClass());
     if (typeAdapter instanceof ObjectTypeAdapter) {
-      writer.beginObject();
-      writer.endObject();
+      out.beginObject();
+      out.endObject();
       return;
     }
 
-    typeAdapter.write(writer, value);
+    typeAdapter.write(out, value);
   }
 }

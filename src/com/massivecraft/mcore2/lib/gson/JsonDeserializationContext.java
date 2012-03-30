@@ -18,6 +18,11 @@ package com.massivecraft.mcore2.lib.gson;
 
 import java.lang.reflect.Type;
 
+import com.massivecraft.mcore2.lib.gson.JsonDeserializationContext;
+import com.massivecraft.mcore2.lib.gson.JsonDeserializer;
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonParseException;
+
 /**
  * Context for deserialization that is passed to a custom deserializer during invocation of its
  * {@link JsonDeserializer#deserialize(JsonElement, Type, JsonDeserializationContext)}

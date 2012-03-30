@@ -16,6 +16,9 @@
 
 package com.massivecraft.mcore2.lib.gson;
 
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonPrimitive;
+
 /**
  * Defines the expected format for a {@code long} or {@code Long} type when its serialized.
  *
@@ -31,44 +34,28 @@ public enum LongSerializationPolicy {
    * would be:
    * {@code {"f":123}}.
    */
-  DEFAULT(new DefaultStrategy()),
+  DEFAULT() {
+    public JsonElement serialize(Long value) {
+      return new JsonPrimitive(value);
+    }
+  },
   
   /**
    * Serializes a long value as a quoted string.  For example, assume an object has a long field 
    * named "f" then the serialized output would be:
    * {@code {"f":"123"}}.
    */
-  STRING(new StringStrategy());
+  STRING() {
+    public JsonElement serialize(Long value) {
+      return new JsonPrimitive(String.valueOf(value));
+    }
+  };
   
-  private final Strategy strategy;
-  
-  private LongSerializationPolicy(Strategy strategy) {
-    this.strategy = strategy;
-  }
-
   /**
    * Serialize this {@code value} using this serialization policy.
    *
    * @param value the long value to be serialized into a {@link JsonElement}
    * @return the serialized version of {@code value}
    */
-  public JsonElement serialize(Long value) {
-    return strategy.serialize(value);
-  }
-  
-  private interface Strategy {
-    JsonElement serialize(Long value);
-  }
-  
-  private static class DefaultStrategy implements Strategy {
-    public JsonElement serialize(Long value) {
-      return new JsonPrimitive(value);
-    }
-  }
-  
-  private static class StringStrategy implements Strategy {
-    public JsonElement serialize(Long value) {
-      return new JsonPrimitive(String.valueOf(value));
-    }
-  }
+  public abstract JsonElement serialize(Long value);
 }

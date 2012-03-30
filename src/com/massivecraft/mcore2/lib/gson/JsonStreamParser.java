@@ -22,6 +22,10 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import com.massivecraft.mcore2.lib.gson.JsonElement;
+import com.massivecraft.mcore2.lib.gson.JsonIOException;
+import com.massivecraft.mcore2.lib.gson.JsonParseException;
+import com.massivecraft.mcore2.lib.gson.JsonSyntaxException;
 import com.massivecraft.mcore2.lib.gson.internal.Streams;
 import com.massivecraft.mcore2.lib.gson.stream.JsonReader;
 import com.massivecraft.mcore2.lib.gson.stream.JsonToken;
@@ -50,7 +54,6 @@ import com.massivecraft.mcore2.lib.gson.stream.MalformedJsonException;
  * @since 1.4
  */
 public final class JsonStreamParser implements Iterator<JsonElement> {
-
   private final JsonReader parser;
   private final Object lock;
 

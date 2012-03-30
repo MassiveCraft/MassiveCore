@@ -22,11 +22,11 @@ public class DiscUtil
 		String line;
 		while ((line = in.readLine()) != null)
 		{
-			ret += line;
+			ret += line+"\n";
 		}
 
 		in.close();
-		return ret;
+		return ret.substring(0, ret.length()-1);
 	}
 	
 	public static boolean writeCatch(File file, String content)
