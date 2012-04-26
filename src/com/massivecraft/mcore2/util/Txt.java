@@ -1,6 +1,7 @@
 package com.massivecraft.mcore2.util;
 
 import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -267,6 +268,23 @@ public class Txt
 			}
 		}
 		return ret;
+	}
+	
+	public static String removeLeadingCommandDust(String string)
+	{
+		return string.replaceAll("^[/\\s]+", "");
+	}
+	
+	public static Entry<String, String> divideOnFirstSpace(String string)
+	{
+		String[] parts = string.split("\\s+", 2);
+		String first = parts[0];
+		String second = null;
+		if (parts.length > 1)
+		{
+			second = parts[1];
+		}
+		return new SimpleEntry<String, String>(first, second);
 	}
 	
 	// -------------------------------------------- //

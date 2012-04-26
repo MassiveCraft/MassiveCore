@@ -133,11 +133,18 @@ public class Persist
 		ArrayList<T> ret = new ArrayList<T>(items.size());
 		
 		// WHERE
-		for (T item : items)
+		if (where == null)
 		{
-			if (where.apply(item))
+			ret.addAll(items);
+		}
+		else
+		{
+			for (T item : items)
 			{
-				ret.add(item);
+				if (where.apply(item))
+				{
+					ret.add(item);
+				}
 			}
 		}
 		

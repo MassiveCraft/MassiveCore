@@ -304,16 +304,25 @@ public abstract class MCommand
 	// Help and Usage information
 	// -------------------------------------------- //
 	
-	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc)
+	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
 	{
 		StringBuilder ret = new StringBuilder();
 		ret.append(Txt.parse("<c>"));
 		ret.append('/');
 		
+		boolean first = true;
 		for (MCommand mc : commandChain)
 		{
-			ret.append(Txt.implode(mc.aliases, ","));
+			if (first && onlyFirstAlias)
+			{
+				ret.append(mc.aliases.get(0));
+			}
+			else
+			{
+				ret.append(Txt.implode(mc.aliases, ","));
+			}
 			ret.append(' ');
+			first = false;
 		}
 		
 		ret.append(Txt.implode(this.aliases, ","));
@@ -354,6 +363,11 @@ public abstract class MCommand
 		}
 		
 		return ret.toString();
+	}
+	
+	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc)
+	{
+		return getUseageTemplate(commandChain, addDesc, false);
 	}
 	
 	public String getUseageTemplate(boolean addDesc)
