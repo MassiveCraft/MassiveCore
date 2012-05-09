@@ -79,6 +79,8 @@ public class MCore extends JavaPlugin
 	
 	public static Random random = new Random();
 	
+	
+	
 	@Override
 	public void onDisable()
 	{

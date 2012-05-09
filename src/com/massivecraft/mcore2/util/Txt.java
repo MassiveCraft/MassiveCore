@@ -199,12 +199,7 @@ public class Txt
 	    else return string + repeat(string, times-1);
 	}
 	
-	public static String implode(final Collection<? extends Object> coll, final String glue)
-	{
-		return implode(coll.toArray(new Object[0]), glue);
-	}
-	
-	public static String implode(final Object[] list, final String glue)
+	public static String implode(final Object[] list, final String glue, final String format)
 	{
 	    StringBuilder ret = new StringBuilder();
 	    for (int i=0; i<list.length; i++)
@@ -213,26 +208,59 @@ public class Txt
 	        {
 	        	ret.append(glue);
 	        }
-	        ret.append(list[i]);
+	        if (format != null)
+	        {
+	        	ret.append(String.format(format, list[i].toString()));
+	        }
+	        else
+	        {
+	        	ret.append(list[i].toString());
+	        }
 	    }
 	    return ret.toString();
 	}
+	public static String implode(final Object[] list, final String glue)
+	{
+		return implode(list, glue, null);
+	}
+	public static String implode(final Collection<? extends Object> coll, final String glue, final String format)
+	{
+		return implode(coll.toArray(new Object[0]), glue, format);
+	}
+	public static String implode(final Collection<? extends Object> coll, final String glue)
+	{
+		return implode(coll, glue, null);
+	}
 	
-	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String comma, final String and, final String dot)
+	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String format, final String comma, final String and, final String dot)
 	{
 	    if (objects.size() == 0) return "";
-		if (objects.size() == 1) return objects.iterator().next().toString();
+		if (objects.size() == 1)
+		{
+			return implode(objects, comma, format);
+		}
 		
 		List<Object> ourObjects = new ArrayList<Object>(objects);
 		
 		String lastItem = ourObjects.get(ourObjects.size()-1).toString();
 		String nextToLastItem = ourObjects.get(ourObjects.size()-2).toString();
+		if (format != null)
+		{
+			lastItem = String.format(format, lastItem);
+			nextToLastItem = String.format(format, nextToLastItem);
+		}
 		String merge = nextToLastItem+and+lastItem;
 		ourObjects.set(ourObjects.size()-2, merge);
 		ourObjects.remove(ourObjects.size()-1);
 		
-		return implode(ourObjects, comma)+dot;
+		return implode(ourObjects, comma, format)+dot;
 	}
+	
+	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String comma, final String and, final String dot)
+	{
+		return implodeCommaAndDot(objects, null, comma, and, dot);
+	}
+	
 	public static String implodeCommaAnd(final Collection<? extends Object> objects, final String comma, final String and)
 	{
 		return implodeCommaAndDot(objects, comma, and, "");
@@ -419,6 +447,65 @@ public class Txt
 				ret = candidate;
 			}
 		}
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// Tokenization
+	// -------------------------------------------- //
+	
+	public static List<String> tokenizeArguments(String str)
+	{
+		List<String> ret = new ArrayList<String>();
+		StringBuilder token = null;
+		boolean escaping = false;
+		boolean citing = false;
+		
+		for(int i = 0; i < str.length(); i++)
+		{
+			char c = str.charAt(i);
+			if (token == null)
+			{
+				 token = new StringBuilder();
+			}
+			
+			if (escaping)
+			{
+				escaping = false;
+				token.append(c);
+			}
+			else if (c == '\\')
+			{
+				escaping = true;
+			}
+			else if (c == '"')
+			{
+				if (citing || token.length() > 0)
+				{
+					ret.add(token.toString());
+					token = null;
+				}
+				citing = !citing;
+			}
+			else if (citing == false && c == ' ')
+			{
+				if (token.length() > 0)
+				{
+					ret.add(token.toString());
+					token = null;
+				}
+			}
+			else
+			{
+				token.append(c);
+			}
+		}
+		
+		if (token != null)
+		{
+			ret.add(token.toString());
+		}
+		
 		return ret;
 	}
 }

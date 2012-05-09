@@ -1,11 +1,9 @@
 package com.massivecraft.mcore2.cmd;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import com.massivecraft.mcore2.util.Txt;
 
 public class BukkitGlueCommand extends Command
 {
@@ -24,8 +22,7 @@ public class BukkitGlueCommand extends Command
             return false;
         }
 		
-		List<String> argList = new ArrayList<String>(Arrays.asList(args));
-		this.mcommand.execute(sender, argList);
+		this.mcommand.execute(sender, Txt.tokenizeArguments(Txt.implode(args, " ")));
 		return true;
 	}
 }

@@ -288,7 +288,8 @@ public abstract class MCommand
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				msg(Lang.commandToManyArgs, Txt.implode(theToMany, " "));
+				msg(Lang.commandToManyArgs, Txt.implodeCommaAndDot(theToMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
+				msg(Lang.commandToManyArgs2);
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
