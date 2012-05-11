@@ -3,6 +3,7 @@ package com.massivecraft.mcore2.persist;
 import java.util.Collection;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore2.util.Txt;
@@ -23,6 +24,16 @@ public abstract class PlayerEntity<T extends PlayerEntity<T>> extends Entity<T>
 	public boolean isOffline()
 	{
 		return ! isOnline();
+	}
+	
+	// -------------------------------------------- //
+	// CHECKER UTILS
+	// -------------------------------------------- //
+	public boolean isGameMode(GameMode gm, boolean defaultIfOffline)
+	{
+		Player player = this.getPlayer();
+		if (player == null || ! player.isOnline()) return defaultIfOffline;
+		return player.getGameMode() == gm;
 	}
 	
 	// -------------------------------------------- //
