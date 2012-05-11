@@ -1,4 +1,3 @@
-name: mcore2
+name: mcore3
 version: 1.0.0
-main: com.massivecraft.mcore2.MCore
-authors: [Olof Larsson, Brett Flannigan]
+main: com.massivecraft.mcore3.MCore
