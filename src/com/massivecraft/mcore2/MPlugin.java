@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.mcore2.cmd.Cmd;
@@ -14,8 +15,7 @@ import com.massivecraft.mcore2.persist.Persist;
 import com.massivecraft.mcore2.util.LibLoader;
 import com.massivecraft.mcore2.util.Txt;
 
-
-public abstract class MPlugin extends JavaPlugin
+public abstract class MPlugin extends JavaPlugin implements Listener
 {
 	// Tools
 	public Cmd cmd;

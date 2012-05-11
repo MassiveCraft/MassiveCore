@@ -61,6 +61,16 @@ public class Txt
 		parseReplacements.put("<pink>", "\u00A7d");
 		parseReplacements.put("<yellow>", "\u00A7e");
 		parseReplacements.put("<white>", "\u00A7f");
+		parseReplacements.put("<magic>", "\u00A7k");
+		parseReplacements.put("<bold>", "\u00A7l");
+		parseReplacements.put("<strong>", "\u00A7l");
+		parseReplacements.put("<strike>", "\u00A7m");
+		parseReplacements.put("<strikethrough>", "\u00A7m");
+		parseReplacements.put("<under>", "\u00A7n");
+		parseReplacements.put("<underline>", "\u00A7n");
+		parseReplacements.put("<italic>", "\u00A7o");
+		parseReplacements.put("<em>", "\u00A7o");
+		parseReplacements.put("<reset>", "\u00A7r");
 		
 		// Color by semantic functionality
 		parseReplacements.put("<l>", "\u00A72");
@@ -157,7 +167,7 @@ public class Txt
 	// -------------------------------------------- //
 	public static ArrayList<String> wrap(final String string)
 	{
-		return new ArrayList<String>(Arrays.asList(TextWrapper.wrapText(string)));
+		return wrap(Arrays.asList(string.split("\\r?\\n")));
 	}
 	
 	public static ArrayList<String> wrap(final Collection<String> strings)
@@ -165,7 +175,7 @@ public class Txt
 		ArrayList<String> ret = new ArrayList<String>();
 		for (String line : strings)
 		{
-			ret.addAll(wrap(line));
+			ret.addAll(Arrays.asList(TextWrapper.wrapText(line)));
 		}
 		return ret;
 	}

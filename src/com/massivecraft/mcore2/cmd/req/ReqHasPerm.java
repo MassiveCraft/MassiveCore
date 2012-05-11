@@ -27,5 +27,10 @@ public class ReqHasPerm implements IReq
 	{
 		return Perm.getForbiddenMessage(this.perm);
 	}
+	
+	public static ReqHasPerm get(String perm)
+	{
+		return new ReqHasPerm(perm);
+	}
 
 }

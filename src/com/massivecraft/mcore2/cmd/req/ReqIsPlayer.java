@@ -25,4 +25,9 @@ public class ReqIsPlayer implements IReq
 	{
 		return instance;
 	}
+	
+	public static ReqIsPlayer get()
+	{
+		return instance;
+	}
 }
