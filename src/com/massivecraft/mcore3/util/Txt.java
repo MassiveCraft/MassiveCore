@@ -331,7 +331,12 @@ public class Txt
 	
 	public static String getMaterialName(Material material)
 	{
-		return material.toString().replace('_', ' ').toLowerCase();
+		List<String> parts = new ArrayList<String>();  
+		for (String part : material.toString().toLowerCase().split("_"))
+		{
+			parts.add(upperCaseFirst(part));
+		}
+		return implode(parts, " ");
 	}
 	
 	public static String getMaterialName(int materialId)

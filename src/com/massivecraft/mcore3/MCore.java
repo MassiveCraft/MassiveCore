@@ -7,9 +7,13 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.mcore3.cmd.Cmd;
+import com.massivecraft.mcore3.gson.InventoryTypeAdapter;
+import com.massivecraft.mcore3.gson.ItemStackAdapter;
 import com.massivecraft.mcore3.lib.gson.GsonBuilder;
 import com.massivecraft.mcore3.persist.One;
 import com.massivecraft.mcore3.persist.Persist;
@@ -108,7 +112,9 @@ public class MCore extends JavaPlugin
 		return new GsonBuilder()
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
-		.excludeFieldsWithModifiers(Modifier.TRANSIENT);
+		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
+		.registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
+		.registerTypeAdapter(Inventory.class, new InventoryTypeAdapter());
 	}
 	
 	// -------------------------------------------- //
