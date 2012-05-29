@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerEvent;
 
 import com.massivecraft.mcore3.Predictate;
 import com.massivecraft.mcore3.lib.gson.Gson;
@@ -29,6 +30,7 @@ public abstract class GsonPlayerEntityManager<T extends PlayerEntity<T>> extends
 		if (oid == null) return null;
 		if (oid instanceof String) return (String) oid;
 		if (oid instanceof Player) return ((Player)oid).getName();
+		if (oid instanceof PlayerEvent) return ((PlayerEvent)oid).getPlayer().getName();
 		return null;
 	}
 	
