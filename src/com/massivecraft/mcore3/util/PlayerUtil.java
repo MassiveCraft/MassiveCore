@@ -1,6 +1,7 @@
 package com.massivecraft.mcore3.util;
 
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -8,6 +9,7 @@ import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet8UpdateHealth;
 
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -34,5 +36,21 @@ public class PlayerUtil
 		CraftPlayer cplayer = (CraftPlayer)player;
 		EntityPlayer eplayer = cplayer.getHandle();
 		eplayer.netServerHandler.sendPacket(new Packet8UpdateHealth(eplayer.getHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().c()));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Player getPlayerExact(String exactPlayerName)
+	{
+		CraftServer craftServer = (CraftServer) Bukkit.getServer();
+		List<EntityPlayer> entityPlayers = craftServer.getHandle().players;
+		for (EntityPlayer entityPlayer : entityPlayers)
+		{
+			Player player = entityPlayer.netServerHandler.getPlayer();
+			if (player.getName().equals(exactPlayerName))
+			{
+				return player;
+			}
+        }
+		return null;
 	}
 }
