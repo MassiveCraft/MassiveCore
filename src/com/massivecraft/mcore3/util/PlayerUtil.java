@@ -20,7 +20,8 @@ public class PlayerUtil
 	public static void populateAllVisitorNames()
 	{
 		// Find the player folder
-		File playerfolder = new File(Bukkit.getWorlds().get(0).getWorldFolder(), "players");
+		String levelName = ((CraftServer)Bukkit.getServer()).getServer().propertyManager.getString("level-name", "world");
+		File playerfolder = new File(levelName, "players");
 		
 		// Populate by removing .dat
 		for (File playerfile : playerfolder.listFiles())
