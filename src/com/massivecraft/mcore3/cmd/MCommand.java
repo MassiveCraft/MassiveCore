@@ -4,7 +4,9 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore3.Lang;
@@ -148,9 +150,23 @@ public abstract class MCommand
 	
 	public boolean register()
 	{
-		// TODO: Save this somewhere? And update it on changes to the aliases?
+		return register(false);
+	}
+	
+	public boolean register(boolean override)
+	{
 		BukkitGlueCommand bgc = new BukkitGlueCommand(this);
-		return Cmd.getBukkitCommandMap().register("mcore", bgc);
+		SimpleCommandMap scm = Cmd.getBukkitCommandMap();
+		
+		if (override)
+		{
+			// Our commands are more important than your commands :P
+			Map<String, Command> knownCommands = Cmd.getKnownCommandsFromSimpleCommandMap(scm);
+			String lowerLabel = bgc.getName().trim().toLowerCase();
+			knownCommands.remove(lowerLabel);
+		}
+		
+		return scm.register("mcore", bgc);
 	}
 	
 	// -------------------------------------------- //

@@ -1,5 +1,6 @@
 package com.massivecraft.mcore3.cmd;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
@@ -56,5 +58,20 @@ public class Cmd
 	{
 		CraftServer craftServer = (CraftServer)Bukkit.getServer();
 		return craftServer.getCommandMap();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String, Command> getKnownCommandsFromSimpleCommandMap(SimpleCommandMap scm)
+	{
+		try
+		{
+			Field field = SimpleCommandMap.class.getDeclaredField("knownCommands");
+			field.setAccessible(true);
+			return (Map<String, Command>) field.get(scm);
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
 }
