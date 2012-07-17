@@ -21,7 +21,7 @@ public class PlayerUtil
 	{
 		// Find the player folder
 		String levelName = ((CraftServer)Bukkit.getServer()).getServer().propertyManager.getString("level-name", "world");
-		File playerfolder = new File(levelName, "players");
+		File playerfolder = new File(Bukkit.getWorldContainer(), new File(levelName, "players").getPath());
 		
 		// Populate by removing .dat
 		for (File playerfile : playerfolder.listFiles())
