@@ -1,4 +1,4 @@
-name: mcore3
-version: 1.0.2
+name: mcore4
+version: 1.0.0
 main: com.massivecraft.mcore3.MCore
 load: startup
