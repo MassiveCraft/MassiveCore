@@ -1,7 +1,7 @@
 ![MCore](http://massivecraft.com/wp-content/uploads/mcore/mcore150.png "MCore")<br>
 MCore - A bukkit plugin dev-framework in a bukkit plugin
 ====================
-<b>[Download Latest Version](https://github.com/MassiveCraft/mcore/downloads) | [Source Code](https://github.com/MassiveCraft/mcore) | [BukkitDev](http://dev.bukkit.org/server-mods/mcore/)</b>
+<b>[BukkitDev](http://dev.bukkit.org/server-mods/mcore/)</b>
 
 This bukkit plugin contains components for developing other bukkit plugins. It offers no new plugin-like features on it's own. It is just a bunch of libraries and features that other plugins can make use of.
 
@@ -13,7 +13,7 @@ When a new version of mcore is released it will take a while before the plugins 
 
 For Plugin Developers
 ----------
-There is currently no documantation for mcore. You can learn how to use it by looking at other plugins that do so. The source code is embeded in all the jarfiles for your convenience. 
+The source code is embeded in all the jarfiles for your convenience. There is currently no documantation for mcore. You can learn how to use it by looking at other plugins that do so. [Most plugins by MassiveCraft](https://github.com/MassiveCraft) use MCore. [The Vampire Plugin](http://massivecraft.com/plugins/vampire) is a good example.
 
 For Contributors
 ----------
@@ -24,3 +24,4 @@ License
 ----------
 This project is open source. We are using [The MIT Licence](http://www.opensource.org/licenses/MIT)<br>
 This project includes [GSON](http://code.google.com/p/google-gson/) which has an [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
+This project includes [the MongoDB driver for Java](https://github.com/mongodb/mongo-java-driver/) which has an [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
