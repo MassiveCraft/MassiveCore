@@ -23,5 +23,5 @@ Read more about our plugin developent team at [MassiveCraft.com/plugins](http://
 License
 ----------
 This project is open source. We are using [The MIT Licence](http://www.opensource.org/licenses/MIT)<br>
-This project includes [GSON](http://code.google.com/p/google-gson/) which has an [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
+This project includes [GSON](http://code.google.com/p/google-gson/) which has an [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).<br>
 This project includes [the MongoDB driver for Java](https://github.com/mongodb/mongo-java-driver/) which has an [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
