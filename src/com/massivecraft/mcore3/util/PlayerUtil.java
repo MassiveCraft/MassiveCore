@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import net.minecraft.server.DedicatedServer;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet8UpdateHealth;
 
@@ -20,7 +21,9 @@ public class PlayerUtil
 	public static void populateAllVisitorNames()
 	{
 		// Find the player folder
-		String levelName = ((CraftServer)Bukkit.getServer()).getServer().propertyManager.getString("level-name", "world");
+	    CraftServer cserver = (CraftServer)Bukkit.getServer();
+	    DedicatedServer dserver = (DedicatedServer)cserver.getServer();
+		String levelName = dserver.propertyManager.getString("level-name", "world");
 		File playerfolder = new File(Bukkit.getWorldContainer(), new File(levelName, "players").getPath());
 		
 		// Populate by removing .dat
@@ -36,7 +39,7 @@ public class PlayerUtil
 	{
 		CraftPlayer cplayer = (CraftPlayer)player;
 		EntityPlayer eplayer = cplayer.getHandle();
-		eplayer.netServerHandler.sendPacket(new Packet8UpdateHealth(eplayer.getHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().c()));
+		eplayer.netServerHandler.sendPacket(new Packet8UpdateHealth(eplayer.getHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().e()));
 	}
 	
 	@SuppressWarnings("unchecked")

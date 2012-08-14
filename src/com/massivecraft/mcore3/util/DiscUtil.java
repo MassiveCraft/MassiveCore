@@ -26,6 +26,8 @@ public class DiscUtil
 		}
 
 		in.close();
+		
+		if (ret.length() == 0) return ret;
 		return ret.substring(0, ret.length()-1);
 	}
 	
@@ -75,4 +77,19 @@ public class DiscUtil
 	{
 		return downloadUrl(urlstring, new File(filename));
 	}
+	
+    public static boolean deleteRecursive(File path) throws FileNotFoundException
+    {
+        if ( ! path.exists()) throw new FileNotFoundException(path.getAbsolutePath());
+        boolean ret = true;
+        if (path.isDirectory())
+        {
+            for (File f : path.listFiles())
+            {
+                ret = ret && deleteRecursive(f);
+            }
+        }
+        return ret && path.delete();
+    }
+
 }

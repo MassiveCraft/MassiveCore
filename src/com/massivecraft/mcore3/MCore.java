@@ -14,7 +14,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.massivecraft.mcore3.cmd.Cmd;
 import com.massivecraft.mcore3.gson.InventoryTypeAdapter;
 import com.massivecraft.mcore3.gson.ItemStackAdapter;
+import com.massivecraft.mcore3.gson.MongoURIAdapter;
 import com.massivecraft.mcore3.lib.gson.GsonBuilder;
+import com.massivecraft.mcore3.lib.mongodb.MongoURI;
 import com.massivecraft.mcore3.persist.One;
 import com.massivecraft.mcore3.persist.Persist;
 import com.massivecraft.mcore3.util.LibLoader;
@@ -113,6 +115,7 @@ public class MCore extends JavaPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
+		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
 		.registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
 		.registerTypeAdapter(Inventory.class, new InventoryTypeAdapter());
 	}
