@@ -15,6 +15,7 @@ import com.massivecraft.mcore4.Predictate;
 import com.massivecraft.mcore4.lib.gson.Gson;
 import com.massivecraft.mcore4.persist.IClassManager;
 import com.massivecraft.mcore4.persist.Persist;
+import com.massivecraft.mcore4.util.DiscUtil;
 
 public abstract class GsonClassManager<T> implements IClassManager<T>
 {
@@ -259,7 +260,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		{
 			String json = this.getGson().toJson(entity);
 			File file = this.fileFromId(id);
-			return Persist.writeCatch(file, json);
+			return DiscUtil.writeCatch(file, json);
 		}
 		this.removeFile(id);
 		// TODO: Remove if loaded??
@@ -307,7 +308,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		if (entity != null) return entity;
 		if ( ! this.containsId(id)) return null;
 		File file = this.fileFromId(id);
-		String json = Persist.readCatch(file);
+		String json = DiscUtil.readCatch(file);
 		if (json == null) return null;
 		entity = this.getGson().fromJson(json, this.getManagedClass());
 		this.attach(entity, id, true);

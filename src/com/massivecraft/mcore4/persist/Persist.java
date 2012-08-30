@@ -1,13 +1,5 @@
 package com.massivecraft.mcore4.persist;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -80,53 +72,6 @@ public class Persist
 	// -------------------------------------------- //
 	// UTILS
 	// -------------------------------------------- //
-	
-	public static void write(File file, String content) throws IOException
-	{
-		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF8"));
-		out.write(content);
-		out.close();
-	}
-	
-	public static String read(File file) throws IOException
-	{
-		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-		String ret = new String(new byte[0], "UTF-8");
-		 
-		String line;
-		while ((line = in.readLine()) != null)
-		{
-			ret += line;
-		}
-
-		in.close();
-		return ret;
-	}
-	
-	public static boolean writeCatch(File file, String content)
-	{
-		try
-		{
-			write(file, content);
-			return true;
-		}
-		catch (Exception e)
-		{
-			return false;
-		}
-	}
-	
-	public static String readCatch(File file)
-	{
-		try
-		{
-			return read(file);
-		}
-		catch (IOException e)
-		{
-			return null;
-		}
-	}
 	
 	public static <T> ArrayList<T> uglySQL(Collection<T> items, Predictate<T> where, Comparator<T> orderby, Integer limit, Integer offset)
 	{

@@ -1,4 +1,4 @@
-package com.massivecraft.mcore4.gson;
+package com.massivecraft.mcore4.adapter;
 
 import java.lang.reflect.Type;
 
@@ -14,8 +14,9 @@ import com.massivecraft.mcore4.lib.gson.JsonParseException;
 import com.massivecraft.mcore4.lib.gson.JsonPrimitive;
 import com.massivecraft.mcore4.lib.gson.JsonSerializationContext;
 import com.massivecraft.mcore4.lib.gson.JsonSerializer;
+import com.massivecraft.mcore4.lib.mongodb.BasicDBObject;
 
-public class InventoryTypeAdapter implements JsonDeserializer<Inventory>, JsonSerializer<Inventory>
+public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerializer<Inventory>
 {
 	// -------------------------------------------- //
 	// FIELD NAME CONSTANTS
@@ -30,20 +31,20 @@ public class InventoryTypeAdapter implements JsonDeserializer<Inventory>, JsonSe
 	@Override
 	public JsonElement serialize(Inventory src, Type typeOfSrc, JsonSerializationContext context)
 	{
-		return serialize(src);
+		return toJson(src);
 	}
 	
 	@Override
 	public Inventory deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return deserialize(json);
+		return fromJson(json);
 	}
 	
 	// -------------------------------------------- //
-	// STATIC LOGIC
+	// JSON
 	// -------------------------------------------- //
 	
-	public static JsonElement serialize(Inventory src)
+	public static JsonElement toJson(Inventory src)
 	{
 		JsonObject jsonInventory = new JsonObject();
 		ItemStack[] itemStacks = src.getContents();
@@ -52,7 +53,7 @@ public class InventoryTypeAdapter implements JsonDeserializer<Inventory>, JsonSe
 		for (int i = 0; i < itemStacks.length; i++)
 		{
 			ItemStack itemStack = itemStacks[i];
-			JsonObject jsonItemStack = ItemStackAdapter.serialize(itemStack);
+			JsonObject jsonItemStack = ItemStackAdapter.toJson(itemStack);
 			if (jsonItemStack == null) continue;
 			jsonInventory.add(String.valueOf(i), jsonItemStack);
 		}
@@ -60,7 +61,7 @@ public class InventoryTypeAdapter implements JsonDeserializer<Inventory>, JsonSe
 		return jsonInventory;
 	}
 	
-	public static Inventory deserialize(JsonElement json)
+	public static Inventory fromJson(JsonElement json)
 	{
 		if ( ! json.isJsonObject()) return null;
 		JsonObject jsonInventory = json.getAsJsonObject();
@@ -75,7 +76,49 @@ public class InventoryTypeAdapter implements JsonDeserializer<Inventory>, JsonSe
 			// Fetch the jsonItemStack or mark it as empty and continue
 			String stackIdx = String.valueOf(i);
 			JsonElement jsonItemStack = jsonInventory.get(stackIdx);
-			ItemStack itemStack = ItemStackAdapter.deserialize(jsonItemStack);
+			ItemStack itemStack = ItemStackAdapter.fromJson(jsonItemStack);
+			itemStacks[i] = itemStack;
+		}
+		
+		Inventory ret = new CraftInventoryCustom(null, size, "items");
+		ret.setContents(itemStacks);
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// BSON
+	// -------------------------------------------- //
+	
+	public static BasicDBObject toBson(Inventory src)
+	{
+		BasicDBObject bsonInventory = new BasicDBObject();
+		ItemStack[] itemStacks = src.getContents();
+		bsonInventory.put(SIZE, itemStacks.length);
+		
+		for (int i = 0; i < itemStacks.length; i++)
+		{
+			ItemStack itemStack = itemStacks[i];
+			BasicDBObject bsonItemStack = ItemStackAdapter.toBson(itemStack);
+			if (bsonItemStack == null) continue;
+			bsonInventory.put(String.valueOf(i), bsonItemStack);
+		}
+		
+		return bsonInventory;
+	}
+	
+	public static Inventory fromBson(BasicDBObject bsonInventory)
+	{
+		if ( ! bsonInventory.containsField(SIZE)) return null;
+		int size = bsonInventory.getInt(SIZE);
+		
+		ItemStack[] itemStacks = new ItemStack[size];
+		
+		for (int i = 0; i < size; i++)
+		{
+			// Fetch the jsonItemStack or mark it as empty and continue
+			String stackIdx = String.valueOf(i);
+			BasicDBObject bsonItemStack = (BasicDBObject) bsonInventory.get(stackIdx);
+			ItemStack itemStack = ItemStackAdapter.fromBson(bsonItemStack);
 			itemStacks[i] = itemStack;
 		}
 		

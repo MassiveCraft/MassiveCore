@@ -42,6 +42,7 @@ public class PlayerUtil
 		eplayer.netServerHandler.sendPacket(new Packet8UpdateHealth(eplayer.getHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().e()));
 	}
 	
+	// TODO: Is there synchronization/parallelism risks here?
 	@SuppressWarnings("unchecked")
 	public static Player getPlayerExact(String exactPlayerName)
 	{

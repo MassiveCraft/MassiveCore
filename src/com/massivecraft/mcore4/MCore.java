@@ -11,10 +11,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.massivecraft.mcore4.adapter.InventoryAdapter;
+import com.massivecraft.mcore4.adapter.ItemStackAdapter;
+import com.massivecraft.mcore4.adapter.MongoURIAdapter;
 import com.massivecraft.mcore4.cmd.Cmd;
-import com.massivecraft.mcore4.gson.InventoryTypeAdapter;
-import com.massivecraft.mcore4.gson.ItemStackAdapter;
-import com.massivecraft.mcore4.gson.MongoURIAdapter;
+import com.massivecraft.mcore4.lib.gson.Gson;
 import com.massivecraft.mcore4.lib.gson.GsonBuilder;
 import com.massivecraft.mcore4.lib.mongodb.MongoURI;
 import com.massivecraft.mcore4.persist.One;
@@ -30,6 +31,7 @@ public class MCore extends JavaPlugin
 	// -------------------------------------------- //
 	// PERSIST
 	// -------------------------------------------- //
+
 	private static Map<Object, Persist> persistInstances = new HashMap<Object, Persist>();
 	public static Map<Object, Persist> getPersistInstances() { return persistInstances; }
 	public static Persist getPersist(Object owner) { return persistInstances.get(owner); }
@@ -84,8 +86,7 @@ public class MCore extends JavaPlugin
 	// -------------------------------------------- //
 	
 	public static Random random = new Random();
-	
-	
+	public static Gson gson = getGsonBuilder().create();
 	
 	@Override
 	public void onDisable()
@@ -117,7 +118,7 @@ public class MCore extends JavaPlugin
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
 		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
 		.registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
-		.registerTypeAdapter(Inventory.class, new InventoryTypeAdapter());
+		.registerTypeAdapter(Inventory.class, new InventoryAdapter());
 	}
 	
 	// -------------------------------------------- //

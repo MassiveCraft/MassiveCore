@@ -1,4 +1,4 @@
-package com.massivecraft.mcore4.gson;
+package com.massivecraft.mcore4.adapter;
 
 import java.lang.reflect.Type;
 import java.util.Map.Entry;
@@ -13,6 +13,7 @@ import com.massivecraft.mcore4.lib.gson.JsonObject;
 import com.massivecraft.mcore4.lib.gson.JsonParseException;
 import com.massivecraft.mcore4.lib.gson.JsonSerializationContext;
 import com.massivecraft.mcore4.lib.gson.JsonSerializer;
+import com.massivecraft.mcore4.lib.mongodb.BasicDBObject;
 
 public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack>
 {	
@@ -32,20 +33,20 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 	@Override
 	public JsonElement serialize(ItemStack itemStack, Type typeOfSrc, JsonSerializationContext context)
 	{
-		return serialize(itemStack);
+		return toJson(itemStack);
 	}
 	
 	@Override
 	public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return deserialize(json);
+		return fromJson(json);
 	}
 	
 	// -------------------------------------------- //
-	// STATIC LOGIC
+	// JSON
 	// -------------------------------------------- //
 	
-	public static JsonObject serialize(ItemStack itemStack)
+	public static JsonObject toJson(ItemStack itemStack)
 	{
 		if (itemStack == null || itemStack.getTypeId() == 0 || itemStack.getAmount() == 0)
 		{
@@ -76,7 +77,7 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		return jsonItemStack;
 	}
 	
-	public static ItemStack deserialize(JsonElement json)
+	public static ItemStack fromJson(JsonElement json)
 	{
 		if (json == null || ! json.isJsonObject()) return null;
 		
@@ -113,6 +114,85 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 			{
 				int enchantmentId = Integer.valueOf(enchantmentEntry.getKey());
 				Integer enchantmentLevel = Integer.valueOf(enchantmentEntry.getValue().getAsString());
+				stack.addUnsafeEnchantment(Enchantment.getById(enchantmentId), enchantmentLevel);
+			}
+		}
+		
+		return stack;
+	}
+	
+	// -------------------------------------------- //
+	// BSON
+	// -------------------------------------------- //
+	
+	public static BasicDBObject toBson(ItemStack itemStack)
+	{
+		if (itemStack == null || itemStack.getTypeId() == 0 || itemStack.getAmount() == 0)
+		{
+			return null;
+		}
+		
+		BasicDBObject bsonItemStack = new BasicDBObject();
+		
+		bsonItemStack.put(TYPE, itemStack.getTypeId());
+		
+		if (itemStack.getAmount() != 1)
+		{
+			bsonItemStack.put(AMOUNT, itemStack.getAmount());
+		}
+		if (itemStack.getDurability() != 0) // Durability is a weird name since it is the amount of damage.
+		{
+			bsonItemStack.put(DAMAGE, itemStack.getDurability());
+		}
+		if (itemStack.getEnchantments().size() > 0)
+		{
+			BasicDBObject bsonEnchantments = new BasicDBObject();
+			for (Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet())
+			{
+				bsonEnchantments.put(String.valueOf(entry.getKey().getId()), entry.getValue());
+			}
+			bsonItemStack.put(ENCHANTMENTS, bsonEnchantments);
+		}
+		
+		return bsonItemStack;
+	}
+	
+	public static ItemStack fromBson(BasicDBObject bsonItemStack)
+	{
+		if (bsonItemStack == null) return null;
+		
+		// Populate values
+		int type = 0; 
+		int amount = 1;
+		short damage = 0;
+		
+		if (bsonItemStack.containsField(TYPE))
+		{
+			type = bsonItemStack.getInt(TYPE);
+		}
+		
+		if (bsonItemStack.containsField(AMOUNT))
+		{
+			amount = bsonItemStack.getInt(AMOUNT);
+		}
+		
+		if (bsonItemStack.containsField(DAMAGE))
+		{
+			damage = (short) bsonItemStack.getInt(DAMAGE);
+		}
+		
+		// Create Non enchanted stack
+		ItemStack stack = new ItemStack(type, amount, damage);
+		
+	    // Add enchantments if there are any
+		if (bsonItemStack.containsField(ENCHANTMENTS))
+		{
+			BasicDBObject bsonEnchantments = (BasicDBObject) bsonItemStack.get(ENCHANTMENTS);
+			
+			for (Entry<String, Object> enchantmentEntry: bsonEnchantments.entrySet())
+			{
+				int enchantmentId = Integer.valueOf(enchantmentEntry.getKey());
+				Integer enchantmentLevel = (Integer) enchantmentEntry.getValue();
 				stack.addUnsafeEnchantment(Enchantment.getById(enchantmentId), enchantmentLevel);
 			}
 		}

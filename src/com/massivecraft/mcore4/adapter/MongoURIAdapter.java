@@ -1,4 +1,4 @@
-package com.massivecraft.mcore4.gson;
+package com.massivecraft.mcore4.adapter;
 
 import java.lang.reflect.Type;
 
