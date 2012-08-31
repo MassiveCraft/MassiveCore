@@ -14,13 +14,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.massivecraft.mcore4.adapter.InventoryAdapter;
 import com.massivecraft.mcore4.adapter.ItemStackAdapter;
 import com.massivecraft.mcore4.adapter.MongoURIAdapter;
-import com.massivecraft.mcore4.cmd.Cmd;
 import com.massivecraft.mcore4.lib.gson.Gson;
 import com.massivecraft.mcore4.lib.gson.GsonBuilder;
 import com.massivecraft.mcore4.lib.mongodb.MongoURI;
-import com.massivecraft.mcore4.persist.One;
 import com.massivecraft.mcore4.persist.Persist;
-import com.massivecraft.mcore4.util.LibLoader;
 import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.util.Txt;
 
@@ -40,45 +37,6 @@ public class MCore extends JavaPlugin
 	{
 		if (persistInstances.containsKey(owner)) return;
 		persistInstances.put(owner, new Persist());
-	}
-	
-	// -------------------------------------------- //
-	// CMD
-	// -------------------------------------------- //
-	private static Map<Object, Cmd> cmdInstances = new HashMap<Object, Cmd>();
-	public static Map<Object, Cmd> getCmdInstances() { return cmdInstances; }
-	public static Cmd getCmd(Object owner) { return cmdInstances.get(owner); }
-	public static void removeCmd(Object owner) { cmdInstances.remove(owner); }
-	public static void createCmd(Object owner)
-	{
-		if (cmdInstances.containsKey(owner)) return;
-		cmdInstances.put(owner, new Cmd());
-	}
-	
-	// -------------------------------------------- //
-	// ONE
-	// -------------------------------------------- //
-	private static Map<MPlugin, One> oneInstances = new HashMap<MPlugin, One>();
-	public static Map<MPlugin, One> getOneInstances() { return oneInstances; }
-	public static One getOne(MPlugin owner) { return oneInstances.get(owner); }
-	public static void removeOne(MPlugin owner) { oneInstances.remove(owner); }
-	public static void createOne(MPlugin owner)
-	{
-		if (oneInstances.containsKey(owner)) return;
-		oneInstances.put(owner, new One(owner));
-	}
-	
-	// -------------------------------------------- //
-	// LIBLOADER
-	// -------------------------------------------- //
-	private static Map<MPlugin, LibLoader> libLoaderInstances = new HashMap<MPlugin, LibLoader>();
-	public static Map<MPlugin, LibLoader> getLibLoaderInstances() { return libLoaderInstances; }
-	public static LibLoader getLibLoader(MPlugin owner) { return libLoaderInstances.get(owner); }
-	public static void removeLibLoader(MPlugin owner) { libLoaderInstances.remove(owner); }
-	public static void createLibLoader(MPlugin owner)
-	{
-		if (libLoaderInstances.containsKey(owner)) return;
-		libLoaderInstances.put(owner, new LibLoader(owner));
 	}
 	
 	// -------------------------------------------- //

@@ -43,17 +43,12 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		// Create Gson
 		this.gson = this.getGsonBuilder().create();
 		
-		// Create Tools
-		MCore.createCmd(this);
-		MCore.createPersist(this);
-		MCore.createOne(this);
-		MCore.createLibLoader(this);
 		
-		// Assign tool pointers
-		this.cmd = MCore.getCmd(this);
+		MCore.createPersist(this);
+		this.cmd = new Cmd();
 		this.persist = MCore.getPersist(this);
-		this.one = MCore.getOne(this);
-		this.lib = MCore.getLibLoader(this);
+		this.one = new One(this);
+		this.lib = new LibLoader(this);
 		
 		return true;
 	}
@@ -69,11 +64,8 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	
 	public void onDisable()
 	{
-		MCore.getPersist(this).saveAll();
+		this.persist.saveAll();
 		MCore.removePersist(this);
-		MCore.removeOne(this);
-		MCore.removeCmd(this);
-		MCore.removeLibLoader(this);
 		
 		this.cmd = null;
 		this.persist = null;
