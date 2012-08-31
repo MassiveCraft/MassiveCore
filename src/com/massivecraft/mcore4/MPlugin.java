@@ -66,11 +66,6 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		this.persist.saveAll();
 		Persist.instances.remove(this.persist);
 		
-		this.cmd = null;
-		this.persist = null;
-		this.one = null;
-		this.lib = null;
-		
 		log("Disabled");
 	}
 	

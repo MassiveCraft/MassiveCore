@@ -21,22 +21,10 @@ import com.massivecraft.mcore4.util.Txt;
 
 public class MCore extends JavaPlugin
 {
-	InternalListener listener;
-	
-	// -------------------------------------------- //
-	// DERP
-	// -------------------------------------------- //
-	
 	public static Random random = new Random();
 	public static Gson gson = getGsonBuilder().create();
 	
-	@Override
-	public void onDisable()
-	{
-		// Avoid memleak by clearing ???
-		// Or will this trigger errors???
-		//Persist.getRealms().clear();
-	}
+	InternalListener listener;
 
 	@Override
 	public void onEnable()
