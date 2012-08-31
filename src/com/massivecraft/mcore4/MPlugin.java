@@ -1,6 +1,5 @@
 package com.massivecraft.mcore4;
 
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,14 +66,12 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		Persist.instances.remove(this.persist);
 		
 		// Collection shutdowns for new system.
-		Iterator<Coll<?, ?>> iter = Coll.instances.iterator();
-		while (iter.hasNext())
+		for (Coll<?, ?> coll : Coll.instances)
 		{
-			Coll<?, ?> coll = iter.next();
 			if (coll.mplugin() != this) continue;
 			coll.examineThread().interrupt();
 			coll.syncAll(); // TODO: Save outwards only? We may want to avoid loads at this stage...
-			iter.remove();
+			Coll.instances.remove(coll);
 		}
 		
 		log("Disabled");

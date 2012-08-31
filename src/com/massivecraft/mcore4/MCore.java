@@ -44,6 +44,16 @@ public class MCore extends MPlugin
 	public static Db<?> getDb() { return db; }
 	
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	protected static MCore p;
+	public MCore()
+	{
+		p = this;
+	}
+	
+	// -------------------------------------------- //
 	// NON STATIC :)
 	// -------------------------------------------- //
 
@@ -68,7 +78,7 @@ public class MCore extends MPlugin
 		
 		if ( ! preEnable()) return;
 		
-		Conf.load();
+		Conf.i.load();
 		
 		// Setup the default database
 		db = MStore.getDb(Conf.dburi);
