@@ -31,7 +31,8 @@ public class MCore extends JavaPlugin
 	{
 		logPrefix = "["+this.getDescription().getName()+"] ";
 		
-		PlayerUtil.populateAllVisitorNames();
+		// Setup PlayerUtil and it's events
+		new PlayerUtil(this);
 		
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		Persist.instances.clear();
