@@ -46,6 +46,7 @@ public abstract class Entity<E extends Entity<E, L>, L>
 	
 	public L getId()
 	{
+		if (this.getColl() == null) return null;
 		return this.getColl().id(getThis());
 	}
 	

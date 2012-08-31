@@ -13,7 +13,7 @@ public class SimpleConfig
 	protected transient MPlugin mplugin;
 	protected MPlugin mplugin() { return this.mplugin; }
 	
-	protected transient File file = new File("plugins/mcore/conf.json");
+	protected transient File file;
 	protected File file() { return this.file; }
 	
 	public SimpleConfig(MPlugin mplugin, File file)
@@ -36,20 +36,31 @@ public class SimpleConfig
 	// IO
 	// -------------------------------------------- //
 	
+	protected static boolean contentRequestsDefaults(String content)
+	{
+		if (content == null) return false;
+		char c = content.charAt(0);
+		return c == 'd' || c == 'D';
+	}
+	
 	public void load()
 	{
 		if (this.file().isFile())
 		{
 			String content = DiscUtil.readCatch(this.file());
-			SimpleConfig loaded = this.mplugin().gson.fromJson(content, this.getClass());
-			Accessor.get(this.getClass()).copy(loaded, this);
+			if (contentRequestsDefaults(content)) return;
+			Object createdByGson = this.mplugin().gson.fromJson(content, this.getClass());
+			Accessor.get(this.getClass()).copy(createdByGson, this);
 		}
 		save();
 	}
 	
 	public void save()
 	{
-		String content = this.mplugin().gson.toJson(this);
+		String content = DiscUtil.readCatch(this.file());
+		if (contentRequestsDefaults(content)) return;
+		content = this.mplugin().gson.toJson(this);
 		DiscUtil.writeCatch(file, content);
 	}
 }
+

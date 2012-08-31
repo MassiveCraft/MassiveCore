@@ -504,7 +504,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	@Override public Thread examineThread() { return this.examineThread; }
 	
 	// -------------------------------------------- //
-	// CONSTRUCTORS
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
 	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
@@ -533,15 +533,19 @@ public class Coll<E, L> implements CollInterface<E, L>
 		{
 			@Override public void run() { me.onTick(); }
 		};
-		
-		this.examineThread = new ExamineThread<E, L>(this);
-		this.examineThread.start();
-		this.syncAll();
-		instances.add(this);
 	}
 	
 	public Coll(MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
 	{
 		this(MCore.getDb(), mplugin, idStrategyName, name, entityClass, idClass, creative);
+	}
+	
+	@Override
+	public void init()
+	{
+		this.syncAll();
+		this.examineThread = new ExamineThread<E, L>(this);
+		this.examineThread.start();
+		instances.add(this);
 	}
 }

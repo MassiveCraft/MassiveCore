@@ -133,5 +133,11 @@ public interface CollInterface<E, L>
 	
 	public Thread examineThread();
 	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public void init();
+	
 	
 }
