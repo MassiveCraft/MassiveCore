@@ -44,8 +44,7 @@ public interface CollInterface<E, L>
 	public Map<L, E> id2entity();
 	public E get(Object oid);
 	public E get(Object oid, boolean creative);
-	public E getBestMatch(Object oid);
-	
+
 	public Map<E, L> entity2id();
 	public L id(E entity);
 	public L idFix(Object oid);

@@ -1,33 +1,38 @@
 package com.massivecraft.mcore4.cmd.arg;
 
+import java.util.Collection;
+
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore4.MPlugin;
-import com.massivecraft.mcore4.persist.IClassManager;
+import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.util.Txt;
 
-public abstract class AHPlayerWrapper<T> extends AHBase<T>
+public class AHPlayerWrapperNew<E> extends AHBase<E>
 {
-	public abstract Class<T> getClazz();
+	final Coll<E, ?> coll;
+	public Coll<E, ?> coll() { return this.coll; };
 	
-	public IClassManager<T> getManager(MPlugin p)
+	public AHPlayerWrapperNew(Coll<E, ?> coll)
 	{
-		return p.persist.getManager(getClazz());
+		this.coll = coll;
 	}
 	
 	@Override
-	public T parse(String str, String style, CommandSender sender, MPlugin p)
+	public E parse(String str, String style, CommandSender sender, MPlugin p)
 	{
 		this.error.clear();
 		if (str == null) return null;
 		
-		IClassManager<T> manager = this.getManager(p);
-		T ret;
+		E ret;
 		
 		if (style != null && style.equalsIgnoreCase("match"))
 		{
-			ret = manager.getBestMatch(str);
+			@SuppressWarnings("unchecked")
+			Collection<String> ids = (Collection<String>) this.coll().ids();
+			String id = Txt.getBestCIStart(ids, str);
+			ret = this.coll().get(id);
 			if (ret != null)
 			{
 				return ret;
@@ -36,7 +41,7 @@ public abstract class AHPlayerWrapper<T> extends AHBase<T>
 		}
 		else if (style != null && style.equalsIgnoreCase("matchany"))
 		{
-			ret = manager.get(Txt.getBestCIStart(PlayerUtil.getAllVisitorNames(), str));
+			ret = this.coll().get(Txt.getBestCIStart(PlayerUtil.getAllVisitorNames(), str));
 			if (ret != null)
 			{
 				return ret;
@@ -45,7 +50,7 @@ public abstract class AHPlayerWrapper<T> extends AHBase<T>
 		}
 		else
 		{
-			ret = manager.get(str);
+			ret = this.coll().get(str);
 			if (ret != null)
 			{
 				return ret;

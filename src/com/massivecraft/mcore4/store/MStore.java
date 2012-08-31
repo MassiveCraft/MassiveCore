@@ -27,6 +27,7 @@ public class MStore
 	{
 		try
 		{
+			if (uri.equalsIgnoreCase("default")) return MCore.getDb();
 			return getDb(new URI(uri));
 		}
 		catch (URISyntaxException e)
@@ -39,7 +40,6 @@ public class MStore
 	public static Db<?> getDb(URI uri)
 	{
 		String scheme = uri.getScheme();
-		if (scheme.equalsIgnoreCase("default")) return MCore.getDb();
 		Driver<?> driver = getDriver(scheme);
 		if (driver == null) return null;
 		return driver.db(uri.toString());

@@ -95,13 +95,6 @@ public class Coll<E, L> implements CollInterface<E, L>
 		return this.create(id, noteChange);
 	}
 	
-	@Override
-	public E getBestMatch(Object oid)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	// Get the id for this entity.
 	protected Map<E, L> entity2id = new ConcurrentHashMap<E, L>();
 	@Override public Map<E, L> entity2id() { return Collections.unmodifiableMap(this.entity2id); }
@@ -389,29 +382,38 @@ public class Coll<E, L> implements CollInterface<E, L>
 		boolean existsLocal = (localEntity != null);
 		boolean existsRemote = (remoteMtime != null);
 		
+		if ( ! existsLocal && ! existsRemote) return ModificationState.UNKNOWN;
+		
 		if (existsLocal && existsRemote)
 		{
 			Long lastMtime = this.lastMtime.get(id);
 			if (remoteMtime.equals(lastMtime) == false) return ModificationState.REMOTE_ALTER;
 			
-			Object lastRaw = this.lastRaw.get(id);
-			Object currentRaw = this.storeAdapter.read(this, localEntity);
-			if (currentRaw.equals(lastRaw) == false) return ModificationState.LOCAL_ALTER;
+			if (this.examineHasLocalAlter(id, localEntity)) return ModificationState.LOCAL_ALTER;
 		}
 		else if (existsLocal)
 		{
-			if ( ! this.lastDefault.contains(id)) return ModificationState.REMOTE_DETACH;
+			if (this.lastDefault.contains(id))
+			{
+				if (this.examineHasLocalAlter(id, localEntity)) return ModificationState.LOCAL_ALTER;
+			}
+			else
+			{
+				return ModificationState.REMOTE_DETACH;
+			}
 		}
 		else if (existsRemote)
 		{
 			return ModificationState.REMOTE_ATTACH;
 		}
-		else if ( ! existsLocal && ! existsRemote)
-		{
-			return ModificationState.UNKNOWN;
-		}
 		
 		return ModificationState.NONE;
+	}
+	protected boolean examineHasLocalAlter(L id, E entity)
+	{
+		Object lastRaw = this.lastRaw.get(id);
+		Object currentRaw = this.storeAdapter.read(this, entity);
+		return (currentRaw.equals(lastRaw) == false);
 	}
 	
 	@Override
@@ -419,7 +421,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	{
 		ModificationState mstate = this.examineId(id);
 		
-		//System.out.println("syncId \""+id+"\" "+mstate);
+		//mplugin.log("syncId: It seems", id, "has state", mstate);
 		
 		switch (mstate)
 		{
@@ -480,6 +482,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 		{
 			Long remoteMtime = id2RemoteMtime.get(id);
 			ModificationState state = this.examineId(id, remoteMtime);
+			//mplugin.log("findSuspects: It seems", id, "has state", state);
 			if (state.modified())
 			{
 				//System.out.println("It seems "+id+" has state "+state);

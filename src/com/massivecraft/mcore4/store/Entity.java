@@ -36,18 +36,39 @@ public abstract class Entity<E extends Entity<E, L>, L>
 		return ! this.attached();
 	}
 	
-	// TODO: Mark as dirty.
-	// TODO: Perhaps even brute force methods to save or load from remote.
-	
-	/*public boolean save()
-	{
-		return this.getColl().saveEntity(getThis());
-	}*/
-	
 	public L getId()
 	{
-		if (this.getColl() == null) return null;
 		return this.getColl().id(getThis());
+	}
+	
+	// TODO: Perhaps even brute force methods to save or load from remote.
+	
+	public void changed()
+	{
+		L id = this.getId();
+		if (id == null) return;
+		this.getColl().changedIds.add(id);
+	}
+	
+	public void sync()
+	{
+		L id = this.getId();
+		if (id == null) return;
+		this.getColl().syncId(id);
+	}
+	
+	public void saveToRemote()
+	{
+		L id = this.getId();
+		if (id == null) return;
+		this.getColl().saveToRemote(id);
+	}
+	
+	public void loadFromRemote()
+	{
+		L id = this.getId();
+		if (id == null) return;
+		this.getColl().loadFromRemote(id);
 	}
 	
 	@Override

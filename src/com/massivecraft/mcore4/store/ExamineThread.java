@@ -25,7 +25,7 @@ public class ExamineThread<E, L> extends Thread
 				
 				//long after = System.currentTimeMillis();
 				
-				//XCore.p.log(this.getName()+ " complete. Took "+ (after-before) +"ms.");
+				//coll.mplugin().log(this.getName()+ " complete. Took "+ (after-before) +"ms.");
 				
 				Thread.sleep(5000);
 			}

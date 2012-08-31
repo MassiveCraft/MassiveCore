@@ -149,33 +149,6 @@ public class Persist
 		if (fromIndex == 0 && toIndex == ret.size()-1) return ret;
 		return new ArrayList<T>(ret.subList(fromIndex, toIndex));
 	}
-		
-	public static String getBestCIStart(Collection<String> candidates, String start)
-	{
-		String ret = null;
-		int best = 0;
-		
-		start = start.toLowerCase();
-		int minlength = start.length();
-		for (String candidate : candidates)
-		{
-			if (candidate.length() < minlength) continue;
-			if ( ! candidate.toLowerCase().startsWith(start)) continue;
-			
-			// The closer to zero the better
-			int lendiff = candidate.length() - minlength;
-			if (lendiff == 0)
-			{
-				return candidate;
-			}
-			if (lendiff < best || best == 0)
-			{
-				best = lendiff;
-				ret = candidate;
-			}
-		}
-		return ret;
-	}
 	
 	// http://stackoverflow.com/questions/2864840/treemap-sort-by-value
 	public static <K,V extends Comparable<? super V>> SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K,V> map, final boolean ascending)

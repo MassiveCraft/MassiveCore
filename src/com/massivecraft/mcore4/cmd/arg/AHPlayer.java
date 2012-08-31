@@ -27,7 +27,7 @@ public class AHPlayer extends AHBase<Player>
 		}
 		else
 		{
-			Player player = Bukkit.getServer().getPlayer(str);
+			Player player = Bukkit.getServer().getPlayerExact(str);
 			if (player != null)
 			{
 				return player;

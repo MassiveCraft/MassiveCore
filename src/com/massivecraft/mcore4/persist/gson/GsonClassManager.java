@@ -15,6 +15,7 @@ import com.massivecraft.mcore4.Predictate;
 import com.massivecraft.mcore4.persist.IClassManager;
 import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.util.DiscUtil;
+import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.mcore4.xlib.gson.Gson;
 
 public abstract class GsonClassManager<T> implements IClassManager<T>
@@ -489,7 +490,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	{
 		String start = this.idFix(oid);
 		if (start == null) return null;
-		String id = Persist.getBestCIStart(this.ids, start);
+		String id = Txt.getBestCIStart(this.ids, start);
 		return this.get(id);
 	}
 }
