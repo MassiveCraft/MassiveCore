@@ -12,12 +12,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.massivecraft.mcore4.adapter.InventoryAdapter;
 import com.massivecraft.mcore4.adapter.ItemStackAdapter;
 import com.massivecraft.mcore4.adapter.MongoURIAdapter;
-import com.massivecraft.mcore4.lib.gson.Gson;
-import com.massivecraft.mcore4.lib.gson.GsonBuilder;
-import com.massivecraft.mcore4.lib.mongodb.MongoURI;
 import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.util.Txt;
+import com.massivecraft.mcore4.xlib.gson.Gson;
+import com.massivecraft.mcore4.xlib.gson.GsonBuilder;
+import com.massivecraft.mcore4.xlib.mongodb.MongoURI;
 
 public class MCore extends JavaPlugin
 {

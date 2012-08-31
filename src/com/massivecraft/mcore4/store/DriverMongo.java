@@ -9,16 +9,16 @@ import java.util.Set;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
-import com.massivecraft.mcore4.lib.mongodb.BasicDBObject;
-import com.massivecraft.mcore4.lib.mongodb.DB;
-import com.massivecraft.mcore4.lib.mongodb.DBCollection;
-import com.massivecraft.mcore4.lib.mongodb.DBCursor;
-import com.massivecraft.mcore4.lib.mongodb.MongoURI;
 import com.massivecraft.mcore4.store.idstrategy.IdStrategyAiMongo;
 import com.massivecraft.mcore4.store.idstrategy.IdStrategyOidMongo;
 import com.massivecraft.mcore4.store.idstrategy.IdStrategyUuidMongoAndGson;
 import com.massivecraft.mcore4.store.storeadapter.StoreAdapter;
 import com.massivecraft.mcore4.store.storeadapter.StoreAdapterMongo;
+import com.massivecraft.mcore4.xlib.mongodb.BasicDBObject;
+import com.massivecraft.mcore4.xlib.mongodb.DB;
+import com.massivecraft.mcore4.xlib.mongodb.DBCollection;
+import com.massivecraft.mcore4.xlib.mongodb.DBCursor;
+import com.massivecraft.mcore4.xlib.mongodb.MongoURI;
 
 public class DriverMongo extends DriverAbstract<BasicDBObject>
 {

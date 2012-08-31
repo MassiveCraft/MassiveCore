@@ -6,14 +6,14 @@ import java.util.Map.Entry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.mcore4.lib.gson.JsonDeserializationContext;
-import com.massivecraft.mcore4.lib.gson.JsonDeserializer;
-import com.massivecraft.mcore4.lib.gson.JsonElement;
-import com.massivecraft.mcore4.lib.gson.JsonObject;
-import com.massivecraft.mcore4.lib.gson.JsonParseException;
-import com.massivecraft.mcore4.lib.gson.JsonSerializationContext;
-import com.massivecraft.mcore4.lib.gson.JsonSerializer;
-import com.massivecraft.mcore4.lib.mongodb.BasicDBObject;
+import com.massivecraft.mcore4.xlib.gson.JsonDeserializationContext;
+import com.massivecraft.mcore4.xlib.gson.JsonDeserializer;
+import com.massivecraft.mcore4.xlib.gson.JsonElement;
+import com.massivecraft.mcore4.xlib.gson.JsonObject;
+import com.massivecraft.mcore4.xlib.gson.JsonParseException;
+import com.massivecraft.mcore4.xlib.gson.JsonSerializationContext;
+import com.massivecraft.mcore4.xlib.gson.JsonSerializer;
+import com.massivecraft.mcore4.xlib.mongodb.BasicDBObject;
 
 public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack>
 {	

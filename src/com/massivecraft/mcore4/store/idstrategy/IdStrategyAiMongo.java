@@ -1,10 +1,10 @@
 package com.massivecraft.mcore4.store.idstrategy;
 
-import com.massivecraft.mcore4.lib.mongodb.BasicDBObject;
-import com.massivecraft.mcore4.lib.mongodb.DBCollection;
-import com.massivecraft.mcore4.lib.mongodb.DBObject;
 import com.massivecraft.mcore4.store.CollInterface;
 import com.massivecraft.mcore4.store.DbMongo;
+import com.massivecraft.mcore4.xlib.mongodb.BasicDBObject;
+import com.massivecraft.mcore4.xlib.mongodb.DBCollection;
+import com.massivecraft.mcore4.xlib.mongodb.DBObject;
 
 public class IdStrategyAiMongo extends IdStrategyAbstract<String, String>
 {

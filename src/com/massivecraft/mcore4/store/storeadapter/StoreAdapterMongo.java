@@ -1,8 +1,8 @@
 package com.massivecraft.mcore4.store.storeadapter;
 
-import com.massivecraft.mcore4.lib.gson.JsonElement;
-import com.massivecraft.mcore4.lib.mongodb.DBObject;
 import com.massivecraft.mcore4.store.Coll;
+import com.massivecraft.mcore4.xlib.gson.JsonElement;
+import com.massivecraft.mcore4.xlib.mongodb.DBObject;
 
 public class StoreAdapterMongo extends StoreAdapterAbstract
 {	

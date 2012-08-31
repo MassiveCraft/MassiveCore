@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 
 import com.massivecraft.mcore4.Predictate;
-import com.massivecraft.mcore4.lib.gson.Gson;
 import com.massivecraft.mcore4.persist.PlayerEntity;
+import com.massivecraft.mcore4.xlib.gson.Gson;
 
 public abstract class GsonPlayerEntityManager<T extends PlayerEntity<T>> extends GsonClassManager<T>
 {

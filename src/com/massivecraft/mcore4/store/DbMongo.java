@@ -1,7 +1,7 @@
 package com.massivecraft.mcore4.store;
 
-import com.massivecraft.mcore4.lib.mongodb.BasicDBObject;
-import com.massivecraft.mcore4.lib.mongodb.DB;
+import com.massivecraft.mcore4.xlib.mongodb.BasicDBObject;
+import com.massivecraft.mcore4.xlib.mongodb.DB;
 
 public class DbMongo extends DbAbstract<BasicDBObject>
 {

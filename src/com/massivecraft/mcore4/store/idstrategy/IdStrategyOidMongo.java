@@ -1,7 +1,7 @@
 package com.massivecraft.mcore4.store.idstrategy;
 
-import com.massivecraft.mcore4.lib.bson.types.ObjectId;
 import com.massivecraft.mcore4.store.CollInterface;
+import com.massivecraft.mcore4.xlib.bson.types.ObjectId;
 
 public class IdStrategyOidMongo extends IdStrategyAbstract<ObjectId, ObjectId>
 {

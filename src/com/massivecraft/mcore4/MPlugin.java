@@ -8,12 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.mcore4.cmd.Cmd;
-import com.massivecraft.mcore4.lib.gson.Gson;
-import com.massivecraft.mcore4.lib.gson.GsonBuilder;
 import com.massivecraft.mcore4.persist.One;
 import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.util.LibLoader;
 import com.massivecraft.mcore4.util.Txt;
+import com.massivecraft.mcore4.xlib.gson.Gson;
+import com.massivecraft.mcore4.xlib.gson.GsonBuilder;
 
 public abstract class MPlugin extends JavaPlugin implements Listener
 {

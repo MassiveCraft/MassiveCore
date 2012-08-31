@@ -2,14 +2,14 @@ package com.massivecraft.mcore4.adapter;
 
 import java.lang.reflect.Type;
 
-import com.massivecraft.mcore4.lib.gson.JsonDeserializationContext;
-import com.massivecraft.mcore4.lib.gson.JsonDeserializer;
-import com.massivecraft.mcore4.lib.gson.JsonElement;
-import com.massivecraft.mcore4.lib.gson.JsonParseException;
-import com.massivecraft.mcore4.lib.gson.JsonPrimitive;
-import com.massivecraft.mcore4.lib.gson.JsonSerializationContext;
-import com.massivecraft.mcore4.lib.gson.JsonSerializer;
-import com.massivecraft.mcore4.lib.mongodb.MongoURI;
+import com.massivecraft.mcore4.xlib.gson.JsonDeserializationContext;
+import com.massivecraft.mcore4.xlib.gson.JsonDeserializer;
+import com.massivecraft.mcore4.xlib.gson.JsonElement;
+import com.massivecraft.mcore4.xlib.gson.JsonParseException;
+import com.massivecraft.mcore4.xlib.gson.JsonPrimitive;
+import com.massivecraft.mcore4.xlib.gson.JsonSerializationContext;
+import com.massivecraft.mcore4.xlib.gson.JsonSerializer;
+import com.massivecraft.mcore4.xlib.mongodb.MongoURI;
 
 public class MongoURIAdapter implements JsonDeserializer<MongoURI>, JsonSerializer<MongoURI>
 {
