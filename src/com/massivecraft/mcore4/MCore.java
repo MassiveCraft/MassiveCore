@@ -3,6 +3,7 @@ package com.massivecraft.mcore4;
 import java.lang.reflect.Modifier;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,6 +11,9 @@ import com.massivecraft.mcore4.adapter.InventoryAdapter;
 import com.massivecraft.mcore4.adapter.ItemStackAdapter;
 import com.massivecraft.mcore4.adapter.MongoURIAdapter;
 import com.massivecraft.mcore4.persist.Persist;
+import com.massivecraft.mcore4.store.Coll;
+import com.massivecraft.mcore4.store.Db;
+import com.massivecraft.mcore4.store.MStore;
 import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.xlib.gson.Gson;
 import com.massivecraft.mcore4.xlib.gson.GsonBuilder;
@@ -35,25 +39,49 @@ public class MCore extends MPlugin
 		.registerTypeAdapter(Inventory.class, new InventoryAdapter());
 	}
 	
+	public static String getServerId() { return Conf.serverid; }
+	private static Db<?> db;
+	public static Db<?> getDb() { return db; }
+	
 	// -------------------------------------------- //
 	// NON STATIC :)
 	// -------------------------------------------- //
-	
-	InternalListener listener;
 
+	private Runnable collTickTask = new Runnable()
+	{
+		public void run()
+		{
+			for (Coll<?, ?> coll : Coll.instances)
+			{
+				coll.onTick();
+			}
+		}
+	};
+	
 	@Override
 	public void onEnable()
 	{
+		// This is safe since all plugins using Persist should bukkit-depend this plugin.
+		// Note this one must be before preEnable. dooh.
+		Persist.instances.clear();
+		Coll.instances.clear();
+		
+		if ( ! preEnable()) return;
+		
+		Conf.load();
+		
+		// Setup the default database
+		db = MStore.getDb(Conf.dburi);
+		
 		// Setup PlayerUtil and it's events
 		new PlayerUtil(this);
 		
-		// This is safe since all plugins using Persist should bukkit-depend this plugin.
-		Persist.instances.clear();
-		
 		// Register events
-		this.listener = new InternalListener(this);
+		new InternalListener(this);
 		
-		if ( ! preEnable()) return;
+		// Schedule the collection ticker.
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
+		
 		this.postEnable();
 	}
 	

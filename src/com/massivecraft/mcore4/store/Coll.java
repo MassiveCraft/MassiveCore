@@ -4,11 +4,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.Predictate;
 import com.massivecraft.mcore4.store.idstrategy.IdStrategy;
@@ -16,6 +19,12 @@ import com.massivecraft.mcore4.store.storeadapter.StoreAdapter;
 
 public class Coll<E, L> implements CollInterface<E, L>
 {
+	// -------------------------------------------- //
+	// GLOBAL REGISTRY
+	// -------------------------------------------- //
+	
+	public static List<Coll<?, ?>> instances = new CopyOnWriteArrayList<Coll<?, ?>>(); 
+	
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
@@ -498,7 +507,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	// CONSTRUCTORS
 	// -------------------------------------------- //
 	
-	public Coll(MPlugin mplugin, Db<?> db, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
 	{
 		this.name = name;
 		this.entityClass = entityClass;
@@ -526,5 +535,13 @@ public class Coll<E, L> implements CollInterface<E, L>
 		};
 		
 		this.examineThread = new ExamineThread<E, L>(this);
+		this.examineThread.start();
+		this.syncAll();
+		instances.add(this);
+	}
+	
+	public Coll(MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	{
+		this(MCore.getDb(), mplugin, idStrategyName, name, entityClass, idClass, creative);
 	}
 }

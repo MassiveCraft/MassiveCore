@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.massivecraft.mcore4.MCore;
+
 
 public class MStore
 {
@@ -17,6 +19,7 @@ public class MStore
 	}
 	public static Driver<?> getDriver(String id)
 	{
+		
 		return drivers.get(id);
 	}
 	
@@ -36,6 +39,7 @@ public class MStore
 	public static Db<?> getDb(URI uri)
 	{
 		String scheme = uri.getScheme();
+		if (scheme.equalsIgnoreCase("default")) return MCore.getDb();
 		Driver<?> driver = getDriver(scheme);
 		if (driver == null) return null;
 		return driver.db(uri.toString());

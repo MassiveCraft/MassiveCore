@@ -1,5 +1,6 @@
 package com.massivecraft.mcore4;
 
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.massivecraft.mcore4.cmd.Cmd;
 import com.massivecraft.mcore4.persist.One;
 import com.massivecraft.mcore4.persist.Persist;
+import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.util.LibLoader;
 import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.mcore4.xlib.gson.Gson;
@@ -60,8 +62,20 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	
 	public void onDisable()
 	{
+		// Collection shutdowns for old system.
 		this.persist.saveAll();
 		Persist.instances.remove(this.persist);
+		
+		// Collection shutdowns for new system.
+		Iterator<Coll<?, ?>> iter = Coll.instances.iterator();
+		while (iter.hasNext())
+		{
+			Coll<?, ?> coll = iter.next();
+			if (coll.mplugin() != this) continue;
+			coll.examineThread().interrupt();
+			coll.syncAll(); // TODO: Save outwards only? We may want to avoid loads at this stage...
+			iter.remove();
+		}
 		
 		log("Disabled");
 	}
