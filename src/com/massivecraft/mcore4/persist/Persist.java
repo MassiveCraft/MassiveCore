@@ -5,15 +5,19 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.Timer;
 import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.massivecraft.mcore4.Predictate;
 
 public class Persist
 {
+	public static List<Persist> instances = new CopyOnWriteArrayList<Persist>(); 
+	
 	private Map<Class<?>, IClassManager<?>> classManagers = new HashMap<Class<?>, IClassManager<?>>();
 	public <T> void setManager(Class<T> clazz, IClassManager<T> manager)
 	{
@@ -55,6 +59,15 @@ public class Persist
 	public <T extends Object> IClassManager<T> getManager(T entity)
 	{	
 		return (IClassManager<T>) this.getManager(entity.getClass());
+	}
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public Persist()
+	{
+		instances.add(this);
 	}
 	
 	// -------------------------------------------- //

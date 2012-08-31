@@ -1,8 +1,6 @@
 package com.massivecraft.mcore4;
 
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,20 +22,6 @@ import com.massivecraft.mcore4.util.Txt;
 public class MCore extends JavaPlugin
 {
 	InternalListener listener;
-	
-	// -------------------------------------------- //
-	// PERSIST
-	// -------------------------------------------- //
-
-	private static Map<Object, Persist> persistInstances = new HashMap<Object, Persist>();
-	public static Map<Object, Persist> getPersistInstances() { return persistInstances; }
-	public static Persist getPersist(Object owner) { return persistInstances.get(owner); }
-	public static void removePersist(Object owner) { persistInstances.remove(owner); }
-	public static void createPersist(Object owner)
-	{
-		if (persistInstances.containsKey(owner)) return;
-		persistInstances.put(owner, new Persist());
-	}
 	
 	// -------------------------------------------- //
 	// DERP
@@ -62,7 +46,7 @@ public class MCore extends JavaPlugin
 		PlayerUtil.populateAllVisitorNames();
 		
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
-		getPersistInstances().clear();
+		Persist.instances.clear();
 		
 		// Register events
 		this.listener = new InternalListener(this);

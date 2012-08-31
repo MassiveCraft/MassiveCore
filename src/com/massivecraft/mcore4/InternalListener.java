@@ -29,9 +29,9 @@ public class InternalListener implements Listener
 		
 		PlayerUtil.getAllVisitorNames().add(id);
 		
-		for (Persist realm : MCore.getPersistInstances().values())
+		for (Persist instance : Persist.instances)
 		{
-			for (IClassManager<?> manager : realm.getClassManagers().values())
+			for (IClassManager<?> manager : instance.getClassManagers().values())
 			{
 				if (manager.idCanFix(Player.class) == false) continue;
 				if (manager.containsId(id)) continue;
