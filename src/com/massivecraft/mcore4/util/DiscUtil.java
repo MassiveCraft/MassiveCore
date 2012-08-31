@@ -19,8 +19,6 @@ public class DiscUtil
 	
 	public static byte[] readBytes(File file) throws IOException
 	{
-		File parent = file.getParentFile();
-		if (parent != null && !parent.exists()) parent.mkdirs();
 		int length = (int) file.length();
 		byte[] output = new byte[length];
 		InputStream in = new FileInputStream(file);
@@ -36,6 +34,8 @@ public class DiscUtil
 	
 	public static void writeBytes(File file, byte[] bytes) throws IOException
 	{
+		File parent = file.getParentFile();
+		if (parent != null && !parent.exists()) parent.mkdirs();
 		FileOutputStream out = new FileOutputStream(file);
 		out.write(bytes);
 		out.close();

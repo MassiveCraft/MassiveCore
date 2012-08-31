@@ -52,6 +52,9 @@ public class MCore extends MPlugin
 		
 		// Register events
 		this.listener = new InternalListener(this);
+		
+		if ( ! preEnable()) return;
+		this.postEnable();
 	}
 	
 }

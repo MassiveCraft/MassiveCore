@@ -46,6 +46,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 	protected boolean didLoadAll = false;
 	protected void loadIds()
 	{
+		if ( ! this.getFolder().exists()) return;
 		for(File file : this.getFolder().listFiles(JsonFileFilter.getInstance()))
 		{
 			this.ids.add(this.idFromFile(file));
