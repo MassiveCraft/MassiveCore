@@ -213,13 +213,16 @@ public class Txt
 	    StringBuilder ret = new StringBuilder();
 	    for (int i=0; i<list.length; i++)
 	    {
+	    	Object item = list[i];
+	    	String str = (item == null ? "NULL" : item.toString());
+	    	
 	        if (i!=0)
 	        {
 	        	ret.append(glue);
 	        }
 	        if (format != null)
 	        {
-	        	ret.append(String.format(format, list[i].toString()));
+	        	ret.append(String.format(format, str));
 	        }
 	        else
 	        {

@@ -119,6 +119,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		if (mtime == 0) return null;
 		String content = DiscUtil.readCatch(file);
 		if (content == null) return null;
+		if (content.length() == 0) return null;
 		JsonElement raw = new JsonParser().parse(content);
 		return new SimpleEntry<JsonElement, Long>(raw, mtime);
 	}
