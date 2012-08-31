@@ -75,7 +75,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	
 	public GsonBuilder getGsonBuilder()
 	{
-		return MCore.getGsonBuilder();
+		return MCore.getMCoreGsonBuilder();
 	}
 	
 	// -------------------------------------------- //

@@ -10,7 +10,6 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore4.Lang;
-import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.cmd.arg.IArgHandler;
 import com.massivecraft.mcore4.cmd.req.IReq;
@@ -461,7 +460,7 @@ public abstract class MCommand
 		
 		if (handler == null)
 		{
-			MCore.log(Level.SEVERE, "There is no ArgHandler for " + clazz.getName());
+			p().log(Level.SEVERE, "There is no ArgHandler for " + clazz.getName());
 		}
 		
 		T ret = handler.parse(this.arg(idx), style, this.sender, p());

@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerPreLoginEvent;
 
 import com.massivecraft.mcore4.persist.IClassManager;
 import com.massivecraft.mcore4.persist.Persist;
-import com.massivecraft.mcore4.util.PlayerUtil;
 
 public class InternalListener implements Listener
 {
@@ -26,8 +25,6 @@ public class InternalListener implements Listener
 	public void onPlayerPreLogin(PlayerPreLoginEvent event)
 	{
 		String id = event.getName();
-		
-		PlayerUtil.getAllVisitorNames().add(id);
 		
 		for (Persist instance : Persist.instances)
 		{

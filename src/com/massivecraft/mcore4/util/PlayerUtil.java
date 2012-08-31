@@ -30,12 +30,7 @@ public class PlayerUtil implements Listener
 	// -------------------------------------------- //
 	
 	/**
-	 * This is the latest created instance of this class.
-	 */
-	private static PlayerUtil i = null;
-	
-	/**
-	 * We will use this folder later. 
+	 * We will use this folder later.
 	 */
 	public static File playerfolder = getPlayerFolder();
 	
@@ -57,8 +52,6 @@ public class PlayerUtil implements Listener
 	
 	public PlayerUtil(Plugin plugin)
 	{
-		if (i != null) return;
-		i = this;
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 		populateCaseInsensitiveNameToCaseCorrectName();
 	}
