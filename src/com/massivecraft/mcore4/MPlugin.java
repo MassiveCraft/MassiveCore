@@ -37,9 +37,6 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		this.logPrefix = "["+this.getDescription().getFullName()+"] ";
 		log("=== ENABLE START ===");
 		
-		// Ensure the base folder exists
-		this.getDataFolder().mkdirs();
-		
 		// Create Gson
 		this.gson = this.getGsonBuilder().create();
 		

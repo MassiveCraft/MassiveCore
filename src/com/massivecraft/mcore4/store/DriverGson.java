@@ -127,7 +127,6 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	public <L> Long save(Coll<?, L> coll, L id, Object rawData)
 	{
 		File file = fileFromId(coll, id);
-		getCollDir(coll).mkdirs();
 		String content = coll.mplugin().gson.toJson((JsonElement)rawData);
 		if (DiscUtil.writeCatch(file, content) == false) return null;
 		return file.lastModified();

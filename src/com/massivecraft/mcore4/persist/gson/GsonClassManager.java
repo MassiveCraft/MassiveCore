@@ -35,7 +35,7 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 
 	protected File folder;
 	public File getFolder() { return folder; }
-	public void setFolder(File val) { this.folder = val; this.folder.mkdirs(); }
+	public void setFolder(File val) { this.folder = val; }
 
 	protected boolean creative;
 	@Override
@@ -80,7 +80,6 @@ public abstract class GsonClassManager<T> implements IClassManager<T>
 		this.id2entity = id2entity;
 		this.entity2id = entity2id;
 		
-		this.getFolder().mkdirs();
 		this.loadIds();
 		if ( ! lazy)
 		{

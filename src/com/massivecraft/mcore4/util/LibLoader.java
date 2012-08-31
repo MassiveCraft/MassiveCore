@@ -10,7 +10,6 @@ public class LibLoader
 	public LibLoader(MPlugin p)
 	{
 		this.p = p;
-		new File("./lib").mkdirs();
 	}
 	
 	public boolean require(String filename, String url)
@@ -29,6 +28,9 @@ public class LibLoader
 		File file = getFile(filename);
 		if ( ! file.exists())
 		{
+			File parent = file.getParentFile();
+			if (parent != null && !parent.exists()) parent.mkdirs();
+			
 			p.log("Downloading library "+filename);
 			if ( ! DiscUtil.downloadUrl(url, file))
 			{
