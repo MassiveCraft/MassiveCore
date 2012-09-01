@@ -3,6 +3,7 @@ package com.massivecraft.mcore4.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -23,6 +24,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.massivecraft.mcore4.MCore;
+import com.massivecraft.mcore4.util.extractor.Extractor;
+import com.massivecraft.mcore4.util.extractor.ExtractorWorldName;
 
 public class MUtil
 {
@@ -170,5 +173,59 @@ public class MUtil
 		double prob = val % 1;
 		if (MCore.random.nextDouble() < prob) ret += 1;
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// EXTRACTION
+	// -------------------------------------------- //
+	
+	protected static Map<Class<?>, Map<String, Set<Extractor>>> classesPropertiesExtractors = new HashMap<Class<?>, Map<String, Set<Extractor>>>();
+	protected static Map<String, Set<Extractor>> getPropertiesExtractors(Class<?> propertyClass)
+	{
+		Map<String, Set<Extractor>> ret = classesPropertiesExtractors.get(propertyClass);
+		if (ret == null)
+		{
+			ret = new HashMap<String, Set<Extractor>>();
+			classesPropertiesExtractors.put(propertyClass, ret);
+		}
+		return ret;
+	}
+	
+	protected static Set<Extractor> getExtractors(Class<?> propertyClass, String propertyName)
+	{
+		Map<String, Set<Extractor>> propertiesExtractors = getPropertiesExtractors(propertyClass);
+		Set<Extractor> ret = propertiesExtractors.get(propertyName);
+		if (ret == null)
+		{
+			ret = new HashSet<Extractor>();
+			propertiesExtractors.put(propertyName, ret);
+		}
+		return ret;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T extract(Class<T> propertyClass, String propertyName, Object o)
+	{
+		Object ret = null;
+		for (Extractor extractor : getExtractors(propertyClass, propertyName))
+		{
+			ret = extractor.extract(o);
+			if (ret != null) break;
+		}
+		return (T) ret;
+	}
+	
+	public static <T> void registerExtractor(Class<T> clazz, String propertyName, Extractor extractor)
+	{
+		getExtractors(clazz, propertyName).add(extractor);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC CONSTRUCT
+	// -------------------------------------------- //
+	
+	static
+	{
+		registerExtractor(String.class, "worldName", new ExtractorWorldName());
 	}
 }

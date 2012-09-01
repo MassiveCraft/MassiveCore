@@ -14,6 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.Predictate;
+import com.massivecraft.mcore4.store.accessor.Accessor;
 import com.massivecraft.mcore4.store.idstrategy.IdStrategy;
 import com.massivecraft.mcore4.store.storeadapter.StoreAdapter;
 
@@ -121,8 +122,13 @@ public class Coll<E, L> implements CollInterface<E, L>
 	@Override public boolean isDefault(E entity) { return false; }
 	
 	// -------------------------------------------- //
-	// CREATE
+	// COPY AND CREATE
 	// -------------------------------------------- //
+	
+	public void copy(Object ofrom, Object oto)
+	{
+		Accessor.get(this.entityClass()).copy(ofrom, oto);
+	}
 	
 	// This simply creates and returns a new instance
 	// It does not detach/attach or anything. Just creates a new instance.
@@ -176,6 +182,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 		return this.attach(entity, oid, true);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected synchronized L attach(E entity, Object oid, boolean noteChange)
 	{
 		// Check entity
@@ -200,6 +207,12 @@ public class Coll<E, L> implements CollInterface<E, L>
 		this.entities.add(entity);
 		this.id2entity.put(id, entity);
 		this.entity2id.put(entity, id);
+		
+		// Set this as the coll if possible.
+		if (entity instanceof Entity)
+		{
+			((Entity)entity).setColl(this);
+		}
 		
 		// Make note of the change
 		if (noteChange)

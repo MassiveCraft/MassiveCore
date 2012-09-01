@@ -47,7 +47,7 @@ public class MCore extends MPlugin
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	protected static MCore p;
+	public static MCore p;
 	public MCore()
 	{
 		p = this;

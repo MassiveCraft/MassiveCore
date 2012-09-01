@@ -1,7 +1,6 @@
 package com.massivecraft.mcore4.store.storeadapter;
 
 import com.massivecraft.mcore4.store.Coll;
-import com.massivecraft.mcore4.store.accessor.Accessor;
 import com.massivecraft.mcore4.xlib.gson.JsonElement;
 
 public class StoreAdapterGson extends StoreAdapterAbstract
@@ -21,7 +20,7 @@ public class StoreAdapterGson extends StoreAdapterAbstract
 	public void write(Coll<?, ?> coll, Object raw, Object entity)
 	{
 		Object temp = coll.mplugin().gson.fromJson((JsonElement)raw, coll.entityClass());
-		Accessor.get(coll.entityClass()).copy(temp, entity);
+		coll.copy(temp, entity);
 	}
 	
 	// -------------------------------------------- //

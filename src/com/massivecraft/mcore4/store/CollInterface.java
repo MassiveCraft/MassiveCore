@@ -60,8 +60,10 @@ public interface CollInterface<E, L>
 	public boolean isDefault(E entity);
 	
 	// -------------------------------------------- //
-	// CREATE
+	// COPY AND CREATE
 	// -------------------------------------------- //
+	
+	public void copy(Object fromo, Object too);
 	
 	// This simply creates and returns a new instance
 	// It does not detach/attach or anything. Just creates a new instance.

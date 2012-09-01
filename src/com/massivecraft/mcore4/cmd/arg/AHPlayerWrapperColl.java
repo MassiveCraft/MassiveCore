@@ -9,12 +9,12 @@ import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.util.Txt;
 
-public class AHPlayerWrapperNew<E> extends AHBase<E>
+public class AHPlayerWrapperColl<E> extends AHBase<E>
 {
 	final Coll<E, ?> coll;
 	public Coll<E, ?> coll() { return this.coll; };
 	
-	public AHPlayerWrapperNew(Coll<E, ?> coll)
+	public AHPlayerWrapperColl(Coll<E, ?> coll)
 	{
 		this.coll = coll;
 	}

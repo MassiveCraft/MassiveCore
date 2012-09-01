@@ -226,7 +226,7 @@ public class Txt
 	        }
 	        else
 	        {
-	        	ret.append(list[i].toString());
+	        	ret.append(str);
 	        }
 	    }
 	    return ret.toString();
