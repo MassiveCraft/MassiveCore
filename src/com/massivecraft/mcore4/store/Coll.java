@@ -30,13 +30,19 @@ public class Coll<E, L> implements CollInterface<E, L>
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
 	
-	protected String name;
+	protected final String name;
 	@Override public String name() { return this.name; }
 	
-	protected Class<E> entityClass;
+	protected final String nameBase;
+	@Override public String nameBase() { return this.nameBase; }
+	
+	protected final String nameUniverse;
+	@Override public String nameUniverse() { return this.nameUniverse; }
+	
+	protected final Class<E> entityClass;
 	@Override public Class<E> entityClass() { return this.entityClass; }
 
-	protected Class<L> idClass;
+	protected final Class<L> idClass;
 	@Override public Class<L> idClass() { return this.idClass; }
 	
 	// -------------------------------------------- //
@@ -525,7 +531,19 @@ public class Coll<E, L> implements CollInterface<E, L>
 	
 	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
 	{
+		// Setup the name and the parsed parts
 		this.name = name;
+		String[] nameParts = this.name.split("\\@");
+		this.nameBase = nameParts[0];
+		if (nameParts.length > 1)
+		{
+			this.nameUniverse = nameParts[1];
+		}
+		else
+		{
+			this.nameUniverse = null;
+		}
+		
 		this.entityClass = entityClass;
 		this.idClass = idClass;
 		this.creative = creative;

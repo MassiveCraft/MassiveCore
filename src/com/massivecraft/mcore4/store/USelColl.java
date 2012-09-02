@@ -2,23 +2,23 @@ package com.massivecraft.mcore4.store;
 
 import com.massivecraft.mcore4.MCore;
 
-public class WCatColl extends Coll<WCat, String>
+public class USelColl extends Coll<USel, String>
 {
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
-	public static WCatColl i = new WCatColl();
+	public static USelColl i = new USelColl();
 	
-	private WCatColl()
+	private USelColl()
 	{
-		super(MCore.p, "ai", "mcore_wcat", WCat.class, String.class, true);
+		super(MCore.p, "ai", "mcore_usel", USel.class, String.class, true);
 	}
 	
 	@Override
 	public void copy(Object ofrom, Object oto)
 	{
-		WCat from = (WCat)ofrom;
-		WCat to = (WCat)oto;
+		USel from = (USel)ofrom;
+		USel to = (USel)oto;
 		to.rules = from.rules;
 	}
 	
@@ -28,14 +28,14 @@ public class WCatColl extends Coll<WCat, String>
 		super.init();
 		
 		// Ensure the default WorldCategorizer is present.
-		WCat d = this.get(WCat._DEFAULT);
-		d.rules(WCat.DEFAULT_DEFAULT_RULES);
+		USel d = this.get(USel._DEFAULT);
+		d.rules(USel.DEFAULT_DEFAULT_RULES);
 	}
 	
 	@Override
-	public boolean isDefault(WCat entity)
+	public boolean isDefault(USel entity)
 	{
-		return entity.rules().equals(WCat.DEFAULT_RULES);
+		return entity.rules().equals(USel.DEFAULT_RULES);
 	}
 	
 }

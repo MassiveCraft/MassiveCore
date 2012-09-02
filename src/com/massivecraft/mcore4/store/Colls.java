@@ -7,20 +7,39 @@ import com.massivecraft.mcore4.util.MUtil;
 
 public abstract class Colls<C extends Coll<E, L>, E, L>
 {
-	public abstract String name();
-	public abstract C createColl(String collName);
+	protected Map<String, C> name2coll = new HashMap<String, C>();
 	
-	public String collNameFromCategory(String category)
+	public abstract C createColl(String name);
+	
+	public abstract String getContext();
+	
+	public String universeFromWorldName(String worldName)
 	{
-		return this.name() + "_" + category;
+		USel selector = USelColl.i.get(this.getContext());
+		return selector.select(worldName);
 	}
 	
-	protected Map<String, C> name2coll = new HashMap<String, C>();
 	public C get(Object worldNameExtractable)
 	{
 		String worldName = MUtil.extract(String.class, "worldName", worldNameExtractable);
-		String category = WCatColl.i.get(this.name()).categorize(worldName);
-		String collName = this.collNameFromCategory(category);
+		return this.getForWorld(worldName);
+	}
+	
+	public E get2(Object worldNameExtractable)
+	{
+		C coll = this.get(worldNameExtractable);
+		if (coll == null) return null;
+		return coll.get(worldNameExtractable);
+	}
+	
+	public C getForWorld(String worldName)
+	{
+		return this.getForUniverse(this.universeFromWorldName(worldName));
+	}
+	
+	public C getForUniverse(String universe)
+	{
+		String collName = this.getContext() + "@" + universe;
 		
 		C ret = this.name2coll.get(collName);
 		if (ret == null)
@@ -30,12 +49,5 @@ public abstract class Colls<C extends Coll<E, L>, E, L>
 		}
 		
 		return ret;
-	}
-	
-	public E get2(Object worldNameExtractable)
-	{
-		C coll = this.get(worldNameExtractable);
-		if (coll == null) return null;
-		return coll.get(worldNameExtractable);
 	}
 }

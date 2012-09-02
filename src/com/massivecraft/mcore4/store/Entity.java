@@ -23,6 +23,14 @@ public abstract class Entity<E extends Entity<E, L>, L>
 	
 	public abstract E getDefaultInstance();
 	
+	public String getUniverse()
+	{
+		Coll<E, L> coll = this.getColl();
+		if (coll == null) return null;
+		
+		return coll.nameUniverse();
+	}
+	
 	public L attach(Coll<E, L> coll)
 	{
 		return coll.attach(getThis());

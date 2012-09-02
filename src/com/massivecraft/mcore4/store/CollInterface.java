@@ -15,6 +15,8 @@ public interface CollInterface<E, L>
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
 	public String name();
+	public String nameBase();
+	public String nameUniverse();
 	public Class<E> entityClass();
 	public Class<L> idClass();
 	

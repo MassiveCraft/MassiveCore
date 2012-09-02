@@ -8,46 +8,46 @@ import java.util.List;
 import com.massivecraft.mcore4.util.MUtil;
 
 /**
- * WCat stands for World Categorizer.
- * They provide a recursive matching system.
+ * USel stands for "Universe Selector".
+ * The task of a USel is to select a "universe" based on a world.
+ * There will be one USel per "context".
  */
-public class WCat extends Entity<WCat, String>
+public class USel extends Entity<USel, String>
 {
 	public final static transient String RETURN = "_return";
 	public final static transient String RUN = "_run";
 	public final static transient String _DEFAULT = "_default";
 	public final static transient String DEFAULT = "default";
-	public final static transient List<WCatRule> DEFAULT_RULES = MUtil.list(new WCatRule(RUN, _DEFAULT));
-	public final static transient List<WCatRule> DEFAULT_DEFAULT_RULES = MUtil.list(new WCatRule(RETURN, DEFAULT));
+	public final static transient List<USelRule> DEFAULT_RULES = MUtil.list(new USelRule(RUN, _DEFAULT));
+	public final static transient List<USelRule> DEFAULT_DEFAULT_RULES = MUtil.list(new USelRule(RETURN, DEFAULT));
 	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
 	
-	@Override public Coll<WCat, String> getColl() { return WCatColl.i; }
-	@Override protected WCat getThis() { return this; }
+	@Override protected USel getThis() { return this; }
 	
-	private final static transient WCat defaultInstance = new WCat();
-	@Override public WCat getDefaultInstance(){ return defaultInstance; }
-	@Override protected Class<WCat> getClazz() { return WCat.class; }
+	private final static transient USel defaultInstance = new USel();
+	@Override public USel getDefaultInstance(){ return defaultInstance; }
+	@Override protected Class<USel> getClazz() { return USel.class; }
 	
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	protected List<WCatRule> rules;
-	public List<WCatRule> rules() { return this.rules; };
-	public void rules(List<WCatRule> val) { this.rules = new ArrayList<WCatRule>(val); };
+	protected List<USelRule> rules;
+	public List<USelRule> rules() { return this.rules; };
+	public void rules(List<USelRule> val) { this.rules = new ArrayList<USelRule>(val); };
 	public void rules(String... namesAndParams)
 	{
-		this.rules = new ArrayList<WCatRule>();
+		this.rules = new ArrayList<USelRule>();
 		Iterator<String> iter = Arrays.asList(namesAndParams).iterator();
 		while (iter.hasNext())
 		{
 			String name = iter.next();
 			String param = iter.next();
-			this.rules.add(new WCatRule(name, param));
+			this.rules.add(new USelRule(name, param));
 		}
 	}
 	
@@ -55,7 +55,7 @@ public class WCat extends Entity<WCat, String>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public WCat()
+	public USel()
 	{
 		this.rules(DEFAULT_RULES);
 	}
@@ -64,9 +64,9 @@ public class WCat extends Entity<WCat, String>
 	// THAT SPECIAL LOGIC
 	// -------------------------------------------- //
 	
-	public String categorize(String worldName)
+	public String select(String worldName)
 	{
-		for (WCatRule rule : this.rules())
+		for (USelRule rule : this.rules())
 		{
 			String name = rule.name();
 			String param = rule.param();
@@ -76,9 +76,9 @@ public class WCat extends Entity<WCat, String>
 			}
 			else if (name.equals(RUN))
 			{
-				WCat subcat = WCatColl.i.get(param);
-				String subcatresult = subcat.categorize(worldName);
-				if (subcatresult != null) return subcatresult;
+				USel subSelector = USelColl.i.get(param);
+				String subSelectorResult = subSelector.select(worldName);
+				if (subSelectorResult != null) return subSelectorResult;
 			}
 			else if (name.equalsIgnoreCase(worldName))
 			{
