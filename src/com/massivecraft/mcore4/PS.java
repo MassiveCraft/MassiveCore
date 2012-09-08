@@ -5,6 +5,8 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.massivecraft.mcore4.store.accessor.Accessor;
 import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
@@ -16,7 +18,7 @@ import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
  * Another time you may want to store the player location but without the worldName info.
  * Another time you may want to store pitch and yaw only.
  * This class is supposed to be usable in all those cases.
- * Hopefully this class will save you from implementing special classes for all those compinations.
+ * Hopefully this class will save you from implementing special classes for all those combinations.
  */
 public class PS implements Cloneable
 {
@@ -31,7 +33,11 @@ public class PS implements Cloneable
 	public void worldName(String val) { this.worldName = val; }
 	
 	// FakeField: world
-	public World world() { return Bukkit.getWorld(this.worldName); }
+	public World world()
+	{
+		if (this.worldName == null) return null;
+		return Bukkit.getWorld(this.worldName);
+	}
 	public PS world(World val) { this.worldName = val.getName(); return this; }
 	
 	// ---------------------
@@ -149,7 +155,12 @@ public class PS implements Cloneable
 	// Field: pitch
 	@SerializedName("p")
 	protected Float pitch;
-	public PS pitch(Float val) { this.pitch = val; return this; }
+	public PS pitch(Float val) 
+	{
+		if (val == null) this.pitch = null;
+		this.pitch = (val + 360F) % 360F; 
+		return this;
+	}
 	public Float pitch() { return this.pitch; }
 	
 	// Field: yaw
@@ -160,39 +171,63 @@ public class PS implements Cloneable
 	
 	// ---------------------
 	
-	// Field: motionX
-	@SerializedName("mx")
-	protected Double motionX;
-	public PS motionX(Double val) { this.motionX = val; return this; }
-	public Double motionX() { return this.motionX; }
+	// Field: velocityX
+	@SerializedName("vx")
+	protected Double velocityX;
+	public PS velocityX(Double val) { this.velocityX = val; return this; }
+	public Double velocityX() { return this.velocityX; }
+	public Double velocityXCalc()
+	{
+		return velocityCalc(this.locationX, this.blockX, this.chunkX, this.velocityX);
+	}
 	
-	// Field: motionY
-	@SerializedName("my")
-	protected Double motionY;
-	public PS motionY(Double val) { this.motionY = val; return this; }
-	public Double motionY() { return this.motionY; }
+	// Field: velocityY
+	@SerializedName("vy")
+	protected Double velocityY;
+	public PS velocityY(Double val) { this.velocityY = val; return this; }
+	public Double velocityY() { return this.velocityY; }
+	public Double velocityYCalc()
+	{
+		return velocityCalc(this.locationY, this.blockY, 0, this.velocityY);
+	}
 	
-	// Field: motionZ
-	@SerializedName("mz")
-	protected Double motionZ;
-	public PS motionZ(Double val) { this.motionZ = val; return this; }
-	public Double motionZ() { return this.motionZ; }
+	// Field: velocityZ
+	@SerializedName("vz")
+	protected Double velocityZ;
+	public PS velocityZ(Double val) { this.velocityZ = val; return this; }
+	public Double velocityZ() { return this.velocityZ; }
+	public Double velocityZCalc()
+	{
+		return velocityCalc(this.locationZ, this.blockZ, this.chunkZ, this.velocityZ);
+	}
+	
+	protected static synchronized Double velocityCalc(Double location, Integer block, Integer chunk, Double velocity)
+	{
+		if (velocity != null) return velocity;
+		if (location != null) return location;
+		if (block != null) return (double) block;
+		if (chunk != null) return chunk * 16D;
+		return null;
+	}
 	
 	//----------------------------------------------//
 	// CONVERTERS
 	//----------------------------------------------//
 	
-	public synchronized Location asLocation()
+	public synchronized Location location()
+	{
+		return this.locationInner(this.locationX(), this.locationY(), this.locationZ());
+	}
+	public synchronized Location locationCalc()
+	{
+		return this.locationInner(this.locationXCalc(), this.locationYCalc(), this.locationZCalc());
+	}
+	protected synchronized Location locationInner(Double x, Double y, Double z)
 	{
 		World world = this.world();
 		
-		Double x = this.locationXCalc();
 		if (x == null) return null;
-		
-		Double y = this.locationYCalc();
 		if (y == null) return null;
-		
-		Double z = this.locationZCalc();
 		if (z == null) return null;
 		
 		Float pitch = this.pitch();
@@ -204,42 +239,66 @@ public class PS implements Cloneable
 		return new Location(world, x, y, z, pitch, yaw);
 	}
 	
-	public synchronized Block asBlock()
+	public synchronized Block block()
+	{
+		return this.blockInner(this.blockX(), this.blockY(), this.blockZ());
+	}
+	public synchronized Block blockCalc()
+	{
+		return this.blockInner(this.blockXCalc(), this.blockYCalc(), this.blockZCalc());
+	}
+	public synchronized Block blockInner(Integer x, Integer y, Integer z)
 	{
 		World world = this.world();
 		if (world == null) return null;
 		
-		Integer x = this.blockXCalc();
 		if (x == null) return null;
-		
-		Integer y = this.blockYCalc();
 		if (y == null) return null;
-		
-		Integer z = this.blockZCalc();
 		if (z == null) return null;
 		
 		return world.getBlockAt(x, y, z);
 	}
 	
-	public synchronized Chunk asChunk()
+	public synchronized Chunk chunk()
+	{
+		return this.chunkInner(this.chunkX(), this.chunkZ());
+	}
+	public synchronized Chunk chunkCalc()
+	{
+		return this.chunkInner(this.chunkXCalc(), this.chunkZCalc());
+	}
+	public synchronized Chunk chunkInner(Integer x, Integer z)
 	{
 		World world = this.world();
 		if (world == null) return null;
 		
-		Integer x = this.chunkXCalc();
 		if (x == null) return null;
-		
-		Integer z = this.chunkZCalc();
 		if (z == null) return null;
 		
 		return world.getChunkAt(x, z);
 	}
 	
+	public synchronized Vector velocity()
+	{
+		return this.velocityInner(this.velocityX(), this.velocityY(), this.velocityZ());
+	}
+	public synchronized Vector velocityCalc()
+	{
+		return this.velocityInner(this.velocityXCalc(), this.velocityYCalc(), this.velocityZCalc());
+	}
+	public synchronized Vector velocityInner(Double x, Double y, Double z)
+	{
+		if (x == null) return null;
+		if (y == null) return null;
+		if (z == null) return null;
+		return new Vector(x, y, z);
+	}
+	
 	//----------------------------------------------//
-	// LOADERS
+	// READERS
 	//----------------------------------------------//
 	
-	public synchronized PS loadDefault()
+	public synchronized PS readDefault()
 	{
 		this.worldName = null;
 		
@@ -257,39 +316,39 @@ public class PS implements Cloneable
 		this.pitch = null;
 		this.yaw = null;
 		
-		this.motionX = null;
-		this.motionY = null;
-		this.motionZ = null;
+		this.velocityX = null;
+		this.velocityY = null;
+		this.velocityZ = null;
 		
 		return this;
 	}
 	
-	public synchronized PS loadTransparent(PS ps)
+	public synchronized PS readTransparent(PS ps)
 	{
 		Accessor.get(PS.class).copy(ps, this, true);
 		return this;
 	}
 	
-	public synchronized PS load(PS ps)
+	public synchronized PS read(PS ps)
 	{
 		Accessor.get(PS.class).copy(ps, this);
 		return this;
 	}
-
+	
 	// ---------------------
 	
-	public synchronized PS load(Location location)
+	public synchronized PS read(Location location)
 	{
-		return this.loadDefault().loadTransparent(location);
+		return this.readDefault().readTransparent(location);
 	}
 	
-	public synchronized PS loadTransparent(Location location)
+	public synchronized PS readTransparent(Location location)
 	{
 		this.worldName = location.getWorld().getName();
 		this.locationX = location.getX();
 		this.locationY = location.getY();
 		this.locationZ = location.getZ();
-		this.pitch = location.getPitch();
+		this.pitch(location.getPitch());
 		this.yaw = location.getYaw();
 		
 		return this;
@@ -297,12 +356,42 @@ public class PS implements Cloneable
 	
 	// ---------------------
 	
-	public synchronized PS load(Block block)
+	public synchronized PS read(Vector vector)
 	{
-		return this.loadDefault().loadTransparent(block);
+		return this.readDefault().readTransparent(vector);
 	}
 	
-	public synchronized PS loadTransparent(Block block)
+	public synchronized PS readTransparent(Vector vector)
+	{
+		this.velocityX = vector.getX();
+		this.velocityY = vector.getY();
+		this.velocityZ = vector.getZ();
+		
+		return this;
+	}
+	
+	// ---------------------
+	
+	public synchronized PS read(Player player)
+	{
+		return this.readDefault().readTransparent(player);
+	}
+	
+	public synchronized PS readTransparent(Player player)
+	{
+		this.readTransparent(player.getLocation());
+		this.readTransparent(player.getVelocity());
+		return this;
+	}
+	
+	// ---------------------
+	
+	public synchronized PS read(Block block)
+	{
+		return this.readDefault().readTransparent(block);
+	}
+	
+	public synchronized PS readTransparent(Block block)
 	{
 		this.worldName = block.getWorld().getName();
 		this.blockX = block.getX();
@@ -313,17 +402,30 @@ public class PS implements Cloneable
 	
 	// ---------------------
 	
-	public synchronized PS load(Chunk chunk)
+	public synchronized PS read(Chunk chunk)
 	{
-		return this.loadDefault().loadTransparent(chunk);
+		return this.readDefault().readTransparent(chunk);
 	}
 	
-	public synchronized PS loadTransparent(Chunk chunk)
+	public synchronized PS readTransparent(Chunk chunk)
 	{
 		this.worldName = chunk.getWorld().getName();
 		this.chunkX = chunk.getX();
 		this.chunkZ = chunk.getZ();
 		return this;
+	}
+	
+	//----------------------------------------------//
+	// WRITERS
+	//----------------------------------------------//
+	
+	public synchronized void write(Player player)
+	{
+		Location location = this.locationCalc();
+		if (location != null) player.teleport(location);
+		
+		Vector velocity = this.velocity();
+		if (velocity != null) player.setVelocity(velocity);
 	}
 	
 	//----------------------------------------------//
@@ -337,7 +439,32 @@ public class PS implements Cloneable
 	
 	public PS(PS ps)
 	{
-		this.load(ps);
+		this.read(ps);
+	}
+	
+	public PS(Location location)
+	{
+		this.read(location);
+	}
+	
+	public PS(Vector vector)
+	{
+		this.read(vector);
+	}
+	
+	public PS(Player player)
+	{
+		this.read(player);
+	}
+	
+	public PS(Block block)
+	{
+		this.read(block);
+	}
+	
+	public PS(Chunk chunk)
+	{
+		this.read(chunk);
 	}
 	
 	//----------------------------------------------//
@@ -378,9 +505,9 @@ public class PS implements Cloneable
 		result = prime * result	+ ((locationX == null) ? 0 : locationX.hashCode());
 		result = prime * result	+ ((locationY == null) ? 0 : locationY.hashCode());
 		result = prime * result	+ ((locationZ == null) ? 0 : locationZ.hashCode());
-		result = prime * result + ((motionX == null) ? 0 : motionX.hashCode());
-		result = prime * result + ((motionY == null) ? 0 : motionY.hashCode());
-		result = prime * result + ((motionZ == null) ? 0 : motionZ.hashCode());
+		result = prime * result + ((velocityX == null) ? 0 : velocityX.hashCode());
+		result = prime * result + ((velocityY == null) ? 0 : velocityY.hashCode());
+		result = prime * result + ((velocityZ == null) ? 0 : velocityZ.hashCode());
 		result = prime * result + ((pitch == null) ? 0 : pitch.hashCode());
 		result = prime * result	+ ((worldName == null) ? 0 : worldName.hashCode());
 		result = prime * result + ((yaw == null) ? 0 : yaw.hashCode());
@@ -434,21 +561,21 @@ public class PS implements Cloneable
 			if (other.locationZ != null) return false;
 		}
 		else if (!locationZ.equals(other.locationZ)) return false;
-		if (motionX == null)
+		if (velocityX == null)
 		{
-			if (other.motionX != null) return false;
+			if (other.velocityX != null) return false;
 		}
-		else if (!motionX.equals(other.motionX)) return false;
-		if (motionY == null)
+		else if (!velocityX.equals(other.velocityX)) return false;
+		if (velocityY == null)
 		{
-			if (other.motionY != null) return false;
+			if (other.velocityY != null) return false;
 		}
-		else if (!motionY.equals(other.motionY)) return false;
-		if (motionZ == null)
+		else if (!velocityY.equals(other.velocityY)) return false;
+		if (velocityZ == null)
 		{
-			if (other.motionZ != null) return false;
+			if (other.velocityZ != null) return false;
 		}
-		else if (!motionZ.equals(other.motionZ)) return false;
+		else if (!velocityZ.equals(other.velocityZ)) return false;
 		if (pitch == null)
 		{
 			if (other.pitch != null) return false;

@@ -66,6 +66,7 @@ public class USel extends Entity<USel, String>
 	
 	public String select(String worldName)
 	{
+		if (worldName == null) return null;
 		for (USelRule rule : this.rules())
 		{
 			String name = rule.name();

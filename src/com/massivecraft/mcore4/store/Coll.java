@@ -33,8 +33,8 @@ public class Coll<E, L> implements CollInterface<E, L>
 	protected final String name;
 	@Override public String name() { return this.name; }
 	
-	protected final String nameBase;
-	@Override public String nameBase() { return this.nameBase; }
+	protected final String nameContext;
+	@Override public String nameContext() { return this.nameContext; }
 	
 	protected final String nameUniverse;
 	@Override public String nameUniverse() { return this.nameUniverse; }
@@ -436,7 +436,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	}
 	
 	@Override
-	public void syncId(L id)
+	public ModificationState syncId(L id)
 	{
 		ModificationState mstate = this.examineId(id);
 		
@@ -462,6 +462,8 @@ public class Coll<E, L> implements CollInterface<E, L>
 				this.clearIdentifiedChanges(id);
 			break;
 		}
+		
+		return mstate;
 	}
 	
 	@Override
@@ -534,7 +536,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 		// Setup the name and the parsed parts
 		this.name = name;
 		String[] nameParts = this.name.split("\\@");
-		this.nameBase = nameParts[0];
+		this.nameContext = nameParts[0];
 		if (nameParts.length > 1)
 		{
 			this.nameUniverse = nameParts[1];

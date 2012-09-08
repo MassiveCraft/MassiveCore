@@ -14,6 +14,7 @@ import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.Db;
 import com.massivecraft.mcore4.store.MStore;
+import com.massivecraft.mcore4.store.USelColl;
 import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.xlib.gson.Gson;
 import com.massivecraft.mcore4.xlib.gson.GsonBuilder;
@@ -68,6 +69,8 @@ public class MCore extends MPlugin
 		}
 	};
 	
+	public InternalListener internalListener;
+	
 	@Override
 	public void onEnable()
 	{
@@ -87,10 +90,13 @@ public class MCore extends MPlugin
 		new PlayerUtil(this);
 		
 		// Register events
-		new InternalListener(this);
+		this.internalListener = new InternalListener(this);
 		
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
+		
+		// Init internal collections
+		USelColl.i.init();
 		
 		this.postEnable();
 	}

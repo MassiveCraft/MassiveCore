@@ -26,6 +26,26 @@ public abstract class PlayerEntity<E extends PlayerEntity<E>> extends Entity<E, 
 		return ! isOnline();
 	}
 	
+	public String getCurrentUniverse()
+	{
+		Player player = this.getPlayer();
+		if (player == null) return null;
+		
+		String context = this.getColl().nameContext();
+		return USelColl.i.get(context).select(player.getWorld().getName());
+	}
+	
+	public boolean isInThisUniverse()
+	{
+		String universe = this.getUniverse(); 
+		if (universe == null) return false;
+		
+		String currentUniverse = this.getCurrentUniverse(); 
+		if (currentUniverse == null) return false;
+		
+		return universe.equals(currentUniverse);
+	}
+	
 	// -------------------------------------------- //
 	// CHECKER UTILS
 	// -------------------------------------------- //

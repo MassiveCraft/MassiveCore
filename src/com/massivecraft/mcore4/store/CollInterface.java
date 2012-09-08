@@ -15,7 +15,7 @@ public interface CollInterface<E, L>
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
 	public String name();
-	public String nameBase();
+	public String nameContext();
 	public String nameUniverse();
 	public Class<E> entityClass();
 	public Class<L> idClass();
@@ -121,7 +121,7 @@ public interface CollInterface<E, L>
 	public ModificationState examineId(L id);
 	public ModificationState examineId(L id, Long remoteMtime);
 	
-	public void syncId(L id);
+	public ModificationState syncId(L id);
 	public void syncSuspects();
 	public void syncAll();
 	public void findSuspects();

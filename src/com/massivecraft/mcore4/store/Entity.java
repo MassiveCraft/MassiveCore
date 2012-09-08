@@ -72,12 +72,11 @@ public abstract class Entity<E extends Entity<E, L>, L>
 		this.getColl().changedIds.add(id);
 	}
 	
-	public void sync()
+	public ModificationState sync()
 	{
 		L id = this.getId();
-		if (id == null) return;
-		
-		this.getColl().syncId(id);
+		if (id == null) return ModificationState.UNKNOWN;
+		return this.getColl().syncId(id);
 	}
 	
 	public void saveToRemote()
@@ -112,9 +111,9 @@ public abstract class Entity<E extends Entity<E, L>, L>
 		return this.getThis();
 	}
 	
-	public E load(E entity)
+	public E load(E that)
 	{
-		Accessor.get(this.getClazz()).copy(entity, this.getThis());
+		Accessor.get(this.getClazz()).copy(that, this.getThis());
 		return this.getThis();
 	}
 }

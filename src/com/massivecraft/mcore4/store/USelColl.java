@@ -28,8 +28,11 @@ public class USelColl extends Coll<USel, String>
 		super.init();
 		
 		// Ensure the default WorldCategorizer is present.
-		USel d = this.get(USel._DEFAULT);
-		d.rules(USel.DEFAULT_DEFAULT_RULES);
+		if ( ! this.ids().contains(USel._DEFAULT))
+		{
+			USel d = this.get(USel._DEFAULT);
+			d.rules(USel.DEFAULT_DEFAULT_RULES);
+		}
 	}
 	
 	@Override
