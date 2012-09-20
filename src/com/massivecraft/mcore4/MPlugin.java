@@ -44,10 +44,10 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		this.gson = this.getGsonBuilder().create();
 		
 		// Create tools
-		this.cmd = new Cmd();
-		this.persist = new Persist();
-		this.one = new One(this);
-		this.lib = new LibLoader(this);
+		this.cmd = new Cmd(); // TODO: Stop creating this asap :)
+		this.persist = new Persist(); // TODO: Stop creating this asap :)
+		this.one = new One(this); // TODO: Stop creating this asap :)
+		this.lib = new LibLoader(this); // TODO: Stop creating this asap :)
 		
 		return true;
 	}

@@ -34,20 +34,14 @@ import com.massivecraft.mcore4.usys.Multiverse;
 
 public class Cmd
 {
+	// TODO: The cmd will no longer need to be instantiated.
+	// TODO: Perhaps I should remove the cmd system soon.
+	
 	protected Map<Class<?>, IArgHandler<?>> argHandlers = new HashMap<Class<?>, IArgHandler<?>>();
 	public Map<Class<?>, IArgHandler<?>> getArgHandlers() { return this.argHandlers; }
 	@SuppressWarnings("unchecked")
 	public <T> IArgHandler<T> getArgHandler(Class<T> clazz) { return (IArgHandler<T>) this.argHandlers.get(clazz); }
 	public <T> void setArgHandler(Class<T> clazz, IArgHandler<T> handler) { this.argHandlers.put(clazz, handler); }
-	
-	/**
-	 * @deprecated As of MCore 3, replaced by by {@link MCommand#register()}
-	 */
-	@Deprecated
-	public void addCommand(MCommand mcommand)
-	{
-		mcommand.register();
-	}
 	
 	public Cmd()
 	{
