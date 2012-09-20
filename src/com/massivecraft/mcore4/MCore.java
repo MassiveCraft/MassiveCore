@@ -14,7 +14,6 @@ import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.Db;
 import com.massivecraft.mcore4.store.MStore;
-import com.massivecraft.mcore4.store.USelColl;
 import com.massivecraft.mcore4.usys.AspectColl;
 import com.massivecraft.mcore4.usys.MultiverseColl;
 import com.massivecraft.mcore4.usys.cmd.CmdUsys;
@@ -100,7 +99,6 @@ public class MCore extends MPlugin
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
 		
 		// Init internal collections
-		USelColl.i.init(); // TODO: Remove and deprecate!? possibly yes... how soon?
 		MultiverseColl.i.init();
 		AspectColl.i.init();
 		
