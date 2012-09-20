@@ -2,18 +2,18 @@ package com.massivecraft.mcore4.persist;
 
 import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.util.Txt;
-
 
 public abstract class PlayerEntity<T extends PlayerEntity<T>> extends Entity<T>
 {
 	public Player getPlayer()
 	{
-		return PlayerUtil.getPlayerExact(this.getId());
+		// There is no case sensitivity.
+		return Bukkit.getPlayerExact(this.getId());
 	}
 	
 	public boolean isOnline()

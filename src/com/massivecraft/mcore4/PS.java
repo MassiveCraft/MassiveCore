@@ -157,8 +157,14 @@ public class PS implements Cloneable
 	protected Float pitch;
 	public PS pitch(Float val) 
 	{
-		if (val == null) this.pitch = null;
-		this.pitch = (val + 360F) % 360F; 
+		if (val == null)
+		{
+			this.pitch = null;
+		}
+		else
+		{
+			this.pitch = (val + 360F) % 360F;
+		}
 		return this;
 	}
 	public Float pitch() { return this.pitch; }
@@ -421,11 +427,7 @@ public class PS implements Cloneable
 	
 	public synchronized void write(Player player)
 	{
-		Location location = this.locationCalc();
-		if (location != null) player.teleport(location);
-		
-		Vector velocity = this.velocity();
-		if (velocity != null) player.setVelocity(velocity);
+		teleporter.teleport(player, this);
 	}
 	
 	//----------------------------------------------//
@@ -486,6 +488,12 @@ public class PS implements Cloneable
 	{
 		return new PS(this);
 	}
+	
+	// -------------------------------------------- //
+	// TELEPORTER
+	// -------------------------------------------- //
+	
+	public static transient PSTeleporter teleporter = PSTeleporterDefault.get();
 	
 	//----------------------------------------------//
 	// COMPARISON

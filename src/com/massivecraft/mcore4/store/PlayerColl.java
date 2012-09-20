@@ -6,11 +6,16 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerEvent;
 
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.Predictate;
+import com.massivecraft.mcore4.cmd.arg.ARPlayerEntity;
+import com.massivecraft.mcore4.cmd.arg.ARStringMatchFullCI;
+import com.massivecraft.mcore4.cmd.arg.ARStringMatchStartCI;
+import com.massivecraft.mcore4.cmd.arg.ArgReader;
+import com.massivecraft.mcore4.util.MUtil;
+import com.massivecraft.mcore4.util.PlayerUtil;
 
 public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 {
@@ -24,14 +29,15 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 		super(MCore.getDb(), mplugin, "ai", name, entityClass, String.class, true);
 	}
 	
+	// -------------------------------------------- //
+	// EXTRAS
+	// -------------------------------------------- //
+	
 	@Override
 	public String idFix(Object oid)
 	{
 		if (oid == null) return null;
-		if (oid instanceof String) return (String) oid;
-		if (oid instanceof Player) return ((Player)oid).getName();
-		if (oid instanceof PlayerEvent) return ((PlayerEvent)oid).getPlayer().getName();
-		return null;
+		return MUtil.extract(String.class, "playerName", oid);
 	}
 	
 	public Collection<E> getAllOnline()
@@ -55,6 +61,38 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 				return entity.isOffline();
 			}
 		});
+	}
+	
+	// -------------------------------------------- //
+	// ARGUMENT READERS
+	// -------------------------------------------- //
+	
+	protected Collection<Collection<String>> forgeAltColls()
+	{
+		Collection<Collection<String>> ret = new ArrayList<Collection<String>>();
+		ret.add(this.ids());
+		if (this.creative()) ret.add(PlayerUtil.getAllVisitorNames());
+		return ret;
+	}
+	
+	public ArgReader<String> argReaderPlayerNameFull()
+	{
+		return new ARStringMatchFullCI("player", this.forgeAltColls());
+	}
+	
+	public ArgReader<String> argReaderPlayerNameStart()
+	{
+		return new ARStringMatchStartCI("player", this.forgeAltColls());
+	}
+	
+	public ArgReader<E> argReaderPlayerFull()
+	{
+		return new ARPlayerEntity<E>(this.argReaderPlayerNameFull(), this);
+	}
+	
+	public ArgReader<E> argReaderPlayerStart()
+	{
+		return new ARPlayerEntity<E>(this.argReaderPlayerNameStart(), this);
 	}
 
 }

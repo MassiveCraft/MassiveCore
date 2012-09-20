@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.mcore4.cmd.Cmd;
+import com.massivecraft.mcore4.integration.Integration;
+import com.massivecraft.mcore4.integration.IntegrationFeatures;
 import com.massivecraft.mcore4.persist.One;
 import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
@@ -94,6 +96,14 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	{
 		log("Now I suicide!");
 		Bukkit.getPluginManager().disablePlugin(this);
+	}
+	
+	public void integrate(IntegrationFeatures... features)
+	{
+		for (IntegrationFeatures f : features)
+		{
+			new Integration(this, f);
+		}
 	}
 	
 	// -------------------------------------------- //

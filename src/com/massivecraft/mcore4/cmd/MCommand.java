@@ -11,7 +11,9 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore4.Lang;
 import com.massivecraft.mcore4.MPlugin;
-import com.massivecraft.mcore4.cmd.arg.IArgHandler;
+import com.massivecraft.mcore4.cmd.arg.ArgReader;
+import com.massivecraft.mcore4.cmd.arg.ArgResult;
+import com.massivecraft.mcore4.cmd.arg.old.IArgHandler;
 import com.massivecraft.mcore4.cmd.req.IReq;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore4.util.Perm;
@@ -435,10 +437,13 @@ public abstract class MCommand
 	// Argument Readers
 	// -------------------------------------------- //
 	
-	public String arg(int idx)
+	public String argConcatFrom(int idx)
 	{
 		if ( ! this.argIsSet(idx)) return null;
-		return this.args.get(idx);
+		int from = idx;
+		int to = args.size();
+		if (to <= from) return "";
+		return Txt.implode(this.args.subList(from, to), " ");
 	}
 	
 	public boolean argIsSet(int idx)
@@ -450,6 +455,31 @@ public abstract class MCommand
 		return true;
 	}
 	
+	public String arg(int idx)
+	{
+		if ( ! this.argIsSet(idx)) return null;
+		return this.args.get(idx);
+	}
+	
+	public <T> T arg(int idx, ArgReader<T> ar)
+	{
+		return this.arg(idx, ar, null);
+	}
+	
+	public <T> T arg(int idx, ArgReader<T> argReader, T defaultNotSet)
+	{
+		String str = this.arg(idx);
+		if (str == null) return defaultNotSet;
+		ArgResult<T> result = argReader.read(str, this);
+		if (result.hasErrors()) this.msg(result.getErrors());
+		return result.getResult();
+	}
+	
+	// -------------------------------------------- //
+	// Argument Readers DEPRACATED TODO
+	// -------------------------------------------- //
+	
+	@Deprecated
 	public synchronized <T> T argAs(int idx, Class<T> clazz, String style, T defaultNotSet, T defaultNotFound)
 	{
 		if ( ! this.argIsSet(idx))
@@ -472,37 +502,35 @@ public abstract class MCommand
 		return ret;
 	}
 	
+	@Deprecated
 	public <T> T argAs(int idx, Class<T> clazz, T defaultNotSet, T defaultNotFound)
 	{
 		return this.argAs(idx, clazz, null, defaultNotSet, defaultNotFound);
 	}
 	
+	@Deprecated
 	public <T> T argAs(int idx, Class<T> clazz, String style, T defaultNotSet)
 	{
 		return this.argAs(idx, clazz, style, defaultNotSet, null);
 	}
 	
+	@Deprecated
 	public <T> T argAs(int idx, Class<T> clazz, T defaultNotSet)
 	{
 		return this.argAs(idx, clazz, null, defaultNotSet, null);
 	}
 	
+	@Deprecated
 	public <T> T argAs(int idx, Class<T> clazz, String style)
 	{
 		return this.argAs(idx, clazz, style, null, null);
 	}
 	
+	@Deprecated
 	public <T> T argAs(int idx, Class<T> clazz)
 	{
 		return this.argAs(idx, clazz, (T)null, null);
 	}
 	
-	public String argConcatFrom(int idx)
-	{
-		if ( ! this.argIsSet(idx)) return null;
-		int from = idx;
-		int to = args.size();
-		if (to <= from) return "";
-		return Txt.implode(args.subList(from, to), " ");
-	}
+	
 }

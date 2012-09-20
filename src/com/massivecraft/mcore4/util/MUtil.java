@@ -15,16 +15,23 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.massivecraft.mcore4.InternalListener;
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.util.extractor.Extractor;
+import com.massivecraft.mcore4.util.extractor.ExtractorPlayer;
+import com.massivecraft.mcore4.util.extractor.ExtractorPlayerName;
+import com.massivecraft.mcore4.util.extractor.ExtractorWorld;
 import com.massivecraft.mcore4.util.extractor.ExtractorWorldName;
 
 public class MUtil
@@ -97,6 +104,16 @@ public class MUtil
 			ret = ((Projectile)ret).getShooter();
 		}
 		return ret;
+	}
+	
+	public static String kickReason(PlayerQuitEvent event)
+	{
+		return InternalListener.kickedPlayerReasons.get(event.getPlayer().getName());
+	}
+	
+	public static boolean causedByKick(PlayerQuitEvent event)
+	{
+		return kickReason(event) != null;
 	}
 	
 	// -------------------------------------------- //
@@ -226,6 +243,9 @@ public class MUtil
 	
 	static
 	{
+		registerExtractor(World.class, "world", new ExtractorWorld());
 		registerExtractor(String.class, "worldName", new ExtractorWorldName());
+		registerExtractor(Player.class, "player", new ExtractorPlayer());
+		registerExtractor(String.class, "playerName", new ExtractorPlayerName());
 	}
 }

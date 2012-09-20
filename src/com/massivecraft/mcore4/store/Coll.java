@@ -33,11 +33,11 @@ public class Coll<E, L> implements CollInterface<E, L>
 	protected final String name;
 	@Override public String name() { return this.name; }
 	
-	protected final String nameContext;
-	@Override public String nameContext() { return this.nameContext; }
+	protected final String basename;
+	@Override public String basename() { return this.basename; }
 	
-	protected final String nameUniverse;
-	@Override public String nameUniverse() { return this.nameUniverse; }
+	protected final String universe;
+	@Override public String universe() { return this.universe; }
 	
 	protected final Class<E> entityClass;
 	@Override public Class<E> entityClass() { return this.entityClass; }
@@ -536,14 +536,14 @@ public class Coll<E, L> implements CollInterface<E, L>
 		// Setup the name and the parsed parts
 		this.name = name;
 		String[] nameParts = this.name.split("\\@");
-		this.nameContext = nameParts[0];
+		this.basename = nameParts[0];
 		if (nameParts.length > 1)
 		{
-			this.nameUniverse = nameParts[1];
+			this.universe = nameParts[1];
 		}
 		else
 		{
-			this.nameUniverse = null;
+			this.universe = null;
 		}
 		
 		this.entityClass = entityClass;

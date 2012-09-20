@@ -15,6 +15,9 @@ import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.Db;
 import com.massivecraft.mcore4.store.MStore;
 import com.massivecraft.mcore4.store.USelColl;
+import com.massivecraft.mcore4.usys.AspectColl;
+import com.massivecraft.mcore4.usys.MultiverseColl;
+import com.massivecraft.mcore4.usys.cmd.CmdUsys;
 import com.massivecraft.mcore4.util.PlayerUtil;
 import com.massivecraft.mcore4.xlib.gson.Gson;
 import com.massivecraft.mcore4.xlib.gson.GsonBuilder;
@@ -70,6 +73,7 @@ public class MCore extends MPlugin
 	};
 	
 	public InternalListener internalListener;
+	public CmdUsys cmdUsys;
 	
 	@Override
 	public void onEnable()
@@ -96,7 +100,13 @@ public class MCore extends MPlugin
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
 		
 		// Init internal collections
-		USelColl.i.init();
+		USelColl.i.init(); // TODO: Remove and deprecate!? possibly yes... how soon?
+		MultiverseColl.i.init();
+		AspectColl.i.init();
+		
+		// Register commands
+		this.cmdUsys = new CmdUsys();
+		this.cmdUsys.register(true);
 		
 		this.postEnable();
 	}
