@@ -2,6 +2,7 @@ package com.massivecraft.mcore4.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -146,6 +147,18 @@ public class MUtil
 		}
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// LE NICE RANDOM
+	// -------------------------------------------- //
+	
+	public static <T> T random(Collection<T> coll)
+	{
+		if (coll.size() == 0) return null;
+		if (coll.size() == 1) return coll.iterator().next();
+		int index = MCore.random.nextInt(coll.size());
+		return new ArrayList<T>(coll).get(index);
 	}
 	
 	// -------------------------------------------- //

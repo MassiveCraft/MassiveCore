@@ -27,7 +27,6 @@ public class ARUniverse implements ArgReader<String>
 			result.getErrors().add("<b>No universe \"<h>"+str+"<b>\" exists in multiverse <h>"+this.multiverse.getId()+"<b>.");
 			
 			Collection<String> names = new ArrayList<String>(multiverse.getUniverses());
-			names.add(Multiverse.DEFAULT);
 			result.getErrors().add("<i>Use "+Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));
 		}
 		

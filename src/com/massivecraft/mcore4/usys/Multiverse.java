@@ -2,6 +2,7 @@ package com.massivecraft.mcore4.usys;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -66,11 +67,12 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public boolean containsUniverse(String worldName)
 	{
-		return worldName.equals(Multiverse.DEFAULT) || this.uw.containsKey(worldName);
+		return this.getUniverses().contains(worldName);
 	}
 	
 	public Set<String> newUniverse(String universe)
 	{
+		if (universe.equals(Multiverse.DEFAULT)) return null;
 		Set<String> ret = this.uw.get(universe);
 		if (ret == null)
 		{
@@ -87,7 +89,10 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public Set<String> getUniverses()
 	{
-		return this.uw.keySet();
+		Set<String> ret = new LinkedHashSet<String>();
+		ret.addAll(this.uw.keySet());
+		ret.add(Multiverse.DEFAULT);
+		return ret;
 	}
 	
 	public String getUniverseForWorldName(String worldName)

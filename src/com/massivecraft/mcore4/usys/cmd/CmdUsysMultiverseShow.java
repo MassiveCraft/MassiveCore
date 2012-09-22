@@ -30,9 +30,9 @@ public class CmdUsysMultiverseShow extends UsysCommand
 		
 		for (String universe : multiverse.getUniverses())
 		{
+			if (universe.equals(Multiverse.DEFAULT)) continue;
 			msg("<aqua>"+universe+"<i>: "+Txt.implodeCommaAndDot(multiverse.getWorlds(universe), "<h>%s", "<i>, ", " <i>and ", "<i>."));
 		}
-		
 		msg("<aqua>default<i>: for all other worlds.");
 		
 		msg("");

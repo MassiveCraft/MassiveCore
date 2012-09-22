@@ -9,6 +9,7 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore4.MPlugin;
+import com.massivecraft.mcore4.util.Txt;
 
 public class Integration implements Listener
 {
@@ -49,11 +50,11 @@ public class Integration implements Listener
 				{
 					this.features.activate();
 					this.active = true;
-					this.ourPlugin.log("Activated integration with "+this.features.getTargetPluginName()+".");
+					this.ourPlugin.log(Txt.parse("<g>Activated <i>integration with <h>%s<i>.", this.features.getTargetPluginName()));
 				}
 				catch (Exception e)
 				{
-					this.ourPlugin.log("Failed to activate integration with "+this.features.getTargetPluginName()+".");
+					this.ourPlugin.log(Txt.parse("<b>Failed to activate <i>integration with <h>%s<i>.", this.features.getTargetPluginName()));
 					e.printStackTrace();
 				}
 			}
@@ -66,11 +67,11 @@ public class Integration implements Listener
 				{
 					this.active = false;
 					this.features.deactivate();
-					this.ourPlugin.log("Deactivated integration with "+this.features.getTargetPluginName()+".");
+					this.ourPlugin.log(Txt.parse("Deactivated integration with <h>%s<i>.", this.features.getTargetPluginName()));
 				}
 				catch (Exception e)
 				{
-					this.ourPlugin.log("Failed to deactivate integration with "+this.features.getTargetPluginName()+".");
+					this.ourPlugin.log(Txt.parse("<b>Failed to deactivate <i>integration with <h>%s<i>.", this.features.getTargetPluginName()));
 					e.printStackTrace();
 				}
 			}

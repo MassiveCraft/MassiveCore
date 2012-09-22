@@ -24,7 +24,7 @@ public class CmdUsysUniverseNew extends UsysCommand
 		
 		String universe = this.arg(0);
 		
-		if (multiverse.containsUniverse(universe) || universe.equals(Multiverse.DEFAULT))
+		if (multiverse.containsUniverse(universe))
 		{
 			msg("<b>The universe <h>%s<b> already exists in multiverse <h>%s<b>.", universe, multiverse.getId());
 			return;

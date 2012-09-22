@@ -31,14 +31,7 @@ public class CmdUsysMultiverseList extends UsysCommand
 		
 		for (Multiverse multiverse : MultiverseColl.i.getAll())
 		{
-			if (multiverse.getUniverses().size() > 0)
-			{
-				lines.add("<h>"+multiverse.getId()+" <i>has "+Txt.implodeCommaAndDot(multiverse.getUniverses(), "<aqua>%s", "<i>, ", " <i>and ", "<i>."));
-			}
-			else
-			{
-				lines.add("<h>"+multiverse.getId()+" <i>has no universes.");
-			}
+			lines.add("<h>"+multiverse.getId()+" <i>has "+Txt.implodeCommaAndDot(multiverse.getUniverses(), "<aqua>%s", "<i>, ", " <i>and ", "<i>."));
 		}
 				
 		// Send them

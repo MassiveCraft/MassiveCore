@@ -98,6 +98,7 @@ public class Txt
 		parseReplacements.put("<p>", "\u00A73");
 		parseReplacements.put("<parameter>", "\u00A73");
 		parseReplacements.put("&&", "&");
+		parseReplacements.put("§§", "§");
 		
 		// Color by number/char
 		for (int i = 48; i <= 122; i++)

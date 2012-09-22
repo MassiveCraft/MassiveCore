@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.massivecraft.mcore4.store.Entity;
+import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
 
 public class Aspect extends Entity<Aspect, String>
 {	
@@ -40,6 +41,7 @@ public class Aspect extends Entity<Aspect, String>
 	// STORED FIELDS
 	// -------------------------------------------- //
 	
+	@SerializedName("mid")
 	protected String multiverseId;
 	public String multiverseId() { return this.multiverseId; }
 	public void multiverseId(String val) { this.multiverseId = val; }

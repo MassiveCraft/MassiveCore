@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,7 +39,10 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	public boolean preEnable()
 	{
 		timeEnableStart = System.currentTimeMillis();
-		this.logPrefix = "["+this.getDescription().getFullName()+"] ";
+		
+		this.logPrefixColored = Txt.parse("<teal>[<aqua>%s %s<teal>] <i>", this.getDescription().getName(), this.getDescription().getVersion());
+		this.logPrefixPlain = ChatColor.stripColor(this.logPrefixColored);
+		
 		log("=== ENABLE START ===");
 		
 		// Create Gson
@@ -54,7 +59,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	
 	public void postEnable()
 	{
-		log("=== ENABLE DONE (Took "+(System.currentTimeMillis()-timeEnableStart)+"ms) ===");
+		log(Txt.parse("=== ENABLE <g>COMPLELTE <i>(Took <h>"+(System.currentTimeMillis()-timeEnableStart)+"ms<i>) ==="));
 	}
 	
 	// -------------------------------------------- //
@@ -94,7 +99,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	
 	public void suicide()
 	{
-		log("Now I suicide!");
+		log(Txt.parse("<b>Now I suicide!"));
 		Bukkit.getPluginManager().disablePlugin(this);
 	}
 	
@@ -109,13 +114,23 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	// -------------------------------------------- //
 	// LOGGING
 	// -------------------------------------------- //
-	private String logPrefix = null;
+	private String logPrefixColored = null;
+	private String logPrefixPlain = null;
 	public void log(Object... msg)
 	{
 		log(Level.INFO, msg);
 	}
 	public void log(Level level, Object... msg)
 	{
-		Logger.getLogger("Minecraft").log(level, this.logPrefix + Txt.implode(msg, " "));
+		String imploded = Txt.implode(msg, " ");
+		ConsoleCommandSender sender = Bukkit.getConsoleSender();
+		if (level == Level.INFO && sender != null)
+		{
+			Bukkit.getConsoleSender().sendMessage(this.logPrefixColored + imploded);
+		}
+		else
+		{
+			Logger.getLogger("Minecraft").log(level, this.logPrefixPlain + imploded);
+		}
 	}
 }

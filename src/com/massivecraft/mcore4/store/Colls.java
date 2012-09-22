@@ -1,6 +1,8 @@
 package com.massivecraft.mcore4.store;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.massivecraft.mcore4.usys.Aspect;
@@ -9,14 +11,10 @@ import com.massivecraft.mcore4.util.MUtil;
 public abstract class Colls<C extends Coll<E, L>, E, L>
 {
 	protected Map<String, C> name2coll = new HashMap<String, C>();
-	public Map<String, C> name2coll() { return this.name2coll; }
 	
 	public abstract C createColl(String name);
-	
 	public abstract Aspect aspect();
 	public abstract String basename();
-	
-	public abstract Db<?> getDb();
 
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -24,12 +22,17 @@ public abstract class Colls<C extends Coll<E, L>, E, L>
 	
 	public void init()
 	{
-		String start = this.collnameForUniverse("");
-		for (String collname : this.getDb().collnames())
+		this.getColls();
+	}
+	
+	public List<C> getColls()
+	{
+		List<C> ret = new ArrayList<C>();
+		for (String universe : this.aspect().multiverse().getUniverses())
 		{
-			if ( ! collname.startsWith(start)) continue;
-			this.getForCollname(collname);
+			ret.add(this.getForUniverse(universe));
 		}
+		return ret;
 	}
 	
 	// -------------------------------------------- //
