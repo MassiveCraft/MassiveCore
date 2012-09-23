@@ -1,5 +1,6 @@
 package com.massivecraft.mcore4.usys.cmd;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.Permission;
 import com.massivecraft.mcore4.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
@@ -24,7 +25,7 @@ public class CmdUsysUniverseClear extends UsysCommand
 		
 		String universe = this.arg(0);
 		
-		if (universe.equals(Multiverse.DEFAULT))
+		if (universe.equals(MCore.DEFAULT))
 		{
 			msg("<b>You can't clear the default universe.");
 			msg("<b>It contains the worlds that aren't assigned to a universe.");

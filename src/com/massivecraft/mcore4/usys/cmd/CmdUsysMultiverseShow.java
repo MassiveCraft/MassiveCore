@@ -3,6 +3,7 @@ package com.massivecraft.mcore4.usys.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.Permission;
 import com.massivecraft.mcore4.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
@@ -30,7 +31,7 @@ public class CmdUsysMultiverseShow extends UsysCommand
 		
 		for (String universe : multiverse.getUniverses())
 		{
-			if (universe.equals(Multiverse.DEFAULT)) continue;
+			if (universe.equals(MCore.DEFAULT)) continue;
 			msg("<aqua>"+universe+"<i>: "+Txt.implodeCommaAndDot(multiverse.getWorlds(universe), "<h>%s", "<i>, ", " <i>and ", "<i>."));
 		}
 		msg("<aqua>default<i>: for all other worlds.");

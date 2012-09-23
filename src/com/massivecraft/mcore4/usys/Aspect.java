@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.store.Entity;
 import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
 
@@ -48,7 +49,7 @@ public class Aspect extends Entity<Aspect, String>
 	public Multiverse multiverse()
 	{
 		Multiverse ret = MultiverseColl.i.get(this.multiverseId);
-		if (ret == null) ret = MultiverseColl.i.get(Multiverse.DEFAULT);
+		if (ret == null) ret = MultiverseColl.i.get(MCore.DEFAULT);
 		return ret;
 	}
 	public void multiverse(Multiverse val) { this.multiverseId = val.getId(); }

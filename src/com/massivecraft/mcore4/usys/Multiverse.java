@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.cmd.arg.ARUniverse;
 import com.massivecraft.mcore4.store.Entity;
 import com.massivecraft.mcore4.util.MUtil;
@@ -32,8 +33,6 @@ public class Multiverse extends Entity<Multiverse, String>
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
-	public static final transient String DEFAULT = "default";
 	
 	protected Map<String, Set<String>> uw = new HashMap<String, Set<String>>();
 	
@@ -72,7 +71,7 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public Set<String> newUniverse(String universe)
 	{
-		if (universe.equals(Multiverse.DEFAULT)) return null;
+		if (universe.equals(MCore.DEFAULT)) return null;
 		Set<String> ret = this.uw.get(universe);
 		if (ret == null)
 		{
@@ -91,7 +90,7 @@ public class Multiverse extends Entity<Multiverse, String>
 	{
 		Set<String> ret = new LinkedHashSet<String>();
 		ret.addAll(this.uw.keySet());
-		ret.add(Multiverse.DEFAULT);
+		ret.add(MCore.DEFAULT);
 		return ret;
 	}
 	
@@ -103,7 +102,7 @@ public class Multiverse extends Entity<Multiverse, String>
 			Set<String> worlds = entry.getValue();
 			if (worlds.contains(worldName)) return universe;
 		}
-		return Multiverse.DEFAULT;
+		return MCore.DEFAULT;
 	}
 	
 	public String getUniverse(Object worldNameExtractable)
@@ -128,7 +127,7 @@ public class Multiverse extends Entity<Multiverse, String>
 	{
 		if (this.getUniverseForWorldName(worldName).equals(universe)) return false;
 		this.removeWorld(worldName);
-		if (!universe.equals(Multiverse.DEFAULT))
+		if (!universe.equals(MCore.DEFAULT))
 		{
 			this.newUniverse(universe).add(worldName);
 		}

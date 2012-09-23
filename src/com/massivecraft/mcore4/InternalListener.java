@@ -21,7 +21,6 @@ import com.massivecraft.mcore4.persist.IClassManager;
 import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.PlayerColl;
-import com.massivecraft.mcore4.util.MUtil;
 
 public class InternalListener implements Listener
 {
@@ -30,6 +29,7 @@ public class InternalListener implements Listener
 	public InternalListener(MCore p)
 	{
 		this.p = p;
+		MCorePlayerLeaveEvent.player2event.clear();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this.p);
 	}
 	
@@ -94,16 +94,53 @@ public class InternalListener implements Listener
 	}
 	
 	// -------------------------------------------- //
-	// STORE SYSTEM: SYNC IN AND SYNC OUT
+	// PLAYER LEAVE EVENT
 	// -------------------------------------------- //
-	// There are some forced syncs of players in all collections so developers can rest assure the data is up to date.
-	// PlayerLoginEvent LOW. LOWEST is left for anti flood and bans.
-	// PlayerKickEvent MONITOR.
-	// PlayerQuitEvent MONITOR.
-	// Why do we sync at both PlayerKickEvent and PlayerQuitEvent you may wonder?
-	// PlayerQuitEvent do not always fire, for example due to a spoutcraft bug
-	// and it also fires AFTER the player left the server. In kick cases we can sync
-	// directly before the player leaves the server. That is great.
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void leaveEventKickCall(PlayerKickEvent event)
+	{
+		new MCorePlayerLeaveEvent(event.getPlayer(), true, "kick", event.getReason()).run();
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void leaveEventQuitCall(PlayerQuitEvent event)
+	{
+		new MCorePlayerLeaveEvent(event.getPlayer(), false, "quit", null).run();
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void leaveEventQuitClear(PlayerQuitEvent event)
+	{
+		// We do the schedule in order for the set to be correct through out the whole MONITOR priority state.
+		final String name = event.getPlayer().getName();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.p, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				MCorePlayerLeaveEvent.player2event.remove(name);
+			}
+		});
+	}
+	
+	// -------------------------------------------- //
+	// SYNC PLAYER ON LOGON AND LEAVE
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void syncOnPlayerLogin(PlayerLoginEvent event)
+	{
+		p.log("syncOnPlayerLogin", event.getPlayer().getName());
+		this.syncAllForPlayer(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void syncOnPlayerLeave(MCorePlayerLeaveEvent event)
+	{
+		p.log("syncOnPlayerLeave", event.getPlayer().getName());
+		this.syncAllForPlayer(event.getPlayer());
+	}
 	
 	public void syncAllForPlayer(Player player)
 	{
@@ -113,36 +150,6 @@ public class InternalListener implements Listener
 			if (!(coll instanceof PlayerColl)) continue;
 			PlayerColl<?> pcoll = (PlayerColl<?>)coll;
 			pcoll.syncId(playerName);
-			//ModificationState mstate = pcoll.syncId(playerName);
-			//p.log("syncAllForPlayer", coll.name(), playerName, pcoll.syncId(playerName), pcoll.syncId(playerName));
 		}
 	}
-	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void syncAllForPlayer(PlayerLoginEvent event)
-	{
-		//p.log("syncAllForPlayer PlayerLoginEvent LOW", event.getPlayer().getName());
-		this.syncAllForPlayer(event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void syncAllForPlayer(PlayerKickEvent event)
-	{
-		//p.log("syncAllForPlayer PlayerKickEvent MONITOR", event.getPlayer().getName());
-		new MCorePlayerLeaveEvent(event.getPlayer(), true, event.getReason()).run();
-		this.syncAllForPlayer(event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void syncAllForPlayer(PlayerQuitEvent event)
-	{
-		//p.log("syncAllForPlayer PlayerQuitEvent MONITOR", event.getPlayer().getName());
-		if (!MUtil.causedByKick(event))
-		{
-			new MCorePlayerLeaveEvent(event.getPlayer(), false, null).run();
-		}
-		
-		this.syncAllForPlayer(event.getPlayer());
-	}
-	
 }

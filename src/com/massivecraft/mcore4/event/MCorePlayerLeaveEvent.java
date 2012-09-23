@@ -1,9 +1,14 @@
 package com.massivecraft.mcore4.event;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.massivecraft.mcore4.MCore;
 
 /**
  * The MCorePlayerLeaveEvent is a non-cancellable event.
@@ -13,8 +18,7 @@ import org.bukkit.event.HandlerList;
  * 
  * Use this even if you want to update a player entity as
  * that player leaves. Automatic syncing will be guaranteed and the
- * event will run the moment BEFORE the player leaves the server if possible
- * due to the internal usage if the PlayerKickedEvent.
+ * event will run pre disconnect if possible due to the internal usage if the PlayerKickedEvent.
  */
 public class MCorePlayerLeaveEvent extends Event implements Runnable
 {
@@ -32,22 +36,28 @@ public class MCorePlayerLeaveEvent extends Event implements Runnable
 	protected Player player;
 	public Player getPlayer() { return this.player; }
 	
-	protected boolean kick;
-	public boolean isKick() { return this.kick; }
-	public boolean isQuit() { return !this.kick; }
+	protected boolean preDisconnect;
+	public boolean isPreDisconnect() { return this.preDisconnect; }
+	public boolean isPostDisconnect() { return !this.isPreDisconnect(); }
 	
-	protected String kickReason;
-	public String getKickReason() { return this.kickReason; }
+	protected String caller;
+	public String getCaller() { return this.caller; }
+	public boolean isQuit() { return "quit".equals(caller); }
+	public boolean isKick() { return "kick".equals(caller); }
+	
+	protected String message;
+	public String getMessage() { return this.message; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MCorePlayerLeaveEvent(Player player, boolean kick, String kickReason)
+	public MCorePlayerLeaveEvent(Player player, boolean preDisconnect, String caller, String message)
 	{
 		this.player = player;
-		this.kick = kick;
-		this.kickReason = kickReason;
+		this.preDisconnect = preDisconnect;
+		this.caller = caller;
+		this.message = message;
 	}
 	
 	// -------------------------------------------- //
@@ -57,7 +67,23 @@ public class MCorePlayerLeaveEvent extends Event implements Runnable
 	@Override
 	public void run()
 	{
-		Bukkit.getPluginManager().callEvent(this);
+		// Someone may already have issued a player leave event for this disconnect.
+		// We ignore that since we want one leave event called per disconnect only.
+		boolean doit = !player2event.containsKey(this.player.getName());
+		
+		//MCore.p.log("MCorePlayerLeaveEvent", "caller:", caller, "doit:", doit, "player:", player.getDisplayName(), "preDisconnect:", preDisconnect, "message:", message);
+		
+		if (doit)
+		{
+			MCore.p.log("MCorePlayerLeaveEvent", caller, player.getDisplayName(), preDisconnect, message);
+			player2event.put(this.player.getName(), this);
+			Bukkit.getPluginManager().callEvent(this);
+		}
 	}
+	
+	// -------------------------------------------- //
+	// STORING THE ACTIVE PLAYER EVENT
+	// -------------------------------------------- //
+	public static Map<String,MCorePlayerLeaveEvent> player2event = new HashMap<String,MCorePlayerLeaveEvent>();
 	
 }

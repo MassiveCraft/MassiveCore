@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.massivecraft.mcore4.usys.Aspect;
+import com.massivecraft.mcore4.usys.Multiverse;
 import com.massivecraft.mcore4.util.MUtil;
 
 public abstract class Colls<C extends Coll<E, L>, E, L>
 {
 	protected Map<String, C> name2coll = new HashMap<String, C>();
 	
-	public abstract C createColl(String name);
 	public abstract Aspect aspect();
 	public abstract String basename();
+	public abstract C createColl(String name);
 
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -27,8 +28,10 @@ public abstract class Colls<C extends Coll<E, L>, E, L>
 	
 	public List<C> getColls()
 	{
-		List<C> ret = new ArrayList<C>();
-		for (String universe : this.aspect().multiverse().getUniverses())
+		List<C> ret = new ArrayList<C>(); 
+		Aspect a = this.aspect();
+		Multiverse m = a.multiverse();
+		for (String universe : m.getUniverses())
 		{
 			ret.add(this.getForUniverse(universe));
 		}
@@ -75,6 +78,7 @@ public abstract class Colls<C extends Coll<E, L>, E, L>
 		if (ret == null)
 		{
 			ret = this.createColl(collname);
+			ret.init();
 			this.name2coll.put(collname, ret);
 		}
 		return ret;

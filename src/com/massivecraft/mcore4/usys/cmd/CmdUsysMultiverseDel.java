@@ -1,5 +1,6 @@
 package com.massivecraft.mcore4.usys.cmd;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.Permission;
 import com.massivecraft.mcore4.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
@@ -23,7 +24,7 @@ public class CmdUsysMultiverseDel extends UsysCommand
 		
 		String id = multiverse.getId();
 		
-		if (id.equals(Multiverse.DEFAULT))
+		if (id.equals(MCore.DEFAULT))
 		{
 			msg("<b>You can't delete the default multiverse.");
 			return;

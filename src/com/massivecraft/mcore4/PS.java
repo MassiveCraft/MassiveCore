@@ -1,14 +1,20 @@
 package com.massivecraft.mcore4;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.massivecraft.mcore4.store.accessor.Accessor;
+import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
 
 /**
@@ -421,13 +427,45 @@ public class PS implements Cloneable
 		return this;
 	}
 	
+	// ---------------------
+	// TODO: This should be removed later on when my converting phase is complete.
+	public synchronized PS read(String str)
+	{
+		return this.readDefault().readTransparent(str);
+	}
+	
+	public synchronized PS readTransparent(String str)
+	{
+		String[] parts = str.split("\\|");
+		
+		if (parts.length == 4)
+		{
+			this.worldName = parts[0];
+			this.blockX = Integer.parseInt(parts[1]);
+			this.blockY = Integer.parseInt(parts[2]);
+			this.blockZ = Integer.parseInt(parts[3]);
+		}
+		else if (parts.length == 6)
+		{
+			this.worldName = parts[0];
+			this.locationX = Double.parseDouble(parts[1]);
+			this.locationY = Double.parseDouble(parts[2]);
+			this.locationZ = Double.parseDouble(parts[3]);
+			this.pitch = Float.parseFloat(parts[4]);
+			this.yaw = Float.parseFloat(parts[5]);
+		}
+		
+		return this;
+	}
+	
+	
 	//----------------------------------------------//
 	// WRITERS
 	//----------------------------------------------//
 	
-	public synchronized void write(Player player)
+	public synchronized void write(Entity entity)
 	{
-		teleporter.teleport(player, this);
+		teleporter.teleport(entity, this);
 	}
 	
 	//----------------------------------------------//
@@ -477,7 +515,72 @@ public class PS implements Cloneable
     public synchronized String toString()
     {
     	return this.getClass().getSimpleName()+MCore.gson.toJson(this);
-    } 
+    }
+    
+    protected final transient static DecimalFormat twoDForm = new DecimalFormat("#.##");
+    public List<String> getDesc()
+    {
+    	// ret.add("<h>World <a>"+this.worldName);
+    	return this.getDesc("<k>%s <v>%s");
+    }
+	public List<String> getDesc(String format)
+	{
+		List<String> ret = new ArrayList<String>();
+		
+		if (this.worldName != null) ret.add(Txt.parse(format, "World", this.worldName));
+
+		if (this.blockX != null) ret.add(Txt.parse(format, "Block X", this.blockX));
+		if (this.blockY != null) ret.add(Txt.parse(format, "Block Y", this.blockY));
+		if (this.blockZ != null) ret.add(Txt.parse(format, "Block Z", this.blockZ));
+
+		if (this.locationX != null) ret.add(Txt.parse(format, "Location X", twoDForm.format(this.locationX)));
+		if (this.locationY != null) ret.add(Txt.parse(format, "Location Y", twoDForm.format(this.locationY)));
+		if (this.locationZ != null) ret.add(Txt.parse(format, "Location Z", twoDForm.format(this.locationZ)));
+
+		if (this.chunkX != null) ret.add(Txt.parse(format, "Chunk X", this.chunkX));
+		if (this.chunkZ != null) ret.add(Txt.parse(format, "Chunk Z", this.chunkZ));
+
+		if (this.pitch != null) ret.add(Txt.parse(format, "Pitch", twoDForm.format(this.pitch)));
+		if (this.yaw != null) ret.add(Txt.parse(format, "Yaw", twoDForm.format(this.yaw)));
+
+		if (this.velocityX != null) ret.add(Txt.parse(format, "Velocity X", twoDForm.format(this.velocityX)));
+		if (this.velocityY != null) ret.add(Txt.parse(format, "Velocity Y", twoDForm.format(this.velocityY)));
+		if (this.velocityZ != null) ret.add(Txt.parse(format, "Velocity Z", twoDForm.format(this.velocityZ)));
+		
+		return ret;
+	}
+	
+	public String getShortDesc()
+    {
+    	return this.getShortDesc("<k>%s <v>%s ");
+    }
+	public String getShortDesc(String format)
+	{
+		List<String> ret = new ArrayList<String>();
+		
+		if (this.worldName != null) ret.add(Txt.parse(format, "w", this.worldName));
+
+		if (this.blockX != null) ret.add(Txt.parse(format, "bx", this.blockX));
+		if (this.blockY != null) ret.add(Txt.parse(format, "by", this.blockY));
+		if (this.blockZ != null) ret.add(Txt.parse(format, "bz", this.blockZ));
+
+		if (this.locationX != null) ret.add(Txt.parse(format, "lx", twoDForm.format(this.locationX)));
+		if (this.locationY != null) ret.add(Txt.parse(format, "ly", twoDForm.format(this.locationY)));
+		if (this.locationZ != null) ret.add(Txt.parse(format, "lz", twoDForm.format(this.locationZ)));
+
+		if (this.chunkX != null) ret.add(Txt.parse(format, "cx", this.chunkX));
+		if (this.chunkZ != null) ret.add(Txt.parse(format, "cz", this.chunkZ));
+
+		if (this.pitch != null) ret.add(Txt.parse(format, "p", twoDForm.format(this.pitch)));
+		if (this.yaw != null) ret.add(Txt.parse(format, "y", twoDForm.format(this.yaw)));
+
+		if (this.velocityX != null) ret.add(Txt.parse(format, "vx", twoDForm.format(this.velocityX)));
+		if (this.velocityY != null) ret.add(Txt.parse(format, "vy", twoDForm.format(this.velocityY)));
+		if (this.velocityZ != null) ret.add(Txt.parse(format, "vz", twoDForm.format(this.velocityZ)));
+		
+		return Txt.implode(ret, "").trim();
+	}
+	
 	
 	//----------------------------------------------//
 	// CLONE

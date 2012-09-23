@@ -579,6 +579,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	@Override
 	public void init()
 	{
+		if (instances.contains(this)) return;
 		this.syncAll();
 		this.examineThread = new ExamineThread<E, L>(this);
 		this.examineThread.start();

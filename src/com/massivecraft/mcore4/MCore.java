@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import com.massivecraft.mcore4.adapter.InventoryAdapter;
 import com.massivecraft.mcore4.adapter.ItemStackAdapter;
 import com.massivecraft.mcore4.adapter.MongoURIAdapter;
+import com.massivecraft.mcore4.adapter.PSAdapter;
 import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.Db;
@@ -25,6 +26,13 @@ import com.massivecraft.mcore4.xlib.mongodb.MongoURI;
 public class MCore extends MPlugin
 {
 	// -------------------------------------------- //
+	// COMMON CONSTANTS
+	// -------------------------------------------- //
+	
+	public final static String INSTANCE = "instance";
+	public final static String DEFAULT = "default";
+	
+	// -------------------------------------------- //
 	// STATIC
 	// -------------------------------------------- //
 	
@@ -39,7 +47,8 @@ public class MCore extends MPlugin
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
 		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
 		.registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
-		.registerTypeAdapter(Inventory.class, new InventoryAdapter());
+		.registerTypeAdapter(Inventory.class, new InventoryAdapter())
+		.registerTypeAdapter(PS.class, new PSAdapter());
 	}
 	
 	public static String getServerId() { return Conf.serverid; }

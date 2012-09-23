@@ -21,7 +21,7 @@ public class MultiverseColl extends Coll<Multiverse, String>
 		super.init();
 		
 		// Ensure the default multiverse exits
-		this.get(Multiverse.DEFAULT, true);
+		this.get(MCore.DEFAULT, true);
 	}
 	
 }
