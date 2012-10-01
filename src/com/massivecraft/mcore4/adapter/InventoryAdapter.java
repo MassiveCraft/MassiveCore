@@ -14,7 +14,6 @@ import com.massivecraft.mcore4.xlib.gson.JsonParseException;
 import com.massivecraft.mcore4.xlib.gson.JsonPrimitive;
 import com.massivecraft.mcore4.xlib.gson.JsonSerializationContext;
 import com.massivecraft.mcore4.xlib.gson.JsonSerializer;
-import com.massivecraft.mcore4.xlib.mongodb.BasicDBObject;
 
 public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerializer<Inventory>
 {
@@ -77,48 +76,6 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			String stackIdx = String.valueOf(i);
 			JsonElement jsonItemStack = jsonInventory.get(stackIdx);
 			ItemStack itemStack = ItemStackAdapter.fromJson(jsonItemStack);
-			itemStacks[i] = itemStack;
-		}
-		
-		Inventory ret = new CraftInventoryCustom(null, size, "items");
-		ret.setContents(itemStacks);
-		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// BSON
-	// -------------------------------------------- //
-	
-	public static BasicDBObject toBson(Inventory src)
-	{
-		BasicDBObject bsonInventory = new BasicDBObject();
-		ItemStack[] itemStacks = src.getContents();
-		bsonInventory.put(SIZE, itemStacks.length);
-		
-		for (int i = 0; i < itemStacks.length; i++)
-		{
-			ItemStack itemStack = itemStacks[i];
-			BasicDBObject bsonItemStack = ItemStackAdapter.toBson(itemStack);
-			if (bsonItemStack == null) continue;
-			bsonInventory.put(String.valueOf(i), bsonItemStack);
-		}
-		
-		return bsonInventory;
-	}
-	
-	public static Inventory fromBson(BasicDBObject bsonInventory)
-	{
-		if ( ! bsonInventory.containsField(SIZE)) return null;
-		int size = bsonInventory.getInt(SIZE);
-		
-		ItemStack[] itemStacks = new ItemStack[size];
-		
-		for (int i = 0; i < size; i++)
-		{
-			// Fetch the jsonItemStack or mark it as empty and continue
-			String stackIdx = String.valueOf(i);
-			BasicDBObject bsonItemStack = (BasicDBObject) bsonInventory.get(stackIdx);
-			ItemStack itemStack = ItemStackAdapter.fromBson(bsonItemStack);
 			itemStacks[i] = itemStack;
 		}
 		

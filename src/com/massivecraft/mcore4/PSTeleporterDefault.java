@@ -9,10 +9,10 @@ public class PSTeleporterDefault implements PSTeleporter
 	@Override
 	public void teleport(Entity entity, PS ps)
 	{
-		Location location = ps.locationCalc();
+		Location location = ps.calcLocation();
 		if (location != null) entity.teleport(location);
 		
-		Vector velocity = ps.velocity();
+		Vector velocity = ps.getVelocity();
 		if (velocity != null) entity.setVelocity(velocity);
 	}
 	

@@ -11,10 +11,10 @@ public class SimpleConfig
 	// FIELDS
 	// -------------------------------------------- //
 	protected transient MPlugin mplugin;
-	protected MPlugin mplugin() { return this.mplugin; }
+	protected MPlugin getMplugin() { return this.mplugin; }
 	
 	protected transient File file;
-	protected File file() { return this.file; }
+	protected File getFile() { return this.file; }
 	
 	public SimpleConfig(MPlugin mplugin, File file)
 	{
@@ -45,9 +45,9 @@ public class SimpleConfig
 	
 	public void load()
 	{
-		if (this.file().isFile())
+		if (this.getFile().isFile())
 		{
-			String content = DiscUtil.readCatch(this.file());
+			String content = DiscUtil.readCatch(this.getFile());
 			Object toShallowLoad = null;
 			if (contentRequestsDefaults(content))
 			{
@@ -63,7 +63,7 @@ public class SimpleConfig
 			}
 			else
 			{
-				toShallowLoad = this.mplugin().gson.fromJson(content, this.getClass());
+				toShallowLoad = this.getMplugin().gson.fromJson(content, this.getClass());
 			}
 			Accessor.get(this.getClass()).copy(toShallowLoad, this);
 		}
@@ -72,9 +72,9 @@ public class SimpleConfig
 	
 	public void save()
 	{
-		String content = DiscUtil.readCatch(this.file());
+		String content = DiscUtil.readCatch(this.getFile());
 		if (contentRequestsDefaults(content)) return;
-		content = this.mplugin().gson.toJson(this);
+		content = this.getMplugin().gson.toJson(this);
 		DiscUtil.writeCatch(file, content);
 	}
 }

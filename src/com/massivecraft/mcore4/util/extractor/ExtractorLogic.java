@@ -104,7 +104,7 @@ public class ExtractorLogic
 	public static World world(Location o) { return o.getWorld(); }
 	public static World world(Entity o) { return o.getWorld(); }
 	public static World world(PlayerEvent o) { return world(o.getPlayer()); }
-	public static World world(PS o) { return o.world(); }
+	public static World world(PS o) { return o.getWorld(); }
 	
 	public static World worldFromObject(Object o)
 	{
@@ -126,7 +126,7 @@ public class ExtractorLogic
 	public static String worldNameFromObject(Object o)
 	{
 		if (o instanceof String) return (String)o;
-		if (o instanceof PS) return ((PS)o).worldName();
+		if (o instanceof PS) return ((PS)o).getWorldName();
 		World world = worldFromObject(o);
 		if (world == null) return null;
 		return world.getName();

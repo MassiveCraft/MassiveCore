@@ -4,6 +4,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -26,59 +30,63 @@ import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
  * This class is supposed to be usable in all those cases.
  * Hopefully this class will save you from implementing special classes for all those combinations.
  */
+
+@EqualsAndHashCode
 public class PS implements Cloneable
 {
+	// -------------------------------------------- //
+	// TELEPORTER
+	// -------------------------------------------- //
+	
+	public static transient PSTeleporter teleporter = PSTeleporterDefault.get();
+	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
 	// Field: worldName
 	@SerializedName("w")
-	protected String worldName;
-	public String worldName() { return this.worldName; }
-	public void worldName(String val) { this.worldName = val; }
+	@Getter @Setter protected String worldName;
 	
 	// FakeField: world
-	public World world()
+	public World getWorld()
 	{
 		if (this.worldName == null) return null;
 		return Bukkit.getWorld(this.worldName);
 	}
-	public PS world(World val) { this.worldName = val.getName(); return this; }
+	public PS setWorld(World val)
+	{
+		this.worldName = val.getName();
+		return this;
+	}
 	
 	// ---------------------
 	
 	// Field: blockX
 	@SerializedName("bx")
-	protected Integer blockX;
-	public PS blockX(Integer val) { this.blockX = val; return this; }
-	public Integer blockX() { return this.blockX; }
-	public Integer blockXCalc()
+	@Getter @Setter protected Integer blockX;
+	public Integer calcBlockX()
 	{
-		return blockCalc(this.locationX, this.blockX, this.chunkX);
+		return calcBlock(this.locationX, this.blockX, this.chunkX);
 	}
 	
 	// Field: blockY
 	@SerializedName("by")
-	protected Integer blockY;
-	public PS blockY(Integer val) { this.blockY = val; return this; }
-	public Integer blockY() { return this.blockY; }
-	public Integer blockYCalc()
+	@Getter @Setter protected Integer blockY;
+	public Integer calcBlockY()
 	{
-		return blockCalc(this.locationY, this.blockY, null);
+		return calcBlock(this.locationY, this.blockY, null);
 	}
 	
 	// Field: blockZ
 	@SerializedName("bz")
-	protected Integer blockZ;
-	public PS blockZ(Integer val) { this.blockZ = val; return this; }
-	public Integer blockZ() { return this.blockZ; }
-	public Integer blockZCalc()
+	@Getter @Setter protected Integer blockZ;
+	public Integer calcBlockZ()
 	{
-		return blockCalc(this.locationZ, this.blockZ, this.chunkZ);
+		return calcBlock(this.locationZ, this.blockZ, this.chunkZ);
 	}
 	
-	protected static synchronized Integer blockCalc(Double location, Integer block, Integer chunk)
+	protected static synchronized Integer calcBlock(Double location, Integer block, Integer chunk)
 	{
 		if (block != null) return block;
 		if (location != null) return (int) Math.floor(location);
@@ -90,35 +98,29 @@ public class PS implements Cloneable
 	
 	// Field: locationX
 	@SerializedName("lx")
-	protected Double locationX;
-	public PS locationX(Double val) { this.locationX = val; return this; }
-	public Double locationX() { return this.locationX; }
-	public Double locationXCalc()
+	@Getter @Setter protected Double locationX;
+	public Double calcLocationX()
 	{
-		return locationCalc(this.locationX, this.blockX, this.chunkX);
+		return calcLocation(this.locationX, this.blockX, this.chunkX);
 	}
 	
 	// Field: locationY
 	@SerializedName("ly")
-	protected Double locationY;
-	public PS locationY(Double val) { this.locationY = val; return this; }
-	public Double locationY() { return this.locationY; }
-	public Double locationYCalc()
+	@Getter @Setter protected Double locationY;
+	public Double calcLocationY()
 	{
-		return locationCalc(this.locationY, this.blockY, null);
+		return calcLocation(this.locationY, this.blockY, null);
 	}
 	
 	// Field: locationZ
 	@SerializedName("lz")
-	protected Double locationZ;
-	public PS locationZ(Double val) { this.locationZ = val; return this; }
-	public Double locationZ() { return this.locationZ; }
-	public Double locationZCalc()
+	@Getter @Setter protected Double locationZ;
+	public Double calclocationZ()
 	{
-		return locationCalc(this.locationZ, this.blockZ, this.chunkZ);
+		return calcLocation(this.locationZ, this.blockZ, this.chunkZ);
 	}
 	
-	protected static synchronized Double locationCalc(Double location, Integer block, Integer chunk)
+	protected static synchronized Double calcLocation(Double location, Integer block, Integer chunk)
 	{
 		if (location != null) return location;
 		if (block != null) return (double) block;
@@ -130,25 +132,21 @@ public class PS implements Cloneable
 	
 	// Field: chunkX
 	@SerializedName("cx")
-	protected Integer chunkX;
-	public PS chunkX(Integer val) { this.chunkX = val; return this; }
-	public Integer chunkX() { return this.chunkX; }
-	public Integer chunkXCalc()
+	@Getter @Setter protected Integer chunkX;
+	public Integer calcChunkX()
 	{
-		return chunkCalc(this.locationX, this.blockX, this.chunkX);
+		return calcChunk(this.locationX, this.blockX, this.chunkX);
 	}
 	
 	// Field: chunkZ
 	@SerializedName("xz")
-	protected Integer chunkZ;
-	public PS chunkZ(Integer val) { this.chunkZ = val; return this; }
-	public Integer chunkZ() { return this.chunkZ; }
-	public Integer chunkZCalc()
+	@Getter @Setter protected Integer chunkZ;
+	public Integer calcChunkZ()
 	{
-		return chunkCalc(this.locationZ, this.blockZ, this.chunkZ);
+		return calcChunk(this.locationZ, this.blockZ, this.chunkZ);
 	}
 	
-	protected static synchronized Integer chunkCalc(Double location, Integer block, Integer chunk)
+	protected static synchronized Integer calcChunk(Double location, Integer block, Integer chunk)
 	{
 		if (chunk != null) return chunk;
 		if (location != null) return location.intValue() >> 4;
@@ -160,8 +158,8 @@ public class PS implements Cloneable
 	
 	// Field: pitch
 	@SerializedName("p")
-	protected Float pitch;
-	public PS pitch(Float val) 
+	@Getter protected Float pitch;
+	public PS setPitch(Float val) 
 	{
 		if (val == null)
 		{
@@ -173,47 +171,38 @@ public class PS implements Cloneable
 		}
 		return this;
 	}
-	public Float pitch() { return this.pitch; }
 	
 	// Field: yaw
 	@SerializedName("y")
-	protected Float yaw;
-	public PS yaw(Float val) { this.yaw = val; return this; }
-	public Float yaw() { return this.yaw; }
+	@Getter @Setter protected Float yaw;
 	
 	// ---------------------
 	
 	// Field: velocityX
 	@SerializedName("vx")
-	protected Double velocityX;
-	public PS velocityX(Double val) { this.velocityX = val; return this; }
-	public Double velocityX() { return this.velocityX; }
-	public Double velocityXCalc()
+	@Getter @Setter protected Double velocityX;
+	public Double calcVelocityX()
 	{
-		return velocityCalc(this.locationX, this.blockX, this.chunkX, this.velocityX);
+		return calcVelocity(this.locationX, this.blockX, this.chunkX, this.velocityX);
 	}
 	
 	// Field: velocityY
 	@SerializedName("vy")
-	protected Double velocityY;
-	public PS velocityY(Double val) { this.velocityY = val; return this; }
-	public Double velocityY() { return this.velocityY; }
-	public Double velocityYCalc()
+	@Getter @Setter protected Double velocityY;
+	public Double calcVelocityY()
 	{
-		return velocityCalc(this.locationY, this.blockY, 0, this.velocityY);
+		return calcVelocity(this.locationY, this.blockY, 0, this.velocityY);
 	}
 	
 	// Field: velocityZ
 	@SerializedName("vz")
-	protected Double velocityZ;
-	public PS velocityZ(Double val) { this.velocityZ = val; return this; }
-	public Double velocityZ() { return this.velocityZ; }
-	public Double velocityZCalc()
+	@Getter @Setter protected Double velocityZ;
+	public Double calcVelocityZ()
 	{
-		return velocityCalc(this.locationZ, this.blockZ, this.chunkZ, this.velocityZ);
+		return calcVelocity(this.locationZ, this.blockZ, this.chunkZ, this.velocityZ);
 	}
 	
-	protected static synchronized Double velocityCalc(Double location, Integer block, Integer chunk, Double velocity)
+	protected static synchronized Double calcVelocity(Double location, Integer block, Integer chunk, Double velocity)
 	{
 		if (velocity != null) return velocity;
 		if (location != null) return location;
@@ -226,42 +215,42 @@ public class PS implements Cloneable
 	// CONVERTERS
 	//----------------------------------------------//
 	
-	public synchronized Location location()
+	public synchronized Location getLocation()
 	{
-		return this.locationInner(this.locationX(), this.locationY(), this.locationZ());
+		return this.innerLocation(this.getLocationX(), this.getLocationY(), this.getLocationZ());
 	}
-	public synchronized Location locationCalc()
+	public synchronized Location calcLocation()
 	{
-		return this.locationInner(this.locationXCalc(), this.locationYCalc(), this.locationZCalc());
+		return this.innerLocation(this.calcLocationX(), this.calcLocationY(), this.calclocationZ());
 	}
-	protected synchronized Location locationInner(Double x, Double y, Double z)
+	protected synchronized Location innerLocation(Double x, Double y, Double z)
 	{
-		World world = this.world();
+		World world = this.getWorld();
 		
 		if (x == null) return null;
 		if (y == null) return null;
 		if (z == null) return null;
 		
-		Float pitch = this.pitch();
+		Float pitch = this.getPitch();
 		if (pitch == null) pitch = 0F;
 		
-		Float yaw = this.yaw();
+		Float yaw = this.getYaw();
 		if (yaw == null) yaw = 0F;
 		
 		return new Location(world, x, y, z, pitch, yaw);
 	}
 	
-	public synchronized Block block()
+	public synchronized Block getBlock()
 	{
-		return this.blockInner(this.blockX(), this.blockY(), this.blockZ());
+		return this.innerBlock(this.getBlockX(), this.getBlockY(), this.getBlockZ());
 	}
-	public synchronized Block blockCalc()
+	public synchronized Block calcBlock()
 	{
-		return this.blockInner(this.blockXCalc(), this.blockYCalc(), this.blockZCalc());
+		return this.innerBlock(this.calcBlockX(), this.calcBlockY(), this.calcBlockZ());
 	}
-	public synchronized Block blockInner(Integer x, Integer y, Integer z)
+	public synchronized Block innerBlock(Integer x, Integer y, Integer z)
 	{
-		World world = this.world();
+		World world = this.getWorld();
 		if (world == null) return null;
 		
 		if (x == null) return null;
@@ -271,17 +260,17 @@ public class PS implements Cloneable
 		return world.getBlockAt(x, y, z);
 	}
 	
-	public synchronized Chunk chunk()
+	public synchronized Chunk getChunk()
 	{
-		return this.chunkInner(this.chunkX(), this.chunkZ());
+		return this.innerChunk(this.getChunkX(), this.getChunkZ());
 	}
-	public synchronized Chunk chunkCalc()
+	public synchronized Chunk calcChunk()
 	{
-		return this.chunkInner(this.chunkXCalc(), this.chunkZCalc());
+		return this.innerChunk(this.calcChunkX(), this.calcChunkZ());
 	}
-	public synchronized Chunk chunkInner(Integer x, Integer z)
+	public synchronized Chunk innerChunk(Integer x, Integer z)
 	{
-		World world = this.world();
+		World world = this.getWorld();
 		if (world == null) return null;
 		
 		if (x == null) return null;
@@ -290,15 +279,15 @@ public class PS implements Cloneable
 		return world.getChunkAt(x, z);
 	}
 	
-	public synchronized Vector velocity()
+	public synchronized Vector getVelocity()
 	{
-		return this.velocityInner(this.velocityX(), this.velocityY(), this.velocityZ());
+		return this.innerVelocity(this.getVelocityX(), this.getVelocityY(), this.getVelocityZ());
 	}
-	public synchronized Vector velocityCalc()
+	public synchronized Vector calcVelocity()
 	{
-		return this.velocityInner(this.velocityXCalc(), this.velocityYCalc(), this.velocityZCalc());
+		return this.innerVelocity(this.calcVelocityX(), this.calcVelocityY(), this.calcVelocityZ());
 	}
-	public synchronized Vector velocityInner(Double x, Double y, Double z)
+	public synchronized Vector innerVelocity(Double x, Double y, Double z)
 	{
 		if (x == null) return null;
 		if (y == null) return null;
@@ -360,7 +349,7 @@ public class PS implements Cloneable
 		this.locationX = location.getX();
 		this.locationY = location.getY();
 		this.locationZ = location.getZ();
-		this.pitch(location.getPitch());
+		this.setPitch(location.getPitch());
 		this.yaw = location.getYaw();
 		
 		return this;
@@ -590,119 +579,6 @@ public class PS implements Cloneable
 	public PS clone()
 	{
 		return new PS(this);
-	}
-	
-	// -------------------------------------------- //
-	// TELEPORTER
-	// -------------------------------------------- //
-	
-	public static transient PSTeleporter teleporter = PSTeleporterDefault.get();
-	
-	//----------------------------------------------//
-	// COMPARISON
-	//----------------------------------------------//
-	// These were autogenerated using eclipse.
-	
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((blockX == null) ? 0 : blockX.hashCode());
-		result = prime * result + ((blockY == null) ? 0 : blockY.hashCode());
-		result = prime * result + ((blockZ == null) ? 0 : blockZ.hashCode());
-		result = prime * result + ((chunkX == null) ? 0 : chunkX.hashCode());
-		result = prime * result + ((chunkZ == null) ? 0 : chunkZ.hashCode());
-		result = prime * result	+ ((locationX == null) ? 0 : locationX.hashCode());
-		result = prime * result	+ ((locationY == null) ? 0 : locationY.hashCode());
-		result = prime * result	+ ((locationZ == null) ? 0 : locationZ.hashCode());
-		result = prime * result + ((velocityX == null) ? 0 : velocityX.hashCode());
-		result = prime * result + ((velocityY == null) ? 0 : velocityY.hashCode());
-		result = prime * result + ((velocityZ == null) ? 0 : velocityZ.hashCode());
-		result = prime * result + ((pitch == null) ? 0 : pitch.hashCode());
-		result = prime * result	+ ((worldName == null) ? 0 : worldName.hashCode());
-		result = prime * result + ((yaw == null) ? 0 : yaw.hashCode());
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		PS other = (PS) obj;
-		if (blockX == null)
-		{
-			if (other.blockX != null) return false;
-		}
-		else if (!blockX.equals(other.blockX)) return false;
-		if (blockY == null)
-		{
-			if (other.blockY != null) return false;
-		}
-		else if (!blockY.equals(other.blockY)) return false;
-		if (blockZ == null)
-		{
-			if (other.blockZ != null) return false;
-		}
-		else if (!blockZ.equals(other.blockZ)) return false;
-		if (chunkX == null)
-		{
-			if (other.chunkX != null) return false;
-		}
-		else if (!chunkX.equals(other.chunkX)) return false;
-		if (chunkZ == null)
-		{
-			if (other.chunkZ != null) return false;
-		}
-		else if (!chunkZ.equals(other.chunkZ)) return false;
-		if (locationX == null)
-		{
-			if (other.locationX != null) return false;
-		}
-		else if (!locationX.equals(other.locationX)) return false;
-		if (locationY == null)
-		{
-			if (other.locationY != null) return false;
-		}
-		else if (!locationY.equals(other.locationY)) return false;
-		if (locationZ == null)
-		{
-			if (other.locationZ != null) return false;
-		}
-		else if (!locationZ.equals(other.locationZ)) return false;
-		if (velocityX == null)
-		{
-			if (other.velocityX != null) return false;
-		}
-		else if (!velocityX.equals(other.velocityX)) return false;
-		if (velocityY == null)
-		{
-			if (other.velocityY != null) return false;
-		}
-		else if (!velocityY.equals(other.velocityY)) return false;
-		if (velocityZ == null)
-		{
-			if (other.velocityZ != null) return false;
-		}
-		else if (!velocityZ.equals(other.velocityZ)) return false;
-		if (pitch == null)
-		{
-			if (other.pitch != null) return false;
-		}
-		else if (!pitch.equals(other.pitch)) return false;
-		if (worldName == null)
-		{
-			if (other.worldName != null) return false;
-		}
-		else if (!worldName.equals(other.worldName)) return false;
-		if (yaw == null)
-		{
-			if (other.yaw != null) return false;
-		}
-		else if (!yaw.equals(other.yaw)) return false;
-		return true;
 	}
 
 }
