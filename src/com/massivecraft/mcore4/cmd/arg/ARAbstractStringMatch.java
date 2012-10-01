@@ -20,11 +20,21 @@ public abstract class ARAbstractStringMatch implements ArgReader<String>
 		
 		// Find all matches		
 		Set<String> matches = new HashSet<String>();
+		String perfectMatch = null;
+		
+		outerloop:
 		for (Collection<String> altColl : this.altColls())
 		{
 			for (String alt : altColl)
 			{
-				if (this.matches(str, alt))
+				Integer matchDistance = this.matches(str, alt);
+				if (matchDistance == null) continue;
+				if (matchDistance == 0)
+				{
+					perfectMatch = alt;
+					break outerloop;
+				}
+				else
 				{
 					matches.add(alt);
 				}
@@ -32,7 +42,11 @@ public abstract class ARAbstractStringMatch implements ArgReader<String>
 		}
 		
 		// Set result and errors
-		if (matches.size() == 1)
+		if (perfectMatch != null)
+		{
+			result.setResult(perfectMatch);
+		}
+		else if (matches.size() == 1)
 		{
 			result.setResult(matches.iterator().next());
 		}
@@ -53,7 +67,10 @@ public abstract class ARAbstractStringMatch implements ArgReader<String>
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract boolean matches(String arg, String alt);
+	// return null if no match
+	// return 0 if perfect match
+	// return >0 to declare distance from perfect match
+	public abstract Integer matches(String arg, String alt);
 	
 	// -------------------------------------------- //
 	// FIELDS

@@ -48,9 +48,24 @@ public class SimpleConfig
 		if (this.file().isFile())
 		{
 			String content = DiscUtil.readCatch(this.file());
-			if (contentRequestsDefaults(content)) return;
-			Object createdByGson = this.mplugin().gson.fromJson(content, this.getClass());
-			Accessor.get(this.getClass()).copy(createdByGson, this);
+			Object toShallowLoad = null;
+			if (contentRequestsDefaults(content))
+			{
+				try
+				{
+					toShallowLoad = this.getClass().newInstance();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					return;
+				}
+			}
+			else
+			{
+				toShallowLoad = this.mplugin().gson.fromJson(content, this.getClass());
+			}
+			Accessor.get(this.getClass()).copy(toShallowLoad, this);
 		}
 		save();
 	}

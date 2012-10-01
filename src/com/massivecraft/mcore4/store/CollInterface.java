@@ -36,6 +36,8 @@ public interface CollInterface<E, L>
 	// -------------------------------------------- //
 	public Collection<L> ids();
 	public Collection<L> idsRemote();
+	public boolean containsId(Object oid);
+	public boolean containsEntity(E entity);
 	
 	public Collection<E> getAll();
 	public Collection<E> getAll(Predictate<E> where);
@@ -141,6 +143,7 @@ public interface CollInterface<E, L>
 	// -------------------------------------------- //
 	
 	public void init();
+	public boolean inited();
 	
 	
 }

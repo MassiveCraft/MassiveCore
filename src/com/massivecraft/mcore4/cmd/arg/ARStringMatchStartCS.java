@@ -9,9 +9,16 @@ public class ARStringMatchStartCS extends ARAbstractStringMatch
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean matches(String arg, String alt)
+	public Integer matches(String arg, String alt)
 	{
-		return alt.startsWith(arg);
+		if (alt.startsWith(arg))
+		{
+			return alt.length() - arg.length();
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	// -------------------------------------------- //

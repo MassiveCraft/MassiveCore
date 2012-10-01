@@ -72,6 +72,15 @@ public class Coll<E, L> implements CollInterface<E, L>
 	protected Set<L> ids = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
 	@Override public Collection<L> ids() { return Collections.unmodifiableCollection(this.ids); }
 	@Override public Collection<L> idsRemote() { return this.db().driver().ids(this); }
+	@Override public boolean containsEntity(E entity) { return this.entities.contains(entity); };
+	@Override
+	public boolean containsId(Object oid)
+	{
+		L id = this.idFix(oid);
+		if (id == null) return false;
+		return this.ids.contains(id);
+	}
+	
 	
 	protected Set<E> entities = Collections.newSetFromMap(new ConcurrentHashMap<E, Boolean>());
 	@Override public Collection<E> getAll() { return Collections.unmodifiableCollection(this.entities); }
@@ -112,6 +121,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	{
 		if (oid == null) return null;
 		if (oid.getClass() == this.idClass) return this.idClass.cast(oid);
+		if (oid.getClass() == this.entityClass) return this.entity2id.get(oid);
 		return null;
 	}
 	
@@ -131,9 +141,19 @@ public class Coll<E, L> implements CollInterface<E, L>
 	// COPY AND CREATE
 	// -------------------------------------------- //
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void copy(Object ofrom, Object oto)
 	{
-		Accessor.get(this.entityClass()).copy(ofrom, oto);
+		if (ofrom instanceof Entity)
+		{
+			Entity efrom = (Entity)ofrom;
+			Entity eto = (Entity)oto;
+			eto.load(efrom);
+		}
+		else
+		{
+			Accessor.get(this.entityClass()).copy(ofrom, oto);
+		}
 	}
 	
 	// This simply creates and returns a new instance
@@ -579,10 +599,16 @@ public class Coll<E, L> implements CollInterface<E, L>
 	@Override
 	public void init()
 	{
-		if (instances.contains(this)) return;
+		if (this.inited()) return;
 		this.syncAll();
 		this.examineThread = new ExamineThread<E, L>(this);
 		this.examineThread.start();
 		instances.add(this);
+	}
+	
+	@Override
+	public boolean inited()
+	{
+		return instances.contains(this);
 	}
 }

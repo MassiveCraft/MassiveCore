@@ -85,6 +85,7 @@ public class PlayerUtil implements Listener
 	@SuppressWarnings("unchecked")
 	public static Player getPlayerExact(String exactPlayerName)
 	{
+		if (exactPlayerName == null) return null;
 		CraftServer craftServer = (CraftServer) Bukkit.getServer();
 		List<EntityPlayer> entityPlayers = craftServer.getHandle().players;
 		for (EntityPlayer entityPlayer : entityPlayers)

@@ -8,8 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.mcore4.MCore;
-
 /**
  * The MCorePlayerLeaveEvent is a non-cancellable event.
  * It is run at the MONITOR of either PlayerKickEvent or PlayerQuitEvent.
@@ -75,7 +73,7 @@ public class MCorePlayerLeaveEvent extends Event implements Runnable
 		
 		if (doit)
 		{
-			MCore.p.log("MCorePlayerLeaveEvent", caller, player.getDisplayName(), preDisconnect, message);
+			//MCore.p.log("MCorePlayerLeaveEvent", caller, player.getDisplayName(), preDisconnect, message);
 			player2event.put(this.player.getName(), this);
 			Bukkit.getPluginManager().callEvent(this);
 		}

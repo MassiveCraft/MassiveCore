@@ -6,19 +6,55 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import com.massivecraft.mcore4.Lang;
 
 public class Perm
 {
-	public static String getPermissionDescription (String perm)
+	// -------------------------------------------- //
+	// HAS
+	// -------------------------------------------- //
+	
+	public static boolean has(CommandSender sender, Permission permission)
+	{
+		return has(sender, permission.getName());
+	}
+	public static boolean has(CommandSender sender, String perm)
+	{
+		if (sender == null) return false;
+		return sender.hasPermission(perm);
+	}
+	
+	public static boolean has(CommandSender sender, Permission permission, boolean verbose)
+	{
+		return has(sender, permission.getName(), verbose);
+	}
+	public static boolean has(CommandSender sender, String perm, boolean verbose)
+	{
+		if (has(sender, perm))
+		{
+			return true;
+		}
+		else if (verbose && sender != null)
+		{
+			sender.sendMessage(getForbiddenMessage(perm));
+		}
+		return false;
+	}
+	
+	// -------------------------------------------- //
+	// DESCRIPTIONS AND MESSAGES
+	// -------------------------------------------- //
+	
+	public static String getPermissionDescription(String perm)
 	{
 		if (perm == null) return Lang.permDoThat;
 		Permission permission = Bukkit.getPluginManager().getPermission(perm);
 		return getPermissionDescription(permission);
 	}
 	
-	public static String getPermissionDescription (Permission perm)
+	public static String getPermissionDescription(Permission perm)
 	{
 		if (perm == null) return Lang.permDoThat;
 		String desc = perm.getDescription();
@@ -31,24 +67,9 @@ public class Perm
 		return Txt.parse(Lang.permForbidden, getPermissionDescription(perm));
 	}
 	
-	public static boolean has (CommandSender me, String perm)
-	{
-		if (me == null) return false;
-		return me.hasPermission(perm);
-	}
-	
-	public static boolean has (CommandSender me, String perm, boolean verbose)
-	{
-		if (has(me, perm))
-		{
-			return true;
-		}
-		else if (verbose && me != null)
-		{
-			me.sendMessage(getForbiddenMessage(perm));
-		}
-		return false;
-	}
+	// -------------------------------------------- //
+	// RANDOM UTILS
+	// -------------------------------------------- //
 	
 	public static <T> T pickFirstVal(CommandSender me, Map<String, T> perm2val)
 	{
@@ -63,4 +84,54 @@ public class Perm
 		
 		return ret;
 	}
+	
+	// -------------------------------------------- //
+	// GET CREATIVE
+	// -------------------------------------------- //
+	
+    public static Permission getCreative(String name)
+    {
+    	return getCreative(name, null, null, null);
+    }
+
+    public static Permission getCreative(String name, String description)
+    {
+    	return getCreative(name, description, null, null);
+    }
+
+    public static Permission getCreative(String name, PermissionDefault defaultValue)
+    {
+    	return getCreative(name, null, defaultValue, null);
+    }
+
+    public static Permission getCreative(String name, String description, PermissionDefault defaultValue)
+    {
+    	return getCreative(name, description, defaultValue, null);
+    }
+
+    public static Permission getCreative(String name, Map<String, Boolean> children)
+    {
+    	return getCreative(name, null, null, children);
+    }
+
+    public static Permission getCreative(String name, String description, Map<String, Boolean> children)
+    {
+    	return getCreative(name, description, null, children);
+    }
+
+    public static Permission getCreative(String name, PermissionDefault defaultValue, Map<String, Boolean> children)
+    {
+        return getCreative(name, null, defaultValue, children);
+    }
+
+    public static Permission getCreative(String name, String description, PermissionDefault defaultValue, Map<String, Boolean> children)
+    {
+		Permission ret = Bukkit.getPluginManager().getPermission(name);
+		if (ret == null)
+		{
+			ret = new Permission(name, description, defaultValue, children);
+			Bukkit.getPluginManager().addPermission(ret);
+		}
+		return ret;
+    }
 }

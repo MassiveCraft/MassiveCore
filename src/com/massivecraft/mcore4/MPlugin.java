@@ -59,7 +59,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	
 	public void postEnable()
 	{
-		log(Txt.parse("=== ENABLE <g>COMPLELTE <i>(Took <h>"+(System.currentTimeMillis()-timeEnableStart)+"ms<i>) ==="));
+		log(Txt.parse("=== ENABLE <g>COMPLETE <i>(Took <h>"+(System.currentTimeMillis()-timeEnableStart)+"ms<i>) ==="));
 	}
 	
 	// -------------------------------------------- //

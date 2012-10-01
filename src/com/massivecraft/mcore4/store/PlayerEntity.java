@@ -2,6 +2,7 @@ package com.massivecraft.mcore4.store;
 
 import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -13,7 +14,21 @@ public abstract class PlayerEntity<E extends PlayerEntity<E>> extends Entity<E, 
 {
 	public Player getPlayer()
 	{
-		return PlayerUtil.getPlayerExact(this.getId());
+		if (this.getColl() == null) return null;
+		if (this.getColl().isLowercasing())
+		{
+			return Bukkit.getPlayerExact(this.getId());
+		}
+		else
+		{
+			return PlayerUtil.getPlayerExact(this.getId());
+		}
+	}
+	
+	@Override
+	public PlayerColl<E> getColl()
+	{
+		return (PlayerColl<E>) super.getColl();
 	}
 	
 	public boolean isOnline()

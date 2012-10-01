@@ -369,9 +369,13 @@ public class Txt
 	
 	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title)
 	{
+		return getPage(lines, pageHumanBased, title, 9);
+	}
+	
+	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title, int pageheight)
+	{
 		ArrayList<String> ret = new ArrayList<String>();
 		int pageZeroBased = pageHumanBased - 1;
-		int pageheight = 9;
 		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
 		
 		ret.add(titleize(title+parse("<a>")+" "+pageHumanBased+"/"+pagecount));

@@ -9,9 +9,9 @@ public class ARStringMatchFullCS extends ARAbstractStringMatch
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean matches(String arg, String alt)
+	public Integer matches(String arg, String alt)
 	{
-		return alt.equals(arg);
+		return alt.equals(arg) ? 0 : null;
 	}
 
 	// -------------------------------------------- //

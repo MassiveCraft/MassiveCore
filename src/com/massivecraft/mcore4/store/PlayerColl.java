@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.Predictate;
-import com.massivecraft.mcore4.cmd.arg.ARPlayerEntity;
+import com.massivecraft.mcore4.cmd.arg.ARStringEntity;
 import com.massivecraft.mcore4.cmd.arg.ARStringMatchFullCI;
 import com.massivecraft.mcore4.cmd.arg.ARStringMatchStartCI;
 import com.massivecraft.mcore4.cmd.arg.ArgReader;
@@ -19,14 +19,47 @@ import com.massivecraft.mcore4.util.PlayerUtil;
 
 public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	// Note that the lowercasing should be kept at either true or false.
+	protected boolean lowercasing = false;
+	public boolean isLowercasing() { return this.lowercasing; }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public PlayerColl(Db<?> db, MPlugin mplugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing)
+	{
+		super(db, mplugin, "ai", name, entityClass, String.class, creative);
+		this.lowercasing = lowercasing;
+	}
+	
+	public PlayerColl(Db<?> db, MPlugin mplugin, String name, Class<E> entityClass, boolean creative)
+	{
+		this(db, mplugin, name, entityClass, creative, false);
+	}
+	
 	public PlayerColl(Db<?> db, MPlugin mplugin, String name, Class<E> entityClass)
 	{
-		super(db, mplugin, "ai", name, entityClass, String.class, true);
+		this(db, mplugin, name, entityClass, true);
+	}
+	
+	public PlayerColl(MPlugin mplugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing)
+	{
+		this(MCore.getDb(), mplugin, name, entityClass, creative, lowercasing);
+	}
+	
+	public PlayerColl(MPlugin mplugin, String name, Class<E> entityClass, boolean creative)
+	{
+		this(MCore.getDb(), mplugin, name, entityClass, creative);
 	}
 	
 	public PlayerColl(MPlugin mplugin, String name, Class<E> entityClass)
 	{
-		super(MCore.getDb(), mplugin, "ai", name, entityClass, String.class, true);
+		this(MCore.getDb(), mplugin, name, entityClass);
 	}
 	
 	// -------------------------------------------- //
@@ -37,7 +70,9 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 	public String idFix(Object oid)
 	{
 		if (oid == null) return null;
-		return MUtil.extract(String.class, "playerName", oid);
+		String ret = MUtil.extract(String.class, "playerName", oid);
+		if (ret == null) return ret;
+		return this.lowercasing ? ret.toLowerCase() : ret;
 	}
 	
 	public Collection<E> getAllOnline()
@@ -87,12 +122,12 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 	
 	public ArgReader<E> argReaderPlayerFull()
 	{
-		return new ARPlayerEntity<E>(this.argReaderPlayerNameFull(), this);
+		return new ARStringEntity<E>(this.argReaderPlayerNameFull(), this);
 	}
 	
 	public ArgReader<E> argReaderPlayerStart()
 	{
-		return new ARPlayerEntity<E>(this.argReaderPlayerNameStart(), this);
+		return new ARStringEntity<E>(this.argReaderPlayerNameStart(), this);
 	}
 
 }

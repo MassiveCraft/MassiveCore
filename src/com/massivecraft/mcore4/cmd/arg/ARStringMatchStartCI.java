@@ -9,11 +9,18 @@ public class ARStringMatchStartCI extends ARAbstractStringMatch
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean matches(String arg, String alt)
+	public Integer matches(String arg, String alt)
 	{
 		arg = arg.toLowerCase();
 		alt = alt.toLowerCase();
-		return alt.startsWith(arg);
+		if (alt.startsWith(arg))
+		{
+			return alt.length() - arg.length();
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	// -------------------------------------------- //
