@@ -1,5 +1,7 @@
 package com.massivecraft.mcore4.integration;
 
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,8 +22,7 @@ public class Integration implements Listener
 	protected MPlugin ourPlugin;
 	protected IntegrationFeatures features;
 	
-	protected boolean active = false;
-	public boolean active() { return this.active; }
+	@Getter protected boolean active = false;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

@@ -14,10 +14,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.massivecraft.mcore4.store.accessor.Accessor;
 import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
 
@@ -46,7 +44,7 @@ public class PS implements Cloneable
 	
 	// Field: worldName
 	@SerializedName("w")
-	@Getter @Setter protected String worldName;
+	@Getter @Setter protected String worldName = null;
 	
 	// FakeField: world
 	public World getWorld()
@@ -54,17 +52,16 @@ public class PS implements Cloneable
 		if (this.worldName == null) return null;
 		return Bukkit.getWorld(this.worldName);
 	}
-	public PS setWorld(World val)
+	public void setWorld(World val)
 	{
 		this.worldName = val.getName();
-		return this;
 	}
 	
 	// ---------------------
 	
 	// Field: blockX
 	@SerializedName("bx")
-	@Getter @Setter protected Integer blockX;
+	@Getter @Setter protected Integer blockX = null;
 	public Integer calcBlockX()
 	{
 		return calcBlock(this.locationX, this.blockX, this.chunkX);
@@ -72,7 +69,7 @@ public class PS implements Cloneable
 	
 	// Field: blockY
 	@SerializedName("by")
-	@Getter @Setter protected Integer blockY;
+	@Getter @Setter protected Integer blockY = null;
 	public Integer calcBlockY()
 	{
 		return calcBlock(this.locationY, this.blockY, null);
@@ -80,7 +77,7 @@ public class PS implements Cloneable
 	
 	// Field: blockZ
 	@SerializedName("bz")
-	@Getter @Setter protected Integer blockZ;
+	@Getter @Setter protected Integer blockZ = null;
 	public Integer calcBlockZ()
 	{
 		return calcBlock(this.locationZ, this.blockZ, this.chunkZ);
@@ -98,7 +95,7 @@ public class PS implements Cloneable
 	
 	// Field: locationX
 	@SerializedName("lx")
-	@Getter @Setter protected Double locationX;
+	@Getter @Setter protected Double locationX = null;
 	public Double calcLocationX()
 	{
 		return calcLocation(this.locationX, this.blockX, this.chunkX);
@@ -106,7 +103,7 @@ public class PS implements Cloneable
 	
 	// Field: locationY
 	@SerializedName("ly")
-	@Getter @Setter protected Double locationY;
+	@Getter @Setter protected Double locationY = null;
 	public Double calcLocationY()
 	{
 		return calcLocation(this.locationY, this.blockY, null);
@@ -114,7 +111,7 @@ public class PS implements Cloneable
 	
 	// Field: locationZ
 	@SerializedName("lz")
-	@Getter @Setter protected Double locationZ;
+	@Getter @Setter protected Double locationZ = null;
 	public Double calclocationZ()
 	{
 		return calcLocation(this.locationZ, this.blockZ, this.chunkZ);
@@ -132,7 +129,7 @@ public class PS implements Cloneable
 	
 	// Field: chunkX
 	@SerializedName("cx")
-	@Getter @Setter protected Integer chunkX;
+	@Getter @Setter protected Integer chunkX = null;
 	public Integer calcChunkX()
 	{
 		return calcChunk(this.locationX, this.blockX, this.chunkX);
@@ -140,7 +137,7 @@ public class PS implements Cloneable
 	
 	// Field: chunkZ
 	@SerializedName("xz")
-	@Getter @Setter protected Integer chunkZ;
+	@Getter @Setter protected Integer chunkZ = null;
 	public Integer calcChunkZ()
 	{
 		return calcChunk(this.locationZ, this.blockZ, this.chunkZ);
@@ -158,8 +155,8 @@ public class PS implements Cloneable
 	
 	// Field: pitch
 	@SerializedName("p")
-	@Getter protected Float pitch;
-	public PS setPitch(Float val) 
+	@Getter protected Float pitch = null;
+	public void setPitch(Float val) 
 	{
 		if (val == null)
 		{
@@ -169,18 +166,17 @@ public class PS implements Cloneable
 		{
 			this.pitch = (val + 360F) % 360F;
 		}
-		return this;
 	}
 	
 	// Field: yaw
 	@SerializedName("y")
-	@Getter @Setter protected Float yaw;
+	@Getter @Setter protected Float yaw = null;
 	
 	// ---------------------
 	
 	// Field: velocityX
 	@SerializedName("vx")
-	@Getter @Setter protected Double velocityX;
+	@Getter @Setter protected Double velocityX = null;
 	public Double calcVelocityX()
 	{
 		return calcVelocity(this.locationX, this.blockX, this.chunkX, this.velocityX);
@@ -188,7 +184,7 @@ public class PS implements Cloneable
 	
 	// Field: velocityY
 	@SerializedName("vy")
-	@Getter @Setter protected Double velocityY;
+	@Getter @Setter protected Double velocityY = null;
 	public Double calcVelocityY()
 	{
 		return calcVelocity(this.locationY, this.blockY, 0, this.velocityY);
@@ -196,7 +192,7 @@ public class PS implements Cloneable
 	
 	// Field: velocityZ
 	@SerializedName("vz")
-	@Getter @Setter protected Double velocityZ;
+	@Getter @Setter protected Double velocityZ = null;
 	public Double calcVelocityZ()
 	{
 		return calcVelocity(this.locationZ, this.blockZ, this.chunkZ, this.velocityZ);
@@ -212,7 +208,7 @@ public class PS implements Cloneable
 	}
 	
 	//----------------------------------------------//
-	// CONVERTERS
+	// GET / CALC
 	//----------------------------------------------//
 	
 	public synchronized Location getLocation()
@@ -248,7 +244,7 @@ public class PS implements Cloneable
 	{
 		return this.innerBlock(this.calcBlockX(), this.calcBlockY(), this.calcBlockZ());
 	}
-	public synchronized Block innerBlock(Integer x, Integer y, Integer z)
+	protected synchronized Block innerBlock(Integer x, Integer y, Integer z)
 	{
 		World world = this.getWorld();
 		if (world == null) return null;
@@ -268,7 +264,7 @@ public class PS implements Cloneable
 	{
 		return this.innerChunk(this.calcChunkX(), this.calcChunkZ());
 	}
-	public synchronized Chunk innerChunk(Integer x, Integer z)
+	protected synchronized Chunk innerChunk(Integer x, Integer z)
 	{
 		World world = this.getWorld();
 		if (world == null) return null;
@@ -287,7 +283,7 @@ public class PS implements Cloneable
 	{
 		return this.innerVelocity(this.calcVelocityX(), this.calcVelocityY(), this.calcVelocityZ());
 	}
-	public synchronized Vector innerVelocity(Double x, Double y, Double z)
+	protected synchronized Vector innerVelocity(Double x, Double y, Double z)
 	{
 		if (x == null) return null;
 		if (y == null) return null;
@@ -296,10 +292,10 @@ public class PS implements Cloneable
 	}
 	
 	//----------------------------------------------//
-	// READERS
+	// SET
 	//----------------------------------------------//
 	
-	public synchronized PS readDefault()
+	public synchronized void setDefault()
 	{
 		this.worldName = null;
 		
@@ -320,30 +316,63 @@ public class PS implements Cloneable
 		this.velocityX = null;
 		this.velocityY = null;
 		this.velocityZ = null;
+	}
+	
+	public synchronized void setPSTransparent(PS ps)
+	{
+		if (ps.worldName != null) this.worldName = ps.worldName;
 		
-		return this;
+		if (ps.blockX != null) this.blockX = ps.blockX;
+		if (ps.blockY != null) this.blockY = ps.blockY;
+		if (ps.blockZ != null) this.blockZ = ps.blockZ;
+		
+		if (ps.locationX != null) this.locationX = ps.locationX;
+		if (ps.locationY != null) this.locationY = ps.locationY;
+		if (ps.locationZ != null) this.locationZ = ps.locationZ;
+		
+		if (ps.chunkX != null) this.chunkX = ps.chunkX;
+		if (ps.chunkZ != null) this.chunkZ = ps.chunkZ;
+		
+		if (ps.pitch != null) this.pitch = ps.pitch;
+		if (ps.yaw != null) this.yaw = ps.yaw;
+		
+		if (ps.velocityX != null) this.velocityX = ps.velocityX;
+		if (ps.velocityY != null) this.velocityY = ps.velocityY;
+		if (ps.velocityZ != null) this.velocityZ = ps.velocityZ;
 	}
 	
-	public synchronized PS readTransparent(PS ps)
+	public synchronized void setPS(PS ps)
 	{
-		Accessor.get(PS.class).copy(ps, this, true);
-		return this;
-	}
-	
-	public synchronized PS read(PS ps)
-	{
-		Accessor.get(PS.class).copy(ps, this);
-		return this;
+		this.worldName = ps.worldName;
+		
+		this.blockX = ps.blockX;
+		this.blockY = ps.blockY;
+		this.blockZ = ps.blockZ;
+		
+		this.locationX = ps.locationX;
+		this.locationY = ps.locationY;
+		this.locationZ = ps.locationZ;
+		
+		this.chunkX = ps.chunkX;
+		this.chunkZ = ps.chunkZ;
+		
+		this.pitch = ps.pitch;
+		this.yaw = ps.yaw;
+		
+		this.velocityX = ps.velocityX;
+		this.velocityY = ps.velocityY;
+		this.velocityZ = ps.velocityZ;
 	}
 	
 	// ---------------------
 	
-	public synchronized PS read(Location location)
+	public synchronized void setLocation(Location location)
 	{
-		return this.readDefault().readTransparent(location);
+		this.setDefault();
+		this.setLocationTransparent(location);
 	}
 	
-	public synchronized PS readTransparent(Location location)
+	public synchronized void setLocationTransparent(Location location)
 	{
 		this.worldName = location.getWorld().getName();
 		this.locationX = location.getX();
@@ -351,79 +380,77 @@ public class PS implements Cloneable
 		this.locationZ = location.getZ();
 		this.setPitch(location.getPitch());
 		this.yaw = location.getYaw();
-		
-		return this;
 	}
 	
 	// ---------------------
 	
-	public synchronized PS read(Vector vector)
+	public synchronized void setVelocity(Vector vector)
 	{
-		return this.readDefault().readTransparent(vector);
+		this.setDefault();
+		this.setVelocityTransparent(vector);
 	}
 	
-	public synchronized PS readTransparent(Vector vector)
+	public synchronized void setVelocityTransparent(Vector vector)
 	{
 		this.velocityX = vector.getX();
 		this.velocityY = vector.getY();
 		this.velocityZ = vector.getZ();
-		
-		return this;
 	}
 	
 	// ---------------------
 	
-	public synchronized PS read(Player player)
+	public synchronized void setEntity(Entity entity)
 	{
-		return this.readDefault().readTransparent(player);
+		this.setDefault();
+		this.setEntityTransparent(entity);
 	}
 	
-	public synchronized PS readTransparent(Player player)
+	public synchronized void setEntityTransparent(Entity entity)
 	{
-		this.readTransparent(player.getLocation());
-		this.readTransparent(player.getVelocity());
-		return this;
+		this.setLocationTransparent(entity.getLocation());
+		this.setVelocityTransparent(entity.getVelocity());
 	}
 	
 	// ---------------------
 	
-	public synchronized PS read(Block block)
+	public synchronized void setBlock(Block block)
 	{
-		return this.readDefault().readTransparent(block);
+		this.setDefault();
+		this.setBlockTransparent(block);
 	}
 	
-	public synchronized PS readTransparent(Block block)
+	public synchronized void setBlockTransparent(Block block)
 	{
 		this.worldName = block.getWorld().getName();
 		this.blockX = block.getX();
 		this.blockY = block.getY();
 		this.blockZ = block.getZ();
-		return this;
 	}
 	
 	// ---------------------
 	
-	public synchronized PS read(Chunk chunk)
+	public synchronized void setChunk(Chunk chunk)
 	{
-		return this.readDefault().readTransparent(chunk);
+		this.setDefault();
+		this.setChunkTransparent(chunk);
 	}
 	
-	public synchronized PS readTransparent(Chunk chunk)
+	public synchronized void setChunkTransparent(Chunk chunk)
 	{
 		this.worldName = chunk.getWorld().getName();
 		this.chunkX = chunk.getX();
 		this.chunkZ = chunk.getZ();
-		return this;
 	}
 	
 	// ---------------------
-	// TODO: This should be removed later on when my converting phase is complete.
-	public synchronized PS read(String str)
+
+	public synchronized void setOldString(String str)
 	{
-		return this.readDefault().readTransparent(str);
+		this.setDefault();
+		this.setOldStringTransparent(str);
 	}
 	
-	public synchronized PS readTransparent(String str)
+	public synchronized void setOldStringTransparent(String str)
 	{
 		String[] parts = str.split("\\|");
 		
@@ -443,8 +470,6 @@ public class PS implements Cloneable
 			this.pitch = Float.parseFloat(parts[4]);
 			this.yaw = Float.parseFloat(parts[5]);
 		}
-		
-		return this;
 	}
 	
 	
@@ -468,32 +493,37 @@ public class PS implements Cloneable
 	
 	public PS(PS ps)
 	{
-		this.read(ps);
+		this.setPS(ps);
 	}
 	
 	public PS(Location location)
 	{
-		this.read(location);
+		this.setLocationTransparent(location);
 	}
 	
-	public PS(Vector vector)
+	public PS(Vector velocity)
 	{
-		this.read(vector);
+		this.setVelocityTransparent(velocity);
 	}
 	
-	public PS(Player player)
+	public PS(Entity entity)
 	{
-		this.read(player);
+		this.setEntityTransparent(entity);
 	}
 	
 	public PS(Block block)
 	{
-		this.read(block);
+		this.setBlockTransparent(block);
 	}
 	
 	public PS(Chunk chunk)
 	{
-		this.read(chunk);
+		this.setChunkTransparent(chunk);
+	}
+	
+	public PS(String oldString)
+	{
+		this.setOldStringTransparent(oldString);
 	}
 	
 	//----------------------------------------------//

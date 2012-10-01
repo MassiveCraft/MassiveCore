@@ -7,7 +7,7 @@ public class ExamineThread<E, L> extends Thread
 	public ExamineThread(Coll<E, L> coll)
 	{
 		this.coll = coll;
-		this.setName("ExamineThread for "+coll.name());
+		this.setName("ExamineThread for "+coll.getName());
 	}
 	
 	// TODO: Implement logging and/or auto adjusting system for how long the sleep should be?

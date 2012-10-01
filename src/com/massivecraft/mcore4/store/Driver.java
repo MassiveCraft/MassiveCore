@@ -11,7 +11,7 @@ import com.massivecraft.mcore4.store.storeadapter.StoreAdapter;
 public interface Driver<R>
 {
 	// Returns the name of the driver.
-	public String name();
+	public String getName();
 	
 	// This is the rawdata format this driver works with.
 	// Could for example be JsonElement or DBObject
@@ -25,22 +25,22 @@ public interface Driver<R>
 	public StoreAdapter getStoreAdapter();
 	
 	// Get a database instance from the driver
-	public Db<R> db(String uri);
+	public Db<R> getDb(String uri);
 	
 	// What collections are in the database?		
-	public Set<String> collnames(Db<?> db);
+	public Set<String> getCollnames(Db<?> db);
 	
 	// Is id X in the collection?
 	public <L> boolean containsId(Coll<?, L> coll, L id);
 	
 	// When was X last altered?
-	public <L> Long mtime(Coll<?, L> coll, L id);
+	public <L> Long getMtime(Coll<?, L> coll, L id);
 		
 	// What ids are in the collection?
-	public <L> Collection<L> ids(Coll<?, L> coll);
+	public <L> Collection<L> getIds(Coll<?, L> coll);
 	
 	// Return a map of all ids with their corresponding mtimes
-	public <L> Map<L, Long> id2mtime(Coll<?, L> coll);
+	public <L> Map<L, Long> getId2mtime(Coll<?, L> coll);
 	
 	// Load the raw data for X. The second part of the entry is the remote mtime at the load.
 	public <L> Entry<R, Long> load(Coll<?, L> coll, L id);

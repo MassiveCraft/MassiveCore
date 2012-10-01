@@ -13,7 +13,7 @@ public abstract class DriverAbstract<R> implements Driver<R>
 	}
 	
 	protected String name;
-	@Override public String name() { return this.name; }
+	@Override public String getName() { return this.name; }
 
 	protected Map<String, IdStrategy<?, ?>> idStrategies = new HashMap<String, IdStrategy<?, ?>>();
 	@Override

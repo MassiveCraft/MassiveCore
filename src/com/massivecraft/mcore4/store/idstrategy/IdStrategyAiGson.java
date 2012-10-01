@@ -61,8 +61,8 @@ public class IdStrategyAiGson extends IdStrategyAbstract<String, String>
 	
 	protected File getAiFile(CollInterface<?, String> coll)
 	{
-		DbGson cdb = (DbGson)coll.db();
-		return new File(cdb.dir, coll.name() + "_ai.txt");
+		DbGson cdb = (DbGson)coll.getDb();
+		return new File(cdb.dir, coll.getName() + "_ai.txt");
 	}
 	
 	protected boolean ensureFileExists(File file)

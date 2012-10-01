@@ -39,8 +39,8 @@ public class IdStrategyAiMongo extends IdStrategyAbstract<String, String>
 	@Override
 	public String generateAttempt(CollInterface<?, String> coll)
 	{
-		String sequenseName = coll.name();
-		DBCollection sequenseCollection = ((DbMongo)coll.db()).db.getCollection(SEC);
+		String sequenseName = coll.getName();
+		DBCollection sequenseCollection = ((DbMongo)coll.getDb()).db.getCollection(SEC);
 		
 		// this object represents your "query", its analogous to a WHERE clause in SQL
 		DBObject query = new BasicDBObject();

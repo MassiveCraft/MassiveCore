@@ -4,13 +4,13 @@ import java.util.Set;
 
 public interface Db<R>
 {	
-	public String name();
+	public String getName();
 	
 	public boolean drop();
 	
-	public Set<String> collnames();
+	public Set<String> getCollnames();
 	
-	public Driver<R> driver();
+	public Driver<R> getDriver();
 	
 	public Object getCollDriverObject(Coll<?, ?> coll);
 }

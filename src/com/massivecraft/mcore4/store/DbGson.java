@@ -14,7 +14,7 @@ public class DbGson extends DbAbstract<JsonElement>
 	public File dir;
 	
 	protected DriverGson driver;
-	@Override public DriverGson driver() { return driver; }
+	@Override public DriverGson getDriver() { return driver; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCTORS
@@ -31,7 +31,7 @@ public class DbGson extends DbAbstract<JsonElement>
 	// -------------------------------------------- //
 
 	@Override
-	public String name()
+	public String getName()
 	{
 		return dir.getAbsolutePath();
 	}
@@ -52,6 +52,6 @@ public class DbGson extends DbAbstract<JsonElement>
 	@Override
 	public Object getCollDriverObject(Coll<?, ?> coll)
 	{
-		return new File(dir, coll.name());
+		return new File(dir, coll.getName());
 	}
 }

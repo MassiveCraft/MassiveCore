@@ -30,7 +30,7 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 	@Override
 	public Collection<String> altNames(MCommand mcommand)
 	{
-		return MultiverseColl.i.ids();
+		return MultiverseColl.i.getIds();
 	}
 	
 	// -------------------------------------------- //

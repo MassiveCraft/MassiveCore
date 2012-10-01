@@ -13,8 +13,8 @@ public class MStore
 	protected static Map<String, Driver<?>> drivers = new HashMap<String, Driver<?>>();
 	public static boolean registerDriver(Driver<?> driver)
 	{
-		if (drivers.containsKey(driver.name())) return false;
-		drivers.put(driver.name(), driver);
+		if (drivers.containsKey(driver.getName())) return false;
+		drivers.put(driver.getName(), driver);
 		return true;
 	}
 	public static Driver<?> getDriver(String id)
@@ -42,7 +42,7 @@ public class MStore
 		String scheme = uri.getScheme();
 		Driver<?> driver = getDriver(scheme);
 		if (driver == null) return null;
-		return driver.db(uri.toString());
+		return driver.getDb(uri.toString());
 	}
 	
 	static

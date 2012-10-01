@@ -7,8 +7,8 @@ import java.util.Map;
 public class EntityAccessorPerProperty extends EntityAccessorAbstract
 {
 	protected Map<String, PropertyAccessor> propertyAccessors;
-	public Map<String, PropertyAccessor> propertyAccessors() {	return this.propertyAccessors; }
-	public PropertyAccessor propertyAccessor(String name)
+	public Map<String, PropertyAccessor> getPropertyAccessors() {	return this.propertyAccessors; }
+	public PropertyAccessor getPropertyAccessor(String name)
 	{
 		PropertyAccessor ret = this.propertyAccessors.get(name);
 		if (ret == null)
@@ -17,7 +17,7 @@ public class EntityAccessorPerProperty extends EntityAccessorAbstract
 		}
 		return ret;
 	}
-	public void propertyAccessor(String name, PropertyAccessor val)
+	public void setPropertyAccessor(String name, PropertyAccessor val)
 	{
 		this.propertyAccessors.put(name, val);
 	}
@@ -66,14 +66,14 @@ public class EntityAccessorPerProperty extends EntityAccessorAbstract
 	@Override
 	public void set(Object entity, String property, Object val)
 	{
-		PropertyAccessor pa = this.propertyAccessor(property);
+		PropertyAccessor pa = this.getPropertyAccessor(property);
 		pa.set(entity, val);
 	}
 
 	@Override
 	public Object get(Object entity, String property)
 	{
-		PropertyAccessor pa = this.propertyAccessor(property);
+		PropertyAccessor pa = this.getPropertyAccessor(property);
 		return pa.get(entity);
 	}
 	

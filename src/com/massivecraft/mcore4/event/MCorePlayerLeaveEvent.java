@@ -3,6 +3,8 @@ package com.massivecraft.mcore4.event;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -31,20 +33,16 @@ public class MCorePlayerLeaveEvent extends Event implements Runnable
 	// FIELD
 	// -------------------------------------------- //
 	
-	protected Player player;
-	public Player getPlayer() { return this.player; }
+	@Getter protected final Player player;
 	
-	protected boolean preDisconnect;
-	public boolean isPreDisconnect() { return this.preDisconnect; }
+	@Getter protected final boolean preDisconnect;
 	public boolean isPostDisconnect() { return !this.isPreDisconnect(); }
 	
-	protected String caller;
-	public String getCaller() { return this.caller; }
+	@Getter protected final String caller;
 	public boolean isQuit() { return "quit".equals(caller); }
 	public boolean isKick() { return "kick".equals(caller); }
 	
-	protected String message;
-	public String getMessage() { return this.message; }
+	@Getter protected final String message;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

@@ -25,7 +25,7 @@ public class CmdUsysAspectShow extends UsysCommand
 		msg(Txt.titleize("Aspect: "+aspect.getId()));
 		msg("<k>using multiverse: <v>%s",aspect.multiverse().getId());
 		
-		for (String descLine : aspect.desc())
+		for (String descLine : aspect.getDesc())
 		{
 			msg(descLine);
 		}

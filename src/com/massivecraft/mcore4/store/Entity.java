@@ -28,7 +28,7 @@ public abstract class Entity<E extends Entity<E, L>, L>
 		Coll<E, L> coll = this.getColl();
 		if (coll == null) return null;
 		
-		return coll.universe();
+		return coll.getUniverse();
 	}
 	
 	public L attach(Coll<E, L> coll)
@@ -61,7 +61,7 @@ public abstract class Entity<E extends Entity<E, L>, L>
 	{
 		Coll<E, L> coll = this.getColl();
 		if (coll == null) return null;
-		return coll.id(this.getThis());
+		return coll.getId(this.getThis());
 	}
 	
 	public void changed()
@@ -100,7 +100,7 @@ public abstract class Entity<E extends Entity<E, L>, L>
 	{
 		Gson gson = MCore.gson;
 		Coll<E, L> coll = this.getColl();
-		if (coll != null) gson = coll.mplugin().gson;
+		if (coll != null) gson = coll.getMplugin().gson;
 		
 		return this.getClazz().getSimpleName()+gson.toJson(this, this.getClazz());
 	}

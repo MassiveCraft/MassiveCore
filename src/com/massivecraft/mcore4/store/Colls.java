@@ -13,8 +13,8 @@ public abstract class Colls<C extends Coll<E, L>, E, L>
 {
 	protected Map<String, C> name2coll = new HashMap<String, C>();
 	
-	public abstract Aspect aspect();
-	public abstract String basename();
+	public abstract Aspect getAspect();
+	public abstract String getBasename();
 	public abstract C createColl(String name);
 
 	// -------------------------------------------- //
@@ -29,7 +29,7 @@ public abstract class Colls<C extends Coll<E, L>, E, L>
 	public List<C> getColls()
 	{
 		List<C> ret = new ArrayList<C>(); 
-		Aspect a = this.aspect();
+		Aspect a = this.getAspect();
 		Multiverse m = a.multiverse();
 		for (String universe : m.getUniverses())
 		{
@@ -44,14 +44,14 @@ public abstract class Colls<C extends Coll<E, L>, E, L>
 	
 	public String collnameForUniverse(String universe)
 	{
-		return this.basename() + "@" + universe;
+		return this.getBasename() + "@" + universe;
 	}
 	
 	public String universeFromWorldName(String worldName)
 	{
 		if (worldName == null) throw new IllegalArgumentException("worldName may not be null.");
 		
-		return this.aspect().multiverse().getUniverseForWorldName(worldName);
+		return this.getAspect().multiverse().getUniverseForWorldName(worldName);
 	}
 	
 	// -------------------------------------------- //

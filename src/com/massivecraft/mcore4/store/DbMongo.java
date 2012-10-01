@@ -12,7 +12,7 @@ public class DbMongo extends DbAbstract<BasicDBObject>
 	public DB db;
 	
 	protected DriverMongo driver;
-	@Override public DriverMongo driver() { return driver; }
+	@Override public DriverMongo getDriver() { return driver; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCTORS
@@ -29,7 +29,7 @@ public class DbMongo extends DbAbstract<BasicDBObject>
 	// -------------------------------------------- //
 
 	@Override
-	public String name()
+	public String getName()
 	{
 		return db.getName();
 	}
@@ -51,6 +51,6 @@ public class DbMongo extends DbAbstract<BasicDBObject>
 	@Override
 	public Object getCollDriverObject(Coll<?, ?> coll)
 	{
-		return db.getCollection(coll.name());
+		return db.getCollection(coll.getName());
 	}
 }

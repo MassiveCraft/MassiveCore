@@ -22,7 +22,7 @@ public class AHAspect extends AHBase<Aspect>
 			this.error.add("<b>No aspect called \"<p>"+str+"<b>\".");
 			if (Permission.USYS_ASPECT_LIST.has(sender, false))
 			{
-				this.error.add("<i>Use "+Txt.implodeCommaAndDot(AspectColl.i.ids(), "<h>%s", "<i>, ", " <i>or ", "<i>."));
+				this.error.add("<i>Use "+Txt.implodeCommaAndDot(AspectColl.i.getIds(), "<h>%s", "<i>, ", " <i>or ", "<i>."));
 			}
 		}
 		

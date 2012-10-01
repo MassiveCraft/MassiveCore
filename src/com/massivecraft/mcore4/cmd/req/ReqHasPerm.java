@@ -1,5 +1,8 @@
 package com.massivecraft.mcore4.cmd.req;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore4.cmd.MCommand;
@@ -7,9 +10,7 @@ import com.massivecraft.mcore4.util.Perm;
 
 public class ReqHasPerm implements IReq
 {
-	private String perm;
-	public String getPerm() { return this.perm; }
-	public void setPerm(String val) { this.perm = val; }
+	@Getter @Setter private String perm;
 	
 	public ReqHasPerm(String perm)
 	{

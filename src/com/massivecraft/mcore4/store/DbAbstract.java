@@ -5,8 +5,8 @@ import java.util.Set;
 public abstract class DbAbstract<R> implements Db<R>
 {	
 	@Override
-	public Set<String> collnames()
+	public Set<String> getCollnames()
 	{
-		return this.driver().collnames(this);
+		return this.getDriver().getCollnames(this);
 	}
 }

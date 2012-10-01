@@ -67,7 +67,7 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 	// -------------------------------------------- //
 	
 	@Override
-	public String idFix(Object oid)
+	public String fixId(Object oid)
 	{
 		if (oid == null) return null;
 		String ret = MUtil.extract(String.class, "playerName", oid);
@@ -105,8 +105,8 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 	protected Collection<Collection<String>> forgeAltColls()
 	{
 		Collection<Collection<String>> ret = new ArrayList<Collection<String>>();
-		ret.add(this.ids());
-		if (this.creative()) ret.add(PlayerUtil.getAllVisitorNames());
+		ret.add(this.getIds());
+		if (this.isCreative()) ret.add(PlayerUtil.getAllVisitorNames());
 		return ret;
 	}
 	

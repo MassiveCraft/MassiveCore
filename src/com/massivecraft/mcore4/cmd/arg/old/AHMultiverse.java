@@ -23,7 +23,7 @@ public class AHMultiverse extends AHBase<Multiverse>
 			this.error.add("<b>No multiverse called \"<p>"+str+"<b>\".");
 			if (Permission.USYS_MULTIVERSE_LIST.has(sender, false))
 			{
-				this.error.add("<i>Use "+Txt.implodeCommaAndDot(MultiverseColl.i.ids(), "<h>%s", "<i>, ", " <i>or ", "<i>."));
+				this.error.add("<i>Use "+Txt.implodeCommaAndDot(MultiverseColl.i.getIds(), "<h>%s", "<i>, ", " <i>or ", "<i>."));
 			}
 		}
 		

@@ -26,7 +26,7 @@ public abstract class IdStrategyAbstract<L, R> implements IdStrategy<L, R>
 	@Override
 	public L generate(CollInterface<?, L> coll)
 	{
-		Collection<L> alreadyInUse = coll.ids();
+		Collection<L> alreadyInUse = coll.getIds();
 		L ret = null;
 		do
 		{

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.store.Entity;
 import com.massivecraft.mcore4.xlib.gson.annotations.SerializedName;
@@ -29,23 +32,19 @@ public class Aspect extends Entity<Aspect, String>
 	// TRANSIENT FIELDS
 	// -------------------------------------------- //
 	
-	protected transient boolean registered = false;
-	public boolean registered() { return this.registered; }
+	@Getter protected transient boolean registered = false;
 	public void register() { this.registered = true; }
 	
-	protected transient Collection<String> desc = new ArrayList<String>();
-	public Collection<String> desc() { return this.desc; }
-	public void desc(Collection<String> val) { this.desc = val; }
-	public void desc(String... val) { this.desc = Arrays.asList(val); }
+	@Getter protected transient Collection<String> desc = new ArrayList<String>();
+	public void setDesc(Collection<String> val) { this.desc = val; }
+	public void setDesc(String... val) { this.desc = Arrays.asList(val); }
 	
 	// -------------------------------------------- //
 	// STORED FIELDS
 	// -------------------------------------------- //
 	
 	@SerializedName("mid")
-	protected String multiverseId;
-	public String multiverseId() { return this.multiverseId; }
-	public void multiverseId(String val) { this.multiverseId = val; }
+	@Getter @Setter protected String multiverseId;
 	public Multiverse multiverse()
 	{
 		Multiverse ret = MultiverseColl.i.get(this.multiverseId);

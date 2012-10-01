@@ -14,28 +14,28 @@ public interface CollInterface<E, L>
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
-	public String name();
-	public String basename();
-	public String universe();
-	public Class<E> entityClass();
-	public Class<L> idClass();
+	public String getName();
+	public String getBasename();
+	public String getUniverse();
+	public Class<E> getEntityClass();
+	public Class<L> getIdClass();
 	
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM
 	// -------------------------------------------- //
-	public MPlugin mplugin();
+	public MPlugin getMplugin();
 	
-	public Db<?> db();
-	public Driver<?> driver();
-	public StoreAdapter storeAdapter();
-	public IdStrategy<L, ?> idStrategy();
-	public Object collDriverObject();
+	public Db<?> getDb();
+	public Driver<?> getDriver();
+	public StoreAdapter getStoreAdapter();
+	public IdStrategy<L, ?> getIdStrategy();
+	public Object getCollDriverObject();
 	
 	// -------------------------------------------- //
 	// STORAGE
 	// -------------------------------------------- //
-	public Collection<L> ids();
-	public Collection<L> idsRemote();
+	public Collection<L> getIds();
+	public Collection<L> getIdsRemote();
 	public boolean containsId(Object oid);
 	public boolean containsEntity(E entity);
 	
@@ -45,19 +45,19 @@ public interface CollInterface<E, L>
 	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit);
 	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit, Integer offset);
 	
-	public Map<L, E> id2entity();
+	public Map<L, E> getId2entity();
 	public E get(Object oid);
 	public E get(Object oid, boolean creative);
 
-	public Map<E, L> entity2id();
-	public L id(E entity);
-	public L idFix(Object oid);
+	public Map<E, L> getEntity2id();
+	public L getId(E entity);
+	public L fixId(Object oid);
 	
 	// -------------------------------------------- //
 	// BAHAVIOR
 	// -------------------------------------------- //
-	public boolean creative();
-	public void creative(boolean val);
+	public boolean isCreative();
+	public void setCreative(boolean val);
 	
 	// A default entity will not be saved.
 	// This is often used together with creative collections to save disc space.
@@ -133,7 +133,7 @@ public interface CollInterface<E, L>
 	// -------------------------------------------- //
 	
 	// The tickTask simply runs the onTick method.
-	public Runnable tickTask();
+	public Runnable getTickTask();
 	public void onTick();
 	
 	public Thread examineThread();

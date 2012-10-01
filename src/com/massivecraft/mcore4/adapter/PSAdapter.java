@@ -22,7 +22,7 @@ public class PSAdapter implements JsonDeserializer<PS>
 	{
 		if (json.isJsonPrimitive())
 		{
-			return new PS().read(json.getAsString());
+			return new PS(json.getAsString());
 		}
 		return new Gson().fromJson(json, typeOfT);
 	}

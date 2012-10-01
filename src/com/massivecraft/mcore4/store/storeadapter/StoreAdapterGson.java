@@ -13,13 +13,13 @@ public class StoreAdapterGson extends StoreAdapterAbstract
 	@Override
 	public Object read(Coll<?, ?> coll, Object entity)
 	{
-		return coll.mplugin().gson.toJsonTree(entity, coll.entityClass());
+		return coll.getMplugin().gson.toJsonTree(entity, coll.getEntityClass());
 	}
 
 	@Override
 	public void write(Coll<?, ?> coll, Object raw, Object entity)
 	{
-		Object temp = coll.mplugin().gson.fromJson((JsonElement)raw, coll.entityClass());
+		Object temp = coll.getMplugin().gson.fromJson((JsonElement)raw, coll.getEntityClass());
 		coll.copy(temp, entity);
 	}
 	

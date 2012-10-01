@@ -1,5 +1,7 @@
 package com.massivecraft.mcore4.event;
 
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -21,8 +23,7 @@ public class MCoreAfterPlayerTeleportEvent extends Event implements Runnable
 	// FIELD
 	// -------------------------------------------- //
 	
-	protected PlayerTeleportEvent bukkitEvent;
-	public PlayerTeleportEvent getBukkitEvent() { return this.bukkitEvent; }
+	@Getter protected final PlayerTeleportEvent bukkitEvent;
 	
 	public Location getFrom() { return this.bukkitEvent.getFrom(); }
 	public Location getTo() { return this.bukkitEvent.getTo(); }

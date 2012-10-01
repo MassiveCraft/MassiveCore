@@ -31,52 +31,52 @@ public class Coll<E, L> implements CollInterface<E, L>
 	// -------------------------------------------- //
 	
 	protected final String name;
-	@Override public String name() { return this.name; }
+	@Override public String getName() { return this.name; }
 	
 	protected final String basename;
-	@Override public String basename() { return this.basename; }
+	@Override public String getBasename() { return this.basename; }
 	
 	protected final String universe;
-	@Override public String universe() { return this.universe; }
+	@Override public String getUniverse() { return this.universe; }
 	
 	protected final Class<E> entityClass;
-	@Override public Class<E> entityClass() { return this.entityClass; }
+	@Override public Class<E> getEntityClass() { return this.entityClass; }
 
 	protected final Class<L> idClass;
-	@Override public Class<L> idClass() { return this.idClass; }
+	@Override public Class<L> getIdClass() { return this.idClass; }
 	
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM
 	// -------------------------------------------- //
 	
 	protected MPlugin mplugin;
-	@Override public MPlugin mplugin() { return this.mplugin; }
+	@Override public MPlugin getMplugin() { return this.mplugin; }
 	
 	protected Db<?> db;
-	@Override public Db<?> db() { return this.db; }
-	@Override public Driver<?> driver() { return this.db.driver(); }
+	@Override public Db<?> getDb() { return this.db; }
+	@Override public Driver<?> getDriver() { return this.db.getDriver(); }
 	
 	protected IdStrategy<L, ?> idStrategy;
-	@Override public IdStrategy<L, ?> idStrategy() { return this.idStrategy; }
+	@Override public IdStrategy<L, ?> getIdStrategy() { return this.idStrategy; }
 	
 	protected StoreAdapter storeAdapter;
-	@Override public StoreAdapter storeAdapter() { return this.storeAdapter; }
+	@Override public StoreAdapter getStoreAdapter() { return this.storeAdapter; }
 	
 	protected Object collDriverObject;
-	@Override public Object collDriverObject() { return this.collDriverObject; }
+	@Override public Object getCollDriverObject() { return this.collDriverObject; }
 	
 	// -------------------------------------------- //
 	// STORAGE
 	// -------------------------------------------- //
 	
 	protected Set<L> ids = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
-	@Override public Collection<L> ids() { return Collections.unmodifiableCollection(this.ids); }
-	@Override public Collection<L> idsRemote() { return this.db().driver().ids(this); }
+	@Override public Collection<L> getIds() { return Collections.unmodifiableCollection(this.ids); }
+	@Override public Collection<L> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
 	@Override public boolean containsEntity(E entity) { return this.entities.contains(entity); };
 	@Override
 	public boolean containsId(Object oid)
 	{
-		L id = this.idFix(oid);
+		L id = this.fixId(oid);
 		if (id == null) return false;
 		return this.ids.contains(id);
 	}
@@ -90,11 +90,11 @@ public class Coll<E, L> implements CollInterface<E, L>
 	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, offset); }
 	
 	protected Map<L, E> id2entity = new ConcurrentHashMap<L, E>();
-	@Override public Map<L, E> id2entity() { return Collections.unmodifiableMap(this.id2entity); } 
+	@Override public Map<L, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override 
 	public E get(Object oid) 
 	{
-		return this.get(oid, this.creative());
+		return this.get(oid, this.isCreative());
 	}
 	@Override
 	public E get(Object oid, boolean creative)
@@ -103,7 +103,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	}
 	protected E get(Object oid, boolean creative, boolean noteChange)
 	{
-		L id = this.idFix(oid);
+		L id = this.fixId(oid);
 		if (id == null) return null;
 		E ret = this.id2entity.get(id);
 		if (ret != null) return ret;
@@ -113,11 +113,11 @@ public class Coll<E, L> implements CollInterface<E, L>
 	
 	// Get the id for this entity.
 	protected Map<E, L> entity2id = new ConcurrentHashMap<E, L>();
-	@Override public Map<E, L> entity2id() { return Collections.unmodifiableMap(this.entity2id); }
-	@Override public L id(E entity) { return this.entity2id.get(entity); }
+	@Override public Map<E, L> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
+	@Override public L getId(E entity) { return this.entity2id.get(entity); }
 	
 	@Override
-	public L idFix(Object oid)
+	public L fixId(Object oid)
 	{
 		if (oid == null) return null;
 		if (oid.getClass() == this.idClass) return this.idClass.cast(oid);
@@ -130,8 +130,8 @@ public class Coll<E, L> implements CollInterface<E, L>
 	// -------------------------------------------- //
 
 	protected boolean creative;
-	@Override public boolean creative() { return this.creative; }
-	@Override public void creative(boolean val) { this.creative = val; }
+	@Override public boolean isCreative() { return this.creative; }
+	@Override public void setCreative(boolean val) { this.creative = val; }
 	
 	// Should that instance be saved or not?
 	// If it is default it should not be saved.
@@ -152,7 +152,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 		}
 		else
 		{
-			Accessor.get(this.entityClass()).copy(ofrom, oto);
+			Accessor.get(this.getEntityClass()).copy(ofrom, oto);
 		}
 	}
 	
@@ -213,17 +213,17 @@ public class Coll<E, L> implements CollInterface<E, L>
 	{
 		// Check entity
 		if (entity == null) return null;
-		L id = this.id(entity);
+		L id = this.getId(entity);
 		if (id != null) return id;
 		
 		// Check/Fix id
 		if (oid == null)
 		{
-			id = this.idStrategy().generate(this);
+			id = this.getIdStrategy().generate(this);
 		}
 		else
 		{
-			id = this.idFix(oid);
+			id = this.fixId(oid);
 			if (id == null) return null;
 			if (this.ids.contains(id)) return null;
 		}
@@ -266,7 +266,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 		}
 		else
 		{
-			id = this.idFix(o);
+			id = this.fixId(o);
 		}
 		if (id == null)
 		{
@@ -339,7 +339,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
 		
-		this.db().driver().delete(this, id);
+		this.getDb().getDriver().delete(this, id);
 	}
 	
 	@Override
@@ -351,17 +351,17 @@ public class Coll<E, L> implements CollInterface<E, L>
 		E entity = this.id2entity.get(id);
 		if (entity == null) return;
 		
-		Object raw = this.storeAdapter().read(this, entity);
+		Object raw = this.getStoreAdapter().read(this, entity);
 		this.lastRaw.put(id, raw);
 		
 		if (this.isDefault(entity))
 		{
-			this.db.driver().delete(this, id);
+			this.db.getDriver().delete(this, id);
 			this.lastDefault.add(id);
 		}
 		else
 		{
-			Long mtime = this.db.driver().save(this, id, raw);
+			Long mtime = this.db.getDriver().save(this, id, raw);
 			if (mtime == null) return; // This fail should not happen often. We could handle it better though.
 			this.lastMtime.put(id, mtime);
 		}
@@ -372,7 +372,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	{
 		this.clearIdentifiedChanges(id);
 		
-		Entry<?, Long> entry = this.db().driver().load(this, id);
+		Entry<?, Long> entry = this.getDb().getDriver().load(this, id);
 		if (entry == null) return;
 		
 		Object raw = entry.getKey();
@@ -383,10 +383,10 @@ public class Coll<E, L> implements CollInterface<E, L>
 		
 		E entity = this.get(id, true, false);
 		
-		this.storeAdapter().write(this, raw, entity);
+		this.getStoreAdapter().write(this, raw, entity);
 		
 		// Store adapter again since result of a database read may be "different" from entity read.
-		this.lastRaw.put(id, this.storeAdapter().read(this, entity)); 
+		this.lastRaw.put(id, this.getStoreAdapter().read(this, entity)); 
 		this.lastMtime.put(id, mtime);
 		this.lastDefault.remove(id);
 	}
@@ -415,7 +415,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 		E localEntity = this.id2entity.get(id);
 		if ( ! remoteMtimeSupplied)
 		{
-			remoteMtime = this.driver().mtime(this, id);
+			remoteMtime = this.getDriver().getMtime(this, id);
 		}
 		
 		boolean existsLocal = (localEntity != null);
@@ -500,7 +500,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	{
 		// Find all ids
 		Set<L> allids = new HashSet<L>(this.ids);
-		allids.addAll(this.driver().ids(this));
+		allids.addAll(this.getDriver().getIds(this));
 		for (L id : allids)
 		{
 			this.syncId(id);
@@ -511,7 +511,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	public void findSuspects()
 	{
 		// Get remote id and mtime snapshot
-		Map<L, Long> id2RemoteMtime = this.db().driver().id2mtime(this);
+		Map<L, Long> id2RemoteMtime = this.getDb().getDriver().getId2mtime(this);
 		
 		// Compile a list of all ids (both remote and local)
 		Set<L> allids = new HashSet<L>();
@@ -524,7 +524,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 			Long remoteMtime = id2RemoteMtime.get(id);
 			ModificationState state = this.examineId(id, remoteMtime);
 			//mplugin.log("findSuspects: It seems", id, "has state", state);
-			if (state.modified())
+			if (state.isModified())
 			{
 				//System.out.println("It seems "+id+" has state "+state);
 				this.changedIds.add(id);
@@ -537,7 +537,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	// -------------------------------------------- //
 	
 	protected Runnable tickTask;
-	@Override public Runnable tickTask() { return this.tickTask; }
+	@Override public Runnable getTickTask() { return this.tickTask; }
 	@Override
 	public void onTick()
 	{
@@ -572,15 +572,15 @@ public class Coll<E, L> implements CollInterface<E, L>
 		
 		this.mplugin = mplugin;
 		this.db = db;
-		this.storeAdapter = this.db.driver().getStoreAdapter();
-		this.idStrategy = this.db.driver().getIdStrategy(idStrategyName);
+		this.storeAdapter = this.db.getDriver().getStoreAdapter();
+		this.idStrategy = this.db.getDriver().getIdStrategy(idStrategyName);
 		if (this.idStrategy == null)
 		{
-			throw new IllegalArgumentException("UNKNOWN: The id stragegy \""+idStrategyName+"\" is unknown to the driver \""+db.driver().name()+"\".");
+			throw new IllegalArgumentException("UNKNOWN: The id stragegy \""+idStrategyName+"\" is unknown to the driver \""+db.getDriver().getName()+"\".");
 		}
 		else if (this.idStrategy.getLocalClass() != idClass)
 		{
-			throw new IllegalArgumentException("MISSMATCH: The id stragegy \""+idStrategyName+"\" for the driver \""+db.driver().name()+"\" uses \""+this.idStrategy.getLocalClass().getSimpleName()+"\" but the collection "+this.name+"/"+this.getClass().getSimpleName()+" uses \""+idClass.getSimpleName()+"\".");
+			throw new IllegalArgumentException("MISSMATCH: The id stragegy \""+idStrategyName+"\" for the driver \""+db.getDriver().getName()+"\" uses \""+this.idStrategy.getLocalClass().getSimpleName()+"\" but the collection "+this.name+"/"+this.getClass().getSimpleName()+" uses \""+idClass.getSimpleName()+"\".");
 		}
 		this.collDriverObject = db.getCollDriverObject(this);
 		

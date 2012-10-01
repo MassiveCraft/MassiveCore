@@ -47,14 +47,14 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 	
 	@Override
-	public Db<BasicDBObject> db(String uri)
+	public Db<BasicDBObject> getDb(String uri)
 	{
 		DB db = this.getDbInner(uri);
 		return new DbMongo(this, db);
 	}
 
 	@Override
-	public Set<String> collnames(Db<?> db)
+	public Set<String> getCollnames(Db<?> db)
 	{
 		return ((DbMongo)db).db.getCollectionNames();
 	}
@@ -63,22 +63,22 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	public <L> boolean containsId(Coll<?, L> coll, L id)
 	{
 		DBCollection dbcoll = fixColl(coll);
-		DBCursor cursor = dbcoll.find(new BasicDBObject(ID_FIELD, coll.idStrategy().localToRemote(id)));
+		DBCursor cursor = dbcoll.find(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)));
 		return cursor.count() != 0;
 	}
 	
 	@Override
-	public <L> Long mtime(Coll<?, L> coll, L id)
+	public <L> Long getMtime(Coll<?, L> coll, L id)
 	{
 		DBCollection dbcoll = fixColl(coll);
-		BasicDBObject found = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, coll.idStrategy().localToRemote(id)), dboKeysMtime);
+		BasicDBObject found = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)), dboKeysMtime);
 		if (found == null) return null;
 		if ( ! found.containsField(MTIME_FIELD)) return null; // This should not happen! But better to ignore than crash?
 		return found.getLong(MTIME_FIELD);
 	}
 	
 	@Override
-	public <L> Collection<L> ids(Coll<?, L> coll)
+	public <L> Collection<L> getIds(Coll<?, L> coll)
 	{
 		List<L> ret = null;
 		
@@ -91,7 +91,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 			while(cursor.hasNext())
 			{
 				Object remoteId = cursor.next().get(ID_FIELD);
-				L localId = coll.idStrategy().remoteToLocal(remoteId);
+				L localId = coll.getIdStrategy().remoteToLocal(remoteId);
 				ret.add(localId);
 			}
 		}
@@ -104,7 +104,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 	
 	@Override
-	public <L> Map<L, Long> id2mtime(Coll<?, L> coll)
+	public <L> Map<L, Long> getId2mtime(Coll<?, L> coll)
 	{
 		Map<L, Long> ret = null;
 		
@@ -118,7 +118,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 			{
 				BasicDBObject raw = (BasicDBObject)cursor.next();
 				Object remoteId = raw.get(ID_FIELD);
-				L localId = coll.idStrategy().remoteToLocal(remoteId);
+				L localId = coll.getIdStrategy().remoteToLocal(remoteId);
 				if ( ! raw.containsField(MTIME_FIELD)) continue; // This should not happen! But better to ignore than crash?
 				Long mtime = raw.getLong(MTIME_FIELD);
 				ret.put(localId, mtime);
@@ -136,7 +136,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	public <L> Entry<BasicDBObject, Long> load(Coll<?, L> coll, L id)
 	{
 		DBCollection dbcoll = fixColl(coll);
-		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, coll.idStrategy().localToRemote(id)));
+		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)));
 		if (raw == null) return null;
 		Long mtime = (Long) raw.removeField(MTIME_FIELD);
 		return new SimpleEntry<BasicDBObject, Long>(raw, mtime);
@@ -153,7 +153,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 		Long mtime = System.currentTimeMillis();
 		data.put(MTIME_FIELD, mtime);
 		
-		Object remoteId = coll.idStrategy().localToRemote(id);		
+		Object remoteId = coll.getIdStrategy().localToRemote(id);		
 		dbcoll.update(new BasicDBObject(ID_FIELD, remoteId), data, true, false);
 
 		return mtime;
@@ -162,7 +162,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	@Override
 	public <L> void delete(Coll<?, L> coll, L id)
 	{
-		fixColl(coll).remove(new BasicDBObject(ID_FIELD, coll.idStrategy().localToRemote(id)));
+		fixColl(coll).remove(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)));
 	}
 
 	//----------------------------------------------//
@@ -171,7 +171,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	
 	protected static DBCollection fixColl(Coll<?, ?> coll)
 	{
-		return (DBCollection) coll.collDriverObject();
+		return (DBCollection) coll.getCollDriverObject();
 	}
 	
 	protected DB getDbInner(String uri)

@@ -5,7 +5,7 @@ import java.util.Collection;
 public abstract class EntityAccessorAbstract implements EntityAccessor
 {
 	protected final Class<?> clazz;
-	public Class<?> clazz() { return this.clazz; }
+	public Class<?> getClazz() { return this.clazz; }
 	
 	public EntityAccessorAbstract(Class<?> clazz)
 	{

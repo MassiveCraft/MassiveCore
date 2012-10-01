@@ -37,7 +37,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 		
 	@Override
-	public Db<JsonElement> db(String uri)
+	public Db<JsonElement> getDb(String uri)
 	{
 		// "gson://" is 7 chars
 		File folder = new File(uri.substring(7));
@@ -46,7 +46,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public Set<String> collnames(Db<?> db)
+	public Set<String> getCollnames(Db<?> db)
 	{
 		Set<String> ret = new LinkedHashSet<String>();
 		
@@ -66,7 +66,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 	
 	@Override
-	public <L> Long mtime(Coll<?, L> coll, L id)
+	public <L> Long getMtime(Coll<?, L> coll, L id)
 	{
 		File file = fileFromId(coll, id);
 		if ( ! file.isFile()) return null;
@@ -74,7 +74,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 	
 	@Override
-	public <L> Collection<L> ids(Coll<?, L> coll)
+	public <L> Collection<L> getIds(Coll<?, L> coll)
 	{
 		List<L> ret = new ArrayList<L>();
 		
@@ -85,7 +85,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		{
 			// Then convert them to what they should be
 			String remoteId = idFromFile(file);
-			L localId = coll.idStrategy().remoteToLocal(remoteId);
+			L localId = coll.getIdStrategy().remoteToLocal(remoteId);
 			ret.add(localId);
 		}
 		
@@ -93,7 +93,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 	
 	@Override
-	public <L> Map<L, Long> id2mtime(Coll<?, L> coll)
+	public <L> Map<L, Long> getId2mtime(Coll<?, L> coll)
 	{
 		Map<L, Long> ret = new HashMap<L, Long>();
 		
@@ -104,7 +104,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		{
 			// Then convert them to what they should be
 			String remoteId = idFromFile(file);
-			L localId = coll.idStrategy().remoteToLocal(remoteId);
+			L localId = coll.getIdStrategy().remoteToLocal(remoteId);
 			ret.put(localId, file.lastModified());
 		}
 		
@@ -128,7 +128,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	public <L> Long save(Coll<?, L> coll, L id, Object rawData)
 	{
 		File file = fileFromId(coll, id);
-		String content = coll.mplugin().gson.toJson((JsonElement)rawData);
+		String content = coll.getMplugin().gson.toJson((JsonElement)rawData);
 		if (DiscUtil.writeCatch(file, content) == false) return null;
 		return file.lastModified();
 	}
@@ -146,7 +146,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	
 	protected static File getCollDir(Coll<?, ?> coll)
 	{
-		return (File) coll.collDriverObject();
+		return (File) coll.getCollDriverObject();
 	}
 	
 	protected static String idFromFile(File file)
@@ -159,7 +159,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	protected static <L> File fileFromId(Coll<?, L> coll, L id)
 	{
 		File collDir = getCollDir(coll);
-		String idString = (String)coll.idStrategy().localToRemote(id);
+		String idString = (String)coll.getIdStrategy().localToRemote(id);
 		File idFile = new File(collDir, idString+DOTJSON);
 		return idFile;
 	}

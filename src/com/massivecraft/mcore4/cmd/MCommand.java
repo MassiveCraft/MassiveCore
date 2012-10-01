@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
@@ -29,9 +32,7 @@ public abstract class MCommand
 	
 	// FIELD: subCommands
 	// The sub-commands to this command
-	protected List<MCommand> subCommands;
-	public List<MCommand> getSubCommands() { return this.subCommands; }
-	public void setSubCommands(List<MCommand> val) { this.subCommands = val; }
+	@Getter @Setter protected List<MCommand> subCommands;
 	public void addSubCommand(MCommand subCommand)
 	{
 		subCommand.commandChain.addAll(this.commandChain);
@@ -41,24 +42,18 @@ public abstract class MCommand
 	
 	// FIELD: aliases
 	// The different names this commands will react to  
-	protected List<String> aliases;
-	public List<String> getAliases() { return this.aliases; }
-	public void setAliases(List<String> val) { this.aliases = val; }
+	@Getter @Setter protected List<String> aliases;
 	public void addAliases(String... aliases) { this.aliases.addAll(Arrays.asList(aliases)); }
 	public void addAliases(List<String> aliases) { this.aliases.addAll(aliases); }
 	
 	// FIELD: requiredArgs
 	// These args must always be sent
-	protected List<String> requiredArgs;
-	public List<String> getRequiredArgs() { return this.requiredArgs; }
-	public void setRequiredArgs(List<String> val) { this.requiredArgs = val; }
+	@Getter @Setter protected List<String> requiredArgs;
 	public void addRequiredArg(String arg) { this.requiredArgs.add(arg); }
 	
 	// FIELD: optionalArgs
 	// These args are optional
-	protected Map<String, String> optionalArgs;
-	public Map<String, String> getOptionalArgs() { return this.optionalArgs; }
-	public void setOptionalArgs(Map<String, String> val) { this.optionalArgs = val; }
+	@Getter @Setter protected Map<String, String> optionalArgs;
 	public void addOptionalArg(String arg, String def) { this.optionalArgs.put(arg, def); }
 	
 	// FIELD: errorOnToManyArgs
@@ -69,16 +64,13 @@ public abstract class MCommand
 	
 	// FIELD: requirements
 	// All these requirements must be met for the command to be executable;
-	protected List<IReq> requirements;
-	public List<IReq> getRequirements() { return this.requirements; }
-	public void setRequirements(List<IReq> val) { this.requirements = val; }
+	@Getter @Setter protected List<IReq> requirements;
 	public void addRequirements(IReq... requirements) { this.requirements.addAll(Arrays.asList(requirements)); }
 	
 	// FIELD: desc
 	// This field may be left blank and will in such case be loaded from the permissions node instead.
 	// Thus make sure the permissions node description is an action description like "eat hamburgers" or "do admin stuff".
-	protected String desc = null;
-	public void setDesc(String val) { this.desc = val; }
+	@Setter protected String desc = null;
 	public String getDesc()
 	{
 		if (this.desc != null) return this.desc;
@@ -98,7 +90,7 @@ public abstract class MCommand
 	
 	// FIELD: descPermission
 	// This permission node IS NOT TESTED AT ALL. It is rather used in the method above.
-	protected String descPermission;
+	@Setter protected String descPermission;
 	public String getDescPermission()
 	{
 		if (this.descPermission != null) return this.descPermission;
@@ -110,7 +102,6 @@ public abstract class MCommand
 		}
 		return null;
 	}
-	public void setDescPermission(String val) { this.descPermission = val; }
 	
 	// FIELD: help
 	// This is a multi-line help text for the command.
@@ -120,9 +111,7 @@ public abstract class MCommand
 	public List<String> getHelp() { return this.help; }
 	
 	// FIELD: visibilityMode
-	protected VisibilityMode visibilityMode;
-	public VisibilityMode getVisibilityMode() { return this.visibilityMode; }
-	public void setVisibilityMode(VisibilityMode val) { this.visibilityMode = val; }
+	@Getter @Setter protected VisibilityMode visibilityMode;
 	
 	// -------------------------------------------- //
 	// EXECUTION INFO
@@ -130,15 +119,11 @@ public abstract class MCommand
 	
 	// FIELD: args
 	// Will contain the arguments, or and empty list if there are none.
-	protected List<String> args;
-	public List<String> getArgs() { return this.args; }
-	public void setArgs(List<String> val) { this.args = val; }
+	@Getter @Setter protected List<String> args;
 
 	// FIELD: commandChain
 	// The command chain used to execute this command
-	protected List<MCommand> commandChain = new ArrayList<MCommand>();
-	public List<MCommand> getCommandChain() { return this.commandChain; }
-	public void setCommandChain(List<MCommand> val) { this.commandChain = val; }
+	@Getter @Setter protected List<MCommand> commandChain = new ArrayList<MCommand>();
 	
 	// FIELDS: sender, me, senderIsConsole
 	public CommandSender sender;

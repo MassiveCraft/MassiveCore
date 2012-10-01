@@ -13,11 +13,11 @@ public enum ModificationState
 	;
 	
 	private final boolean modified;
-	public boolean modified() { return this.modified; }
+	public boolean isModified() { return this.modified; }
 	
 	private final boolean local;
-	public boolean local() { return this.local; }
-	public boolean remote() { return this.local == false; }
+	public boolean isLocal() { return this.local; }
+	public boolean isRemote() { return this.local == false; }
 	
 	private ModificationState(boolean modified, boolean local)
 	{

@@ -30,7 +30,7 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	@Override
 	public Collection<String> altNames(MCommand mcommand)
 	{
-		return AspectColl.i.ids();
+		return AspectColl.i.getIds();
 	}
 	
 	// -------------------------------------------- //
