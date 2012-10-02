@@ -2,7 +2,6 @@ package com.massivecraft.mcore4.cmd;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +15,9 @@ import com.massivecraft.mcore4.Lang;
 import com.massivecraft.mcore4.MPlugin;
 import com.massivecraft.mcore4.cmd.arg.ArgReader;
 import com.massivecraft.mcore4.cmd.arg.ArgResult;
-import com.massivecraft.mcore4.cmd.arg.old.IArgHandler;
 import com.massivecraft.mcore4.cmd.req.IReq;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore4.util.BukkitCommandUtil;
 import com.massivecraft.mcore4.util.Perm;
 import com.massivecraft.mcore4.util.Txt;
 
@@ -142,12 +141,12 @@ public abstract class MCommand
 	public boolean register(boolean override)
 	{
 		BukkitGlueCommand bgc = new BukkitGlueCommand(this);
-		SimpleCommandMap scm = Cmd.getBukkitCommandMap();
+		SimpleCommandMap scm = BukkitCommandUtil.getBukkitCommandMap();
 		
 		if (override)
 		{
 			// Our commands are more important than your commands :P
-			Map<String, Command> knownCommands = Cmd.getKnownCommandsFromSimpleCommandMap(scm);
+			Map<String, Command> knownCommands = BukkitCommandUtil.getKnownCommandsFromSimpleCommandMap(scm);
 			String lowerLabel = bgc.getName().trim().toLowerCase();
 			knownCommands.remove(lowerLabel);
 		}
@@ -464,7 +463,7 @@ public abstract class MCommand
 	// Argument Readers DEPRACATED TODO
 	// -------------------------------------------- //
 	
-	@Deprecated
+	/*@Deprecated
 	public synchronized <T> T argAs(int idx, Class<T> clazz, String style, T defaultNotSet, T defaultNotFound)
 	{
 		if ( ! this.argIsSet(idx))
@@ -516,6 +515,6 @@ public abstract class MCommand
 	{
 		return this.argAs(idx, clazz, (T)null, null);
 	}
-	
+	*/
 	
 }

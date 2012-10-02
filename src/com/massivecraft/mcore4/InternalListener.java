@@ -17,8 +17,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import com.massivecraft.mcore4.event.MCoreAfterPlayerRespawnEvent;
 import com.massivecraft.mcore4.event.MCoreAfterPlayerTeleportEvent;
 import com.massivecraft.mcore4.event.MCorePlayerLeaveEvent;
-import com.massivecraft.mcore4.persist.IClassManager;
-import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.PlayerColl;
 
@@ -33,6 +31,7 @@ public class InternalListener implements Listener
 		Bukkit.getServer().getPluginManager().registerEvents(this, this.p);
 	}
 	
+	/*
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerLogin(PlayerLoginEvent event)
 	{
@@ -47,7 +46,7 @@ public class InternalListener implements Listener
 				manager.create(id);
 			}
 		}
-	}
+	}*/
 	
 	// -------------------------------------------- //
 	// AFTER EVENTS

@@ -11,7 +11,6 @@ import com.massivecraft.mcore4.adapter.InventoryAdapter;
 import com.massivecraft.mcore4.adapter.ItemStackAdapter;
 import com.massivecraft.mcore4.adapter.MongoURIAdapter;
 import com.massivecraft.mcore4.adapter.PSAdapter;
-import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
 import com.massivecraft.mcore4.store.Db;
 import com.massivecraft.mcore4.store.MStore;
@@ -88,7 +87,6 @@ public class MCore extends MPlugin
 	{
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		// Note this one must be before preEnable. dooh.
-		Persist.instances.clear();
 		Coll.instances.clear();
 		
 		if ( ! preEnable()) return;

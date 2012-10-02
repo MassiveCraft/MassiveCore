@@ -9,25 +9,15 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.massivecraft.mcore4.cmd.Cmd;
 import com.massivecraft.mcore4.integration.Integration;
 import com.massivecraft.mcore4.integration.IntegrationFeatures;
-import com.massivecraft.mcore4.persist.One;
-import com.massivecraft.mcore4.persist.Persist;
 import com.massivecraft.mcore4.store.Coll;
-import com.massivecraft.mcore4.util.LibLoader;
 import com.massivecraft.mcore4.util.Txt;
 import com.massivecraft.mcore4.xlib.gson.Gson;
 import com.massivecraft.mcore4.xlib.gson.GsonBuilder;
 
 public abstract class MPlugin extends JavaPlugin implements Listener
 {
-	// Tools
-	public Cmd cmd;
-	public Persist persist;
-	public One one;
-	public LibLoader lib;
-	
 	// Gson
 	public Gson gson;
 	
@@ -48,12 +38,6 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		// Create Gson
 		this.gson = this.getGsonBuilder().create();
 		
-		// Create tools
-		this.cmd = new Cmd(); // TODO: Stop creating this asap :)
-		this.persist = new Persist(); // TODO: Stop creating this asap :)
-		this.one = new One(this); // TODO: Stop creating this asap :)
-		this.lib = new LibLoader(this); // TODO: Stop creating this asap :)
-		
 		return true;
 	}
 	
@@ -68,11 +52,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	
 	public void onDisable()
 	{
-		// Collection shutdowns for old system.
-		this.persist.saveAll();
-		Persist.instances.remove(this.persist);
-		
-		// Collection shutdowns for new system.
+		// Collection shutdowns.
 		for (Coll<?, ?> coll : Coll.instances)
 		{
 			if (coll.getMplugin() != this) continue;

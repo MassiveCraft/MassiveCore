@@ -427,7 +427,7 @@ public class Txt
 		
 		if (unitCountParts.size() == 0) return "just now";
 		
-		ret += implodeCommaAndDot(unitCountParts);
+		ret += implodeCommaAnd(unitCountParts);
 		ret += " ";
 		if (millis <= 0)
 		{

@@ -2,17 +2,12 @@ package com.massivecraft.mcore4.util;
 
 import java.io.File;
 
+import com.massivecraft.mcore4.MCore;
 import com.massivecraft.mcore4.MPlugin;
 
 public class LibLoader
 {	
-	MPlugin p;
-	public LibLoader(MPlugin p)
-	{
-		this.p = p;
-	}
-	
-	public boolean require(String filename, String url)
+	public static boolean require(String filename, String url, MPlugin p)
 	{
 		if ( ! include(filename, url))
 		{
@@ -23,7 +18,7 @@ public class LibLoader
 		return true;
 	}
 	
-	public boolean include (String filename, String url)
+	public static boolean include (String filename, String url)
 	{
 		File file = getFile(filename);
 		if ( ! file.exists())
@@ -31,14 +26,13 @@ public class LibLoader
 			File parent = file.getParentFile();
 			if (parent != null && !parent.exists()) parent.mkdirs();
 			
-			p.log("Downloading library "+filename);
+			MCore.p.log("Downloading library "+filename);
 			if ( ! DiscUtil.downloadUrl(url, file))
 			{
-				p.log("Failed to download "+filename);
+				MCore.p.log(Txt.parse("<b>Failed to download <h>%s", filename));
 				return false;
 			}
 		}
-		
 		return ClassLoadHack.load(file);
 	}
 	
