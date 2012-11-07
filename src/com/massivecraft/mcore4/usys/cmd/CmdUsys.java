@@ -1,11 +1,14 @@
 package com.massivecraft.mcore4.usys.cmd;
 
+import com.massivecraft.mcore4.Conf;
 import com.massivecraft.mcore4.Permission;
 import com.massivecraft.mcore4.cmd.HelpCommand;
 import com.massivecraft.mcore4.cmd.req.ReqHasPerm;
 
 public class CmdUsys extends UsysCommand
-{	
+{
+	public final static String USYS = "usys";
+	
 	public CmdUsysMultiverse cmdUsysMultiverse = new CmdUsysMultiverse();
 	public CmdUsysUniverse cmdUsysUniverse = new CmdUsysUniverse();
 	public CmdUsysWorld cmdUsysWorld = new CmdUsysWorld();
@@ -15,8 +18,7 @@ public class CmdUsys extends UsysCommand
 	{
 		super();
 		
-		// TODO: Make configurable
-		this.addAliases("usys");
+		this.addAliases(Conf.cmdaliases.get(USYS));
 		
 		this.addSubCommand(this.cmdUsysMultiverse);
 		this.addSubCommand(this.cmdUsysUniverse);
