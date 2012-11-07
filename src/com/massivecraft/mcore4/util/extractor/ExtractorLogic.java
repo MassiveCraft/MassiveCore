@@ -14,10 +14,10 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
@@ -48,7 +48,7 @@ public class ExtractorLogic
 	public static Player player(InventoryClickEvent o) { return player(o.getWhoClicked()); }
 	public static Player player(InventoryCloseEvent o) { return player(o.getPlayer()); }
 	public static Player player(InventoryOpenEvent o) { return player(o.getPlayer()); }
-	public static Player player(PaintingBreakByEntityEvent o) { return player(o.getRemover()); }
+	public static Player player(HangingBreakByEntityEvent o) { return player(o.getRemover()); }
 	public static Player player(VehicleDamageEvent o) { return player(o.getAttacker()); }
 	public static Player player(VehicleDestroyEvent o) { return player(o.getAttacker()); }
 	public static Player player(VehicleEnterEvent o) { return player(o.getEntered()); }
@@ -73,7 +73,7 @@ public class ExtractorLogic
 		if (o instanceof InventoryClickEvent) return player((InventoryClickEvent)o);
 		if (o instanceof InventoryCloseEvent) return player((InventoryCloseEvent)o);
 		if (o instanceof InventoryOpenEvent) return player((InventoryOpenEvent)o);
-		if (o instanceof PaintingBreakByEntityEvent) return player((PaintingBreakByEntityEvent)o);
+		if (o instanceof HangingBreakByEntityEvent) return player((HangingBreakByEntityEvent)o);
 		if (o instanceof VehicleDamageEvent) return player((VehicleDamageEvent)o);
 		if (o instanceof VehicleDestroyEvent) return player((VehicleDestroyEvent)o);
 		if (o instanceof VehicleEnterEvent) return player((VehicleEnterEvent)o);

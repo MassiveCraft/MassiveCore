@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
 
 public class PlayerUtil implements Listener
@@ -57,9 +57,9 @@ public class PlayerUtil implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onLowestPlayerPreLoginEvent(PlayerPreLoginEvent event)
+	public void onLowestPlayerLoginEvent(PlayerLoginEvent event)
 	{
-		String newPlayerName = event.getName();
+		String newPlayerName = event.getPlayer().getName();
 		String lowercaseNewPlayerName = newPlayerName.toLowerCase();
 		
 		// Add this name to the case-corrector map
