@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -144,6 +145,22 @@ public class MUtil
 			K key = (K) iter.next();
 			V value = (V) iter.next();
 			ret.put(key, value);
+		}
+		
+		return ret;
+	}
+	
+	public static <K, V> Map<V, K> flippedMap(Map<K, V> map)
+	{
+		Map<V, K> ret = new LinkedHashMap<V, K>();
+		
+		for(Entry<K, V> entry : map.entrySet())
+		{
+			V value = entry.getValue();
+			K key = entry.getKey();
+			
+			if (value == null) continue;
+			ret.put(value, key);
 		}
 		
 		return ret;

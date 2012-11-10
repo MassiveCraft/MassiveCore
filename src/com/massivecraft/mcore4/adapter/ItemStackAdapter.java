@@ -3,6 +3,10 @@ package com.massivecraft.mcore4.adapter;
 import java.lang.reflect.Type;
 import java.util.Map.Entry;
 
+import net.minecraft.server.NBTBase;
+import net.minecraft.server.NBTTagCompound;
+
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,6 +28,7 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 	public static final String AMOUNT = "amount";
 	public static final String DAMAGE = "damage";
 	public static final String ENCHANTMENTS = "enchantments";
+	public static final String TAG = "tag";
 	
 	// -------------------------------------------- //
 	// IMPLEMENTATION
@@ -45,39 +50,71 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 	// JSON
 	// -------------------------------------------- //
 	
-	public static JsonObject toJson(ItemStack itemStack)
+	public static JsonObject toJson(ItemStack stack)
 	{
-		if (itemStack == null || itemStack.getTypeId() == 0 || itemStack.getAmount() == 0)
+		// Check for "nothing"
+		if (stack == null || stack.getTypeId() == 0 || stack.getAmount() == 0)
 		{
 			return null;
 		}
 		
 		JsonObject jsonItemStack = new JsonObject();
 		
-		jsonItemStack.addProperty(ItemStackAdapter.TYPE, itemStack.getTypeId());
+		// Add type id
+		jsonItemStack.addProperty(TYPE, stack.getTypeId());
 		
-		if (itemStack.getAmount() != 1)
+		// Add amount
+		if (stack.getAmount() != 1)
 		{
-			jsonItemStack.addProperty(ItemStackAdapter.AMOUNT, itemStack.getAmount());
+			jsonItemStack.addProperty(AMOUNT, stack.getAmount());
 		}
-		if (itemStack.getDurability() != 0) // Durability is a weird name since it is the amount of damage.
+		
+		// Add damage
+		if (stack.getDurability() != 0) // Durability is a weird name since it is the amount of damage.
 		{
-			jsonItemStack.addProperty(ItemStackAdapter.DAMAGE, itemStack.getDurability());
+			jsonItemStack.addProperty(DAMAGE, stack.getDurability());
 		}
-		if (itemStack.getEnchantments().size() > 0)
+		
+		// Add enchantments
+		if (stack.getEnchantments().size() > 0)
 		{
 			JsonObject jsonEnchantments = new JsonObject();
-			for (Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet())
+			for (Entry<Enchantment, Integer> entry : stack.getEnchantments().entrySet())
 			{
 				jsonEnchantments.addProperty(String.valueOf(entry.getKey().getId()), entry.getValue());
 			}
 			jsonItemStack.add(ItemStackAdapter.ENCHANTMENTS, jsonEnchantments);
 		}
+		
+		// Add the tag if there is one 
+		JsonObject tag = getEnchFreeGsonTagFromItemStack(stack);
+		if (tag != null)
+		{
+			jsonItemStack.add(TAG, tag);
+		}
+		
 		return jsonItemStack;
+	}
+	
+	// Used by method toJson
+	public static JsonObject getEnchFreeGsonTagFromItemStack(ItemStack stack)
+	{
+		if (!(stack instanceof CraftItemStack)) return null;
+		CraftItemStack craftItemStack = (CraftItemStack)stack;
+		
+		NBTTagCompound nbt = craftItemStack.getHandle().tag;
+		if (nbt == null) return null;
+		
+		JsonObject gsonbt = (JsonObject) NbtGsonConverter.nbtToGsonVal(nbt);
+		gsonbt.remove("ench");
+		if (gsonbt.entrySet().size() == 0) return null;
+		
+		return gsonbt;		
 	}
 	
 	public static ItemStack fromJson(JsonElement json)
 	{
+		// Check for "nothing"
 		if (json == null || ! json.isJsonObject()) return null;
 		
 		JsonObject jsonItemStack = json.getAsJsonObject();
@@ -87,28 +124,37 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		int amount = 1;
 		short damage = 0;
 		
-		if (jsonItemStack.has(ItemStackAdapter.TYPE))
+		if (jsonItemStack.has(TYPE))
 		{
-			type = jsonItemStack.get(ItemStackAdapter.TYPE).getAsInt();
+			type = jsonItemStack.get(TYPE).getAsInt();
 		}
 		
-		if (jsonItemStack.has(ItemStackAdapter.AMOUNT))
+		if (jsonItemStack.has(AMOUNT))
 		{
-			amount = jsonItemStack.get(ItemStackAdapter.AMOUNT).getAsInt();
+			amount = jsonItemStack.get(AMOUNT).getAsInt();
 		}
 		
-		if (jsonItemStack.has(ItemStackAdapter.DAMAGE))
+		if (jsonItemStack.has(DAMAGE))
 		{
-			damage = jsonItemStack.get(ItemStackAdapter.DAMAGE).getAsShort();
+			damage = jsonItemStack.get(DAMAGE).getAsShort();
 		}
 		
 		// Create Non enchanted stack
-		ItemStack stack = new ItemStack(type, amount, damage);
+		CraftItemStack stack = new CraftItemStack(type, amount, damage);
 		
-	    // Add enchantments if there are any
-		if (jsonItemStack.has(ItemStackAdapter.ENCHANTMENTS))
+		// Add tag
+		if (jsonItemStack.has(TAG))
 		{
-			JsonObject jsonEnchantments = jsonItemStack.get(ItemStackAdapter.ENCHANTMENTS).getAsJsonObject();
+			JsonObject jsonbt = jsonItemStack.get(TAG).getAsJsonObject();
+			CraftItemStack craftItemStack = stack;
+			NBTBase nbt = NbtGsonConverter.gsonValToNbt(jsonbt, null, NBType.COMPOUND, NBType.UNKNOWN);
+			craftItemStack.getHandle().tag = (NBTTagCompound) nbt;
+		}
+		
+		// Add enchantments if there are any
+		if (jsonItemStack.has(ENCHANTMENTS))
+		{
+			JsonObject jsonEnchantments = jsonItemStack.get(ENCHANTMENTS).getAsJsonObject();
 			for (Entry<String, JsonElement> enchantmentEntry: jsonEnchantments.entrySet())
 			{
 				int enchantmentId = Integer.valueOf(enchantmentEntry.getKey());
