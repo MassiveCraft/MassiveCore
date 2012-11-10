@@ -35,7 +35,7 @@ public class NbtGsonConverter
 	public final static String NAME = "name";
 	
 	// -------------------------------------------- //
-	// GSON 2 NBT
+	// GSON TO NBT
 	// -------------------------------------------- //
 	
 	public static NBTBase gsonToNbt(JsonElement jsonElement)

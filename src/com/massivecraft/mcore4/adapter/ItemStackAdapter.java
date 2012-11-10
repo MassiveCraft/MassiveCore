@@ -140,13 +140,16 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		}
 		
 		// Create Non enchanted stack
-		CraftItemStack stack = new CraftItemStack(type, amount, damage);
+		ItemStack stack = new ItemStack(type, amount, damage);
 		
 		// Add tag
 		if (jsonItemStack.has(TAG))
 		{
 			JsonObject jsonbt = jsonItemStack.get(TAG).getAsJsonObject();
-			CraftItemStack craftItemStack = stack;
+			
+			CraftItemStack craftItemStack = new CraftItemStack(stack);
+			stack = craftItemStack;
+			
 			NBTBase nbt = NbtGsonConverter.gsonValToNbt(jsonbt, null, NBType.COMPOUND, NBType.UNKNOWN);
 			craftItemStack.getHandle().tag = (NBTTagCompound) nbt;
 		}
