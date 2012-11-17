@@ -26,6 +26,11 @@ public class Txt
 	public static final long millisPerMonth  =   31 * millisPerDay;
 	public static final long millisPerYear   =  365 * millisPerDay;
 	
+	public static final Set<String> vowel = MUtil.set(
+		"A", "E", "I", "O", "U", "Y", "Å", "Ä", "Ö",
+		"a", "e", "i", "o", "u", "y", "å", "ä", "ö"
+	); 
+	
 	public static Map<String, Long> unitMillis;
 	
 	static
@@ -328,18 +333,39 @@ public class Txt
 		return new SimpleEntry<String, String>(first, second);
 	}
 	
+	public static boolean isVowel(String str)
+	{
+		if (str == null || str.length() == 0) return false;
+		return vowel.contains(str.substring(0, 1));
+	}
+	
+	public static String aan(String noun)
+	{
+		return isVowel(noun) ? "an" : "a";
+	}
+	
 	// -------------------------------------------- //
 	// Material name tools
 	// -------------------------------------------- //
 	
-	public static String getMaterialName(Material material)
+	public static String getNicedEnumString(String str)
 	{
 		List<String> parts = new ArrayList<String>();  
-		for (String part : material.toString().toLowerCase().split("_"))
+		for (String part : str.toLowerCase().split("_"))
 		{
 			parts.add(upperCaseFirst(part));
 		}
 		return implode(parts, " ");
+	}
+	
+	public static String getNicedEnum(Object enumObject)
+	{
+		return getNicedEnumString(enumObject.toString());
+	}
+	
+	public static String getMaterialName(Material material)
+	{
+		return getNicedEnum(material);
 	}
 	
 	public static String getMaterialName(int materialId)
