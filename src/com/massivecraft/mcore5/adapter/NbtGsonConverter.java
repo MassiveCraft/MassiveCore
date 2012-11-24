@@ -75,12 +75,10 @@ public class NbtGsonConverter
 		if (type == NBType.LIST)
 		{
 			JsonElement elemtypeElement = jsonObject.get(ELEMTYPE);
-			if (elemtypeElement == null)
+			if (elemtypeElement != null)
 			{
-				// must have an elemtype
-				return null;
+				elemtype = NBType.getByName(elemtypeElement.getAsString());
 			}
-			elemtype = NBType.getByName(elemtypeElement.getAsString());
 		}
 		
 		// Fetch the value field
@@ -215,7 +213,13 @@ public class NbtGsonConverter
 		
 		if (type == NBType.LIST)
 		{
-			ret.addProperty(ELEMTYPE, NBType.getByTag(((NBTTagList)nbt).get(0)).getName());
+			NBType elemtype = NBType.UNKNOWN;
+			NBTTagList nbtl = (NBTTagList)nbt;
+			if (nbtl.size() > 0)
+			{
+				elemtype = NBType.getByTag(nbtl.get(0));
+			}
+			ret.addProperty(ELEMTYPE, elemtype.getName());
 		}
 		
 		JsonElement val = nbtToGsonVal(nbt);
