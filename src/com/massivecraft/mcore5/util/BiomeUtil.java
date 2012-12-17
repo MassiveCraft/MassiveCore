@@ -5,11 +5,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 
-import org.bukkit.World;
-import org.bukkit.craftbukkit.CraftWorld;
+import net.minecraft.server.v1_4_5.BiomeBase;
+import net.minecraft.server.v1_4_5.Chunk;
+import net.minecraft.server.v1_4_5.WorldServer;
 
-import net.minecraft.server.BiomeBase;
-import net.minecraft.server.WorldServer;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_4_5.CraftWorld;
 
 public class BiomeUtil
 {
@@ -44,7 +45,7 @@ public class BiomeUtil
 		
 		BiomeBase bb = BiomeBase.biomes[id];
         if (craftWorld.loadChunk(x >> 4, z >> 4, false)) {
-            net.minecraft.server.Chunk chunk = worldServer.getChunkAtWorldCoords(x, z);
+            Chunk chunk = worldServer.getChunkAtWorldCoords(x, z);
 
             if (chunk != null) {
                 byte[] biomevals = chunk.m();

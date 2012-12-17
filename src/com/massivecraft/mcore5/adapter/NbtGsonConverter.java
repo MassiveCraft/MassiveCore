@@ -1,22 +1,22 @@
 package com.massivecraft.mcore5.adapter;
 
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagByte;
-import net.minecraft.server.NBTTagByteArray;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagDouble;
-import net.minecraft.server.NBTTagEnd;
-import net.minecraft.server.NBTTagFloat;
-import net.minecraft.server.NBTTagInt;
-import net.minecraft.server.NBTTagIntArray;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.NBTTagLong;
-import net.minecraft.server.NBTTagShort;
-import net.minecraft.server.NBTTagString;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import net.minecraft.server.v1_4_5.NBTBase;
+import net.minecraft.server.v1_4_5.NBTTagByte;
+import net.minecraft.server.v1_4_5.NBTTagByteArray;
+import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.v1_4_5.NBTTagDouble;
+import net.minecraft.server.v1_4_5.NBTTagEnd;
+import net.minecraft.server.v1_4_5.NBTTagFloat;
+import net.minecraft.server.v1_4_5.NBTTagInt;
+import net.minecraft.server.v1_4_5.NBTTagIntArray;
+import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.v1_4_5.NBTTagLong;
+import net.minecraft.server.v1_4_5.NBTTagShort;
+import net.minecraft.server.v1_4_5.NBTTagString;
 
 import com.massivecraft.mcore5.xlib.gson.JsonArray;
 import com.massivecraft.mcore5.xlib.gson.JsonElement;

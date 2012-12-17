@@ -5,15 +5,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.server.ChunkPosition;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.Packet60Explosion;
+import net.minecraft.server.v1_4_5.ChunkPosition;
+import net.minecraft.server.v1_4_5.MinecraftServer;
+import net.minecraft.server.v1_4_5.Packet60Explosion;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.v1_4_5.CraftServer;
+import org.bukkit.craftbukkit.v1_4_5.CraftWorld;
 
 // http://mc.kev009.com/Protocol
 // -----------------------------
