@@ -155,8 +155,8 @@ public class PS implements Cloneable
 	
 	// Field: pitch
 	@SerializedName("p")
-	@Getter protected Float pitch = null;
-	public void setPitch(Float val) 
+	@Getter @Setter protected Float pitch = null;
+	/*public void setPitch(Float val) 
 	{
 		if (val == null)
 		{
@@ -166,7 +166,7 @@ public class PS implements Cloneable
 		{
 			this.pitch = (val + 360F) % 360F;
 		}
-	}
+	}*/
 	
 	// Field: yaw
 	@SerializedName("y")
@@ -233,7 +233,7 @@ public class PS implements Cloneable
 		Float yaw = this.getYaw();
 		if (yaw == null) yaw = 0F;
 		
-		return new Location(world, x, y, z, pitch, yaw);
+		return new Location(world, x, y, z, yaw, pitch);
 	}
 	
 	public synchronized Block getBlock()

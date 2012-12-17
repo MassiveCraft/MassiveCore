@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -29,6 +30,13 @@ public class MCoreAfterPlayerTeleportEvent extends Event implements Runnable
 	public Location getTo() { return this.bukkitEvent.getTo(); }
 	public Player getPlayer() { return this.bukkitEvent.getPlayer(); }
 	public TeleportCause getCause() { return this.bukkitEvent.getCause(); }
+	
+	public boolean isCrossWorlds()
+	{
+		World worldFrom = this.getFrom().getWorld();
+		World worldTo = this.getTo().getWorld();
+		return ! worldFrom.equals(worldTo);
+	}
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

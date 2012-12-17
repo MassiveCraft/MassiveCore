@@ -179,6 +179,25 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
+	// LE NICE EQUALS
+	// -------------------------------------------- //
+	
+	public static boolean equals(Object herp, Object derp)
+	{
+		if (herp == null && derp == null)
+		{
+			return true;
+		}
+		
+		if (herp == null || derp == null)
+		{
+			return false;
+		}
+		
+		return herp.equals(derp);
+	}
+	
+	// -------------------------------------------- //
 	// SORTING
 	// -------------------------------------------- //
 	

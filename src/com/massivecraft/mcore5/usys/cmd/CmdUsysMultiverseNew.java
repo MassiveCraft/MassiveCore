@@ -19,9 +19,9 @@ public class CmdUsysMultiverseNew extends UsysCommand
 	{
 		String id = this.arg(0);
 		
-		if (MultiverseColl.i.getIds().contains(id))
+		if (MultiverseColl.i.containsId(id))
 		{
-			msg("<b>The multiverse <h>%s<b> alread exists.", id);
+			msg("<b>The multiverse <h>%s<b> already exists.", id);
 			return;
 		}
 		
