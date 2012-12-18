@@ -1,5 +1,6 @@
 package com.massivecraft.mcore5.adapter;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Map.Entry;
 
@@ -102,7 +103,7 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		if (!(stack instanceof CraftItemStack)) return null;
 		CraftItemStack craftItemStack = (CraftItemStack)stack;
 		
-		NBTTagCompound nbt = craftItemStack.getHandle().tag;
+		NBTTagCompound nbt = getHandle(craftItemStack).tag;
 		if (nbt == null) return null;
 		
 		JsonObject gsonbt = (JsonObject) NbtGsonConverter.nbtToGsonVal(nbt);
@@ -147,11 +148,12 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		{
 			JsonObject jsonbt = jsonItemStack.get(TAG).getAsJsonObject();
 			
-			CraftItemStack craftItemStack = new CraftItemStack(stack);
+			CraftItemStack craftItemStack = CraftItemStack.asCraftCopy(stack);
 			stack = craftItemStack;
 			
 			NBTBase nbt = NbtGsonConverter.gsonValToNbt(jsonbt, null, NBType.COMPOUND, NBType.UNKNOWN);
-			craftItemStack.getHandle().tag = (NBTTagCompound) nbt;
+			
+			getHandle(craftItemStack).tag = (NBTTagCompound) nbt;
 		}
 		
 		// Add enchantments if there are any
@@ -167,5 +169,37 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		}
 		
 		return stack;
+	}
+	
+	// -------------------------------------------- //
+	// GET HANDLE
+	// -------------------------------------------- //
+	
+	public static Field fieldCraftItemStackDotHandle = null;
+	
+	static
+	{
+		try
+		{
+			fieldCraftItemStackDotHandle = CraftItemStack.class.getDeclaredField("handle");
+			fieldCraftItemStackDotHandle.setAccessible(true);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static net.minecraft.server.v1_4_5.ItemStack getHandle(CraftItemStack craftItemStack)
+	{
+		try
+		{
+			return (net.minecraft.server.v1_4_5.ItemStack) fieldCraftItemStackDotHandle.get(craftItemStack);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

@@ -224,6 +224,9 @@ public class PlayerUtil implements Listener
 	
 	protected static void populateCaseInsensitiveNameToCaseCorrectName()
 	{   
+		// The player file may not exist yet
+		if (playerfolder == null) return;
+		
 		// Populate by removing .dat
 		for (File playerfile : playerfolder.listFiles())
 		{
