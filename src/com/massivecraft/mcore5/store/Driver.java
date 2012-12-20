@@ -17,6 +17,9 @@ public interface Driver<R>
 	// Could for example be JsonElement or DBObject
 	public Class<R> getRawdataClass();
 	
+	// Comparison of raw data should be done through this method
+	public boolean equal(Object rawOne, Object rawTwo);
+	
 	// This is some sort of database specific id strategy with built in adapter
 	public boolean registerIdStrategy(IdStrategy<?, ?> idStrategy);
 	public <L> IdStrategy<L, ?> getIdStrategy(String idStrategyName);

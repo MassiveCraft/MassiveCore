@@ -41,6 +41,18 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	@Override public Class<BasicDBObject> getRawdataClass() { return BasicDBObject.class; }
 	
 	@Override
+	public boolean equal(Object rawOne, Object rawTwo)
+	{
+		BasicDBObject one = (BasicDBObject)rawOne;
+		BasicDBObject two = (BasicDBObject)rawTwo;
+		
+		if (one == null && two == null) return true;
+		if (one == null || two == null) return false;
+		
+		return one.equals(two);
+	}
+	
+	@Override
 	public StoreAdapter getStoreAdapter()
 	{
 		return StoreAdapterMongo.get();

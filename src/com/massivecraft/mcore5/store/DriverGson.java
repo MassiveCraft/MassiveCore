@@ -31,6 +31,18 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	@Override public Class<JsonElement> getRawdataClass() { return JsonElement.class; }
 	
 	@Override
+	public boolean equal(Object rawOne, Object rawTwo)
+	{
+		JsonElement one = (JsonElement)rawOne;
+		JsonElement two = (JsonElement)rawTwo;
+		
+		if (one == null && two == null) return true;
+		if (one == null || two == null) return false;
+		
+		return one.toString().equals(two.toString());
+	}
+	
+	@Override
 	public StoreAdapter getStoreAdapter()
 	{
 		return StoreAdapterGson.get();

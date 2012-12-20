@@ -6,6 +6,7 @@ import org.bukkit.craftbukkit.v1_4_5.inventory.CraftInventoryCustom;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.mcore5.xlib.gson.JsonDeserializer;
 import com.massivecraft.mcore5.xlib.gson.JsonElement;
@@ -52,7 +53,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 		for (int i = 0; i < itemStacks.length; i++)
 		{
 			ItemStack itemStack = itemStacks[i];
-			JsonObject jsonItemStack = ItemStackAdapter.toJson(itemStack);
+			JsonElement jsonItemStack = MCore.gson.toJsonTree(itemStack, ItemStack.class);
 			if (jsonItemStack == null) continue;
 			jsonInventory.add(String.valueOf(i), jsonItemStack);
 		}
@@ -75,7 +76,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			// Fetch the jsonItemStack or mark it as empty and continue
 			String stackIdx = String.valueOf(i);
 			JsonElement jsonItemStack = jsonInventory.get(stackIdx);
-			ItemStack itemStack = ItemStackAdapter.fromJson(jsonItemStack);
+			ItemStack itemStack = MCore.gson.fromJson(jsonItemStack, ItemStack.class);
 			itemStacks[i] = itemStack;
 		}
 		
@@ -101,4 +102,12 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 		}
 		return true;
 	}
+	
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	public static InventoryAdapter i = new InventoryAdapter();
+	public static InventoryAdapter get() { return i; }
+	
 }

@@ -45,8 +45,8 @@ public class MCore extends MPlugin
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
 		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
-		.registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
-		.registerTypeAdapter(Inventory.class, new InventoryAdapter())
+		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
+		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
 		.registerTypeAdapter(PS.class, new PSAdapter());
 	}
 	

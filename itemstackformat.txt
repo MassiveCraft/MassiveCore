@@ -1,0 +1,123 @@
+# =============================================
+# Vanilla NBT prented as pseudo-json
+# =============================================
+
+{
+	id: short
+	Count: byte
+	Damage: short
+	tag:
+	{
+		display:
+		{
+			Name: str
+			Lore: [str]
+			color: int
+		}
+		ench:
+		[
+			{
+				id: int
+				lvl: int
+			}
+			{
+				id: int
+				lvl: int
+			}
+			...
+		]
+		title: str
+		author: str
+		pages: [str]
+		map_is_scaling: byte
+		SkullOwner: str
+		CustomPotionEffects:
+		[
+			{
+				ID: byte
+				Amplifier: byte
+				Duration: int
+				Amplifier: bool
+			}
+			...
+		]
+	}
+}
+
+# =============================================
+# Bukkit YAML prented as pseudo-json
+# =============================================
+
+{
+	type: str
+	damage: short
+	amount: int
+	meta:
+	{
+		meta-type: BOOK, SKULL, LEATHER_ARMOR, MAP, POTION or UNSPECIFIC
+		display-name: str
+		lore: [str]
+		enchants: 
+		{
+			id: lvl
+			...
+		}
+		repair-cost: int
+		title: str
+		author: str
+		pages: [str]
+		color:
+		{
+			RED: int
+			BLUE: int
+			GREEN: int
+		}
+		scaling: byte
+		skull-owner: str
+		custom-effects:
+		[
+			{
+				effect: int
+				duration: int
+				amplifier: int
+				ambient: bool
+			}
+			...
+		]
+	}
+}
+
+# =============================================
+# MassiveCraft Json prented as pseudo-json
+# =============================================
+
+{
+	id: int
+	count: int
+	damage: short
+	name: str
+	lore: [str]
+	enchants:
+	{
+		id: lvl
+		id: lvl
+		...
+	}
+	repaircost: int
+	title: str
+	author: str
+	pages: [str]
+	color: int
+	scaling: bool
+	skull: str
+	effects:
+	[
+		{
+			id: int
+			duration: int
+			amplifier: int
+			ambient: bool
+		}
+		...
+	]
+}

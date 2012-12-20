@@ -23,6 +23,7 @@ import com.massivecraft.mcore5.xlib.gson.JsonElement;
 import com.massivecraft.mcore5.xlib.gson.JsonObject;
 import com.massivecraft.mcore5.xlib.gson.JsonPrimitive;
 
+//TODO: This converter is deprecated as of 2012-12-20. It should be removed in some time.
 public class NbtGsonConverter
 {
 	// -------------------------------------------- //

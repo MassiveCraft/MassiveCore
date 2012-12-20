@@ -385,8 +385,12 @@ public class Coll<E, L> implements CollInterface<E, L>
 		
 		this.getStoreAdapter().write(this, raw, entity);
 		
+		// this.lastRaw.put(id, this.getStoreAdapter().read(this, entity));
 		// Store adapter again since result of a database read may be "different" from entity read.
-		this.lastRaw.put(id, this.getStoreAdapter().read(this, entity)); 
+		// WARN: This was causing many issues with config files not updating etc.
+		// The approach below may not work with MongoDB at all since that is not tested.
+		this.lastRaw.put(id, raw);
+		
 		this.lastMtime.put(id, mtime);
 		this.lastDefault.remove(id);
 	}
@@ -452,7 +456,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	{
 		Object lastRaw = this.lastRaw.get(id);
 		Object currentRaw = this.storeAdapter.read(this, entity);
-		return (currentRaw.equals(lastRaw) == false);
+		return (this.getDriver().equal(currentRaw, lastRaw) == false);
 	}
 	
 	@Override
