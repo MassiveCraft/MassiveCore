@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,6 +21,7 @@ import com.massivecraft.mcore5.event.MCoreAfterPlayerTeleportEvent;
 import com.massivecraft.mcore5.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore5.store.Coll;
 import com.massivecraft.mcore5.store.PlayerColl;
+import com.massivecraft.mcore5.util.SmokeUtil;
 
 public class InternalListener implements Listener
 {
@@ -47,6 +50,24 @@ public class InternalListener implements Listener
 			}
 		}
 	}*/
+	
+	// -------------------------------------------- //
+	// EXPLOSION FX
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void explosionFx(EntityDamageByBlockEvent event)
+	{
+		// If an entity is taking damage from a block explosion ...
+		DamageCause cause = event.getCause();
+		if (cause != DamageCause.BLOCK_EXPLOSION) return;
+		
+		// ... and that explosion is a fake ...
+		if (SmokeUtil.fakeExplosion == false) return;
+		
+		// ... then cancel the event and the damage.
+		event.setCancelled(true);
+	}
 	
 	// -------------------------------------------- //
 	// AFTER EVENTS

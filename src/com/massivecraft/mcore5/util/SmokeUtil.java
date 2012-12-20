@@ -1,19 +1,10 @@
 package com.massivecraft.mcore5.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
-import net.minecraft.server.v1_4_5.ChunkPosition;
-import net.minecraft.server.v1_4_5.MinecraftServer;
-import net.minecraft.server.v1_4_5.Packet60Explosion;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_4_5.CraftServer;
-import org.bukkit.craftbukkit.v1_4_5.CraftWorld;
 
 // http://mc.kev009.com/Protocol
 // -----------------------------
@@ -92,18 +83,27 @@ public class SmokeUtil
 	}
 	
 	// Fake Explosion ========
+	
 	public static void fakeExplosion(Location location)
 	{
-		fakeExplosion(location, (Bukkit.getViewDistance()+1)*16*2);
+		fakeExplosion(location, 4F);
 	}
 	
+	public static Boolean fakeExplosion = false;
+	public static void fakeExplosion(Location location, float power)
+	{
+		synchronized (fakeExplosion)
+		{
+			fakeExplosion = true;
+			location.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), power, false, false);
+			fakeExplosion = false;
+		}
+	}
+	
+	@Deprecated
 	public static void fakeExplosion(Location location, int viewDistance)
 	{
-		List<ChunkPosition> chunkPositions = new ArrayList<ChunkPosition>();
-		Packet60Explosion packet = new Packet60Explosion(location.getX(),location.getY(), location.getZ(), 0.1f, chunkPositions, null);
-		CraftServer craftServer = (CraftServer) Bukkit.getServer();
-		MinecraftServer minecraftServer = craftServer.getServer();
-		minecraftServer.getServerConfigurationManager().sendPacketNearby(location.getX(), location.getY(), location.getZ(), viewDistance, ((CraftWorld)location.getWorld()).getHandle().dimension, packet);
+		fakeExplosion(location);
 	}
 	
 	// -------------------------------------------- //
