@@ -19,8 +19,8 @@ public class BukkitGlueCommand extends Command
 	{
 		if ( ! mcommand.p().isEnabled())
 		{
-            return false;
-        }
+			return false;
+		}
 		
 		this.mcommand.execute(sender, Txt.tokenizeArguments(Txt.implode(args, " ")));
 		return true;

@@ -47,42 +47,42 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 	public static final String DAMAGE = "damage";
 	
 	public static final String NAME = "name";
-    public static final String LORE = "lore";
-    
-    public static final String ENCHANTS = "enchants";
-    
-    public static final String REPAIRCOST = "repaircost";
-    
-    public static final String BOOK_TITLE = "title";
-    public static final String BOOK_AUTHOR = "author";
-    public static final String BOOK_PAGES = "pages";
-    
-    public static final String LEATHER_ARMOR_COLOR = "color";
-    
-    public static final String MAP_SCALING = "scaling";
-    
-    public static final String SKULL_OWNER = "skull";
-    
-    public static final String POTION_EFFECTS = "effects";
-    
+	public static final String LORE = "lore";
+	
+	public static final String ENCHANTS = "enchants";
+	
+	public static final String REPAIRCOST = "repaircost";
+	
+	public static final String BOOK_TITLE = "title";
+	public static final String BOOK_AUTHOR = "author";
+	public static final String BOOK_PAGES = "pages";
+	
+	public static final String LEATHER_ARMOR_COLOR = "color";
+	
+	public static final String MAP_SCALING = "scaling";
+	
+	public static final String SKULL_OWNER = "skull";
+	
+	public static final String POTION_EFFECTS = "effects";
+	
 	// -------------------------------------------- //
 	// OTHER CONSTANTS
 	// -------------------------------------------- //
-    
-    public static final int DEFAULT_ID;
-    public static final int DEFAULT_COUNT;
-    public static final int DEFAULT_DAMAGE;
-    
-    // TODO: Awaiting https://bukkit.atlassian.net/browse/BUKKIT-3203
-    static final Color DEFAULT_LEATHER_COLOR = Color.fromRGB(0xA06540);
-    
-    static
-    {
-    	ItemStack stack = createItemStack();
-    	DEFAULT_ID = stack.getTypeId();
-    	DEFAULT_COUNT = stack.getAmount();
-    	DEFAULT_DAMAGE = stack.getDurability();
-    }
+	
+	public static final int DEFAULT_ID;
+	public static final int DEFAULT_COUNT;
+	public static final int DEFAULT_DAMAGE;
+	
+	// TODO: Awaiting https://bukkit.atlassian.net/browse/BUKKIT-3203
+	static final Color DEFAULT_LEATHER_COLOR = Color.fromRGB(0xA06540);
+	
+	static
+	{
+		ItemStack stack = createItemStack();
+		DEFAULT_ID = stack.getTypeId();
+		DEFAULT_COUNT = stack.getAmount();
+		DEFAULT_DAMAGE = stack.getDurability();
+	}
 	
 	// -------------------------------------------- //
 	// GSON INTERFACE IMPLEMENTATION
@@ -286,7 +286,7 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 		if (meta2json)
 		{
 			if ( ! meta.hasLore()) return;
-	        json.add(LORE, fromStringCollection(meta.getLore()));
+			json.add(LORE, fromStringCollection(meta.getLore()));
 		}
 		else
 		{
@@ -306,13 +306,13 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 		{
 			if ( ! meta.hasEnchants()) return;
 			
-	    	JsonObject enchants = new JsonObject();
-	    	for (Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet())
-	    	{
-	    		enchants.addProperty(String.valueOf(entry.getKey().getId()), entry.getValue());
-	    	}
-	    	
-	    	json.add(ENCHANTS, enchants);
+			JsonObject enchants = new JsonObject();
+			for (Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet())
+			{
+				enchants.addProperty(String.valueOf(entry.getKey().getId()), entry.getValue());
+			}
+			
+			json.add(ENCHANTS, enchants);
 		}
 		else
 		{
@@ -342,7 +342,7 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 		if (meta2json)
 		{
 			if ( ! repairable.hasRepairCost()) return;
-	    	json.addProperty(REPAIRCOST, repairable.getRepairCost());
+			json.addProperty(REPAIRCOST, repairable.getRepairCost());
 		}
 		else
 		{
@@ -528,11 +528,11 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 	public static JsonArray fromStringCollection(Collection<String> strings)
 	{
 		JsonArray ret = new JsonArray();
-    	for (String string : strings)
-    	{
-    		ret.add(new JsonPrimitive(string));
-    	}
-    	return ret;
+		for (String string : strings)
+		{
+			ret.add(new JsonPrimitive(string));
+		}
+		return ret;
 	}
 	
 	public static List<String> toStringCollection(JsonElement json)
@@ -546,8 +546,8 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 			JsonElement element = iter.next();
 			ret.add(element.getAsString());
 		}
-    	
-    	return ret;
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //

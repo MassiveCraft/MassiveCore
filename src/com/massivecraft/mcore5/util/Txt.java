@@ -19,12 +19,12 @@ public class Txt
 	public static final Pattern parsePattern;
 	
 	public static final long millisPerSecond = 1000;
-	public static final long millisPerMinute =   60 * millisPerSecond;
-	public static final long millisPerHour   =   60 * millisPerMinute;
-	public static final long millisPerDay    =   24 * millisPerHour;
-	public static final long millisPerWeek   =    7 * millisPerDay;
-	public static final long millisPerMonth  =   31 * millisPerDay;
-	public static final long millisPerYear   =  365 * millisPerDay;
+	public static final long millisPerMinute = 60 * millisPerSecond;
+	public static final long millisPerHour = 60 * millisPerMinute;
+	public static final long millisPerDay = 24 * millisPerHour;
+	public static final long millisPerWeek = 7 * millisPerDay;
+	public static final long millisPerMonth = 31 * millisPerDay;
+	public static final long millisPerYear = 365 * millisPerDay;
 	
 	public static final Set<String> vowel = MUtil.set(
 		"A", "E", "I", "O", "U", "Y", "Å", "Ä", "Ö",
@@ -210,32 +210,32 @@ public class Txt
 	
 	public static String repeat(String string, int times)
 	{
-	    if (times <= 0) return "";
-	    else return string + repeat(string, times-1);
+		if (times <= 0) return "";
+		else return string + repeat(string, times-1);
 	}
 	
 	public static String implode(final Object[] list, final String glue, final String format)
 	{
-	    StringBuilder ret = new StringBuilder();
-	    for (int i=0; i<list.length; i++)
-	    {
-	    	Object item = list[i];
-	    	String str = (item == null ? "NULL" : item.toString());
-	    	
-	        if (i!=0)
-	        {
-	        	ret.append(glue);
-	        }
-	        if (format != null)
-	        {
-	        	ret.append(String.format(format, str));
-	        }
-	        else
-	        {
-	        	ret.append(str);
-	        }
-	    }
-	    return ret.toString();
+		StringBuilder ret = new StringBuilder();
+		for (int i=0; i<list.length; i++)
+		{
+			Object item = list[i];
+			String str = (item == null ? "NULL" : item.toString());
+			
+			if (i!=0)
+			{
+				ret.append(glue);
+			}
+			if (format != null)
+			{
+				ret.append(String.format(format, str));
+			}
+			else
+			{
+				ret.append(str);
+			}
+		}
+		return ret.toString();
 	}
 	public static String implode(final Object[] list, final String glue)
 	{
@@ -252,7 +252,7 @@ public class Txt
 	
 	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String format, final String comma, final String and, final String dot)
 	{
-	    if (objects.size() == 0) return "";
+		if (objects.size() == 0) return "";
 		if (objects.size() == 1)
 		{
 			return implode(objects, comma, format);
@@ -285,11 +285,11 @@ public class Txt
 	}
 	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String color)
 	{
-	    return implodeCommaAndDot(objects, color+", ", color+" and ", color+".");
+		return implodeCommaAndDot(objects, color+", ", color+" and ", color+".");
 	}
 	public static String implodeCommaAnd(final Collection<? extends Object> objects, final String color)
 	{
-	    return implodeCommaAndDot(objects, color+", ", color+" and ", "");
+		return implodeCommaAndDot(objects, color+", ", color+" and ", "");
 	}
 	public static String implodeCommaAndDot(final Collection<? extends Object> objects)
 	{

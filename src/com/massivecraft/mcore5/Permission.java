@@ -28,7 +28,7 @@ public enum Permission
 	Permission(final String permissionNode)
 	{
 		this.node = "mcore."+permissionNode;
-    }
+	}
 	
 	public boolean has(CommandSender sender, boolean informSenderIfNot)
 	{

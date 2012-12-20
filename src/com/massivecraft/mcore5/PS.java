@@ -530,18 +530,18 @@ public class PS implements Cloneable
 	// TO STRING
 	//----------------------------------------------//
 	
-    @Override
-    public synchronized String toString()
-    {
-    	return this.getClass().getSimpleName()+MCore.gson.toJson(this);
-    }
-    
-    protected final transient static DecimalFormat twoDForm = new DecimalFormat("#.##");
-    public List<String> getDesc()
-    {
-    	// ret.add("<h>World <a>"+this.worldName);
-    	return this.getDesc("<k>%s <v>%s");
-    }
+	@Override
+	public synchronized String toString()
+	{
+		return this.getClass().getSimpleName()+MCore.gson.toJson(this);
+	}
+	
+	protected final transient static DecimalFormat twoDForm = new DecimalFormat("#.##");
+	public List<String> getDesc()
+	{
+		// ret.add("<h>World <a>"+this.worldName);
+		return this.getDesc("<k>%s <v>%s");
+	}
 	public List<String> getDesc(String format)
 	{
 		List<String> ret = new ArrayList<String>();
@@ -570,9 +570,9 @@ public class PS implements Cloneable
 	}
 	
 	public String getShortDesc()
-    {
-    	return this.getShortDesc("<k>%s <v>%s ");
-    }
+	{
+		return this.getShortDesc("<k>%s <v>%s ");
+	}
 	public String getShortDesc(String format)
 	{
 		List<String> ret = new ArrayList<String>();

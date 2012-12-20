@@ -32,7 +32,7 @@ public class ExamineThread<E, L> extends Thread
 			catch (InterruptedException e)
 			{
 				// We've been interrupted. Lets bail.
-		        return;
+				return;
 			}
 			catch (Exception e)
 			{

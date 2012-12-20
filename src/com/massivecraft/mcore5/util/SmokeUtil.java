@@ -19,16 +19,16 @@ import org.bukkit.craftbukkit.v1_4_5.CraftWorld;
 // -----------------------------
 // Smoke Directions 
 // -----------------------------
-// Direction ID    Direction
-//            0    South - East
-//            1    South
-//            2    South - West
-//            3    East
-//            4    (Up or middle ?)
-//            5    West
-//            6    North - East
-//            7    North
-//            8    North - West
+// Direction 	ID	Direction
+//				0	South - East
+//				1	South
+//				2	South - West
+//				3	East
+//				4	(Up or middle ?)
+//				5	West
+//				6	North - East
+//				7	North
+//				8	North - West
 //-----------------------------
 
 public class SmokeUtil
@@ -98,13 +98,13 @@ public class SmokeUtil
 	}
 	
 	public static void fakeExplosion(Location location, int viewDistance)
-    {
-        List<ChunkPosition> chunkPositions = new ArrayList<ChunkPosition>();
-        Packet60Explosion packet = new Packet60Explosion(location.getX(),location.getY(), location.getZ(), 0.1f, chunkPositions, null);
-        CraftServer craftServer = (CraftServer) Bukkit.getServer();
-        MinecraftServer minecraftServer = craftServer.getServer();
-        minecraftServer.getServerConfigurationManager().sendPacketNearby(location.getX(), location.getY(), location.getZ(), viewDistance, ((CraftWorld)location.getWorld()).getHandle().dimension, packet);
-    }
+	{
+		List<ChunkPosition> chunkPositions = new ArrayList<ChunkPosition>();
+		Packet60Explosion packet = new Packet60Explosion(location.getX(),location.getY(), location.getZ(), 0.1f, chunkPositions, null);
+		CraftServer craftServer = (CraftServer) Bukkit.getServer();
+		MinecraftServer minecraftServer = craftServer.getServer();
+		minecraftServer.getServerConfigurationManager().sendPacketNearby(location.getX(), location.getY(), location.getZ(), viewDistance, ((CraftWorld)location.getWorld()).getHandle().dimension, packet);
+	}
 	
 	// -------------------------------------------- //
 	// Attach continuous effects to or locations

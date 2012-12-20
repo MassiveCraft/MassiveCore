@@ -34,7 +34,7 @@
 		CustomPotionEffects:
 		[
 			{
-				ID: byte
+				Id: byte
 				Amplifier: byte
 				Duration: int
 				Amplifier: bool

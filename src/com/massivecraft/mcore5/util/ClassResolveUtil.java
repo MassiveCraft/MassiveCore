@@ -45,13 +45,13 @@ public class ClassResolveUtil
 		
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		
-        try
-        {
-            return classLoader.loadClass(className);
-        }
-        catch (ClassNotFoundException e)
-        {
-            return Class.forName(className, false, classLoader);
-        }
+		try
+		{
+			return classLoader.loadClass(className);
+		}
+		catch (ClassNotFoundException e)
+		{
+			return Class.forName(className, false, classLoader);
+		}
 	}
 }

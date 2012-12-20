@@ -36,50 +36,50 @@ public class EventUtil
 	public static void callEventAt(Event event, EventPriority priority)
 	{
 		HandlerList handlers = event.getHandlers();
-        RegisteredListener[] listeners = handlers.getRegisteredListeners().clone();
+		RegisteredListener[] listeners = handlers.getRegisteredListeners().clone();
 
-        for (RegisteredListener registration : listeners)
-        {
-        	try
+		for (RegisteredListener registration : listeners)
+		{
+			try
 			{
-        		EventPriority thisPriority = (EventPriority) fieldRegisteredListenerDotPriority.get(registration);
-        		if (thisPriority != priority) continue;
+				EventPriority thisPriority = (EventPriority) fieldRegisteredListenerDotPriority.get(registration);
+				if (thisPriority != priority) continue;
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
 				continue;
 			}
-        	fireEventRegistration(event, registration);
-        }
+			fireEventRegistration(event, registration);
+		}
 	}
 	
 	public static void callEventAfter(Event event, Listener listener, EventPriority priority)
 	{
 		HandlerList handlers = event.getHandlers();
-        RegisteredListener[] listeners = handlers.getRegisteredListeners().clone();
+		RegisteredListener[] listeners = handlers.getRegisteredListeners().clone();
 
-        boolean run = false;
-        for (RegisteredListener registration : listeners)
-        {
-        	if (run)
-        	{
-        		fireEventRegistration(event, registration);
-        	}
-        	else
-        	{
-        		try
-    			{
-            		EventPriority thisPriority = (EventPriority) fieldRegisteredListenerDotPriority.get(registration);
-            		Listener thisListener = (Listener) fieldRegisteredListenerDotListener.get(registration);
-            		if (thisListener == listener && thisPriority == priority) run = true;
-    			}
-    			catch (Exception e)
-    			{
-    				e.printStackTrace();
-    			}
-        	}
-        }
+		boolean run = false;
+		for (RegisteredListener registration : listeners)
+		{
+			if (run)
+			{
+				fireEventRegistration(event, registration);
+			}
+			else
+			{
+				try
+				{
+					EventPriority thisPriority = (EventPriority) fieldRegisteredListenerDotPriority.get(registration);
+					Listener thisListener = (Listener) fieldRegisteredListenerDotListener.get(registration);
+					if (thisListener == listener && thisPriority == priority) run = true;
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	/**

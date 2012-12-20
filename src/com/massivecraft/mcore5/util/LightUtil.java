@@ -12,17 +12,17 @@ public class LightUtil
 	// RECALC LIGHT LEVEL AT
 	// -------------------------------------------- //
 	// This method will update the light level for the block.
-    // It will however only work properly if all chunks that are around the chunk the block is in are loaded.
+	// It will however only work properly if all chunks that are around the chunk the block is in are loaded.
 	
-    public static void recalcLightLevelAt(Block block)
-    {
-    	recalcLightLevelAt(block.getWorld(), block.getX(), block.getY(), block.getZ());
-    }
-    
-    public static void recalcLightLevelAt(World world, int x, int y, int z)
-    {
-        CraftWorld cworld = (CraftWorld)world;
-        WorldServer worldServer = cworld.getHandle();
-        worldServer.z(x, y, z);
-    }
+	public static void recalcLightLevelAt(Block block)
+	{
+		recalcLightLevelAt(block.getWorld(), block.getX(), block.getY(), block.getZ());
+	}
+	
+	public static void recalcLightLevelAt(World world, int x, int y, int z)
+	{
+		CraftWorld cworld = (CraftWorld)world;
+		WorldServer worldServer = cworld.getHandle();
+		worldServer.z(x, y, z);
+	}
 }

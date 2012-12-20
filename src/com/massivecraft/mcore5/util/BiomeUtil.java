@@ -44,14 +44,14 @@ public class BiomeUtil
 		WorldServer worldServer = craftWorld.getHandle();
 		
 		BiomeBase bb = BiomeBase.biomes[id];
-        if (craftWorld.loadChunk(x >> 4, z >> 4, false)) {
-            Chunk chunk = worldServer.getChunkAtWorldCoords(x, z);
+		if (craftWorld.loadChunk(x >> 4, z >> 4, false)) {
+			Chunk chunk = worldServer.getChunkAtWorldCoords(x, z);
 
-            if (chunk != null) {
-                byte[] biomevals = chunk.m();
-                biomevals[((z & 0xF) << 4) | (x & 0xF)] = (byte)bb.id;
-            }
-        }
+			if (chunk != null) {
+				byte[] biomevals = chunk.m();
+				biomevals[((z & 0xF) << 4) | (x & 0xF)] = (byte)bb.id;
+			}
+		}
 	}
 	
 	public static int getBiomeIdAt(World world, int x, int z)

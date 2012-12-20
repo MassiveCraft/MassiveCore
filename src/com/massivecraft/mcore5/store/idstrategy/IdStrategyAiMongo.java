@@ -44,15 +44,15 @@ public class IdStrategyAiMongo extends IdStrategyAbstract<String, String>
 		
 		// this object represents your "query", its analogous to a WHERE clause in SQL
 		DBObject query = new BasicDBObject();
-	    query.put("_id", sequenseName); // where _id = the input sequence name
+		query.put("_id", sequenseName); // where _id = the input sequence name
 	 
-	    // this object represents the "update" or the SET blah=blah in SQL
-	    DBObject change = new BasicDBObject(this.sequenseField, 1);
-	    DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
+		// this object represents the "update" or the SET blah=blah in SQL
+		DBObject change = new BasicDBObject(this.sequenseField, 1);
+		DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
 	 
-	    // Atomically updates the sequence field and returns the value for you
-	    DBObject res = sequenseCollection.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
-	    return res.get(this.sequenseField).toString();
+		// Atomically updates the sequence field and returns the value for you
+		DBObject res = sequenseCollection.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
+		return res.get(this.sequenseField).toString();
 	}
 	
 	// -------------------------------------------- //

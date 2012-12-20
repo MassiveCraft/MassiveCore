@@ -89,43 +89,43 @@ public class Perm
 	// GET CREATIVE
 	// -------------------------------------------- //
 	
-    public static Permission getCreative(String name)
-    {
-    	return getCreative(name, null, null, null);
-    }
+	public static Permission getCreative(String name)
+	{
+		return getCreative(name, null, null, null);
+	}
 
-    public static Permission getCreative(String name, String description)
-    {
-    	return getCreative(name, description, null, null);
-    }
+	public static Permission getCreative(String name, String description)
+	{
+		return getCreative(name, description, null, null);
+	}
 
-    public static Permission getCreative(String name, PermissionDefault defaultValue)
-    {
-    	return getCreative(name, null, defaultValue, null);
-    }
+	public static Permission getCreative(String name, PermissionDefault defaultValue)
+	{
+		return getCreative(name, null, defaultValue, null);
+	}
 
-    public static Permission getCreative(String name, String description, PermissionDefault defaultValue)
-    {
-    	return getCreative(name, description, defaultValue, null);
-    }
+	public static Permission getCreative(String name, String description, PermissionDefault defaultValue)
+	{
+		return getCreative(name, description, defaultValue, null);
+	}
 
-    public static Permission getCreative(String name, Map<String, Boolean> children)
-    {
-    	return getCreative(name, null, null, children);
-    }
+	public static Permission getCreative(String name, Map<String, Boolean> children)
+	{
+		return getCreative(name, null, null, children);
+	}
 
-    public static Permission getCreative(String name, String description, Map<String, Boolean> children)
-    {
-    	return getCreative(name, description, null, children);
-    }
+	public static Permission getCreative(String name, String description, Map<String, Boolean> children)
+	{
+		return getCreative(name, description, null, children);
+	}
 
-    public static Permission getCreative(String name, PermissionDefault defaultValue, Map<String, Boolean> children)
-    {
-        return getCreative(name, null, defaultValue, children);
-    }
+	public static Permission getCreative(String name, PermissionDefault defaultValue, Map<String, Boolean> children)
+	{
+		return getCreative(name, null, defaultValue, children);
+	}
 
-    public static Permission getCreative(String name, String description, PermissionDefault defaultValue, Map<String, Boolean> children)
-    {
+	public static Permission getCreative(String name, String description, PermissionDefault defaultValue, Map<String, Boolean> children)
+	{
 		Permission ret = Bukkit.getPluginManager().getPermission(name);
 		if (ret == null)
 		{
@@ -133,5 +133,5 @@ public class Perm
 			Bukkit.getPluginManager().addPermission(ret);
 		}
 		return ret;
-    }
+	}
 }
