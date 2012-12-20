@@ -2,14 +2,14 @@ package com.massivecraft.mcore5.store;
 
 public enum ModificationState
 {
-	LOCAL_ALTER	(true,  true),
-	LOCAL_ATTACH   (true,  true),
-	LOCAL_DETACH   (true,  true),
-	REMOTE_ALTER   (true,  false),
-	REMOTE_ATTACH  (true,  false),
-	REMOTE_DETACH  (true,  false),
-	NONE		   (false, false),
-	UNKNOWN		(false, false),
+	LOCAL_ALTER (true, true),
+	LOCAL_ATTACH (true, true),
+	LOCAL_DETACH (true, true),
+	REMOTE_ALTER (true, false),
+	REMOTE_ATTACH (true, false),
+	REMOTE_DETACH (true, false),
+	NONE (false, false),
+	UNKNOWN (false, false),
 	;
 	
 	private final boolean modified;
