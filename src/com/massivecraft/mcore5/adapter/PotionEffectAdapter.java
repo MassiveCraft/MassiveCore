@@ -17,6 +17,10 @@ public class PotionEffectAdapter
 	public static final String POTION_AMPLIFIER = "amplifier";
 	public static final String POTION_AMBIENT = "ambient";
 	
+	public static final int POTION_DURATION_DEFAULT = 20*3*60;
+	public static final int POTION_AMPLIFIER_DEFAULT = 0;
+	public static final boolean POTION_AMBIENT_DEFAULT = false;
+	
 	// -------------------------------------------- //
 	// TO JSON
 	// -------------------------------------------- //
@@ -47,9 +51,27 @@ public class PotionEffectAdapter
 		JsonObject json = jsonElement.getAsJsonObject();
 		
 		PotionEffectType pet = PotionEffectType.getById(json.get(POTION_EFFECT_ID).getAsInt());
-		int duration = json.get(POTION_DURATION).getAsInt();
-		int amplifier = json.get(POTION_AMPLIFIER).getAsInt();
-		boolean ambient = json.get(POTION_AMBIENT).getAsBoolean();
+		
+		int duration = POTION_DURATION_DEFAULT;
+		JsonElement durationElement = json.get(POTION_DURATION);
+		if (durationElement != null)
+		{
+			duration = durationElement.getAsInt();
+		}
+		
+		int amplifier = POTION_AMPLIFIER_DEFAULT;
+		JsonElement amplifierElement = json.get(POTION_AMPLIFIER);
+		if (amplifierElement != null)
+		{
+			amplifier = amplifierElement.getAsInt();
+		}
+		
+		boolean ambient = POTION_AMBIENT_DEFAULT;
+		JsonElement ambientElement = json.get(POTION_AMBIENT);
+		if (ambientElement != null)
+		{
+			ambient = ambientElement.getAsBoolean();
+		}
 		
 		return new PotionEffect(pet, duration, amplifier, ambient);
 	}
