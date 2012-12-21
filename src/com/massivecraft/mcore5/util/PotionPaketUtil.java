@@ -1,9 +1,9 @@
 package com.massivecraft.mcore5.util;
 
-import net.minecraft.server.v1_4_5.Packet41MobEffect;
-import net.minecraft.server.v1_4_5.Packet42RemoveMobEffect;
+import net.minecraft.server.v1_4_6.Packet41MobEffect;
+import net.minecraft.server.v1_4_6.Packet42RemoveMobEffect;
 
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -60,7 +60,7 @@ public class PotionPaketUtil
 		pm.b = effectId;
 		pm.c = amplifier;
 		pm.d = duration;
-		((CraftPlayer)player).getHandle().netServerHandler.sendPacket(pm);
+		((CraftPlayer)player).getHandle().playerConnection.sendPacket(pm);
 	}
 	
 	public static void remove(Player player, int entityId, byte effectId) 
@@ -68,7 +68,7 @@ public class PotionPaketUtil
 		Packet42RemoveMobEffect pr = new Packet42RemoveMobEffect();
 		pr.a = entityId;
 		pr.b = effectId;
-		((CraftPlayer)player).getHandle().netServerHandler.sendPacket(pr);
+		((CraftPlayer)player).getHandle().playerConnection.sendPacket(pr);
 	}
 
 }

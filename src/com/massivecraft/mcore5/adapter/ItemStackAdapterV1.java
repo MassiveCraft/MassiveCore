@@ -4,10 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Map.Entry;
 
-import net.minecraft.server.v1_4_5.NBTBase;
-import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.v1_4_6.NBTBase;
+import net.minecraft.server.v1_4_6.NBTTagCompound;
 
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_4_6.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -191,11 +191,11 @@ public class ItemStackAdapterV1 implements JsonDeserializer<ItemStack>, JsonSeri
 		}
 	}
 	
-	public static net.minecraft.server.v1_4_5.ItemStack getHandle(CraftItemStack craftItemStack)
+	public static net.minecraft.server.v1_4_6.ItemStack getHandle(CraftItemStack craftItemStack)
 	{
 		try
 		{
-			return (net.minecraft.server.v1_4_5.ItemStack) fieldCraftItemStackDotHandle.get(craftItemStack);
+			return (net.minecraft.server.v1_4_6.ItemStack) fieldCraftItemStackDotHandle.get(craftItemStack);
 		}
 		catch (Exception e)
 		{

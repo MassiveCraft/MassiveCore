@@ -3,7 +3,7 @@ package com.massivecraft.mcore5.adapter;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.server.v1_4_5.NBTBase;
+import net.minecraft.server.v1_4_6.NBTBase;
 
 import lombok.Getter;
 

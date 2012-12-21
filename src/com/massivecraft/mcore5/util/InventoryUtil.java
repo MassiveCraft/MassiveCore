@@ -1,6 +1,6 @@
 package com.massivecraft.mcore5.util;
 
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_4_6.inventory.CraftInventoryCustom;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 

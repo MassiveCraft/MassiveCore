@@ -2,7 +2,7 @@ package com.massivecraft.mcore5.adapter;
 
 import java.lang.reflect.Type;
 
-import org.bukkit.craftbukkit.v1_4_5.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_4_6.inventory.CraftInventoryCustom;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

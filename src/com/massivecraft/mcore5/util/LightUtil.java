@@ -1,10 +1,10 @@
 package com.massivecraft.mcore5.util;
 
-import net.minecraft.server.v1_4_5.WorldServer;
+import net.minecraft.server.v1_4_6.WorldServer;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_4_5.CraftWorld;
+import org.bukkit.craftbukkit.v1_4_6.CraftWorld;
 
 public class LightUtil
 {

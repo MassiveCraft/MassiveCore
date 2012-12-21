@@ -1,6 +1,6 @@
 package com.massivecraft.mcore5.util;
 
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftThrownPotion;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftThrownPotion;
 import org.bukkit.entity.ThrownPotion;
 
 // PR to add this feature to the API:

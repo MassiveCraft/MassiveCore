@@ -1,7 +1,6 @@
 package com.massivecraft.mcore5.util;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -9,13 +8,13 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.regex.Pattern;
 
-import net.minecraft.server.v1_4_5.DedicatedServer;
-import net.minecraft.server.v1_4_5.EntityPlayer;
-import net.minecraft.server.v1_4_5.Packet8UpdateHealth;
+import net.minecraft.server.v1_4_6.DedicatedServer;
+import net.minecraft.server.v1_4_6.EntityPlayer;
+import net.minecraft.server.v1_4_6.Packet8UpdateHealth;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_5.CraftServer;
-import org.bukkit.craftbukkit.v1_4_5.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_6.CraftServer;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -82,15 +81,12 @@ public class PlayerUtil implements Listener
 	/**
 	 * This is a faster version of the getPlayerExact method since this one is exact for real (no to lower case stuff).
 	 */
-	@SuppressWarnings("unchecked")
+
 	public static Player getPlayerExact(String exactPlayerName)
 	{
-		if (exactPlayerName == null) return null;
-		CraftServer craftServer = (CraftServer) Bukkit.getServer();
-		List<EntityPlayer> entityPlayers = craftServer.getHandle().players;
-		for (EntityPlayer entityPlayer : entityPlayers)
+		if (exactPlayerName == null) return null;		
+		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			Player player = entityPlayer.netServerHandler.getPlayer();
 			if (player.getName().equals(exactPlayerName))
 			{
 				return player;
@@ -215,7 +211,7 @@ public class PlayerUtil implements Listener
 	{
 		CraftPlayer cplayer = (CraftPlayer)player;
 		EntityPlayer eplayer = cplayer.getHandle();
-		eplayer.netServerHandler.sendPacket(new Packet8UpdateHealth(eplayer.getHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().e()));
+		eplayer.playerConnection.sendPacket(new Packet8UpdateHealth(eplayer.getHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().e()));
 	}
 	
 	// -------------------------------------------- //
