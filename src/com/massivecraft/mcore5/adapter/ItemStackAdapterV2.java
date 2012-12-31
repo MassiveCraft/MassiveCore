@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.enchantments.Enchantment;
@@ -84,9 +85,6 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 	public static final int DEFAULT_ID;
 	public static final int DEFAULT_COUNT;
 	public static final int DEFAULT_DAMAGE;
-
-	// TODO: Awaiting https://bukkit.atlassian.net/browse/BUKKIT-3203
-	static final Color DEFAULT_LEATHER_COLOR = Color.fromRGB(0xA06540);
 
 	static
 	{
@@ -459,7 +457,8 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 		if (meta2json)
 		{
 			Color color = meta.getColor();
-			if (DEFAULT_LEATHER_COLOR.equals(color)) return;
+			
+			if (Bukkit.getItemFactory().getDefaultLeatherColor().equals(color)) return;
 
 			json.addProperty(LEATHER_ARMOR_COLOR, color.asRGB());
 		}
