@@ -2,11 +2,11 @@ package com.massivecraft.mcore5.usys;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.cmd.arg.ARUniverse;
@@ -88,7 +88,7 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public Set<String> getUniverses()
 	{
-		Set<String> ret = new LinkedHashSet<String>();
+		Set<String> ret = new TreeSet<String>();
 		ret.addAll(this.uw.keySet());
 		ret.add(MCore.DEFAULT);
 		return ret;
@@ -145,7 +145,7 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public Set<String> getWorlds()
 	{
-		Set<String>ret = new HashSet<String>();
+		Set<String> ret = new TreeSet<String>();
 		for (Set<String> uworlds : this.uw.values())
 		{
 			ret.addAll(uworlds);
@@ -155,7 +155,13 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public Set<String> getWorlds(String universe)
 	{
-		return this.uw.get(universe);
+		Set<String> orig = this.uw.get(universe);
+		if (orig == null) return null;
+		
+		Set<String> ret = new TreeSet<String>();
+		ret.addAll(orig);
+		
+		return ret;
 	}
 	
 	public boolean removeWorld(String worldName)
