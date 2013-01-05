@@ -13,7 +13,7 @@ public class CmdUsysUniverseNew extends UsysCommand
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_UNIVERSE_NEW.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_UNIVERSE_NEW.node));
 	}
 	
 	@Override

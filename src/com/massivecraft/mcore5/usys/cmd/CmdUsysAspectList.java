@@ -17,7 +17,7 @@ public class CmdUsysAspectList extends UsysCommand
 		this.addAliases("l", "list");
 		this.addOptionalArg("page", "1");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_ASPECT_LIST.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_ASPECT_LIST.node));
 	}
 	
 	@Override

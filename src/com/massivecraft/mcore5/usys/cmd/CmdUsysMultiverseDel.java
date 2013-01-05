@@ -13,7 +13,7 @@ public class CmdUsysMultiverseDel extends UsysCommand
 		this.addAliases("d", "del");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_MULTIVERSE_DEL.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE_DEL.node));
 	}
 	
 	@Override

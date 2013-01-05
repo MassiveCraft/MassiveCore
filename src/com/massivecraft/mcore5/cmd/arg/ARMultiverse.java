@@ -24,7 +24,7 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 	@Override
 	public boolean canList(MCommand mcommand)
 	{
-		return Permission.USYS_MULTIVERSE_LIST.has(mcommand.sender, false);
+		return Permission.CMD_USYS_MULTIVERSE_LIST.has(mcommand.sender, false);
 	}
 
 	@Override

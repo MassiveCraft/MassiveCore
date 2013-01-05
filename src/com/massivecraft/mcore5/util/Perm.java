@@ -5,10 +5,12 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
 import com.massivecraft.mcore5.Lang;
+import com.massivecraft.mcore5.MCore;
 
 public class Perm
 {
@@ -83,6 +85,27 @@ public class Perm
 		}
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// ENSURE HAS
+	// -------------------------------------------- //
+	
+	public static void ensureHas(Player player, String permissionName)
+	{
+		if (player.hasPermission(permissionName))
+		{
+			return;
+		}
+		else
+		{
+			player.addAttachment(MCore.p, permissionName, true);
+		}
+	}
+	
+	public static void ensureHas(Player player, Permission permission)
+	{
+		ensureHas(player, permission.getName());
 	}
 	
 	// -------------------------------------------- //

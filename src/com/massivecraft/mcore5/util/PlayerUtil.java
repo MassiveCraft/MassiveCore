@@ -45,6 +45,7 @@ public class PlayerUtil implements Listener
 	 */
 	protected static Map<String, Set<String>> lowerCaseStartOfNameToCorrectNames = new ConcurrentSkipListMap<String, Set<String>>();
 	
+	
 	// -------------------------------------------- //
 	// CONSTRUCTOR AND EVENT LISTENER
 	// -------------------------------------------- //
@@ -77,23 +78,6 @@ public class PlayerUtil implements Listener
 	// -------------------------------------------- //
 	// PUBLIC METHODS
 	// -------------------------------------------- //
-	
-	/**
-	 * This is a faster version of the getPlayerExact method since this one is exact for real (no to lower case stuff).
-	 */
-
-	public static Player getPlayerExact(String exactPlayerName)
-	{
-		if (exactPlayerName == null) return null;		
-		for (Player player : Bukkit.getOnlinePlayers())
-		{
-			if (player.getName().equals(exactPlayerName))
-			{
-				return player;
-			}
-		}
-		return null;
-	}
 	
 	/**
 	 * This method simply checks if the playerName is a valid one.

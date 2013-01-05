@@ -14,7 +14,7 @@ public class CmdUsysUniverseClear extends UsysCommand
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_UNIVERSE_CLEAR.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_UNIVERSE_CLEAR.node));
 	}
 	
 	@Override

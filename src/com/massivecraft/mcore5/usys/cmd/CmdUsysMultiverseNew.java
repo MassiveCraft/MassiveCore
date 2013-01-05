@@ -11,7 +11,7 @@ public class CmdUsysMultiverseNew extends UsysCommand
 		this.addAliases("n", "new");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_MULTIVERSE_NEW.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE_NEW.node));
 	}
 	
 	@Override

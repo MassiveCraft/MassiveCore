@@ -25,7 +25,7 @@ public class CmdUsys extends UsysCommand
 		this.addSubCommand(this.cmdUsysWorld);
 		this.addSubCommand(this.cmdUsysAspect);
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS.node));
 	}
 	
 	@Override

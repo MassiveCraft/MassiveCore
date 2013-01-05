@@ -13,7 +13,7 @@ public class CmdUsysAspectShow extends UsysCommand
 		this.addAliases("s", "show");
 		this.addRequiredArg("aspect");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_ASPECT_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_ASPECT_SHOW.node));
 	}
 	
 	@Override

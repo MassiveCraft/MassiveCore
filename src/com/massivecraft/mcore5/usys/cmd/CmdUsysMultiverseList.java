@@ -17,7 +17,7 @@ public class CmdUsysMultiverseList extends UsysCommand
 		this.addAliases("l", "list");
 		this.addOptionalArg("page", "1");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_MULTIVERSE_LIST.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE_LIST.node));
 	}
 	
 	@Override

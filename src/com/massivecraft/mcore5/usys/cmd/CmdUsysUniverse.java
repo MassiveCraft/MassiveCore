@@ -19,7 +19,7 @@ public class CmdUsysUniverse extends UsysCommand
 		this.addSubCommand(this.cmdUsysUniverseDel);
 		this.addSubCommand(this.cmdUsysUniverseClear);
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_UNIVERSE.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_UNIVERSE.node));
 	}
 	
 	@Override

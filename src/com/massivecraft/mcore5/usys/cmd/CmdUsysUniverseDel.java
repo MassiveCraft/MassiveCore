@@ -14,7 +14,7 @@ public class CmdUsysUniverseDel extends UsysCommand
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_MULTIVERSE_DEL.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE_DEL.node));
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ public class CmdUsysWorld extends UsysCommand
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_WORLD.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_WORLD.node));
 	}
 	
 	@Override

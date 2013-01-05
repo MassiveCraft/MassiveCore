@@ -18,7 +18,7 @@ public class CmdUsysMultiverseShow extends UsysCommand
 		this.addAliases("s", "show");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_MULTIVERSE_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE_SHOW.node));
 	}
 	
 	@Override

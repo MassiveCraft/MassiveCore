@@ -6,51 +6,77 @@ permissions:
 # -------------------------------------------- #
 # THE REAL NODES
 # -------------------------------------------- #
-  mcore.usys: {description: manage the universe system, default: op}
-  mcore.usys.multiverse: {description: manage multiverses, default: op}
-  mcore.usys.multiverse.list: {description: list multiverses, default: op}
-  mcore.usys.multiverse.show: {description: show multiverse, default: op}
-  mcore.usys.multiverse.new: {description: create new multiverse, default: op}
-  mcore.usys.multiverse.del: {description: delete multiverse, default: op}
-  mcore.usys.universe: {description: manage universes, default: op}
-  mcore.usys.universe.new: {description: create new universe in multiverse, default: op}
-  mcore.usys.universe.del: {description: delete universe in multiverse, default: op}
-  mcore.usys.universe.clear: {description: clear universe in multiverse, default: op}
-  mcore.usys.world: {description: set a worlds universe in a multiverse, default: op}
-  mcore.usys.aspect: {description: manage aspects, default: op}
-  mcore.usys.aspect.list: {description: list aspects, default: op}
-  mcore.usys.aspect.show: {description: show aspect, default: op}
-  mcore.usys.aspect.use: {description: set multiverse for aspect, default: op}
+  mcore.cmd.usys: {description: manage the universe system, default: false}
+  mcore.cmd.usys.multiverse: {description: manage multiverses, default: false}
+  mcore.cmd.usys.multiverse.list: {description: list multiverses, default: false}
+  mcore.cmd.usys.multiverse.show: {description: show multiverse, default: false}
+  mcore.cmd.usys.multiverse.new: {description: create new multiverse, default: false}
+  mcore.cmd.usys.multiverse.del: {description: delete multiverse, default: false}
+  mcore.cmd.usys.universe: {description: manage universes, default: false}
+  mcore.cmd.usys.universe.new: {description: create new universe in multiverse, default: false}
+  mcore.cmd.usys.universe.del: {description: delete universe in multiverse, default: false}
+  mcore.cmd.usys.universe.clear: {description: clear universe in multiverse, default: false}
+  mcore.cmd.usys.world: {description: set a worlds universe in a multiverse, default: false}
+  mcore.cmd.usys.aspect: {description: manage aspects, default: false}
+  mcore.cmd.usys.aspect.list: {description: list aspects, default: false}
+  mcore.cmd.usys.aspect.show: {description: show aspect, default: false}
+  mcore.cmd.usys.aspect.use: {description: set multiverse for aspect, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
 # -------------------------------------------- #
-  mcore.usys.multiverse.*:
+  mcore.cmd.usys.multiverse.*:
+    default: false
+    children:
+      mcore.cmd.usys.multiverse.list: true
+      mcore.cmd.usys.multiverse.show: true
+      mcore.cmd.usys.multiverse.new: true
+      mcore.cmd.usys.multiverse.del: true
+  mcore.cmd.usys.universe.*:
+    default: false
+    children:
+      mcore.cmd.usys.universe.new: true
+      mcore.cmd.usys.universe.del: true
+      mcore.cmd.usys.universe.clear: true
+  mcore.cmd.usys.aspect.*:
+    default: false
+    children:
+      mcore.cmd.usys.aspect.list: true
+      mcore.cmd.usys.aspect.show: true
+      mcore.cmd.usys.aspect.use: true
+  mcore.cmd.usys.*:
+    default: false
+    children:
+      mcore.cmd.usys.multiverse: true
+      mcore.cmd.usys.multiverse.*: true
+      mcore.cmd.usys.universe: true
+      mcore.cmd.usys.universe.*: true
+      mcore.cmd.usys.world: true
+      mcore.cmd.usys.aspect: true
+      mcore.cmd.usys.aspect.*: true
+  mcore.cmd.*:
+    default: false
+    children:
+      mcore.cmd.usys: true
+      mcore.cmd.usys.*: true
+  mcore.*:
+    default: false
+    children:
+      mcore.cmd.*: true
+# -------------------------------------------- #
+# KITS
+# -------------------------------------------- #
+  mcore.kit.operator:
     default: op
     children:
-      mcore.usys.multiverse.list: true
-      mcore.usys.multiverse.show: true
-      mcore.usys.multiverse.new: true
-      mcore.usys.multiverse.del: true
-  mcore.usys.universe.*:
-    default: op
+      mcore.*: true
+  mcore.kit.readonly:
+    default: false
     children:
-      mcore.usys.universe.new: true
-      mcore.usys.universe.del: true
-      mcore.usys.universe.clear: true
-  mcore.usys.world.*:
-    default: op
-    children:
-      mcore.usys.world: true
-  mcore.usys.aspect.*:
-    default: op
-    children:
-      mcore.usys.aspect.list: true
-      mcore.usys.aspect.show: true
-      mcore.usys.aspect.use: true
-  mcore.usys.*:
-    default: op
-    children:
-      mcore.usys.multiverse.*: true
-      mcore.usys.universe.*: true
-      mcore.usys.world.*: true
-      mcore.usys.aspect.*: true
+      mcore.cmd.usys: true
+      mcore.cmd.usys.multiverse: true
+      mcore.cmd.usys.multiverse.list: true
+      mcore.cmd.usys.multiverse.show: true
+      mcore.cmd.usys.universe: true
+      mcore.cmd.usys.aspect: true
+      mcore.cmd.usys.aspect.list: true
+      mcore.cmd.usys.aspect.show: true

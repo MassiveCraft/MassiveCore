@@ -99,6 +99,28 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 	}
 	
 	// -------------------------------------------- //
+	// PLAYER REFFERENCE MANAGEMENT
+	// -------------------------------------------- //
+	
+	protected void setPlayerRefference(String playerName, Player player)
+	{
+		 E pentity = this.get(playerName, false);
+		 if (pentity == null) return;
+		 pentity.player = player;
+		 pentity.playerInitiated = true;
+	}
+	
+	public static void setPlayerRefferences(String playerName, Player player)
+	{
+		for (Coll<?, ?> coll : Coll.instances)
+		{
+			if (!(coll instanceof PlayerColl)) continue;
+			PlayerColl<?> pcoll = (PlayerColl<?>)coll;
+			pcoll.setPlayerRefference(playerName, player);
+		}
+	}
+	
+	// -------------------------------------------- //
 	// ARGUMENT READERS
 	// -------------------------------------------- //
 	

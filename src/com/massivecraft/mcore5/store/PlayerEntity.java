@@ -6,23 +6,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore5.util.PlayerUtil;
 import com.massivecraft.mcore5.util.Txt;
-
 
 public abstract class PlayerEntity<E extends PlayerEntity<E>> extends Entity<E, String>
 {
+	// The Bukkit player reference is initiated here
+	// It's kept updated using the InternalListener
+	protected transient Player player = null;
+	protected transient boolean playerInitiated = false;
 	public Player getPlayer()
 	{
-		if (this.getColl() == null) return null;
-		if (this.getColl().isLowercasing())
+		if ( ! this.playerInitiated)
 		{
-			return Bukkit.getPlayerExact(this.getId());
+			this.player = Bukkit.getPlayerExact(this.getId());
+			this.playerInitiated = true;
 		}
-		else
-		{
-			return PlayerUtil.getPlayerExact(this.getId());
-		}
+		return this.player;
 	}
 	
 	@Override

@@ -19,7 +19,7 @@ public class CmdUsysAspect extends UsysCommand
 		this.addSubCommand(this.cmdUsysAspectShow);
 		this.addSubCommand(this.cmdUsysAspectUse);
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_ASPECT.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_ASPECT.node));
 	}
 	
 	@Override

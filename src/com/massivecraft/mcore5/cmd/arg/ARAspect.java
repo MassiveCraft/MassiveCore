@@ -24,7 +24,7 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	@Override
 	public boolean canList(MCommand mcommand)
 	{
-		return Permission.USYS_ASPECT_LIST.has(mcommand.sender, false);
+		return Permission.CMD_USYS_ASPECT_LIST.has(mcommand.sender, false);
 	}
 
 	@Override

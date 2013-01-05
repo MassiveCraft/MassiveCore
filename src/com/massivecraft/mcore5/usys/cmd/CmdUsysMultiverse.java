@@ -21,7 +21,7 @@ public class CmdUsysMultiverse extends UsysCommand
 		this.addSubCommand(this.cmdUsysMultiverseNew);
 		this.addSubCommand(this.cmdUsysMultiverseDel);
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_MULTIVERSE.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE.node));
 	}
 	
 	@Override

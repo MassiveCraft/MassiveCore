@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -67,6 +68,29 @@ public class InternalListener implements Listener
 		
 		// ... then cancel the event and the damage.
 		event.setCancelled(true);
+	}
+	
+	// -------------------------------------------- //
+	// PLAYER REFERENCES
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void playerReferencesLoginLowest(PlayerLoginEvent event)
+	{
+		PlayerColl.setPlayerRefferences(event.getPlayer().getName(), event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void playerReferencesLoginMonitor(PlayerLoginEvent event)
+	{
+		if (event.getResult() == Result.ALLOWED) return;
+		PlayerColl.setPlayerRefferences(event.getPlayer().getName(), null);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void playerReferencesQuitMonitor(PlayerQuitEvent event)
+	{
+		PlayerColl.setPlayerRefferences(event.getPlayer().getName(), null);
 	}
 	
 	// -------------------------------------------- //

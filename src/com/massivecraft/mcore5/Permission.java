@@ -6,21 +6,21 @@ import com.massivecraft.mcore5.util.Perm;
 
 public enum Permission
 {
-	USYS("usys"),
-	USYS_MULTIVERSE("usys.multiverse"),
-	USYS_MULTIVERSE_LIST("usys.multiverse.list"),
-	USYS_MULTIVERSE_SHOW("usys.multiverse.show"),
-	USYS_MULTIVERSE_NEW("usys.multiverse.new"),
-	USYS_MULTIVERSE_DEL("usys.multiverse.del"),
-	USYS_UNIVERSE("usys.universe"),
-	USYS_UNIVERSE_NEW("usys.universe.new"),
-	USYS_UNIVERSE_DEL("usys.universe.del"),
-	USYS_UNIVERSE_CLEAR("usys.universe.clear"),
-	USYS_WORLD("usys.world"),
-	USYS_ASPECT("usys.aspect"),
-	USYS_ASPECT_LIST("usys.aspect.list"),
-	USYS_ASPECT_SHOW("usys.aspect.show"),
-	USYS_ASPECT_USE("usys.aspect.use"),
+	CMD_USYS("cmd.usys"),
+	CMD_USYS_MULTIVERSE("cmd.usys.multiverse"),
+	CMD_USYS_MULTIVERSE_LIST("cmd.usys.multiverse.list"),
+	CMD_USYS_MULTIVERSE_SHOW("cmd.usys.multiverse.show"),
+	CMD_USYS_MULTIVERSE_NEW("cmd.usys.multiverse.new"),
+	CMD_USYS_MULTIVERSE_DEL("cmd.usys.multiverse.del"),
+	CMD_USYS_UNIVERSE("cmd.usys.universe"),
+	CMD_USYS_UNIVERSE_NEW("cmd.usys.universe.new"),
+	CMD_USYS_UNIVERSE_DEL("cmd.usys.universe.del"),
+	CMD_USYS_UNIVERSE_CLEAR("cmd.usys.universe.clear"),
+	CMD_USYS_WORLD("cmd.usys.world"),
+	CMD_USYS_ASPECT("cmd.usys.aspect"),
+	CMD_USYS_ASPECT_LIST("cmd.usys.aspect.list"),
+	CMD_USYS_ASPECT_SHOW("cmd.usys.aspect.show"),
+	CMD_USYS_ASPECT_USE("cmd.usys.aspect.use"),
 	;
 	
 	public final String node;

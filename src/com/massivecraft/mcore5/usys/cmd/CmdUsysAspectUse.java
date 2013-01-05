@@ -15,7 +15,7 @@ public class CmdUsysAspectUse extends UsysCommand
 		this.addRequiredArg("aspect");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.USYS_ASPECT_USE.node));
+		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_ASPECT_USE.node));
 	}
 	
 	@Override
