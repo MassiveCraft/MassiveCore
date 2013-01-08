@@ -207,8 +207,11 @@ public class PlayerUtil implements Listener
 		// The player file may not exist yet
 		if (playerfolder == null) return;
 		
+		File[] playerfiles = playerfolder.listFiles();
+		if (playerfiles == null) return;
+		
 		// Populate by removing .dat
-		for (File playerfile : playerfolder.listFiles())
+		for (File playerfile : playerfiles)
 		{
 			String filename = playerfile.getName();
 			String playername = filename.substring(0, filename.length()-4);

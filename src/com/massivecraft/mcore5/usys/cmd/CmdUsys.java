@@ -18,7 +18,7 @@ public class CmdUsys extends UsysCommand
 	{
 		super();
 		
-		this.addAliases(Conf.cmdaliases.get(USYS));
+		this.addAliases(Conf.getCmdAliases(USYS));
 		
 		this.addSubCommand(this.cmdUsysMultiverse);
 		this.addSubCommand(this.cmdUsysUniverse);

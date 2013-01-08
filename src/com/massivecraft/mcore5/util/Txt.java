@@ -8,12 +8,17 @@ import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class Txt
-{	
+{
 	// -------------------------------------------- //
 	// STATIC
 	// -------------------------------------------- //
+	
+	public static final int PAGEHEIGHT_PLAYER = 9;
+	public static final int PAGEHEIGHT_CONSOLE = 50;
 	
 	public static final Map<String, String> parseReplacements;
 	public static final Pattern parsePattern;
@@ -31,19 +36,18 @@ public class Txt
 		"a", "e", "i", "o", "u", "y", "å", "ä", "ö"
 	); 
 	
-	public static Map<String, Long> unitMillis;
+	public static final Map<String, Long> unitMillis = MUtil.map(
+		"years", millisPerYear,
+		"months", millisPerMonth,
+		"weeks", millisPerWeek,
+		"days", millisPerDay,
+		"hours", millisPerHour,
+		"minutes", millisPerMinute,
+		"seconds", millisPerSecond
+	);
 	
 	static
 	{
-		unitMillis = new LinkedHashMap<String, Long>();
-		unitMillis.put("years", millisPerYear);
-		unitMillis.put("months", millisPerMonth);
-		unitMillis.put("weeks", millisPerWeek);
-		unitMillis.put("days", millisPerDay);
-		unitMillis.put("hours", millisPerHour);
-		unitMillis.put("minutes", millisPerMinute);
-		unitMillis.put("seconds", millisPerSecond);
-		
 		// Create the parce replacements map
 		parseReplacements = new HashMap<String, String>();
 		
@@ -395,7 +399,21 @@ public class Txt
 	
 	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title)
 	{
-		return getPage(lines, pageHumanBased, title, 9);
+		return getPage(lines, pageHumanBased, title, PAGEHEIGHT_PLAYER);
+	}
+	
+	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title, CommandSender sender)
+	{
+		int pageheight;
+		if (sender instanceof Player)
+		{
+			pageheight = PAGEHEIGHT_PLAYER;
+		}
+		else
+		{
+			pageheight = PAGEHEIGHT_CONSOLE;
+		}
+		return getPage(lines, pageHumanBased, title, pageheight);
 	}
 	
 	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title, int pageheight)

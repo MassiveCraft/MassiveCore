@@ -11,6 +11,7 @@ import com.massivecraft.mcore5.adapter.InventoryAdapter;
 import com.massivecraft.mcore5.adapter.ItemStackAdapter;
 import com.massivecraft.mcore5.adapter.MongoURIAdapter;
 import com.massivecraft.mcore5.adapter.PSAdapter;
+import com.massivecraft.mcore5.cmd.CmdMcore;
 import com.massivecraft.mcore5.store.Coll;
 import com.massivecraft.mcore5.store.Db;
 import com.massivecraft.mcore5.store.MStore;
@@ -81,6 +82,7 @@ public class MCore extends MPlugin
 	
 	public InternalListener internalListener;
 	public CmdUsys cmdUsys;
+	public CmdMcore cmdMcore;
 	
 	@Override
 	public void onEnable()
@@ -112,6 +114,9 @@ public class MCore extends MPlugin
 		// Register commands
 		this.cmdUsys = new CmdUsys();
 		this.cmdUsys.register(true);
+		
+		this.cmdMcore = new CmdMcore();
+		this.cmdMcore.register(true);
 		
 		this.postEnable();
 	}

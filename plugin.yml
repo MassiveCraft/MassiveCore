@@ -6,6 +6,7 @@ permissions:
 # -------------------------------------------- #
 # THE REAL NODES
 # -------------------------------------------- #
+# usys command
   mcore.cmd.usys: {description: manage the universe system, default: false}
   mcore.cmd.usys.multiverse: {description: manage multiverses, default: false}
   mcore.cmd.usys.multiverse.list: {description: list multiverses, default: false}
@@ -21,6 +22,8 @@ permissions:
   mcore.cmd.usys.aspect.list: {description: list aspects, default: false}
   mcore.cmd.usys.aspect.show: {description: show aspect, default: false}
   mcore.cmd.usys.aspect.use: {description: set multiverse for aspect, default: false}
+# mcore command
+  mcore.cmd.mcore: {description: use the mcore command, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
 # -------------------------------------------- #
@@ -58,6 +61,7 @@ permissions:
     children:
       mcore.cmd.usys: true
       mcore.cmd.usys.*: true
+      mcore.cmd.mcore: true
   mcore.*:
     default: false
     children:
@@ -80,3 +84,4 @@ permissions:
       mcore.cmd.usys.aspect: true
       mcore.cmd.usys.aspect.list: true
       mcore.cmd.usys.aspect.show: true
+      mcore.cmd.mcore: true

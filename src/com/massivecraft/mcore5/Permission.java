@@ -21,6 +21,7 @@ public enum Permission
 	CMD_USYS_ASPECT_LIST("cmd.usys.aspect.list"),
 	CMD_USYS_ASPECT_SHOW("cmd.usys.aspect.show"),
 	CMD_USYS_ASPECT_USE("cmd.usys.aspect.use"),
+	CMD_MCORE("cmd.mcore"),
 	;
 	
 	public final String node;
