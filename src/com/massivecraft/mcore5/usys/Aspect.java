@@ -17,12 +17,6 @@ public class Aspect extends Entity<Aspect, String>
 	// META
 	// -------------------------------------------- //
 	
-	@Override protected Aspect getThis() { return this; }
-	
-	private final static transient Aspect defaultInstance = new Aspect();
-	@Override public Aspect getDefaultInstance(){ return defaultInstance; }
-	@Override protected Class<Aspect> getClazz() { return Aspect.class; }
-	
 	public static Aspect get(Object oid)
 	{
 		return AspectColl.i.get(oid);

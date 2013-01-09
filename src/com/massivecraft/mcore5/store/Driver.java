@@ -22,7 +22,7 @@ public interface Driver<R>
 	
 	// This is some sort of database specific id strategy with built in adapter
 	public boolean registerIdStrategy(IdStrategy<?, ?> idStrategy);
-	public <L> IdStrategy<L, ?> getIdStrategy(String idStrategyName);
+	public <L extends Comparable<? super L>> IdStrategy<L, ?> getIdStrategy(String idStrategyName);
 	
 	// Get the default store adapter for the driver.
 	public StoreAdapter getStoreAdapter();
@@ -34,25 +34,25 @@ public interface Driver<R>
 	public Set<String> getCollnames(Db<?> db);
 	
 	// Is id X in the collection?
-	public <L> boolean containsId(Coll<?, L> coll, L id);
+	public <L extends Comparable<? super L>> boolean containsId(Coll<?, L> coll, L id);
 	
 	// When was X last altered?
-	public <L> Long getMtime(Coll<?, L> coll, L id);
+	public <L extends Comparable<? super L>> Long getMtime(Coll<?, L> coll, L id);
 		
 	// What ids are in the collection?
-	public <L> Collection<L> getIds(Coll<?, L> coll);
+	public <L extends Comparable<? super L>> Collection<L> getIds(Coll<?, L> coll);
 	
 	// Return a map of all ids with their corresponding mtimes
-	public <L> Map<L, Long> getId2mtime(Coll<?, L> coll);
+	public <L extends Comparable<? super L>> Map<L, Long> getId2mtime(Coll<?, L> coll);
 	
 	// Load the raw data for X. The second part of the entry is the remote mtime at the load.
-	public <L> Entry<R, Long> load(Coll<?, L> coll, L id);
+	public <L extends Comparable<? super L>> Entry<R, Long> load(Coll<?, L> coll, L id);
 	
 	// Save raw data as X
 	// Return value is the new mtime (we caused the change).
 	// If the mtime is null something failed.
-	public <L> Long save(Coll<?, L> coll, L id, final Object rawData);
+	public <L extends Comparable<? super L>> Long save(Coll<?, L> coll, L id, final Object rawData);
 	
 	// Delete X
-	public <L> void delete(Coll<?, L> coll, L id);
+	public <L extends Comparable<? super L>> void delete(Coll<?, L> coll, L id);
 }

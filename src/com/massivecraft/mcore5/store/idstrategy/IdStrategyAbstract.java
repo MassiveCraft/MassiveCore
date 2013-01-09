@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.massivecraft.mcore5.store.CollInterface;
 
-public abstract class IdStrategyAbstract<L, R> implements IdStrategy<L, R>
+public abstract class IdStrategyAbstract<L extends Comparable<? super L>, R> implements IdStrategy<L, R>
 {
 	public IdStrategyAbstract(String name, Class<L> localClass, Class<R> remoteClass)
 	{

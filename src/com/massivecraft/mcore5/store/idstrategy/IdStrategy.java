@@ -11,7 +11,7 @@ import com.massivecraft.mcore5.store.CollInterface;
  * Thus you will find multiple implementations with the name "ai" (auto increment).
  * There must be one implementation per driver.
  */
-public interface IdStrategy<L, R>
+public interface IdStrategy<L extends Comparable<? super L>, R>
 {
 	// The name of the strategy (such as "auto_increment")
 	public String getName();

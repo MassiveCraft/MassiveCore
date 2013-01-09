@@ -72,7 +72,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 	
 	@Override
-	public <L> boolean containsId(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> boolean containsId(Coll<?, L> coll, L id)
 	{
 		DBCollection dbcoll = fixColl(coll);
 		DBCursor cursor = dbcoll.find(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)));
@@ -80,7 +80,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 	
 	@Override
-	public <L> Long getMtime(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> Long getMtime(Coll<?, L> coll, L id)
 	{
 		DBCollection dbcoll = fixColl(coll);
 		BasicDBObject found = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)), dboKeysMtime);
@@ -90,7 +90,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 	
 	@Override
-	public <L> Collection<L> getIds(Coll<?, L> coll)
+	public <L extends Comparable<? super L>> Collection<L> getIds(Coll<?, L> coll)
 	{
 		List<L> ret = null;
 		
@@ -116,7 +116,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 	
 	@Override
-	public <L> Map<L, Long> getId2mtime(Coll<?, L> coll)
+	public <L extends Comparable<? super L>> Map<L, Long> getId2mtime(Coll<?, L> coll)
 	{
 		Map<L, Long> ret = null;
 		
@@ -145,7 +145,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 
 	@Override
-	public <L> Entry<BasicDBObject, Long> load(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> Entry<BasicDBObject, Long> load(Coll<?, L> coll, L id)
 	{
 		DBCollection dbcoll = fixColl(coll);
 		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)));
@@ -155,7 +155,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 
 	@Override
-	public <L> Long save(Coll<?, L> coll, L id, Object rawData)
+	public <L extends Comparable<? super L>> Long save(Coll<?, L> coll, L id, Object rawData)
 	{		
 		DBCollection dbcoll = fixColl(coll);
 		
@@ -172,7 +172,7 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 
 	@Override
-	public <L> void delete(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> void delete(Coll<?, L> coll, L id)
 	{
 		fixColl(coll).remove(new BasicDBObject(ID_FIELD, coll.getIdStrategy().localToRemote(id)));
 	}

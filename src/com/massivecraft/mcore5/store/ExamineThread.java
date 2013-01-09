@@ -1,6 +1,6 @@
 package com.massivecraft.mcore5.store;
 
-public class ExamineThread<E, L> extends Thread
+public class ExamineThread<E, L extends Comparable<? super L>> extends Thread
 {
 	protected Coll<E, L> coll; 
 	

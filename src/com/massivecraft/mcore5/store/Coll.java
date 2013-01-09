@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.massivecraft.mcore5.MCore;
@@ -18,7 +19,7 @@ import com.massivecraft.mcore5.store.accessor.Accessor;
 import com.massivecraft.mcore5.store.idstrategy.IdStrategy;
 import com.massivecraft.mcore5.store.storeadapter.StoreAdapter;
 
-public class Coll<E, L> implements CollInterface<E, L>
+public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E, L>
 {
 	// -------------------------------------------- //
 	// GLOBAL REGISTRY
@@ -72,7 +73,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	protected Set<L> ids = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
 	@Override public Collection<L> getIds() { return Collections.unmodifiableCollection(this.ids); }
 	@Override public Collection<L> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
-	@Override public boolean containsEntity(E entity) { return this.entities.contains(entity); };
+	@Override public boolean containsEntity(Object entity) { return this.entities.contains(entity); };
 	@Override
 	public boolean containsId(Object oid)
 	{
@@ -81,8 +82,9 @@ public class Coll<E, L> implements CollInterface<E, L>
 		return this.ids.contains(id);
 	}
 	
-	
-	protected Set<E> entities = Collections.newSetFromMap(new ConcurrentHashMap<E, Boolean>());
+	// We use a ConcurrentSkipListSet here in order for the entities to keep their natural ordering
+	// You may want to have your entities implement the Comparable interface
+	protected Set<E> entities = new ConcurrentSkipListSet<E>();
 	@Override public Collection<E> getAll() { return Collections.unmodifiableCollection(this.entities); }
 	@Override public Collection<E> getAll(Predictate<E> where) { return MStoreUtil.uglySQL(this.getAll(), where, null, null, null); }
 	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, null, null); }
@@ -114,7 +116,7 @@ public class Coll<E, L> implements CollInterface<E, L>
 	// Get the id for this entity.
 	protected Map<E, L> entity2id = new ConcurrentHashMap<E, L>();
 	@Override public Map<E, L> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
-	@Override public L getId(E entity) { return this.entity2id.get(entity); }
+	@Override public L getId(Object entity) { return this.entity2id.get(entity); }
 	
 	@Override
 	public L fixId(Object oid)
@@ -228,17 +230,17 @@ public class Coll<E, L> implements CollInterface<E, L>
 			if (this.ids.contains(id)) return null;
 		}
 		
-		// Attach
-		this.ids.add(id);
-		this.entities.add(entity);
-		this.id2entity.put(id, entity);
-		this.entity2id.put(entity, id);
-		
 		// Set this as the coll if possible.
 		if (entity instanceof Entity)
 		{
 			((Entity)entity).setColl(this);
 		}
+		
+		// Attach
+		this.id2entity.put(id, entity);
+		this.entity2id.put(entity, id);
+		this.ids.add(id);
+		this.entities.add(entity);
 		
 		// Make note of the change
 		if (noteChange)

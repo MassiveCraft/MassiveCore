@@ -26,7 +26,7 @@ public abstract class DriverAbstract<R> implements Driver<R>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <L> IdStrategy<L, ?> getIdStrategy(String idStrategyName)
+	public <L extends Comparable<? super L>> IdStrategy<L, ?> getIdStrategy(String idStrategyName)
 	{
 		IdStrategy<?, ?> idStrategy = idStrategies.get(idStrategyName);
 		return (IdStrategy<L, ?>) idStrategy;

@@ -19,12 +19,6 @@ public class Multiverse extends Entity<Multiverse, String>
 	// META
 	// -------------------------------------------- //
 	
-	@Override protected Multiverse getThis() { return this; }
-	
-	private final static transient Multiverse defaultInstance = new Multiverse();
-	@Override public Multiverse getDefaultInstance(){ return defaultInstance; }
-	@Override protected Class<Multiverse> getClazz() { return Multiverse.class; }
-	
 	public static Multiverse get(Object oid)
 	{
 		return MultiverseColl.i.get(oid);

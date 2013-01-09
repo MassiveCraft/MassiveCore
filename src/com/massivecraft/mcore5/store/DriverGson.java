@@ -72,13 +72,13 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public <L> boolean containsId(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> boolean containsId(Coll<?, L> coll, L id)
 	{
 		return fileFromId(coll, id).isFile();
 	}
 	
 	@Override
-	public <L> Long getMtime(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> Long getMtime(Coll<?, L> coll, L id)
 	{
 		File file = fileFromId(coll, id);
 		if ( ! file.isFile()) return null;
@@ -86,7 +86,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 	
 	@Override
-	public <L> Collection<L> getIds(Coll<?, L> coll)
+	public <L extends Comparable<? super L>> Collection<L> getIds(Coll<?, L> coll)
 	{
 		List<L> ret = new ArrayList<L>();
 		
@@ -105,7 +105,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 	
 	@Override
-	public <L> Map<L, Long> getId2mtime(Coll<?, L> coll)
+	public <L extends Comparable<? super L>> Map<L, Long> getId2mtime(Coll<?, L> coll)
 	{
 		Map<L, Long> ret = new HashMap<L, Long>();
 		
@@ -124,7 +124,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 	
 	@Override
-	public <L> Entry<JsonElement, Long> load(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> Entry<JsonElement, Long> load(Coll<?, L> coll, L id)
 	{
 		File file = fileFromId(coll, id);
 		Long mtime = file.lastModified();
@@ -137,7 +137,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public <L> Long save(Coll<?, L> coll, L id, Object rawData)
+	public <L extends Comparable<? super L>> Long save(Coll<?, L> coll, L id, Object rawData)
 	{
 		File file = fileFromId(coll, id);
 		String content = coll.getMplugin().gson.toJson((JsonElement)rawData);
@@ -146,7 +146,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public <L> void delete(Coll<?, L> coll, L id)
+	public <L extends Comparable<? super L>> void delete(Coll<?, L> coll, L id)
 	{
 		File file = fileFromId(coll, id);
 		file.delete();
@@ -168,7 +168,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		return name.substring(0, name.length()-5);
 	}
 	
-	protected static <L> File fileFromId(Coll<?, L> coll, L id)
+	protected static <L extends Comparable<? super L>> File fileFromId(Coll<?, L> coll, L id)
 	{
 		File collDir = getCollDir(coll);
 		String idString = (String)coll.getIdStrategy().localToRemote(id);

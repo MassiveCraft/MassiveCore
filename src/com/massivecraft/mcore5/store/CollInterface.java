@@ -9,7 +9,7 @@ import com.massivecraft.mcore5.Predictate;
 import com.massivecraft.mcore5.store.idstrategy.IdStrategy;
 import com.massivecraft.mcore5.store.storeadapter.StoreAdapter;
 
-public interface CollInterface<E, L>
+public interface CollInterface<E, L extends Comparable<? super L>>
 {
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
@@ -37,7 +37,7 @@ public interface CollInterface<E, L>
 	public Collection<L> getIds();
 	public Collection<L> getIdsRemote();
 	public boolean containsId(Object oid);
-	public boolean containsEntity(E entity);
+	public boolean containsEntity(Object entity);
 	
 	public Collection<E> getAll();
 	public Collection<E> getAll(Predictate<E> where);
@@ -50,7 +50,7 @@ public interface CollInterface<E, L>
 	public E get(Object oid, boolean creative);
 
 	public Map<E, L> getEntity2id();
-	public L getId(E entity);
+	public L getId(Object entity);
 	public L fixId(Object oid);
 	
 	// -------------------------------------------- //

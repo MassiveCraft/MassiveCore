@@ -231,21 +231,13 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
-	// LE NICE EQUALS
+	// LE NICE EQUALS and compare
 	// -------------------------------------------- //
 	
 	public static boolean equals(Object herp, Object derp)
 	{
-		if (herp == null && derp == null)
-		{
-			return true;
-		}
-		
-		if (herp == null || derp == null)
-		{
-			return false;
-		}
-		
+		if (herp == null && derp == null) return true;
+		if (herp == null || derp == null) return false;
 		return herp.equals(derp);
 	}
 	
