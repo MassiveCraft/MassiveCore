@@ -10,7 +10,7 @@ import com.massivecraft.mcore5.xlib.gson.Gson;
  * Entity class. It just contains a set of shortcut methods.  
  */
 
-// Self referencing generic using the "getThis trick".
+// Self referencing generic.
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
 public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? super L>> implements Comparable<E>
 {
@@ -37,7 +37,7 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 		Coll<E, L> coll = this.getColl();
 		if (coll == null) return null;
 		
-		return coll.detach(this);
+		return coll.detachEntity(this);
 	}
 	
 	public boolean attached()

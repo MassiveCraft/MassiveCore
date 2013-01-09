@@ -70,7 +70,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// STORAGE
 	// -------------------------------------------- //
 	
-	protected Set<L> ids = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+	protected Set<L> ids = new ConcurrentSkipListSet<L>();
 	@Override public Collection<L> getIds() { return Collections.unmodifiableCollection(this.ids); }
 	@Override public Collection<L> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
 	@Override public boolean containsEntity(Object entity) { return this.entities.contains(entity); };
@@ -252,28 +252,17 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		return id;
 	}
 		
-	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized E detach(Object o)
+	public E detachEntity(Object entity)
 	{
-		// What id is this?
-		L id = null;
-		if (this.idClass.isInstance(o))
-		{
-			id = (L)o;
-		}
-		else if (this.entityClass.isInstance(o))
-		{
-			id = this.entity2id.get(o);
-		}
-		else
-		{
-			id = this.fixId(o);
-		}
-		if (id == null)
-		{
-			return null;
-		}
+		return this.detachId(this.getId(entity));
+	}
+	
+	@Override
+	public E detachId(Object oid)
+	{
+		L id = this.fixId(oid);
+		if (id == null) return null;
 		
 		// Remove @ local
 		E ret = this.removeAtLocal(id);

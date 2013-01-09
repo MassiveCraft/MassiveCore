@@ -83,7 +83,8 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	// -------------------------------------------- //
 	public L attach(E entity);
 	public L attach(E entity, Object oid);
-	public E detach(Object o);
+	public E detachEntity(Object entity);
+	public E detachId(Object oid);
 	
 	// -------------------------------------------- //
 	// IDENTIFIED CHANGES
