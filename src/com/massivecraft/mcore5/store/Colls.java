@@ -61,7 +61,6 @@ public abstract class Colls<C extends Coll<E, L>, E, L extends Comparable<? supe
 	public C getForWorld(String worldName)
 	{
 		if (worldName == null) throw new IllegalArgumentException("worldName may not be null.");
-		
 		return this.getForUniverse(this.universeFromWorldName(worldName));
 	}
 	
@@ -86,7 +85,9 @@ public abstract class Colls<C extends Coll<E, L>, E, L extends Comparable<? supe
 	
 	public C get(Object worldNameExtractable)
 	{
+		if (worldNameExtractable == null) return null;
 		String worldName = MUtil.extract(String.class, "worldName", worldNameExtractable);
+		if (worldName == null) return null;
 		return this.getForWorld(worldName);
 	}
 	

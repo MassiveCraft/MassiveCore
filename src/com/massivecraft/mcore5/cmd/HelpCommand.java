@@ -40,7 +40,7 @@ public class HelpCommand extends MCommand
 		
 		Integer pagenumber = this.arg(0, ARInteger.get(), 1);
 		if (pagenumber == null) return;
-		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \""+parentCommand.getAliases().get(0)+"\""));
+		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \""+parentCommand.getAliases().get(0)+"\"", sender));
 	}
 
 	@Override

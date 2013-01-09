@@ -36,6 +36,6 @@ public class CmdUsysAspectList extends UsysCommand
 				
 		// Send them
 		lines = Txt.parseWrap(lines);
-		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Aspect List"));	
+		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Aspect List", sender));	
 	}
 }
