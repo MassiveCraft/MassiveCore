@@ -20,14 +20,11 @@ public class ReqIsPlayer implements IReq
 		return Lang.commandSenderMustBePlayer;
 	}
 	
-	protected static ReqIsPlayer instance= new ReqIsPlayer();
-	public static ReqIsPlayer getInstance()
-	{
-		return instance;
-	}
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
 	
-	public static ReqIsPlayer get()
-	{
-		return instance;
-	}
+	public static ReqIsPlayer i = new ReqIsPlayer();
+	public static ReqIsPlayer get() { return i; }
+	
 }

@@ -222,6 +222,7 @@ public class PS implements Cloneable
 	protected synchronized Location innerLocation(Double x, Double y, Double z)
 	{
 		World world = this.getWorld();
+		if (world == null) return null;
 		
 		if (x == null) return null;
 		if (y == null) return null;
@@ -477,7 +478,7 @@ public class PS implements Cloneable
 	// WRITERS
 	//----------------------------------------------//
 	
-	public synchronized void write(Entity entity)
+	public synchronized void write(Entity entity) throws PSTeleporterException
 	{
 		teleporter.teleport(entity, this);
 	}

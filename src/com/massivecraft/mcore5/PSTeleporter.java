@@ -4,5 +4,9 @@ import org.bukkit.entity.Entity;
 
 public interface PSTeleporter
 {
-	public void teleport(Entity entity, PS ps);
+	/**
+	 * @param entity The entity to be teleported
+	 * @param ps The target PhysicalState
+	 */
+	public void teleport(Entity entity, PS ps) throws PSTeleporterException;
 }
