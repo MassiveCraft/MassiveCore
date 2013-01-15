@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore5.cmd.MCommand;
-import com.massivecraft.mcore5.util.Perm;
+import com.massivecraft.mcore5.util.PermUtil;
 
 public class ReqHasPerm implements IReq
 {
@@ -26,7 +26,7 @@ public class ReqHasPerm implements IReq
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return Perm.getForbiddenMessage(this.perm);
+		return PermUtil.getForbiddenMessage(this.perm);
 	}
 	
 	public static ReqHasPerm get(String perm)

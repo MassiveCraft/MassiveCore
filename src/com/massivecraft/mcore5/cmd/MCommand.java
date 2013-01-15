@@ -18,7 +18,7 @@ import com.massivecraft.mcore5.cmd.arg.ArgResult;
 import com.massivecraft.mcore5.cmd.req.IReq;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.util.BukkitCommandUtil;
-import com.massivecraft.mcore5.util.Perm;
+import com.massivecraft.mcore5.util.PermUtil;
 import com.massivecraft.mcore5.util.Txt;
 
 public abstract class MCommand
@@ -77,7 +77,7 @@ public abstract class MCommand
 		String perm = this.getDescPermission();
 		if (perm != null)
 		{
-			String pdesc = Perm.getPermissionDescription(this.getDescPermission());
+			String pdesc = PermUtil.getPermissionDescription(this.getDescPermission());
 			if (pdesc != null)
 			{
 				return pdesc;
