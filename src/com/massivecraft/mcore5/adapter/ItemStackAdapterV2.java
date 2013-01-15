@@ -87,7 +87,6 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 	public static final int DEFAULT_ID;
 	public static final int DEFAULT_COUNT;
 	public static final int DEFAULT_DAMAGE;
-	public static final int DEFAULT_FIREWORK_POWER = 1;
 
 	static
 	{
