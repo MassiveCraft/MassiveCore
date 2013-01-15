@@ -47,9 +47,6 @@ public class MongoURIAdapter implements JsonDeserializer<MongoURI>, JsonSerializ
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	protected static MongoURIAdapter instance = new MongoURIAdapter();
-	public static MongoURIAdapter get()
-	{
-		return instance;
-	}
+	protected static MongoURIAdapter i = new MongoURIAdapter();
+	public static MongoURIAdapter get()	{ return i; }
 }

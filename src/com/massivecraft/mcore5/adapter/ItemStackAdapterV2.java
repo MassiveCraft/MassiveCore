@@ -739,10 +739,6 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 	// -------------------------------------------- //
 
 	public static ItemStackAdapterV2 i = new ItemStackAdapterV2();
-
-	public static ItemStackAdapterV2 get()
-	{
-		return i;
-	}
+	public static ItemStackAdapterV2 get() { return i; }
 
 }
