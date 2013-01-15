@@ -36,6 +36,6 @@ public class CmdUsysMultiverseList extends UsysCommand
 				
 		// Send them
 		lines = Txt.parseWrap(lines);
-		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Multiverse List", sender));	
+		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Multiverse List", sender));
 	}
 }

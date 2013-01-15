@@ -70,11 +70,13 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 
 	public static final String SKULL_OWNER = "skull";
 
-	// TODO rename to potion-effects?
-	public static final String POTION_EFFECTS = "effects";
+	// We renamed "effects" to "potion-effects".
+	public static final String POTION_EFFECTS_OLD = "effects";
+	public static final String POTION_EFFECTS = "potion-effects";
 
 	public static final String FIREWORK_EFFECT = "firework-effect";
 	public static final String FIREWORK_EFFECTS = "firework-effects";
+	public static final String FIREWORK_FLIGHT = "firework-flight";
 
 	public static final String STORED_ENCHANTS = "stored-enchants";
 
@@ -85,6 +87,7 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 	public static final int DEFAULT_ID;
 	public static final int DEFAULT_COUNT;
 	public static final int DEFAULT_DAMAGE;
+	public static final int DEFAULT_FIREWORK_POWER = 1;
 
 	static
 	{
@@ -504,6 +507,7 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 		else
 		{
 			JsonElement element = json.get(POTION_EFFECTS);
+			if (element == null) element = json.get(POTION_EFFECTS_OLD);
 			if (element == null) return;
 
 			meta.clearCustomEffects();
@@ -558,6 +562,12 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 
 	public static void transferFireworkMeta(FireworkMeta meta, JsonObject json, boolean meta2json)
 	{
+		transferFireworkMetaEffects(meta, json, meta2json);
+		transferFireworkMetaPower(meta, json, meta2json);
+	}
+	
+	public static void transferFireworkMetaEffects(FireworkMeta meta, JsonObject json, boolean meta2json)
+	{
 		if (meta2json)
 		{
 			if (!meta.hasEffects()) return;
@@ -569,6 +579,20 @@ public class ItemStackAdapterV2 implements JsonDeserializer<ItemStack>, JsonSeri
 			if (element == null) return;
 			meta.clearEffects();
 			meta.addEffects(convertFireworkEffectList(element));
+		}
+	}
+	
+	public static void transferFireworkMetaPower(FireworkMeta meta, JsonObject json, boolean meta2json)
+	{
+		if (meta2json)
+		{
+			json.addProperty(FIREWORK_FLIGHT, meta.getPower());
+		}
+		else
+		{
+			JsonElement element = json.get(FIREWORK_FLIGHT);
+			if (element == null) return;
+			meta.setPower(element.getAsInt());
 		}
 	}
 

@@ -50,9 +50,12 @@ public class HelpCommand extends MCommand
 		return this.commandChain.get(this.commandChain.size()-1).p();
 	}
 	
-	private static HelpCommand instance = new HelpCommand();
-	public static HelpCommand getInstance()
-	{
-		return instance;
-	}
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static HelpCommand i = new HelpCommand();
+	public static HelpCommand getInstance() { return i; }
+	public static HelpCommand get() { return i; }
+	
 }

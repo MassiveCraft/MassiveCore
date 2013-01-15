@@ -26,6 +26,18 @@
 			}
 			...
 		]
+		StoredEnchantments:
+		[
+			{
+				id: int
+				lvl: int
+			}
+			{
+				id: int
+				lvl: int
+			}
+			...
+		]
 		title: str
 		author: str
 		pages: [str]
@@ -41,6 +53,23 @@
 			}
 			...
 		]
+		Explosion:
+		{
+			Flicker: bool
+			Trail: bool
+			Colors: [int]
+			FadeColors: [int]
+			Type: byte
+		}
+		Fireworks:
+		{
+			Flight: byte
+			Explosions:
+			[
+				*Explosion*
+				...
+			]
+		}
 	}
 }
 
@@ -58,6 +87,11 @@
 		display-name: str
 		lore: [str]
 		enchants: 
+		{
+			id: lvl
+			...
+		}
+		stored-enchants:
 		{
 			id: lvl
 			...
@@ -84,6 +118,28 @@
 			}
 			...
 		]
+		firework-effect:
+		{
+			flicker: bool
+			trail: bool
+			colors:
+			[
+				*color*
+				...
+			]
+			fade-colors: 
+			[
+				*color*
+				...
+			]
+			type: "BALL", "BALL_LARGE", "STAR", "BURST" or "CREEPER"
+		}
+		firework-effects:
+		[
+			*firework-effect*
+			...
+		]
+		power: int
 	}
 }
 
@@ -98,6 +154,12 @@
 	name: str
 	lore: [str]
 	enchants:
+	{
+		id: lvl
+		id: lvl
+		...
+	}
+	stored-enchants:
 	{
 		id: lvl
 		id: lvl
@@ -120,4 +182,18 @@
 		}
 		...
 	]
+	firework-effect:
+	{
+		flicker: bool
+		trail: bool
+		colors: [int ...]
+		fade-colors: [int ...]
+		type: str/enum
+	}
+	firework-effects:
+	[
+		*firework-effect*
+		...
+	]
+	firework-flight: int
 }
