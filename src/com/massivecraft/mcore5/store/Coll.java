@@ -70,7 +70,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// STORAGE
 	// -------------------------------------------- //
 	
-	protected Set<L> ids = new ConcurrentSkipListSet<L>();
+	protected Set<L> ids;
 	@Override public Collection<L> getIds() { return Collections.unmodifiableCollection(this.ids); }
 	@Override public Collection<L> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
 	@Override public boolean containsEntity(Object entity) { return this.entities.contains(entity); };
@@ -84,14 +84,14 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	
 	// We use a ConcurrentSkipListSet here in order for the entities to keep their natural ordering
 	// You may want to have your entities implement the Comparable interface
-	protected Set<E> entities = new ConcurrentSkipListSet<E>();
+	protected Set<E> entities;
 	@Override public Collection<E> getAll() { return Collections.unmodifiableCollection(this.entities); }
 	@Override public Collection<E> getAll(Predictate<E> where) { return MStoreUtil.uglySQL(this.getAll(), where, null, null, null); }
 	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, null, null); }
 	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, null); }
 	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, offset); }
 	
-	protected Map<L, E> id2entity = new ConcurrentHashMap<L, E>();
+	protected Map<L, E> id2entity;
 	@Override public Map<L, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override 
 	public E get(Object oid) 
@@ -114,7 +114,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	}
 	
 	// Get the id for this entity.
-	protected Map<E, L> entity2id = new ConcurrentHashMap<E, L>();
+	protected Map<E, L> entity2id;
 	@Override public Map<E, L> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
 	@Override public L getId(Object entity) { return this.entity2id.get(entity); }
 	
@@ -278,9 +278,9 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// IDENTIFIED CHANGES
 	// -------------------------------------------- //
 	
-	protected Set<L> localAttachIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
-	protected Set<L> localDetachIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
-	protected Set<L> changedIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+	protected Set<L> localAttachIds;
+	protected Set<L> localDetachIds;
+	protected Set<L> changedIds;
 	
 	protected synchronized void clearIdentifiedChanges(L id)
 	{
@@ -561,10 +561,12 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 			this.universe = null;
 		}
 		
+		// WHAT DO WE HANDLE?
 		this.entityClass = entityClass;
 		this.idClass = idClass;
 		this.creative = creative;
 		
+		// SUPPORTING SYSTEM
 		this.mplugin = mplugin;
 		this.db = db;
 		this.storeAdapter = this.db.getDriver().getStoreAdapter();
@@ -578,6 +580,22 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 			throw new IllegalArgumentException("MISSMATCH: The id stragegy \""+idStrategyName+"\" for the driver \""+db.getDriver().getName()+"\" uses \""+this.idStrategy.getLocalClass().getSimpleName()+"\" but the collection "+this.name+"/"+this.getClass().getSimpleName()+" uses \""+idClass.getSimpleName()+"\".");
 		}
 		this.collDriverObject = db.getCollDriverObject(this);
+		
+		// STORAGE
+		this.ids = new ConcurrentSkipListSet<L>();
+		this.entities = new ConcurrentSkipListSet<E>();
+		this.id2entity = new ConcurrentHashMap<L, E>();
+		this.entity2id = new ConcurrentHashMap<E, L>();
+		
+		// IDENTIFIED CHANGES
+		this.localAttachIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+		this.localDetachIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+		this.changedIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+		
+		// SYNCLOG
+		this.lastMtime = new ConcurrentHashMap<L, Long>();
+		this.lastRaw = new ConcurrentHashMap<L, Object>();	
+		this.lastDefault = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
 		
 		final Coll<E, L> me = this;
 		this.tickTask = new Runnable()
