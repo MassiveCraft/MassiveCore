@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -230,10 +230,11 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 			if (this.ids.contains(id)) return null;
 		}
 		
-		// Set this as the coll if possible.
+		// Add entity reference info
 		if (entity instanceof Entity)
 		{
 			((Entity)entity).setColl(this);
+			((Entity)entity).setid(id);
 		}
 		
 		// Attach
@@ -293,9 +294,9 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// SYNCLOG
 	// -------------------------------------------- //
 
-	protected Map<L, Long> lastMtime = new ConcurrentHashMap<L, Long>();
-	protected Map<L, Object> lastRaw = new ConcurrentHashMap<L, Object>();	
-	protected Set<L> lastDefault = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+	protected Map<L, Long> lastMtime;
+	protected Map<L, Object> lastRaw;
+	protected Set<L> lastDefault;
 	
 	protected synchronized void clearSynclog(L id)
 	{
@@ -308,6 +309,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// SYNC LOWLEVEL IO ACTIONS
 	// -------------------------------------------- //
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public synchronized E removeAtLocal(L id)
 	{
@@ -320,6 +322,13 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		
 		this.entity2id.remove(entity);
 		this.entities.remove(entity);
+		
+		// Remove entity reference info
+		if (entity instanceof Entity)
+		{
+			((Entity)entity).setColl(null);
+			((Entity)entity).setid(null);
+		}
 		
 		return entity;
 	}
@@ -546,7 +555,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative, Comparator<? super L> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -582,26 +591,31 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		this.collDriverObject = db.getCollDriverObject(this);
 		
 		// STORAGE
-		this.ids = new ConcurrentSkipListSet<L>();
-		this.entities = new ConcurrentSkipListSet<E>();
-		this.id2entity = new ConcurrentHashMap<L, E>();
-		this.entity2id = new ConcurrentHashMap<E, L>();
+		this.ids = new ConcurrentSkipListSet<L>(idComparator);
+		this.entities = new ConcurrentSkipListSet<E>(entityComparator);
+		this.id2entity = new ConcurrentSkipListMap<L, E>(idComparator);
+		this.entity2id = new ConcurrentSkipListMap<E, L>(entityComparator);
 		
 		// IDENTIFIED CHANGES
-		this.localAttachIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
-		this.localDetachIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
-		this.changedIds = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+		this.localAttachIds = new ConcurrentSkipListSet<L>(idComparator);
+		this.localDetachIds = new ConcurrentSkipListSet<L>(idComparator);
+		this.changedIds = new ConcurrentSkipListSet<L>(idComparator);
 		
 		// SYNCLOG
-		this.lastMtime = new ConcurrentHashMap<L, Long>();
-		this.lastRaw = new ConcurrentHashMap<L, Object>();	
-		this.lastDefault = Collections.newSetFromMap(new ConcurrentHashMap<L, Boolean>());
+		this.lastMtime = new ConcurrentSkipListMap<L, Long>(idComparator);
+		this.lastRaw = new ConcurrentSkipListMap<L, Object>(idComparator);
+		this.lastDefault = new ConcurrentSkipListSet<L>(idComparator);
 		
 		final Coll<E, L> me = this;
 		this.tickTask = new Runnable()
 		{
 			@Override public void run() { me.onTick(); }
 		};
+	}
+	
+	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	{
+		this(db, mplugin, idStrategyName, name, entityClass, idClass, creative, null, null);
 	}
 	
 	public Coll(MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)

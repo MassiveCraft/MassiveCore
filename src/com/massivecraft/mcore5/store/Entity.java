@@ -18,6 +18,10 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	protected void setColl(Coll<E, L> val) { this.coll = val; }
 	public Coll<E, L> getColl() { return this.coll; }
 	
+	protected transient L id;
+	protected void setid(L id) { this.id = id; }
+	public L getId() { return this.id; }
+	
 	public String getUniverse()
 	{
 		Coll<E, L> coll = this.getColl();
@@ -51,13 +55,6 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	public boolean detached()
 	{
 		return ! this.attached();
-	}
-	
-	public L getId()
-	{
-		Coll<E, L> coll = this.getColl();
-		if (coll == null) return null;
-		return coll.getId(this);
 	}
 	
 	public void changed()
