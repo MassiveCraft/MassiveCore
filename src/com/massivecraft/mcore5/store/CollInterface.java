@@ -34,23 +34,22 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	// -------------------------------------------- //
 	// STORAGE
 	// -------------------------------------------- //
+	public Map<L, E> getId2entity();
+	public E get(Object oid);
+	public E get(Object oid, boolean creative);
 	public Collection<L> getIds();
 	public Collection<L> getIdsRemote();
 	public boolean containsId(Object oid);
-	public boolean containsEntity(Object entity);
 	
+	public Map<E, L> getEntity2id();
+	public L getId(Object entity);
+	public boolean containsEntity(Object entity);
 	public Collection<E> getAll();
 	public Collection<E> getAll(Predictate<E> where);
 	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby);
 	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit);
 	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit, Integer offset);
 	
-	public Map<L, E> getId2entity();
-	public E get(Object oid);
-	public E get(Object oid, boolean creative);
-
-	public Map<E, L> getEntity2id();
-	public L getId(Object entity);
 	public L fixId(Object oid);
 	
 	// -------------------------------------------- //

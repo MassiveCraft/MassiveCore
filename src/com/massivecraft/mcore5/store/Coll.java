@@ -70,27 +70,6 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// STORAGE
 	// -------------------------------------------- //
 	
-	protected Set<L> ids;
-	@Override public Collection<L> getIds() { return Collections.unmodifiableCollection(this.ids); }
-	@Override public Collection<L> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
-	@Override public boolean containsEntity(Object entity) { return this.entities.contains(entity); };
-	@Override
-	public boolean containsId(Object oid)
-	{
-		L id = this.fixId(oid);
-		if (id == null) return false;
-		return this.ids.contains(id);
-	}
-	
-	// We use a ConcurrentSkipListSet here in order for the entities to keep their natural ordering
-	// You may want to have your entities implement the Comparable interface
-	protected Set<E> entities;
-	@Override public Collection<E> getAll() { return Collections.unmodifiableCollection(this.entities); }
-	@Override public Collection<E> getAll(Predictate<E> where) { return MStoreUtil.uglySQL(this.getAll(), where, null, null, null); }
-	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, null, null); }
-	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, null); }
-	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, offset); }
-	
 	protected Map<L, E> id2entity;
 	@Override public Map<L, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override 
@@ -113,10 +92,27 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		return this.create(id, noteChange);
 	}
 	
+	@Override public Collection<L> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
+	@Override public Collection<L> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
+	@Override
+	public boolean containsId(Object oid)
+	{
+		L id = this.fixId(oid);
+		if (id == null) return false;
+		return this.id2entity.containsKey(id);
+	}
+	
 	// Get the id for this entity.
 	protected Map<E, L> entity2id;
 	@Override public Map<E, L> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
 	@Override public L getId(Object entity) { return this.entity2id.get(entity); }
+	@Override public boolean containsEntity(Object entity) { return this.entity2id.containsKey(entity); };
+	
+	@Override public Collection<E> getAll() { return Collections.unmodifiableCollection(this.entity2id.keySet()); }
+	@Override public Collection<E> getAll(Predictate<E> where) { return MStoreUtil.uglySQL(this.getAll(), where, null, null, null); }
+	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, null, null); }
+	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, null); }
+	@Override public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, offset); }
 	
 	@Override
 	public L fixId(Object oid)
@@ -227,7 +223,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		{
 			id = this.fixId(oid);
 			if (id == null) return null;
-			if (this.ids.contains(id)) return null;
+			if (this.id2entity.containsKey(id)) return null;
 		}
 		
 		// Add entity reference info
@@ -240,8 +236,6 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		// Attach
 		this.id2entity.put(id, entity);
 		this.entity2id.put(entity, id);
-		this.ids.add(id);
-		this.entities.add(entity);
 		
 		// Make note of the change
 		if (noteChange)
@@ -316,12 +310,10 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
 		
-		this.ids.remove(id);
 		E entity = this.id2entity.remove(id);
 		if (entity == null) return null;
 		
 		this.entity2id.remove(entity);
-		this.entities.remove(entity);
 		
 		// Remove entity reference info
 		if (entity instanceof Entity)
@@ -503,7 +495,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	public void syncAll()
 	{
 		// Find all ids
-		Set<L> allids = new HashSet<L>(this.ids);
+		Set<L> allids = new HashSet<L>(this.id2entity.keySet());
 		allids.addAll(this.getDriver().getIds(this));
 		for (L id : allids)
 		{
@@ -520,7 +512,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		// Compile a list of all ids (both remote and local)
 		Set<L> allids = new HashSet<L>();
 		allids.addAll(id2RemoteMtime.keySet());
-		allids.addAll(this.ids);
+		allids.addAll(this.id2entity.keySet());
 		
 		// Check for modifications
 		for (L id : allids)
@@ -591,8 +583,6 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		this.collDriverObject = db.getCollDriverObject(this);
 		
 		// STORAGE
-		this.ids = new ConcurrentSkipListSet<L>(idComparator);
-		this.entities = new ConcurrentSkipListSet<E>(entityComparator);
 		this.id2entity = new ConcurrentSkipListMap<L, E>(idComparator);
 		this.entity2id = new ConcurrentSkipListMap<E, L>(entityComparator);
 		
