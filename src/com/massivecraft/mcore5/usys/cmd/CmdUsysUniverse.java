@@ -2,9 +2,10 @@ package com.massivecraft.mcore5.usys.cmd;
 
 import com.massivecraft.mcore5.Permission;
 import com.massivecraft.mcore5.cmd.HelpCommand;
+import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 
-public class CmdUsysUniverse extends UsysCommand
+public class CmdUsysUniverse extends MCommand
 {
 	public CmdUsysUniverseNew cmdUsysUniverseNew = new CmdUsysUniverseNew();
 	public CmdUsysUniverseDel cmdUsysUniverseDel = new CmdUsysUniverseDel();

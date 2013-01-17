@@ -18,6 +18,7 @@ import java.util.TreeSet;
 
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -37,6 +38,8 @@ import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.util.extractor.Extractor;
 import com.massivecraft.mcore5.util.extractor.ExtractorPlayer;
 import com.massivecraft.mcore5.util.extractor.ExtractorPlayerName;
+import com.massivecraft.mcore5.util.extractor.ExtractorSender;
+import com.massivecraft.mcore5.util.extractor.ExtractorSenderId;
 import com.massivecraft.mcore5.util.extractor.ExtractorWorld;
 import com.massivecraft.mcore5.util.extractor.ExtractorWorldName;
 
@@ -366,9 +369,13 @@ public class MUtil
 	
 	static
 	{
-		registerExtractor(World.class, "world", new ExtractorWorld());
-		registerExtractor(String.class, "worldName", new ExtractorWorldName());
-		registerExtractor(Player.class, "player", new ExtractorPlayer());
-		registerExtractor(String.class, "playerName", new ExtractorPlayerName());
+		registerExtractor(CommandSender.class, "sender", ExtractorSender.get());
+		registerExtractor(String.class, "senderId", ExtractorSenderId.get());
+		
+		registerExtractor(Player.class, "player", ExtractorPlayer.get());
+		registerExtractor(String.class, "playerName", ExtractorPlayerName.get());
+		
+		registerExtractor(World.class, "world", ExtractorWorld.get());
+		registerExtractor(String.class, "worldName", ExtractorWorldName.get());
 	}
 }

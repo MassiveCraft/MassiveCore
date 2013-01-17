@@ -22,6 +22,7 @@ import com.massivecraft.mcore5.event.MCoreAfterPlayerTeleportEvent;
 import com.massivecraft.mcore5.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore5.store.Coll;
 import com.massivecraft.mcore5.store.PlayerColl;
+import com.massivecraft.mcore5.store.SenderColl;
 import com.massivecraft.mcore5.util.SmokeUtil;
 
 public class InternalListener implements Listener
@@ -71,26 +72,39 @@ public class InternalListener implements Listener
 	}
 	
 	// -------------------------------------------- //
-	// PLAYER REFERENCES
+	// PLAYER AND SENDER REFERENCES
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void playerReferencesLoginLowest(PlayerLoginEvent event)
 	{
-		PlayerColl.setPlayerRefferences(event.getPlayer().getName(), event.getPlayer());
+		String id = event.getPlayer().getName();
+		Player player = event.getPlayer();
+		
+		PlayerColl.setPlayerRefferences(id, player);
+		SenderColl.setSenderRefferences(id, player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void playerReferencesLoginMonitor(PlayerLoginEvent event)
 	{
 		if (event.getResult() == Result.ALLOWED) return;
-		PlayerColl.setPlayerRefferences(event.getPlayer().getName(), null);
+		
+		String id = event.getPlayer().getName();
+		Player player = null;
+		
+		PlayerColl.setPlayerRefferences(id, player);
+		SenderColl.setSenderRefferences(id, player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void playerReferencesQuitMonitor(PlayerQuitEvent event)
 	{
-		PlayerColl.setPlayerRefferences(event.getPlayer().getName(), null);
+		String id = event.getPlayer().getName();
+		Player player = null;
+		
+		PlayerColl.setPlayerRefferences(id, player);
+		SenderColl.setSenderRefferences(id, player);
 	}
 	
 	// -------------------------------------------- //

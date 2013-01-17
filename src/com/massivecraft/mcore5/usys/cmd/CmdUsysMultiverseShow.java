@@ -5,13 +5,14 @@ import java.util.List;
 
 import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.Permission;
+import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.usys.Aspect;
 import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.mcore5.util.Txt;
 
-public class CmdUsysMultiverseShow extends UsysCommand
+public class CmdUsysMultiverseShow extends MCommand
 {
 	public CmdUsysMultiverseShow()
 	{

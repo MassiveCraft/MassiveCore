@@ -26,9 +26,7 @@ public class PSTeleporterDefault implements PSTeleporter
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	protected static PSTeleporterDefault instance = new PSTeleporterDefault();
-	public static PSTeleporterDefault get()
-	{
-		return instance;
-	}
+	protected static PSTeleporterDefault i = new PSTeleporterDefault();
+	public static PSTeleporterDefault get() { return i; }
+	
 }

@@ -21,10 +21,4 @@ public class CmdMcore extends MCommand
 		this.msg("<i>You are running %s", MCore.p.getDescription().getFullName());
 		this.msg("<i>The id of this server is \"<h>%s<i>\".", Conf.serverid);
 	}
-	
-	@Override
-	public MCore p()
-	{
-		return MCore.p;
-	}
 }

@@ -7,4 +7,12 @@ public class ExtractorPlayer implements Extractor
 	{
 		return ExtractorLogic.playerFromObject(o);
 	}
+	
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static ExtractorPlayer i = new ExtractorPlayer();
+	public static ExtractorPlayer get() { return i; }
+	
 }

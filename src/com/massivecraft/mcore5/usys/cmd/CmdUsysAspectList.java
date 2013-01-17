@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.massivecraft.mcore5.Permission;
+import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.cmd.arg.ARInteger;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.usys.Aspect;
 import com.massivecraft.mcore5.usys.AspectColl;
 import com.massivecraft.mcore5.util.Txt;
 
-public class CmdUsysAspectList extends UsysCommand
+public class CmdUsysAspectList extends MCommand
 {
 	public CmdUsysAspectList()
 	{

@@ -113,10 +113,10 @@ public class MCore extends MPlugin
 		
 		// Register commands
 		this.cmdUsys = new CmdUsys();
-		this.cmdUsys.register(true);
+		this.cmdUsys.register(this, true);
 		
 		this.cmdMcore = new CmdMcore();
-		this.cmdMcore.register(true);
+		this.cmdMcore.register(this, true);
 		
 		this.postEnable();
 	}

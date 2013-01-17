@@ -17,7 +17,7 @@ public class JsonFileFilter implements FileFilter
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	private static JsonFileFilter instance = new JsonFileFilter();
-	public static JsonFileFilter get() { return instance; }
+	private static JsonFileFilter i = new JsonFileFilter();
+	public static JsonFileFilter get() { return i; }
 	
 }

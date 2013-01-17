@@ -142,10 +142,14 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void copy(Object ofrom, Object oto)
 	{
+		if (ofrom == null) throw new NullPointerException("ofrom");
+		if (oto == null) throw new NullPointerException("oto");
+			
 		if (ofrom instanceof Entity)
 		{
 			Entity efrom = (Entity)ofrom;
 			Entity eto = (Entity)oto;
+			
 			eto.load(efrom);
 		}
 		else

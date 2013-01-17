@@ -1,18 +1,18 @@
 package com.massivecraft.mcore5.util.extractor;
 
-public class ExtractorPlayerName implements Extractor
+public class ExtractorSenderId implements Extractor
 {
 	@Override
 	public Object extract(Object o)
 	{
-		return ExtractorLogic.playerNameFromObject(o);
+		return ExtractorLogic.senderIdFromObject(o);
 	}
 	
 	// -------------------------------------------- //
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	private static ExtractorPlayerName i = new ExtractorPlayerName();
-	public static ExtractorPlayerName get() { return i; }
+	private static ExtractorSenderId i = new ExtractorSenderId();
+	public static ExtractorSenderId get() { return i; }
 	
 }

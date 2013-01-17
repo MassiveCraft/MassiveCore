@@ -3,9 +3,10 @@ package com.massivecraft.mcore5.usys.cmd;
 import com.massivecraft.mcore5.Conf;
 import com.massivecraft.mcore5.Permission;
 import com.massivecraft.mcore5.cmd.HelpCommand;
+import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 
-public class CmdUsys extends UsysCommand
+public class CmdUsys extends MCommand
 {
 	public final static String USYS = "usys";
 	

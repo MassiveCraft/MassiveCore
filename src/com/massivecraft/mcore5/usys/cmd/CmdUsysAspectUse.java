@@ -1,13 +1,14 @@
 package com.massivecraft.mcore5.usys.cmd;
 
 import com.massivecraft.mcore5.Permission;
+import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.cmd.arg.ARAspect;
 import com.massivecraft.mcore5.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.usys.Aspect;
 import com.massivecraft.mcore5.usys.Multiverse;
 
-public class CmdUsysAspectUse extends UsysCommand
+public class CmdUsysAspectUse extends MCommand
 {
 	public CmdUsysAspectUse()
 	{

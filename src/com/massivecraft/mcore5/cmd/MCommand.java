@@ -12,6 +12,7 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore5.Lang;
+import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.MPlugin;
 import com.massivecraft.mcore5.cmd.arg.ArgReader;
 import com.massivecraft.mcore5.cmd.arg.ArgResult;
@@ -19,12 +20,11 @@ import com.massivecraft.mcore5.cmd.req.IReq;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.util.BukkitCommandUtil;
 import com.massivecraft.mcore5.util.PermUtil;
+import com.massivecraft.mcore5.util.SenderUtil;
 import com.massivecraft.mcore5.util.Txt;
 
 public abstract class MCommand
-{
-	public abstract MPlugin p();
-	
+{	
 	// -------------------------------------------- //
 	// COMMAND BEHAVIOR
 	// -------------------------------------------- //
@@ -135,12 +135,22 @@ public abstract class MCommand
 	
 	public boolean register()
 	{
-		return register(false);
+		return register(MCore.p, false);
+	}
+	
+	public boolean register(MPlugin mplugin)
+	{
+		return this.register(mplugin, false);
 	}
 	
 	public boolean register(boolean override)
 	{
-		BukkitGlueCommand bgc = new BukkitGlueCommand(this);
+		return this.register(MCore.p, override);
+	}
+	
+	public boolean register(MPlugin mplugin, boolean override)
+	{
+		BukkitGlueCommand bgc = new BukkitGlueCommand(this, mplugin);
 		SimpleCommandMap scm = BukkitCommandUtil.getBukkitCommandMap();
 		
 		if (override)
@@ -227,7 +237,7 @@ public abstract class MCommand
 	
 	
 	// -------------------------------------------- //
-	// Call Validation
+	// CALL VALIDATION
 	// -------------------------------------------- //
 	
 	/**
@@ -303,7 +313,7 @@ public abstract class MCommand
 	}
 	
 	// -------------------------------------------- //
-	// Help and Usage information
+	// HELP AND USAGE INFORMATION
 	// -------------------------------------------- //
 	
 	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
@@ -383,42 +393,45 @@ public abstract class MCommand
 	}
 	
 	// -------------------------------------------- //
-	// Message Sending Helpers
+	// MESSAGE SENDING HELPERS
 	// -------------------------------------------- //
 	
-	public void msg(String str, Object... args)
+	// CONVENIENCE SEND MESSAGE
+	
+	public boolean sendMessage(String message)
 	{
-		sender.sendMessage(Txt.parse(str, args));
+		return SenderUtil.sendMessage(this.sender, message);
 	}
 	
-	public void msg(String str)
+	public boolean sendMessage(String... messages)
 	{
-		sender.sendMessage(Txt.parse(str));
+		return SenderUtil.sendMessage(this.sender, messages);
 	}
 	
-	public void msg(Collection<String> msgs)
+	public boolean sendMessage(Collection<String> messages)
 	{
-		for(String msg : msgs)
-		{
-			this.msg(msg);
-		}
+		return SenderUtil.sendMessage(this.sender, messages);
 	}
 	
-	public void sendMessage(String msg)
+	// CONVENIENCE MSG
+	
+	public boolean msg(String msg)
 	{
-		sender.sendMessage(msg);
+		return SenderUtil.msg(this.sender, msg);
 	}
 	
-	public void sendMessage(Collection<String> msgs)
+	public boolean msg(String msg, Object... args)
 	{
-		for(String msg : msgs)
-		{
-			this.sendMessage(msg);
-		}
+		return SenderUtil.msg(this.sender, msg, args);
+	}
+	
+	public boolean msg(Collection<String> msgs)
+	{
+		return SenderUtil.msg(this.sender, msgs);
 	}
 	
 	// -------------------------------------------- //
-	// Argument Readers
+	// ARGUMENT READERS
 	// -------------------------------------------- //
 	
 	public String argConcatFrom(int idx)
@@ -458,63 +471,4 @@ public abstract class MCommand
 		if (result.hasErrors()) this.msg(result.getErrors());
 		return result.getResult();
 	}
-	
-	// -------------------------------------------- //
-	// Argument Readers DEPRACATED TODO
-	// -------------------------------------------- //
-	
-	/*@Deprecated
-	public synchronized <T> T argAs(int idx, Class<T> clazz, String style, T defaultNotSet, T defaultNotFound)
-	{
-		if ( ! this.argIsSet(idx))
-		{
-			return defaultNotSet;
-		}
-		IArgHandler<T> handler = p().cmd.getArgHandler(clazz);
-		
-		if (handler == null)
-		{
-			p().log(Level.SEVERE, "There is no ArgHandler for " + clazz.getName());
-		}
-		
-		T ret = handler.parse(this.arg(idx), style, this.sender, p());
-		if (ret == null)
-		{
-			this.msg(handler.getErrors());
-			return defaultNotFound;
-		}
-		return ret;
-	}
-	
-	@Deprecated
-	public <T> T argAs(int idx, Class<T> clazz, T defaultNotSet, T defaultNotFound)
-	{
-		return this.argAs(idx, clazz, null, defaultNotSet, defaultNotFound);
-	}
-	
-	@Deprecated
-	public <T> T argAs(int idx, Class<T> clazz, String style, T defaultNotSet)
-	{
-		return this.argAs(idx, clazz, style, defaultNotSet, null);
-	}
-	
-	@Deprecated
-	public <T> T argAs(int idx, Class<T> clazz, T defaultNotSet)
-	{
-		return this.argAs(idx, clazz, null, defaultNotSet, null);
-	}
-	
-	@Deprecated
-	public <T> T argAs(int idx, Class<T> clazz, String style)
-	{
-		return this.argAs(idx, clazz, style, null, null);
-	}
-	
-	@Deprecated
-	public <T> T argAs(int idx, Class<T> clazz)
-	{
-		return this.argAs(idx, clazz, (T)null, null);
-	}
-	*/
-	
 }

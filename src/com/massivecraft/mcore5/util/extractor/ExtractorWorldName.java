@@ -7,4 +7,12 @@ public class ExtractorWorldName implements Extractor
 	{
 		return ExtractorLogic.worldNameFromObject(o);
 	}
+	
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static ExtractorWorldName i = new ExtractorWorldName();
+	public static ExtractorWorldName get() { return i; }
+	
 }

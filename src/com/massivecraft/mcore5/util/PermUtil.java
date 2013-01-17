@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
@@ -18,29 +19,33 @@ public class PermUtil
 	// HAS
 	// -------------------------------------------- //
 	
-	public static boolean has(CommandSender sender, Permission permission)
+	public static boolean has(Permissible permissable, Permission permission)
 	{
-		return has(sender, permission.getName());
+		return has(permissable, permission.getName());
 	}
-	public static boolean has(CommandSender sender, String perm)
+	public static boolean has(Permissible permissable, String perm)
 	{
-		if (sender == null) return false;
-		return sender.hasPermission(perm);
+		if (permissable == null) return false;
+		return permissable.hasPermission(perm);
 	}
 	
-	public static boolean has(CommandSender sender, Permission permission, boolean verbose)
+	public static boolean has(Permissible permissable, Permission permission, boolean verbose)
 	{
-		return has(sender, permission.getName(), verbose);
+		return has(permissable, permission.getName(), verbose);
 	}
-	public static boolean has(CommandSender sender, String perm, boolean verbose)
+	public static boolean has(Permissible permissable, String perm, boolean verbose)
 	{
-		if (has(sender, perm))
+		if (has(permissable, perm))
 		{
 			return true;
 		}
-		else if (verbose && sender != null)
+		else if (verbose && permissable != null)
 		{
-			sender.sendMessage(getForbiddenMessage(perm));
+			if (permissable instanceof CommandSender)
+			{
+				CommandSender sender = (CommandSender)permissable;
+				sender.sendMessage(getForbiddenMessage(perm));
+			}
 		}
 		return false;
 	}

@@ -19,6 +19,8 @@ public class StoreAdapterGson extends StoreAdapterAbstract
 	@Override
 	public void write(Coll<?, ?> coll, Object raw, Object entity)
 	{
+		if (raw == null) throw new NullPointerException("raw");
+		if (entity == null) throw new NullPointerException("entity");
 		Object temp = coll.getMplugin().gson.fromJson((JsonElement)raw, coll.getEntityClass());
 		coll.copy(temp, entity);
 	}

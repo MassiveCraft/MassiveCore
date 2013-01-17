@@ -1,9 +1,9 @@
 package com.massivecraft.mcore5.util.extractor;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -27,59 +27,90 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 
 import com.massivecraft.mcore5.PS;
 import com.massivecraft.mcore5.store.PlayerEntity;
+import com.massivecraft.mcore5.store.SenderEntity;
+import com.massivecraft.mcore5.util.SenderUtil;
 
 public class ExtractorLogic
 {
 	// -------------------------------------------- //
+	// SENDER
+	// -------------------------------------------- //
+	
+	public static CommandSender sender(String o) { return SenderUtil.getSender(o); }
+	
+	public static CommandSender sender(PlayerEvent o) { return o.getPlayer(); }
+	public static CommandSender sender(BlockBreakEvent o) { return o.getPlayer(); }
+	public static CommandSender sender(BlockDamageEvent o) { return o.getPlayer(); }
+	public static CommandSender sender(BlockIgniteEvent o) { return o.getPlayer(); }
+	public static CommandSender sender(BlockPlaceEvent o) { return o.getPlayer(); }
+	public static CommandSender sender(SignChangeEvent o) { return o.getPlayer(); }
+	public static CommandSender sender(EnchantItemEvent o) { return o.getEnchanter(); }
+	public static CommandSender sender(PrepareItemEnchantEvent o) { return o.getEnchanter(); }
+	public static CommandSender sender(Entity o) { if (o instanceof CommandSender) return (CommandSender)o; return null; }
+	public static CommandSender sender(EntityEvent o) { return sender(o.getEntity()); }
+	public static CommandSender sender(InventoryClickEvent o) { return sender(o.getWhoClicked()); }
+	public static CommandSender sender(InventoryCloseEvent o) { return sender(o.getPlayer()); }
+	public static CommandSender sender(InventoryOpenEvent o) { return sender(o.getPlayer()); }
+	public static CommandSender sender(HangingBreakByEntityEvent o) { return sender(o.getRemover()); }
+	public static CommandSender sender(VehicleDamageEvent o) { return sender(o.getAttacker()); }
+	public static CommandSender sender(VehicleDestroyEvent o) { return sender(o.getAttacker()); }
+	public static CommandSender sender(VehicleEnterEvent o) { return sender(o.getEntered()); }
+	public static CommandSender sender(VehicleExitEvent o) { return sender(o.getExited()); }
+	public static CommandSender sender(VehicleEvent o) { return sender(o.getVehicle().getPassenger()); }
+	
+	public static CommandSender senderFromObject(Object o)
+	{
+		if (o == null) return null;
+		
+		if (o instanceof CommandSender) return (CommandSender)o;
+		
+		if (o instanceof String) return sender((String)o);
+		if (o instanceof PlayerEvent) return sender((PlayerEvent)o);
+		if (o instanceof BlockBreakEvent) return sender((BlockBreakEvent)o);
+		if (o instanceof BlockDamageEvent) return sender((BlockDamageEvent)o);
+		if (o instanceof BlockIgniteEvent) return sender((BlockIgniteEvent)o);
+		if (o instanceof BlockPlaceEvent) return sender((BlockPlaceEvent)o);
+		if (o instanceof SignChangeEvent) return sender((SignChangeEvent)o);
+		if (o instanceof EnchantItemEvent) return sender((EnchantItemEvent)o);
+		if (o instanceof PrepareItemEnchantEvent) return sender((PrepareItemEnchantEvent)o);
+		if (o instanceof Entity) return sender((Entity)o);
+		if (o instanceof EntityEvent) return sender((EntityEvent)o);
+		if (o instanceof InventoryClickEvent) return sender((InventoryClickEvent)o);
+		if (o instanceof InventoryCloseEvent) return sender((InventoryCloseEvent)o);
+		if (o instanceof InventoryOpenEvent) return sender((InventoryOpenEvent)o);
+		if (o instanceof HangingBreakByEntityEvent) return sender((HangingBreakByEntityEvent)o);
+		if (o instanceof VehicleDamageEvent) return sender((VehicleDamageEvent)o);
+		if (o instanceof VehicleDestroyEvent) return sender((VehicleDestroyEvent)o);
+		if (o instanceof VehicleEnterEvent) return sender((VehicleEnterEvent)o);
+		if (o instanceof VehicleExitEvent) return sender((VehicleExitEvent)o);
+		if (o instanceof VehicleEvent) return sender((VehicleEvent)o);
+		
+		return null;
+	}
+	
+	// -------------------------------------------- //
+	// SENDER ID
+	// -------------------------------------------- //
+	
+	public static String senderIdFromObject(Object o)
+	{
+		if (o == null) return null;
+		if (o instanceof String) return (String)o;
+		if (o instanceof SenderEntity) return ((SenderEntity<?>)o).getId();
+		if (o instanceof PlayerEntity) return ((PlayerEntity<?>)o).getId();
+		CommandSender sender = senderFromObject(o);
+		if (sender == null) return null;
+		return SenderUtil.getSenderId(sender);
+	}
+	
+	// -------------------------------------------- //
 	// PLAYER
 	// -------------------------------------------- //
 	
-	public static Player player(String o) { return Bukkit.getPlayerExact(o); }
-	public static Player player(PlayerEvent o) { return o.getPlayer(); }
-	public static Player player(BlockBreakEvent o) { return o.getPlayer(); }
-	public static Player player(BlockDamageEvent o) { return o.getPlayer(); }
-	public static Player player(BlockIgniteEvent o) { return o.getPlayer(); }
-	public static Player player(BlockPlaceEvent o) { return o.getPlayer(); }
-	public static Player player(SignChangeEvent o) { return o.getPlayer(); }
-	public static Player player(EnchantItemEvent o) { return o.getEnchanter(); }
-	public static Player player(PrepareItemEnchantEvent o) { return o.getEnchanter(); }
-	public static Player player(Entity o) { if (o instanceof Player) return (Player)o; return null; }
-	public static Player player(EntityEvent o) { return player(o.getEntity()); }
-	public static Player player(InventoryClickEvent o) { return player(o.getWhoClicked()); }
-	public static Player player(InventoryCloseEvent o) { return player(o.getPlayer()); }
-	public static Player player(InventoryOpenEvent o) { return player(o.getPlayer()); }
-	public static Player player(HangingBreakByEntityEvent o) { return player(o.getRemover()); }
-	public static Player player(VehicleDamageEvent o) { return player(o.getAttacker()); }
-	public static Player player(VehicleDestroyEvent o) { return player(o.getAttacker()); }
-	public static Player player(VehicleEnterEvent o) { return player(o.getEntered()); }
-	public static Player player(VehicleExitEvent o) { return player(o.getExited()); }
-	public static Player player(VehicleEvent o) { return player(o.getVehicle().getPassenger()); }
-	
 	public static Player playerFromObject(Object o)
 	{
-		if (o instanceof Player) return (Player)o;
-		
-		if (o instanceof String) return player((String)o);
-		if (o instanceof PlayerEvent) return player((PlayerEvent)o);
-		if (o instanceof BlockBreakEvent) return player((BlockBreakEvent)o);
-		if (o instanceof BlockDamageEvent) return player((BlockDamageEvent)o);
-		if (o instanceof BlockIgniteEvent) return player((BlockIgniteEvent)o);
-		if (o instanceof BlockPlaceEvent) return player((BlockPlaceEvent)o);
-		if (o instanceof SignChangeEvent) return player((SignChangeEvent)o);
-		if (o instanceof EnchantItemEvent) return player((EnchantItemEvent)o);
-		if (o instanceof PrepareItemEnchantEvent) return player((PrepareItemEnchantEvent)o);
-		if (o instanceof Entity) return player((Entity)o);
-		if (o instanceof EntityEvent) return player((EntityEvent)o);
-		if (o instanceof InventoryClickEvent) return player((InventoryClickEvent)o);
-		if (o instanceof InventoryCloseEvent) return player((InventoryCloseEvent)o);
-		if (o instanceof InventoryOpenEvent) return player((InventoryOpenEvent)o);
-		if (o instanceof HangingBreakByEntityEvent) return player((HangingBreakByEntityEvent)o);
-		if (o instanceof VehicleDamageEvent) return player((VehicleDamageEvent)o);
-		if (o instanceof VehicleDestroyEvent) return player((VehicleDestroyEvent)o);
-		if (o instanceof VehicleEnterEvent) return player((VehicleEnterEvent)o);
-		if (o instanceof VehicleExitEvent) return player((VehicleExitEvent)o);
-		if (o instanceof VehicleEvent) return player((VehicleEvent)o);
-		
+		CommandSender sender = senderFromObject(o);
+		if (sender instanceof Player) return (Player)sender;
 		return null;
 	}
 	
@@ -89,11 +120,10 @@ public class ExtractorLogic
 	
 	public static String playerNameFromObject(Object o)
 	{
-		if (o instanceof String) return (String)o;
-		if (o instanceof PlayerEntity) return ((PlayerEntity<?>)o).getId();
-		Player player = playerFromObject(o);
-		if (player == null) return null;
-		return player.getName();
+		String senderId = senderIdFromObject(o);
+		//if (SenderUtil.isPlayerId(senderId)) return senderId;
+		//return null;
+		return senderId;
 	}
 	
 	// -------------------------------------------- //

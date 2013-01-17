@@ -2,11 +2,12 @@ package com.massivecraft.mcore5.usys.cmd;
 
 import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.Permission;
+import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.usys.Multiverse;
 
-public class CmdUsysUniverseDel extends UsysCommand
+public class CmdUsysUniverseDel extends MCommand
 {
 	public CmdUsysUniverseDel()
 	{

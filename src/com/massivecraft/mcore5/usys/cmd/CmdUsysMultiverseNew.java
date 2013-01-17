@@ -1,10 +1,11 @@
 package com.massivecraft.mcore5.usys.cmd;
 
 import com.massivecraft.mcore5.Permission;
+import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore5.usys.MultiverseColl;
 
-public class CmdUsysMultiverseNew extends UsysCommand
+public class CmdUsysMultiverseNew extends MCommand
 {
 	public CmdUsysMultiverseNew()
 	{
