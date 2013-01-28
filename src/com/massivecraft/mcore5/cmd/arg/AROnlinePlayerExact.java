@@ -1,14 +1,13 @@
 package com.massivecraft.mcore5.cmd.arg;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.massivecraft.mcore5.cmd.MCommand;
 
 public class AROnlinePlayerExact implements ArgReader<Player>
 {
 	@Override
-	public ArgResult<Player> read(String str, MCommand mcommand)
+	public ArgResult<Player> read(String str, CommandSender sender)
 	{
 		ArgResult<Player> result = new ArgResult<Player>();
 		Player player = Bukkit.getServer().getPlayerExact(str);
@@ -16,7 +15,7 @@ public class AROnlinePlayerExact implements ArgReader<Player>
 		
 		if (!result.hasResult())
 		{
-			result.getErrors().add("<b>No online player with exact name \"<h>"+str+"<b\">.");
+			result.getErrors().add("<b>No online player with exact name \"<h>"+str+"<b>\".");
 		}
 		
 		return result;

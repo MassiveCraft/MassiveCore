@@ -1,8 +1,10 @@
 package com.massivecraft.mcore5.integration;
 
+import java.util.List;
+
 public interface IntegrationFeatures
 {
-	public String getTargetPluginName();
+	public List<String> getTargetPluginNames();
 	public void activate();
 	public void deactivate();
 }

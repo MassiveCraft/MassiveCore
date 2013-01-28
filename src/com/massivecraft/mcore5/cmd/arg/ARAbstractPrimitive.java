@@ -1,6 +1,6 @@
 package com.massivecraft.mcore5.cmd.arg;
 
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
 
 public abstract class ARAbstractPrimitive<T> implements ArgReader<T>
 {
@@ -8,7 +8,7 @@ public abstract class ARAbstractPrimitive<T> implements ArgReader<T>
 	public abstract T convert(String str) throws Exception;
 	
 	@Override
-	public ArgResult<T> read(String str, MCommand mcommand)
+	public ArgResult<T> read(String str, CommandSender sender)
 	{
 		ArgResult<T> result = new ArgResult<T>();
 		

@@ -2,9 +2,6 @@ package com.massivecraft.mcore5.adapter;
 
 import java.lang.reflect.Type;
 
-
-
-import com.massivecraft.mcore5.util.ClassResolveUtil;
 import com.massivecraft.mcore5.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.mcore5.xlib.gson.JsonDeserializer;
 import com.massivecraft.mcore5.xlib.gson.JsonElement;
@@ -64,7 +61,7 @@ public class PolymorphicAdapter<T> implements JsonDeserializer<T>, JsonSerialize
 		Class<?> typeClass = null;
 		try
 		{
-			typeClass = ClassResolveUtil.resolve(type);
+			typeClass = Class.forName(type);
 		}
 		catch (ClassNotFoundException e)
 		{

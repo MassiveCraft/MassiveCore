@@ -1,6 +1,7 @@
 package com.massivecraft.mcore5.cmd.arg;
 
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.mcore5.store.Coll;
 import com.massivecraft.mcore5.store.Entity;
 
@@ -11,10 +12,10 @@ public class ARStringEntity<E extends Entity<E, String>> implements ArgReader<E>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<E> read(String str, MCommand mcommand)
+	public ArgResult<E> read(String str, CommandSender sender)
 	{
 		ArgResult<E> result = new ArgResult<E>();
-		ArgResult<String> innerResult = this.stringReader().read(str, mcommand);
+		ArgResult<String> innerResult = this.stringReader().read(str, sender);
 		
 		if (innerResult.hasResult())
 		{

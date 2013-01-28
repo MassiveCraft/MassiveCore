@@ -6,15 +6,14 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.regex.Pattern;
 
-import net.minecraft.server.v1_4_6.DedicatedServer;
-import net.minecraft.server.v1_4_6.EntityPlayer;
-import net.minecraft.server.v1_4_6.Packet8UpdateHealth;
+import net.minecraft.server.v1_4_R1.DedicatedServer;
+import net.minecraft.server.v1_4_R1.EntityPlayer;
+import net.minecraft.server.v1_4_R1.Packet8UpdateHealth;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_6.CraftServer;
-import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -85,7 +84,7 @@ public class PlayerUtil implements Listener
 	 */
 	public static boolean isValidPlayerName(final String playerName)
 	{
-		return Pattern.matches("^[a-zA-Z0-9_]{2,16}$", playerName);
+		return MUtil.isValidPlayerName(playerName);
 	}
 	
 	public static Set<String> getAllVisitorNames()

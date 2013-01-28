@@ -150,18 +150,29 @@ public abstract class MCommand
 	
 	public boolean register(MPlugin mplugin, boolean override)
 	{
-		BukkitGlueCommand bgc = new BukkitGlueCommand(this, mplugin);
+		boolean ret = false;
+		
 		SimpleCommandMap scm = BukkitCommandUtil.getBukkitCommandMap();
 		
-		if (override)
+		for (String alias : this.getAliases())
 		{
-			// Our commands are more important than your commands :P
-			Map<String, Command> knownCommands = BukkitCommandUtil.getKnownCommandsFromSimpleCommandMap(scm);
-			String lowerLabel = bgc.getName().trim().toLowerCase();
-			knownCommands.remove(lowerLabel);
+			BukkitGlueCommand bgc = new BukkitGlueCommand(alias, this, mplugin);
+			
+			if (override)
+			{
+				// Our commands are more important than your commands :P
+				Map<String, Command> knownCommands = BukkitCommandUtil.getKnownCommandsFromSimpleCommandMap(scm);
+				String lowerLabel = bgc.getName().trim().toLowerCase();
+				knownCommands.remove(lowerLabel);
+			}
+			
+			if (scm.register(MCore.p.getDescription().getName(), bgc))
+			{
+				ret = true;
+			}
 		}
 		
-		return scm.register("mcore", bgc);
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -467,7 +478,7 @@ public abstract class MCommand
 	{
 		String str = this.arg(idx);
 		if (str == null) return defaultNotSet;
-		ArgResult<T> result = argReader.read(str, this);
+		ArgResult<T> result = argReader.read(str, this.sender);
 		if (result.hasErrors()) this.msg(result.getErrors());
 		return result.getResult();
 	}

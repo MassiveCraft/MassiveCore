@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.mcore5.util.Txt;
 
 public abstract class ARAbstractStringMatch implements ArgReader<String>
@@ -14,7 +15,7 @@ public abstract class ARAbstractStringMatch implements ArgReader<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<String> read(String str, MCommand mcommand)
+	public ArgResult<String> read(String str, CommandSender sender)
 	{
 		ArgResult<String> result = new ArgResult<String>();
 		

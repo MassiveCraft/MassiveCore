@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
 
 public class ARWorld extends ARAbstractSelect<World>
 {
@@ -17,13 +16,13 @@ public class ARWorld extends ARAbstractSelect<World>
 	}
 
 	@Override
-	public World select(String str, MCommand mcommand)
+	public World select(String str, CommandSender sender)
 	{
 		return Bukkit.getWorld(str);
 	}
 
 	@Override
-	public List<String> altNames(MCommand mcommand)
+	public List<String> altNames(CommandSender sender)
 	{
 		List<String> ret = new ArrayList<String>();
 		for (World world : Bukkit.getWorlds())

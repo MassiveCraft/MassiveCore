@@ -12,6 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,6 +46,19 @@ import com.massivecraft.mcore5.util.extractor.ExtractorWorldName;
 
 public class MUtil
 {
+	// -------------------------------------------- //
+	// IS PLAYER ID
+	// -------------------------------------------- //
+	
+	// Player id pattern, the regex for a valid minecraft username.
+	public final static Pattern playerNamePattern = Pattern.compile("^[a-zA-Z0-9_]{2,16}$");
+	
+	public static boolean isValidPlayerName(Object o)
+	{
+		if (!(o instanceof String)) return false;
+		return playerNamePattern.matcher((String) o).matches();
+	}
+	
 	// -------------------------------------------- //
 	// MATERIAL FACTS
 	// -------------------------------------------- //

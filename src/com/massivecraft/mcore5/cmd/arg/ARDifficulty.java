@@ -3,8 +3,8 @@ package com.massivecraft.mcore5.cmd.arg;
 import java.util.Collection;
 
 import org.bukkit.Difficulty;
+import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.util.MUtil;
 
 public class ARDifficulty extends ARAbstractSelect<Difficulty>
@@ -16,7 +16,7 @@ public class ARDifficulty extends ARAbstractSelect<Difficulty>
 	}
 
 	@Override
-	public Difficulty select(String str, MCommand mcommand)
+	public Difficulty select(String str, CommandSender sender)
 	{
 		Difficulty ret = null;
 		
@@ -43,7 +43,7 @@ public class ARDifficulty extends ARAbstractSelect<Difficulty>
 	}
 
 	@Override
-	public Collection<String> altNames(MCommand mcommand)
+	public Collection<String> altNames(CommandSender sender)
 	{
 		return MUtil.list("peaceful", "easy", "normal", "hard");
 	}

@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.util.Txt;
 
 public class AROnlinePlayerMatch implements ArgReader<Player>
 {
 	@Override
-	public ArgResult<Player> read(String str, MCommand mcommand)
+	public ArgResult<Player> read(String str, CommandSender sender)
 	{
 		ArgResult<Player> result = new ArgResult<Player>();
 		
@@ -33,7 +33,7 @@ public class AROnlinePlayerMatch implements ArgReader<Player>
 		}
 		else if (players.size() == 0)
 		{
-			result.getErrors().add("<b>No online player matching \"<h>"+str+"<b\">.");
+			result.getErrors().add("<b>No online player matching \"<h>"+str+"<b>\".");
 		}
 		
 		return result;

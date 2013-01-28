@@ -9,7 +9,7 @@ import com.massivecraft.mcore5.Predictate;
 
 public class MStoreUtil
 {
-	public static <T> ArrayList<T> uglySQL(Collection<T> items, Predictate<T> where, Comparator<T> orderby, Integer limit, Integer offset)
+	public static <T> ArrayList<T> uglySQL(Collection<T> items, Predictate<? super T> where, Comparator<? super T> orderby, Integer limit, Integer offset)
 	{
 		ArrayList<T> ret = new ArrayList<T>(items.size());
 		

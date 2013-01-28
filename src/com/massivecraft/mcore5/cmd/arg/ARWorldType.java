@@ -3,8 +3,8 @@ package com.massivecraft.mcore5.cmd.arg;
 import java.util.Collection;
 
 import org.bukkit.WorldType;
+import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.util.MUtil;
 
 public class ARWorldType extends ARAbstractSelect<WorldType>
@@ -16,7 +16,7 @@ public class ARWorldType extends ARAbstractSelect<WorldType>
 	}
 
 	@Override
-	public WorldType select(String str, MCommand mcommand)
+	public WorldType select(String str, CommandSender sender)
 	{
 		WorldType ret = null;
 		
@@ -55,7 +55,7 @@ public class ARWorldType extends ARAbstractSelect<WorldType>
 	}
 
 	@Override
-	public Collection<String> altNames(MCommand mcommand)
+	public Collection<String> altNames(CommandSender sender)
 	{
 		return MUtil.list("normal", "flat", "1.1", "largebiomes");
 	}

@@ -1,5 +1,7 @@
 package com.massivecraft.mcore5.integration;
 
+import java.util.Collection;
+
 import lombok.Getter;
 
 import org.bukkit.Bukkit;
@@ -43,7 +45,9 @@ public class Integration implements Listener
 	
 	public void tick()
 	{
-		if (pluginEnabled(this.features.getTargetPluginName()))
+		String namelist = Txt.implodeCommaAndDot(this.features.getTargetPluginNames(), "<h>%s", "<i>, ", " <i>and ", "<i>.");
+		
+		if (isPluginsEnabled(this.features.getTargetPluginNames()))
 		{
 			if (!this.active)
 			{
@@ -51,11 +55,11 @@ public class Integration implements Listener
 				{
 					this.features.activate();
 					this.active = true;
-					this.ourPlugin.log(Txt.parse("<g>Activated <i>integration with <h>%s<i>.", this.features.getTargetPluginName()));
+					this.ourPlugin.log(Txt.parse("<g>Activated <i>integration with "+namelist));
 				}
 				catch (Exception e)
 				{
-					this.ourPlugin.log(Txt.parse("<b>Failed to activate <i>integration with <h>%s<i>.", this.features.getTargetPluginName()));
+					this.ourPlugin.log(Txt.parse("<b>Failed to activate <i>integration with "+namelist));
 					e.printStackTrace();
 				}
 			}
@@ -68,11 +72,11 @@ public class Integration implements Listener
 				{
 					this.active = false;
 					this.features.deactivate();
-					this.ourPlugin.log(Txt.parse("Deactivated integration with <h>%s<i>.", this.features.getTargetPluginName()));
+					this.ourPlugin.log(Txt.parse("<g>Deactivated <i>integration with "+namelist));
 				}
 				catch (Exception e)
 				{
-					this.ourPlugin.log(Txt.parse("<b>Failed to deactivate <i>integration with <h>%s<i>.", this.features.getTargetPluginName()));
+					this.ourPlugin.log(Txt.parse("<b>Failed to deactivate <i>integration with "+namelist));
 					e.printStackTrace();
 				}
 			}
@@ -83,11 +87,20 @@ public class Integration implements Listener
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static boolean pluginEnabled(String pluginName)
+	public static boolean isPluginEnabled(String pluginName)
 	{
 		Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
 		if (plugin == null) return false;
 		return plugin.isEnabled();
+	}
+	
+	public static boolean isPluginsEnabled(Collection<String> pluginNames)
+	{
+		for (String pluginName : pluginNames)
+		{
+			if (!isPluginEnabled(pluginName)) return false;
+		}
+		return true;
 	}
 	
 	// -------------------------------------------- //

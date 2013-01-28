@@ -3,7 +3,8 @@ package com.massivecraft.mcore5.cmd.arg;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.mcore5.util.Txt;
 
@@ -14,7 +15,7 @@ public class ARUniverse implements ArgReader<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<String> read(String str, MCommand mcommand)
+	public ArgResult<String> read(String str, CommandSender sender)
 	{
 		ArgResult<String> result = new ArgResult<String>();
 		

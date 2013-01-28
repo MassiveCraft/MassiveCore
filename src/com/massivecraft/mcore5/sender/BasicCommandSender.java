@@ -5,6 +5,8 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissibleBase;
 
+import com.massivecraft.mcore5.util.SenderUtil;
+
 public class BasicCommandSender extends PermissibleBase implements CommandSender
 {
 	private final String name;
@@ -40,7 +42,7 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 	@Override
 	public void sendMessage(String message)
 	{
-		// Per default
+		// Nothing per default
 	}
 
 	@Override
@@ -50,5 +52,15 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 		{
 			this.sendMessage(message);
 		}
+	}
+	
+	public boolean register()
+	{
+		return SenderUtil.register(this);
+	}
+	
+	public boolean unregister()
+	{
+		return SenderUtil.unregister(this);
 	}
 }

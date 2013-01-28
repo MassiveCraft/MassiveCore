@@ -3,8 +3,8 @@ package com.massivecraft.mcore5.cmd.arg;
 import java.util.Collection;
 
 import org.bukkit.World.Environment;
+import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.util.MUtil;
 
 public class AREnvironment extends ARAbstractSelect<Environment>
@@ -16,7 +16,7 @@ public class AREnvironment extends ARAbstractSelect<Environment>
 	}
 
 	@Override
-	public Environment select(String str, MCommand mcommand)
+	public Environment select(String str, CommandSender sender)
 	{
 		Environment ret = null;
 		
@@ -45,7 +45,7 @@ public class AREnvironment extends ARAbstractSelect<Environment>
 	}
 
 	@Override
-	public Collection<String> altNames(MCommand mcommand)
+	public Collection<String> altNames(CommandSender sender)
 	{
 		return MUtil.list("normal", "end", "nether");
 	}

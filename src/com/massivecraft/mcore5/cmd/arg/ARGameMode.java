@@ -3,8 +3,8 @@ package com.massivecraft.mcore5.cmd.arg;
 import java.util.Collection;
 
 import org.bukkit.GameMode;
+import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore5.cmd.MCommand;
 import com.massivecraft.mcore5.util.MUtil;
 
 public class ARGameMode extends ARAbstractSelect<GameMode>
@@ -16,7 +16,7 @@ public class ARGameMode extends ARAbstractSelect<GameMode>
 	}
 
 	@Override
-	public GameMode select(String str, MCommand mcommand)
+	public GameMode select(String str, CommandSender sender)
 	{
 		GameMode ret = null;
 		
@@ -39,7 +39,7 @@ public class ARGameMode extends ARAbstractSelect<GameMode>
 	}
 
 	@Override
-	public Collection<String> altNames(MCommand mcommand)
+	public Collection<String> altNames(CommandSender sender)
 	{
 		return MUtil.list("survival", "creative", "adventure");
 	}

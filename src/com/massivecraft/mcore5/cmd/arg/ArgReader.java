@@ -1,8 +1,8 @@
 package com.massivecraft.mcore5.cmd.arg;
 
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
 
 public interface ArgReader<T>
 {
-	public ArgResult<T> read(String str, MCommand mcommand);
+	public ArgResult<T> read(String str, CommandSender sender);
 }

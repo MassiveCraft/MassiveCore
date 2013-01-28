@@ -45,10 +45,10 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	public L getId(Object entity);
 	public boolean containsEntity(Object entity);
 	public Collection<E> getAll();
-	public Collection<E> getAll(Predictate<E> where);
-	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby);
-	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit);
-	public Collection<E> getAll(Predictate<E> where, Comparator<E> orderby, Integer limit, Integer offset);
+	public Collection<E> getAll(Predictate<? super E> where);
+	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby);
+	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
+	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
 	
 	public L fixId(Object oid);
 	

@@ -1,13 +1,12 @@
 package com.massivecraft.mcore5.cmd.arg;
 
 import org.bukkit.Material;
-
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
 
 public class ARMaterial implements ArgReader<Material>
 {
 	@Override
-	public ArgResult<Material> read(String str, MCommand mcommand)
+	public ArgResult<Material> read(String str, CommandSender sender)
 	{
 		ArgResult<Material> result = new ArgResult<Material>(Material.matchMaterial(str));
 		if (!result.hasResult())

@@ -1,14 +1,34 @@
 package com.massivecraft.mcore5.integration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class IntegrationFeaturesAbstract implements IntegrationFeatures
 {
-	@Override
-	public String getTargetPluginName()
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private List<String> targetPluginNames;
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public IntegrationFeaturesAbstract(String... targetPluginNames)
 	{
-		// "SpoutFeatures" --> "Spout"
-		String ret = this.getClass().getSimpleName();
-		ret = ret.substring(0, ret.length()-8);
-		return ret;
+		this.targetPluginNames = new ArrayList<String>(Arrays.asList(targetPluginNames));
+	}
+
+	// -------------------------------------------- //
+	// OVERRIDES
+	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getTargetPluginNames()
+	{
+		return this.targetPluginNames;
 	}
 	
 	@Override

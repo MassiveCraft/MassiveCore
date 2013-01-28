@@ -25,7 +25,7 @@ public class TextWrapper
 	private static final char COLOR_CHAR = '\u00A7';
 	private static final int CHAT_WINDOW_WIDTH = 320;
 	private static final int CHAT_STRING_LENGTH = 119;
-	private static final String allowedChars = net.minecraft.server.v1_4_6.SharedConstants.allowedCharacters;
+	private static final String allowedChars = net.minecraft.server.v1_4_R1.SharedConstants.allowedCharacters;
 	
 	public static int getCharPixelWidth(char ch)
 	{

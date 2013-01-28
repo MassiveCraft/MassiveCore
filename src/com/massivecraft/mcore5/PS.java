@@ -1,5 +1,6 @@
 package com.massivecraft.mcore5;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
+import com.massivecraft.mcore5.mixin.Mixin;
+import com.massivecraft.mcore5.mixin.PsTeleporterException;
+import com.massivecraft.mcore5.usys.Aspect;
+import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.mcore5.xlib.gson.annotations.SerializedName;
 
@@ -30,13 +35,15 @@ import com.massivecraft.mcore5.xlib.gson.annotations.SerializedName;
  */
 
 @EqualsAndHashCode
-public class PS implements Cloneable
+public class PS implements Cloneable, Serializable
 {
 	// -------------------------------------------- //
-	// TELEPORTER
+	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static transient PSTeleporter teleporter = PSTeleporterDefault.get();
+	private static final transient long serialVersionUID = 1L;
+	
+	public static final transient String UNKNOWN_WORLD_NAME = "?";
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -478,9 +485,9 @@ public class PS implements Cloneable
 	// WRITERS
 	//----------------------------------------------//
 	
-	public synchronized void write(Entity entity) throws PSTeleporterException
+	public synchronized void write(Entity entity) throws PsTeleporterException
 	{
-		teleporter.teleport(entity, this);
+		Mixin.getPsTeleporterMixin().teleport(entity, this);
 	}
 	
 	//----------------------------------------------//
@@ -611,5 +618,46 @@ public class PS implements Cloneable
 	{
 		return new PS(this);
 	}
+	
+	//----------------------------------------------//
+	// STATIC COMPARISON TOOLS
+	//----------------------------------------------//
+	
+	public static boolean inSameWorld(PS one, PS two)
+	{
+		if (one == null) return false;
+		if (two == null) return false;
+		
+		String w1 = one.getWorldName();
+		String w2 = two.getWorldName();
+		
+		if (w1 == null) return false;
+		if (w2 == null) return false;
+		
+		return w1.equalsIgnoreCase(w2);
+	}
+	
+	public static boolean inSameUniverse(PS one, PS two, Multiverse multiverse)
+	{
+		if (one == null) return false;
+		if (two == null) return false;
+		
+		String w1 = one.getWorldName();
+		String w2 = two.getWorldName();
+		
+		if (w1 == null) return false;
+		if (w2 == null) return false;
+		
+		String m1 = multiverse.getUniverseForWorldName(w1);
+		String m2 = multiverse.getUniverseForWorldName(w2);
+		
+		return m1.equalsIgnoreCase(m2);
+	}
+
+	public static boolean inSameUniverse(PS one, PS two, Aspect aspect)
+	{
+		return inSameUniverse(one, two, aspect.multiverse());
+	}
+	
 
 }

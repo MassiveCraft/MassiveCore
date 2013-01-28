@@ -1,12 +1,15 @@
 package com.massivecraft.mcore5.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 
-import net.minecraft.server.v1_4_6.MinecraftServer;
+import net.minecraft.server.v1_4_R1.MinecraftServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,9 +19,10 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_4_6.CraftServer;
+import org.bukkit.craftbukkit.v1_4_R1.CraftServer;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.sender.FakeBlockCommandSender;
 import com.massivecraft.mcore5.store.SenderColl;
 
@@ -65,15 +69,11 @@ public class SenderUtil
 	public final static String VANILLA_RCON_NAME = "Rcon";
 	public final static String VANILLA_BLOCK_NAME = "@";
 	
-	// Player id pattern, the regex for a valid minecraft username.
-	public final static Pattern playerNamePattern = Pattern.compile("^[a-zA-Z0-9_]{2,16}$");
-	
 	// -------------------------------------------- //
 	// REGISTRY
 	// -------------------------------------------- //
 	
 	protected static Map<String, CommandSender> idToSender = new TreeMap<String, CommandSender>(String.CASE_INSENSITIVE_ORDER);
-	protected static Map<String, String> idToDisplayName = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
 	protected static Map<String, String> idToListName = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
 	
 	public static synchronized boolean register(CommandSender sender)
@@ -85,6 +85,11 @@ public class SenderUtil
 		idToSender.put(id, sender);
 		SenderColl.setSenderRefferences(id, sender);
 		return true;
+	}
+	
+	public static synchronized boolean unregister(CommandSender sender)
+	{
+		return idToSender.remove(getSenderId(sender)) != null;
 	}
 	
 	public static Map<String, CommandSender> getIdToSender()
@@ -121,8 +126,7 @@ public class SenderUtil
 	
 	public static boolean isPlayerId(Object o)
 	{
-		if (!isSenderId(o)) return false;
-		return playerNamePattern.matcher((String) o).matches();
+		return MUtil.isValidPlayerName(o);
 	}
 	
 	public static boolean isConsoleId(Object o)
@@ -365,10 +369,22 @@ public class SenderUtil
 		return isOffline(getSenderId(sender));
 	}
 	
-	/*public static LinkedHashSet<String> getOnlineIds(String senderId)
+	// -------------------------------------------- //
+	// GET ALL ONLINE
+	// -------------------------------------------- //
+	
+	public static List<CommandSender> getOnlineSenders()
 	{
-		return false;
-	}*/
+		List<CommandSender> ret = new ArrayList<CommandSender>(Arrays.asList(Bukkit.getOnlinePlayers()));
+		for (Entry<String, CommandSender> entry : idToSender.entrySet())
+		{
+			String id = entry.getKey();
+			CommandSender sender = entry.getValue();
+			if (isPlayerId(id)) continue;
+			ret.add(sender);
+		}
+		return ret;
+	}
 	
 	// -------------------------------------------- //
 	// DISPLAY NAME
@@ -376,33 +392,22 @@ public class SenderUtil
 	
 	public static String getDisplayName(String senderId)
 	{
-		String ret = idToDisplayName.get(senderId);
-		if (ret != null) return ret;
-		
-		Player player = Bukkit.getPlayer(senderId);
-		if (player == null) return senderId;
-		
-		return player.getDisplayName();
+		return Mixin.getDisplayNameMixin().get(senderId);
 	}
 	
 	public static void setDisplayName(String senderId, String displayName)
 	{
-		idToDisplayName.put(senderId, displayName);
-		
-		Player player = Bukkit.getPlayer(senderId);
-		if (player == null) return;
-		
-		player.setDisplayName(displayName);
+		Mixin.getDisplayNameMixin().set(senderId, displayName);
 	}
 	
 	public static String getDisplayName(CommandSender sender)
 	{
-		return getDisplayName(getSenderId(sender));
+		return Mixin.getDisplayNameMixin().get(sender);
 	}
 	
 	public static void setDisplayName(CommandSender sender, String displayName)
 	{
-		setDisplayName(getSenderId(sender), displayName);
+		Mixin.getDisplayNameMixin().set(sender, displayName);
 	}
 	
 	// -------------------------------------------- //
@@ -411,33 +416,22 @@ public class SenderUtil
 	
 	public static String getListName(String senderId)
 	{
-		String ret = idToListName.get(senderId);
-		if (ret != null) return ret;
-		
-		Player player = Bukkit.getPlayer(senderId);
-		if (player == null) return senderId;
-		
-		return player.getPlayerListName();
+		return Mixin.getListNameMixin().get(senderId);
 	}
 	
 	public static void setListName(String senderId, String displayName)
 	{
-		idToListName.put(senderId, displayName);
-		
-		Player player = Bukkit.getPlayer(senderId);
-		if (player == null) return;
-		
-		player.setPlayerListName(displayName);
+		Mixin.getListNameMixin().set(senderId, displayName);
 	}
 	
 	public static String getListName(CommandSender sender)
 	{
-		return getListName(getSenderId(sender));
+		return Mixin.getListNameMixin().get(sender);
 	}
 	
 	public static void setListName(CommandSender sender, String displayName)
 	{
-		setListName(getSenderId(sender), displayName);
+		Mixin.getListNameMixin().set(sender, displayName);
 	}
 	
 	// -------------------------------------------- //

@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-
-import com.massivecraft.mcore5.cmd.MCommand;
+import org.bukkit.command.CommandSender;
 
 public class ARChatColor extends ARAbstractSelect<ChatColor>
 {
@@ -17,7 +16,7 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 	}
 
 	@Override
-	public ChatColor select(String str, MCommand mcommand)
+	public ChatColor select(String str, CommandSender sender)
 	{
 		ChatColor ret = null;
 		
@@ -37,7 +36,7 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 	}
 
 	@Override
-	public Collection<String> altNames(MCommand mcommand)
+	public Collection<String> altNames(CommandSender sender)
 	{
 		List<String> ret = new ArrayList<String>();
 		
