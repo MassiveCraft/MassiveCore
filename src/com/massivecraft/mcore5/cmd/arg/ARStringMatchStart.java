@@ -2,7 +2,7 @@ package com.massivecraft.mcore5.cmd.arg;
 
 import java.util.Collection;
 
-public class ARStringMatchStartCI extends ARAbstractStringMatch
+public class ARStringMatchStart extends ARAbstractStringMatch
 {
 	// -------------------------------------------- //
 	// IMPLEMENTATION
@@ -27,7 +27,7 @@ public class ARStringMatchStartCI extends ARAbstractStringMatch
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public ARStringMatchStartCI(String typename, Collection<Collection<String>> altColls)
+	public ARStringMatchStart(String typename, Collection<Collection<String>> altColls)
 	{
 		super(typename, altColls);
 	}

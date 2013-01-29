@@ -10,8 +10,8 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.mcore5.MPlugin;
 import com.massivecraft.mcore5.Predictate;
 import com.massivecraft.mcore5.cmd.arg.ARStringEntity;
-import com.massivecraft.mcore5.cmd.arg.ARStringMatchFullCI;
-import com.massivecraft.mcore5.cmd.arg.ARStringMatchStartCI;
+import com.massivecraft.mcore5.cmd.arg.ARStringMatchFull;
+import com.massivecraft.mcore5.cmd.arg.ARStringMatchStart;
 import com.massivecraft.mcore5.cmd.arg.ArgReader;
 import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.util.MUtil;
@@ -148,12 +148,12 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String>
 	
 	public ArgReader<String> argReaderSenderIdFull()
 	{
-		return new ARStringMatchFullCI("player", this.forgeAltColls());
+		return new ARStringMatchFull("player", this.forgeAltColls());
 	}
 	
 	public ArgReader<String> argReaderSenderIdStart()
 	{
-		return new ARStringMatchStartCI("player", this.forgeAltColls());
+		return new ARStringMatchStart("player", this.forgeAltColls());
 	}
 	
 	public ArgReader<E> argReaderEntityFull()

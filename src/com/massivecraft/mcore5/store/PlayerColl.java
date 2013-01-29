@@ -11,8 +11,8 @@ import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.MPlugin;
 import com.massivecraft.mcore5.Predictate;
 import com.massivecraft.mcore5.cmd.arg.ARStringEntity;
-import com.massivecraft.mcore5.cmd.arg.ARStringMatchFullCI;
-import com.massivecraft.mcore5.cmd.arg.ARStringMatchStartCI;
+import com.massivecraft.mcore5.cmd.arg.ARStringMatchFull;
+import com.massivecraft.mcore5.cmd.arg.ARStringMatchStart;
 import com.massivecraft.mcore5.cmd.arg.ArgReader;
 import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.mcore5.util.PlayerUtil;
@@ -134,12 +134,12 @@ public class PlayerColl<E extends PlayerEntity<E>> extends Coll<E, String>
 	
 	public ArgReader<String> argReaderPlayerNameFull()
 	{
-		return new ARStringMatchFullCI("player", this.forgeAltColls());
+		return new ARStringMatchFull("player", this.forgeAltColls());
 	}
 	
 	public ArgReader<String> argReaderPlayerNameStart()
 	{
-		return new ARStringMatchStartCI("player", this.forgeAltColls());
+		return new ARStringMatchStart("player", this.forgeAltColls());
 	}
 	
 	public ArgReader<E> argReaderPlayerFull()
