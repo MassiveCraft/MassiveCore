@@ -105,14 +105,14 @@ public class SenderUtil
 		register(getBlock());
 		
 		// Display Name
-		setDisplayName(ID_CONSOLE, ChatColor.RED.toString()+ID_CONSOLE.toUpperCase());
-		setDisplayName(ID_RCON, ChatColor.RED.toString()+ID_RCON.toUpperCase());
-		setDisplayName(ID_BLOCK, ChatColor.RED.toString()+ID_BLOCK.toUpperCase());
+		Mixin.setDisplayName(ID_CONSOLE, ChatColor.RED.toString()+ID_CONSOLE.toUpperCase());
+		Mixin.setDisplayName(ID_RCON, ChatColor.RED.toString()+ID_RCON.toUpperCase());
+		Mixin.setDisplayName(ID_BLOCK, ChatColor.RED.toString()+ID_BLOCK.toUpperCase());
 		
 		// List Name
-		setListName(ID_CONSOLE, ChatColor.RED.toString()+ID_CONSOLE.toUpperCase());
-		setListName(ID_RCON, ChatColor.RED.toString()+ID_RCON.toUpperCase());
-		setListName(ID_BLOCK, ChatColor.RED.toString()+ID_BLOCK.toUpperCase());
+		Mixin.setListName(ID_CONSOLE, ChatColor.RED.toString()+ID_CONSOLE.toUpperCase());
+		Mixin.setListName(ID_RCON, ChatColor.RED.toString()+ID_RCON.toUpperCase());
+		Mixin.setListName(ID_BLOCK, ChatColor.RED.toString()+ID_BLOCK.toUpperCase());
 	}
 	
 	// -------------------------------------------- //
@@ -333,43 +333,6 @@ public class SenderUtil
 	}
 	
 	// -------------------------------------------- //
-	// ONLINE/OFFLINE
-	// -------------------------------------------- //
-	// What about visibility? And the hide player API?
-	
-	public static boolean isOnline(String senderId)
-	{
-		if (senderId == null) return false;
-		if (isPlayerId(senderId))
-		{
-			Player player = Bukkit.getPlayer(senderId);
-			if (player == null) return false;
-			return player.isOnline();
-		}
-		else
-		{
-			// Non-players must be registered for us to consider them online.
-			CommandSender sender = getSender(senderId);
-			return sender != null;
-		}
-	}
-	
-	public static boolean isOffline(String senderId)
-	{
-		return ! isOnline(senderId);
-	}
-	
-	public static boolean isOnline(CommandSender sender)
-	{
-		return isOnline(getSenderId(sender));
-	}
-	
-	public static boolean isOffline(CommandSender sender)
-	{
-		return isOffline(getSenderId(sender));
-	}
-	
-	// -------------------------------------------- //
 	// GET ALL ONLINE
 	// -------------------------------------------- //
 	
@@ -384,54 +347,6 @@ public class SenderUtil
 			ret.add(sender);
 		}
 		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// DISPLAY NAME
-	// -------------------------------------------- //
-	
-	public static String getDisplayName(String senderId)
-	{
-		return Mixin.getDisplayNameMixin().get(senderId);
-	}
-	
-	public static void setDisplayName(String senderId, String displayName)
-	{
-		Mixin.getDisplayNameMixin().set(senderId, displayName);
-	}
-	
-	public static String getDisplayName(CommandSender sender)
-	{
-		return Mixin.getDisplayNameMixin().get(sender);
-	}
-	
-	public static void setDisplayName(CommandSender sender, String displayName)
-	{
-		Mixin.getDisplayNameMixin().set(sender, displayName);
-	}
-	
-	// -------------------------------------------- //
-	// LIST NAME
-	// -------------------------------------------- //
-	
-	public static String getListName(String senderId)
-	{
-		return Mixin.getListNameMixin().get(senderId);
-	}
-	
-	public static void setListName(String senderId, String displayName)
-	{
-		Mixin.getListNameMixin().set(senderId, displayName);
-	}
-	
-	public static String getListName(CommandSender sender)
-	{
-		return Mixin.getListNameMixin().get(sender);
-	}
-	
-	public static void setListName(CommandSender sender, String displayName)
-	{
-		Mixin.getListNameMixin().set(sender, displayName);
 	}
 	
 	// -------------------------------------------- //

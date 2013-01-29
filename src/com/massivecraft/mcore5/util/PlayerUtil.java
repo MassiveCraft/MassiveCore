@@ -7,12 +7,10 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import net.minecraft.server.v1_4_R1.DedicatedServer;
 import net.minecraft.server.v1_4_R1.EntityPlayer;
 import net.minecraft.server.v1_4_R1.Packet8UpdateHealth;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +28,7 @@ public class PlayerUtil implements Listener
 	/**
 	 * We will use this folder later.
 	 */
-	public static File playerfolder = getPlayerFolder();
+	public static File playerDirectory = MUtil.getPlayerDirectory();
 	
 	/**
 	 * This map is populated using the player.dat files on disk.
@@ -52,7 +50,11 @@ public class PlayerUtil implements Listener
 	public PlayerUtil(Plugin plugin)
 	{
 		Bukkit.getPluginManager().registerEvents(this, plugin);
-		populateCaseInsensitiveNameToCaseCorrectName();
+
+		for (String playername : MUtil.getPlayerDirectoryNames())
+		{
+			nameToCorrectName.put(playername, playername);
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -77,15 +79,6 @@ public class PlayerUtil implements Listener
 	// -------------------------------------------- //
 	// PUBLIC METHODS
 	// -------------------------------------------- //
-	
-	/**
-	 * This method simply checks if the playerName is a valid one.
-	 * Mojangs rules for Minecraft character registration is used.
-	 */
-	public static boolean isValidPlayerName(final String playerName)
-	{
-		return MUtil.isValidPlayerName(playerName);
-	}
 	
 	public static Set<String> getAllVisitorNames()
 	{
@@ -183,7 +176,7 @@ public class PlayerUtil implements Listener
 		Player player = Bukkit.getPlayerExact(playerNameCC);
 		if (player != null && player.isOnline()) return System.currentTimeMillis();
 		
-		File playerFile = new File(playerfolder, playerNameCC+".dat");
+		File playerFile = new File(playerDirectory, playerNameCC+".dat");
 		return playerFile.lastModified();
 	}
 	
@@ -195,39 +188,6 @@ public class PlayerUtil implements Listener
 		CraftPlayer cplayer = (CraftPlayer)player;
 		EntityPlayer eplayer = cplayer.getHandle();
 		eplayer.playerConnection.sendPacket(new Packet8UpdateHealth(eplayer.getHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().e()));
-	}
-	
-	// -------------------------------------------- //
-	// INTERNAL METHODS
-	// -------------------------------------------- //
-	
-	protected static void populateCaseInsensitiveNameToCaseCorrectName()
-	{   
-		// The player file may not exist yet
-		if (playerfolder == null) return;
-		
-		File[] playerfiles = playerfolder.listFiles();
-		if (playerfiles == null) return;
-		
-		// Populate by removing .dat
-		for (File playerfile : playerfiles)
-		{
-			String filename = playerfile.getName();
-			String playername = filename.substring(0, filename.length()-4);
-			nameToCorrectName.put(playername, playername);
-		}
-	}
-	
-	/**
-	 * You might ask yourself why we do this in such a low-level way.
-	 * The reason is this info is not yet "compiled" for plugins that init early.
-	 */
-	protected static File getPlayerFolder()
-	{
-		CraftServer cserver = (CraftServer)Bukkit.getServer();
-		DedicatedServer dserver = (DedicatedServer)cserver.getServer();
-		String levelName = dserver.propertyManager.getString("level-name", "world");
-		return new File(Bukkit.getWorldContainer(), new File(levelName, "players").getPath());
 	}
 	
 }

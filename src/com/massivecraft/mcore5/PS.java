@@ -21,6 +21,7 @@ import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.mixin.PsTeleporterException;
 import com.massivecraft.mcore5.usys.Aspect;
 import com.massivecraft.mcore5.usys.Multiverse;
+import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.mcore5.util.Txt;
 import com.massivecraft.mcore5.xlib.gson.annotations.SerializedName;
 
@@ -119,7 +120,7 @@ public class PS implements Cloneable, Serializable
 	// Field: locationZ
 	@SerializedName("lz")
 	@Getter @Setter protected Double locationZ = null;
-	public Double calclocationZ()
+	public Double calcLocationZ()
 	{
 		return calcLocation(this.locationZ, this.blockZ, this.chunkZ);
 	}
@@ -224,7 +225,7 @@ public class PS implements Cloneable, Serializable
 	}
 	public synchronized Location calcLocation()
 	{
-		return this.innerLocation(this.calcLocationX(), this.calcLocationY(), this.calclocationZ());
+		return this.innerLocation(this.calcLocationX(), this.calcLocationY(), this.calcLocationZ());
 	}
 	protected synchronized Location innerLocation(Double x, Double y, Double z)
 	{
@@ -487,7 +488,7 @@ public class PS implements Cloneable, Serializable
 	
 	public synchronized void write(Entity entity) throws PsTeleporterException
 	{
-		Mixin.getPsTeleporterMixin().teleport(entity, this);
+		Mixin.teleport(entity, this);
 	}
 	
 	//----------------------------------------------//
@@ -622,6 +623,44 @@ public class PS implements Cloneable, Serializable
 	//----------------------------------------------//
 	// STATIC COMPARISON TOOLS
 	//----------------------------------------------//
+	
+	public static Double locationDistanceSquared(PS one, PS two)
+	{
+		if (one == null) return null;
+		if (two == null) return null;
+		
+		String w1 = one.getWorldName();
+		String w2 = two.getWorldName();
+		
+		if (!MUtil.equals(w1, w2)) return null;
+		
+		Double x1 = one.calcLocationX();
+		if (x1 == null) return null;
+		
+		Double y1 = one.calcLocationY();
+		if (y1 == null) return null;
+		
+		Double z1 = one.calcLocationZ();
+		if (z1 == null) return null;
+		
+		Double x2 = two.calcLocationX();
+		if (x2 == null) return null;
+		
+		Double y2 = two.calcLocationY();
+		if (y2 == null) return null;
+		
+		Double z2 = two.calcLocationZ();
+		if (z2 == null) return null;
+		
+		return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2);
+	}
+	
+	public static Double locationDistance(PS one, PS two)
+	{
+		Double ret = locationDistanceSquared(one, two);
+		if (ret == null) return null;
+		return Math.sqrt(ret);
+	}
 	
 	public static boolean inSameWorld(PS one, PS two)
 	{

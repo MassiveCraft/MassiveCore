@@ -1,5 +1,6 @@
 package com.massivecraft.mcore5.util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,9 +18,13 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import net.minecraft.server.v1_4_R1.DedicatedServer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_4_R1.CraftServer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -57,6 +62,43 @@ public class MUtil
 	{
 		if (!(o instanceof String)) return false;
 		return playerNamePattern.matcher((String) o).matches();
+	}
+	
+	// -------------------------------------------- //
+	// PLAYER DIRECTORY
+	// -------------------------------------------- //
+	// A way of getting the player directory even when the server just started
+	
+	public static File getPlayerDirectory()
+	{
+		CraftServer cserver = (CraftServer)Bukkit.getServer();
+		DedicatedServer dserver = (DedicatedServer)cserver.getServer();
+		String levelName = dserver.propertyManager.getString("level-name", "world");
+		return new File(Bukkit.getWorldContainer(), new File(levelName, "players").getPath());
+	}
+	
+	public static List<String> getPlayerDirectoryNames()
+	{
+		List<String> ret = new ArrayList<String>();
+		
+		// Get the player directory
+		File playerDirectory = getPlayerDirectory();
+		
+		// List the files in the player folder
+		File[] playerfiles = playerDirectory.listFiles();
+		
+		// The player directory may not exist yet
+		if (playerfiles == null) return ret;
+		
+		// Populate by removing .dat
+		for (File playerfile : playerfiles)
+		{
+			String filename = playerfile.getName();
+			String playername = filename.substring(0, filename.length()-4);
+			ret.add(playername);
+		}
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //

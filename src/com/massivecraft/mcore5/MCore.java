@@ -12,6 +12,7 @@ import com.massivecraft.mcore5.adapter.ItemStackAdapter;
 import com.massivecraft.mcore5.adapter.MongoURIAdapter;
 import com.massivecraft.mcore5.adapter.PSAdapter;
 import com.massivecraft.mcore5.cmd.CmdMcore;
+import com.massivecraft.mcore5.mixin.DefaultSenderIdMixin;
 import com.massivecraft.mcore5.store.Coll;
 import com.massivecraft.mcore5.store.Db;
 import com.massivecraft.mcore5.store.MStore;
@@ -100,6 +101,8 @@ public class MCore extends MPlugin
 		
 		// Setup PlayerUtil and it's events
 		new PlayerUtil(this);
+		DefaultSenderIdMixin.get().register();
+		DefaultSenderIdMixin.get().setup();
 		
 		// Register events
 		this.internalListener = new InternalListener(this);

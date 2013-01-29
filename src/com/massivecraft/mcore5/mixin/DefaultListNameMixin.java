@@ -39,7 +39,7 @@ public class DefaultListNameMixin implements ListNameMixin
 		Player player = Bukkit.getPlayerExact(senderId);
 		if (player != null) return player.getDisplayName();
 		
-		return Mixin.getSenderIdFixerMixin().tryFix(senderId);
+		return Mixin.tryFix(senderId);
 	}
 
 	@Override

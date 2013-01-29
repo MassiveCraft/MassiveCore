@@ -3,6 +3,7 @@ package com.massivecraft.mcore5.store;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.TreeSet;
 
 import org.bukkit.command.CommandSender;
 
@@ -12,6 +13,7 @@ import com.massivecraft.mcore5.cmd.arg.ARStringEntity;
 import com.massivecraft.mcore5.cmd.arg.ARStringMatchFullCI;
 import com.massivecraft.mcore5.cmd.arg.ARStringMatchStartCI;
 import com.massivecraft.mcore5.cmd.arg.ArgReader;
+import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.util.MUtil;
 import com.massivecraft.mcore5.util.PlayerUtil;
 import com.massivecraft.mcore5.util.SenderUtil;
@@ -64,6 +66,16 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String>
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
+	
+	public TreeSet<String> getFixedIds()
+	{
+		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		for (String senderId : this.getIds())
+		{
+			ret.add(Mixin.tryFix(senderId));
+		}
+		return ret;
+	}
 	
 	@Override
 	public String fixId(Object oid)

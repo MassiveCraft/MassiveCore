@@ -9,6 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.util.SenderUtil;
 
 public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E, String>
@@ -127,24 +128,24 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E, 
 	
 	public String getDisplayName()
 	{
-		return SenderUtil.getDisplayName(this.getId());
+		return Mixin.getDisplayName(this.getId());
 	}
 	
 	public void setDisplayName(String displayName)
 	{
-		SenderUtil.setDisplayName(this.getId(), displayName);
+		Mixin.setDisplayName(this.getId(), displayName);
 	}
 	
 	// LIST NAME
 	
 	public String getListName()
 	{
-		return SenderUtil.getListName(this.getId());
+		return Mixin.getListName(this.getId());
 	}
 	
 	public void setListName(String listName)
 	{
-		SenderUtil.setListName(this.getId(), listName);
+		Mixin.setListName(this.getId(), listName);
 	}
 	
 	// CONVENIENCE SEND MESSAGE
