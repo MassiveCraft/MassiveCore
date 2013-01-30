@@ -9,9 +9,9 @@ public class ARLong extends ARAbstractPrimitive<Long>
 	}
 
 	@Override
-	public Long convert(String str) throws Exception
+	public Long convert(String arg) throws Exception
 	{
-		return Long.parseLong(str);
+		return Long.parseLong(arg);
 	}
 	
 	// -------------------------------------------- //

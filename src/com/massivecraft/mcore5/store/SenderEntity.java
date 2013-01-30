@@ -33,6 +33,15 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E, 
 	}
 	
 	// -------------------------------------------- //
+	// FIXED ID
+	// -------------------------------------------- //
+	
+	public String getFixedId()
+	{
+		return Mixin.tryFix(this.getId());
+	}
+	
+	// -------------------------------------------- //
 	// OVERRIDES
 	// -------------------------------------------- //
 	
@@ -116,12 +125,12 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E, 
 	
 	public boolean isOnline()
 	{
-		return this.getSender() != null;
+		return Mixin.isOnline(this.getId());
 	}
 	
 	public boolean isOffline()
 	{
-		return ! isOnline();
+		return Mixin.isOffline(this.getId());
 	}
 	
 	// DISPLAY NAME

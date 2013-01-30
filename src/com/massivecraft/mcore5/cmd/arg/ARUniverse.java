@@ -15,17 +15,17 @@ public class ARUniverse implements ArgReader<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<String> read(String str, CommandSender sender)
+	public ArgResult<String> read(String arg, CommandSender sender)
 	{
 		ArgResult<String> result = new ArgResult<String>();
 		
-		if (multiverse.containsUniverse(str))
+		if (multiverse.containsUniverse(arg))
 		{
-			result.setResult(str);
+			result.setResult(arg);
 		}
 		else
 		{
-			result.getErrors().add("<b>No universe \"<h>"+str+"<b>\" exists in multiverse <h>"+this.multiverse.getId()+"<b>.");
+			result.getErrors().add("<b>No universe \"<h>"+arg+"<b>\" exists in multiverse <h>"+this.multiverse.getId()+"<b>.");
 			
 			Collection<String> names = new ArrayList<String>(multiverse.getUniverses());
 			result.getErrors().add("<i>Use "+Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));

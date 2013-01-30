@@ -15,9 +15,9 @@ public class ARDate extends ARAbstractPrimitive<Date>
 	}
 
 	@Override
-	public Date convert(String str) throws Exception
+	public Date convert(String arg) throws Exception
 	{
-		return df.parse(str);
+		return df.parse(arg);
 	}
 	
 	// -------------------------------------------- //

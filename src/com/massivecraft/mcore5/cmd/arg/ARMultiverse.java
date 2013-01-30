@@ -17,9 +17,9 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 	}
 
 	@Override
-	public Multiverse select(String str, CommandSender sender)
+	public Multiverse select(String arg, CommandSender sender)
 	{
-		return MultiverseColl.i.get(str);
+		return MultiverseColl.i.get(arg);
 	}
 	
 	@Override

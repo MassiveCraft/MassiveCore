@@ -16,26 +16,26 @@ public class AREnvironment extends ARAbstractSelect<Environment>
 	}
 
 	@Override
-	public Environment select(String str, CommandSender sender)
+	public Environment select(String arg, CommandSender sender)
 	{
 		Environment ret = null;
 		
 		// "THE_END" --> "end"
-		str = str.toLowerCase();
-		str = str.replace("_", "");
-		str = str.replace("the", "");
+		arg = arg.toLowerCase();
+		arg = arg.replace("_", "");
+		arg = arg.replace("the", "");
 		
-		if (str.startsWith("no") || str.startsWith("d"))
+		if (arg.startsWith("no") || arg.startsWith("d"))
 		{
 			// "normal" or "default"
 			ret = Environment.NORMAL;
 		}
-		else if (str.startsWith("ne"))
+		else if (arg.startsWith("ne"))
 		{
 			// "nether"
 			ret = Environment.NETHER;
 		}
-		else if (str.startsWith("e"))
+		else if (arg.startsWith("e"))
 		{
 			// "end"
 			ret = Environment.THE_END;

@@ -16,25 +16,25 @@ public class ARDifficulty extends ARAbstractSelect<Difficulty>
 	}
 
 	@Override
-	public Difficulty select(String str, CommandSender sender)
+	public Difficulty select(String arg, CommandSender sender)
 	{
 		Difficulty ret = null;
 		
-		str = str.toLowerCase();
+		arg = arg.toLowerCase();
 
-		if (str.startsWith("p"))
+		if (arg.startsWith("p"))
 		{
 			ret = Difficulty.PEACEFUL;
 		}
-		else if (str.startsWith("e"))
+		else if (arg.startsWith("e"))
 		{
 			ret = Difficulty.EASY;
 		}
-		else if (str.startsWith("n"))
+		else if (arg.startsWith("n"))
 		{
 			ret = Difficulty.NORMAL;
 		}
-		else if (str.startsWith("h"))
+		else if (arg.startsWith("h"))
 		{
 			ret = Difficulty.HARD;
 		}

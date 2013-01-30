@@ -9,10 +9,10 @@ public class ARBoolean extends ARAbstractPrimitive<Boolean>
 	}
 
 	@Override
-	public Boolean convert(String str) throws Exception
+	public Boolean convert(String arg) throws Exception
 	{
-		str = str.toLowerCase();
-		if (str.startsWith("y") || str.startsWith("t") || str.startsWith("on") || str.startsWith("+") || str.startsWith("1"))
+		arg = arg.toLowerCase();
+		if (arg.startsWith("y") || arg.startsWith("t") || arg.startsWith("on") || arg.startsWith("+") || arg.startsWith("1"))
 		{
 			return true;
 		}

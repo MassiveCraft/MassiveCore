@@ -16,18 +16,18 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 	}
 
 	@Override
-	public ChatColor select(String str, CommandSender sender)
+	public ChatColor select(String arg, CommandSender sender)
 	{
 		ChatColor ret = null;
 		
-		str = getToCompare(str);
+		arg = getToCompare(arg);
 		
 		for (ChatColor cc : ChatColor.values())
 		{
 
 			
 			String ccstr = getToCompare(cc.name());
-			if ( ! ccstr.equals(str)) continue;
+			if ( ! ccstr.equals(arg)) continue;
 			ret = cc;
 			break;
 		}

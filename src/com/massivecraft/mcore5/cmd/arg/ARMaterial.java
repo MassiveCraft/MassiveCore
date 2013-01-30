@@ -6,12 +6,12 @@ import org.bukkit.command.CommandSender;
 public class ARMaterial implements ArgReader<Material>
 {
 	@Override
-	public ArgResult<Material> read(String str, CommandSender sender)
+	public ArgResult<Material> read(String arg, CommandSender sender)
 	{
-		ArgResult<Material> result = new ArgResult<Material>(Material.matchMaterial(str));
+		ArgResult<Material> result = new ArgResult<Material>(Material.matchMaterial(arg));
 		if (!result.hasResult())
 		{
-			result.getErrors().add("<b>No material matches <h>"+str+"<b>.");
+			result.getErrors().add("<b>No material matches <h>"+arg+"<b>.");
 			result.getErrors().add("<i>Suggestion: <aqua>http://www.minecraftwiki.net/wiki/Data_values");
 		}
 		return result;

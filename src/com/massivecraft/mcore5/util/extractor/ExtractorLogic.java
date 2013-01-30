@@ -26,7 +26,6 @@ import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
 import com.massivecraft.mcore5.PS;
-import com.massivecraft.mcore5.store.PlayerEntity;
 import com.massivecraft.mcore5.store.SenderEntity;
 import com.massivecraft.mcore5.util.SenderUtil;
 
@@ -97,7 +96,7 @@ public class ExtractorLogic
 		if (o == null) return null;
 		if (o instanceof String) return (String)o;
 		if (o instanceof SenderEntity) return ((SenderEntity<?>)o).getId();
-		if (o instanceof PlayerEntity) return ((PlayerEntity<?>)o).getId();
+		if (o instanceof SenderEntity) return ((SenderEntity<?>)o).getId();
 		CommandSender sender = senderFromObject(o);
 		if (sender == null) return null;
 		return SenderUtil.getSenderId(sender);

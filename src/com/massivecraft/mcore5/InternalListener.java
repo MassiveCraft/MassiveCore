@@ -21,7 +21,6 @@ import com.massivecraft.mcore5.event.MCoreAfterPlayerRespawnEvent;
 import com.massivecraft.mcore5.event.MCoreAfterPlayerTeleportEvent;
 import com.massivecraft.mcore5.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore5.store.Coll;
-import com.massivecraft.mcore5.store.PlayerColl;
 import com.massivecraft.mcore5.store.SenderColl;
 import com.massivecraft.mcore5.util.SmokeUtil;
 
@@ -81,7 +80,6 @@ public class InternalListener implements Listener
 		String id = event.getPlayer().getName();
 		Player player = event.getPlayer();
 		
-		PlayerColl.setPlayerRefferences(id, player);
 		SenderColl.setSenderRefferences(id, player);
 	}
 	
@@ -93,7 +91,6 @@ public class InternalListener implements Listener
 		String id = event.getPlayer().getName();
 		Player player = null;
 		
-		PlayerColl.setPlayerRefferences(id, player);
 		SenderColl.setSenderRefferences(id, player);
 	}
 	
@@ -103,7 +100,6 @@ public class InternalListener implements Listener
 		String id = event.getPlayer().getName();
 		Player player = null;
 		
-		PlayerColl.setPlayerRefferences(id, player);
 		SenderColl.setSenderRefferences(id, player);
 	}
 	
@@ -205,8 +201,8 @@ public class InternalListener implements Listener
 		String playerName = player.getName();
 		for (Coll<?, ?> coll : Coll.instances)
 		{
-			if (!(coll instanceof PlayerColl)) continue;
-			PlayerColl<?> pcoll = (PlayerColl<?>)coll;
+			if (!(coll instanceof SenderColl)) continue;
+			SenderColl<?> pcoll = (SenderColl<?>)coll;
 			pcoll.syncId(playerName);
 		}
 	}

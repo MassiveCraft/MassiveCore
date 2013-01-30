@@ -9,9 +9,9 @@ public class ARString extends ARAbstractPrimitive<String>
 	}
 
 	@Override
-	public String convert(String str) throws Exception
+	public String convert(String arg) throws Exception
 	{
-		return str;
+		return arg;
 	}
 	
 	// -------------------------------------------- //

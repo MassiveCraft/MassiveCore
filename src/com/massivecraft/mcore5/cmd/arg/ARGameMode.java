@@ -16,21 +16,21 @@ public class ARGameMode extends ARAbstractSelect<GameMode>
 	}
 
 	@Override
-	public GameMode select(String str, CommandSender sender)
+	public GameMode select(String arg, CommandSender sender)
 	{
 		GameMode ret = null;
 		
-		str = str.toLowerCase();
+		arg = arg.toLowerCase();
 		
-		if (str.startsWith("s"))
+		if (arg.startsWith("s"))
 		{
 			ret = GameMode.SURVIVAL;
 		}
-		else if (str.startsWith("c"))
+		else if (arg.startsWith("c"))
 		{
 			ret = GameMode.CREATIVE;
 		}
-		else if (str.startsWith("a"))
+		else if (arg.startsWith("a"))
 		{
 			ret = GameMode.ADVENTURE;
 		}

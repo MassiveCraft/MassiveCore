@@ -9,9 +9,9 @@ public class ARInteger extends ARAbstractPrimitive<Integer>
 	}
 
 	@Override
-	public Integer convert(String str) throws Exception
+	public Integer convert(String arg) throws Exception
 	{
-		return Integer.parseInt(str);
+		return Integer.parseInt(arg);
 	}
 	
 	// -------------------------------------------- //

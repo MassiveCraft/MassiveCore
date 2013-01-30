@@ -4,5 +4,5 @@ import org.bukkit.command.CommandSender;
 
 public interface ArgReader<T>
 {
-	public ArgResult<T> read(String str, CommandSender sender);
+	public ArgResult<T> read(String arg, CommandSender sender);
 }

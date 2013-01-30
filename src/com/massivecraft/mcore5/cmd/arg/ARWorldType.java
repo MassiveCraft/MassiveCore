@@ -16,36 +16,36 @@ public class ARWorldType extends ARAbstractSelect<WorldType>
 	}
 
 	@Override
-	public WorldType select(String str, CommandSender sender)
+	public WorldType select(String arg, CommandSender sender)
 	{
 		WorldType ret = null;
 		
 		// "DEFAULT_1_1" --> "11"
 		// "LARGE_BIOMES" --> "large"
 		// "Default" --> ""
-		str = str.toLowerCase();
-		str = str.replace("_", "");
-		str = str.replace(".", "");
-		str = str.replace("normal", "");
-		str = str.replace("default", "");
-		str = str.replace("large", "");
+		arg = arg.toLowerCase();
+		arg = arg.replace("_", "");
+		arg = arg.replace(".", "");
+		arg = arg.replace("normal", "");
+		arg = arg.replace("default", "");
+		arg = arg.replace("large", "");
 		
-		if (str.equals(""))
+		if (arg.equals(""))
 		{
 			// "normal" or "default"
 			ret = WorldType.NORMAL;
 		}
-		else if (str.startsWith("flat"))
+		else if (arg.startsWith("flat"))
 		{
 			// "flat"
 			ret = WorldType.FLAT;
 		}
-		else if (str.contains("11"))
+		else if (arg.contains("11"))
 		{
 			// "VERSION_1_1"
 			ret = WorldType.VERSION_1_1;
 		}
-		else if (str.contains("large"))
+		else if (arg.contains("large"))
 		{
 			// "LARGE_BIOMES"
 			ret = WorldType.LARGE_BIOMES;

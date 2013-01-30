@@ -17,9 +17,9 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	}
 
 	@Override
-	public Aspect select(String str, CommandSender sender)
+	public Aspect select(String arg, CommandSender sender)
 	{
-		return AspectColl.i.get(str);
+		return AspectColl.i.get(arg);
 	}
 	
 	@Override

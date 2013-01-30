@@ -9,9 +9,9 @@ public class ARFloat extends ARAbstractPrimitive<Float>
 	}
 
 	@Override
-	public Float convert(String str) throws Exception
+	public Float convert(String arg) throws Exception
 	{
-		return Float.parseFloat(str);
+		return Float.parseFloat(arg);
 	}
 	
 	// -------------------------------------------- //

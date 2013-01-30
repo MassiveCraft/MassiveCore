@@ -9,9 +9,9 @@ public class ARDouble extends ARAbstractPrimitive<Double>
 	}
 
 	@Override
-	public Double convert(String str) throws Exception
+	public Double convert(String arg) throws Exception
 	{
-		return Double.parseDouble(str);
+		return Double.parseDouble(arg);
 	}
 	
 	// -------------------------------------------- //

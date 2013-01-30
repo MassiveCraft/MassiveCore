@@ -16,9 +16,9 @@ public class ARWorld extends ARAbstractSelect<World>
 	}
 
 	@Override
-	public World select(String str, CommandSender sender)
+	public World select(String arg, CommandSender sender)
 	{
-		return Bukkit.getWorld(str);
+		return Bukkit.getWorld(arg);
 	}
 
 	@Override

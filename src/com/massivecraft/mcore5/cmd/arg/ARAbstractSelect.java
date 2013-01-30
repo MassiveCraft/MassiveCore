@@ -14,13 +14,13 @@ public abstract class ARAbstractSelect<T> implements ArgReader<T>
 	public boolean canList(CommandSender sender) { return true; }
 	
 	@Override
-	public ArgResult<T> read(String str, CommandSender sender)
+	public ArgResult<T> read(String arg, CommandSender sender)
 	{
-		ArgResult<T> result = new ArgResult<T>(this.select(str, sender));
+		ArgResult<T> result = new ArgResult<T>(this.select(arg, sender));
 		
 		if (!result.hasResult())
 		{
-			result.getErrors().add("<b>No "+this.typename()+" matches \"<h>"+str+"<b>\".");
+			result.getErrors().add("<b>No "+this.typename()+" matches \"<h>"+arg+"<b>\".");
 			if (this.canList(sender))
 			{
 				Collection<String> names = this.altNames(sender);

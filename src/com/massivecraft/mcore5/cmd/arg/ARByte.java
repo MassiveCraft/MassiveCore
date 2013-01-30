@@ -9,9 +9,9 @@ public class ARByte extends ARAbstractPrimitive<Byte>
 	}
 
 	@Override
-	public Byte convert(String str) throws Exception
+	public Byte convert(String arg) throws Exception
 	{
-		return Byte.parseByte(str);
+		return Byte.parseByte(arg);
 	}
 	
 	// -------------------------------------------- //

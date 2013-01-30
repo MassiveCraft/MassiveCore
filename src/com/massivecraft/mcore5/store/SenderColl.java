@@ -1,6 +1,5 @@
 package com.massivecraft.mcore5.store;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeSet;
@@ -9,16 +8,10 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore5.MPlugin;
 import com.massivecraft.mcore5.Predictate;
-import com.massivecraft.mcore5.cmd.arg.ARStringEntity;
-import com.massivecraft.mcore5.cmd.arg.ARStringMatchFull;
-import com.massivecraft.mcore5.cmd.arg.ARStringMatchStart;
-import com.massivecraft.mcore5.cmd.arg.ArgReader;
 import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.util.MUtil;
-import com.massivecraft.mcore5.util.PlayerUtil;
-import com.massivecraft.mcore5.util.SenderUtil;
 
-public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String>
+public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> implements SenderIdSource
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -37,6 +30,9 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String>
 	
 	protected boolean lowercasing;
 	public boolean isLowercasing() { return this.lowercasing; }
+	
+	protected final SenderIdSource mixinedIdSource = new SenderIdSourceCombined(this, MixinSenderIdSource.get());
+	public SenderIdSource getMixinedIdSource() { return this.mixinedIdSource; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -75,6 +71,12 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String>
 			ret.add(Mixin.tryFix(senderId));
 		}
 		return ret;
+	}
+	
+	@Override
+	public Collection<String> getSenderIds()
+	{
+		return this.getFixedIds();
 	}
 	
 	@Override
@@ -134,36 +136,14 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String>
 	// ARGUMENT READERS
 	// -------------------------------------------- //
 	
-	protected Collection<Collection<String>> forgeAltColls()
+	/*public ArgReader<E> getARFullAny()
 	{
-		Collection<Collection<String>> ret = new ArrayList<Collection<String>>();
-		ret.add(this.getIds());
-		if (this.isCreative())
-		{
-			ret.add(PlayerUtil.getAllVisitorNames());
-			ret.add(SenderUtil.getIdToSender().keySet());
-		}
-		return ret;
+		return ARSenderEntity.getFullAny(this);
 	}
 	
-	public ArgReader<String> argReaderSenderIdFull()
+	public ArgReader<E> getARStartAny()
 	{
-		return new ARStringMatchFull("player", this.forgeAltColls());
-	}
-	
-	public ArgReader<String> argReaderSenderIdStart()
-	{
-		return new ARStringMatchStart("player", this.forgeAltColls());
-	}
-	
-	public ArgReader<E> argReaderEntityFull()
-	{
-		return new ARStringEntity<E>(this.argReaderSenderIdFull(), this);
-	}
-	
-	public ArgReader<E> argReaderEntityStart()
-	{
-		return new ARStringEntity<E>(this.argReaderSenderIdStart(), this);
-	}
+		return ARSenderEntity.getStartAny(this);
+	}*/
 
 }
