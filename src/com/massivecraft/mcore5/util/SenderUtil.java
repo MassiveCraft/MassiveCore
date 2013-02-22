@@ -2,7 +2,6 @@ package com.massivecraft.mcore5.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.TreeMap;
 import net.minecraft.server.v1_4_R1.MinecraftServer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Server;
 import org.bukkit.command.BlockCommandSender;
@@ -22,33 +20,18 @@ import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.craftbukkit.v1_4_R1.CraftServer;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore5.mixin.Mixin;
+import com.massivecraft.mcore5.MCore;
+import com.massivecraft.mcore5.event.MCoreSenderRegisterEvent;
+import com.massivecraft.mcore5.event.MCoreSenderUnregisterEvent;
 import com.massivecraft.mcore5.sender.FakeBlockCommandSender;
-import com.massivecraft.mcore5.store.SenderColl;
 
 /**
- * This Util was created to fill out the void between the Player interface and other CommandSenders.
- * 
- * +++ The ID +++
  * We add an ID <--> CommandSender lookup feature.
  * Each player has an id which is the name of the player. Players are retrievable by id using Bukkit.getPlayerExact().
  * Other command senders have no true id. We make it so they have.
  * Non-player-sender-ids always start with and ampersand (@). This is to avoid clashes with regular player names.
  * The id is simply "@"+CommandSender.getName() with exception for the block command sender which we call "@block".
  * Non standard CommandSenders must be manually registered to the util using the register method.
- * 
- * +++ The DisplayName and ListName +++
- * CommandSenders can have DisplayName and ListName just like normal Player.
- * 
- * +++ Online/Offline  +++
- * Players may be Online/Offline. We allow CommandSenders to be Online/Offline as well.
- * This is simply done by stating that everything non-player in online all the time.  
- * The ConsoleCommandSender is for example always online and never offline.
- * 
- * +++ Easy sendMessage and dispatchCommand +++
- * This feature isn't new "fake fields" like the ones above.
- * Its a suite of useful utility methods for sending messages and dispatching commands as a certain sender.
- * 
  */
 public class SenderUtil
 {
@@ -80,16 +63,19 @@ public class SenderUtil
 	{
 		if (sender == null) return false;
 		String id = getSenderId(sender);
-		CommandSender current = idToSender.get(id);
-		if (current != null) return current == sender;
 		idToSender.put(id, sender);
-		SenderColl.setSenderRefferences(id, sender);
+		new MCoreSenderRegisterEvent(sender).run();
 		return true;
 	}
 	
 	public static synchronized boolean unregister(CommandSender sender)
 	{
-		return idToSender.remove(getSenderId(sender)) != null;
+		boolean ret = (idToSender.remove(getSenderId(sender)) != null);
+		if (ret)
+		{
+			new MCoreSenderUnregisterEvent(sender).run();
+		}
+		return ret;
 	}
 	
 	public static Map<String, CommandSender> getIdToSender()
@@ -99,20 +85,17 @@ public class SenderUtil
 	
 	static
 	{
-		// Register
-		register(getConsole());
-		register(getRcon());
-		register(getBlock());
-		
-		// Display Name
-		Mixin.setDisplayName(ID_CONSOLE, ChatColor.RED.toString()+ID_CONSOLE.toUpperCase());
-		Mixin.setDisplayName(ID_RCON, ChatColor.RED.toString()+ID_RCON.toUpperCase());
-		Mixin.setDisplayName(ID_BLOCK, ChatColor.RED.toString()+ID_BLOCK.toUpperCase());
-		
-		// List Name
-		Mixin.setListName(ID_CONSOLE, ChatColor.RED.toString()+ID_CONSOLE.toUpperCase());
-		Mixin.setListName(ID_RCON, ChatColor.RED.toString()+ID_RCON.toUpperCase());
-		Mixin.setListName(ID_BLOCK, ChatColor.RED.toString()+ID_BLOCK.toUpperCase());
+		// Since the console and rcon does not exist we schedule the register for these senders.
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				register(getConsole());
+				register(getRcon());
+				register(getBlock());
+			}
+		});
 	}
 	
 	// -------------------------------------------- //
@@ -347,105 +330,6 @@ public class SenderUtil
 			ret.add(sender);
 		}
 		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// CONVENIENCE CMD
-	// -------------------------------------------- //
-	
-	public static boolean cmd(CommandSender sender, String cmd)
-	{
-		return Bukkit.dispatchCommand(sender, cmd);
-	}
-	
-	// -------------------------------------------- //
-	// CONVENIENCE SEND MESSAGE
-	// -------------------------------------------- //
-	
-	// sender
-	
-	public static boolean sendMessage(CommandSender sender, String message)
-	{
-		if (sender == null) return false;
-		sender.sendMessage(message);
-		return true;
-	}
-	
-	public static boolean sendMessage(CommandSender sender, String... messages)
-	{
-		if (sender == null) return false;
-		sender.sendMessage(messages);
-		return true;
-	}
-	
-	public static boolean sendMessage(CommandSender sender, Collection<String> messages)
-	{
-		if (sender == null) return false;
-		for (String message : messages)
-		{
-			sender.sendMessage(message);
-		}
-		return true;
-	}
-	
-	// senderId
-	
-	public static boolean sendMessage(String senderId, String message)
-	{
-		return sendMessage(getSender(senderId), message);
-	}
-	
-	public static boolean sendMessage(String senderId, String... messages)
-	{
-		return sendMessage(getSender(senderId), messages);
-	}
-	
-	public static boolean sendMessage(String senderId, Collection<String> messages)
-	{
-		return sendMessage(getSender(senderId), messages);
-	}
-	
-	// -------------------------------------------- //
-	// CONVENIENCE MSG
-	// -------------------------------------------- //
-	
-	// sender
-	
-	public static boolean msg(CommandSender sender, String msg)
-	{
-		return sendMessage(sender, Txt.parse(msg));
-	}
-	
-	public static boolean msg(CommandSender sender, String msg, Object... args)
-	{
-		return sendMessage(sender, Txt.parse(msg, args));
-	}
-	
-	public static boolean msg(CommandSender sender, Collection<String> msgs)
-	{
-		if (sender == null) return false;
-		for (String msg : msgs)
-		{
-			msg(sender, msg);
-		}
-		return true;
-	}
-	
-	// senderId
-	
-	public static boolean msg(String senderId, String msg)
-	{
-		return msg(getSender(senderId), msg);
-	}
-	
-	public static boolean msg(String senderId, String msg, Object... args)
-	{
-		return msg(getSender(senderId), msg, args);
-	}
-	
-	public static boolean msg(String senderId, Collection<String> msgs)
-	{
-		return msg(getSender(senderId), msgs);
 	}
 	
 	// -------------------------------------------- //

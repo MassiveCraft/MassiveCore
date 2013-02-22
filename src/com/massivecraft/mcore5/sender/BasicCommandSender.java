@@ -5,6 +5,7 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissibleBase;
 
+import com.massivecraft.mcore5.MCore;
 import com.massivecraft.mcore5.util.SenderUtil;
 
 public class BasicCommandSender extends PermissibleBase implements CommandSender
@@ -56,6 +57,24 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 	
 	public boolean register()
 	{
+		final BasicCommandSender ME = this;
+		
+		// register later
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				ME.registerImmediately();
+			}
+		});
+		
+		// and register now
+		return this.registerImmediately();
+	}
+	
+	public boolean registerImmediately()
+	{
 		return SenderUtil.register(this);
 	}
 	
@@ -63,4 +82,5 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 	{
 		return SenderUtil.unregister(this);
 	}
+	
 }

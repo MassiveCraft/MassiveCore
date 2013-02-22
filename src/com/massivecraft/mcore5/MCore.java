@@ -1,9 +1,12 @@
 package com.massivecraft.mcore5;
 
 import java.lang.reflect.Modifier;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,7 +15,8 @@ import com.massivecraft.mcore5.adapter.ItemStackAdapter;
 import com.massivecraft.mcore5.adapter.MongoURIAdapter;
 import com.massivecraft.mcore5.adapter.PSAdapter;
 import com.massivecraft.mcore5.cmd.CmdMcore;
-import com.massivecraft.mcore5.mixin.DefaultSenderIdMixin;
+import com.massivecraft.mcore5.mixin.SenderIdMixinDefault;
+import com.massivecraft.mcore5.mixin.ScheduledTeleportListener;
 import com.massivecraft.mcore5.store.Coll;
 import com.massivecraft.mcore5.store.Db;
 import com.massivecraft.mcore5.store.MStore;
@@ -20,6 +24,8 @@ import com.massivecraft.mcore5.usys.AspectColl;
 import com.massivecraft.mcore5.usys.MultiverseColl;
 import com.massivecraft.mcore5.usys.cmd.CmdUsys;
 import com.massivecraft.mcore5.util.PlayerUtil;
+import com.massivecraft.mcore5.util.TimeDiffUtil;
+import com.massivecraft.mcore5.util.TimeUnit;
 import com.massivecraft.mcore5.xlib.gson.Gson;
 import com.massivecraft.mcore5.xlib.gson.GsonBuilder;
 import com.massivecraft.mcore5.xlib.mongodb.MongoURI;
@@ -32,6 +38,14 @@ public class MCore extends MPlugin
 	
 	public final static String INSTANCE = "instance";
 	public final static String DEFAULT = "default";
+	
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	public static MCore p;
+	public static MCore get() { return p; }
+	public MCore() { p = this; }
 	
 	// -------------------------------------------- //
 	// STATIC
@@ -57,19 +71,13 @@ public class MCore extends MPlugin
 	public static Db<?> getDb() { return db; }
 	
 	// -------------------------------------------- //
-	// CONSTRUCT
+	// FIELDS
 	// -------------------------------------------- //
 	
-	public static MCore p;
-	public MCore()
-	{
-		p = this;
-	}
+	// Commands
+	public CmdUsys cmdUsys;
+	public CmdMcore cmdMcore;
 	
-	// -------------------------------------------- //
-	// NON STATIC :)
-	// -------------------------------------------- //
-
 	private Runnable collTickTask = new Runnable()
 	{
 		public void run()
@@ -81,9 +89,9 @@ public class MCore extends MPlugin
 		}
 	};
 	
-	public InternalListener internalListener;
-	public CmdUsys cmdUsys;
-	public CmdMcore cmdMcore;
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void onEnable()
@@ -101,11 +109,11 @@ public class MCore extends MPlugin
 		
 		// Setup PlayerUtil and it's events
 		new PlayerUtil(this);
-		DefaultSenderIdMixin.get().register();
-		DefaultSenderIdMixin.get().setup();
+		SenderIdMixinDefault.get().setup();
 		
 		// Register events
-		this.internalListener = new InternalListener(this);
+		InternalListener.get().setup();
+		ScheduledTeleportListener.get().setup();
 		
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
@@ -121,7 +129,54 @@ public class MCore extends MPlugin
 		this.cmdMcore = new CmdMcore();
 		this.cmdMcore.register(this, true);
 		
+		/*
+		test("");
+		test("+1day");
+		test("1day");
+		test("1 day");
+		test("-1day");
+		test("1week4d");
+		test("+1week-4d");
+		test("day");
+		test("1month");
+		test("1months");
+		test("1months2ms");
+		*/
+		
 		this.postEnable();
+	}
+	
+	public void test(String diffString)
+	{
+		log("===========================");
+		log("Testing Diff String \""+diffString+"\":");
+		
+		try
+		{
+			Map<TimeUnit, Long> unitcounts = TimeDiffUtil.unitcounts(diffString);
+			for (Entry<TimeUnit, Long> entry : unitcounts.entrySet())
+			{
+				System.out.println(entry.getValue()+": "+entry.getKey());
+			}
+			
+			System.out.println("---");
+			
+			long millis = TimeDiffUtil.millis(unitcounts);
+			log("millis: "+millis);
+			
+			String verboose = ChatColor.stripColor(TimeDiffUtil.formatedVerboose(unitcounts));
+			String minimal = ChatColor.stripColor(TimeDiffUtil.formatedMinimal(unitcounts));
+			log("verboose: "+verboose);
+			log("minimal: "+minimal);
+			
+			long millisRec = TimeDiffUtil.millis(minimal);
+			log("millisRec: "+millisRec);
+			log("matches: "+(millis == millisRec));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 }

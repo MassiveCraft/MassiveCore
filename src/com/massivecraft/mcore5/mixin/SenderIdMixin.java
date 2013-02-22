@@ -10,14 +10,13 @@ public interface SenderIdMixin
 	public String tryFix(String senderId);
 	public boolean canFix(String senderId);
 	
-	public boolean isOnline(String senderId);
-	public boolean isOffline(String senderId);
-	public boolean hasBeenOnline(String senderId);
-	public Long getLastOnline(String senderId);
-	
-	// All of these are static snapshots that are alterable and won't change over time.
+	// These may be unmodifiable. Don't expect them to be changeable.
 	public Set<String> getAllSenderIds();
 	public Set<String> getOnlineSenderIds();
 	public Set<String> getOfflineSenderIds();
+	
+	public Set<String> getAllPlayerIds();
+	public Set<String> getOnlinePlayerIds();
+	public Set<String> getOfflinePlayerIds();
 	
 }

@@ -4,8 +4,8 @@ import org.bukkit.command.CommandSender;
 
 public interface DisplayNameMixin
 {
-	public String get(String senderId);
-	public void set(String senderId, String displayName);
-	public String get(CommandSender sender);
-	public void set(CommandSender sender, String displayName);
+	public String getDisplayName(String senderId);
+	public void setDisplayName(String senderId, String displayName);
+	public String getDisplayName(CommandSender sender);
+	public void setDisplayName(CommandSender sender, String displayName);
 }

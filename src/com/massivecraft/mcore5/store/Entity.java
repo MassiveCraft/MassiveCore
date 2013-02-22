@@ -46,10 +46,7 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	
 	public boolean attached()
 	{
-		Coll<E, L> coll = this.getColl();
-		if (coll == null) return false;
-		
-		return coll.getAll().contains(this);
+		return this.getColl() != null;
 	}
 	
 	public boolean detached()

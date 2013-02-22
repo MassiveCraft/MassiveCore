@@ -1,7 +1,7 @@
 package com.massivecraft.mcore5.cmd.arg;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.TreeSet;
 
 import org.bukkit.command.CommandSender;
 
@@ -41,18 +41,26 @@ public abstract class ARSenderIdAbstractPredsource<T> extends ARSenderIdAbstract
 	@Override
 	public Collection<String> getSenderIdsFor(String arg, CommandSender sender)
 	{
-		Collection<String> senderIds = this.source.getSenderIds();
 		arg = arg.toLowerCase();
 		
-		Iterator<String> iter = senderIds.iterator();
-		while(iter.hasNext())
+		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		for (Collection<String> coll : this.source.getSenderIdCollections())
 		{
-			String senderId = iter.next();
-			if (this.isSenderIdOk(senderId, arg, sender)) continue;
-			iter.remove();
+			for (String senderId : coll)
+			{
+				if (this.isSenderIdOk(senderId, arg, sender))
+				{
+					ret.add(senderId);
+					if (ret.size() >= MAX_COUNT)
+					{
+						return ret;
+					}
+				}
+			}
 		}
 		
-		return senderIds;
+		return ret;
 	}
 	
 	protected boolean isSenderIdOk(String senderId, String arg, CommandSender sender)

@@ -1,6 +1,6 @@
 package com.massivecraft.mcore5.cmd.arg;
 
-import com.massivecraft.mcore5.store.MixinSenderIdSource;
+import com.massivecraft.mcore5.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.mcore5.store.SenderIdSource;
 
 public class ARSenderId extends ARSenderIdAbstractPredsource<String>
@@ -9,10 +9,10 @@ public class ARSenderId extends ARSenderIdAbstractPredsource<String>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final ARSenderId full = getFull(MixinSenderIdSource.get());
+	private static final ARSenderId full = getFull(SenderIdSourceMixinAllSenderIds.get());
 	public static ARSenderId getFull() { return full; }
 	
-	private static final ARSenderId start = getStart(MixinSenderIdSource.get());
+	private static final ARSenderId start = getStart(SenderIdSourceMixinAllSenderIds.get());
 	public static ARSenderId getStart() { return start; }
 	
 	public static ARSenderId getFull(SenderIdSource source)

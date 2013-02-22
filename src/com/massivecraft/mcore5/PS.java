@@ -15,10 +15,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.massivecraft.mcore5.mixin.TeleportMixinDefault;
 import com.massivecraft.mcore5.mixin.Mixin;
-import com.massivecraft.mcore5.mixin.PsTeleporterException;
+import com.massivecraft.mcore5.mixin.TeleporterException;
 import com.massivecraft.mcore5.usys.Aspect;
 import com.massivecraft.mcore5.usys.Multiverse;
 import com.massivecraft.mcore5.util.MUtil;
@@ -486,9 +488,16 @@ public class PS implements Cloneable, Serializable
 	// WRITERS
 	//----------------------------------------------//
 	
-	public synchronized void write(Entity entity) throws PsTeleporterException
+	public synchronized void write(Entity entity) throws TeleporterException
 	{
-		Mixin.teleport(entity, this);
+		if (entity instanceof Player)
+		{
+			Mixin.teleport((Player)entity, this);
+		}
+		else
+		{
+			TeleportMixinDefault.teleportEntity(entity, this);
+		}
 	}
 	
 	//----------------------------------------------//

@@ -1,6 +1,6 @@
 package com.massivecraft.mcore5;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.mcore5.util.PermUtil;
 
@@ -22,6 +22,7 @@ public enum Permission
 	CMD_USYS_ASPECT_SHOW("cmd.usys.aspect.show"),
 	CMD_USYS_ASPECT_USE("cmd.usys.aspect.use"),
 	CMD_MCORE("cmd.mcore"),
+	NOTPDELAY("notpdelay"),
 	;
 	
 	public final String node;
@@ -31,13 +32,13 @@ public enum Permission
 		this.node = "mcore."+permissionNode;
 	}
 	
-	public boolean has(CommandSender sender, boolean informSenderIfNot)
+	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{
-		return PermUtil.has(sender, this.node, informSenderIfNot);
+		return PermUtil.has(permissible, this.node, informSenderIfNot);
 	}
 	
-	public boolean has(CommandSender sender)
+	public boolean has(Permissible permissible)
 	{
-		return has(sender, false);
+		return has(permissible, false);
 	}
 }

@@ -21,6 +21,7 @@ public class Conf extends SimpleConfig
 		CmdUsys.USYS, MUtil.list(CmdUsys.USYS),
 		CmdMcore.MCORE, MUtil.list(CmdMcore.MCORE)
 	);
+	public static int tpdelay = 10;
 	
 	public static List<String> getCmdAliases(String name)
 	{

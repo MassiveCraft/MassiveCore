@@ -4,8 +4,8 @@ import org.bukkit.command.CommandSender;
 
 public interface ListNameMixin
 {
-	public String get(String senderId);
-	public void set(String senderId, String listName);
-	public String get(CommandSender sender);
-	public void set(CommandSender sender, String listName);
+	public String getListName(String senderId);
+	public void setListName(String senderId, String listName);
+	public String getListName(CommandSender sender);
+	public void setListName(CommandSender sender, String listName);
 }

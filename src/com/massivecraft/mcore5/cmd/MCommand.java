@@ -18,9 +18,9 @@ import com.massivecraft.mcore5.cmd.arg.ArgReader;
 import com.massivecraft.mcore5.cmd.arg.ArgResult;
 import com.massivecraft.mcore5.cmd.req.IReq;
 import com.massivecraft.mcore5.cmd.req.ReqHasPerm;
+import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.util.BukkitCommandUtil;
 import com.massivecraft.mcore5.util.PermUtil;
-import com.massivecraft.mcore5.util.SenderUtil;
 import com.massivecraft.mcore5.util.Txt;
 
 public abstract class MCommand
@@ -411,34 +411,34 @@ public abstract class MCommand
 	
 	public boolean sendMessage(String message)
 	{
-		return SenderUtil.sendMessage(this.sender, message);
+		return Mixin.message(this.sender, message);
 	}
 	
 	public boolean sendMessage(String... messages)
 	{
-		return SenderUtil.sendMessage(this.sender, messages);
+		return Mixin.message(this.sender, messages);
 	}
 	
 	public boolean sendMessage(Collection<String> messages)
 	{
-		return SenderUtil.sendMessage(this.sender, messages);
+		return Mixin.message(this.sender, messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return SenderUtil.msg(this.sender, msg);
+		return Mixin.msg(this.sender, msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return SenderUtil.msg(this.sender, msg, args);
+		return Mixin.msg(this.sender, msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return SenderUtil.msg(this.sender, msgs);
+		return Mixin.msg(this.sender, msgs);
 	}
 	
 	// -------------------------------------------- //

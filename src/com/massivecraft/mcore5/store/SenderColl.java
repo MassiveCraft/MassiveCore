@@ -1,8 +1,9 @@
 package com.massivecraft.mcore5.store;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
@@ -31,7 +32,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> imple
 	protected boolean lowercasing;
 	public boolean isLowercasing() { return this.lowercasing; }
 	
-	protected final SenderIdSource mixinedIdSource = new SenderIdSourceCombined(this, MixinSenderIdSource.get());
+	protected final SenderIdSource mixinedIdSource = new SenderIdSourceCombined(this, SenderIdSourceMixinAllSenderIds.get());
 	public SenderIdSource getMixinedIdSource() { return this.mixinedIdSource; }
 	
 	// -------------------------------------------- //
@@ -63,9 +64,9 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> imple
 	// EXTRAS
 	// -------------------------------------------- //
 	
-	public TreeSet<String> getFixedIds()
+	public List<String> getFixedIds()
 	{
-		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		List<String> ret = new ArrayList<String>();
 		for (String senderId : this.getIds())
 		{
 			ret.add(Mixin.tryFix(senderId));
@@ -74,10 +75,13 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> imple
 	}
 	
 	@Override
-	public Collection<String> getSenderIds()
+	public Collection<Collection<String>> getSenderIdCollections()
 	{
-		return this.getFixedIds();
+		List<Collection<String>> ret = new ArrayList<Collection<String>>();
+		ret.add(this.getFixedIds());
+		return ret;
 	}
+	
 	
 	@Override
 	public String fixId(Object oid)

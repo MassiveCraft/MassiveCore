@@ -13,6 +13,12 @@ public abstract class ARSenderIdAbstract<T> implements ArgReader<T>
 	// ABSTRACT
 	// -------------------------------------------- //
 	
+	public final static int MAX_COUNT = 10;
+	
+	// -------------------------------------------- //
+	// ABSTRACT
+	// -------------------------------------------- //
+	
 	public abstract String getTypename();
 	
 	public abstract T getResultForSenderId(String senderId);
@@ -51,10 +57,10 @@ public abstract class ARSenderIdAbstract<T> implements ArgReader<T>
 		{
 			// Ambigious!
 			ret.getErrors().add("<b>Online "+this.getTypename()+" matching \"<h>"+arg+"<b>\" is ambigious.");
-			if (senderIds.size() > 10)
+			if (senderIds.size() >= MAX_COUNT)
 			{
 				// To many to list
-				ret.getErrors().add("<b>Could be any of <h>"+senderIds.size()+" <b>possible alternatives.");
+				ret.getErrors().add("<b>More than "+MAX_COUNT+" possible alternatives.");
 			}
 			else
 			{

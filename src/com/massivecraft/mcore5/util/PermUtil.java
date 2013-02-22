@@ -32,17 +32,17 @@ public class PermUtil
 	{
 		return has(permissable, permission.getName(), verbose);
 	}
-	public static boolean has(Permissible permissable, String perm, boolean verbose)
+	public static boolean has(Permissible permissible, String perm, boolean verbose)
 	{
-		if (has(permissable, perm))
+		if (has(permissible, perm))
 		{
 			return true;
 		}
-		else if (verbose && permissable != null)
+		else if (verbose && permissible != null)
 		{
-			if (permissable instanceof CommandSender)
+			if (permissible instanceof CommandSender)
 			{
-				CommandSender sender = (CommandSender)permissable;
+				CommandSender sender = (CommandSender)permissible;
 				sender.sendMessage(getForbiddenMessage(perm));
 			}
 		}

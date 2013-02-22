@@ -2,7 +2,7 @@ package com.massivecraft.mcore5.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore5.store.MixinSenderIdSource;
+import com.massivecraft.mcore5.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.mcore5.store.SenderIdSource;
 import com.massivecraft.mcore5.util.SenderUtil;
 
@@ -12,10 +12,10 @@ public class ARSender extends ARSenderIdAbstractPredsource<CommandSender>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final ARSender full = getFull(MixinSenderIdSource.get());
+	private static final ARSender full = getFull(SenderIdSourceMixinAllSenderIds.get());
 	public static ARSender getFull() { return full; }
 	
-	private static final ARSender start = getStart(MixinSenderIdSource.get());
+	private static final ARSender start = getStart(SenderIdSourceMixinAllSenderIds.get());
 	public static ARSender getStart() { return start; }
 	
 	public static ARSender getFull(SenderIdSource source)

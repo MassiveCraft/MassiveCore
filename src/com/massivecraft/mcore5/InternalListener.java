@@ -2,8 +2,11 @@ package com.massivecraft.mcore5;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -20,37 +24,60 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import com.massivecraft.mcore5.event.MCoreAfterPlayerRespawnEvent;
 import com.massivecraft.mcore5.event.MCoreAfterPlayerTeleportEvent;
 import com.massivecraft.mcore5.event.MCorePlayerLeaveEvent;
+import com.massivecraft.mcore5.event.MCoreSenderRegisterEvent;
+import com.massivecraft.mcore5.event.MCoreSenderUnregisterEvent;
+import com.massivecraft.mcore5.mixin.Mixin;
 import com.massivecraft.mcore5.store.Coll;
 import com.massivecraft.mcore5.store.SenderColl;
+import com.massivecraft.mcore5.util.SenderUtil;
 import com.massivecraft.mcore5.util.SmokeUtil;
 
 public class InternalListener implements Listener
 {
-	MCore p;
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
-	public InternalListener(MCore p)
+	private static InternalListener i = new InternalListener();
+	public static InternalListener get() { return i; }
+	
+	// -------------------------------------------- //
+	// REGISTER
+	// -------------------------------------------- //
+	
+	public void setup()
 	{
-		this.p = p;
 		MCorePlayerLeaveEvent.player2event.clear();
-		Bukkit.getServer().getPluginManager().registerEvents(this, this.p);
+		Bukkit.getPluginManager().registerEvents(this, MCore.get());
 	}
 	
-	/*
-	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerLogin(PlayerLoginEvent event)
+	// -------------------------------------------- //
+	// CHAT TAB COMPLETE
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	public void chatTabComplete(PlayerChatTabCompleteEvent event)
 	{
-		String id = event.getPlayer().getName();
+		// So the player is watching ...
+		Player watcher = event.getPlayer();
 		
-		for (Persist instance : Persist.instances)
+		// Get the lowercased token
+		String tokenlc = event.getLastToken().toLowerCase();
+		
+		// Create a case insensitive set to check for already added stuff
+		Set<String> current = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		current.addAll(event.getTabCompletions());
+		
+		// Add ids of all online senders that match and isn't added yet. 
+		for (String senderId : Mixin.getOnlineSenderIds())
 		{
-			for (IClassManager<?> manager : instance.getClassManagers().values())
-			{
-				if (manager.idCanFix(Player.class) == false) continue;
-				if (manager.containsId(id)) continue;
-				manager.create(id);
-			}
+			if (!senderId.toLowerCase().startsWith(tokenlc)) continue;
+			if (current.contains(senderId)) continue;
+			if (!Mixin.isVisible(watcher, senderId)) continue;
+			
+			event.getTabCompletions().add(senderId);
 		}
-	}*/
+	}
 	
 	// -------------------------------------------- //
 	// EXPLOSION FX
@@ -75,32 +102,50 @@ public class InternalListener implements Listener
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void playerReferencesLoginLowest(PlayerLoginEvent event)
+	public void senderReferencesLoginLowest(PlayerLoginEvent event)
 	{
-		String id = event.getPlayer().getName();
-		Player player = event.getPlayer();
+		String id = SenderUtil.getSenderId(event.getPlayer());
+		CommandSender sender = event.getPlayer();
 		
-		SenderColl.setSenderRefferences(id, player);
+		SenderColl.setSenderRefferences(id, sender);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void playerReferencesLoginMonitor(PlayerLoginEvent event)
+	public void senderReferencesLoginMonitor(PlayerLoginEvent event)
 	{
 		if (event.getResult() == Result.ALLOWED) return;
 		
-		String id = event.getPlayer().getName();
-		Player player = null;
+		String id = SenderUtil.getSenderId(event.getPlayer());
+		CommandSender sender = null;
 		
-		SenderColl.setSenderRefferences(id, player);
+		SenderColl.setSenderRefferences(id, sender);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void playerReferencesQuitMonitor(PlayerQuitEvent event)
+	public void senderReferencesQuitMonitor(PlayerQuitEvent event)
 	{
-		String id = event.getPlayer().getName();
-		Player player = null;
+		String id = SenderUtil.getSenderId(event.getPlayer());
+		CommandSender sender = null;
 		
-		SenderColl.setSenderRefferences(id, player);
+		SenderColl.setSenderRefferences(id, sender);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void senderReferencesRegisterMonitor(MCoreSenderRegisterEvent event)
+	{
+		String id = SenderUtil.getSenderId(event.getSender());
+		CommandSender sender = event.getSender();
+		
+		SenderColl.setSenderRefferences(id, sender);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void senderReferencesUnregisterMonitor(MCoreSenderUnregisterEvent event)
+	{
+		String id = SenderUtil.getSenderId(event.getSender());
+		CommandSender sender = null;
+		
+		SenderColl.setSenderRefferences(id, sender);
 	}
 	
 	// -------------------------------------------- //
@@ -110,13 +155,13 @@ public class InternalListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void after(PlayerTeleportEvent event)
 	{
-		Bukkit.getScheduler().scheduleSyncDelayedTask(p, new MCoreAfterPlayerTeleportEvent(event), 0);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new MCoreAfterPlayerTeleportEvent(event), 0);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void after(PlayerRespawnEvent event)
 	{
-		Bukkit.getScheduler().scheduleSyncDelayedTask(p, new MCoreAfterPlayerRespawnEvent(event, event.getPlayer().getLocation()), 0);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new MCoreAfterPlayerRespawnEvent(event, event.getPlayer().getLocation()), 0);
 	}
 	
 	// -------------------------------------------- //
@@ -182,17 +227,17 @@ public class InternalListener implements Listener
 	// SYNC PLAYER ON LOGON AND LEAVE
 	// -------------------------------------------- //
 	
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void syncOnPlayerLogin(PlayerLoginEvent event)
 	{
-		//p.log("syncOnPlayerLogin", event.getPlayer().getName());
+		MCore.get().log("LOWEST syncOnPlayerLogin", event.getPlayer().getName());
 		this.syncAllForPlayer(event.getPlayer());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void syncOnPlayerLeave(MCorePlayerLeaveEvent event)
 	{
-		//p.log("syncOnPlayerLeave", event.getPlayer().getName());
+		MCore.get().log("MONITOR syncOnPlayerLeave", event.getPlayer().getName());
 		this.syncAllForPlayer(event.getPlayer());
 	}
 	

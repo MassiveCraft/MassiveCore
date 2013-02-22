@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.TreeSet;
 
 public class SenderIdSourceCombined implements SenderIdSource
 {
@@ -33,12 +32,12 @@ public class SenderIdSourceCombined implements SenderIdSource
 	// -------------------------------------------- //
 	
 	@Override
-	public Collection<String> getSenderIds()
+	public Collection<Collection<String>> getSenderIdCollections()
 	{
-		TreeSet<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		List<Collection<String>> ret = new ArrayList<Collection<String>>();
 		for (SenderIdSource source : this.sources)
 		{
-			ret.addAll(source.getSenderIds());
+			ret.addAll(source.getSenderIdCollections());
 		}
 		return ret;
 	}

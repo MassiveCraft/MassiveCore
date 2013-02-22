@@ -21,8 +21,10 @@ import java.util.TreeSet;
 import net.minecraft.server.v1_4_R1.DedicatedServer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_4_R1.CraftServer;
 import org.bukkit.entity.Entity;
@@ -99,6 +101,85 @@ public class MUtil
 		}
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// PICK
+	// -------------------------------------------- //
+	
+	public static <T> T regexPickFirstVal(String input, Map<String, T> regex2val)
+	{
+		if (regex2val == null) return null;
+		T ret = null;
+		
+		for (Entry<String, T> entry : regex2val.entrySet())
+		{
+			ret = entry.getValue();
+			if (input == null) continue;
+			String regex = entry.getKey();
+			if (Pattern.matches(regex, input)) break;
+		}
+		
+		return ret;
+	}
+	
+	public static <E, T> T equalsPickFirstVal(E input, Map<E, T> thing2val)
+	{
+		if (thing2val == null) return null;
+		T ret = null;
+		
+		for (Entry<E, T> entry : thing2val.entrySet())
+		{
+			ret = entry.getValue();
+			if (input == null) continue;
+			E thing = entry.getKey();
+			if (MUtil.equals(input, thing)) break;
+		}
+		
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// BLOCK COMPARISON BY LOCATIONS
+	// -------------------------------------------- //
+	
+	public static boolean isSameBlock(Location one, Location two)
+	{
+		if (one.getBlockX() != two.getBlockX()) return false;
+		if (one.getBlockZ() != two.getBlockZ()) return false;
+		if (one.getBlockY() != two.getBlockY()) return false;
+		return one.getWorld().equals(two.getWorld());
+	}
+	
+	// -------------------------------------------- //
+	// FACE AND YAW
+	// -------------------------------------------- //
+	
+	public static Float getYaw(BlockFace face)
+	{
+		switch (face)
+		{
+			case NORTH: return 0f;
+			case EAST: return 90f;
+			case SOUTH: return 180f;
+			case WEST: return 270f;
+			case UP: return null;
+			case DOWN: return null;
+			case NORTH_EAST: return 45f;
+			case NORTH_WEST: return 315f;
+			case SOUTH_EAST: return 135f;
+			case SOUTH_WEST: return 225f;
+			case WEST_NORTH_WEST: return 292.5f;
+			case NORTH_NORTH_WEST: return 337.5f;
+			case NORTH_NORTH_EAST: return 22.5f;
+			case EAST_NORTH_EAST: return 67.5f;
+			case EAST_SOUTH_EAST: return 112.5f;
+			case SOUTH_SOUTH_EAST: return 157.5f;
+			case SOUTH_SOUTH_WEST: return 202.5f;
+			case WEST_SOUTH_WEST: return 247.5f;
+			case SELF: return null;
+		}
+		return null;
 	}
 	
 	// -------------------------------------------- //

@@ -161,34 +161,34 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E, 
 	
 	public boolean sendMessage(String message)
 	{
-		return SenderUtil.sendMessage(this.getId(), message);
+		return Mixin.message(this.getId(), message);
 	}
 	
 	public boolean sendMessage(String... messages)
 	{
-		return SenderUtil.sendMessage(this.getId(), messages);
+		return Mixin.message(this.getId(), messages);
 	}
 	
 	public boolean sendMessage(Collection<String> messages)
 	{
-		return SenderUtil.sendMessage(this.getId(), messages);
+		return Mixin.message(this.getId(), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return SenderUtil.msg(this.getId(), msg);
+		return Mixin.msg(this.getId(), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return SenderUtil.msg(this.getId(), msg, args);
+		return Mixin.msg(this.getId(), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return SenderUtil.msg(this.getId(), msgs);
+		return Mixin.msg(this.getId(), msgs);
 	}
 	
 	// CONVENIENCE GAME-MODE
