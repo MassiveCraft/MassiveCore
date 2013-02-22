@@ -83,7 +83,7 @@ public class Mixin
 	
 	public static List<String> getWorldAliases(String worldId)
 	{
-		return getWorldAliases(worldId);
+		return getWorldMixin().getWorldAliases(worldId);
 	}
 	
 	public static String getWorldAliasOrId(String worldId)
