@@ -15,7 +15,7 @@ import com.massivecraft.mcore.adapter.ItemStackAdapter;
 import com.massivecraft.mcore.adapter.MongoURIAdapter;
 import com.massivecraft.mcore.adapter.PSAdapter;
 import com.massivecraft.mcore.cmd.CmdMcore;
-import com.massivecraft.mcore.mixin.ScheduledTeleportListener;
+import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.Db;
@@ -113,7 +113,7 @@ public class MCore extends MPlugin
 		
 		// Register events
 		InternalListener.get().setup();
-		ScheduledTeleportListener.get().setup();
+		ScheduledTeleportEngine.get().setup();
 		
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);

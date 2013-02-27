@@ -1,39 +1,11 @@
 package com.massivecraft.mcore.mixin;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.PS;
 
 public class ScheduledTeleport implements Runnable
 {
-	// -------------------------------------------- //
-	// CONSTANTS
-	// -------------------------------------------- //
-	
-	public final static transient int NON_SCHEDULED_TASK_ID = -1;
-	
-	// -------------------------------------------- //
-	// STATIC INDEX
-	// -------------------------------------------- //
-	
-	public static Map<Player, ScheduledTeleport> teleporteeToScheduledTeleport = new ConcurrentHashMap<Player, ScheduledTeleport>();
-	
-	public static void schedule(ScheduledTeleport scheduledTeleport)
-	{
-		if (isScheduled(scheduledTeleport)) return;
-		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), scheduledTeleport, scheduledTeleport.getDelaySeconds()*20);
-	}
-	
-	public static boolean isScheduled(ScheduledTeleport scheduledTeleport)
-	{
-		return teleporteeToScheduledTeleport.containsKey(scheduledTeleport.getTeleportee());
-	}
-	
 	// -------------------------------------------- //
 	// FIELDS & RAW-DATA ACCESS
 	// -------------------------------------------- //
@@ -50,8 +22,10 @@ public class ScheduledTeleport implements Runnable
 	private final int delaySeconds;
 	public int getDelaySeconds() { return this.delaySeconds; }
 	
-	private int taskId;
-	public int getTaskId() { return this.taskId; }
+	private long dueMillis;
+	public long getDueMillis() { return this.dueMillis; }
+	public void setDueMillis(long dueMillis) { this.dueMillis = dueMillis; }
+	public boolean isDue(long now) { return now >= this.dueMillis; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -63,7 +37,7 @@ public class ScheduledTeleport implements Runnable
 		this.destinationPs = destinationPs;
 		this.destinationDesc = destinationDesc;
 		this.delaySeconds = delaySeconds;
-		this.taskId = NON_SCHEDULED_TASK_ID;
+		this.dueMillis = 0;
 	}
 	
 	// -------------------------------------------- //
@@ -72,28 +46,17 @@ public class ScheduledTeleport implements Runnable
 		
 	public boolean isScheduled()
 	{
-		return this.taskId != NON_SCHEDULED_TASK_ID;
+		return ScheduledTeleportEngine.get().isScheduled(this);
 	}
 	
 	public ScheduledTeleport schedule()
 	{
-		ScheduledTeleport old = teleporteeToScheduledTeleport.get(this.getTeleportee());
-		if (old != null) old.unschedule();
-		
-		teleporteeToScheduledTeleport.put(this.getTeleportee(), this);
-		
-		this.taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), this, this.getDelaySeconds()*20);
-		
-		return old;
+		return ScheduledTeleportEngine.get().schedule(this);
 	}
 	
 	public boolean unschedule()
 	{
-		Bukkit.getScheduler().cancelTask(this.getTaskId());
-		
-		this.taskId = NON_SCHEDULED_TASK_ID;
-		
-		return teleporteeToScheduledTeleport.remove(this.getTeleportee()) != null;
+		return ScheduledTeleportEngine.get().unschedule(this);
 	}
 	
 	// -------------------------------------------- //
