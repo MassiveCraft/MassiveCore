@@ -1,5 +1,5 @@
 name: mcore
-version: 6.0.1
+version: 6.1.0
 main: com.massivecraft.mcore.MCore
 load: startup
 permissions:
