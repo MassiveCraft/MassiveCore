@@ -15,6 +15,7 @@ import com.massivecraft.mcore.adapter.ItemStackAdapter;
 import com.massivecraft.mcore.adapter.MongoURIAdapter;
 import com.massivecraft.mcore.adapter.PSAdapter;
 import com.massivecraft.mcore.cmd.CmdMcore;
+import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
 import com.massivecraft.mcore.store.Coll;
@@ -128,6 +129,9 @@ public class MCore extends MPlugin
 		
 		this.cmdMcore = new CmdMcore();
 		this.cmdMcore.register(this, true);
+		
+		// Integration
+		this.integrate(ProtocolLibFeatures.get());
 		
 		/*
 		test("");
