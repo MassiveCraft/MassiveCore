@@ -2,8 +2,6 @@ package com.massivecraft.mcore.integration;
 
 import java.util.Collection;
 
-import lombok.Getter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,7 +22,8 @@ public class Integration implements Listener
 	protected MPlugin ourPlugin;
 	protected IntegrationFeatures features;
 	
-	@Getter protected boolean active = false;
+	protected boolean active = false;
+	public boolean isActive() { return this.active; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

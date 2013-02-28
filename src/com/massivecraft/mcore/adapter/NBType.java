@@ -5,8 +5,6 @@ import java.util.Map;
 
 import net.minecraft.server.v1_4_R1.NBTBase;
 
-import lombok.Getter;
-
 public enum NBType
 {
 	// -------------------------------------------- //
@@ -32,8 +30,11 @@ public enum NBType
 	// FIELDS
 	// -------------------------------------------- //
 	
-	@Getter final byte id;
-	@Getter final String name;
+	final byte id;
+	public byte getId() { return this.id; }
+	
+	final String name;
+	public String getName() { return this.name; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

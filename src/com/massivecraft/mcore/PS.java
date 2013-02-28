@@ -5,10 +5,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -37,7 +33,6 @@ import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
  * Hopefully this class will save you from implementing special classes for all those combinations.
  */
 
-@EqualsAndHashCode
 public class PS implements Cloneable, Serializable
 {
 	// -------------------------------------------- //
@@ -54,7 +49,9 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: worldName
 	@SerializedName("w")
-	@Getter @Setter protected String worldName = null;
+	protected String worldName = null;
+	public String getWorldName() { return this.worldName; }
+	public void setWorldName(String worldName) { this.worldName = worldName; }
 	
 	// FakeField: world
 	public World getWorld()
@@ -71,7 +68,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: blockX
 	@SerializedName("bx")
-	@Getter @Setter protected Integer blockX = null;
+	protected Integer blockX = null;
+	public Integer getBlockX() { return this.blockX; }
+	public void setBlockX(Integer blockX) { this.blockX = blockX; }
+	
 	public Integer calcBlockX()
 	{
 		return calcBlock(this.locationX, this.blockX, this.chunkX);
@@ -79,7 +79,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: blockY
 	@SerializedName("by")
-	@Getter @Setter protected Integer blockY = null;
+	protected Integer blockY = null;
+	public Integer getBlockY() { return this.blockY; }
+	public void setBlockY(Integer blockY) { this.blockY = blockY; }
+	
 	public Integer calcBlockY()
 	{
 		return calcBlock(this.locationY, this.blockY, null);
@@ -87,7 +90,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: blockZ
 	@SerializedName("bz")
-	@Getter @Setter protected Integer blockZ = null;
+	protected Integer blockZ = null;
+	public Integer getBlockZ() { return this.blockZ; }
+	public void setBlockZ(Integer blockZ) { this.blockZ = blockZ; }
+	
 	public Integer calcBlockZ()
 	{
 		return calcBlock(this.locationZ, this.blockZ, this.chunkZ);
@@ -105,7 +111,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: locationX
 	@SerializedName("lx")
-	@Getter @Setter protected Double locationX = null;
+	protected Double locationX = null;
+	public Double getLocationX() { return this.locationX; }
+	public void setLocationX(Double locationX) { this.locationX = locationX; }
+	
 	public Double calcLocationX()
 	{
 		return calcLocation(this.locationX, this.blockX, this.chunkX);
@@ -113,7 +122,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: locationY
 	@SerializedName("ly")
-	@Getter @Setter protected Double locationY = null;
+	protected Double locationY = null;
+	public Double getLocationY() { return this.locationY; }
+	public void setLocationY(Double locationY) { this.locationY = locationY; }
+	
 	public Double calcLocationY()
 	{
 		return calcLocation(this.locationY, this.blockY, null);
@@ -121,7 +133,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: locationZ
 	@SerializedName("lz")
-	@Getter @Setter protected Double locationZ = null;
+	protected Double locationZ = null;
+	public Double getLocationZ() { return this.locationZ; }
+	public void setLocationZ(Double locationZ) { this.locationZ = locationZ; }
+	
 	public Double calcLocationZ()
 	{
 		return calcLocation(this.locationZ, this.blockZ, this.chunkZ);
@@ -139,7 +154,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: chunkX
 	@SerializedName("cx")
-	@Getter @Setter protected Integer chunkX = null;
+	protected Integer chunkX = null;
+	public Integer getChunkX() { return this.chunkX; }
+	public void setChunkX(Integer chunkX) { this.chunkX = chunkX; }
+	
 	public Integer calcChunkX()
 	{
 		return calcChunk(this.locationX, this.blockX, this.chunkX);
@@ -147,7 +165,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: chunkZ
 	@SerializedName("xz")
-	@Getter @Setter protected Integer chunkZ = null;
+	protected Integer chunkZ = null;
+	public Integer getChunkZ() { return this.chunkZ; }
+	public void setChunkZ(Integer chunkZ) { this.chunkZ = chunkZ; }
+	
 	public Integer calcChunkZ()
 	{
 		return calcChunk(this.locationZ, this.blockZ, this.chunkZ);
@@ -165,28 +186,24 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: pitch
 	@SerializedName("p")
-	@Getter @Setter protected Float pitch = null;
-	/*public void setPitch(Float val) 
-	{
-		if (val == null)
-		{
-			this.pitch = null;
-		}
-		else
-		{
-			this.pitch = (val + 360F) % 360F;
-		}
-	}*/
+	protected Float pitch = null;
+	public Float getPitch() { return this.pitch; }
+	public void setPitch(Float pitch) { this.pitch = pitch; }
 	
 	// Field: yaw
 	@SerializedName("y")
-	@Getter @Setter protected Float yaw = null;
+	protected Float yaw = null;
+	public Float getYaw() { return this.yaw; }
+	public void setYaw(Float yaw) { this.yaw = yaw; }
 	
 	// ---------------------
 	
 	// Field: velocityX
 	@SerializedName("vx")
-	@Getter @Setter protected Double velocityX = null;
+	protected Double velocityX = null;
+	public Double getVelocityX() { return this.velocityX; }
+	public void setVelocityX(Double velocityX) { this.velocityX = velocityX; }
+	
 	public Double calcVelocityX()
 	{
 		return calcVelocity(this.locationX, this.blockX, this.chunkX, this.velocityX);
@@ -194,7 +211,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: velocityY
 	@SerializedName("vy")
-	@Getter @Setter protected Double velocityY = null;
+	protected Double velocityY = null;
+	public Double getVelocityY() { return this.velocityY; }
+	public void setVelocityY(Double velocityY) { this.velocityY = velocityY; }
+	
 	public Double calcVelocityY()
 	{
 		return calcVelocity(this.locationY, this.blockY, 0, this.velocityY);
@@ -202,7 +222,10 @@ public class PS implements Cloneable, Serializable
 	
 	// Field: velocityZ
 	@SerializedName("vz")
-	@Getter @Setter protected Double velocityZ = null;
+	protected Double velocityZ = null;
+	public Double getVelocityZ() { return this.velocityZ; }
+	public void setVelocityZ(Double velocityZ) { this.velocityZ = velocityZ; }
+	
 	public Double calcVelocityZ()
 	{
 		return calcVelocity(this.locationZ, this.blockZ, this.chunkZ, this.velocityZ);
@@ -627,6 +650,120 @@ public class PS implements Cloneable, Serializable
 	public PS clone()
 	{
 		return new PS(this);
+	}
+	
+	//----------------------------------------------//
+	// EQUALS AND HASH CODE
+	//----------------------------------------------//
+	// Generated by eclipse
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((blockX == null) ? 0 : blockX.hashCode());
+		result = prime * result + ((blockY == null) ? 0 : blockY.hashCode());
+		result = prime * result + ((blockZ == null) ? 0 : blockZ.hashCode());
+		result = prime * result + ((chunkX == null) ? 0 : chunkX.hashCode());
+		result = prime * result + ((chunkZ == null) ? 0 : chunkZ.hashCode());
+		result = prime * result
+				+ ((locationX == null) ? 0 : locationX.hashCode());
+		result = prime * result
+				+ ((locationY == null) ? 0 : locationY.hashCode());
+		result = prime * result
+				+ ((locationZ == null) ? 0 : locationZ.hashCode());
+		result = prime * result + ((pitch == null) ? 0 : pitch.hashCode());
+		result = prime * result
+				+ ((velocityX == null) ? 0 : velocityX.hashCode());
+		result = prime * result
+				+ ((velocityY == null) ? 0 : velocityY.hashCode());
+		result = prime * result
+				+ ((velocityZ == null) ? 0 : velocityZ.hashCode());
+		result = prime * result
+				+ ((worldName == null) ? 0 : worldName.hashCode());
+		result = prime * result + ((yaw == null) ? 0 : yaw.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		PS other = (PS) obj;
+		if (blockX == null)
+		{
+			if (other.blockX != null) return false;
+		}
+		else if (!blockX.equals(other.blockX)) return false;
+		if (blockY == null)
+		{
+			if (other.blockY != null) return false;
+		}
+		else if (!blockY.equals(other.blockY)) return false;
+		if (blockZ == null)
+		{
+			if (other.blockZ != null) return false;
+		}
+		else if (!blockZ.equals(other.blockZ)) return false;
+		if (chunkX == null)
+		{
+			if (other.chunkX != null) return false;
+		}
+		else if (!chunkX.equals(other.chunkX)) return false;
+		if (chunkZ == null)
+		{
+			if (other.chunkZ != null) return false;
+		}
+		else if (!chunkZ.equals(other.chunkZ)) return false;
+		if (locationX == null)
+		{
+			if (other.locationX != null) return false;
+		}
+		else if (!locationX.equals(other.locationX)) return false;
+		if (locationY == null)
+		{
+			if (other.locationY != null) return false;
+		}
+		else if (!locationY.equals(other.locationY)) return false;
+		if (locationZ == null)
+		{
+			if (other.locationZ != null) return false;
+		}
+		else if (!locationZ.equals(other.locationZ)) return false;
+		if (pitch == null)
+		{
+			if (other.pitch != null) return false;
+		}
+		else if (!pitch.equals(other.pitch)) return false;
+		if (velocityX == null)
+		{
+			if (other.velocityX != null) return false;
+		}
+		else if (!velocityX.equals(other.velocityX)) return false;
+		if (velocityY == null)
+		{
+			if (other.velocityY != null) return false;
+		}
+		else if (!velocityY.equals(other.velocityY)) return false;
+		if (velocityZ == null)
+		{
+			if (other.velocityZ != null) return false;
+		}
+		else if (!velocityZ.equals(other.velocityZ)) return false;
+		if (worldName == null)
+		{
+			if (other.worldName != null) return false;
+		}
+		else if (!worldName.equals(other.worldName)) return false;
+		if (yaw == null)
+		{
+			if (other.yaw != null) return false;
+		}
+		else if (!yaw.equals(other.yaw)) return false;
+		return true;
 	}
 	
 	//----------------------------------------------//

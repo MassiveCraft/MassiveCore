@@ -1,7 +1,5 @@
 package com.massivecraft.mcore.event;
 
-import lombok.Getter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -22,9 +20,11 @@ public class MCoreAfterPlayerRespawnEvent extends Event implements Runnable
 	// FIELD
 	// -------------------------------------------- //
 	
-	@Getter protected final Location deathLocation;
+	protected final Location deathLocation;
+	public Location getDeathLocation() { return this.deathLocation; }
 	
-	@Getter protected final PlayerRespawnEvent bukkitEvent;
+	protected final PlayerRespawnEvent bukkitEvent;
+	public PlayerRespawnEvent getBukkitEvent() { return this.bukkitEvent; }
 	
 	public Location getRespawnLocation() { return this.bukkitEvent.getRespawnLocation(); }
 	public Player getPlayer() { return this.bukkitEvent.getPlayer(); }

@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public class ArgResult<T>
 {
 	// -------------------------------------------- //
 	// FIELD: RESULT
 	// -------------------------------------------- //
 	
-	@Getter @Setter protected T result = null;
+	protected T result = null;
+	public T getResult() { return this.result; }
+	public void setResult(T result) { this.result = result; }
 	public boolean hasResult()
 	{
 		return this.getResult() != null;
@@ -23,7 +22,8 @@ public class ArgResult<T>
 	// FIELD: ERRORS
 	// -------------------------------------------- //
 	
-	@Getter protected List<String> errors = new ArrayList<String>();
+	protected List<String> errors = new ArrayList<String>();
+	public List<String> getErrors() { return this.errors; }
 	
 	public void setErrors(List<String> val)
 	{
