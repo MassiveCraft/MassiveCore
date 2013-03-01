@@ -41,32 +41,42 @@ public class EntityPotionColorPacketAdapter extends PacketAdapter
 	@Override
 	public void onPacketSending(PacketEvent event)
 	{
-		// If the server is sending a meta-data packet to a sendee player...
-		// NOTE: That must be the case. We are listening to no other situation.
-		final PacketContainer packet = event.getPacket();
-		final Player sendee = event.getPlayer();
-		
-		// ... fetch the entity ...
-		// NOTE: MetaData packets are only sent to players in the same world.
-		final Entity entity = packet.getEntityModifier(sendee.getWorld()).read(0);
-		
-		// ... fetch the metadata ...
-		final List<WrappedWatchableObject> metadata = packet.getWatchableCollectionModifier().read(0);
-		
-		// ... for each watchable in the metadata ...
-		for (WrappedWatchableObject watchable : metadata)
+		try
 		{
-			// If the watchable is about potion effect color ...
-			if (watchable.getIndex() != 8) continue;
+			// If the server is sending a meta-data packet to a sendee player...
+			// NOTE: That must be the case. We are listening to no other situation.
+			final PacketContainer packet = event.getPacket();
+			final Player sendee = event.getPlayer();
 			
-			// ... run our custom async event to allow changing it ...
-			int oldColor = (Integer) watchable.getValue();
-			MCoreEntityPotionColorEvent colorEvent = new MCoreEntityPotionColorEvent(sendee, entity, oldColor);
-			colorEvent.run();
-			int newColor = colorEvent.getColor();
+			// ... fetch the entity ...
+			// NOTE: MetaData packets are only sent to players in the same world.
+			final Entity entity = packet.getEntityModifier(sendee.getWorld()).read(0);
 			
-			// ... alter if changed.
-			if (newColor != oldColor) watchable.setValue(newColor, false);
+			// ... fetch the metadata ...
+			final List<WrappedWatchableObject> metadata = packet.getWatchableCollectionModifier().read(0);
+			
+			// ... for each watchable in the metadata ...
+			for (WrappedWatchableObject watchable : metadata)
+			{
+				// If the watchable is about potion effect color ...
+				if (watchable.getIndex() != 8) continue;
+				
+				// ... run our custom async event to allow changing it ...
+				int oldColor = (Integer) watchable.getValue();
+				MCoreEntityPotionColorEvent colorEvent = new MCoreEntityPotionColorEvent(sendee, entity, oldColor);
+				colorEvent.run();
+				int newColor = colorEvent.getColor();
+				
+				// ... alter if changed.
+				if (newColor != oldColor) watchable.setValue(newColor, false);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Caught "+e.getClass().getName()+" exception in EntityPotionColorPacketAdapter#onPacketSending");
+			System.out.println("Message: "+e.getMessage());
+			System.out.println("Stack Trace:");
+			e.printStackTrace();
 		}
 	}
 }
