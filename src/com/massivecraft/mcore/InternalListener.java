@@ -230,14 +230,14 @@ public class InternalListener implements Listener
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void syncOnPlayerLogin(PlayerLoginEvent event)
 	{
-		MCore.get().log("LOWEST syncOnPlayerLogin", event.getPlayer().getName());
+		//MCore.get().log("LOWEST syncOnPlayerLogin", event.getPlayer().getName());
 		this.syncAllForPlayer(event.getPlayer());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void syncOnPlayerLeave(MCorePlayerLeaveEvent event)
 	{
-		MCore.get().log("MONITOR syncOnPlayerLeave", event.getPlayer().getName());
+		//MCore.get().log("MONITOR syncOnPlayerLeave", event.getPlayer().getName());
 		this.syncAllForPlayer(event.getPlayer());
 	}
 	
