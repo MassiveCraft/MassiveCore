@@ -1,76 +1,151 @@
 package com.massivecraft.mcore.mixin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.mcore.Predictate;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public abstract class MessageMixinAbstract implements MessageMixin
 {
+	// -------------------------------------------- //
+	// RAW MESSAGE
+	// -------------------------------------------- //
+	
+	// All
 	@Override
-	public boolean message(CommandSender sender, String... messages)
+	public boolean message(String message)
 	{
-		Collection<String> coll = new ArrayList<String>(Arrays.asList(messages));
-		return this.message(sender, coll);
+		return this.message(MUtil.list(message));
+	}
+	
+	@Override
+	public boolean message(String... messages)
+	{
+		return this.message(Arrays.asList(messages));
+	}
+	
+	// Predictate
+	@Override
+	public boolean message(Predictate<CommandSender> predictate, String message)
+	{
+		return this.message(predictate, MUtil.list(message));
+	}
+	
+	@Override
+	public boolean message(Predictate<CommandSender> predictate, String... messages)
+	{
+		return this.message(predictate, Arrays.asList(messages));
+	}
+	
+	// One
+	@Override
+	public boolean message(CommandSender sendee, String message)
+	{
+		return this.message(sendee, MUtil.list(message));
+	}
+	
+	@Override
+	public boolean message(CommandSender sendee, String... messages)
+	{
+		return this.message(sendee, Arrays.asList(messages));
+	}
+	
+	// One by id
+	@Override
+	public boolean message(String sendeeId, String message)
+	{
+		return this.message(sendeeId, MUtil.list(message));
+	}
+	
+	@Override
+	public boolean message(String sendeeId, String... messages)
+	{
+		return this.message(sendeeId, Arrays.asList(messages));
 	}
 
+	// -------------------------------------------- //
+	// PARSE MESSAGE
+	// -------------------------------------------- //
+	// They are all in abstract!
+	
+	// All
 	@Override
-	public boolean message(String senderId, String... messages)
+	public boolean msg(String msg)
 	{
-		Collection<String> coll = new ArrayList<String>(Arrays.asList(messages));
-		return this.message(senderId, coll);
+		return this.message(Txt.parse(msg));
 	}
-
+	
 	@Override
-	public boolean msg(CommandSender sender, String msg)
+	public boolean msg(String msg, Object... args)
 	{
-		return this.message(sender, Txt.parse(msg));
+		return this.message(Txt.parse(msg, args));
 	}
-
+	
 	@Override
-	public boolean msg(CommandSender sender, String msg, Object... args)
+	public boolean msg(Collection<String> msgs)
 	{
-		return this.message(sender, Txt.parse(msg, args));
+		return this.message(Txt.parse(msgs));
 	}
-
+	
+	// Predictate
 	@Override
-	public boolean msg(CommandSender sender, Collection<String> msgs)
+	public boolean msg(Predictate<CommandSender> predictate, String msg)
 	{
-		List<String> messages = new ArrayList<String>();
-		for (String msg : msgs)
-		{
-			String message = Txt.parse(msg);
-			messages.add(message);
-		}
-		return this.message(sender, messages);
+		return this.message(predictate, Txt.parse(msg));
 	}
-
+	
 	@Override
-	public boolean msg(String senderId, String msg)
+	public boolean msg(Predictate<CommandSender> predictate, String msg, Object... args)
 	{
-		return this.message(senderId, Txt.parse(msg));
+		return this.message(predictate, Txt.parse(msg, args));
 	}
-
+	
 	@Override
-	public boolean msg(String senderId, String msg, Object... args)
+	public boolean msg(Predictate<CommandSender> predictate, Collection<String> msgs)
 	{
-		return this.message(senderId, Txt.parse(msg, args));
+		return this.message(predictate, Txt.parse(msgs));
 	}
-
+	
+	// One
 	@Override
-	public boolean msg(String senderId, Collection<String> msgs)
+	public boolean msg(CommandSender sendee, String msg)
 	{
-		List<String> messages = new ArrayList<String>();
-		for (String msg : msgs)
-		{
-			String message = Txt.parse(msg);
-			messages.add(message);
-		}
-		return this.message(senderId, messages);
+		return this.message(sendee, Txt.parse(msg));
+	}
+	
+	@Override
+	public boolean msg(CommandSender sendee, String msg, Object... args)
+	{
+		return this.message(sendee, Txt.parse(msg, args));
+	}
+	
+	@Override
+	public boolean msg(CommandSender sendee, Collection<String> msgs)
+	{
+		return this.message(sendee, Txt.parse(msgs));
+	}
+	
+	// One by id
+	@Override
+	public boolean msg(String sendeeId, String msg)
+	{
+		return this.message(sendeeId, Txt.parse(msg));
+	}
+	
+	@Override
+	public boolean msg(String sendeeId, String msg, Object... args)
+	{
+		return this.message(sendeeId, Txt.parse(msg, args));
+	}
+	
+	@Override
+	public boolean msg(String sendeeId, Collection<String> msgs)
+	{
+		return this.message(sendeeId, Txt.parse(msgs));
 	}
 
 }

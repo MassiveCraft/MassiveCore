@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.Predictate;
 
 public class Mixin
 {
@@ -345,32 +346,91 @@ public class Mixin
 	// STATIC EXPOSE: MESSAGE
 	// -------------------------------------------- //
 	
+	// All
+	public static boolean message(String message)
+	{
+		return getMessageMixin().message(message);
+	}
+	public static boolean message(String... messages)
+	{
+		return getMessageMixin().message(messages);
+	}
+	public static boolean message(Collection<String> messages)
+	{
+		return getMessageMixin().message(messages);
+	}
+	
+	// Predictate
+	public static boolean message(Predictate<CommandSender> predictate, String message)
+	{
+		return getMessageMixin().message(predictate, message);
+	}
+	public static boolean message(Predictate<CommandSender> predictate, String... messages)
+	{
+		return getMessageMixin().message(predictate, messages);
+	}
+	public static boolean message(Predictate<CommandSender> predictate, Collection<String> messages)
+	{
+		return getMessageMixin().message(predictate, messages);
+	}
+	
+	// One
 	public static boolean message(CommandSender sender, String message)
 	{
 		return getMessageMixin().message(sender, message);
-	}
-	public static boolean message(CommandSender sender, Collection<String> messages)
-	{
-		return getMessageMixin().message(sender, messages);
 	}
 	public static boolean message(CommandSender sender, String... messages)
 	{
 		return getMessageMixin().message(sender, messages);
 	}
+	public static boolean message(CommandSender sender, Collection<String> messages)
+	{
+		return getMessageMixin().message(sender, messages);
+	}
 	
+	// One by id
 	public static boolean message(String senderId, String message)
 	{
 		return getMessageMixin().message(senderId, message);
-	}
-	public static boolean message(String senderId, Collection<String> messages)
-	{
-		return getMessageMixin().message(senderId, messages);
 	}
 	public static boolean message(String senderId, String... messages)
 	{
 		return getMessageMixin().message(senderId, messages);
 	}
+	public static boolean message(String senderId, Collection<String> messages)
+	{
+		return getMessageMixin().message(senderId, messages);
+	}
 	
+	// All
+	public static boolean msg(String msg)
+	{
+		return getMessageMixin().msg(msg);
+	}
+	public static boolean msg(String msg, Object... args)
+	{
+		return getMessageMixin().msg(msg, args);
+	}
+	public static boolean msg(Collection<String> msgs)
+	{
+		return getMessageMixin().msg(msgs);
+	}
+	
+	// Predictate
+	public static boolean msg(Predictate<CommandSender> predictate, String msg)
+	{
+		return getMessageMixin().msg(predictate, msg);
+	}
+	public static boolean msg(Predictate<CommandSender> predictate, String msg, Object... args)
+	{
+		return getMessageMixin().msg(predictate, msg, args);
+	}
+	public static boolean msg(Predictate<CommandSender> predictate, Collection<String> msgs)
+	{
+		return getMessageMixin().msg(predictate, msgs);
+	}
+	
+	// One
 	public static boolean msg(CommandSender sender, String msg)
 	{
 		return getMessageMixin().msg(sender, msg);
@@ -384,6 +444,7 @@ public class Mixin
 		return getMessageMixin().msg(sender, msgs);
 	}
 	
+	// One by id
 	public static boolean msg(String senderId, String msg)
 	{
 		return getMessageMixin().msg(senderId, msg);

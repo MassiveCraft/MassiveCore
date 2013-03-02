@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.util.SenderUtil;
 
 public class MessageMixinDefault extends MessageMixinAbstract
@@ -20,36 +21,47 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean message(CommandSender sender, String message)
+	public boolean message(Collection<String> messages)
 	{
-		if (sender == null) return false;
-		if (message == null) return false;
-		sender.sendMessage(message);
-		return true;
-	}
-
-	@Override
-	public boolean message(CommandSender sender, Collection<String> messages)
-	{
-		if (sender == null) return false;
 		if (messages == null) return false;
-		for (String message : messages)
+		for (CommandSender sender : SenderUtil.getOnlineSenders())
 		{
-			sender.sendMessage(message);
+			this.message(sender, messages);
 		}
 		return true;
 	}
-
+	
 	@Override
-	public boolean message(String senderId, String message)
+	public boolean message(Predictate<CommandSender> predictate, Collection<String> messages)
 	{
-		return this.message(SenderUtil.getSender(senderId), message);
+		if (predictate == null) return false;
+		if (messages == null) return false;
+		for (CommandSender sender : SenderUtil.getOnlineSenders())
+		{
+			if (!predictate.apply(sender)) continue;
+			this.message(sender, messages);
+		}
+		return true;
 	}
-
+	
 	@Override
-	public boolean message(String senderId, Collection<String> messages)
+	public boolean message(CommandSender sendee, Collection<String> messages)
 	{
-		return this.message(SenderUtil.getSender(senderId), messages);
+		if (sendee == null) return false;
+		if (messages == null) return false;
+		for (String message : messages)
+		{
+			sendee.sendMessage(message);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean message(String sendeeId, Collection<String> messages)
+	{
+		if (sendeeId == null) return false;
+		if (messages == null) return false;
+		return this.message(SenderUtil.getSender(sendeeId), messages);
 	}
 
 }
