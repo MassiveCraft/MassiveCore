@@ -2,13 +2,15 @@ package com.massivecraft.mcore.cmd.req;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.cmd.MCommand;
 
-public interface IReq
+public interface Req extends Predictate<CommandSender>
 {
-	// This just tests wether the requirement is met or not.
-	public boolean test(CommandSender sender, MCommand command);
+	public boolean apply(CommandSender sender, MCommand command);
 	
 	// This just composes the error message and does NOT test the requirement at all.
+	
+	public String createErrorMessage(CommandSender sender);
 	public String createErrorMessage(CommandSender sender, MCommand command);
 }

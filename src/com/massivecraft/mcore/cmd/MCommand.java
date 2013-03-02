@@ -13,7 +13,7 @@ import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.cmd.arg.ArgReader;
 import com.massivecraft.mcore.cmd.arg.ArgResult;
-import com.massivecraft.mcore.cmd.req.IReq;
+import com.massivecraft.mcore.cmd.req.Req;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.BukkitCommandUtil;
@@ -72,11 +72,11 @@ public abstract class MCommand
 	
 	// FIELD: requirements
 	// All these requirements must be met for the command to be executable;
-	protected List<IReq> requirements;
-	public List<IReq> getRequirements() { return this.requirements; }
-	public void getRequirements(List<IReq> requirements) { this.requirements = requirements; }
+	protected List<Req> requirements;
+	public List<Req> getRequirements() { return this.requirements; }
+	public void getRequirements(List<Req> requirements) { this.requirements = requirements; }
 	
-	public void addRequirements(IReq... requirements) { this.requirements.addAll(Arrays.asList(requirements)); }
+	public void addRequirements(Req... requirements) { this.requirements.addAll(Arrays.asList(requirements)); }
 	
 	// FIELD: desc
 	// This field may be left blank and will in such case be loaded from the permissions node instead.
@@ -110,7 +110,7 @@ public abstract class MCommand
 	{
 		if (this.descPermission != null) return this.descPermission;
 		// Otherwise we try to find one.
-		for (IReq req : this.requirements)
+		for (Req req : this.requirements)
 		{
 			if ( ! (req instanceof ReqHasPerm)) continue;
 			return ((ReqHasPerm)req).getPerm();
@@ -211,7 +211,7 @@ public abstract class MCommand
 		this.requiredArgs = new ArrayList<String>();
 		this.optionalArgs = new LinkedHashMap<String, String>();
 		
-		this.requirements = new ArrayList<IReq>();
+		this.requirements = new ArrayList<Req>();
 		
 		this.errorOnToManyArgs = true;
 		
@@ -300,9 +300,9 @@ public abstract class MCommand
 	
 	public boolean requirementsAreMet(CommandSender sender, boolean informSenderIfNot)
 	{
-		for (IReq req : this.getRequirements())
+		for (Req req : this.getRequirements())
 		{
-			if ( ! req.test(sender, this))
+			if ( ! req.apply(sender, this))
 			{
 				if (informSenderIfNot)
 				{
