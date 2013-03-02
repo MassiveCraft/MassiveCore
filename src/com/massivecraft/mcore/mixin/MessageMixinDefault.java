@@ -49,10 +49,7 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	{
 		if (sendee == null) return false;
 		if (messages == null) return false;
-		for (String message : messages)
-		{
-			sendee.sendMessage(message);
-		}
+		sendee.sendMessage(messages.toArray(new String[0]));
 		return true;
 	}
 	
