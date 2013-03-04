@@ -281,8 +281,9 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	protected Set<L> localDetachIds;
 	protected Set<L> changedIds;
 	
-	protected synchronized void clearIdentifiedChanges(L id)
+	protected synchronized void clearIdentifiedChanges(Object oid)
 	{
+		L id = this.fixId(oid);
 		this.localAttachIds.remove(id);
 		this.localDetachIds.remove(id);
 		this.changedIds.remove(id);
@@ -296,8 +297,9 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	protected Map<L, Object> lastRaw;
 	protected Set<L> lastDefault;
 	
-	protected synchronized void clearSynclog(L id)
+	protected synchronized void clearSynclog(Object oid)
 	{
+		L id = this.fixId(oid);
 		this.lastMtime.remove(id);
 		this.lastRaw.remove(id);
 		this.lastDefault.remove(id);
@@ -309,8 +311,9 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public synchronized E removeAtLocal(L id)
+	public synchronized E removeAtLocal(Object oid)
 	{
+		L id = this.fixId(oid);
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
 		
@@ -330,8 +333,10 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	}
 	
 	@Override
-	public synchronized void removeAtRemote(L id)
+	public synchronized void removeAtRemote(Object oid)
 	{
+		L id = this.fixId(oid);
+		
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
 		
@@ -339,8 +344,10 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	}
 	
 	@Override
-	public synchronized void saveToRemote(L id)
+	public synchronized void saveToRemote(Object oid)
 	{
+		L id = this.fixId(oid);
+		
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
 		
@@ -364,8 +371,10 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	}
 	
 	@Override
-	public synchronized void loadFromRemote(L id)
+	public synchronized void loadFromRemote(Object oid)
 	{
+		L id = this.fixId(oid);
+		
 		this.clearIdentifiedChanges(id);
 		
 		Entry<?, Long> entry = this.getDb().getDriver().load(this, id);
@@ -396,19 +405,23 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// -------------------------------------------- //
 	
 	@Override
-	public ModificationState examineId(L id)
+	public ModificationState examineId(Object oid)
 	{
+		L id = this.fixId(oid);
 		return this.examineId(id, null, false);
 	}
 	
 	@Override
-	public ModificationState examineId(L id, Long remoteMtime)
+	public ModificationState examineId(Object oid, Long remoteMtime)
 	{
+		L id = this.fixId(oid);
 		return this.examineId(id, remoteMtime, true);
 	}
 	
-	protected ModificationState examineId(L id, Long remoteMtime, boolean remoteMtimeSupplied)
+	protected ModificationState examineId(Object oid, Long remoteMtime, boolean remoteMtimeSupplied)
 	{
+		L id = this.fixId(oid);
+		
 		if (this.localDetachIds.contains(id)) return ModificationState.LOCAL_DETACH;
 		if (this.localAttachIds.contains(id)) return ModificationState.LOCAL_ATTACH;
 		
@@ -456,8 +469,10 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	}
 	
 	@Override
-	public ModificationState syncId(L id)
+	public ModificationState syncId(Object oid)
 	{
+		L id = this.fixId(oid);
+		
 		ModificationState mstate = this.examineId(id);
 		
 		//mplugin.log("syncId: It seems", id, "has state", mstate);

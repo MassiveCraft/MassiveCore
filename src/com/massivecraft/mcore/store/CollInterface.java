@@ -93,7 +93,7 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	public Set<L> localAttachIds();
 	public Set<L> localDetachIds();
 	public Set<L> changedIds();
-	public void clearIdentifiedChanges(L id);
+	public void clearIdentifiedChanges(Object oid);
 	*/
 	
 	// -------------------------------------------- //
@@ -104,26 +104,26 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	public Map<L, Long> lastMtime();
 	public Map<L, Object> lastRaw();
 	public Set<L> lastDefault();
-	public void clearSynclog(L id);
+	public void clearSynclog(Object oid);
 	*/
 	
 	// -------------------------------------------- //
 	// SYNC LOWLEVEL IO ACTIONS
 	// -------------------------------------------- //
 	
-	public E removeAtLocal(L id);
-	public void removeAtRemote(L id);
-	public void saveToRemote(L id);
-	public void loadFromRemote(L id);
+	public E removeAtLocal(Object oid);
+	public void removeAtRemote(Object oid);
+	public void saveToRemote(Object oid);
+	public void loadFromRemote(Object oid);
 	
 	// -------------------------------------------- //
 	// SYNC EXAMINE AND DO
 	// -------------------------------------------- //
 	
-	public ModificationState examineId(L id);
-	public ModificationState examineId(L id, Long remoteMtime);
+	public ModificationState examineId(Object oid);
+	public ModificationState examineId(Object oid, Long remoteMtime);
 	
-	public ModificationState syncId(L id);
+	public ModificationState syncId(Object oid);
 	public void syncSuspects();
 	public void syncAll();
 	public void findSuspects();
