@@ -1,8 +1,6 @@
 package com.massivecraft.mcore.event;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -27,11 +25,11 @@ public class MCorePlayerPSTeleportEvent extends Event implements Cancellable, Ru
 	@Override public boolean isCancelled() { return this.cancelled; }
 	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
 	
-	private final Player player;
-	public Player getPlayer() { return this.player; }
+	private final String teleporteeId;
+	public String getTeleporteeId() { return this.teleporteeId; }
 	
-	private final Location from;
-	public Location getFrom() { return this.from; }
+	private final PS from;
+	public PS getFrom() { return this.from; }
 	
 	private PS to;
 	public PS getTo() { return this.to; }
@@ -41,9 +39,9 @@ public class MCorePlayerPSTeleportEvent extends Event implements Cancellable, Ru
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MCorePlayerPSTeleportEvent(Player player, Location from, PS to)
+	public MCorePlayerPSTeleportEvent(String teleporteeId, PS from, PS to)
 	{
-		this.player = player;
+		this.teleporteeId = teleporteeId;
 		this.from = from;
 		this.to = to;
 	}

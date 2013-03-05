@@ -296,18 +296,6 @@ public class Mixin
 	{
 		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc, delayPermissible);
 	}
-	public static void teleport(Player teleportee, PS destinationPs, String destinationDesc, Permissible delayPermissible, CommandSender otherSender, String otherPerm) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc, delayPermissible, otherSender, otherPerm);
-	}
-	public static void teleport(Player teleportee, PS destinationPs, String destinationDesc, CommandSender otherSender, String otherPerm) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc, otherSender, otherPerm);
-	}
-	public static void teleport(Player teleportee, PS destinationPs, String destinationDesc, int delaySeconds, CommandSender otherSender, String otherPerm) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc, delaySeconds, otherSender, otherPerm);
-	}
 	public static void teleport(Player teleportee, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
 	{
 		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc, delaySeconds);
@@ -324,18 +312,6 @@ public class Mixin
 	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc, Permissible delayPermissible) throws TeleporterException
 	{
 		getTeleportMixin().teleport(teleporteeId, destinationPs, destinationDesc, delayPermissible);
-	}
-	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc, Permissible delayPermissible, CommandSender otherSender, String otherPerm) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleporteeId, destinationPs, destinationDesc, delayPermissible, otherSender, otherPerm);
-	}
-	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc, CommandSender otherSender, String otherPerm) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleporteeId, destinationPs, destinationDesc, otherSender, otherPerm);
-	}
-	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds, CommandSender otherSender, String otherPerm) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleporteeId, destinationPs, destinationDesc, delaySeconds, otherSender, otherPerm);
 	}
 	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
 	{

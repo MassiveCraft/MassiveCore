@@ -1,6 +1,5 @@
 package com.massivecraft.mcore.mixin;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 
@@ -8,12 +7,6 @@ import com.massivecraft.mcore.PS;
 
 public interface TeleportMixin
 {
-	// -------------------------------------------- //
-	// MESSAGING
-	// -------------------------------------------- //
-	
-	public void sendPreTeleportMessage(Player teleportee, String destinationDesc, int delaySeconds);
-	
 	// -------------------------------------------- //
 	// PLAYER
 	// -------------------------------------------- //
@@ -23,11 +16,6 @@ public interface TeleportMixin
 	public void teleport(Player teleportee, PS destinationPs, String destinationDesc) throws TeleporterException;
 	
 	public void teleport(Player teleportee, PS destinationPs, String destinationDesc, Permissible delayPermissible) throws TeleporterException;
-	public void teleport(Player teleportee, PS destinationPs, String destinationDesc, Permissible delayPermissible, CommandSender otherSender, String otherPerm) throws TeleporterException;
-	
-	public void teleport(Player teleportee, PS destinationPs, String destinationDesc, CommandSender otherSender, String otherPerm) throws TeleporterException;
-	
-	public void teleport(Player teleportee, PS destinationPs, String destinationDesc, int delaySeconds, CommandSender otherSender, String otherPerm) throws TeleporterException;
 	
 	public void teleport(Player teleportee, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException;
 	
@@ -40,11 +28,7 @@ public interface TeleportMixin
 	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc) throws TeleporterException;
 	
 	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, Permissible delayPermissible) throws TeleporterException;
-	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, Permissible delayPermissible, CommandSender otherSender, String otherPerm) throws TeleporterException;
 	
-	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, CommandSender otherSender, String otherPerm) throws TeleporterException;
-	
-	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds, CommandSender otherSender, String otherPerm) throws TeleporterException;
-	
+	// The only one not covered in abstract
 	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException;
 }

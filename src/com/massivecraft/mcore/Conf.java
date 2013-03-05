@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.permissions.Permissible;
+
 import com.massivecraft.mcore.cmd.CmdMcore;
 import com.massivecraft.mcore.usys.cmd.CmdUsys;
 import com.massivecraft.mcore.util.MUtil;
@@ -33,6 +35,12 @@ public class Conf extends SimpleConfig
 			i.save();
 		}
 		return ret;
+	}
+	
+	public static int getTpdelay(Permissible permissible)
+	{
+		if (Permission.NOTPDELAY.has(permissible, false)) return 0;
+		return Math.max(tpdelay, 0); 
 	}
 	
 	// -------------------------------------------- //

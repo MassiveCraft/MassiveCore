@@ -24,6 +24,7 @@ import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.usys.AspectColl;
 import com.massivecraft.mcore.usys.MultiverseColl;
 import com.massivecraft.mcore.usys.cmd.CmdUsys;
+import com.massivecraft.mcore.util.FirstTeleportUtil;
 import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.mcore.util.TimeDiffUtil;
 import com.massivecraft.mcore.util.TimeUnit;
@@ -115,6 +116,7 @@ public class MCore extends MPlugin
 		// Register events
 		InternalListener.get().setup();
 		ScheduledTeleportEngine.get().setup();
+		FirstTeleportUtil.get().setup();
 		
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);

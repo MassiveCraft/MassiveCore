@@ -49,32 +49,50 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public void teleport(Player teleportee, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
+	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
 	{
-		this.sendPreTeleportMessage(teleportee, destinationDesc, delaySeconds);
+		if (!SenderUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId)));
+		
 		if (delaySeconds > 0)
 		{
-			new ScheduledTeleport(teleportee, destinationPs, destinationDesc, delaySeconds).schedule();
+			// With delay
+			if (destinationDesc != null)
+			{
+				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+destinationDesc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
+			}
+			else
+			{
+				Mixin.msg(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
+			}
+			
+			new ScheduledTeleport(teleporteeId, destinationPs, destinationDesc, delaySeconds).schedule();
 		}
 		else
 		{
+			// Without delay AKA "now"/"at once"
+			
 			// Run event
-			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleportee, teleportee.getLocation(), destinationPs.clone());
+			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleporteeId, Mixin.getSenderPs(teleporteeId), destinationPs.clone());
 			event.run();
 			if (event.isCancelled()) return;
 			if (event.getTo() == null) return;
 			destinationPs = event.getTo().clone();
 			
-			teleportEntity(teleportee, destinationPs);
+			if (destinationDesc != null)
+			{
+				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+destinationDesc+"<i>.");
+			}
+			
+			Player teleportee = SenderUtil.getPlayer(teleporteeId);
+			if (teleportee != null)
+			{
+				teleportEntity(teleportee, destinationPs);
+			}
+			else
+			{
+				Mixin.setSenderPs(teleporteeId, destinationPs.clone());
+			}
 		}
-	}
-	
-	@Override
-	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
-	{
-		validateTeleporteeId(teleporteeId);
-		Player teleportee = SenderUtil.getPlayer(teleporteeId);
-		this.teleport(teleportee, destinationPs, destinationDesc, delaySeconds);
 	}
 	
 }

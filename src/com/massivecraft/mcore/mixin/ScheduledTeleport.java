@@ -1,7 +1,5 @@
 package com.massivecraft.mcore.mixin;
 
-import org.bukkit.entity.Player;
-
 import com.massivecraft.mcore.PS;
 
 public class ScheduledTeleport implements Runnable
@@ -10,8 +8,8 @@ public class ScheduledTeleport implements Runnable
 	// FIELDS & RAW-DATA ACCESS
 	// -------------------------------------------- //
 	
-	private final Player teleportee;
-	public Player getTeleportee() { return this.teleportee; }
+	private final String teleporteeId;
+	public String getTeleporteeId() { return this.teleporteeId; }
 	
 	private final PS destinationPs;
 	public PS getDestinationPs() { return this.destinationPs; }
@@ -31,9 +29,9 @@ public class ScheduledTeleport implements Runnable
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public ScheduledTeleport(Player teleportee, PS destinationPs, String destinationDesc, int delaySeconds)
+	public ScheduledTeleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds)
 	{
-		this.teleportee = teleportee;
+		this.teleporteeId = teleporteeId;
 		this.destinationPs = destinationPs;
 		this.destinationDesc = destinationDesc;
 		this.delaySeconds = delaySeconds;
@@ -67,14 +65,14 @@ public class ScheduledTeleport implements Runnable
 	public void run()
 	{
 		this.unschedule();
-		if (!teleportee.isOnline()) return;
+		
 		try
 		{
-			Mixin.teleport(this.teleportee, this.destinationPs, this.destinationDesc);
+			Mixin.teleport(this.getTeleporteeId(), this.getDestinationPs(), this.getDestinationDesc());
 		}
 		catch (TeleporterException e)
 		{
-			this.teleportee.sendMessage(e.getMessage());
+			Mixin.message(this.getTeleporteeId(), e.getMessage());
 		}
 	}
 	
