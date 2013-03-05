@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.event.MCorePlayerPSTeleportEvent;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
 
@@ -24,7 +25,6 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	
 	public static void teleportEntity(Entity entity, PS ps) throws TeleporterException
 	{
-		// Use a local clone of the ps to avoid altering original
 		ps = ps.clone();
 		
 		// Ensure the ps has a world name
@@ -58,6 +58,13 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 		}
 		else
 		{
+			// Run event
+			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleportee, teleportee.getLocation(), destinationPs.clone());
+			event.run();
+			if (event.isCancelled()) return;
+			if (event.getTo() == null) return;
+			destinationPs = event.getTo().clone();
+			
 			teleportEntity(teleportee, destinationPs);
 		}
 	}

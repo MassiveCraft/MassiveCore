@@ -1,6 +1,7 @@
 package com.massivecraft.mcore.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +127,22 @@ public class TimeDiffUtil
 	public static LinkedHashMap<TimeUnit, Long> unitcounts(long millis)
 	{
 		return unitcounts(millis, TimeUnit.getAll());
+	}
+	
+	public static LinkedHashMap<TimeUnit, Long> limit(LinkedHashMap<TimeUnit, Long> unitcounts, int limit)
+	{
+		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<TimeUnit, Long>();
+		
+		Iterator<Entry<TimeUnit, Long>> iter = unitcounts.entrySet().iterator();
+		int i = 0;
+		while (iter.hasNext() && i < limit)
+		{
+			Entry<TimeUnit, Long> entry = iter.next();
+			ret.put(entry.getKey(), entry.getValue());
+			i++;
+		}
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //
