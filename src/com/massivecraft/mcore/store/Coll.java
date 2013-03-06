@@ -133,7 +133,18 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	
 	// Should that instance be saved or not?
 	// If it is default it should not be saved.
-	@Override public boolean isDefault(E entity) { return false; }
+	@SuppressWarnings("rawtypes")
+	@Override public boolean isDefault(E entity)
+	{
+		if (entity instanceof Entity)
+		{
+			return ((Entity)entity).isDefault();
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	// -------------------------------------------- //
 	// COPY AND CREATE

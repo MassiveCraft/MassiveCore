@@ -102,6 +102,11 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 		return (E) this;
 	}
 	
+	public boolean isDefault()
+	{
+		return false;
+	}
+	
 	@Override
 	public int compareTo(E that)
 	{
