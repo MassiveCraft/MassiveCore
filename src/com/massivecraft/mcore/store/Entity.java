@@ -46,7 +46,7 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	
 	public boolean attached()
 	{
-		return this.getColl() != null;
+		return this.getColl() != null && this.getId() != null;
 	}
 	
 	public boolean detached()

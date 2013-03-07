@@ -381,6 +381,14 @@ public class MUtil
 		return herp.equals(derp);
 	}
 	
+	public static <T> int compare(Comparable<T> herp, T derp)
+	{
+		if (herp == null && derp == null) return 0;
+		if (herp == null) return -1;
+		if (derp == null) return +1;
+		return herp.compareTo(derp);
+	}
+	
 	// -------------------------------------------- //
 	// SORTING
 	// -------------------------------------------- //

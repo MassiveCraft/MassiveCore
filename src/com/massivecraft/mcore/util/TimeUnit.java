@@ -36,6 +36,19 @@ public class TimeUnit implements Comparable<TimeUnit>
 		
 	private static final TreeSet<TimeUnit> all = new TreeSet<TimeUnit>();
 	public static TreeSet<TimeUnit> getAll() { return new TreeSet<TimeUnit>(all); }
+	public static TreeSet<TimeUnit> getAllButMillis()
+	{
+		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
+		ret.remove(MILLISECOND);
+		return ret;
+	}
+	public static TreeSet<TimeUnit> getAllButMillisAndSeconds()
+	{
+		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
+		ret.remove(MILLISECOND);
+		ret.remove(SECOND);
+		return ret;
+	}
 	
 	public static TimeUnit get(String timeUnitString)
 	{
