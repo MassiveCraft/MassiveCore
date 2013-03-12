@@ -127,7 +127,7 @@ public final class PS2 implements Cloneable, Serializable
 	// FIELDS: WITH
 	// -------------------------------------------- //
 	
-	public PS2 withWorld(String worldName) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withWorld(String world) { return new PS2(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS2 withWorld(World world) { return new PS2(calcWorldName(world), blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS2 withBlockX(Integer blockX) { return new PS2(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS2 withBlockY(Integer blockY) { return new PS2(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
@@ -142,6 +142,28 @@ public final class PS2 implements Cloneable, Serializable
 	public PS2 withVelocityX(Double velocityX) { return new PS2(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS2 withVelocityY(Double velocityY) { return new PS2(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS2 withVelocityZ(Double velocityZ) { return new PS2(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	
+	public PS2 with(PS2 ps)
+	{
+		PS2Builder builder = this.builder();
+		
+		if (ps.getWorld() != null) builder.world(ps.getWorld());
+		if (ps.getBlockX() != null) builder.blockX(ps.getBlockX());
+		if (ps.getBlockY() != null) builder.blockY(ps.getBlockY());
+		if (ps.getBlockZ() != null) builder.blockZ(ps.getBlockZ());
+		if (ps.getLocationX() != null) builder.locationX(ps.getLocationX());
+		if (ps.getLocationY() != null) builder.locationY(ps.getLocationY());
+		if (ps.getLocationZ() != null) builder.locationZ(ps.getLocationZ());
+		if (ps.getChunkX() != null) builder.chunkX(ps.getChunkX());
+		if (ps.getChunkZ() != null) builder.chunkZ(ps.getChunkZ());
+		if (ps.getPitch() != null) builder.pitch(ps.getPitch());
+		if (ps.getYaw() != null) builder.yaw(ps.getYaw());
+		if (ps.getVelocityX() != null) builder.velocityX(ps.getVelocityX());
+		if (ps.getVelocityY() != null) builder.velocityY(ps.getVelocityY());
+		if (ps.getVelocityZ() != null) builder.velocityZ(ps.getVelocityZ());
+		
+		return builder.build();
+	}
 	
 	// -------------------------------------------- //
 	// PRIVATE CONSTRUCTOR
