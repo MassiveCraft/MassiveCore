@@ -65,7 +65,8 @@ public class MCore extends MPlugin
 		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
-		.registerTypeAdapter(PS.class, new PSAdapter());
+		.registerTypeAdapter(PS.class, new PSAdapter())
+		.registerTypeAdapter(PS2.class, PS2Adapter.get());
 	}
 	
 	public static String getServerId() { return Conf.serverid; }
