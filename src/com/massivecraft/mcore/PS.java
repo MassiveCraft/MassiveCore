@@ -164,7 +164,7 @@ public class PS implements Cloneable, Serializable
 	}
 	
 	// Field: chunkZ
-	@SerializedName("xz")
+	@SerializedName("cz")
 	protected Integer chunkZ = null;
 	public Integer getChunkZ() { return this.chunkZ; }
 	public void setChunkZ(Integer chunkZ) { this.chunkZ = chunkZ; }

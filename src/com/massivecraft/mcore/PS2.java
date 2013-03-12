@@ -2,6 +2,9 @@ package com.massivecraft.mcore;
 
 import java.io.Serializable;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
 public final class PS2 implements Serializable
@@ -12,65 +15,101 @@ public final class PS2 implements Serializable
 	
 	private static final transient long serialVersionUID = 1L;
 	
+	public static final transient String SERIALIZED_NAME_WORLDNAME = "w";
+	public static final transient String SERIALIZED_NAME_BLOCKX = "bx";
+	public static final transient String SERIALIZED_NAME_BLOCKY = "by";
+	public static final transient String SERIALIZED_NAME_BLOCKZ = "bz";
+	public static final transient String SERIALIZED_NAME_LOCATIONX = "lx";
+	public static final transient String SERIALIZED_NAME_LOCATIONY = "ly";
+	public static final transient String SERIALIZED_NAME_LOCATIONZ = "lz";
+	public static final transient String SERIALIZED_NAME_CHUNKX = "cx";
+	public static final transient String SERIALIZED_NAME_CHUNKZ = "cz";
+	public static final transient String SERIALIZED_NAME_PITCH = "p";
+	public static final transient String SERIALIZED_NAME_YAW = "y";
+	public static final transient String SERIALIZED_NAME_VELOCITYX = "vx";
+	public static final transient String SERIALIZED_NAME_VELOCITYY = "vy";
+	public static final transient String SERIALIZED_NAME_VELOCITYZ = "vz";
+	
 	// -------------------------------------------- //
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
-	@SerializedName("w")
+	@SerializedName(SERIALIZED_NAME_WORLDNAME)
 	private final String worldName;
 	public String getWorldName() { return this.worldName; }
 	
-	@SerializedName("bx")
+	@SerializedName(SERIALIZED_NAME_BLOCKX)
 	private final Integer blockX;
 	public Integer getBlockX() { return this.blockX; }
 	
-	@SerializedName("by")
+	@SerializedName(SERIALIZED_NAME_BLOCKY)
 	private final Integer blockY;
 	public Integer getBlockY() { return this.blockY; }
 	
-	@SerializedName("bz")
+	@SerializedName(SERIALIZED_NAME_BLOCKZ)
 	private final Integer blockZ;
 	public Integer getBlockZ() { return this.blockZ; }
 	
-	@SerializedName("lx")
+	@SerializedName(SERIALIZED_NAME_LOCATIONX)
 	private final Double locationX;
 	public Double getLocationX() { return this.locationX; }
 	
-	@SerializedName("ly")
+	@SerializedName(SERIALIZED_NAME_LOCATIONY)
 	private final Double locationY;
 	public Double getLocationY() { return this.locationY; }
 	
-	@SerializedName("lz")
+	@SerializedName(SERIALIZED_NAME_LOCATIONZ)
 	private final Double locationZ;
 	public Double getLocationZ() { return this.locationZ; }
 	
-	@SerializedName("cx")
+	@SerializedName(SERIALIZED_NAME_CHUNKX)
 	private final Integer chunkX;
 	public Integer getChunkX() { return this.chunkX; }
 	
-	@SerializedName("cz")
+	@SerializedName(SERIALIZED_NAME_CHUNKZ)
 	private final Integer chunkZ;
 	public Integer getChunkZ() { return this.chunkZ; }
 	
-	@SerializedName("p")
+	@SerializedName(SERIALIZED_NAME_PITCH)
 	private final Float pitch;
 	public Float getPitch() { return this.pitch; }
 	
-	@SerializedName("y")
+	@SerializedName(SERIALIZED_NAME_YAW)
 	private final Float yaw;
 	public Float getYaw() { return this.yaw; }
 	
-	@SerializedName("vx")
+	@SerializedName(SERIALIZED_NAME_VELOCITYX)
 	private final Double velocityX;
 	public Double getVelocityX() { return this.velocityX; }
 	
-	@SerializedName("vy")
+	@SerializedName(SERIALIZED_NAME_VELOCITYY)
 	private final Double velocityY;
 	public Double getVelocityY() { return this.velocityY; }
 	
-	@SerializedName("vz")
+	@SerializedName(SERIALIZED_NAME_VELOCITYZ)
 	private final Double velocityZ;
 	public Double getVelocityZ() { return this.velocityZ; }
+	
+	// -------------------------------------------- //
+	// FIELDS: RAW FAKE
+	// -------------------------------------------- //
+	
+	public World getWorld()
+	{
+		return calcWorld(this.worldName);
+	}
+	
+	public static String calcWorldName(World world)
+	{
+		if (world == null) return null;
+		return world.getName();
+	}
+	
+	public static World calcWorld(String worldName)
+	{
+		if (worldName == null) return null;
+		return Bukkit.getWorld(worldName);
+	}
 	
 	// -------------------------------------------- //
 	// PRIVATE CONSTRUCTOR
@@ -93,6 +132,26 @@ public final class PS2 implements Serializable
 		this.velocityY = velocityY;
 		this.velocityZ = velocityZ;
 	}
+	
+	// -------------------------------------------- //
+	// FIELDS: WITH
+	// -------------------------------------------- //
+	
+	public PS2 withWorldName(String worldName) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withWorld(World world) { return new PS2(calcWorldName(world), blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withBlockX(Integer blockX) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withBlockY(Integer blockY) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withBlockZ(Integer blockZ) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withLocationX(Double locationX) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withLocationY(Double locationY) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withLocationZ(Double locationZ) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withChunkX(Integer chunkX) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withChunkZ(Integer chunkZ) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withPitch(Float pitch) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withYaw(Float yaw) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withVelocityX(Double velocityX) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withVelocityY(Double velocityY) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
+	public PS2 withVelocityZ(Double velocityZ) { return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	
 	// -------------------------------------------- //
 	// HASHCODE (CACHED)
