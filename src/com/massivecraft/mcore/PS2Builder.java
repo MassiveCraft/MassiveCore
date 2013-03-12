@@ -8,11 +8,10 @@ public class PS2Builder
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private String worldName = null;
-	public String worldName() { return this.worldName; }
-	public World world() { return PS2.calcWorld(this.worldName); }
-	public PS2Builder worldName(String worldName) { this.worldName = worldName; return this; }
-	public PS2Builder world(World world) { this.worldName = PS2.calcWorldName(world); return this; }
+	private String world = null;
+	public String world() { return this.world; }
+	public PS2Builder world(String worldName) { this.world = worldName; return this; }
+	public PS2Builder world(World world) { this.world = PS2.calcWorldName(world); return this; }
 	
 	private Integer blockX = null;
 	public Integer blockX() { return this.blockX; }
@@ -70,9 +69,9 @@ public class PS2Builder
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public PS2Builder(String worldName, Integer blockX, Integer blockY, Integer blockZ, Double locationX, Double locationY, Double locationZ, Integer chunkX, Integer chunkZ, Float pitch, Float yaw, Double velocityX, Double velocityY, Double velocityZ)
+	public PS2Builder(String world, Integer blockX, Integer blockY, Integer blockZ, Double locationX, Double locationY, Double locationZ, Integer chunkX, Integer chunkZ, Float pitch, Float yaw, Double velocityX, Double velocityY, Double velocityZ)
 	{
-		this.worldName = worldName;
+		this.world = world;
 		this.blockX = blockX;
 		this.blockY = blockY;
 		this.blockZ = blockZ;
@@ -90,7 +89,7 @@ public class PS2Builder
 	
 	public PS2Builder(PS2 ps)
 	{
-		this(ps.getWorldName(), ps.getBlockX(), ps.getBlockY(), ps.getBlockZ(), ps.getLocationX(), ps.getLocationY(), ps.getLocationZ(), ps.getChunkX(), ps.getChunkZ(), ps.getPitch(), ps.getYaw(), ps.getVelocityX(), ps.getVelocityY(), ps.getVelocityZ());
+		this(ps.getWorld(), ps.getBlockX(), ps.getBlockY(), ps.getBlockZ(), ps.getLocationX(), ps.getLocationY(), ps.getLocationZ(), ps.getChunkX(), ps.getChunkZ(), ps.getPitch(), ps.getYaw(), ps.getVelocityX(), ps.getVelocityY(), ps.getVelocityZ());
 	}
 	
 	public PS2Builder()
@@ -104,7 +103,7 @@ public class PS2Builder
 	
 	public PS2 build()
 	{
-		return PS2.valueOf(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ);
+		return PS2.valueOf(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ);
 	}
 	
 }
