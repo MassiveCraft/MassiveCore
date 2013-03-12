@@ -8,6 +8,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 import com.massivecraft.mcore.xlib.gson.JsonElement;
@@ -177,9 +178,69 @@ public final class PS2 implements Cloneable, Serializable
 	// FACTORY: VALUE OF
 	// -------------------------------------------- //
 	
-	public static PS2 valueOf(String worldName, Integer blockX, Integer blockY, Integer blockZ, Double locationX, Double locationY, Double locationZ, Integer chunkX, Integer chunkZ, Float pitch, Float yaw, Double velocityX, Double velocityY, Double velocityZ)
+	public static PS2 valueOf(String world, Integer blockX, Integer blockY, Integer blockZ, Double locationX, Double locationY, Double locationZ, Integer chunkX, Integer chunkZ, Float pitch, Float yaw, Double velocityX, Double velocityY, Double velocityZ)
 	{
-		return new PS2(worldName, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ);
+		return new PS2(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ);
+	}
+	
+	public static PS2 valueOf(Location location)
+	{
+		if (location == null) return null;
+		String world = calcWorldName(location.getWorld());
+		Double locationX = location.getX();
+		Double locationY = location.getY();
+		Double locationZ = location.getZ();
+		Float pitch = location.getPitch();
+		Float yaw = location.getYaw();
+		return valueOf(world, null, null, null, locationX, locationY, locationZ, null, null, pitch, yaw, null, null, null);
+	}
+	
+	public static PS2 valueOf(Vector velocity)
+	{
+		if (velocity == null) return null;
+		Double velocityX = velocity.getX();
+		Double velocityY = velocity.getY();
+		Double velocityZ = velocity.getZ();
+		return valueOf(null, null, null, null, null, null, null, null, null, null, null, velocityX, velocityY, velocityZ);
+	}
+	
+	public static PS2 valueOf(Entity entity)
+	{
+		if (entity == null) return null;
+		
+		Location location = entity.getLocation();
+		String world = calcWorldName(location.getWorld());
+		Double locationX = location.getX();
+		Double locationY = location.getY();
+		Double locationZ = location.getZ();
+		Float pitch = location.getPitch();
+		Float yaw = location.getYaw();
+		
+		Vector velocity = entity.getVelocity();
+		Double velocityX = velocity.getX();
+		Double velocityY = velocity.getY();
+		Double velocityZ = velocity.getZ();
+		
+		return valueOf(world, null, null, null, locationX, locationY, locationZ, null, null, pitch, yaw, velocityX, velocityY, velocityZ);
+	}
+	
+	public static PS2 valueOf(Block block)
+	{
+		if (block == null) return null;
+		String world = calcWorldName(block.getWorld());
+		Integer blockX = block.getX();
+		Integer blockY = block.getY();
+		Integer blockZ = block.getZ();
+		return valueOf(world, blockX, blockY, blockZ, null, null, null, null, null, null, null, null, null, null);
+	}
+	
+	public static PS2 valueOf(Chunk chunk)
+	{
+		if (chunk == null) return null;
+		String world = calcWorldName(chunk.getWorld());
+		Integer chunkX = chunk.getX();
+		Integer chunkZ = chunk.getZ();
+		return valueOf(world, null, null, null, null, null, null, chunkX, chunkZ, null, null, null, null, null);
 	}
 	
 	public static PS2 valueOf(final JsonElement jsonElement)
