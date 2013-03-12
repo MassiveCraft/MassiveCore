@@ -16,7 +16,14 @@ import com.massivecraft.mcore.xlib.gson.JsonObject;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
 /**
- * 
+ * # Introduction
+ * PS stands for PhysicalState.
+ * This class stores data related to just that.
+ * When coding plugins you may find yourself wanting to store a player location.
+ * Another time you may want to store the player location but without the worldName info.
+ * Another time you may want to store pitch and yaw only.
+ * This class is supposed to be usable in all those cases.
+ * Hopefully this class will save you from implementing special classes for all those combinations.
  * 
  * # Field Groups
  * velocity: velocityX, velocityY, velocityZ
@@ -24,7 +31,6 @@ import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
  * locationCoords: locationX, locationY, locationZ
  * chunkCoords: chunkX, chunkZ
  * head: pitch, yaw
- * 
  * block: world, blockX, blockY, blockZ
  * location: world, locationX, locationY, locationZ, pitch, yaw
  * chunk: world, chunkX, chunkZ
@@ -42,20 +48,35 @@ public final class PS2 implements Cloneable, Serializable
 	public static final transient float DEFAULT_BUKKIT_PITCH = 0F;
 	public static final transient float DEFAULT_BUKKIT_YAW = 0F;
 	
-	public static final transient String SERIALIZED_NAME_WORLD = "w";
-	public static final transient String SERIALIZED_NAME_BLOCKX = "bx";
-	public static final transient String SERIALIZED_NAME_BLOCKY = "by";
-	public static final transient String SERIALIZED_NAME_BLOCKZ = "bz";
-	public static final transient String SERIALIZED_NAME_LOCATIONX = "lx";
-	public static final transient String SERIALIZED_NAME_LOCATIONY = "ly";
-	public static final transient String SERIALIZED_NAME_LOCATIONZ = "lz";
-	public static final transient String SERIALIZED_NAME_CHUNKX = "cx";
-	public static final transient String SERIALIZED_NAME_CHUNKZ = "cz";
-	public static final transient String SERIALIZED_NAME_PITCH = "p";
-	public static final transient String SERIALIZED_NAME_YAW = "y";
-	public static final transient String SERIALIZED_NAME_VELOCITYX = "vx";
-	public static final transient String SERIALIZED_NAME_VELOCITYY = "vy";
-	public static final transient String SERIALIZED_NAME_VELOCITYZ = "vz";
+	public static final transient String NAME_SERIALIZED_WORLD = "w";
+	public static final transient String NAME_SERIALIZED_BLOCKX = "bx";
+	public static final transient String NAME_SERIALIZED_BLOCKY = "by";
+	public static final transient String NAME_SERIALIZED_BLOCKZ = "bz";
+	public static final transient String NAME_SERIALIZED_LOCATIONX = "lx";
+	public static final transient String NAME_SERIALIZED_LOCATIONY = "ly";
+	public static final transient String NAME_SERIALIZED_LOCATIONZ = "lz";
+	public static final transient String NAME_SERIALIZED_CHUNKX = "cx";
+	public static final transient String NAME_SERIALIZED_CHUNKZ = "cz";
+	public static final transient String NAME_SERIALIZED_PITCH = "p";
+	public static final transient String NAME_SERIALIZED_YAW = "y";
+	public static final transient String NAME_SERIALIZED_VELOCITYX = "vx";
+	public static final transient String NAME_SERIALIZED_VELOCITYY = "vy";
+	public static final transient String NAME_SERIALIZED_VELOCITYZ = "vz";
+	
+	public static final transient String NAME_FULL_WORLD = "world";
+	public static final transient String NAME_FULL_BLOCKX = "blockX";
+	public static final transient String NAME_FULL_BLOCKY = "blockY";
+	public static final transient String NAME_FULL_BLOCKZ = "blockZ";
+	public static final transient String NAME_FULL_LOCATIONX = "locationX";
+	public static final transient String NAME_FULL_LOCATIONY = "locationY";
+	public static final transient String NAME_FULL_LOCATIONZ = "locationZ";
+	public static final transient String NAME_FULL_CHUNKX = "chunkX";
+	public static final transient String NAME_FULL_CHUNKZ = "chunkZ";
+	public static final transient String NAME_FULL_PITCH = "pitch";
+	public static final transient String NAME_FULL_YAW = "yay";
+	public static final transient String NAME_FULL_VELOCITYX = "velocityX";
+	public static final transient String NAME_FULL_VELOCITYY = "velocityY";
+	public static final transient String NAME_FULL_VELOCITYZ = "velocityZ";
 	
 	// -------------------------------------------- //
 	// STANDARD INSTANCES
@@ -67,59 +88,59 @@ public final class PS2 implements Cloneable, Serializable
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
-	@SerializedName(SERIALIZED_NAME_WORLD)
+	@SerializedName(NAME_SERIALIZED_WORLD)
 	private final String world;
 	public String getWorld() { return this.world; }
 	
-	@SerializedName(SERIALIZED_NAME_BLOCKX)
+	@SerializedName(NAME_SERIALIZED_BLOCKX)
 	private final Integer blockX;
 	public Integer getBlockX() { return this.blockX; }
 	
-	@SerializedName(SERIALIZED_NAME_BLOCKY)
+	@SerializedName(NAME_SERIALIZED_BLOCKY)
 	private final Integer blockY;
 	public Integer getBlockY() { return this.blockY; }
 	
-	@SerializedName(SERIALIZED_NAME_BLOCKZ)
+	@SerializedName(NAME_SERIALIZED_BLOCKZ)
 	private final Integer blockZ;
 	public Integer getBlockZ() { return this.blockZ; }
 	
-	@SerializedName(SERIALIZED_NAME_LOCATIONX)
+	@SerializedName(NAME_SERIALIZED_LOCATIONX)
 	private final Double locationX;
 	public Double getLocationX() { return this.locationX; }
 	
-	@SerializedName(SERIALIZED_NAME_LOCATIONY)
+	@SerializedName(NAME_SERIALIZED_LOCATIONY)
 	private final Double locationY;
 	public Double getLocationY() { return this.locationY; }
 	
-	@SerializedName(SERIALIZED_NAME_LOCATIONZ)
+	@SerializedName(NAME_SERIALIZED_LOCATIONZ)
 	private final Double locationZ;
 	public Double getLocationZ() { return this.locationZ; }
 	
-	@SerializedName(SERIALIZED_NAME_CHUNKX)
+	@SerializedName(NAME_SERIALIZED_CHUNKX)
 	private final Integer chunkX;
 	public Integer getChunkX() { return this.chunkX; }
 	
-	@SerializedName(SERIALIZED_NAME_CHUNKZ)
+	@SerializedName(NAME_SERIALIZED_CHUNKZ)
 	private final Integer chunkZ;
 	public Integer getChunkZ() { return this.chunkZ; }
 	
-	@SerializedName(SERIALIZED_NAME_PITCH)
+	@SerializedName(NAME_SERIALIZED_PITCH)
 	private final Float pitch;
 	public Float getPitch() { return this.pitch; }
 	
-	@SerializedName(SERIALIZED_NAME_YAW)
+	@SerializedName(NAME_SERIALIZED_YAW)
 	private final Float yaw;
 	public Float getYaw() { return this.yaw; }
 	
-	@SerializedName(SERIALIZED_NAME_VELOCITYX)
+	@SerializedName(NAME_SERIALIZED_VELOCITYX)
 	private final Double velocityX;
 	public Double getVelocityX() { return this.velocityX; }
 	
-	@SerializedName(SERIALIZED_NAME_VELOCITYY)
+	@SerializedName(NAME_SERIALIZED_VELOCITYY)
 	private final Double velocityY;
 	public Double getVelocityY() { return this.velocityY; }
 	
-	@SerializedName(SERIALIZED_NAME_VELOCITYZ)
+	@SerializedName(NAME_SERIALIZED_VELOCITYZ)
 	private final Double velocityZ;
 	public Double getVelocityZ() { return this.velocityZ; }
 	
@@ -279,46 +300,46 @@ public final class PS2 implements Cloneable, Serializable
 			
 			switch(key)
 			{
-				case SERIALIZED_NAME_WORLD:
+				case NAME_SERIALIZED_WORLD:
 					builder.world(value.getAsString());
 				break;
-				case SERIALIZED_NAME_BLOCKX:
+				case NAME_SERIALIZED_BLOCKX:
 					builder.blockX(value.getAsInt());
 				break;
-				case SERIALIZED_NAME_BLOCKY:
+				case NAME_SERIALIZED_BLOCKY:
 					builder.blockY(value.getAsInt());
 				break;
-				case SERIALIZED_NAME_BLOCKZ:
+				case NAME_SERIALIZED_BLOCKZ:
 					builder.blockZ(value.getAsInt());
 				break;
-				case SERIALIZED_NAME_LOCATIONX:
+				case NAME_SERIALIZED_LOCATIONX:
 					builder.locationX(value.getAsDouble());
 				break;
-				case SERIALIZED_NAME_LOCATIONY:
+				case NAME_SERIALIZED_LOCATIONY:
 					builder.locationY(value.getAsDouble());
 				break;
-				case SERIALIZED_NAME_LOCATIONZ:
+				case NAME_SERIALIZED_LOCATIONZ:
 					builder.locationZ(value.getAsDouble());
 				break;
-				case SERIALIZED_NAME_CHUNKX:
+				case NAME_SERIALIZED_CHUNKX:
 					builder.chunkX(value.getAsInt());
 				break;
-				case SERIALIZED_NAME_CHUNKZ:
+				case NAME_SERIALIZED_CHUNKZ:
 					builder.chunkZ(value.getAsInt());
 				break;
-				case SERIALIZED_NAME_PITCH:
+				case NAME_SERIALIZED_PITCH:
 					builder.pitch(value.getAsFloat());
 				break;
-				case SERIALIZED_NAME_YAW:
+				case NAME_SERIALIZED_YAW:
 					builder.yaw(value.getAsFloat());
 				break;
-				case SERIALIZED_NAME_VELOCITYX:
+				case NAME_SERIALIZED_VELOCITYX:
 					builder.velocityX(value.getAsDouble());
 				break;
-				case SERIALIZED_NAME_VELOCITYY:
+				case NAME_SERIALIZED_VELOCITYY:
 					builder.velocityY(value.getAsDouble());
 				break;
-				case SERIALIZED_NAME_VELOCITYZ:
+				case NAME_SERIALIZED_VELOCITYZ:
 					builder.velocityZ(value.getAsDouble());
 				break;
 			}
