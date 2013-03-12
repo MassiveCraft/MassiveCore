@@ -10,7 +10,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.ps.PSFormatDesc;
 import com.massivecraft.mcore.util.MUtil;
 
 public class WorldMixinDefault extends WorldMixinAbstract
@@ -60,7 +61,7 @@ public class WorldMixinDefault extends WorldMixinAbstract
 	{
 		World world = Bukkit.getWorld(worldId);
 		if (world == null) return null;
-		return new PS(world.getSpawnLocation());
+		return PS.valueOf(world.getSpawnLocation());
 	}
 
 	@Override
@@ -69,10 +70,17 @@ public class WorldMixinDefault extends WorldMixinAbstract
 		World world = Bukkit.getWorld(worldId);
 		if (world == null) return;
 		
-		spawnPs = spawnPs.clone();
-		spawnPs.setWorldName(worldId);
-		Location location = spawnPs.calcLocation();
-		if (location == null) return;
+		spawnPs = spawnPs.withWorld(world);
+		
+		Location location = null;
+		try
+		{
+			location = spawnPs.asBukkitLocation(true);
+		}
+		catch (Exception e)
+		{
+			return;
+		}
 		
 		world.setSpawnLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
@@ -93,8 +101,8 @@ public class WorldMixinDefault extends WorldMixinAbstract
 		// Pre Calculations
 		String worldDisplayName = Mixin.getWorldDisplayName(worldId);
 		PS current = this.getWorldSpawnPs(worldId);
-		String currentFormatted = current.getShortDesc();
-		String goalFormatted = goal.getShortDesc();
+		String currentFormatted = current.toString(PSFormatDesc.get());
+		String goalFormatted = goal.toString(PSFormatDesc.get());
 		
 		// No change?
 		if (MUtil.equals(goal, current))

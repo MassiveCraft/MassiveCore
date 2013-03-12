@@ -5,8 +5,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.massivecraft.mcore.PS;
 import com.massivecraft.mcore.event.MCorePlayerPSTeleportEvent;
+import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
 
@@ -25,22 +25,33 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	
 	public static void teleportEntity(Entity entity, PS ps) throws TeleporterException
 	{
-		ps = ps.clone();
+		// Base the PS location on the entity location
+		ps = ps.getEntity(true);
+		ps = PS.valueOf(entity.getLocation()).with(ps);
 		
-		// Ensure the ps has a world name
-		if (ps.getWorldName() == null)
+		// Bukkit Location
+		Location location = null;
+		try
 		{
-			ps.setWorldName(entity.getWorld().getName());
+			location = ps.asBukkitLocation();
+			
 		}
-		
-		Location location = ps.calcLocation();		
-		if (location == null) throw new TeleporterException(Txt.parse("<b>Could not calculate the location."));
-		
+		catch (Exception e)
+		{
+			throw new TeleporterException(Txt.parse("<b>Could not calculate the location: %s", e.getMessage()));
+		}
 		entity.teleport(location);
 		
-		Vector velocity = ps.getVelocity();
-		if (velocity == null) return;
-		
+		// Bukkit velocity
+		Vector velocity = null;
+		try
+		{
+			velocity = ps.asBukkitVelocity();
+		}
+		catch (Exception e)
+		{
+			return;
+		}
 		entity.setVelocity(velocity);
 	}
 	
@@ -72,11 +83,11 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			// Without delay AKA "now"/"at once"
 			
 			// Run event
-			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleporteeId, Mixin.getSenderPs(teleporteeId), destinationPs.clone());
+			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleporteeId, Mixin.getSenderPs(teleporteeId), destinationPs);
 			event.run();
 			if (event.isCancelled()) return;
 			if (event.getTo() == null) return;
-			destinationPs = event.getTo().clone();
+			destinationPs = event.getTo();
 			
 			if (destinationDesc != null)
 			{
@@ -90,7 +101,7 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			}
 			else
 			{
-				Mixin.setSenderPs(teleporteeId, destinationPs.clone());
+				Mixin.setSenderPs(teleporteeId, destinationPs);
 			}
 		}
 	}

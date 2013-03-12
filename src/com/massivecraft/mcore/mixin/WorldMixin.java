@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
 
 public interface WorldMixin
 {

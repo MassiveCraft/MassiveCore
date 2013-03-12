@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
 
 public class MCorePlayerPSTeleportEvent extends Event implements Cancellable, Runnable
 {

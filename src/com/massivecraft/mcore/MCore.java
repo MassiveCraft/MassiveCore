@@ -13,13 +13,12 @@ import org.bukkit.inventory.ItemStack;
 import com.massivecraft.mcore.adapter.InventoryAdapter;
 import com.massivecraft.mcore.adapter.ItemStackAdapter;
 import com.massivecraft.mcore.adapter.MongoURIAdapter;
-import com.massivecraft.mcore.adapter.PSAdapter;
 import com.massivecraft.mcore.cmd.CmdMcore;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
-import com.massivecraft.mcore.ps.PS2;
-import com.massivecraft.mcore.ps.PS2Adapter;
+import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.Db;
 import com.massivecraft.mcore.store.MStore;
@@ -67,8 +66,7 @@ public class MCore extends MPlugin
 		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
-		.registerTypeAdapter(PS.class, new PSAdapter())
-		.registerTypeAdapter(PS2.class, PS2Adapter.get());
+		.registerTypeAdapter(PS.class, PSAdapter.get());
 	}
 	
 	public static String getServerId() { return Conf.serverid; }

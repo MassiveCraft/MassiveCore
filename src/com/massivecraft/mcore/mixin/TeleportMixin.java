@@ -3,7 +3,7 @@ package com.massivecraft.mcore.mixin;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
 
 public interface TeleportMixin
 {

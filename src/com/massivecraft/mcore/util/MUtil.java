@@ -314,11 +314,13 @@ public class MUtil
 	// SIMPLE CONSTRUCTORS
 	// -------------------------------------------- //
 	
+	@SafeVarargs
 	public static <T> List<T> list(T... items)
 	{
 		return new ArrayList<T>(Arrays.asList(items));
 	}
 	
+	@SafeVarargs
 	public static <T> Set<T> set(T... items)
 	{
 		return new LinkedHashSet<T>(Arrays.asList(items));

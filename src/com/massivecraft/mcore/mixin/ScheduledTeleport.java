@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.mixin;
 
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
 
 public class ScheduledTeleport implements Runnable
 {

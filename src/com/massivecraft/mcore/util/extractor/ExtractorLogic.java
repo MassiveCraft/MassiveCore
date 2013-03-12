@@ -25,7 +25,7 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.util.SenderUtil;
 
@@ -133,7 +133,7 @@ public class ExtractorLogic
 	public static World world(Location o) { return o.getWorld(); }
 	public static World world(Entity o) { return o.getWorld(); }
 	public static World world(PlayerEvent o) { return world(o.getPlayer()); }
-	public static World world(PS o) { return o.getWorld(); }
+	public static World world(PS o) { try { return o.asBukkitWorld(true); } catch (Exception e) { return null; }}
 	
 	public static World worldFromObject(Object o)
 	{
@@ -155,7 +155,7 @@ public class ExtractorLogic
 	public static String worldNameFromObject(Object o)
 	{
 		if (o instanceof String) return (String)o;
-		if (o instanceof PS) return ((PS)o).getWorldName();
+		if (o instanceof PS) return ((PS)o).getWorld();
 		World world = worldFromObject(o);
 		if (world == null) return null;
 		return world.getName();

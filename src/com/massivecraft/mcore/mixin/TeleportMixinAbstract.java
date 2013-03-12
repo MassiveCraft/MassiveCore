@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.mcore.Conf;
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.util.SenderUtil;
 
 public abstract class TeleportMixinAbstract implements TeleportMixin

@@ -3,7 +3,7 @@ package com.massivecraft.mcore.mixin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.PS;
+import com.massivecraft.mcore.ps.PS;
 
 public class SenderPsMixinDefault extends SenderPsMixinAbstract
 {
@@ -23,7 +23,7 @@ public class SenderPsMixinDefault extends SenderPsMixinAbstract
 	{
 		Player player = Bukkit.getPlayerExact(senderId);
 		if (player == null) return null;
-		return new PS(player.getLocation());
+		return PS.valueOf(player.getLocation());
 	}
 
 	@Override

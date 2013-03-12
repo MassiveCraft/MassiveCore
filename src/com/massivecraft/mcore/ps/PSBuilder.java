@@ -2,7 +2,7 @@ package com.massivecraft.mcore.ps;
 
 import org.bukkit.World;
 
-public class PS2Builder
+public class PSBuilder
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -10,66 +10,66 @@ public class PS2Builder
 	
 	private String world = null;
 	public String world() { return this.world; }
-	public PS2Builder world(String worldName) { this.world = worldName; return this; }
-	public PS2Builder world(World world) { this.world = PS2.calcWorldName(world); return this; }
+	public PSBuilder world(String worldName) { this.world = worldName; return this; }
+	public PSBuilder world(World world) { this.world = PS.calcWorldName(world); return this; }
 	
 	private Integer blockX = null;
 	public Integer blockX() { return this.blockX; }
-	public PS2Builder blockX(Integer blockX) { this.blockX = blockX; return this; }
+	public PSBuilder blockX(Integer blockX) { this.blockX = blockX; return this; }
 	
 	private Integer blockY = null;
 	public Integer blockY() { return this.blockY; }
-	public PS2Builder blockY(Integer blockY) { this.blockY = blockY; return this; }
+	public PSBuilder blockY(Integer blockY) { this.blockY = blockY; return this; }
 	
 	private Integer blockZ = null;
 	public Integer blockZ() { return this.blockZ; }
-	public PS2Builder blockZ(Integer blockZ) { this.blockZ = blockZ; return this; }
+	public PSBuilder blockZ(Integer blockZ) { this.blockZ = blockZ; return this; }
 	
 	private Double locationX = null;
 	public Double locationX() { return this.locationX; }
-	public PS2Builder locationX(Double locationX) { this.locationX = locationX; return this; }
+	public PSBuilder locationX(Double locationX) { this.locationX = locationX; return this; }
 	
 	private Double locationY = null;
 	public Double locationY() { return this.locationY; }
-	public PS2Builder locationY(Double locationY) { this.locationY = locationY; return this; }
+	public PSBuilder locationY(Double locationY) { this.locationY = locationY; return this; }
 	
 	private Double locationZ = null;
 	public Double locationZ() { return this.locationZ; }
-	public PS2Builder locationZ(Double locationZ) { this.locationZ = locationZ; return this; }
+	public PSBuilder locationZ(Double locationZ) { this.locationZ = locationZ; return this; }
 	
 	private Integer chunkX = null;
 	public Integer chunkX() { return this.chunkX; }
-	public PS2Builder chunkX(Integer chunkX) { this.chunkX = chunkX; return this; }
+	public PSBuilder chunkX(Integer chunkX) { this.chunkX = chunkX; return this; }
 	
 	private Integer chunkZ = null;
 	public Integer chunkZ() { return this.chunkZ; }
-	public PS2Builder chunkZ(Integer chunkZ) { this.chunkZ = chunkZ; return this; }
+	public PSBuilder chunkZ(Integer chunkZ) { this.chunkZ = chunkZ; return this; }
 	
 	private Float pitch = null;
 	public Float pitch() { return this.pitch; }
-	public PS2Builder pitch(Float pitch) { this.pitch = pitch; return this; }
+	public PSBuilder pitch(Float pitch) { this.pitch = pitch; return this; }
 	
 	private Float yaw = null;
 	public Float yaw() { return this.yaw; }
-	public PS2Builder yaw(Float yaw) { this.yaw = yaw; return this; }
+	public PSBuilder yaw(Float yaw) { this.yaw = yaw; return this; }
 	
 	private Double velocityX = null;
 	public Double velocityX() { return this.velocityX; }
-	public PS2Builder velocityX(Double velocityX) { this.velocityX = velocityX; return this; }
+	public PSBuilder velocityX(Double velocityX) { this.velocityX = velocityX; return this; }
 	
 	private Double velocityY = null;
 	public Double velocityY() { return this.velocityY; }
-	public PS2Builder velocityY(Double velocityY) { this.velocityY = velocityY; return this; }
+	public PSBuilder velocityY(Double velocityY) { this.velocityY = velocityY; return this; }
 	
 	private Double velocityZ = null;
 	public Double velocityZ() { return this.velocityZ; }
-	public PS2Builder velocityZ(Double velocityZ) { this.velocityZ = velocityZ; return this; }
+	public PSBuilder velocityZ(Double velocityZ) { this.velocityZ = velocityZ; return this; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public PS2Builder(String world, Integer blockX, Integer blockY, Integer blockZ, Double locationX, Double locationY, Double locationZ, Integer chunkX, Integer chunkZ, Float pitch, Float yaw, Double velocityX, Double velocityY, Double velocityZ)
+	public PSBuilder(String world, Integer blockX, Integer blockY, Integer blockZ, Double locationX, Double locationY, Double locationZ, Integer chunkX, Integer chunkZ, Float pitch, Float yaw, Double velocityX, Double velocityY, Double velocityZ)
 	{
 		this.world = world;
 		this.blockX = blockX;
@@ -87,12 +87,12 @@ public class PS2Builder
 		this.velocityZ = velocityZ;
 	}
 	
-	public PS2Builder(PS2 ps)
+	public PSBuilder(PS ps)
 	{
 		this(ps.getWorld(), ps.getBlockX(), ps.getBlockY(), ps.getBlockZ(), ps.getLocationX(), ps.getLocationY(), ps.getLocationZ(), ps.getChunkX(), ps.getChunkZ(), ps.getPitch(), ps.getYaw(), ps.getVelocityX(), ps.getVelocityY(), ps.getVelocityZ());
 	}
 	
-	public PS2Builder()
+	public PSBuilder()
 	{
 		
 	}
@@ -101,9 +101,9 @@ public class PS2Builder
 	// BUILD
 	// -------------------------------------------- //
 	
-	public PS2 build()
+	public PS build()
 	{
-		return PS2.valueOf(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ);
+		return PS.valueOf(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ);
 	}
 	
 }

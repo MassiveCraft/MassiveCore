@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.mcore.PS;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
+import com.massivecraft.mcore.ps.PS;
 
 public class Mixin
 {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.massivecraft.mcore.util.Txt;
 
-public class PS2FormatAbstract implements PS2Format
+public class PSFormatAbstract implements PSFormat
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -36,7 +36,7 @@ public class PS2FormatAbstract implements PS2Format
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public PS2FormatAbstract(String strNull, String strStart, String formatWorld, String formatBlockX, String formatBlockY, String formatBlockZ, String formatLocationX, String formatLocationY, String formatLocationZ, String formatChunkX, String formatChunkZ, String formatPitch, String formatYaw, String formatVelocityX, String formatVelocityY, String formatVelocityZ, String strGlue, String strStop)
+	public PSFormatAbstract(String strNull, String strStart, String formatWorld, String formatBlockX, String formatBlockY, String formatBlockZ, String formatLocationX, String formatLocationY, String formatLocationZ, String formatChunkX, String formatChunkZ, String formatPitch, String formatYaw, String formatVelocityX, String formatVelocityY, String formatVelocityZ, String strGlue, String strStop)
 	{
 		this.strNull = strNull;
 		this.strStart = strStart;
@@ -63,7 +63,7 @@ public class PS2FormatAbstract implements PS2Format
 	// -------------------------------------------- //
 	
 	@Override
-	public String format(PS2 ps)
+	public String format(PS ps)
 	{
 		if (ps == null) return this.strNull;
 		
@@ -76,7 +76,7 @@ public class PS2FormatAbstract implements PS2Format
 	// UTIL
 	// -------------------------------------------- //
 	
-	public List<String> formatEntries(PS2 ps)
+	public List<String> formatEntries(PS ps)
 	{
 		List<String> ret = new ArrayList<String>();
 		
