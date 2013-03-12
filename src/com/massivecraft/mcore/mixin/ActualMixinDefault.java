@@ -4,27 +4,27 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 
-public class ActuallMixinDefault extends ActuallMixinAbstract
+public class ActualMixinDefault extends ActualMixinAbstract
 {	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ActuallMixinDefault i = new ActuallMixinDefault();
-	public static ActuallMixinDefault get() { return i; }
+	private static ActualMixinDefault i = new ActualMixinDefault();
+	public static ActualMixinDefault get() { return i; }
 
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean isActuallJoin(PlayerJoinEvent event)
+	public boolean isActualJoin(PlayerJoinEvent event)
 	{
 		return true;
 	}
 	
 	@Override
-	public boolean isActuallLeave(MCorePlayerLeaveEvent event)
+	public boolean isActualLeave(MCorePlayerLeaveEvent event)
 	{
 		return true;
 	}

@@ -4,8 +4,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 
-public interface ActuallMixin
+public interface ActualMixin
 {
-	public boolean isActuallJoin(PlayerJoinEvent event);
-	public boolean isActuallLeave(MCorePlayerLeaveEvent event);
+	public boolean isActualJoin(PlayerJoinEvent event);
+	public boolean isActualLeave(MCorePlayerLeaveEvent event);
 }

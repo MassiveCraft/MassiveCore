@@ -60,9 +60,9 @@ public class Mixin
 	public static KickMixin getKickMixin() { return kickMixin; }
 	public static void setKickMixin(KickMixin val) { kickMixin = val; }
 	
-	private static ActuallMixin actuallMixin = ActuallMixinDefault.get();
-	public static ActuallMixin getActuallMixin() { return actuallMixin; }
-	public static void setActuallMixin(ActuallMixin val) { actuallMixin = val; }
+	private static ActualMixin actualMixin = ActualMixinDefault.get();
+	public static ActualMixin getActualMixin() { return actualMixin; }
+	public static void setActualMixin(ActualMixin val) { actualMixin = val; }
 	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: WORLD
@@ -466,14 +466,14 @@ public class Mixin
 	// STATIC EXPOSE: ACTUALL
 	// -------------------------------------------- //
 	
-	public static boolean isActuallJoin(PlayerJoinEvent event)
+	public static boolean isActualJoin(PlayerJoinEvent event)
 	{
-		return getActuallMixin().isActuallJoin(event);
+		return getActualMixin().isActualJoin(event);
 	}
 	
-	public static boolean isActuallLeave(MCorePlayerLeaveEvent event)
+	public static boolean isActualLeave(MCorePlayerLeaveEvent event)
 	{
-		return getActuallMixin().isActuallLeave(event);
+		return getActualMixin().isActualLeave(event);
 	}
 	
 }
