@@ -498,59 +498,57 @@ public final class PS2 implements Cloneable, Serializable
 	// AS BUKKIT EQUIVALENT
 	// -------------------------------------------- //
 	
-	public World asBukkitWorld() { return this.asBukkitWorld(false); }
-	public World asBukkitWorld(boolean calc) { return asBukkitWorld(this.getWorld(calc)); }
+	public World asBukkitWorld() throws IllegalStateException { return this.asBukkitWorld(false); }
+	public World asBukkitWorld(boolean calc) throws IllegalStateException { return asBukkitWorld(this.getWorld(calc)); }
 	
-	public Block asBukkitBlock() { return this.asBukkitBlock(false); }
-	public Block asBukkitBlock(boolean calc) { return asBukkitBlock(this.getBlock(calc)); }
+	public Block asBukkitBlock() throws IllegalStateException { return this.asBukkitBlock(false); }
+	public Block asBukkitBlock(boolean calc) throws IllegalStateException { return asBukkitBlock(this.getBlock(calc)); }
 	
-	public Location asBukkitLocation() { return this.asBukkitLocation(false); }
-	public Location asBukkitLocation(boolean calc) { return asBukkitLocation(this.getLocation(calc)); }
+	public Location asBukkitLocation() throws IllegalStateException { return this.asBukkitLocation(false); }
+	public Location asBukkitLocation(boolean calc) throws IllegalStateException { return asBukkitLocation(this.getLocation(calc)); }
 	
-	public Chunk asBukkitChunk() { return this.asBukkitChunk(false); }
-	public Chunk asBukkitChunk(boolean calc) { return asBukkitChunk(this.getChunk(calc)); }
+	public Chunk asBukkitChunk() throws IllegalStateException { return this.asBukkitChunk(false); }
+	public Chunk asBukkitChunk(boolean calc) throws IllegalStateException { return asBukkitChunk(this.getChunk(calc)); }
 	
-	public Vector asBukkitVelocity() { return this.asBukkitVelocity(false); }
-	public Vector asBukkitVelocity(boolean calc) { return asBukkitVelocity(this.getVelocity(calc)); }
+	public Vector asBukkitVelocity() throws IllegalStateException { return this.asBukkitVelocity(false); }
+	public Vector asBukkitVelocity(boolean calc) throws IllegalStateException { return asBukkitVelocity(this.getVelocity(calc)); }
 	
-	public static World asBukkitWorld(String world)
+	public static World asBukkitWorld(String world) throws IllegalStateException, NullPointerException
 	{
-		if (world == null) return null;
-		return Bukkit.getWorld(world);
+		if (world == null) throw new NullPointerException("world wasn't set");
+		World ret = Bukkit.getWorld(world);
+		if (ret == null) throw new IllegalStateException("the world "+world+" does not exist on "+MCore.getServerId());
+		return ret;
 	}
 	
-	// TODO: throw instead of return null?
-	public static Block asBukkitBlock(PS2 ps)
+	public static Block asBukkitBlock(PS2 ps) throws IllegalStateException
 	{
 		World world = ps.asBukkitWorld();
-		if (world == null) return null;
 		
 		Integer blockX = ps.getBlockX();
-		if (blockX == null) return null;
+		if (blockX == null) throw new IllegalStateException("blockX wasn't set");
 		
 		Integer blockY = ps.getBlockY();
-		if (blockY == null) return null;
+		if (blockY == null) throw new IllegalStateException("blockY wasn't set");
 		
 		Integer blockZ = ps.getBlockZ();
-		if (blockZ == null) return null;
+		if (blockZ == null) throw new IllegalStateException("blockZ wasn't set");
 		
 		return world.getBlockAt(blockX, blockY, blockZ);
 	}
 	
-	// TODO: throw instead of return null?
-	public static Location asBukkitLocation(PS2 ps)
+	public static Location asBukkitLocation(PS2 ps) throws IllegalStateException
 	{
 		World world = ps.asBukkitWorld();
-		if (world == null) return null;
 		
 		Double locationX = ps.getLocationX();
-		if (locationX == null) return null;
+		if (locationX == null) throw new IllegalStateException("locationX wasn't set");
 		
 		Double locationY = ps.getLocationY();
-		if (locationY == null) return null;
+		if (locationY == null) throw new IllegalStateException("locationY wasn't set");
 		
 		Double locationZ = ps.getLocationZ();
-		if (locationZ == null) return null;
+		if (locationZ == null) throw new IllegalStateException("locationZ wasn't set");
 		
 		Float pitch = ps.getPitch();
 		if (pitch == null) pitch = DEFAULT_BUKKIT_PITCH;
@@ -561,32 +559,29 @@ public final class PS2 implements Cloneable, Serializable
 		return new Location(world, locationX, locationY, locationZ, yaw, pitch);
 	}
 	
-	// TODO: throw instead of return null?
-	public static Chunk asBukkitChunk(PS2 ps)
+	public static Chunk asBukkitChunk(PS2 ps) throws IllegalStateException
 	{
 		World world = ps.asBukkitWorld();
-		if (world == null) return null;
 		
 		Integer chunkX = ps.getChunkX();
-		if (chunkX == null) return null;
+		if (chunkX == null) throw new IllegalStateException("chunkX wasn't set");
 		
 		Integer chunkZ = ps.getChunkZ();
-		if (chunkZ == null) return null;
+		if (chunkZ == null) throw new IllegalStateException("chunkZ wasn't set");
 		
 		return world.getChunkAt(chunkX, chunkZ);
 	}
 	
-	// TODO: throw instead of return null?
-	public static Vector asBukkitVelocity(PS2 ps)
+	public static Vector asBukkitVelocity(PS2 ps) throws IllegalStateException
 	{
 		Double velocityX = ps.getVelocityX();
-		if (velocityX == null) return null;
+		if (velocityX == null) throw new IllegalStateException("velocityX wasn't set");
 		
 		Double velocityY = ps.getVelocityY();
-		if (velocityY == null) return null;
+		if (velocityY == null) throw new IllegalStateException("velocityY wasn't set");
 		
 		Double velocityZ = ps.getVelocityZ();
-		if (velocityZ == null) return null;
+		if (velocityZ == null) throw new IllegalStateException("velocityZ wasn't set");
 		
 		return new Vector(velocityX, velocityY, velocityZ);
 	}
@@ -595,7 +590,7 @@ public final class PS2 implements Cloneable, Serializable
 	// ASSORTED
 	// -------------------------------------------- //
 	
-	// TODO: Malplaced
+	// TODO: Malplaced?
 	public static String calcWorldName(World world)
 	{
 		if (world == null) return null;
