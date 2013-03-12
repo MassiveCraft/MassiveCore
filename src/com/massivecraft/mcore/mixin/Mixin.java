@@ -7,10 +7,12 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.mcore.PS;
 import com.massivecraft.mcore.Predictate;
+import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 
 public class Mixin
 {
@@ -57,6 +59,10 @@ public class Mixin
 	private static KickMixin kickMixin = KickMixinDefault.get();
 	public static KickMixin getKickMixin() { return kickMixin; }
 	public static void setKickMixin(KickMixin val) { kickMixin = val; }
+	
+	private static ActuallMixin actuallMixin = ActuallMixinDefault.get();
+	public static ActuallMixin getActuallMixin() { return actuallMixin; }
+	public static void setActuallMixin(ActuallMixin val) { actuallMixin = val; }
 	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: WORLD
@@ -454,6 +460,20 @@ public class Mixin
 	public static boolean kick(String senderId, String message)
 	{
 		return getKickMixin().kick(senderId, message);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC EXPOSE: ACTUALL
+	// -------------------------------------------- //
+	
+	public static boolean isActuallJoin(PlayerJoinEvent event)
+	{
+		return getActuallMixin().isActuallJoin(event);
+	}
+	
+	public static boolean isActuallLeave(MCorePlayerLeaveEvent event)
+	{
+		return getActuallMixin().isActuallLeave(event);
 	}
 	
 }
