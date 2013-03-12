@@ -1,4 +1,4 @@
-package com.massivecraft.mcore;
+package com.massivecraft.mcore.ps;
 
 import java.lang.reflect.Type;
 

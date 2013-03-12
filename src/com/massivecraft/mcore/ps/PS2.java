@@ -1,4 +1,4 @@
-package com.massivecraft.mcore;
+package com.massivecraft.mcore.ps;
 
 import java.io.Serializable;
 import java.util.Map.Entry;
@@ -11,6 +11,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
+import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.usys.Aspect;
+import com.massivecraft.mcore.usys.Multiverse;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonObject;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
@@ -73,10 +77,27 @@ public final class PS2 implements Cloneable, Serializable
 	public static final transient String NAME_FULL_CHUNKX = "chunkX";
 	public static final transient String NAME_FULL_CHUNKZ = "chunkZ";
 	public static final transient String NAME_FULL_PITCH = "pitch";
-	public static final transient String NAME_FULL_YAW = "yay";
+	public static final transient String NAME_FULL_YAW = "yaw";
 	public static final transient String NAME_FULL_VELOCITYX = "velocityX";
 	public static final transient String NAME_FULL_VELOCITYY = "velocityY";
 	public static final transient String NAME_FULL_VELOCITYZ = "velocityZ";
+	
+	public static final transient String NAME_VERBOOSE_WORLD = "World";
+	public static final transient String NAME_VERBOOSE_BLOCKX = "Block X";
+	public static final transient String NAME_VERBOOSE_BLOCKY = "Block Y";
+	public static final transient String NAME_VERBOOSE_BLOCKZ = "Block Z";
+	public static final transient String NAME_VERBOOSE_LOCATIONX = "Location X";
+	public static final transient String NAME_VERBOOSE_LOCATIONY = "Location Y";
+	public static final transient String NAME_VERBOOSE_LOCATIONZ = "Location Z";
+	public static final transient String NAME_VERBOOSE_CHUNKX = "Chunk X";
+	public static final transient String NAME_VERBOOSE_CHUNKZ = "Chunk Z";
+	public static final transient String NAME_VERBOOSE_PITCH = "Pitch";
+	public static final transient String NAME_VERBOOSE_YAW = "Yaw";
+	public static final transient String NAME_VERBOOSE_VELOCITYX = "Velocity X";
+	public static final transient String NAME_VERBOOSE_VELOCITYY = "Velocity Y";
+	public static final transient String NAME_VERBOOSE_VELOCITYZ = "Velocity Z";
+	
+	public static final transient String SPACE_WASNT_SET = " wasn't set";
 	
 	// -------------------------------------------- //
 	// STANDARD INSTANCES
@@ -536,7 +557,7 @@ public final class PS2 implements Cloneable, Serializable
 	
 	public static World asBukkitWorld(String world) throws IllegalStateException, NullPointerException
 	{
-		if (world == null) throw new NullPointerException("world wasn't set");
+		if (world == null) throw new NullPointerException(NAME_FULL_WORLD + SPACE_WASNT_SET);
 		World ret = Bukkit.getWorld(world);
 		if (ret == null) throw new IllegalStateException("the world "+world+" does not exist on "+MCore.getServerId());
 		return ret;
@@ -547,13 +568,13 @@ public final class PS2 implements Cloneable, Serializable
 		World world = ps.asBukkitWorld();
 		
 		Integer blockX = ps.getBlockX();
-		if (blockX == null) throw new IllegalStateException("blockX wasn't set");
+		if (blockX == null) throw new IllegalStateException(NAME_FULL_BLOCKX + SPACE_WASNT_SET);
 		
 		Integer blockY = ps.getBlockY();
-		if (blockY == null) throw new IllegalStateException("blockY wasn't set");
+		if (blockY == null) throw new IllegalStateException(NAME_FULL_BLOCKY + SPACE_WASNT_SET);
 		
 		Integer blockZ = ps.getBlockZ();
-		if (blockZ == null) throw new IllegalStateException("blockZ wasn't set");
+		if (blockZ == null) throw new IllegalStateException(NAME_FULL_BLOCKZ + SPACE_WASNT_SET);
 		
 		return world.getBlockAt(blockX, blockY, blockZ);
 	}
@@ -563,13 +584,13 @@ public final class PS2 implements Cloneable, Serializable
 		World world = ps.asBukkitWorld();
 		
 		Double locationX = ps.getLocationX();
-		if (locationX == null) throw new IllegalStateException("locationX wasn't set");
+		if (locationX == null) throw new IllegalStateException(NAME_FULL_LOCATIONX + SPACE_WASNT_SET);
 		
 		Double locationY = ps.getLocationY();
-		if (locationY == null) throw new IllegalStateException("locationY wasn't set");
+		if (locationY == null) throw new IllegalStateException(NAME_FULL_LOCATIONY + SPACE_WASNT_SET);
 		
 		Double locationZ = ps.getLocationZ();
-		if (locationZ == null) throw new IllegalStateException("locationZ wasn't set");
+		if (locationZ == null) throw new IllegalStateException(NAME_FULL_LOCATIONZ + SPACE_WASNT_SET);
 		
 		Float pitch = ps.getPitch();
 		if (pitch == null) pitch = DEFAULT_BUKKIT_PITCH;
@@ -585,10 +606,10 @@ public final class PS2 implements Cloneable, Serializable
 		World world = ps.asBukkitWorld();
 		
 		Integer chunkX = ps.getChunkX();
-		if (chunkX == null) throw new IllegalStateException("chunkX wasn't set");
+		if (chunkX == null) throw new IllegalStateException(NAME_FULL_CHUNKX + SPACE_WASNT_SET);
 		
 		Integer chunkZ = ps.getChunkZ();
-		if (chunkZ == null) throw new IllegalStateException("chunkZ wasn't set");
+		if (chunkZ == null) throw new IllegalStateException(NAME_FULL_CHUNKZ + SPACE_WASNT_SET);
 		
 		return world.getChunkAt(chunkX, chunkZ);
 	}
@@ -596,13 +617,13 @@ public final class PS2 implements Cloneable, Serializable
 	public static Vector asBukkitVelocity(PS2 ps) throws IllegalStateException
 	{
 		Double velocityX = ps.getVelocityX();
-		if (velocityX == null) throw new IllegalStateException("velocityX wasn't set");
+		if (velocityX == null) throw new IllegalStateException(NAME_FULL_VELOCITYX + SPACE_WASNT_SET);
 		
 		Double velocityY = ps.getVelocityY();
-		if (velocityY == null) throw new IllegalStateException("velocityY wasn't set");
+		if (velocityY == null) throw new IllegalStateException(NAME_FULL_VELOCITYY + SPACE_WASNT_SET);
 		
 		Double velocityZ = ps.getVelocityZ();
-		if (velocityZ == null) throw new IllegalStateException("velocityZ wasn't set");
+		if (velocityZ == null) throw new IllegalStateException(NAME_FULL_VELOCITYZ + SPACE_WASNT_SET);
 		
 		return new Vector(velocityX, velocityY, velocityZ);
 	}
@@ -616,6 +637,111 @@ public final class PS2 implements Cloneable, Serializable
 	{
 		if (world == null) return null;
 		return world.getName();
+	}
+	
+	// -------------------------------------------- //
+	// TO STRING
+	// -------------------------------------------- //
+	
+	// TODO: Remove this alias!
+	
+	public String getShortDesc()
+	{
+		return this.toString(PS2FormatDesc.get());
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.toString(PS2FormatFormal.get());
+	}
+	
+	public String toString(PS2Format format)
+	{
+		return format.format(this);
+	}
+	
+	public static String toString(PS2 ps, PS2Format format)
+	{
+		return format.format(ps);
+	}
+	
+	// -------------------------------------------- //
+	// PARTIAL COMPARES
+	// -------------------------------------------- //
+	
+	public static Double locationDistanceSquared(PS2 one, PS2 two)
+	{
+		if (one == null) return null;
+		if (two == null) return null;
+		
+		String w1 = one.getWorld();
+		String w2 = two.getWorld();
+		
+		if (!MUtil.equals(w1, w2)) return null;
+		
+		Double x1 = one.getLocationX(true);
+		if (x1 == null) return null;
+		
+		Double y1 = one.getLocationY(true);
+		if (y1 == null) return null;
+		
+		Double z1 = one.getLocationZ(true);
+		if (z1 == null) return null;
+		
+		Double x2 = two.getLocationX(true);
+		if (x2 == null) return null;
+		
+		Double y2 = two.getLocationY(true);
+		if (y2 == null) return null;
+		
+		Double z2 = two.getLocationZ(true);
+		if (z2 == null) return null;
+		
+		return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2);
+	}
+	
+	public static Double locationDistance(PS2 one, PS2 two)
+	{
+		Double ret = locationDistanceSquared(one, two);
+		if (ret == null) return null;
+		return Math.sqrt(ret);
+	}
+	
+	public static boolean inSameWorld(PS2 one, PS2 two)
+	{
+		if (one == null) return false;
+		if (two == null) return false;
+		
+		String w1 = one.getWorld();
+		String w2 = two.getWorld();
+		
+		if (w1 == null) return false;
+		if (w2 == null) return false;
+		
+		return w1.equalsIgnoreCase(w2);
+	}
+	
+	public static boolean inSameUniverse(PS2 one, PS2 two, Multiverse multiverse)
+	{
+		if (one == null) return false;
+		if (two == null) return false;
+		
+		String w1 = one.getWorld();
+		String w2 = two.getWorld();
+		
+		if (w1 == null) return false;
+		if (w2 == null) return false;
+		
+		String m1 = multiverse.getUniverseForWorldName(w1);
+		String m2 = multiverse.getUniverseForWorldName(w2);
+		
+		return m1.equalsIgnoreCase(m2);
+	}
+
+	public static boolean inSameUniverse(PS2 one, PS2 two, Aspect aspect)
+	{
+		return inSameUniverse(one, two, aspect.multiverse());
 	}
 	
 	// -------------------------------------------- //

@@ -18,6 +18,8 @@ import com.massivecraft.mcore.cmd.CmdMcore;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
+import com.massivecraft.mcore.ps.PS2;
+import com.massivecraft.mcore.ps.PS2Adapter;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.Db;
 import com.massivecraft.mcore.store.MStore;
