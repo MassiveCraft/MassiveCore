@@ -41,7 +41,7 @@ import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
  * entity: world, locationX, locationY, locationZ, pitch, yaw, velocityX, velocityY, velocityZ
  */
 
-public final class PS implements Serializable
+public final class PS implements Cloneable, Serializable
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -282,7 +282,7 @@ public final class PS implements Serializable
 		
 		Vector velocity = entity.getVelocity();
 		Double velocityX = velocity.getX();
-		Double velocityY = velocity.getY();
+		Double velocityY = trimEntityVelocityY(velocity.getY());
 		Double velocityZ = velocity.getZ();
 		
 		return valueOf(world, null, null, null, locationX, locationY, locationZ, null, null, pitch, yaw, velocityX, velocityY, velocityZ);
@@ -638,6 +638,17 @@ public final class PS implements Serializable
 		return world.getName();
 	}
 	
+	// Because of something in the physics engine players actually
+	// have a small negative velocityY even when standing still.
+	// We remove this redundant small negative value.
+	public static Double trimEntityVelocityY(Double velocityY)
+	{
+		if (velocityY == null) return null;
+		if (velocityY >= 0) return velocityY;
+		if (velocityY < -0.1D) return velocityY;
+		return 0D;
+	}
+	
 	// -------------------------------------------- //
 	// TO STRING
 	// -------------------------------------------- //
@@ -874,11 +885,11 @@ public final class PS implements Serializable
 	// -------------------------------------------- //
 	// CLONE
 	// -------------------------------------------- //
-	/*
+	
 	@Override
 	public PS clone()
 	{
 		return this;
-	}*/
+	}
 	
 }
