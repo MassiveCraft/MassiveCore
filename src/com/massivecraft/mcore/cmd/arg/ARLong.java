@@ -1,7 +1,18 @@
 package com.massivecraft.mcore.cmd.arg;
 
 public class ARLong extends ARAbstractPrimitive<Long>
-{	
+{
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARLong i = new ARLong();
+	public static ARLong get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -13,12 +24,5 @@ public class ARLong extends ARAbstractPrimitive<Long>
 	{
 		return Long.parseLong(arg);
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARLong i = new ARLong();
-	public static ARLong get() { return i; }
 	
 }

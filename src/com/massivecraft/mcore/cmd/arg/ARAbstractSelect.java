@@ -6,12 +6,20 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.util.Txt;
 
-public abstract class ARAbstractSelect<T> implements ArgReader<T>
+public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 {
+	// -------------------------------------------- //
+	// ABSTRACT
+	// -------------------------------------------- //
+	
 	public abstract String typename();
 	public abstract T select(String str, CommandSender sender);
 	public abstract Collection<String> altNames(CommandSender sender);
 	public boolean canList(CommandSender sender) { return true; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public ArgResult<T> read(String arg, CommandSender sender)

@@ -52,6 +52,7 @@ public final class ObjectTypeAdapter extends TypeAdapter<Object> {
     this.gson = gson;
   }
 
+  @SuppressWarnings("incomplete-switch")
   @Override public Object read(JsonReader in) throws IOException {
     JsonToken token = in.peek();
     switch (token) {

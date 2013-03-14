@@ -9,6 +9,17 @@ import com.massivecraft.mcore.mixin.Mixin;
 
 public class ARWorldId extends ARAbstractSelect<String>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARWorldId i = new ARWorldId();
+	public static ARWorldId get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -49,12 +60,5 @@ public class ARWorldId extends ARAbstractSelect<String>
 		}
 		return ret;
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARWorldId i = new ARWorldId();
-	public static ARWorldId get() { return i; }
 	
 }

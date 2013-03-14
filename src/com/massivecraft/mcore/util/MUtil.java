@@ -314,6 +314,7 @@ public class MUtil
 	// SIMPLE CONSTRUCTORS
 	// -------------------------------------------- //
 	
+	
 	@SafeVarargs
 	public static <T> List<T> list(T... items)
 	{

@@ -13,10 +13,7 @@ public class ArgResult<T>
 	protected T result = null;
 	public T getResult() { return this.result; }
 	public void setResult(T result) { this.result = result; }
-	public boolean hasResult()
-	{
-		return this.getResult() != null;
-	}
+	public boolean hasResult() { return this.getResult() != null; }
 	
 	// -------------------------------------------- //
 	// FIELD: ERRORS

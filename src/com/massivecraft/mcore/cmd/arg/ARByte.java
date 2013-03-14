@@ -1,7 +1,18 @@
 package com.massivecraft.mcore.cmd.arg;
 
 public class ARByte extends ARAbstractPrimitive<Byte>
-{	
+{
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARByte i = new ARByte();
+	public static ARByte get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -13,12 +24,5 @@ public class ARByte extends ARAbstractPrimitive<Byte>
 	{
 		return Byte.parseByte(arg);
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARByte i = new ARByte();
-	public static ARByte get() { return i; }
 	
 }

@@ -2,6 +2,17 @@ package com.massivecraft.mcore.cmd.arg;
 
 public class ARBoolean extends ARAbstractPrimitive<Boolean>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARBoolean i = new ARBoolean();
+	public static ARBoolean get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -18,12 +29,5 @@ public class ARBoolean extends ARAbstractPrimitive<Boolean>
 		}
 		return false;
 	}	
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARBoolean i = new ARBoolean();
-	public static ARBoolean get() { return i; }
 	
 }

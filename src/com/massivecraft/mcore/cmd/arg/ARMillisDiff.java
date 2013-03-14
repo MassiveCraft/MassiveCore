@@ -5,8 +5,15 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.mcore.util.TimeDiffUtil;
 import com.massivecraft.mcore.util.Txt;
 
-public class ARMillisDiff implements ArgReader<Long>
+public class ARMillisDiff extends ArgReaderAbstract<Long>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARMillisDiff i = new ARMillisDiff();
+	public static ARMillisDiff get() { return i; }
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
@@ -25,12 +32,5 @@ public class ARMillisDiff implements ArgReader<Long>
 		}
 		return ret;
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARMillisDiff i = new ARMillisDiff();
-	public static ARMillisDiff get() { return i; }
 	
 }

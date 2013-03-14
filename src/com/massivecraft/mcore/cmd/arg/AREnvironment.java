@@ -9,6 +9,17 @@ import com.massivecraft.mcore.util.MUtil;
 
 public class AREnvironment extends ARAbstractSelect<Environment>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static AREnvironment i = new AREnvironment();
+	public static AREnvironment get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -49,12 +60,5 @@ public class AREnvironment extends ARAbstractSelect<Environment>
 	{
 		return MUtil.list("normal", "end", "nether");
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static AREnvironment i = new AREnvironment();
-	public static AREnvironment get() { return i; }
 	
 }

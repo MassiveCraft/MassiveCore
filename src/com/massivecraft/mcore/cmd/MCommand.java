@@ -491,9 +491,9 @@ public abstract class MCommand
 		return this.args.get(idx);
 	}
 	
-	public <T> T arg(int idx, ArgReader<T> ar)
+	public <T> T arg(int idx, ArgReader<T> argReader)
 	{
-		return this.arg(idx, ar, null);
+		return this.arg(idx, argReader, null);
 	}
 	
 	public <T> T arg(int idx, ArgReader<T> argReader, T defaultNotSet)
@@ -501,6 +501,13 @@ public abstract class MCommand
 		String str = this.arg(idx);
 		if (str == null) return defaultNotSet;
 		ArgResult<T> result = argReader.read(str, this.sender);
+		if (result.hasErrors()) this.msg(result.getErrors());
+		return result.getResult();
+	}
+	
+	public <T> T arg(ArgReader<T> argReader)
+	{
+		ArgResult<T> result = argReader.read(this.sender);
 		if (result.hasErrors()) this.msg(result.getErrors());
 		return result.getResult();
 	}

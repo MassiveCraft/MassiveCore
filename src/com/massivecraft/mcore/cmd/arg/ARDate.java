@@ -5,9 +5,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ARDate extends ARAbstractPrimitive<Date>
-{	
-	protected static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+{
+	protected final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARDate i = new ARDate();
+	public static ARDate get() { return i; }
 
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -19,12 +30,5 @@ public class ARDate extends ARAbstractPrimitive<Date>
 	{
 		return df.parse(arg);
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARDate i = new ARDate();
-	public static ARDate get() { return i; }
 	
 }

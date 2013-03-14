@@ -2,6 +2,17 @@ package com.massivecraft.mcore.cmd.arg;
 
 public class ARString extends ARAbstractPrimitive<String>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARString i = new ARString();
+	public static ARString get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -13,12 +24,5 @@ public class ARString extends ARAbstractPrimitive<String>
 	{
 		return arg;
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARString i = new ARString();
-	public static ARString get() { return i; }
 	
 }

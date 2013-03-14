@@ -1,7 +1,18 @@
 package com.massivecraft.mcore.cmd.arg;
 
 public class ARFloat extends ARAbstractPrimitive<Float>
-{	
+{
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARFloat i = new ARFloat();
+	public static ARFloat get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -13,12 +24,5 @@ public class ARFloat extends ARAbstractPrimitive<Float>
 	{
 		return Float.parseFloat(arg);
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARFloat i = new ARFloat();
-	public static ARFloat get() { return i; }
 	
 }

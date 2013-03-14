@@ -9,6 +9,17 @@ import com.massivecraft.mcore.util.MUtil;
 
 public class ARWorldType extends ARAbstractSelect<WorldType>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARWorldType i = new ARWorldType();
+	public static ARWorldType get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -59,12 +70,5 @@ public class ARWorldType extends ARAbstractSelect<WorldType>
 	{
 		return MUtil.list("normal", "flat", "1.1", "largebiomes");
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARWorldType i = new ARWorldType();
-	public static ARWorldType get() { return i; }
 	
 }

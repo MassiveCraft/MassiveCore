@@ -4,8 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-public class ARWorld implements ArgReader<World>
+public class ARWorld extends ArgReaderAbstract<World>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARWorld i = new ARWorld();
+	public static ARWorld get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public ArgResult<World> read(String arg, CommandSender sender)
 	{
@@ -32,13 +43,5 @@ public class ARWorld implements ArgReader<World>
 		
 		return ret;
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARWorld i = new ARWorld();
-	public static ARWorld get() { return i; }
-	
 	
 }

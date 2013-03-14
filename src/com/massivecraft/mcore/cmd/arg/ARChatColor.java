@@ -9,6 +9,17 @@ import org.bukkit.command.CommandSender;
 
 public class ARChatColor extends ARAbstractSelect<ChatColor>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARChatColor i = new ARChatColor();
+	public static ARChatColor get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -61,12 +72,5 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 		str = str.replace(" ", "");
 		return str;
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARChatColor i = new ARChatColor();
-	public static ARChatColor get() { return i; }
 	
 }

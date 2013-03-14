@@ -3,8 +3,19 @@ package com.massivecraft.mcore.cmd.arg;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
-public class ARMaterial implements ArgReader<Material>
+public class ARMaterial extends ArgReaderAbstract<Material>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARMaterial i = new ARMaterial();
+	public static ARMaterial get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public ArgResult<Material> read(String arg, CommandSender sender)
 	{
@@ -16,12 +27,5 @@ public class ARMaterial implements ArgReader<Material>
 		}
 		return result;
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARMaterial i = new ARMaterial();
-	public static ARMaterial get() { return i; }
 	
 }

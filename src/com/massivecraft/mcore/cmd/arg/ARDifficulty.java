@@ -9,6 +9,17 @@ import com.massivecraft.mcore.util.MUtil;
 
 public class ARDifficulty extends ARAbstractSelect<Difficulty>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARDifficulty i = new ARDifficulty();
+	public static ARDifficulty get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -47,12 +58,5 @@ public class ARDifficulty extends ARAbstractSelect<Difficulty>
 	{
 		return MUtil.list("peaceful", "easy", "normal", "hard");
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARDifficulty i = new ARDifficulty();
-	public static ARDifficulty get() { return i; }
 	
 }

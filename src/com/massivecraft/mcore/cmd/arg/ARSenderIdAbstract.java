@@ -7,10 +7,10 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.Txt;
 
-public abstract class ARSenderIdAbstract<T> implements ArgReader<T>
+public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 {
 	// -------------------------------------------- //
-	// ABSTRACT
+	// CONSTANTS
 	// -------------------------------------------- //
 	
 	public final static int MAX_COUNT = 10;

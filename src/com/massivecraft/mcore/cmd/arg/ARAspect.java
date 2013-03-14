@@ -10,6 +10,17 @@ import com.massivecraft.mcore.usys.AspectColl;
 
 public class ARAspect extends ARAbstractSelect<Aspect>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARAspect i = new ARAspect();
+	public static ARAspect get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -33,12 +44,5 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	{
 		return AspectColl.i.getIds();
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARAspect i = new ARAspect();
-	public static ARAspect get() { return i; }
 	
 }

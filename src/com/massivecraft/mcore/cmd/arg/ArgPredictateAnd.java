@@ -21,6 +21,10 @@ public class ArgPredictateAnd<T> implements ArgPredictate<T>
 		this.two = two;
 	}
 	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public boolean apply(T type, String arg, CommandSender sender)
 	{

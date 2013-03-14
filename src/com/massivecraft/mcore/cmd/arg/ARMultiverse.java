@@ -10,6 +10,17 @@ import com.massivecraft.mcore.usys.MultiverseColl;
 
 public class ARMultiverse extends ARAbstractSelect<Multiverse>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARMultiverse i = new ARMultiverse();
+	public static ARMultiverse get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -33,12 +44,5 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 	{
 		return MultiverseColl.i.getIds();
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARMultiverse i = new ARMultiverse();
-	public static ARMultiverse get() { return i; }
 	
 }

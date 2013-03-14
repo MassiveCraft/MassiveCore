@@ -9,6 +9,17 @@ import com.massivecraft.mcore.util.MUtil;
 
 public class ARGameMode extends ARAbstractSelect<GameMode>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARGameMode i = new ARGameMode();
+	public static ARGameMode get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -43,12 +54,5 @@ public class ARGameMode extends ARAbstractSelect<GameMode>
 	{
 		return MUtil.list("survival", "creative", "adventure");
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARGameMode i = new ARGameMode();
-	public static ARGameMode get() { return i; }
 	
 }

@@ -2,6 +2,17 @@ package com.massivecraft.mcore.cmd.arg;
 
 public class ARInteger extends ARAbstractPrimitive<Integer>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARInteger i = new ARInteger();
+	public static ARInteger get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -13,12 +24,5 @@ public class ARInteger extends ARAbstractPrimitive<Integer>
 	{
 		return Integer.parseInt(arg);
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARInteger i = new ARInteger();
-	public static ARInteger get() { return i; }
-	
+
 }

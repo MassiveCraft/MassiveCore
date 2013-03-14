@@ -8,10 +8,26 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.Txt;
 
-public class ARUniverse implements ArgReader<String>
+public class ARUniverse extends ArgReaderAbstract<String>
 {
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	public ARUniverse(Multiverse multiverse)
+	{
+		this.multiverse = multiverse;
+	}
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	protected Multiverse multiverse;
+	public Multiverse multiverse() { return this.multiverse; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
@@ -34,19 +50,4 @@ public class ARUniverse implements ArgReader<String>
 		return result;
 	}
 	
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	protected Multiverse multiverse;
-	public Multiverse multiverse() { return this.multiverse; }
-	
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	public ARUniverse(Multiverse multiverse)
-	{
-		this.multiverse = multiverse;
-	}
 }

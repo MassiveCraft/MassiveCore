@@ -1,7 +1,18 @@
 package com.massivecraft.mcore.cmd.arg;
 
 public class ARDouble extends ARAbstractPrimitive<Double>
-{	
+{
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ARDouble i = new ARDouble();
+	public static ARDouble get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public String typename()
 	{
@@ -13,12 +24,5 @@ public class ARDouble extends ARAbstractPrimitive<Double>
 	{
 		return Double.parseDouble(arg);
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ARDouble i = new ARDouble();
-	public static ARDouble get() { return i; }
 	
 }
