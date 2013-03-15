@@ -467,14 +467,7 @@ public abstract class MCommand
 	// ARGUMENT READERS
 	// -------------------------------------------- //
 	
-	public String argConcatFrom(int idx)
-	{
-		if ( ! this.argIsSet(idx)) return null;
-		int from = idx;
-		int to = args.size();
-		if (to <= from) return "";
-		return Txt.implode(this.args.subList(from, to), " ");
-	}
+	// argIsSet
 	
 	public boolean argIsSet(int idx)
 	{
@@ -484,6 +477,8 @@ public abstract class MCommand
 		}
 		return true;
 	}
+	
+	// arg
 	
 	public String arg(int idx)
 	{
@@ -499,6 +494,35 @@ public abstract class MCommand
 	public <T> T arg(int idx, ArgReader<T> argReader, T defaultNotSet)
 	{
 		String str = this.arg(idx);
+		return this.arg(str, argReader, defaultNotSet);
+	}
+	
+	// argConcatFrom
+	
+	public String argConcatFrom(int idx)
+	{
+		if ( ! this.argIsSet(idx)) return null;
+		int from = idx;
+		int to = args.size();
+		if (to <= from) return "";
+		return Txt.implode(this.args.subList(from, to), " ");
+	}
+	
+	public <T> T argConcatFrom(int idx, ArgReader<T> argReader)
+	{
+		return this.arg(idx, argReader, null);
+	}
+	
+	public <T> T argConcatFrom(int idx, ArgReader<T> argReader, T defaultNotSet)
+	{
+		String str = this.argConcatFrom(idx);
+		return this.arg(str, argReader, defaultNotSet);
+	}
+	
+	// Core & Other
+	
+	public <T> T arg(String str, ArgReader<T> argReader, T defaultNotSet)
+	{
 		if (str == null) return defaultNotSet;
 		ArgResult<T> result = argReader.read(str, this.sender);
 		if (result.hasErrors()) this.msg(result.getErrors());
@@ -507,8 +531,6 @@ public abstract class MCommand
 	
 	public <T> T arg(ArgReader<T> argReader)
 	{
-		ArgResult<T> result = argReader.read(this.sender);
-		if (result.hasErrors()) this.msg(result.getErrors());
-		return result.getResult();
+		return this.arg(null, argReader, null);
 	}
 }
