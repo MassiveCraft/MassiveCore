@@ -510,7 +510,7 @@ public abstract class MCommand
 	
 	public <T> T argConcatFrom(int idx, ArgReader<T> argReader)
 	{
-		return this.arg(idx, argReader, null);
+		return this.argConcatFrom(idx, argReader, null);
 	}
 	
 	public <T> T argConcatFrom(int idx, ArgReader<T> argReader, T defaultNotSet)
@@ -531,6 +531,8 @@ public abstract class MCommand
 	
 	public <T> T arg(ArgReader<T> argReader)
 	{
-		return this.arg(null, argReader, null);
+		ArgResult<T> result = argReader.read(null, this.sender);
+		if (result.hasErrors()) this.msg(result.getErrors());
+		return result.getResult();
 	}
 }
