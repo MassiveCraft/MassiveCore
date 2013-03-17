@@ -7,11 +7,11 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import net.minecraft.server.v1_4_R1.EntityPlayer;
-import net.minecraft.server.v1_4_R1.Packet8UpdateHealth;
+import net.minecraft.server.v1_5_R1.EntityPlayer;
+import net.minecraft.server.v1_5_R1.Packet8UpdateHealth;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

@@ -3,7 +3,7 @@ package com.massivecraft.mcore.util;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_R1.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_5_R1.inventory.CraftInventoryCustom;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;

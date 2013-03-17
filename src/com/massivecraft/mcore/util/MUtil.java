@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.minecraft.server.v1_4_R1.DedicatedServer;
+import net.minecraft.server.v1_5_R1.DedicatedServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,7 +26,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_4_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R1.CraftServer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
