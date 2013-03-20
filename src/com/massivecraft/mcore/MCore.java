@@ -17,6 +17,7 @@ import com.massivecraft.mcore.cmd.CmdMcore;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
+import com.massivecraft.mcore.mixin.TeleportMixinCauseEngine;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
@@ -118,6 +119,7 @@ public class MCore extends MPlugin
 		InternalListener.get().setup();
 		ScheduledTeleportEngine.get().setup();
 		FirstTeleportUtil.get().setup();
+		TeleportMixinCauseEngine.get().setup();
 		
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);

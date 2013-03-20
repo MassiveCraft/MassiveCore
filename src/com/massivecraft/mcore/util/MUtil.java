@@ -38,6 +38,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -149,6 +150,11 @@ public class MUtil
 		if (one.getBlockZ() != two.getBlockZ()) return false;
 		if (one.getBlockY() != two.getBlockY()) return false;
 		return one.getWorld().equals(two.getWorld());
+	}
+	
+	public static boolean isSameBlock(PlayerMoveEvent event)
+	{
+		return isSameBlock(event.getFrom(), event.getTo());
 	}
 	
 	// -------------------------------------------- //

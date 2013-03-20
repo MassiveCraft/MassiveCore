@@ -1,7 +1,6 @@
 package com.massivecraft.mcore.mixin;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -23,11 +22,11 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	// CORE LOGIC
 	// -------------------------------------------- //
 	
-	public static void teleportEntity(Entity entity, PS ps) throws TeleporterException
+	public static void teleportPlayer(Player player, PS ps) throws TeleporterException
 	{
 		// Base the PS location on the entity location
 		ps = ps.getEntity(true);
-		ps = PS.valueOf(entity.getLocation()).with(ps);
+		ps = PS.valueOf(player.getLocation()).with(ps);
 		
 		// Bukkit Location
 		Location location = null;
@@ -40,7 +39,10 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 		{
 			throw new TeleporterException(Txt.parse("<b>Could not calculate the location: %s", e.getMessage()));
 		}
-		entity.teleport(location);
+		
+		TeleportMixinCauseEngine.get().setMixinCausedTeleportIncoming(true);
+		player.teleport(location);
+		TeleportMixinCauseEngine.get().setMixinCausedTeleportIncoming(false);
 		
 		// Bukkit velocity
 		Vector velocity = null;
@@ -52,7 +54,7 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 		{
 			return;
 		}
-		entity.setVelocity(velocity);
+		player.setVelocity(velocity);
 	}
 	
 	// -------------------------------------------- //
@@ -97,7 +99,7 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			Player teleportee = SenderUtil.getPlayer(teleporteeId);
 			if (teleportee != null)
 			{
-				teleportEntity(teleportee, destinationPs);
+				teleportPlayer(teleportee, destinationPs);
 			}
 			else
 			{

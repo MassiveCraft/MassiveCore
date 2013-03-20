@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.mcore.Predictate;
@@ -289,6 +290,11 @@ public class Mixin
 	// -------------------------------------------- //
 	// STATIC EXPOSE: TELEPORTER
 	// -------------------------------------------- //
+	
+	public static boolean isCausedByMixin(PlayerTeleportEvent event)
+	{
+		return getTeleportMixin().isCausedByMixin(event);
+	}
 	
 	public static void teleport(Player teleportee, PS destinationPs) throws TeleporterException
 	{
