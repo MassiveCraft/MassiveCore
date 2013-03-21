@@ -16,18 +16,18 @@ public class Aspect extends Entity<Aspect, String>
 	
 	public static Aspect get(Object oid)
 	{
-		return AspectColl.i.get(oid);
+		return AspectColl.get().get(oid);
 	}
 	
 	// -------------------------------------------- //
 	// TRANSIENT FIELDS
 	// -------------------------------------------- //
 	
-	protected transient boolean registered = false;
+	private transient boolean registered = false;
 	public boolean isRegistered() { return this.registered; }
 	public void register() { this.registered = true; }
 	
-	protected transient Collection<String> desc = new ArrayList<String>();
+	private transient Collection<String> desc = new ArrayList<String>();
 	public Collection<String> getDesc() { return this.desc; }
 	public void setDesc(Collection<String> val) { this.desc = val; }
 	public void setDesc(String... val) { this.desc = Arrays.asList(val); }
@@ -37,16 +37,16 @@ public class Aspect extends Entity<Aspect, String>
 	// -------------------------------------------- //
 	
 	@SerializedName("mid")
-	protected String multiverseId;
+	private String multiverseId;
 	public String getMultiverseId() { return this.multiverseId; }
 	public void setMultiverseId(String multiverseId) { this.multiverseId = multiverseId; }
-	public Multiverse multiverse()
+	public Multiverse getMultiverse()
 	{
-		Multiverse ret = MultiverseColl.i.get(this.multiverseId);
-		if (ret == null) ret = MultiverseColl.i.get(MCore.DEFAULT);
+		Multiverse ret = MultiverseColl.get().get(this.multiverseId);
+		if (ret == null) ret = MultiverseColl.get().get(MCore.DEFAULT);
 		return ret;
 	}
-	public void multiverse(Multiverse val) { this.multiverseId = val.getId(); }
+	public void setMultiverse(Multiverse val) { this.multiverseId = val.getId(); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

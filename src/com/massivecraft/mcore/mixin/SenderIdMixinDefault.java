@@ -81,7 +81,7 @@ public class SenderIdMixinDefault extends SenderIdMixinAbstract implements Liste
 			this.onlineSenderIds.add(id);			
 		}
 		
-		Bukkit.getServer().getPluginManager().registerEvents(this, MCore.p);
+		Bukkit.getServer().getPluginManager().registerEvents(this, MCore.get());
 		
 		long end = System.currentTimeMillis();
 		MCore.get().log(Txt.parse("<i>Setup of SenderIdMixinDefault took <h>%d<i>ms.", end-start));

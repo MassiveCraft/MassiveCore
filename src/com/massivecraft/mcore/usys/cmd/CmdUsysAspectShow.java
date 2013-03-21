@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.usys.cmd;
 
-import com.massivecraft.mcore.Permission;
+import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARAspect;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -14,7 +14,7 @@ public class CmdUsysAspectShow extends MCommand
 		this.addAliases("s", "show");
 		this.addRequiredArg("aspect");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_ASPECT_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_ASPECT_SHOW.node));
 	}
 	
 	@Override
@@ -24,7 +24,7 @@ public class CmdUsysAspectShow extends MCommand
 		if (aspect == null) return;
 		
 		msg(Txt.titleize("Aspect: "+aspect.getId()));
-		msg("<k>using multiverse: <v>%s",aspect.multiverse().getId());
+		msg("<k>using multiverse: <v>%s",aspect.getMultiverse().getId());
 		
 		for (String descLine : aspect.getDesc())
 		{

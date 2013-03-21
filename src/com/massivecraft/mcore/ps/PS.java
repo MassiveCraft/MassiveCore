@@ -744,7 +744,7 @@ public final class PS implements Cloneable, Serializable
 
 	public static boolean inSameUniverse(PS one, PS two, Aspect aspect)
 	{
-		return inSameUniverse(one, two, aspect.multiverse());
+		return inSameUniverse(one, two, aspect.getMultiverse());
 	}
 	
 	// -------------------------------------------- //

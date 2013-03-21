@@ -21,7 +21,7 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public static Multiverse get(Object oid)
 	{
-		return MultiverseColl.i.get(oid);
+		return MultiverseColl.get().get(oid);
 	}
 	
 	// -------------------------------------------- //
@@ -46,12 +46,12 @@ public class Multiverse extends Entity<Multiverse, String>
 	
 	public List<Aspect> myAspects()
 	{
-		return AspectColl.i.getAllRegisteredForMultiverse(this, true);
+		return AspectColl.get().getAllRegisteredForMultiverse(this, true);
 	}
 	
 	public List<Aspect> otherAspects()
 	{
-		return AspectColl.i.getAllRegisteredForMultiverse(this, false);
+		return AspectColl.get().getAllRegisteredForMultiverse(this, false);
 	}
 	
 	// -------------------------------------------- //

@@ -4,8 +4,12 @@ import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.mcore.util.PermUtil;
 
-public enum Permission
+public enum Perm
 {
+	// -------------------------------------------- //
+	// ENUM
+	// -------------------------------------------- //
+	
 	CMD_USYS("cmd.usys"),
 	CMD_USYS_MULTIVERSE("cmd.usys.multiverse"),
 	CMD_USYS_MULTIVERSE_LIST("cmd.usys.multiverse.list"),
@@ -23,14 +27,28 @@ public enum Permission
 	CMD_USYS_ASPECT_USE("cmd.usys.aspect.use"),
 	CMD_MCORE("cmd.mcore"),
 	NOTPDELAY("notpdelay"),
+	
+	// END OF LIST
 	;
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
 	public final String node;
 	
-	Permission(final String permissionNode)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	Perm(final String permissionNode)
 	{
 		this.node = "mcore."+permissionNode;
 	}
+	
+	// -------------------------------------------- //
+	// HAS
+	// -------------------------------------------- //
 	
 	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{

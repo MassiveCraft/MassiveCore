@@ -3,7 +3,7 @@ package com.massivecraft.mcore.usys.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.massivecraft.mcore.Permission;
+import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -18,7 +18,7 @@ public class CmdUsysAspectList extends MCommand
 		this.addAliases("l", "list");
 		this.addOptionalArg("page", "1");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_ASPECT_LIST.node));
+		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_ASPECT_LIST.node));
 	}
 	
 	@Override
@@ -30,9 +30,9 @@ public class CmdUsysAspectList extends MCommand
 		// Create Messages
 		List<String> lines = new ArrayList<String>();
 		
-		for (Aspect aspect : AspectColl.i.getAllRegistered())
+		for (Aspect aspect : AspectColl.get().getAllRegistered())
 		{
-			lines.add("<h>"+aspect.getId()+" <white>--> <h>"+aspect.multiverse().getId());
+			lines.add("<h>"+aspect.getId()+" <white>--> <h>"+aspect.getMultiverse().getId());
 		}
 				
 		// Send them

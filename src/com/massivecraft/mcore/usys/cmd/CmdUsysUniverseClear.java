@@ -1,7 +1,7 @@
 package com.massivecraft.mcore.usys.cmd;
 
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.Permission;
+import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -15,7 +15,7 @@ public class CmdUsysUniverseClear extends MCommand
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_UNIVERSE_CLEAR.node));
+		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_UNIVERSE_CLEAR.node));
 	}
 	
 	@Override

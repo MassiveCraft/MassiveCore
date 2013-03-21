@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore.Permission;
+import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.usys.AspectColl;
 
@@ -30,19 +30,19 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	@Override
 	public Aspect select(String arg, CommandSender sender)
 	{
-		return AspectColl.i.get(arg);
+		return AspectColl.get().get(arg);
 	}
 	
 	@Override
 	public boolean canList(CommandSender sender)
 	{
-		return Permission.CMD_USYS_ASPECT_LIST.has(sender, false);
+		return Perm.CMD_USYS_ASPECT_LIST.has(sender, false);
 	}
 
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
-		return AspectColl.i.getIds();
+		return AspectColl.get().getIds();
 	}
 	
 }

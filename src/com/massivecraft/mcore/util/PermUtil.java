@@ -103,7 +103,7 @@ public class PermUtil
 		}
 		else
 		{
-			permissible.addAttachment(MCore.p, permissionName, true);
+			permissible.addAttachment(MCore.get(), permissionName, true);
 		}
 	}
 	

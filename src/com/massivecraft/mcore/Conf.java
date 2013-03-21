@@ -39,7 +39,7 @@ public class Conf extends SimpleConfig
 	
 	public static int getTpdelay(Permissible permissible)
 	{
-		if (Permission.NOTPDELAY.has(permissible, false)) return 0;
+		if (Perm.NOTPDELAY.has(permissible, false)) return 0;
 		return Math.max(tpdelay, 0); 
 	}
 	
@@ -49,6 +49,6 @@ public class Conf extends SimpleConfig
 	public static transient Conf i = new Conf();
 	private Conf()
 	{
-		super(MCore.p, new File("plugins/mcore/conf.json"));
+		super(MCore.get(), new File("plugins/mcore/conf.json"));
 	}
 }

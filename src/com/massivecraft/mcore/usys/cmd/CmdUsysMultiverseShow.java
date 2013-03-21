@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.Permission;
+import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -19,7 +19,7 @@ public class CmdUsysMultiverseShow extends MCommand
 		this.addAliases("s", "show");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_MULTIVERSE_SHOW.node));
 	}
 	
 	@Override

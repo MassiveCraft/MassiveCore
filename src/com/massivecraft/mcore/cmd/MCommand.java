@@ -157,7 +157,7 @@ public abstract class MCommand
 	
 	public boolean register()
 	{
-		return register(MCore.p, false);
+		return register(MCore.get(), false);
 	}
 	
 	public boolean register(MPlugin mplugin)
@@ -167,7 +167,7 @@ public abstract class MCommand
 	
 	public boolean register(boolean override)
 	{
-		return this.register(MCore.p, override);
+		return this.register(MCore.get(), override);
 	}
 	
 	public boolean register(MPlugin mplugin, boolean override)
@@ -188,7 +188,7 @@ public abstract class MCommand
 				knownCommands.remove(lowerLabel);
 			}
 			
-			if (scm.register(MCore.p.getDescription().getName(), bgc))
+			if (scm.register(MCore.get().getDescription().getName(), bgc))
 			{
 				ret = true;
 			}

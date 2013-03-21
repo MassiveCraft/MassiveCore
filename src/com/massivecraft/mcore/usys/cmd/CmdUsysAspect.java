@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.usys.cmd;
 
-import com.massivecraft.mcore.Permission;
+import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.HelpCommand;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -20,7 +20,7 @@ public class CmdUsysAspect extends MCommand
 		this.addSubCommand(this.cmdUsysAspectShow);
 		this.addSubCommand(this.cmdUsysAspectUse);
 		
-		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_ASPECT.node));
+		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_ASPECT.node));
 	}
 	
 	@Override

@@ -30,7 +30,7 @@ public abstract class Colls<C extends Coll<E, L>, E, L extends Comparable<? supe
 	{
 		List<C> ret = new ArrayList<C>(); 
 		Aspect a = this.getAspect();
-		Multiverse m = a.multiverse();
+		Multiverse m = a.getMultiverse();
 		for (String universe : m.getUniverses())
 		{
 			ret.add(this.getForUniverse(universe));
@@ -51,7 +51,7 @@ public abstract class Colls<C extends Coll<E, L>, E, L extends Comparable<? supe
 	{
 		if (worldName == null) throw new IllegalArgumentException("worldName may not be null.");
 		
-		return this.getAspect().multiverse().getUniverseForWorldName(worldName);
+		return this.getAspect().getMultiverse().getUniverseForWorldName(worldName);
 	}
 	
 	// -------------------------------------------- //

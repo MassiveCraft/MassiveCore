@@ -47,7 +47,7 @@ public class MCore extends MPlugin
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static MCore p;
+	private static MCore p;
 	public static MCore get() { return p; }
 	public MCore() { p = this; }
 	
@@ -125,8 +125,8 @@ public class MCore extends MPlugin
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
 		
 		// Init internal collections
-		MultiverseColl.i.init();
-		AspectColl.i.init();
+		MultiverseColl.get().init();
+		AspectColl.get().init();
 		
 		// Register commands
 		this.cmdUsys = new CmdUsys();

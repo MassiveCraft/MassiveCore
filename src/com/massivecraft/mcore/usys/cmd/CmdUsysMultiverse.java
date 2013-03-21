@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.usys.cmd;
 
-import com.massivecraft.mcore.Permission;
+import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.HelpCommand;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -22,7 +22,7 @@ public class CmdUsysMultiverse extends MCommand
 		this.addSubCommand(this.cmdUsysMultiverseNew);
 		this.addSubCommand(this.cmdUsysMultiverseDel);
 		
-		this.addRequirements(ReqHasPerm.get(Permission.CMD_USYS_MULTIVERSE.node));
+		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_MULTIVERSE.node));
 	}
 	
 	@Override

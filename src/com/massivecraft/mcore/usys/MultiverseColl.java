@@ -6,14 +6,19 @@ import com.massivecraft.mcore.store.Coll;
 public class MultiverseColl extends Coll<Multiverse, String>
 {
 	// -------------------------------------------- //
-	// META
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	public static MultiverseColl i = new MultiverseColl();
 	
+	private static MultiverseColl i = new MultiverseColl();
+	public static MultiverseColl get() { return i; }
 	private MultiverseColl()
 	{
-		super(MCore.p, "ai", "usys_multiverse", Multiverse.class, String.class, false);
+		super(MCore.get(), "ai", "usys_multiverse", Multiverse.class, String.class, false);
 	}
+	
+	// -------------------------------------------- //
+	// EXTRAS
+	// -------------------------------------------- //
 	
 	@Override
 	public void init()

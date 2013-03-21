@@ -182,7 +182,7 @@ public class InternalListener implements Listener
 	{
 		// We do the schedule in order for the set to be correct through out the whole MONITOR priority state.
 		final String name = event.getPlayer().getName();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.p, new Runnable()
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
 		{
 			@Override
 			public void run()
@@ -213,7 +213,7 @@ public class InternalListener implements Listener
 	{
 		// We do the schedule in order for the set to be correct through out the whole MONITOR priority state.
 		final String name = event.getPlayer().getName();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.p, new Runnable()
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
 		{
 			@Override
 			public void run()

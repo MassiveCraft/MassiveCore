@@ -26,10 +26,10 @@ public class LibLoader
 			File parent = file.getParentFile();
 			if (parent != null && !parent.exists()) parent.mkdirs();
 			
-			MCore.p.log("Downloading library "+filename);
+			MCore.get().log("Downloading library "+filename);
 			if ( ! DiscUtil.downloadUrl(url, file))
 			{
-				MCore.p.log(Txt.parse("<b>Failed to download <h>%s", filename));
+				MCore.get().log(Txt.parse("<b>Failed to download <h>%s", filename));
 				return false;
 			}
 		}
