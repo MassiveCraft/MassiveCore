@@ -141,7 +141,8 @@ public class InventoryUtil
 		return ret;
 	}
 	
-	// NOTE: This method may not be compatible with player inventories
+	// NOTE: This method does not handle the armor part of player inventories.
+	// That is expected behavior for now.
 	public static Inventory cloneInventory(Inventory inventory)
 	{
 		if (inventory == null) return null;
