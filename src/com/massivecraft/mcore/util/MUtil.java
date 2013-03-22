@@ -34,13 +34,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.mcore.InternalListener;
 import com.massivecraft.mcore.MCore;
@@ -234,53 +230,6 @@ public class MUtil
 		
 		return ret;
 	}
-	
-	/**
-	 * This method will return the ItemStack the player is trying to equip.
-	 * If the click event would not result in equipping something null will be returned.
-	 * Note that this algorithm is not perfect. It's an adequate guess.
-	 * 
-	 * @param event The InventoryClickEvent to analyze.
-	 * @return The ItemStack the player is trying to equip.
-	 */
-	public static ItemStack getEquipping(InventoryClickEvent event)
-	{
-		/*
-		System.out.println("---");
-		System.out.println("getInventory().getType() "+event.getInventory().getType());
-		System.out.println("getView().getTopInventory().getType() "+event.getView().getTopInventory().getType());
-		System.out.println("getView().getType() "+event.getView().getType());
-		System.out.println("getView().getBottomInventory().getType() "+event.getView().getBottomInventory().getType());
-		System.out.println("event.getSlotType() "+event.getSlotType());
-		System.out.println("event.getRawSlot() "+event.getRawSlot());
-		System.out.println("event.getSlot() "+event.getSlot());
-		*/
-		
-		boolean isShiftClick = event.isShiftClick();
-		InventoryType inventoryType = event.getInventory().getType();
-		SlotType slotType = event.getSlotType();
-		ItemStack cursor = event.getCursor();
-		ItemStack currentItem = event.getCurrentItem();
-		
-		if (isShiftClick)
-		{
-			if (inventoryType != InventoryType.CRAFTING) return null;
-			if (slotType == SlotType.CRAFTING) return null;
-			if (slotType == SlotType.ARMOR) return null;
-			if (slotType == SlotType.RESULT) return null;
-			if (currentItem.getType() == Material.AIR) return null;
-			return currentItem;
-		}
-		else
-		{
-			if (slotType == SlotType.ARMOR)
-			{
-				return cursor;
-			}
-			return null;
-		}
-	}
-	
 	
 	public static boolean isCombatEvent(EntityDamageEvent event)
 	{
