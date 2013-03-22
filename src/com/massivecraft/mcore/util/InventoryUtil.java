@@ -3,7 +3,7 @@ package com.massivecraft.mcore.util;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_5_R1.inventory.CraftInventoryCustom;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -11,27 +11,58 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryUtil
 {
 	// -------------------------------------------- //
-	// CREATE
+	// EVENT INTERPRETATION
 	// -------------------------------------------- //
 	
-	public static Inventory create(int size)
+	public static boolean isGiving(InventoryClickEvent event)
 	{
-		return create(null, size, "Chest");
+		// Was the upper inventory clicked?
+		boolean upperClicked = event.getRawSlot() < event.getInventory().getSize();
+		
+		boolean ret = false;
+		
+		if (upperClicked)
+		{
+			ret = (event.getCursor() != null && event.getCursor().getAmount() > 0);
+		}
+		else
+		{
+			ret = event.isShiftClick();
+		}
+		
+		return ret;
 	}
 	
-	public static Inventory create(InventoryHolder owner, int size)
+	public static boolean isTaking(InventoryClickEvent event)
 	{
-		return create(owner, size, "Chest");
+		// Was the upper inventory clicked?
+		boolean upperClicked = event.getRawSlot() < event.getInventory().getSize();
+		
+		boolean ret = false;
+		
+		if (upperClicked)
+		{
+			ret = (event.getCurrentItem() != null && event.getCurrentItem().getAmount() > 0);
+		}
+		
+		return ret;
 	}
 	
-	public static Inventory create(int size, String title)
-	{
-		return create(null, size, title);
-	}
+	// -------------------------------------------- //
+	// IS EMPTY?
+	// -------------------------------------------- //
 	
-	public static Inventory create(InventoryHolder owner, int size, String title)
+	public static boolean isEmpty(Inventory inv)
 	{
-		return new CraftInventoryCustom(owner, size, title);
+		if (inv == null) return true;
+		for (ItemStack stack : inv.getContents())
+		{
+			if (stack == null) continue;
+			if (stack.getAmount() == 0) continue;
+			if (stack.getTypeId() == 0) continue;
+			return false;
+		}
+		return true;
 	}
 	
 	// -------------------------------------------- //

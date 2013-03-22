@@ -2,7 +2,7 @@ package com.massivecraft.mcore.adapter;
 
 import java.lang.reflect.Type;
 
-import org.bukkit.craftbukkit.v1_5_R1.inventory.CraftInventoryCustom;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -80,27 +80,9 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			itemStacks[i] = itemStack;
 		}
 		
-		Inventory ret = new CraftInventoryCustom(null, size, "items");
+		Inventory ret = Bukkit.createInventory(null, size);
 		ret.setContents(itemStacks);
 		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// UTIL
-	// -------------------------------------------- //
-	
-	// This utility is nice to have in many cases :)
-	public static boolean isInventoryEmpty(Inventory inv)
-	{
-		if (inv == null) return true;
-		for (ItemStack stack : inv.getContents())
-		{
-			if (stack == null) continue;
-			if (stack.getAmount() == 0) continue;
-			if (stack.getTypeId() == 0) continue;
-			return false;
-		}
-		return true;
 	}
 	
 	// -------------------------------------------- //
