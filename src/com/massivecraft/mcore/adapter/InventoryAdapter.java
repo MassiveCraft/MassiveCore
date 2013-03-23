@@ -68,15 +68,8 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 		ItemStack itemStack = null;
 		JsonElement jsonItemStack = null;
 		
-		// Every inventory has a content part. Lets handle it at once:
+		// Every inventory has a content part.
 		ItemStack[] itemStacks = src.getContents();
-		for (int i = 0; i < itemStacks.length; i++)
-		{
-			itemStack = itemStacks[i];
-			jsonItemStack = MCore.gson.toJsonTree(itemStack, ItemStack.class);
-			if (jsonItemStack == null) continue;
-			jsonInventory.add(String.valueOf(i), jsonItemStack);
-		}
 		
 		if (src instanceof PlayerInventory)
 		{
@@ -124,6 +117,15 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			jsonInventory.addProperty(SIZE, itemStacks.length);
 		}
 		
+		// Add the content at the end since we like to have it at the bottom of return json.
+		for (int i = 0; i < itemStacks.length; i++)
+		{
+			itemStack = itemStacks[i];
+			jsonItemStack = MCore.gson.toJsonTree(itemStack, ItemStack.class);
+			if (jsonItemStack == null) continue;
+			jsonInventory.add(String.valueOf(i), jsonItemStack);
+		}
+		
 		return jsonInventory;
 	}
 	
@@ -142,15 +144,13 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 		
 		// There must be a size entry!
 		if ( ! jsonInventory.has(SIZE)) return null;
+		
 		JsonPrimitive jsonSize = jsonInventory.get(SIZE).getAsJsonPrimitive();
 		int size = 0;
 		
 		// What size/type is it?
-		if (jsonSize.isString())
+		if (jsonSize.isString() && jsonSize.getAsString().equals(PLAYER))
 		{
-			// Only makes sense if stating "player".
-			if (!jsonSize.getAsString().equals(PLAYER)) return null;
-			
 			// We use 36 here since it's the size of the player inventory (without armor)
 			size = 36;
 			
@@ -190,18 +190,13 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 				pret.setBoots(itemStack);
 			}
 		}
-		else if (jsonSize.isNumber())
+		else
 		{
 			// A custom size were specified
 			size = jsonSize.getAsInt();
 			
 			// This is a "Custom" Inventory (content only).
 			ret = new CraftInventoryCustom(null, size);
-		}
-		else
-		{
-			// It must be either string or number
-			return null;
 		}
 		
 		// Now process content

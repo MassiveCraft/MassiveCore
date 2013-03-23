@@ -113,6 +113,15 @@ public class InventoryUtil
 	}
 	
 	// -------------------------------------------- //
+	// CREATE PLAYER INVENTORY
+	// -------------------------------------------- //
+	
+	public static PlayerInventory createPlayerInventory()
+	{
+		return new CraftInventoryPlayer(new MCorePlayerInventory());
+	}
+	
+	// -------------------------------------------- //
 	// IS EMPTY?
 	// -------------------------------------------- //
 	
@@ -179,8 +188,7 @@ public class InventoryUtil
 		
 		if (inventory instanceof PlayerInventory)
 		{
-			MCorePlayerInventory nmsret = new MCorePlayerInventory();
-			CraftInventoryPlayer pret = new CraftInventoryPlayer(nmsret);
+			PlayerInventory pret = createPlayerInventory();
 			ret = pret;
 			
 			PlayerInventory pinventory = (PlayerInventory)inventory;
@@ -199,6 +207,30 @@ public class InventoryUtil
 		ret.setContents(contents);
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// SET CONTENT
+	// -------------------------------------------- //
+	// This one simply moves the content pointers from on inventory to another.
+	// You may want to clone the from inventory first.
+	
+	public static void setAllContents(Inventory from, Inventory to)
+	{
+		to.setContents(from.getContents());
+		if (from instanceof PlayerInventory)
+		{
+			PlayerInventory pfrom = (PlayerInventory)from;
+			if (to instanceof PlayerInventory)
+			{
+				PlayerInventory pto = (PlayerInventory)to;
+				
+				pto.setHelmet(pfrom.getHelmet());
+				pto.setChestplate(pfrom.getChestplate());
+				pto.setLeggings(pfrom.getLeggings());
+				pto.setBoots(pfrom.getBoots());
+			}
+		}
 	}
 	
 	// -------------------------------------------- //
