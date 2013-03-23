@@ -2,14 +2,18 @@ package com.massivecraft.mcore.util;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryPlayer;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
+import com.massivecraft.mcore.inventory.MCorePlayerInventory;
 
 public class InventoryUtil
 {
@@ -115,14 +119,36 @@ public class InventoryUtil
 	public static boolean isEmpty(Inventory inv)
 	{
 		if (inv == null) return true;
-		for (ItemStack stack : inv.getContents())
+		
+		for (ItemStack itemStack : inv.getContents())
 		{
-			if (stack == null) continue;
-			if (stack.getAmount() == 0) continue;
-			if (stack.getTypeId() == 0) continue;
-			return false;
+			if (isSomething(itemStack)) return false;
 		}
+		
+		if (inv instanceof PlayerInventory)
+		{
+			PlayerInventory pinv = (PlayerInventory)inv;
+			
+			if (isSomething(pinv.getHelmet())) return false;
+			if (isSomething(pinv.getChestplate())) return false;
+			if (isSomething(pinv.getLeggings())) return false;
+			if (isSomething(pinv.getBoots())) return false;
+		}
+		
 		return true;
+	}
+	
+	public static boolean isNothing(ItemStack itemStack)
+	{
+		if (itemStack == null) return true;
+		if (itemStack.getAmount() == 0) return true;
+		if (itemStack.getTypeId() == 0) return true;
+		return false;
+	}
+	
+	public static boolean isSomething(ItemStack itemStack)
+	{
+		return !isNothing(itemStack);
 	}
 	
 	// -------------------------------------------- //
@@ -141,18 +167,35 @@ public class InventoryUtil
 		return ret;
 	}
 	
-	// NOTE: This method does not handle the armor part of player inventories.
-	// That is expected behavior for now.
 	public static Inventory cloneInventory(Inventory inventory)
 	{
 		if (inventory == null) return null;
 		
-		InventoryHolder holder = inventory.getHolder();
-		int size = inventory.getSize();
-		String title = inventory.getTitle();
-		ItemStack[] contents = cloneItemStacks(inventory.getContents());
+		Inventory ret = null;
 		
-		Inventory ret = Bukkit.createInventory(holder, size, title);
+		int size = inventory.getSize();
+		InventoryHolder holder = inventory.getHolder();
+		String title = inventory.getTitle();
+		
+		if (inventory instanceof PlayerInventory)
+		{
+			MCorePlayerInventory nmsret = new MCorePlayerInventory();
+			CraftInventoryPlayer pret = new CraftInventoryPlayer(nmsret);
+			ret = pret;
+			
+			PlayerInventory pinventory = (PlayerInventory)inventory;
+			
+			pret.setHelmet(pinventory.getHelmet() == null ? null : new ItemStack(pinventory.getHelmet()));
+			pret.setChestplate(pinventory.getChestplate() == null ? null : new ItemStack(pinventory.getChestplate()));
+			pret.setLeggings(pinventory.getLeggings() == null ? null : new ItemStack(pinventory.getLeggings()));
+			pret.setBoots(pinventory.getBoots() == null ? null : new ItemStack(pinventory.getBoots()));
+		}
+		else
+		{
+			ret = new CraftInventoryCustom(holder, size, title);
+		}
+		
+		ItemStack[] contents = cloneItemStacks(inventory.getContents());
 		ret.setContents(contents);
 		
 		return ret;
