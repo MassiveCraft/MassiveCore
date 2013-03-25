@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import net.minecraft.server.v1_5_R2.EntityPlayer;
 import net.minecraft.server.v1_5_R2.Packet8UpdateHealth;
@@ -16,8 +17,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
+
+import com.massivecraft.mcore.MCore;
 
 public class PlayerUtil implements Listener
 {
@@ -42,6 +47,7 @@ public class PlayerUtil implements Listener
 	 */
 	protected static Map<String, Set<String>> lowerCaseStartOfNameToCorrectNames = new ConcurrentSkipListMap<String, Set<String>>();
 	
+	protected static Set<String> joinedPlayerNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	
 	// -------------------------------------------- //
 	// CONSTRUCTOR AND EVENT LISTENER
@@ -54,6 +60,12 @@ public class PlayerUtil implements Listener
 		for (String playername : MUtil.getPlayerDirectoryNames())
 		{
 			nameToCorrectName.put(playername, playername);
+		}
+		
+		joinedPlayerNames.clear();
+		for (Player player : Bukkit.getOnlinePlayers())
+		{
+			joinedPlayerNames.add(player.getName());
 		}
 	}
 	
@@ -76,9 +88,35 @@ public class PlayerUtil implements Listener
 		}
 	}
 	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void joinMonitor(PlayerJoinEvent event)
+	{
+		final String playerName = event.getPlayer().getName();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				joinedPlayerNames.add(playerName);
+			}
+		});
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void quitMonitor(PlayerQuitEvent event)
+	{
+		final String playerName = event.getPlayer().getName();
+		joinedPlayerNames.remove(playerName);
+	}
+	
 	// -------------------------------------------- //
 	// PUBLIC METHODS
 	// -------------------------------------------- //
+	
+	public static boolean isJoined(Player player)
+	{
+		return joinedPlayerNames.contains(player.getName());
+	}
 	
 	public static Set<String> getAllVisitorNames()
 	{

@@ -21,17 +21,29 @@ public class InventoryUtil
 	// EVENT INTERPRETATION
 	// -------------------------------------------- //
 	
+	public static boolean isOutside(InventoryClickEvent event)
+	{
+		return event.getRawSlot() < 0; 
+	}
+	public static boolean isTopInventory(InventoryClickEvent event)
+	{
+		if (isOutside(event)) return false;
+		return event.getRawSlot() < event.getInventory().getSize();
+	}
+	public static boolean isBottomInventory(InventoryClickEvent event)
+	{
+		if (isOutside(event)) return false;
+		return event.getRawSlot() >= event.getInventory().getSize();
+	}
+	
 	public static boolean isGiving(InventoryClickEvent event)
 	{
-		// Outside inventory?
-		if (event.getRawSlot() < 0) return false;
-		
-		// Was the upper inventory clicked?
-		boolean upperClicked = event.getRawSlot() < event.getInventory().getSize();
+		if (isOutside(event)) return false;
+		boolean topClicked = isTopInventory(event);
 		
 		boolean ret = false;
 		
-		if (upperClicked)
+		if (topClicked)
 		{
 			ret = (event.getCursor() != null && event.getCursor().getAmount() > 0);
 		}
@@ -45,15 +57,12 @@ public class InventoryUtil
 	
 	public static boolean isTaking(InventoryClickEvent event)
 	{
-		// Outside inventory?
-		if (event.getRawSlot() < 0) return false;
-				
-		// Was the upper inventory clicked?
-		boolean upperClicked = event.getRawSlot() < event.getInventory().getSize();
+		if (isOutside(event)) return false;
+		boolean topClicked = isTopInventory(event);
 		
 		boolean ret = false;
 		
-		if (upperClicked)
+		if (topClicked)
 		{
 			ret = (event.getCurrentItem() != null && event.getCurrentItem().getAmount() > 0);
 		}
