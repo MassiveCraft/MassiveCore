@@ -22,6 +22,7 @@ public class MCorePermissionDeniedFormatEvent extends MCoreEvent
 	private String format;
 	public String getFormat() { return this.format; }
 	public void setFormat(String format) { this.format = format; }
+	public boolean hasFormat() { return this.format != null; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

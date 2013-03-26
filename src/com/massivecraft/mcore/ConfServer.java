@@ -25,13 +25,13 @@ public class ConfServer extends SimpleConfig
 	// -------------------------------------------- //
 	
 	public static String dburi = "gson://./mstore";
+	
 	public static String serverid = UUID.randomUUID().toString();
+	
 	public static Map<String, List<String>> cmdaliases = MUtil.map(
 		CmdUsys.USYS, MUtil.list(CmdUsys.USYS),
 		CmdMcore.MCORE, MUtil.list(CmdMcore.MCORE)
 	);
-	public static int tpdelay = 10;
-	
 	public static List<String> getCmdAliases(String name)
 	{
 		List<String> ret = cmdaliases.get(name);
@@ -44,6 +44,7 @@ public class ConfServer extends SimpleConfig
 		return ret;
 	}
 	
+	public static int tpdelay = 10;
 	public static int getTpdelay(Permissible permissible)
 	{
 		if (Perm.NOTPDELAY.has(permissible, false)) return 0;

@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.massivecraft.mcore.event.MCoreAfterPlayerRespawnEvent;
 import com.massivecraft.mcore.event.MCoreAfterPlayerTeleportEvent;
+import com.massivecraft.mcore.event.MCorePermissionDeniedFormatEvent;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.event.MCoreSenderRegisterEvent;
 import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
@@ -49,6 +50,24 @@ public class InternalListener implements Listener
 	{
 		MCorePlayerLeaveEvent.player2event.clear();
 		Bukkit.getPluginManager().registerEvents(this, MCore.get());
+	}
+	
+	// -------------------------------------------- //
+	// PERMISSION DENIED FORMAT
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void permissionDeniedFormat(MCorePermissionDeniedFormatEvent event)
+	{
+		// If noone set a format already ...
+		if (event.hasFormat()) return;
+		
+		// ... and we have a custom format in the config ...
+		String customFormat = MCoreConf.get().getPermissionDeniedFormat(event.getPermissionName());
+		if (customFormat == null) return;
+		
+		// ... then make use of that format.
+		event.setFormat(customFormat);
 	}
 	
 	// -------------------------------------------- //

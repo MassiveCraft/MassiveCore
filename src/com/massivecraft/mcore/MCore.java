@@ -109,6 +109,7 @@ public class MCore extends MPlugin
 		
 		if ( ! preEnable()) return;
 		
+		// Load Server Config
 		ConfServer.get().load();
 		
 		// Setup the default database
@@ -127,9 +128,10 @@ public class MCore extends MPlugin
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
 		
-		// Init internal collections
+		// Initialize Internal Collections
 		MultiverseColl.get().init();
 		AspectColl.get().init();
+		MCoreConfColl.get().init();
 		
 		// Register commands
 		this.cmdUsys = new CmdUsys();
