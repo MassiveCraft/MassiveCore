@@ -91,7 +91,7 @@ public abstract class MCommand
 		String perm = this.getDescPermission();
 		if (perm != null)
 		{
-			String pdesc = PermUtil.getPermissionDescription(this.getDescPermission());
+			String pdesc = PermUtil.getDescription(this.getDescPermission());
 			if (pdesc != null)
 			{
 				return pdesc;
@@ -320,7 +320,7 @@ public abstract class MCommand
 		{
 			if (sender != null)
 			{
-				msg(Lang.commandToFewArgs);
+				msg(Lang.COMMAND_TO_FEW_ARGS);
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;
@@ -332,8 +332,8 @@ public abstract class MCommand
 			{
 				// Get the to many string slice
 				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
-				msg(Lang.commandToManyArgs, Txt.implodeCommaAndDot(theToMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
-				msg(Lang.commandToManyArgs2);
+				msg(Lang.COMMAND_TO_MANY_ARGS, Txt.implodeCommaAndDot(theToMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
+				msg(Lang.COMMAND_TO_MANY_ARGS2);
 				sender.sendMessage(this.getUseageTemplate());
 			}
 			return false;

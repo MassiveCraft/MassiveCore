@@ -36,6 +36,6 @@ public class ReqHasPerm extends ReqAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return PermUtil.getForbiddenMessage(this.perm);
+		return PermUtil.getDeniedMessage(this.perm);
 	}
 }

@@ -11,6 +11,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 import com.massivecraft.mcore.Lang;
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.event.MCorePermissionDeniedFormatEvent;
 
 public class PermUtil
 {
@@ -43,7 +44,7 @@ public class PermUtil
 			if (permissible instanceof CommandSender)
 			{
 				CommandSender sender = (CommandSender)permissible;
-				sender.sendMessage(getForbiddenMessage(perm));
+				sender.sendMessage(getDeniedMessage(perm));
 			}
 		}
 		return false;
@@ -53,24 +54,40 @@ public class PermUtil
 	// DESCRIPTIONS AND MESSAGES
 	// -------------------------------------------- //
 	
-	public static String getPermissionDescription(String perm)
+	public static String getDescription(String perm)
 	{
-		if (perm == null) return Lang.permDoThat;
+		if (perm == null) return Lang.PERM_DEFAULT_DESCRIPTION;
 		Permission permission = Bukkit.getPluginManager().getPermission(perm);
-		return getPermissionDescription(permission);
+		return getDescription(permission);
 	}
-	
-	public static String getPermissionDescription(Permission perm)
+	public static String getDescription(Permission perm)
 	{
-		if (perm == null) return Lang.permDoThat;
+		if (perm == null) return Lang.PERM_DEFAULT_DESCRIPTION;
 		String desc = perm.getDescription();
-		if (desc == null || desc.length() == 0) return Lang.permDoThat;
+		if (desc == null || desc.length() == 0) return Lang.PERM_DEFAULT_DESCRIPTION;
 		return desc;
 	}
 	
-	public static String getForbiddenMessage(String perm)
+	public static String getDeniedFormat(String perm)
 	{
-		return Txt.parse(Lang.permForbidden, getPermissionDescription(perm));
+		MCorePermissionDeniedFormatEvent event = new MCorePermissionDeniedFormatEvent(perm);
+		event.run();
+		String ret = event.getFormat();
+		if (ret == null) ret = Lang.PERM_DEFAULT_DENIED_FORMAT;
+		return ret;
+	}
+	public static String getDeniedFormat(Permission perm)
+	{
+		return getDeniedFormat(perm == null ? null : perm.getName());
+	}
+	
+	public static String getDeniedMessage(String perm)
+	{
+		return Txt.parse(getDeniedFormat(perm), getDescription(perm));
+	}
+	public static String getDeniedMessage(Permission perm)
+	{
+		return Txt.parse(getDeniedFormat(perm), getDescription(perm));
 	}
 	
 	// -------------------------------------------- //

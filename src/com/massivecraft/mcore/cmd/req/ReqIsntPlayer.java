@@ -30,7 +30,7 @@ public class ReqIsntPlayer extends ReqAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MCommand command)
 	{
-		return Lang.commandSenderMusntBePlayer;
+		return Lang.COMMAND_SENDER_MUSNT_BE_PLAYER;
 	}
 	
 }
