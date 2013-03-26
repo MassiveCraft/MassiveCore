@@ -1,6 +1,5 @@
 package com.massivecraft.mcore;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,10 +10,18 @@ import com.massivecraft.mcore.cmd.CmdMcore;
 import com.massivecraft.mcore.usys.cmd.CmdUsys;
 import com.massivecraft.mcore.util.MUtil;
 
-public class Conf extends SimpleConfig
+public class ConfServer extends SimpleConfig
 {
 	// -------------------------------------------- //
-	// CONTENT
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static transient ConfServer i = new ConfServer();
+	public static ConfServer get() { return i; }
+	public ConfServer() { super(MCore.get()); }
+	
+	// -------------------------------------------- //
+	// FIELDS
 	// -------------------------------------------- //
 	
 	public static String dburi = "gson://./mstore";
@@ -41,14 +48,5 @@ public class Conf extends SimpleConfig
 	{
 		if (Perm.NOTPDELAY.has(permissible, false)) return 0;
 		return Math.max(tpdelay, 0); 
-	}
-	
-	// -------------------------------------------- //
-	// META
-	// -------------------------------------------- //
-	public static transient Conf i = new Conf();
-	private Conf()
-	{
-		super(MCore.get(), new File("plugins/mcore/conf.json"));
 	}
 }

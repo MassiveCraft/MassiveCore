@@ -49,9 +49,9 @@ public class MCore extends MPlugin
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MCore p;
-	public static MCore get() { return p; }
-	public MCore() { p = this; }
+	private static MCore i;
+	public static MCore get() { return i; }
+	public MCore() { i = this; }
 	
 	// -------------------------------------------- //
 	// STATIC
@@ -73,7 +73,7 @@ public class MCore extends MPlugin
 		.registerTypeAdapter(PS.class, PSAdapter.get());
 	}
 	
-	public static String getServerId() { return Conf.serverid; }
+	public static String getServerId() { return ConfServer.serverid; }
 	private static Db<?> db;
 	public static Db<?> getDb() { return db; }
 	
@@ -109,10 +109,10 @@ public class MCore extends MPlugin
 		
 		if ( ! preEnable()) return;
 		
-		Conf.i.load();
+		ConfServer.get().load();
 		
 		// Setup the default database
-		db = MStore.getDb(Conf.dburi);
+		db = MStore.getDb(ConfServer.dburi);
 		
 		// Setup PlayerUtil and it's events
 		new PlayerUtil(this);

@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.usys.cmd;
 
-import com.massivecraft.mcore.Conf;
+import com.massivecraft.mcore.ConfServer;
 import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.HelpCommand;
 import com.massivecraft.mcore.cmd.MCommand;
@@ -19,7 +19,7 @@ public class CmdUsys extends MCommand
 	{
 		super();
 		
-		this.addAliases(Conf.getCmdAliases(USYS));
+		this.addAliases(ConfServer.getCmdAliases(USYS));
 		
 		this.addSubCommand(this.cmdUsysMultiverse);
 		this.addSubCommand(this.cmdUsysUniverse);

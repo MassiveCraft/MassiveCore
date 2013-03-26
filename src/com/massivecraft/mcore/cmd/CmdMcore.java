@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.cmd;
 
-import com.massivecraft.mcore.Conf;
+import com.massivecraft.mcore.ConfServer;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -11,7 +11,7 @@ public class CmdMcore extends MCommand
 	
 	public CmdMcore()
 	{
-		this.addAliases(Conf.getCmdAliases(MCORE));
+		this.addAliases(ConfServer.getCmdAliases(MCORE));
 		this.addRequirements(ReqHasPerm.get(Perm.CMD_MCORE.node));
 	}
 	
@@ -19,6 +19,6 @@ public class CmdMcore extends MCommand
 	public void perform()
 	{
 		this.msg("<i>You are running %s", MCore.get().getDescription().getFullName());
-		this.msg("<i>The id of this server is \"<h>%s<i>\".", Conf.serverid);
+		this.msg("<i>The id of this server is \"<h>%s<i>\".", ConfServer.serverid);
 	}
 }
