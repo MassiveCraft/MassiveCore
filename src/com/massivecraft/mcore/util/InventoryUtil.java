@@ -218,6 +218,11 @@ public class InventoryUtil
 		return ret;
 	}
 	
+	public static PlayerInventory cloneInventory(PlayerInventory inventory)
+	{
+		return (PlayerInventory)cloneInventory((Inventory)inventory);
+	}
+	
 	// -------------------------------------------- //
 	// SET CONTENT
 	// -------------------------------------------- //

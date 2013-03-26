@@ -38,6 +38,13 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 	public static final String CHESTPLATE = "chestplate";
 	public static final String LEGGINGS = "leggings";
 	public static final String BOOTS = "boots";
+	
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static InventoryAdapter i = new InventoryAdapter();
+	public static InventoryAdapter get() { return i; }
 
 	// -------------------------------------------- //
 	// IMPLEMENTATION
@@ -213,12 +220,5 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 		
 		return ret;
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	public static InventoryAdapter i = new InventoryAdapter();
-	public static InventoryAdapter get() { return i; }
 	
 }
