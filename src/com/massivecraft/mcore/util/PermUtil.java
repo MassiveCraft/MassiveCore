@@ -94,7 +94,7 @@ public class PermUtil
 	// RANDOM UTILS
 	// -------------------------------------------- //
 	
-	public static <T> T pickFirstVal(CommandSender me, Map<String, T> perm2val)
+	public static <T> T pickFirstVal(Permissible permissible, Map<String, T> perm2val)
 	{
 		if (perm2val == null) return null;
 		T ret = null;
@@ -102,7 +102,7 @@ public class PermUtil
 		for ( Entry<String, T> entry : perm2val.entrySet())
 		{
 			ret = entry.getValue();
-			if (has(me, entry.getKey())) break;
+			if (has(permissible, entry.getKey())) break;
 		}
 		
 		return ret;

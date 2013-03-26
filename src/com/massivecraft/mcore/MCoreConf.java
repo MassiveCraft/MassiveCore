@@ -3,9 +3,12 @@ package com.massivecraft.mcore;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.bukkit.permissions.Permissible;
+
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.PermUtil;
 
 public class MCoreConf extends Entity<MCoreConf, String>
 {
@@ -42,6 +45,13 @@ public class MCoreConf extends Entity<MCoreConf, String>
 	public Map<String, String> getPermissionDeniedFormats() { return this.permissionDeniedFormats == null ? new LinkedHashMap<String, String>() : new LinkedHashMap<String, String>(this.permissionDeniedFormats); }
 	public void setPermissionDeniedFormats(Map<String, String> permissionDeniedFormats) { this.permissionDeniedFormats = permissionDeniedFormats == null ? new LinkedHashMap<String, String>() : new LinkedHashMap<String, String>(permissionDeniedFormats); this.changed(); }
 	
+	private Map<String, Integer> permissionToTpdelay = MUtil.map(
+		"mcore.notpdelay", 0,
+		"default", 10
+	);
+	public Map<String, Integer> getPermissionToTpdelay() { return this.permissionToTpdelay == null ? new LinkedHashMap<String, Integer>() : new LinkedHashMap<String, Integer>(this.permissionToTpdelay); }
+	public void setPermissionToTpdelay(Map<String, Integer> permissionToTpdelay) { this.permissionToTpdelay = permissionToTpdelay == null ? new LinkedHashMap<String, Integer>() : new LinkedHashMap<String, Integer>(permissionToTpdelay); this.changed(); }
+	
 	// -------------------------------------------- //
 	// HELP ACCESS
 	// -------------------------------------------- //
@@ -67,5 +77,11 @@ public class MCoreConf extends Entity<MCoreConf, String>
 		return this.getPermissionDeniedFormats().get(permissionName);
 	}
 	
-
+	public int getTpdelay(Permissible permissible)
+	{
+		Integer ret = PermUtil.pickFirstVal(permissible, this.getPermissionToTpdelay());
+		if (ret == null) ret = 0;
+		return ret;
+	}
+	
 }
