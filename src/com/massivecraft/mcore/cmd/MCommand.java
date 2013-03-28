@@ -157,12 +157,12 @@ public abstract class MCommand
 	
 	public boolean register()
 	{
-		return register(MCore.get(), false);
+		return register(MCore.get(), true);
 	}
 	
 	public boolean register(MPlugin mplugin)
 	{
-		return this.register(mplugin, false);
+		return this.register(mplugin, true);
 	}
 	
 	public boolean register(boolean override)
