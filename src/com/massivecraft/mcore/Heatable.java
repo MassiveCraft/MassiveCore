@@ -6,11 +6,14 @@ public abstract class Heatable
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	protected abstract HeatData getData();
-	protected abstract void setData(HeatData data);
+	public abstract HeatData getData();
+	public abstract void setData(HeatData data);
+	
+	public abstract double getHeatPerMilli();
+	public abstract double getHeatPerExecution();
 	
 	// -------------------------------------------- //
-	// UTIL
+	// CUSTOM
 	// -------------------------------------------- //
 	
 	private HeatData getRecalculatedData(double heatPerMilli)
@@ -35,7 +38,6 @@ public abstract class Heatable
 		return data.getHeat();
 	}
 	
-	
 	public boolean isOverheated(double heatPerMilli)
 	{
 		HeatData data = getRecalculatedData(heatPerMilli);
@@ -52,6 +54,54 @@ public abstract class Heatable
 	{
 		double overheat = this.getOverheat(heatPerMilli);
 		return (long) (-overheat / heatPerMilli);
+	}
+	
+	// -------------------------------------------- //
+	// DEFAULT
+	// -------------------------------------------- //
+	
+	public void addHeat(double heat)
+	{
+		this.addHeat(this.getHeatPerMilli(), heat);
+	}
+	
+	public void addHeat()
+	{
+		this.addHeat(this.getHeatPerExecution());
+	}
+	
+	public double getHeat()
+	{
+		return this.getHeat(this.getHeatPerMilli());
+	}
+	
+	public boolean isOverheated()
+	{
+		return this.isOverheated(this.getHeatPerMilli());
+	}
+	
+	public double getOverheat()
+	{
+		return this.getOverheat(this.getHeatPerMilli());
+	}
+
+	public long getCooldownMillisLeft()
+	{
+		return this.getCooldownMillisLeft(this.getHeatPerMilli());
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public static double calcHeatPerExecution(long executionCount, long periodMillis)
+	{
+		return 1D / (double)executionCount;
+	}
+	
+	public static double calcHeatPerMilli(long executionCount, long periodMillis)
+	{
+		return - 1D / (double)periodMillis;
 	}
 	
 }
