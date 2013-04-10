@@ -7,27 +7,27 @@ import java.util.TreeSet;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.Txt;
 
 public class BukkitGlueCommand extends Command
 {
 	public final MCommand mcommand;
-	public final MPlugin mplugin;
+	public final Plugin plugin;
 	
-	public BukkitGlueCommand(String name, MCommand mcommand, MPlugin mplugin)
+	public BukkitGlueCommand(String name, MCommand mcommand, Plugin plugin)
 	{
 		super(name, mcommand.getDesc(), mcommand.getUseageTemplate(), new ArrayList<String>());
 		this.mcommand = mcommand;
-		this.mplugin = mplugin;
+		this.plugin = plugin;
 	}
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args)
 	{
-		if ( ! mplugin.isEnabled()) return false;
+		if ( ! plugin.isEnabled()) return false;
 		this.mcommand.execute(sender, Txt.tokenizeArguments(Txt.implode(args, " ")));
 		return true;
 	}

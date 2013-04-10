@@ -2,39 +2,51 @@ package com.massivecraft.mcore;
 
 import java.io.File;
 
+import org.bukkit.plugin.Plugin;
+
 import com.massivecraft.mcore.store.accessor.Accessor;
 import com.massivecraft.mcore.util.DiscUtil;
+import com.massivecraft.mcore.xlib.gson.Gson;
 
 public class SimpleConfig
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	protected transient MPlugin mplugin;
-	protected MPlugin getMplugin() { return this.mplugin; }
+	protected transient Plugin plugin;
+	protected Plugin getPlugin() { return this.plugin; }
 	
 	protected transient File file;
 	protected File getFile() { return this.file; }
 	
-	public SimpleConfig(MPlugin mplugin, File file)
+	public SimpleConfig(Plugin plugin, File file)
 	{
-		this.mplugin = mplugin;
+		this.plugin = plugin;
 		this.file = file;
 	}
 	
-	public SimpleConfig(MPlugin mplugin, String confname)
+	public SimpleConfig(Plugin plugin, String confname)
 	{
-		this(mplugin, new File(mplugin.getDataFolder(), confname+".json"));
+		this(plugin, new File(plugin.getDataFolder(), confname+".json"));
 	}
 	
-	public SimpleConfig(MPlugin mplugin)
+	public SimpleConfig(Plugin plugin)
 	{
-		this(mplugin, "conf");
+		this(plugin, "conf");
 	}
 	
 	// -------------------------------------------- //
 	// IO
 	// -------------------------------------------- //
+	
+	private Gson getGson()
+	{
+		if (this.plugin instanceof MPlugin)
+		{
+			return ((MPlugin)this.plugin).gson;
+		}
+		return MCore.gson;
+	}
 	
 	protected static boolean contentRequestsDefaults(String content)
 	{
@@ -63,7 +75,7 @@ public class SimpleConfig
 			}
 			else
 			{
-				toShallowLoad = this.getMplugin().gson.fromJson(content, this.getClass());
+				toShallowLoad = this.getGson().fromJson(content, this.getClass());
 			}
 			Accessor.get(this.getClass()).copy(toShallowLoad, this);
 		}
@@ -74,7 +86,7 @@ public class SimpleConfig
 	{
 		String content = DiscUtil.readCatch(this.getFile());
 		if (contentRequestsDefaults(content)) return;
-		content = this.getMplugin().gson.toJson(this);
+		content = this.getGson().toJson(this);
 		DiscUtil.writeCatch(file, content);
 	}
 }

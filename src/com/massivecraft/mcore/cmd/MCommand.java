@@ -7,10 +7,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.Lang;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.cmd.arg.ArgReader;
 import com.massivecraft.mcore.cmd.arg.ArgResult;
 import com.massivecraft.mcore.cmd.req.Req;
@@ -160,9 +160,9 @@ public abstract class MCommand
 		return register(MCore.get(), true);
 	}
 	
-	public boolean register(MPlugin mplugin)
+	public boolean register(Plugin plugin)
 	{
-		return this.register(mplugin, true);
+		return this.register(plugin, true);
 	}
 	
 	public boolean register(boolean override)
@@ -170,7 +170,7 @@ public abstract class MCommand
 		return this.register(MCore.get(), override);
 	}
 	
-	public boolean register(MPlugin mplugin, boolean override)
+	public boolean register(Plugin plugin, boolean override)
 	{
 		boolean ret = false;
 		
@@ -178,7 +178,7 @@ public abstract class MCommand
 		
 		for (String alias : this.getAliases())
 		{
-			BukkitGlueCommand bgc = new BukkitGlueCommand(alias, this, mplugin);
+			BukkitGlueCommand bgc = new BukkitGlueCommand(alias, this, plugin);
 			
 			if (override)
 			{
