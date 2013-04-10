@@ -13,7 +13,7 @@ public class MultiverseColl extends Coll<Multiverse, String>
 	public static MultiverseColl get() { return i; }
 	private MultiverseColl()
 	{
-		super(MCore.get(), "ai", "usys_multiverse", Multiverse.class, String.class, false);
+		super(MCore.get(), "ai", "mcore_multiverse", Multiverse.class, String.class, false);
 	}
 	
 	// -------------------------------------------- //
