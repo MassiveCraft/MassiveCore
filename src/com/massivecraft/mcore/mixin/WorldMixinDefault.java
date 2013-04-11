@@ -70,7 +70,7 @@ public class WorldMixinDefault extends WorldMixinAbstract
 		World world = Bukkit.getWorld(worldId);
 		if (world == null) return;
 		
-		spawnPs = spawnPs.withWorld(world);
+		spawnPs = spawnPs.withWorld(world.getName());
 		
 		Location location = null;
 		try

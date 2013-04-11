@@ -41,7 +41,7 @@ import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
  * entity: world, locationX, locationY, locationZ, pitch, yaw, velocityX, velocityY, velocityZ
  */
 
-public final class PS implements Cloneable, Serializable
+public final class PS implements Cloneable, Serializable, Comparable<PS>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -170,7 +170,6 @@ public final class PS implements Cloneable, Serializable
 	// -------------------------------------------- //
 	
 	public PS withWorld(String world) { return new PS(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
-	public PS withWorld(World world) { return new PS(calcWorldName(world), blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS withBlockX(Integer blockX) { return new PS(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS withBlockY(Integer blockY) { return new PS(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
 	public PS withBlockZ(Integer blockZ) { return new PS(world, blockX, blockY, blockZ, locationX, locationY, locationZ, chunkX, chunkZ, pitch, yaw, velocityX, velocityY, velocityZ); }
@@ -796,90 +795,80 @@ public final class PS implements Cloneable, Serializable
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object derpObject)
 	{
-		return PS.equals(this, obj);
+		return equals(this, derpObject);
 	}
 
-	public static boolean equals(PS ps, Object obj)
+	public static boolean equals(PS herp, Object derpObject)
 	{
-		if (ps == obj) return true;
-		if (ps == null) return false;
-		if (obj == null) return false;
-		if (!(obj instanceof PS)) return false;
-		PS derp = (PS) obj;
+		return compareTo(herp, derpObject) == 0;
+	}
+	
+	// -------------------------------------------- //
+	// COMPARE
+	// -------------------------------------------- //
+	
+	@Override
+	public int compareTo(PS derp)
+	{
+		return compareTo(this, derp);
+	}
+	
+	public static int compareTo(PS herp, Object derpObject)
+	{
+		if (herp == null && derpObject == null) return 0;
+		if (herp == null) return -1;
+		if (derpObject == null) return +1;
 		
-		if (ps.blockX == null)
-		{
-			if (derp.blockX != null) return false;
-		}
-		else if (!ps.blockX.equals(derp.blockX)) return false;
-		if (ps.blockY == null)
-		{
-			if (derp.blockY != null) return false;
-		}
-		else if (!ps.blockY.equals(derp.blockY)) return false;
-		if (ps.blockZ == null)
-		{
-			if (derp.blockZ != null) return false;
-		}
-		else if (!ps.blockZ.equals(derp.blockZ)) return false;
-		if (ps.chunkX == null)
-		{
-			if (derp.chunkX != null) return false;
-		}
-		else if (!ps.chunkX.equals(derp.chunkX)) return false;
-		if (ps.chunkZ == null)
-		{
-			if (derp.chunkZ != null) return false;
-		}
-		else if (!ps.chunkZ.equals(derp.chunkZ)) return false;
-		if (ps.locationX == null)
-		{
-			if (derp.locationX != null) return false;
-		}
-		else if (!ps.locationX.equals(derp.locationX)) return false;
-		if (ps.locationY == null)
-		{
-			if (derp.locationY != null) return false;
-		}
-		else if (!ps.locationY.equals(derp.locationY)) return false;
-		if (ps.locationZ == null)
-		{
-			if (derp.locationZ != null) return false;
-		}
-		else if (!ps.locationZ.equals(derp.locationZ)) return false;
-		if (ps.pitch == null)
-		{
-			if (derp.pitch != null) return false;
-		}
-		else if (!ps.pitch.equals(derp.pitch)) return false;
-		if (ps.velocityX == null)
-		{
-			if (derp.velocityX != null) return false;
-		}
-		else if (!ps.velocityX.equals(derp.velocityX)) return false;
-		if (ps.velocityY == null)
-		{
-			if (derp.velocityY != null) return false;
-		}
-		else if (!ps.velocityY.equals(derp.velocityY)) return false;
-		if (ps.velocityZ == null)
-		{
-			if (derp.velocityZ != null) return false;
-		}
-		else if (!ps.velocityZ.equals(derp.velocityZ)) return false;
-		if (ps.world == null)
-		{
-			if (derp.world != null) return false;
-		}
-		else if (!ps.world.equals(derp.world)) return false;
-		if (ps.yaw == null)
-		{
-			if (derp.yaw != null) return false;
-		}
-		else if (!ps.yaw.equals(derp.yaw)) return false;
-		return true;
+		if (!(derpObject instanceof PS)) return -1;
+		PS derp = (PS) derpObject;
+		
+		int ret;
+		
+		ret = MUtil.compare(herp.world, derp.world);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.chunkX, derp.chunkX);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.chunkZ, derp.chunkZ);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.blockX, derp.blockX);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.blockY, derp.blockY);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.blockZ, derp.blockZ);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.locationX, derp.locationX);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.locationX, derp.locationX);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.locationZ, derp.locationZ);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.pitch, derp.pitch);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.yaw, derp.yaw);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.velocityX, derp.velocityX);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.velocityY, derp.velocityY);
+		if (ret != 0) return ret;
+		
+		ret = MUtil.compare(herp.velocityZ, derp.velocityZ);
+		if (ret != 0) return ret;
+		
+		return 0;
 	}
 	
 	// -------------------------------------------- //
