@@ -207,6 +207,27 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	}
 	
 	// -------------------------------------------- //
+	// FIELDS: PLUS
+	// -------------------------------------------- //
+	
+	public PS plusChunkCoords(int chunkX, int chunkZ)
+	{
+		PSBuilder builder = this.builder();
+		
+		if (builder.chunkX() != null)
+		{
+			builder.chunkX(builder.chunkX() + chunkX);
+		}
+		
+		if (builder.chunkZ() != null)
+		{
+			builder.chunkZ(builder.chunkZ() + chunkZ);
+		}
+		
+		return builder.build();
+	}
+	
+	// -------------------------------------------- //
 	// PRIVATE CONSTRUCTOR
 	// -------------------------------------------- //
 	
