@@ -318,14 +318,23 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 		return valueOf(world, blockX, blockY, blockZ, null, null, null, null, null, null, null, null, null, null);
 	}
 	
+	public static PS valueOf(String world, int chunkX, int chunkZ)
+	{
+		return valueOf(world, null, null, null, null, null, null, chunkX, chunkZ, null, null, null, null, null);
+	}
 	public static PS valueOf(Chunk chunk)
 	{
 		if (chunk == null) return null;
 		String world = calcWorldName(chunk.getWorld());
 		Integer chunkX = chunk.getX();
 		Integer chunkZ = chunk.getZ();
-		return valueOf(world, null, null, null, null, null, null, chunkX, chunkZ, null, null, null, null, null);
+		return valueOf(world, chunkX, chunkZ);
 	}
+	public static PS valueOf(int chunkX, int chunkZ)
+	{
+		return valueOf(null, null, null, null, null, null, null, chunkX, chunkZ, null, null, null, null, null);
+	}
+	
 	
 	public static PS valueOf(final JsonElement jsonElement)
 	{
