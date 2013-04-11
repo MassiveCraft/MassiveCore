@@ -140,7 +140,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	public <L extends Comparable<? super L>> Long save(Coll<?, L> coll, L id, Object rawData)
 	{
 		File file = fileFromId(coll, id);
-		String content = coll.getMplugin().gson.toJson((JsonElement)rawData);
+		String content = coll.getGson().toJson((JsonElement)rawData);
 		if (DiscUtil.writeCatch(file, content) == false) return null;
 		return file.lastModified();
 	}

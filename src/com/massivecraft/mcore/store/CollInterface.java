@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
-import com.massivecraft.mcore.MPlugin;
+import org.bukkit.plugin.Plugin;
+
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.store.idstrategy.IdStrategy;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
@@ -23,7 +24,7 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM
 	// -------------------------------------------- //
-	public MPlugin getMplugin();
+	public Plugin getPlugin();
 	
 	public Db<?> getDb();
 	public Driver<?> getDriver();

@@ -12,12 +12,15 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.bukkit.plugin.Plugin;
+
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.store.accessor.Accessor;
 import com.massivecraft.mcore.store.idstrategy.IdStrategy;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
+import com.massivecraft.mcore.xlib.gson.Gson;
 
 public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E, L>
 {
@@ -50,8 +53,19 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// SUPPORTING SYSTEM
 	// -------------------------------------------- //
 	
-	protected MPlugin mplugin;
-	@Override public MPlugin getMplugin() { return this.mplugin; }
+	protected Plugin plugin;
+	@Override public Plugin getPlugin() { return this.plugin; }
+	public Gson getGson()
+	{
+		if (this.getPlugin() instanceof MPlugin)
+		{
+			return ((MPlugin)this.getPlugin()).gson;
+		}
+		else
+		{
+			return MCore.gson;
+		}
+	}
 	
 	protected Db<?> db;
 	@Override public Db<?> getDb() { return this.db; }
@@ -577,7 +591,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative, Comparator<? super L> idComparator, Comparator<? super E> entityComparator)
+	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative, Comparator<? super L> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -598,7 +612,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		this.creative = creative;
 		
 		// SUPPORTING SYSTEM
-		this.mplugin = mplugin;
+		this.plugin = plugin;
 		this.db = db;
 		this.storeAdapter = this.db.getDriver().getStoreAdapter();
 		this.idStrategy = this.db.getDriver().getIdStrategy(idStrategyName);
@@ -633,14 +647,14 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		};
 	}
 	
-	public Coll(Db<?> db, MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
 	{
-		this(db, mplugin, idStrategyName, name, entityClass, idClass, creative, null, null);
+		this(db, plugin, idStrategyName, name, entityClass, idClass, creative, null, null);
 	}
 	
-	public Coll(MPlugin mplugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	public Coll(Plugin plugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
 	{
-		this(MCore.getDb(), mplugin, idStrategyName, name, entityClass, idClass, creative);
+		this(MCore.getDb(), plugin, idStrategyName, name, entityClass, idClass, creative);
 	}
 	
 	@Override

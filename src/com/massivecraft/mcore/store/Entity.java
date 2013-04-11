@@ -90,7 +90,7 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	{
 		Gson gson = MCore.gson;
 		Coll<E, L> coll = this.getColl();
-		if (coll != null) gson = coll.getMplugin().gson;
+		if (coll != null) gson = coll.getGson();
 		
 		return this.getClass().getSimpleName()+gson.toJson(this, this.getClass());
 	}

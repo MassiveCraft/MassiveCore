@@ -13,7 +13,7 @@ public class StoreAdapterGson extends StoreAdapterAbstract
 	@Override
 	public Object read(Coll<?, ?> coll, Object entity)
 	{
-		return coll.getMplugin().gson.toJsonTree(entity, coll.getEntityClass());
+		return coll.getGson().toJsonTree(entity, coll.getEntityClass());
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class StoreAdapterGson extends StoreAdapterAbstract
 	{
 		if (raw == null) throw new NullPointerException("raw");
 		if (entity == null) throw new NullPointerException("entity");
-		Object temp = coll.getMplugin().gson.fromJson((JsonElement)raw, coll.getEntityClass());
+		Object temp = coll.getGson().fromJson((JsonElement)raw, coll.getEntityClass());
 		coll.copy(temp, entity);
 	}
 	

@@ -6,8 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.MUtil;
@@ -39,25 +39,25 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> imple
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public SenderColl(Db<?> db, MPlugin mplugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
-		super(db, mplugin, "ai", name, entityClass, String.class, creative, idComparator, entityComparator);
+		super(db, plugin, "ai", name, entityClass, String.class, creative, idComparator, entityComparator);
 		this.lowercasing = lowercasing;
 	}
 	
-	public SenderColl(Db<?> db, MPlugin mplugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing)
+	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing)
 	{
-		this(db, mplugin, name, entityClass, creative, lowercasing, null, null);
+		this(db, plugin, name, entityClass, creative, lowercasing, null, null);
 	}
 	
-	public SenderColl(Db<?> db, MPlugin mplugin, String name, Class<E> entityClass, boolean creative)
+	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative)
 	{
-		this(db, mplugin, name, entityClass, creative, DEFAULT_LOWERCASING);
+		this(db, plugin, name, entityClass, creative, DEFAULT_LOWERCASING);
 	}
 	
-	public SenderColl(Db<?> db, MPlugin mplugin, String name, Class<E> entityClass)
+	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass)
 	{
-		this(db, mplugin, name, entityClass, DEFAULT_CREATIVE);
+		this(db, plugin, name, entityClass, DEFAULT_CREATIVE);
 	}
 	
 	// -------------------------------------------- //
