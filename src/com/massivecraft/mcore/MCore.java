@@ -4,6 +4,7 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +15,9 @@ import org.bukkit.inventory.PlayerInventory;
 import com.massivecraft.mcore.adapter.InventoryAdapter;
 import com.massivecraft.mcore.adapter.ItemStackAdapter;
 import com.massivecraft.mcore.adapter.MongoURIAdapter;
+import com.massivecraft.mcore.adapter.ObjectIdAdapter;
 import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
+import com.massivecraft.mcore.adapter.UUIDAdapter;
 import com.massivecraft.mcore.cmd.CmdMcore;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
@@ -32,6 +35,7 @@ import com.massivecraft.mcore.util.FirstTeleportUtil;
 import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.mcore.util.TimeDiffUtil;
 import com.massivecraft.mcore.util.TimeUnit;
+import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
 import com.massivecraft.mcore.xlib.mongodb.MongoURI;
@@ -67,6 +71,8 @@ public class MCore extends MPlugin
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
 		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
+		.registerTypeAdapter(ObjectId.class, ObjectIdAdapter.get())
+		.registerTypeAdapter(UUID.class, UUIDAdapter.get())
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
 		.registerTypeAdapter(PlayerInventory.class, PlayerInventoryAdapter.get())

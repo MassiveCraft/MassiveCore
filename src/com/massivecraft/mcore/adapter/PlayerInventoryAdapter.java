@@ -21,7 +21,7 @@ public class PlayerInventoryAdapter implements JsonDeserializer<PlayerInventory>
 	public static PlayerInventoryAdapter get() { return i; }
 
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override

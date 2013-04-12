@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 import com.massivecraft.mcore.store.idstrategy.IdStrategyAiMongo;
 import com.massivecraft.mcore.store.idstrategy.IdStrategyOidMongo;
-import com.massivecraft.mcore.store.idstrategy.IdStrategyUuidMongoAndGson;
+import com.massivecraft.mcore.store.idstrategy.IdStrategyUuid;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapterMongo;
 import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
@@ -235,6 +235,6 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 		instance = new DriverMongo();
 		instance.registerIdStrategy(IdStrategyAiMongo.get());
 		instance.registerIdStrategy(IdStrategyOidMongo.get());
-		instance.registerIdStrategy(IdStrategyUuidMongoAndGson.get());
+		instance.registerIdStrategy(IdStrategyUuid.get());
 	}
 }

@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 
 import com.massivecraft.mcore.store.idstrategy.IdStrategyAiGson;
 import com.massivecraft.mcore.store.idstrategy.IdStrategyOidGson;
-import com.massivecraft.mcore.store.idstrategy.IdStrategyUuidMongoAndGson;
+import com.massivecraft.mcore.store.idstrategy.IdStrategyUuid;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapterGson;
 import com.massivecraft.mcore.util.DiscUtil;
@@ -202,7 +202,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		instance = new DriverGson();
 		instance.registerIdStrategy(IdStrategyAiGson.get());
 		instance.registerIdStrategy(IdStrategyOidGson.get());
-		instance.registerIdStrategy(IdStrategyUuidMongoAndGson.get());
+		instance.registerIdStrategy(IdStrategyUuid.get());
 	}
 
 }
