@@ -16,7 +16,7 @@ public class AspectColl extends Coll<Aspect>
 	public static AspectColl get() { return i; }
 	private AspectColl()
 	{
-		super(MCore.get(), "ai", "mcore_aspect", Aspect.class, false);
+		super(MCore.get(), "uuid", "mcore_aspect", Aspect.class, false);
 	}
 	
 	// -------------------------------------------- //

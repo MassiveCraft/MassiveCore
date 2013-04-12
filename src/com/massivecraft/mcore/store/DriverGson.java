@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import com.massivecraft.mcore.store.idstrategy.IdStrategyAiGson;
 import com.massivecraft.mcore.store.idstrategy.IdStrategyOid;
 import com.massivecraft.mcore.store.idstrategy.IdStrategyUuid;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
@@ -193,7 +192,6 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	static
 	{
 		instance = new DriverGson();
-		instance.registerIdStrategy(IdStrategyAiGson.get());
 		instance.registerIdStrategy(IdStrategyOid.get());
 		instance.registerIdStrategy(IdStrategyUuid.get());
 	}

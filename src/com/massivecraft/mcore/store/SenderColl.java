@@ -41,7 +41,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	
 	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
-		super(db, plugin, "ai", name, entityClass, creative, idComparator, entityComparator);
+		super(db, plugin, "uuid", name, entityClass, creative, idComparator, entityComparator);
 		this.lowercasing = lowercasing;
 	}
 	

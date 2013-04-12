@@ -14,7 +14,7 @@ public class MCoreConfColl extends Coll<MCoreConf>
 	public static MCoreConfColl get() { return i; }
 	private MCoreConfColl()
 	{
-		super(MStore.getDb(ConfServer.dburi), MCore.get(), "ai", "mcore_conf", MCoreConf.class, true);
+		super(MStore.getDb(ConfServer.dburi), MCore.get(), "uuid", "mcore_conf", MCoreConf.class, true);
 	}
 	
 	// -------------------------------------------- //

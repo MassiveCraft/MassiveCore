@@ -13,7 +13,7 @@ public class MultiverseColl extends Coll<Multiverse>
 	public static MultiverseColl get() { return i; }
 	private MultiverseColl()
 	{
-		super(MCore.get(), "ai", "mcore_multiverse", Multiverse.class, false);
+		super(MCore.get(), "uuid", "mcore_multiverse", Multiverse.class, false);
 	}
 	
 	// -------------------------------------------- //

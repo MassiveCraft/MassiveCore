@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
-import com.massivecraft.mcore.store.idstrategy.IdStrategyAiMongo;
 import com.massivecraft.mcore.store.idstrategy.IdStrategyOid;
 import com.massivecraft.mcore.store.idstrategy.IdStrategyUuid;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
@@ -230,7 +229,6 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	static
 	{
 		instance = new DriverMongo();
-		instance.registerIdStrategy(IdStrategyAiMongo.get());
 		instance.registerIdStrategy(IdStrategyOid.get());
 		instance.registerIdStrategy(IdStrategyUuid.get());
 	}
