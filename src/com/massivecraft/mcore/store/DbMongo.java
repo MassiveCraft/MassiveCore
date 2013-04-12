@@ -49,7 +49,7 @@ public class DbMongo extends DbAbstract<BasicDBObject>
 	}
 	
 	@Override
-	public Object getCollDriverObject(Coll<?, ?> coll)
+	public Object getCollDriverObject(Coll<?> coll)
 	{
 		return db.getCollection(coll.getName());
 	}

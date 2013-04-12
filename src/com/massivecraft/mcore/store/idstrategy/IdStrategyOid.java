@@ -1,18 +1,17 @@
 package com.massivecraft.mcore.store.idstrategy;
 
-import java.util.UUID;
-
 import com.massivecraft.mcore.store.CollInterface;
+import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 
-public class IdStrategyUuid extends IdStrategyAbstract
+public class IdStrategyOid extends IdStrategyAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static IdStrategyUuid i = new IdStrategyUuid();
-	public static IdStrategyUuid get() { return i; }
-	private IdStrategyUuid() { super("uuid"); }
+	private static IdStrategyOid i = new IdStrategyOid();
+	public static IdStrategyOid get() { return i; }
+	private IdStrategyOid() { super("oid"); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -21,7 +20,7 @@ public class IdStrategyUuid extends IdStrategyAbstract
 	@Override
 	public String generateAttempt(CollInterface<?> coll)
 	{
-		return UUID.randomUUID().toString();
+		return ObjectId.get().toString();
 	}
 	
 }

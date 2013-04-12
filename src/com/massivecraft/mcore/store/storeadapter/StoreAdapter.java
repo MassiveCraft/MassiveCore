@@ -8,6 +8,6 @@ public interface StoreAdapter
 	// This method returns the name of that driver.
 	public String forDriverName();
 	
-	public Object read(Coll<?, ?> coll, Object entity);
-	public void write(Coll<?, ?> coll, Object raw, Object entity); // (This is an opaque/complete write)
+	public Object read(Coll<?> coll, Object entity);
+	public void write(Coll<?> coll, Object raw, Object entity); // (This is an opaque/complete write)
 }

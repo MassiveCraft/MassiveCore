@@ -30,7 +30,7 @@ public class IdStrategyAiMongo extends IdStrategyAiAbstract
 	// http://dev.bubblemix.net/blog/2011/04/auto-increment-for-mongodb-with-the-java-driver/
 	
 	@Override
-	public Integer getNextAndUpdate(CollInterface<?, String> coll)
+	public Integer getNextAndUpdate(CollInterface<?> coll)
 	{
 		DBCollection dbcoll = this.getSeqColl(coll);
 		BasicDBObject res = (BasicDBObject) dbcoll.findAndModify(createQueryObject(coll), new BasicDBObject(), new BasicDBObject(), false, createUpdateObject(), true, true);
@@ -38,7 +38,7 @@ public class IdStrategyAiMongo extends IdStrategyAiAbstract
 	}
 	
 	@Override
-	public Integer getNext(CollInterface<?, String> coll)
+	public Integer getNext(CollInterface<?> coll)
 	{
 		DBCollection dbcoll = this.getSeqColl(coll);
 		BasicDBObject res = (BasicDBObject) dbcoll.findOne(createQueryObject(coll));
@@ -46,7 +46,7 @@ public class IdStrategyAiMongo extends IdStrategyAiAbstract
 	}
 	
 	@Override
-	public boolean setNext(CollInterface<?, String> coll, int next)
+	public boolean setNext(CollInterface<?> coll, int next)
 	{
 		throw new RuntimeException("Not implemented yet");
 		
@@ -60,12 +60,12 @@ public class IdStrategyAiMongo extends IdStrategyAiAbstract
 	// UTIL
 	// -------------------------------------------- //
 	
-	public DBCollection getSeqColl(CollInterface<?, String> coll)
+	public DBCollection getSeqColl(CollInterface<?> coll)
 	{
 		return ((DbMongo)coll.getDb()).db.getCollection(SEC_COLL);
 	}
 	
-	public static DBObject createQueryObject(CollInterface<?, String> coll)
+	public static DBObject createQueryObject(CollInterface<?> coll)
 	{
 		// this object represents your "query", its analogous to a WHERE clause in SQL
 		DBObject query = new BasicDBObject();

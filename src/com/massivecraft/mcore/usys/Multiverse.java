@@ -13,7 +13,7 @@ import com.massivecraft.mcore.cmd.arg.ARUniverse;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 
-public class Multiverse extends Entity<Multiverse, String>
+public class Multiverse extends Entity<Multiverse>
 {	
 	// -------------------------------------------- //
 	// META

@@ -2,7 +2,7 @@ package com.massivecraft.mcore.store.idstrategy;
 
 import com.massivecraft.mcore.store.CollInterface;
 
-public abstract class IdStrategyAiAbstract extends IdStrategyAbstract<String, String>
+public abstract class IdStrategyAiAbstract extends IdStrategyAbstract
 {
 	//----------------------------------------------//
 	// CONSTRUCT
@@ -10,18 +10,15 @@ public abstract class IdStrategyAiAbstract extends IdStrategyAbstract<String, St
 	
 	public IdStrategyAiAbstract()
 	{
-		super("ai", String.class, String.class);
+		super("ai");
 	}
 
 	// -------------------------------------------- //
 	// OVERRIDE: IdStrategyAbstract
 	// -------------------------------------------- //
 	
-	@Override public String localToRemote(Object local) { return (String)local; }
-	@Override public String remoteToLocal(Object remote) { return (String)remote; }
-	
 	@Override
-	public String generateAttempt(CollInterface<?, String> coll)
+	public String generateAttempt(CollInterface<?> coll)
 	{
 		Integer ret = this.getNextAndUpdate(coll);
 		if (ret == null) return null;
@@ -33,8 +30,8 @@ public abstract class IdStrategyAiAbstract extends IdStrategyAbstract<String, St
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract Integer getNextAndUpdate(CollInterface<?, String> coll);
-	public abstract Integer getNext(CollInterface<?, String> coll);
-	public abstract boolean setNext(CollInterface<?, String> coll, int next);
+	public abstract Integer getNextAndUpdate(CollInterface<?> coll);
+	public abstract Integer getNext(CollInterface<?> coll);
+	public abstract boolean setNext(CollInterface<?> coll, int next);
 	
 }

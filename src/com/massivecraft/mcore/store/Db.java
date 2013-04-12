@@ -12,5 +12,5 @@ public interface Db<R>
 	
 	public Driver<R> getDriver();
 	
-	public Object getCollDriverObject(Coll<?, ?> coll);
+	public Object getCollDriverObject(Coll<?> coll);
 }

@@ -12,13 +12,13 @@ public class StoreAdapterMongo extends StoreAdapterAbstract
 	}
 
 	@Override
-	public Object read(Coll<?, ?> coll, Object entity)
+	public Object read(Coll<?> coll, Object entity)
 	{
 		return MongoGsonConverter.gson2MongoObject((JsonElement)StoreAdapterGson.get().read(coll, entity));
 	}
 
 	@Override
-	public void write(Coll<?, ?> coll, Object raw, Object entity)
+	public void write(Coll<?> coll, Object raw, Object entity)
 	{
 		StoreAdapterGson.get().write(coll, MongoGsonConverter.mongo2GsonObject((DBObject) raw), entity);
 	}

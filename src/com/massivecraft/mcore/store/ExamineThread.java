@@ -1,10 +1,10 @@
 package com.massivecraft.mcore.store;
 
-public class ExamineThread<E, L extends Comparable<? super L>> extends Thread
+public class ExamineThread<E> extends Thread
 {
-	protected Coll<E, L> coll; 
+	protected Coll<E> coll; 
 	
-	public ExamineThread(Coll<E, L> coll)
+	public ExamineThread(Coll<E> coll)
 	{
 		this.coll = coll;
 		this.setName("ExamineThread for "+coll.getName());

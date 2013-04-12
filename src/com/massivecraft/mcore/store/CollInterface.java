@@ -10,7 +10,7 @@ import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.store.idstrategy.IdStrategy;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
 
-public interface CollInterface<E, L extends Comparable<? super L>>
+public interface CollInterface<E>
 {
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
@@ -19,7 +19,6 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	public String getBasename();
 	public String getUniverse();
 	public Class<E> getEntityClass();
-	public Class<L> getIdClass();
 	
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM
@@ -29,21 +28,21 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	public Db<?> getDb();
 	public Driver<?> getDriver();
 	public StoreAdapter getStoreAdapter();
-	public IdStrategy<L, ?> getIdStrategy();
+	public IdStrategy getIdStrategy();
 	public Object getCollDriverObject();
 	
 	// -------------------------------------------- //
 	// STORAGE
 	// -------------------------------------------- //
-	public Map<L, E> getId2entity();
+	public Map<String, E> getId2entity();
 	public E get(Object oid);
 	public E get(Object oid, boolean creative);
-	public Collection<L> getIds();
-	public Collection<L> getIdsRemote();
+	public Collection<String> getIds();
+	public Collection<String> getIdsRemote();
 	public boolean containsId(Object oid);
 	
-	public Map<E, L> getEntity2id();
-	public L getId(Object entity);
+	public Map<E, String> getEntity2id();
+	public String getId(Object entity);
 	public boolean containsEntity(Object entity);
 	public Collection<E> getAll();
 	public Collection<E> getAll(Predictate<? super E> where);
@@ -51,7 +50,7 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
 	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
 	
-	public L fixId(Object oid);
+	public String fixId(Object oid);
 	
 	// -------------------------------------------- //
 	// BAHAVIOR
@@ -81,8 +80,8 @@ public interface CollInterface<E, L extends Comparable<? super L>>
 	// -------------------------------------------- //
 	// ATTACH AND DETACH
 	// -------------------------------------------- //
-	public L attach(E entity);
-	public L attach(E entity, Object oid);
+	public String attach(E entity);
+	public String attach(E entity, Object oid);
 	public E detachEntity(Object entity);
 	public E detachId(Object oid);
 	

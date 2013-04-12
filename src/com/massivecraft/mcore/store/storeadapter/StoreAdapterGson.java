@@ -11,13 +11,13 @@ public class StoreAdapterGson extends StoreAdapterAbstract
 	}
 
 	@Override
-	public Object read(Coll<?, ?> coll, Object entity)
+	public Object read(Coll<?> coll, Object entity)
 	{
 		return coll.getGson().toJsonTree(entity, coll.getEntityClass());
 	}
 
 	@Override
-	public void write(Coll<?, ?> coll, Object raw, Object entity)
+	public void write(Coll<?> coll, Object raw, Object entity)
 	{
 		if (raw == null) throw new NullPointerException("raw");
 		if (entity == null) throw new NullPointerException("entity");

@@ -11,19 +11,11 @@ import com.massivecraft.mcore.store.CollInterface;
  * Thus you will find multiple implementations with the name "ai" (auto increment).
  * There must be one implementation per driver.
  */
-public interface IdStrategy<L extends Comparable<? super L>, R>
+public interface IdStrategy
 {
 	// The name of the strategy (such as "auto_increment")
 	public String getName();
 	
-	// The id classes
-	public Class<L> getLocalClass();
-	public Class<R> getRemoteClass();
-	
-	// Convert
-	public R localToRemote(Object local);
-	public L remoteToLocal(Object remote);
-	
 	// Generate
-	public L generate(CollInterface<?, L> coll);
+	public String generate(CollInterface<?> coll);
 }

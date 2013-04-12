@@ -12,7 +12,7 @@ import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.MUtil;
 
-public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> implements SenderIdSource
+public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -41,7 +41,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> imple
 	
 	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
-		super(db, plugin, "ai", name, entityClass, String.class, creative, idComparator, entityComparator);
+		super(db, plugin, "ai", name, entityClass, creative, idComparator, entityComparator);
 		this.lowercasing = lowercasing;
 	}
 	
@@ -128,7 +128,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E, String> imple
 	
 	public static void setSenderRefferences(String senderId, CommandSender sender)
 	{
-		for (Coll<?, ?> coll : Coll.instances)
+		for (Coll<?> coll : Coll.instances)
 		{
 			if (!(coll instanceof SenderColl)) continue;
 			SenderColl<?> senderColl = (SenderColl<?>)coll;

@@ -22,7 +22,7 @@ public class IdStrategyAiGson extends IdStrategyAiAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public Integer getNextAndUpdate(CollInterface<?, String> coll)
+	public Integer getNextAndUpdate(CollInterface<?> coll)
 	{
 		Integer next = this.getNext(coll);
 		if (next == null) return null;
@@ -34,7 +34,7 @@ public class IdStrategyAiGson extends IdStrategyAiAbstract
 	}
 	
 	@Override
-	public Integer getNext(CollInterface<?, String> coll)
+	public Integer getNext(CollInterface<?> coll)
 	{
 		File file = this.getAiFile(coll);
 		if (this.ensureFileExists(file) == false) return null;
@@ -46,7 +46,7 @@ public class IdStrategyAiGson extends IdStrategyAiAbstract
 	}
 	
 	@Override
-	public boolean setNext(CollInterface<?, String> coll, int next)
+	public boolean setNext(CollInterface<?> coll, int next)
 	{
 		File file = this.getAiFile(coll);
 		if (this.ensureFileExists(file) == false) return false;
@@ -58,7 +58,7 @@ public class IdStrategyAiGson extends IdStrategyAiAbstract
 	// UTIL
 	// -------------------------------------------- //
 	
-	private File getAiFile(CollInterface<?, String> coll)
+	private File getAiFile(CollInterface<?> coll)
 	{
 		DbGson cdb = (DbGson)coll.getDb();
 		return new File(cdb.dir, coll.getName() + "_ai.txt");

@@ -8,7 +8,7 @@ import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 
-public class Aspect extends Entity<Aspect, String>
+public class Aspect extends Entity<Aspect>
 {	
 	// -------------------------------------------- //
 	// META

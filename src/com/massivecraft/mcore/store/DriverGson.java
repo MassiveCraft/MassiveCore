@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import com.massivecraft.mcore.store.idstrategy.IdStrategyAiGson;
-import com.massivecraft.mcore.store.idstrategy.IdStrategyOidGson;
+import com.massivecraft.mcore.store.idstrategy.IdStrategyOid;
 import com.massivecraft.mcore.store.idstrategy.IdStrategyUuid;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapterGson;
@@ -72,13 +72,13 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public <L extends Comparable<? super L>> boolean containsId(Coll<?, L> coll, L id)
+	public boolean containsId(Coll<?> coll, String id)
 	{
 		return fileFromId(coll, id).isFile();
 	}
 	
 	@Override
-	public <L extends Comparable<? super L>> Long getMtime(Coll<?, L> coll, L id)
+	public Long getMtime(Coll<?> coll, String id)
 	{
 		File file = fileFromId(coll, id);
 		if ( ! file.isFile()) return null;
@@ -86,45 +86,39 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 	
 	@Override
-	public <L extends Comparable<? super L>> Collection<L> getIds(Coll<?, L> coll)
+	public Collection<String> getIds(Coll<?> coll)
 	{
-		List<L> ret = new ArrayList<L>();
+		List<String> ret = new ArrayList<String>();
 		
 		// Scan the collection folder for .json files
 		File collDir = getCollDir(coll);
 		if ( ! collDir.isDirectory()) return ret;
 		for(File file : collDir.listFiles(JsonFileFilter.get()))
 		{
-			// Then convert them to what they should be
-			String remoteId = idFromFile(file);
-			L localId = coll.getIdStrategy().remoteToLocal(remoteId);
-			ret.add(localId);
+			ret.add(idFromFile(file));
 		}
 		
 		return ret;
 	}
 	
 	@Override
-	public <L extends Comparable<? super L>> Map<L, Long> getId2mtime(Coll<?, L> coll)
+	public Map<String, Long> getId2mtime(Coll<?> coll)
 	{
-		Map<L, Long> ret = new HashMap<L, Long>();
+		Map<String, Long> ret = new HashMap<String, Long>();
 		
 		// Scan the collection folder for .json files
 		File collDir = getCollDir(coll);
 		if ( ! collDir.isDirectory()) return ret;
 		for(File file : collDir.listFiles(JsonFileFilter.get()))
 		{
-			// Then convert them to what they should be
-			String remoteId = idFromFile(file);
-			L localId = coll.getIdStrategy().remoteToLocal(remoteId);
-			ret.put(localId, file.lastModified());
+			ret.put(idFromFile(file), file.lastModified());
 		}
 		
 		return ret;
 	}
 	
 	@Override
-	public <L extends Comparable<? super L>> Entry<JsonElement, Long> load(Coll<?, L> coll, L id)
+	public Entry<JsonElement, Long> load(Coll<?> coll, String id)
 	{
 		File file = fileFromId(coll, id);
 		Long mtime = file.lastModified();
@@ -137,7 +131,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public <L extends Comparable<? super L>> Long save(Coll<?, L> coll, L id, Object rawData)
+	public Long save(Coll<?> coll, String id, Object rawData)
 	{
 		File file = fileFromId(coll, id);
 		String content = coll.getGson().toJson((JsonElement)rawData);
@@ -146,7 +140,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public <L extends Comparable<? super L>> void delete(Coll<?, L> coll, L id)
+	public void delete(Coll<?> coll, String id)
 	{
 		File file = fileFromId(coll, id);
 		file.delete();
@@ -156,7 +150,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	// UTIL
 	// -------------------------------------------- //
 	
-	protected static File getCollDir(Coll<?, ?> coll)
+	protected static File getCollDir(Coll<?> coll)
 	{
 		return (File) coll.getCollDriverObject();
 	}
@@ -168,11 +162,10 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		return name.substring(0, name.length()-5);
 	}
 	
-	protected static <L extends Comparable<? super L>> File fileFromId(Coll<?, L> coll, L id)
+	protected static File fileFromId(Coll<?> coll, String id)
 	{
 		File collDir = getCollDir(coll);
-		String idString = (String)coll.getIdStrategy().localToRemote(id);
-		File idFile = new File(collDir, idString+DOTJSON);
+		File idFile = new File(collDir, id+DOTJSON);
 		return idFile;
 	}
 	
@@ -201,7 +194,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	{
 		instance = new DriverGson();
 		instance.registerIdStrategy(IdStrategyAiGson.get());
-		instance.registerIdStrategy(IdStrategyOidGson.get());
+		instance.registerIdStrategy(IdStrategyOid.get());
 		instance.registerIdStrategy(IdStrategyUuid.get());
 	}
 

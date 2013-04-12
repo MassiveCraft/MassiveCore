@@ -15,20 +15,18 @@ public abstract class DriverAbstract<R> implements Driver<R>
 	protected String name;
 	@Override public String getName() { return this.name; }
 
-	protected Map<String, IdStrategy<?, ?>> idStrategies = new HashMap<String, IdStrategy<?, ?>>();
+	protected Map<String, IdStrategy> idStrategies = new HashMap<String, IdStrategy>();
 	@Override
-	public boolean registerIdStrategy(IdStrategy<?, ?> idStrategy)
+	public boolean registerIdStrategy(IdStrategy idStrategy)
 	{
 		if (idStrategies.containsKey(idStrategy.getName())) return false;
 		idStrategies.put(idStrategy.getName(), idStrategy);
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <L extends Comparable<? super L>> IdStrategy<L, ?> getIdStrategy(String idStrategyName)
+	public IdStrategy getIdStrategy(String idStrategyName)
 	{
-		IdStrategy<?, ?> idStrategy = idStrategies.get(idStrategyName);
-		return (IdStrategy<L, ?>) idStrategy;
+		return idStrategies.get(idStrategyName);
 	}
 }

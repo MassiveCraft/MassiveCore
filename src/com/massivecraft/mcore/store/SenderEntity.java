@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.SenderUtil;
 
-public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E, String>
+public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 {
 	// -------------------------------------------- //
 	// FIELDS

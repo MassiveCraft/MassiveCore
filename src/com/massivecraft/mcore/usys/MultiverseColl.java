@@ -3,7 +3,7 @@ package com.massivecraft.mcore.usys;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Coll;
 
-public class MultiverseColl extends Coll<Multiverse, String>
+public class MultiverseColl extends Coll<Multiverse>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -13,7 +13,7 @@ public class MultiverseColl extends Coll<Multiverse, String>
 	public static MultiverseColl get() { return i; }
 	private MultiverseColl()
 	{
-		super(MCore.get(), "ai", "mcore_multiverse", Multiverse.class, String.class, false);
+		super(MCore.get(), "ai", "mcore_multiverse", Multiverse.class, false);
 	}
 	
 	// -------------------------------------------- //

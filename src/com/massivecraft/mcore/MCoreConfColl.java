@@ -4,7 +4,7 @@ import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
 
-public class MCoreConfColl extends Coll<MCoreConf, String>
+public class MCoreConfColl extends Coll<MCoreConf>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,7 +14,7 @@ public class MCoreConfColl extends Coll<MCoreConf, String>
 	public static MCoreConfColl get() { return i; }
 	private MCoreConfColl()
 	{
-		super(MStore.getDb(ConfServer.dburi), MCore.get(), "ai", "mcore_conf", MCoreConf.class, String.class, true);
+		super(MStore.getDb(ConfServer.dburi), MCore.get(), "ai", "mcore_conf", MCoreConf.class, true);
 	}
 	
 	// -------------------------------------------- //

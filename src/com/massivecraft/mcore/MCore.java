@@ -95,7 +95,7 @@ public class MCore extends MPlugin
 	{
 		public void run()
 		{
-			for (Coll<?, ?> coll : Coll.instances)
+			for (Coll<?> coll : Coll.instances)
 			{
 				coll.onTick();
 			}

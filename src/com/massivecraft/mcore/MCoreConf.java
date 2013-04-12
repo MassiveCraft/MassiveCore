@@ -10,7 +10,7 @@ import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.PermUtil;
 
-public class MCoreConf extends Entity<MCoreConf, String>
+public class MCoreConf extends Entity<MCoreConf>
 {
 	// -------------------------------------------- //
 	// META

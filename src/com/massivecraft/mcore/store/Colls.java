@@ -9,7 +9,7 @@ import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
 
-public abstract class Colls<C extends Coll<E, L>, E, L extends Comparable<? super L>>
+public abstract class Colls<C extends Coll<E>, E>
 {
 	protected Map<String, C> name2coll = new HashMap<String, C>();
 	

@@ -53,7 +53,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	public void onDisable()
 	{
 		// Collection shutdowns.
-		for (Coll<?, ?> coll : Coll.instances)
+		for (Coll<?> coll : Coll.instances)
 		{
 			if (coll.getPlugin() != this) continue;
 			coll.examineThread().interrupt();

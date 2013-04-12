@@ -22,13 +22,13 @@ import com.massivecraft.mcore.store.idstrategy.IdStrategy;
 import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
 import com.massivecraft.mcore.xlib.gson.Gson;
 
-public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E, L>
+public class Coll<E> implements CollInterface<E>
 {
 	// -------------------------------------------- //
 	// GLOBAL REGISTRY
 	// -------------------------------------------- //
 	
-	public static List<Coll<?, ?>> instances = new CopyOnWriteArrayList<Coll<?, ?>>(); 
+	public static List<Coll<?>> instances = new CopyOnWriteArrayList<Coll<?>>(); 
 	
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
@@ -45,9 +45,6 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	
 	protected final Class<E> entityClass;
 	@Override public Class<E> getEntityClass() { return this.entityClass; }
-
-	protected final Class<L> idClass;
-	@Override public Class<L> getIdClass() { return this.idClass; }
 	
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM
@@ -71,8 +68,8 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override public Db<?> getDb() { return this.db; }
 	@Override public Driver<?> getDriver() { return this.db.getDriver(); }
 	
-	protected IdStrategy<L, ?> idStrategy;
-	@Override public IdStrategy<L, ?> getIdStrategy() { return this.idStrategy; }
+	protected IdStrategy idStrategy;
+	@Override public IdStrategy getIdStrategy() { return this.idStrategy; }
 	
 	protected StoreAdapter storeAdapter;
 	@Override public StoreAdapter getStoreAdapter() { return this.storeAdapter; }
@@ -84,8 +81,8 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// STORAGE
 	// -------------------------------------------- //
 	
-	protected Map<L, E> id2entity;
-	@Override public Map<L, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
+	protected Map<String, E> id2entity;
+	@Override public Map<String, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override 
 	public E get(Object oid) 
 	{
@@ -98,7 +95,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	}
 	protected E get(Object oid, boolean creative, boolean noteChange)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		if (id == null) return null;
 		E ret = this.id2entity.get(id);
 		if (ret != null) return ret;
@@ -106,20 +103,20 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		return this.create(id, noteChange);
 	}
 	
-	@Override public Collection<L> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
-	@Override public Collection<L> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
+	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
+	@Override public Collection<String> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
 	@Override
 	public boolean containsId(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		if (id == null) return false;
 		return this.id2entity.containsKey(id);
 	}
 	
 	// Get the id for this entity.
-	protected Map<E, L> entity2id;
-	@Override public Map<E, L> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
-	@Override public L getId(Object entity) { return this.entity2id.get(entity); }
+	protected Map<E, String> entity2id;
+	@Override public Map<E, String> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
+	@Override public String getId(Object entity) { return this.entity2id.get(entity); }
 	@Override public boolean containsEntity(Object entity) { return this.entity2id.containsKey(entity); };
 	
 	@Override public Collection<E> getAll() { return Collections.unmodifiableCollection(this.entity2id.keySet()); }
@@ -129,10 +126,10 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, offset); }
 	
 	@Override
-	public L fixId(Object oid)
+	public String fixId(Object oid)
 	{
 		if (oid == null) return null;
-		if (oid.getClass() == this.idClass) return this.idClass.cast(oid);
+		if (oid instanceof String) return (String)oid;
 		if (oid.getClass() == this.entityClass) return this.entity2id.get(oid);
 		return null;
 	}
@@ -224,23 +221,23 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// -------------------------------------------- //
 	
 	@Override
-	public L attach(E entity)
+	public String attach(E entity)
 	{
 		return this.attach(entity, null);
 	}
 	
 	@Override
-	public synchronized L attach(E entity, Object oid)
+	public synchronized String attach(E entity, Object oid)
 	{
 		return this.attach(entity, oid, true);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected synchronized L attach(E entity, Object oid, boolean noteChange)
+	protected synchronized String attach(E entity, Object oid, boolean noteChange)
 	{
 		// Check entity
 		if (entity == null) return null;
-		L id = this.getId(entity);
+		String id = this.getId(entity);
 		if (id != null) return id;
 		
 		// Check/Fix id
@@ -285,7 +282,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public E detachId(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		if (id == null) return null;
 		
 		// Remove @ local
@@ -302,13 +299,13 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// IDENTIFIED CHANGES
 	// -------------------------------------------- //
 	
-	protected Set<L> localAttachIds;
-	protected Set<L> localDetachIds;
-	protected Set<L> changedIds;
+	protected Set<String> localAttachIds;
+	protected Set<String> localDetachIds;
+	protected Set<String> changedIds;
 	
 	protected synchronized void clearIdentifiedChanges(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		this.localAttachIds.remove(id);
 		this.localDetachIds.remove(id);
 		this.changedIds.remove(id);
@@ -318,13 +315,13 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	// SYNCLOG
 	// -------------------------------------------- //
 
-	protected Map<L, Long> lastMtime;
-	protected Map<L, Object> lastRaw;
-	protected Set<L> lastDefault;
+	protected Map<String, Long> lastMtime;
+	protected Map<String, Object> lastRaw;
+	protected Set<String> lastDefault;
 	
 	protected synchronized void clearSynclog(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		this.lastMtime.remove(id);
 		this.lastRaw.remove(id);
 		this.lastDefault.remove(id);
@@ -338,7 +335,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public synchronized E removeAtLocal(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
 		
@@ -360,7 +357,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public synchronized void removeAtRemote(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
@@ -371,7 +368,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public synchronized void saveToRemote(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
@@ -398,7 +395,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public synchronized void loadFromRemote(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);
 		
@@ -432,20 +429,20 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public ModificationState examineId(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		return this.examineId(id, null, false);
 	}
 	
 	@Override
 	public ModificationState examineId(Object oid, Long remoteMtime)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		return this.examineId(id, remoteMtime, true);
 	}
 	
 	protected ModificationState examineId(Object oid, Long remoteMtime, boolean remoteMtimeSupplied)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		
 		if (this.localDetachIds.contains(id)) return ModificationState.LOCAL_DETACH;
 		if (this.localAttachIds.contains(id)) return ModificationState.LOCAL_ATTACH;
@@ -486,7 +483,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		
 		return ModificationState.NONE;
 	}
-	protected boolean examineHasLocalAlter(L id, E entity)
+	protected boolean examineHasLocalAlter(String id, E entity)
 	{
 		Object lastRaw = this.lastRaw.get(id);
 		Object currentRaw = this.storeAdapter.read(this, entity);
@@ -496,7 +493,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public ModificationState syncId(Object oid)
 	{
-		L id = this.fixId(oid);
+		String id = this.fixId(oid);
 		
 		ModificationState mstate = this.examineId(id);
 		
@@ -529,7 +526,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	@Override
 	public void syncSuspects()
 	{
-		for (L id : this.changedIds)
+		for (String id : this.changedIds)
 		{
 			this.syncId(id);
 		}
@@ -539,9 +536,9 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	public void syncAll()
 	{
 		// Find all ids
-		Set<L> allids = new HashSet<L>(this.id2entity.keySet());
+		Set<String> allids = new HashSet<String>(this.id2entity.keySet());
 		allids.addAll(this.getDriver().getIds(this));
-		for (L id : allids)
+		for (String id : allids)
 		{
 			this.syncId(id);
 		}
@@ -551,15 +548,15 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	public void findSuspects()
 	{
 		// Get remote id and mtime snapshot
-		Map<L, Long> id2RemoteMtime = this.getDb().getDriver().getId2mtime(this);
+		Map<String, Long> id2RemoteMtime = this.getDb().getDriver().getId2mtime(this);
 		
 		// Compile a list of all ids (both remote and local)
-		Set<L> allids = new HashSet<L>();
+		Set<String> allids = new HashSet<String>();
 		allids.addAll(id2RemoteMtime.keySet());
 		allids.addAll(this.id2entity.keySet());
 		
 		// Check for modifications
-		for (L id : allids)
+		for (String id : allids)
 		{
 			Long remoteMtime = id2RemoteMtime.get(id);
 			ModificationState state = this.examineId(id, remoteMtime);
@@ -584,14 +581,14 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		this.syncSuspects();
 	}
 	
-	protected ExamineThread<E, L> examineThread;
+	protected ExamineThread<E> examineThread;
 	@Override public Thread examineThread() { return this.examineThread; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative, Comparator<? super L> idComparator, Comparator<? super E> entityComparator)
+	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, boolean creative, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -608,7 +605,6 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		
 		// WHAT DO WE HANDLE?
 		this.entityClass = entityClass;
-		this.idClass = idClass;
 		this.creative = creative;
 		
 		// SUPPORTING SYSTEM
@@ -620,41 +616,37 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 		{
 			throw new IllegalArgumentException("UNKNOWN: The id stragegy \""+idStrategyName+"\" is unknown to the driver \""+db.getDriver().getName()+"\".");
 		}
-		else if (this.idStrategy.getLocalClass() != idClass)
-		{
-			throw new IllegalArgumentException("MISSMATCH: The id stragegy \""+idStrategyName+"\" for the driver \""+db.getDriver().getName()+"\" uses \""+this.idStrategy.getLocalClass().getSimpleName()+"\" but the collection "+this.name+"/"+this.getClass().getSimpleName()+" uses \""+idClass.getSimpleName()+"\".");
-		}
 		this.collDriverObject = db.getCollDriverObject(this);
 		
 		// STORAGE
-		this.id2entity = new ConcurrentSkipListMap<L, E>(idComparator);
-		this.entity2id = new ConcurrentSkipListMap<E, L>(entityComparator);
+		this.id2entity = new ConcurrentSkipListMap<String, E>(idComparator);
+		this.entity2id = new ConcurrentSkipListMap<E, String>(entityComparator);
 		
 		// IDENTIFIED CHANGES
-		this.localAttachIds = new ConcurrentSkipListSet<L>(idComparator);
-		this.localDetachIds = new ConcurrentSkipListSet<L>(idComparator);
-		this.changedIds = new ConcurrentSkipListSet<L>(idComparator);
+		this.localAttachIds = new ConcurrentSkipListSet<String>(idComparator);
+		this.localDetachIds = new ConcurrentSkipListSet<String>(idComparator);
+		this.changedIds = new ConcurrentSkipListSet<String>(idComparator);
 		
 		// SYNCLOG
-		this.lastMtime = new ConcurrentSkipListMap<L, Long>(idComparator);
-		this.lastRaw = new ConcurrentSkipListMap<L, Object>(idComparator);
-		this.lastDefault = new ConcurrentSkipListSet<L>(idComparator);
+		this.lastMtime = new ConcurrentSkipListMap<String, Long>(idComparator);
+		this.lastRaw = new ConcurrentSkipListMap<String, Object>(idComparator);
+		this.lastDefault = new ConcurrentSkipListSet<String>(idComparator);
 		
-		final Coll<E, L> me = this;
+		final Coll<E> me = this;
 		this.tickTask = new Runnable()
 		{
 			@Override public void run() { me.onTick(); }
 		};
 	}
 	
-	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, boolean creative)
 	{
-		this(db, plugin, idStrategyName, name, entityClass, idClass, creative, null, null);
+		this(db, plugin, idStrategyName, name, entityClass, creative, null, null);
 	}
 	
-	public Coll(Plugin plugin, String idStrategyName, String name, Class<E> entityClass, Class<L> idClass, boolean creative)
+	public Coll(Plugin plugin, String idStrategyName, String name, Class<E> entityClass, boolean creative)
 	{
-		this(MCore.getDb(), plugin, idStrategyName, name, entityClass, idClass, creative);
+		this(MCore.getDb(), plugin, idStrategyName, name, entityClass, creative);
 	}
 	
 	@Override
@@ -662,7 +654,7 @@ public class Coll<E, L extends Comparable<? super L>> implements CollInterface<E
 	{
 		if (this.inited()) return;
 		this.syncAll();
-		this.examineThread = new ExamineThread<E, L>(this);
+		this.examineThread = new ExamineThread<E>(this);
 		this.examineThread.start();
 		instances.add(this);
 	}

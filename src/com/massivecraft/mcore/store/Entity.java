@@ -12,33 +12,33 @@ import com.massivecraft.mcore.xlib.gson.Gson;
 
 // Self referencing generic.
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
-public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? super L>> implements Comparable<E>
+public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 {
-	protected transient Coll<E, L> coll;
-	protected void setColl(Coll<E, L> val) { this.coll = val; }
-	public Coll<E, L> getColl() { return this.coll; }
+	protected transient Coll<E> coll;
+	protected void setColl(Coll<E> val) { this.coll = val; }
+	public Coll<E> getColl() { return this.coll; }
 	
-	protected transient L id;
-	protected void setid(L id) { this.id = id; }
-	public L getId() { return this.id; }
+	protected transient String id;
+	protected void setid(String id) { this.id = id; }
+	public String getId() { return this.id; }
 	
 	public String getUniverse()
 	{
-		Coll<E, L> coll = this.getColl();
+		Coll<E> coll = this.getColl();
 		if (coll == null) return null;
 		
 		return coll.getUniverse();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public L attach(Coll<E, L> coll)
+	public String attach(Coll<E> coll)
 	{
 		return coll.attach((E) this);
 	}
 	
 	public E detach()
 	{
-		Coll<E, L> coll = this.getColl();
+		Coll<E> coll = this.getColl();
 		if (coll == null) return null;
 		
 		return coll.detachEntity(this);
@@ -56,7 +56,7 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	
 	public void changed()
 	{
-		L id = this.getId();
+		String id = this.getId();
 		if (id == null) return;
 		
 		this.getColl().changedIds.add(id);
@@ -64,14 +64,14 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	
 	public ModificationState sync()
 	{
-		L id = this.getId();
+		String id = this.getId();
 		if (id == null) return ModificationState.UNKNOWN;
 		return this.getColl().syncId(id);
 	}
 	
 	public void saveToRemote()
 	{
-		L id = this.getId();
+		String id = this.getId();
 		if (id == null) return;
 		
 		this.getColl().saveToRemote(id);
@@ -79,7 +79,7 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	
 	public void loadFromRemote()
 	{
-		L id = this.getId();
+		String id = this.getId();
 		if (id == null) return;
 		
 		this.getColl().loadFromRemote(id);
@@ -89,7 +89,7 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 	public String toString()
 	{
 		Gson gson = MCore.gson;
-		Coll<E, L> coll = this.getColl();
+		Coll<E> coll = this.getColl();
 		if (coll != null) gson = coll.getGson();
 		
 		return this.getClass().getSimpleName()+gson.toJson(this, this.getClass());
@@ -114,8 +114,8 @@ public abstract class Entity<E extends Entity<E, L>, L extends Comparable<? supe
 		
 		if (this.equals(that)) return 0;
 		
-		L thisId = this.getId();
-		L thatId = that.getId();
+		String thisId = this.getId();
+		String thatId = that.getId();
 		
 		if (thisId == null) return -1;	
 		if (thatId == null) return +1;

@@ -50,7 +50,7 @@ public class DbGson extends DbAbstract<JsonElement>
 	}
 	
 	@Override
-	public Object getCollDriverObject(Coll<?, ?> coll)
+	public Object getCollDriverObject(Coll<?> coll)
 	{
 		return new File(dir, coll.getName());
 	}
