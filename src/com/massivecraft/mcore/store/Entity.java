@@ -1,6 +1,7 @@
 package com.massivecraft.mcore.store;
 
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.NaturalOrderComparator;
 import com.massivecraft.mcore.store.accessor.Accessor;
 import com.massivecraft.mcore.xlib.gson.Gson;
 
@@ -120,7 +121,7 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		if (thisId == null) return -1;	
 		if (thatId == null) return +1;
 		
-		int ret = thisId.compareTo(thatId);
+		int ret = NaturalOrderComparator.get().compare(thisId, thatId);
 		
 		// The id's may be the same if these are objects from different collections
 		// We avoid zero in an ugly way like this.
