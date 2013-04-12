@@ -6,7 +6,15 @@ import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 public class IdStrategyOidGson extends IdStrategyAbstract<ObjectId, String>
 {
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static IdStrategyOidGson i = new IdStrategyOidGson();
+	public static IdStrategyOidGson get() { return i; }
+	private IdStrategyOidGson() { super("oid", ObjectId.class, String.class); }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override public String localToRemote(Object local) { return ((ObjectId)local).toStringBabble(); }
@@ -18,22 +26,4 @@ public class IdStrategyOidGson extends IdStrategyAbstract<ObjectId, String>
 		return ObjectId.get();
 	}
 	
-	//----------------------------------------------//
-	// CONSTRUCTORS
-	//----------------------------------------------//
-	
-	private IdStrategyOidGson()
-	{
-		super("oid", ObjectId.class, String.class);
-	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static IdStrategyOidGson instance = new IdStrategyOidGson();
-	public static IdStrategyOidGson get()
-	{
-		return instance;
-	}
 }

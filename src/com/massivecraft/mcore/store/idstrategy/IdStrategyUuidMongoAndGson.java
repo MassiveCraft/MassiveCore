@@ -7,7 +7,15 @@ import com.massivecraft.mcore.store.CollInterface;
 public class IdStrategyUuidMongoAndGson extends IdStrategyAbstract<UUID, String>
 {
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static IdStrategyUuidMongoAndGson i = new IdStrategyUuidMongoAndGson();
+	public static IdStrategyUuidMongoAndGson get() { return i; }
+	private IdStrategyUuidMongoAndGson() { super("uuid", UUID.class, String.class); }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override public String localToRemote(Object local) { return ((UUID)local).toString(); }
@@ -19,22 +27,4 @@ public class IdStrategyUuidMongoAndGson extends IdStrategyAbstract<UUID, String>
 		return UUID.randomUUID();
 	}
 	
-	//----------------------------------------------//
-	// CONSTRUCTORS
-	//----------------------------------------------//
-	
-	private IdStrategyUuidMongoAndGson()
-	{
-		super("uuid", UUID.class, String.class);
-	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static IdStrategyUuidMongoAndGson instance = new IdStrategyUuidMongoAndGson();
-	public static IdStrategyUuidMongoAndGson get()
-	{
-		return instance;
-	}
 }

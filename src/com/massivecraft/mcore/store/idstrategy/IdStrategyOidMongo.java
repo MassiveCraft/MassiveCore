@@ -6,7 +6,15 @@ import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 public class IdStrategyOidMongo extends IdStrategyAbstract<ObjectId, ObjectId>
 {
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static IdStrategyOidMongo i = new IdStrategyOidMongo();
+	public static IdStrategyOidMongo get() { return i; }
+	private IdStrategyOidMongo() { super("oid", ObjectId.class, ObjectId.class); }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override public ObjectId localToRemote(Object local) { return (ObjectId)local; }
@@ -16,25 +24,6 @@ public class IdStrategyOidMongo extends IdStrategyAbstract<ObjectId, ObjectId>
 	public ObjectId generateAttempt(CollInterface<?, ObjectId> coll)
 	{
 		return ObjectId.get();
-	}
-	
-	//----------------------------------------------//
-	// CONSTRUCTORS
-	//----------------------------------------------//
-	
-	private IdStrategyOidMongo()
-	{
-		super("oid", ObjectId.class, ObjectId.class);
-	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static IdStrategyOidMongo instance = new IdStrategyOidMongo();
-	public static IdStrategyOidMongo get()
-	{
-		return instance;
 	}
 
 }
