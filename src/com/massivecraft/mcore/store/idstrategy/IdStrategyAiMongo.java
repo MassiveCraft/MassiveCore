@@ -6,62 +6,79 @@ import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.mcore.xlib.mongodb.DBCollection;
 import com.massivecraft.mcore.xlib.mongodb.DBObject;
 
-public class IdStrategyAiMongo extends IdStrategyAbstract<String, String>
+public class IdStrategyAiMongo extends IdStrategyAiAbstract
 {
-	private static String SEC = "seq";
+	// -------------------------------------------- //
+	// CONST
+	// -------------------------------------------- //
+	
+	public static final String SEC_COLL = "seq";
+	public static final String SEC_FIELD = "seq";
+	
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	protected static IdStrategyAiMongo i = new IdStrategyAiMongo();
+	public static IdStrategyAiMongo get() { return i; }
+	private IdStrategyAiMongo() { super(); }	
 
 	// -------------------------------------------- //
-	// FIELDS
+	// OVERRIDE
 	// -------------------------------------------- //
-	
-	// String sequenseName;
-	// DBCollection sequenseCollection;
-	String sequenseField;
-	
-	//----------------------------------------------//
-	// CONSTRUCTORS
-	//----------------------------------------------//
-	
-	private IdStrategyAiMongo()
-	{
-		super("ai", String.class, String.class);
-		this.sequenseField = SEC;
-	}
-
-	// -------------------------------------------- //
-	// IMPLEMENTATION
-	// -------------------------------------------- //
-	
-	@Override public String localToRemote(Object local) { return (String)local; }
-	@Override public String remoteToLocal(Object remote) { return (String)remote; }
 	
 	// http://dev.bubblemix.net/blog/2011/04/auto-increment-for-mongodb-with-the-java-driver/
+	
 	@Override
-	public String generateAttempt(CollInterface<?, String> coll)
+	public Integer getNextAndUpdate(CollInterface<?, String> coll)
 	{
-		String sequenseName = coll.getName();
-		DBCollection sequenseCollection = ((DbMongo)coll.getDb()).db.getCollection(SEC);
+		DBCollection dbcoll = this.getSeqColl(coll);
+		BasicDBObject res = (BasicDBObject) dbcoll.findAndModify(createQueryObject(coll), new BasicDBObject(), new BasicDBObject(), false, createUpdateObject(), true, true);
+		return res.getInt(SEC_FIELD);
+	}
+	
+	@Override
+	public Integer getNext(CollInterface<?, String> coll)
+	{
+		DBCollection dbcoll = this.getSeqColl(coll);
+		BasicDBObject res = (BasicDBObject) dbcoll.findOne(createQueryObject(coll));
+		return res.getInt(SEC_FIELD) + 1;
+	}
+	
+	@Override
+	public boolean setNext(CollInterface<?, String> coll, int next)
+	{
+		throw new RuntimeException("Not implemented yet");
 		
+		/*File file = this.getAiFile(coll);
+		if (this.ensureFileExists(file) == false) return false;
+		if (DiscUtil.writeCatch(file, String.valueOf(next)) == false) return false;
+		return true;*/
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public DBCollection getSeqColl(CollInterface<?, String> coll)
+	{
+		return ((DbMongo)coll.getDb()).db.getCollection(SEC_COLL);
+	}
+	
+	public static DBObject createQueryObject(CollInterface<?, String> coll)
+	{
 		// this object represents your "query", its analogous to a WHERE clause in SQL
 		DBObject query = new BasicDBObject();
-		query.put("_id", sequenseName); // where _id = the input sequence name
-	 
-		// this object represents the "update" or the SET blah=blah in SQL
-		DBObject change = new BasicDBObject(this.sequenseField, 1);
-		DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
-	 
-		// Atomically updates the sequence field and returns the value for you
-		DBObject res = sequenseCollection.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
-		return res.get(this.sequenseField).toString();
+		query.put("_id", coll.getName()); // where _id = the input sequence name
+		return query;
 	}
 	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static IdStrategyAiMongo instance = new IdStrategyAiMongo();
-	public static IdStrategyAiMongo get()
+	public static DBObject createUpdateObject()
 	{
-		return instance;
+		// this object represents the "update" or the SET blah=blah in SQL
+		DBObject change = new BasicDBObject(SEC_FIELD, 1);
+		DBObject update = new BasicDBObject("$inc", change); // the $inc here is a mongodb command for increment
+		return update;
 	}
+	
 }

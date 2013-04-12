@@ -7,65 +7,64 @@ import com.massivecraft.mcore.store.CollInterface;
 import com.massivecraft.mcore.store.DbGson;
 import com.massivecraft.mcore.util.DiscUtil;
 
-public class IdStrategyAiGson extends IdStrategyAbstract<String, String>
+public class IdStrategyAiGson extends IdStrategyAiAbstract
 {
-
-	//----------------------------------------------//
-	// CONSTRUCTORS
-	//----------------------------------------------//
-	
-	private IdStrategyAiGson()
-	{
-		super("ai", String.class, String.class);
-	}
-
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	@Override public String localToRemote(Object local) { return (String)local; }
-	@Override public String remoteToLocal(Object remote) { return (String)remote; }
+	private static IdStrategyAiGson i = new IdStrategyAiGson();
+	public static IdStrategyAiGson get() { return i;	}
+	private IdStrategyAiGson() { super(); }
+
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
-	public String generateAttempt(CollInterface<?, String> coll)
+	public Integer getNextAndUpdate(CollInterface<?, String> coll)
 	{
-		File file = getAiFile(coll);
-
-		// Ensure the file exists
-		if (this.ensureFileExists(file) == false)
-		{
-			return null;
-		}
+		Integer next = this.getNext(coll);
+		if (next == null) return null;
 		
-		String content = DiscUtil.readCatch(file);
-		if (content == null)
-		{
-			return null;
-		}
+		Integer newNext = next + 1;
+		if (!this.setNext(coll, newNext)) return null;
 		
-		Integer current = 0;
-		if (content.length() > 0)
-		{
-			current = Integer.valueOf(content);
-		}
-		
-		Integer next = current + 1;
-		if (DiscUtil.writeCatch(file, next.toString()) == false)
-		{
-			return null;
-		}
-		
-		return current.toString();
-		
+		return next;
 	}
 	
-	protected File getAiFile(CollInterface<?, String> coll)
+	@Override
+	public Integer getNext(CollInterface<?, String> coll)
+	{
+		File file = this.getAiFile(coll);
+		if (this.ensureFileExists(file) == false) return null;
+		String content = DiscUtil.readCatch(file);
+		if (content == null) return null;
+		Integer current = 0;
+		if (content.length() > 0) current = Integer.valueOf(content);
+		return current;
+	}
+	
+	@Override
+	public boolean setNext(CollInterface<?, String> coll, int next)
+	{
+		File file = this.getAiFile(coll);
+		if (this.ensureFileExists(file) == false) return false;
+		if (DiscUtil.writeCatch(file, String.valueOf(next)) == false) return false;
+		return true;
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	private File getAiFile(CollInterface<?, String> coll)
 	{
 		DbGson cdb = (DbGson)coll.getDb();
 		return new File(cdb.dir, coll.getName() + "_ai.txt");
 	}
 	
-	protected boolean ensureFileExists(File file)
+	private boolean ensureFileExists(File file)
 	{
 		if (file.isFile()) return true;
 		if (file.isDirectory()) return false;
@@ -79,13 +78,4 @@ public class IdStrategyAiGson extends IdStrategyAbstract<String, String>
 		}
 	}
 	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static IdStrategyAiGson instance = new IdStrategyAiGson();
-	public static IdStrategyAiGson get()
-	{
-		return instance;
-	}
 }
