@@ -15,22 +15,8 @@ import com.massivecraft.mcore.util.MUtil;
 public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {
 	// -------------------------------------------- //
-	// CONSTANTS
-	// -------------------------------------------- //
-	
-	public final static boolean DEFAULT_LOWERCASING = true;
-	public final static boolean DEFAULT_CREATIVE = true;
-	
-	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-	
-	// "Lowercasing" means that the ids are always converted to lower case when fixed.
-	// This is highly recommended for sender colls.
-	// The senderIds are case insensitive by nature and some times you simply can't know the correct casing.
-	
-	protected boolean lowercasing;
-	public boolean isLowercasing() { return this.lowercasing; }
 	
 	protected final SenderIdSource mixinedIdSource = new SenderIdSourceCombined(this, SenderIdSourceMixinAllSenderIds.get());
 	public SenderIdSource getMixinedIdSource() { return this.mixinedIdSource; }
@@ -39,25 +25,19 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public SenderColl(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing, String idStrategyName, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
-		super(db, plugin, "uuid", name, entityClass, creative, idComparator, entityComparator);
-		this.lowercasing = lowercasing;
+		super(name, entityClass, db, plugin, creative, lowercasing, idStrategyName, idComparator, entityComparator);
 	}
 	
-	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative, boolean lowercasing)
-	{
-		this(db, plugin, name, entityClass, creative, lowercasing, null, null);
+	public SenderColl(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing)
+	{	
+		super(name, entityClass, db, plugin, creative, lowercasing);
 	}
 	
-	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass, boolean creative)
-	{
-		this(db, plugin, name, entityClass, creative, DEFAULT_LOWERCASING);
-	}
-	
-	public SenderColl(Db<?> db, Plugin plugin, String name, Class<E> entityClass)
-	{
-		this(db, plugin, name, entityClass, DEFAULT_CREATIVE);
+	public SenderColl(String name, Class<E> entityClass, Db<?> db, Plugin plugin)
+	{	
+		super(name, entityClass, db, plugin, true, true);
 	}
 	
 	// -------------------------------------------- //
@@ -87,9 +67,24 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	public String fixId(Object oid)
 	{
 		if (oid == null) return null;
-		String ret = MUtil.extract(String.class, "senderId", oid);
-		if (ret == null) return ret;
-		return this.lowercasing ? ret.toLowerCase() : ret;
+		
+		String ret = null;
+		if (oid instanceof String) 
+		{
+			ret = (String)oid;
+		}
+		else if (oid.getClass() == this.entityClass)
+		{
+			ret = this.entity2id.get(oid);
+		}
+		else
+		{
+			ret = MUtil.extract(String.class, "senderId", oid);
+		}
+		
+		if (ret == null) return null;
+		
+		return this.isLowercasing() ? ret.toLowerCase() : ret;
 	}
 	
 	public Collection<E> getAllOnline()

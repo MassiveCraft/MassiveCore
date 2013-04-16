@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Coll;
+import com.massivecraft.mcore.store.MStore;
 
 public class AspectColl extends Coll<Aspect>
 {
@@ -16,7 +17,7 @@ public class AspectColl extends Coll<Aspect>
 	public static AspectColl get() { return i; }
 	private AspectColl()
 	{
-		super(MCore.get(), "uuid", "mcore_aspect", Aspect.class, false);
+		super("mcore_aspect", Aspect.class, MStore.getDb("default"), MCore.get());
 	}
 	
 	// -------------------------------------------- //

@@ -2,6 +2,7 @@ package com.massivecraft.mcore.usys;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Coll;
+import com.massivecraft.mcore.store.MStore;
 
 public class MultiverseColl extends Coll<Multiverse>
 {
@@ -13,7 +14,7 @@ public class MultiverseColl extends Coll<Multiverse>
 	public static MultiverseColl get() { return i; }
 	private MultiverseColl()
 	{
-		super(MCore.get(), "uuid", "mcore_multiverse", Multiverse.class, false);
+		super("mcore_multiverse", Multiverse.class, MStore.getDb("default"), MCore.get());
 	}
 	
 	// -------------------------------------------- //

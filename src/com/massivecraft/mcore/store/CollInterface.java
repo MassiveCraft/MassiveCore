@@ -53,10 +53,14 @@ public interface CollInterface<E>
 	public String fixId(Object oid);
 	
 	// -------------------------------------------- //
-	// BAHAVIOR
+	// BEHAVIOR
 	// -------------------------------------------- //
+	
 	public boolean isCreative();
 	public void setCreative(boolean val);
+	
+	public boolean isLowercasing();
+	public void setLowercasing(boolean val);
 	
 	// A default entity will not be saved.
 	// This is often used together with creative collections to save disc space.

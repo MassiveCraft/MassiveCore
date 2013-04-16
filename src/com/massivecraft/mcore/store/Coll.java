@@ -130,18 +130,35 @@ public class Coll<E> implements CollInterface<E>
 	public String fixId(Object oid)
 	{
 		if (oid == null) return null;
-		if (oid instanceof String) return (String)oid;
-		if (oid.getClass() == this.entityClass) return this.entity2id.get(oid);
-		return null;
+		
+		String ret = null;
+		if (oid instanceof String) 
+		{
+			ret = (String)oid;
+		}
+		else if (oid.getClass() == this.entityClass)
+		{
+			ret = this.entity2id.get(oid);
+		}
+		if (ret == null) return null;
+		
+		return this.isLowercasing() ? ret.toLowerCase() : ret;
 	}
 	
 	// -------------------------------------------- //
-	// BAHAVIOR
+	// BEHAVIOR
 	// -------------------------------------------- //
 
 	protected boolean creative;
 	@Override public boolean isCreative() { return this.creative; }
-	@Override public void setCreative(boolean val) { this.creative = val; }
+	@Override public void setCreative(boolean creative) { this.creative = creative; }
+	
+	// "Lowercasing" means that the ids are always converted to lower case when fixed.
+	// This is highly recommended for sender colls.
+	// The senderIds are case insensitive by nature and some times you simply can't know the correct casing.
+	protected boolean lowercasing;
+	@Override public boolean isLowercasing() { return this.lowercasing; }
+	@Override public void setLowercasing(boolean lowercasing) { this.lowercasing = lowercasing; }
 	
 	// Should that instance be saved or not?
 	// If it is default it should not be saved.
@@ -589,7 +606,7 @@ public class Coll<E> implements CollInterface<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, boolean creative, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public Coll(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing, String idStrategyName, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -607,6 +624,7 @@ public class Coll<E> implements CollInterface<E>
 		// WHAT DO WE HANDLE?
 		this.entityClass = entityClass;
 		this.creative = creative;
+		this.lowercasing = lowercasing;
 		
 		// SUPPORTING SYSTEM
 		this.plugin = plugin;
@@ -645,14 +663,14 @@ public class Coll<E> implements CollInterface<E>
 		};
 	}
 	
-	public Coll(Db<?> db, Plugin plugin, String idStrategyName, String name, Class<E> entityClass, boolean creative)
+	public Coll(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing)
 	{
-		this(db, plugin, idStrategyName, name, entityClass, creative, null, null);
+		this(name, entityClass, db, plugin, creative, lowercasing, "uuid", null, null);
 	}
 	
-	public Coll(Plugin plugin, String idStrategyName, String name, Class<E> entityClass, boolean creative)
+	public Coll(String name, Class<E> entityClass, Db<?> db, Plugin plugin)
 	{
-		this(MCore.getDb(), plugin, idStrategyName, name, entityClass, creative);
+		this(name, entityClass, db, plugin, false, false);
 	}
 	
 	@Override
