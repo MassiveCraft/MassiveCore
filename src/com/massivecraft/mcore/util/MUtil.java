@@ -334,8 +334,8 @@ public class MUtil
 	
 	public static boolean equals(Object herp, Object derp)
 	{
-		if (herp == null && derp == null) return true;
-		if (herp == null || derp == null) return false;
+		if (herp == null) return derp == null;
+		if (derp == null) return herp == null;
 		return herp.equals(derp);
 	}
 	
