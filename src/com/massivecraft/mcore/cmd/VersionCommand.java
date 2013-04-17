@@ -32,7 +32,7 @@ public class VersionCommand extends MCommand
 		{
 			this.addRequirements(ReqHasPerm.get(permissionName));
 		}
-		this.setDesc("display the plugin version");
+		this.setDesc("display plugin version");
 		
 		this.addAliases(aliases);
 	}

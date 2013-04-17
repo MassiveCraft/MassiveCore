@@ -343,57 +343,94 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 		
 		final JsonObject jsonObject = jsonElement.getAsJsonObject();
 		final PSBuilder builder = new PSBuilder();
-		for (Entry<String, JsonElement> entry : jsonObject.entrySet())
+		
+		if (jsonObject.has("world") && jsonObject.has("yaw"))
 		{
-			final String key = entry.getKey();
-			final JsonElement value = entry.getValue();
-			
-			switch(key)
+			// Old Faction LazyLocation
+			for (Entry<String, JsonElement> entry : jsonObject.entrySet())
 			{
-				case NAME_SERIALIZED_WORLD:
-					builder.world(value.getAsString());
-				break;
-				case NAME_SERIALIZED_BLOCKX:
-					builder.blockX(value.getAsInt());
-				break;
-				case NAME_SERIALIZED_BLOCKY:
-					builder.blockY(value.getAsInt());
-				break;
-				case NAME_SERIALIZED_BLOCKZ:
-					builder.blockZ(value.getAsInt());
-				break;
-				case NAME_SERIALIZED_LOCATIONX:
-					builder.locationX(value.getAsDouble());
-				break;
-				case NAME_SERIALIZED_LOCATIONY:
-					builder.locationY(value.getAsDouble());
-				break;
-				case NAME_SERIALIZED_LOCATIONZ:
-					builder.locationZ(value.getAsDouble());
-				break;
-				case NAME_SERIALIZED_CHUNKX:
-					builder.chunkX(value.getAsInt());
-				break;
-				case NAME_SERIALIZED_CHUNKZ:
-					builder.chunkZ(value.getAsInt());
-				break;
-				case NAME_SERIALIZED_PITCH:
-					builder.pitch(value.getAsFloat());
-				break;
-				case NAME_SERIALIZED_YAW:
-					builder.yaw(value.getAsFloat());
-				break;
-				case NAME_SERIALIZED_VELOCITYX:
-					builder.velocityX(value.getAsDouble());
-				break;
-				case NAME_SERIALIZED_VELOCITYY:
-					builder.velocityY(value.getAsDouble());
-				break;
-				case NAME_SERIALIZED_VELOCITYZ:
-					builder.velocityZ(value.getAsDouble());
-				break;
+				final String key = entry.getKey();
+				final JsonElement value = entry.getValue();
+				
+				switch(key)
+				{
+					case "world":
+						builder.world(value.getAsString());
+					break;
+					case "x":
+						builder.locationX(value.getAsDouble());
+					break;
+					case "y":
+						builder.locationY(value.getAsDouble());
+					break;
+					case "z":
+						builder.locationZ(value.getAsDouble());
+					break;
+					case "pitch":
+						builder.pitch(value.getAsFloat());
+					break;
+					case "yaw":
+						builder.yaw(value.getAsFloat());
+					break;
+				}
 			}
 		}
+		else
+		{
+			// The Standard Format
+			for (Entry<String, JsonElement> entry : jsonObject.entrySet())
+			{
+				final String key = entry.getKey();
+				final JsonElement value = entry.getValue();
+				
+				switch(key)
+				{
+					case NAME_SERIALIZED_WORLD:
+						builder.world(value.getAsString());
+					break;
+					case NAME_SERIALIZED_BLOCKX:
+						builder.blockX(value.getAsInt());
+					break;
+					case NAME_SERIALIZED_BLOCKY:
+						builder.blockY(value.getAsInt());
+					break;
+					case NAME_SERIALIZED_BLOCKZ:
+						builder.blockZ(value.getAsInt());
+					break;
+					case NAME_SERIALIZED_LOCATIONX:
+						builder.locationX(value.getAsDouble());
+					break;
+					case NAME_SERIALIZED_LOCATIONY:
+						builder.locationY(value.getAsDouble());
+					break;
+					case NAME_SERIALIZED_LOCATIONZ:
+						builder.locationZ(value.getAsDouble());
+					break;
+					case NAME_SERIALIZED_CHUNKX:
+						builder.chunkX(value.getAsInt());
+					break;
+					case NAME_SERIALIZED_CHUNKZ:
+						builder.chunkZ(value.getAsInt());
+					break;
+					case NAME_SERIALIZED_PITCH:
+						builder.pitch(value.getAsFloat());
+					break;
+					case NAME_SERIALIZED_YAW:
+						builder.yaw(value.getAsFloat());
+					break;
+					case NAME_SERIALIZED_VELOCITYX:
+						builder.velocityX(value.getAsDouble());
+					break;
+					case NAME_SERIALIZED_VELOCITYY:
+						builder.velocityY(value.getAsDouble());
+					break;
+					case NAME_SERIALIZED_VELOCITYZ:
+						builder.velocityZ(value.getAsDouble());
+					break;
+				}
+			}
+		}
+		
 		return builder.build();
 	}
 	
