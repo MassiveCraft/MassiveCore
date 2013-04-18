@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,6 +31,7 @@ import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -37,6 +39,11 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.mcore.InternalListener;
 import com.massivecraft.mcore.MCore;
@@ -276,6 +283,69 @@ public class MUtil
 	public static boolean causedByKick(PlayerQuitEvent event)
 	{
 		return kickReason(event) != null;
+	}
+	
+	// -------------------------------------------- //
+	// POTION DERP
+	// -------------------------------------------- //
+	
+	public static List<PotionEffect> getPotionEffects(ItemStack itemStack)
+	{
+		if (itemStack == null) return null;
+		if (itemStack.getType() != Material.POTION) return null;
+		
+		List<PotionEffect> ret = new ArrayList<PotionEffect>();
+		
+		Potion potion = Potion.fromItemStack(itemStack);
+		ret.addAll(potion.getEffects());
+		
+		PotionMeta meta = (PotionMeta) itemStack.getItemMeta();
+		if (meta.hasCustomEffects())
+		{
+			ret.addAll(meta.getCustomEffects());
+		}
+		
+		return ret;
+	}
+	
+	public static final Set<PotionEffectType> HARMFUL_POTION_EFFECTS = Collections.unmodifiableSet(MUtil.set(
+		PotionEffectType.BLINDNESS,
+		PotionEffectType.CONFUSION,
+		PotionEffectType.HARM,
+		PotionEffectType.HUNGER,
+		PotionEffectType.POISON,
+		PotionEffectType.SLOW,
+		PotionEffectType.SLOW_DIGGING,
+		PotionEffectType.WEAKNESS,
+		PotionEffectType.WITHER
+	));
+	
+	public static boolean isHarmfulPotion(PotionEffectType potionEffectType)
+	{
+		return HARMFUL_POTION_EFFECTS.contains(potionEffectType);
+	}
+	
+	public static boolean isHarmfulPotion(PotionEffect potionEffect)
+	{
+		if (potionEffect == null) return false;
+		return isHarmfulPotion(potionEffect.getType());
+	}
+	
+	public static boolean isHarmfulPotion(ItemStack itemStack)
+	{
+		List<PotionEffect> potionEffects = getPotionEffects(itemStack);
+		if (potionEffects == null) return false;
+		
+		for (PotionEffect potionEffect : potionEffects)
+		{
+			if (isHarmfulPotion(potionEffect)) return true;
+		}
+		return false;
+	}
+	
+	public static boolean isHarmfulPotion(ThrownPotion thrownPotion)
+	{
+		return isHarmfulPotion(thrownPotion.getItem());
 	}
 	
 	// -------------------------------------------- //
