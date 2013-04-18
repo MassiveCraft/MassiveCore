@@ -228,6 +228,16 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	}
 	
 	// -------------------------------------------- //
+	// FIELDS: IS
+	// -------------------------------------------- //
+	
+	public boolean isWorldLoadedOnThisServer()
+	{
+		if (this.world == null) return true;
+		return MUtil.getLoadedWorldNames().contains(this.world);
+	}
+	
+	// -------------------------------------------- //
 	// PRIVATE CONSTRUCTOR
 	// -------------------------------------------- //
 	

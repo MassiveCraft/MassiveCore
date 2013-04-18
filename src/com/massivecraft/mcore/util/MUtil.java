@@ -40,6 +40,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.massivecraft.mcore.InternalListener;
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.WorldNameSetEngine;
 import com.massivecraft.mcore.util.extractor.Extractor;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayer;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayerName;
@@ -137,8 +138,13 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
-	// BLOCK COMPARISON BY LOCATIONS
+	// LOCATIONS COMPARISON
 	// -------------------------------------------- //
+	
+	public static boolean isSameBlock(PlayerMoveEvent event)
+	{
+		return isSameBlock(event.getFrom(), event.getTo());
+	}
 	
 	public static boolean isSameBlock(Location one, Location two)
 	{
@@ -148,9 +154,16 @@ public class MUtil
 		return one.getWorld().equals(two.getWorld());
 	}
 	
-	public static boolean isSameBlock(PlayerMoveEvent event)
+	public static boolean isSameChunk(PlayerMoveEvent event)
 	{
-		return isSameBlock(event.getFrom(), event.getTo());
+		return isSameChunk(event.getFrom(), event.getTo());
+	}
+	
+	public static boolean isSameChunk(Location one, Location two)
+	{
+		if (one.getBlockX() >> 4 != one.getBlockX() >> 4) return false;
+		if (one.getBlockZ() >> 4 != one.getBlockZ() >> 4) return false;
+		return one.getWorld().equals(two.getWorld());
 	}
 	
 	// -------------------------------------------- //
@@ -263,6 +276,15 @@ public class MUtil
 	public static boolean causedByKick(PlayerQuitEvent event)
 	{
 		return kickReason(event) != null;
+	}
+	
+	// -------------------------------------------- //
+	// WORLD DERP
+	// -------------------------------------------- //
+	
+	public static Set<String> getLoadedWorldNames()
+	{
+		return WorldNameSetEngine.get().getWorldNames();
 	}
 	
 	// -------------------------------------------- //
