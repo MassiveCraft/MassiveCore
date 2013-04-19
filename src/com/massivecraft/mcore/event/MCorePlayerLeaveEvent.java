@@ -23,6 +23,7 @@ public class MCorePlayerLeaveEvent extends Event implements Runnable
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
 	// -------------------------------------------- //
+	
 	private static final HandlerList handlers = new HandlerList();
 	@Override public HandlerList getHandlers() { return handlers; }
 	public static HandlerList getHandlerList() { return handlers; }
