@@ -29,7 +29,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	
 	public void deactivate()
 	{
-		Money.mixin(MoneyMixinDefault.get());
+		Money.mixin(null);
 	}
 	
 	// -------------------------------------------- //

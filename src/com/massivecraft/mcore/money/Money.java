@@ -8,7 +8,7 @@ public class Money
 	// MIXIN
 	// -------------------------------------------- //
 	
-	private static MoneyMixin mixin = MoneyMixinDefault.get();
+	private static MoneyMixin mixin = null;
 	public static MoneyMixin mixin() { return mixin; };
 	public static void mixin(MoneyMixin newMixin) { mixin = newMixin; }
 	
@@ -36,6 +36,7 @@ public class Money
 	
 	public static boolean enabled(Object universe)
 	{
+		if (mixin == null) return false;
 		return mixin.enabled(universe(universe));
 	}
 	
@@ -50,16 +51,19 @@ public class Money
 	
 	public static String format(Object universe, double amount)
 	{
+		if (disabled(universe)) return String.valueOf(amount);
 		return mixin.format(universe(universe), amount);
 	}
 	
 	public static String singular(Object universe)
 	{
+		if (disabled(universe)) return "singular";
 		return mixin.singular(universe(universe));
 	}
 	
 	public static String plural(Object universe)
 	{
+		if (disabled(universe)) return "plural";
 		return mixin.plural(universe(universe));
 	}
 	
@@ -69,11 +73,13 @@ public class Money
 	
 	public static boolean exists(Object universe, Object accountId)
 	{
+		if (disabled(universe)) return false;
 		return mixin.exists(universe(universe), accountId(accountId));
 	}
 	
 	public static boolean create(Object universe, Object accountId)
 	{
+		if (disabled(universe)) return false;
 		return mixin.create(universe(universe), accountId(accountId));
 	}
 	
@@ -83,11 +89,13 @@ public class Money
 	
 	public static double get(Object universe, Object accountId)
 	{
+		if (disabled(universe)) return 0D;
 		return mixin.get(universe(universe), accountId(accountId));
 	}
 	
 	public static boolean set(Object universe, Object accountId, double amount)
 	{
+		if (disabled(universe)) return false;
 		return mixin.set(universe(universe), accountId(accountId), amount);
 	}
 	
@@ -97,11 +105,13 @@ public class Money
 	
 	public static boolean add(Object universe, Object accountId, double amount)
 	{
+		if (disabled(universe)) return false;
 		return mixin.add(universe(universe), accountId(accountId), amount);
 	}
 	
 	public static boolean subtract(Object universe, Object accountId, double amount)
 	{
+		if (disabled(universe)) return false;
 		return mixin.subtract(universe(universe), accountId(accountId), amount);
 	}
 	
