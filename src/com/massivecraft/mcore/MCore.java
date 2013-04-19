@@ -20,6 +20,7 @@ import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
 import com.massivecraft.mcore.cmd.CmdMcore;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
+import com.massivecraft.mcore.integration.vault.VaultFeatures;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
 import com.massivecraft.mcore.mixin.TeleportMixinCauseEngine;
@@ -28,7 +29,9 @@ import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.Db;
 import com.massivecraft.mcore.store.MStore;
+import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.usys.AspectColl;
+import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.usys.MultiverseColl;
 import com.massivecraft.mcore.usys.cmd.CmdUsys;
 import com.massivecraft.mcore.util.PlayerUtil;
@@ -90,6 +93,12 @@ public class MCore extends MPlugin
 	public CmdUsys cmdUsys;
 	public CmdMcore cmdMcore;
 	
+	// Aspects
+	private Aspect moneyAspect;
+	public Aspect getMoneyAspect() { return this.moneyAspect; }
+	public Multiverse getMoneyMultiverse() { return this.getMoneyAspect().getMultiverse(); }
+	
+	// Runnables
 	private Runnable collTickTask = new Runnable()
 	{
 		public void run()
@@ -138,6 +147,13 @@ public class MCore extends MPlugin
 		AspectColl.get().init();
 		MCoreConfColl.get().init();
 		
+		// Init aspects
+		this.moneyAspect = AspectColl.get().get("mcore_money", true);
+		this.moneyAspect.register();
+		this.moneyAspect.setDesc(
+			"<i>The aspect used for how much money a player has"
+		);
+		
 		// Register commands
 		this.cmdUsys = new CmdUsys();
 		this.cmdUsys.register(this, true);
@@ -146,7 +162,10 @@ public class MCore extends MPlugin
 		this.cmdMcore.register(this, true);
 		
 		// Integration
-		this.integrate(ProtocolLibFeatures.get());
+		this.integrate(
+			ProtocolLibFeatures.get(),
+			VaultFeatures.get()
+		);
 		
 		/*
 		test("");

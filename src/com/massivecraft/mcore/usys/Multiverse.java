@@ -58,9 +58,9 @@ public class Multiverse extends Entity<Multiverse>
 	// UNIVERSE
 	// -------------------------------------------- //
 	
-	public boolean containsUniverse(String worldName)
+	public boolean containsUniverse(String universe)
 	{
-		return this.getUniverses().contains(worldName);
+		return this.getUniverses().contains(universe);
 	}
 	
 	public Set<String> newUniverse(String universe)

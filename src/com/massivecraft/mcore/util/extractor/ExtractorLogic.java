@@ -25,8 +25,11 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
+import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
+import com.massivecraft.mcore.usys.Multiverse;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 
 public class ExtractorLogic
@@ -96,7 +99,6 @@ public class ExtractorLogic
 		if (o == null) return null;
 		if (o instanceof String) return (String)o;
 		if (o instanceof SenderEntity) return ((SenderEntity<?>)o).getId();
-		if (o instanceof SenderEntity) return ((SenderEntity<?>)o).getId();
 		CommandSender sender = senderFromObject(o);
 		if (sender == null) return null;
 		return SenderUtil.getSenderId(sender);
@@ -160,4 +162,35 @@ public class ExtractorLogic
 		if (world == null) return null;
 		return world.getName();
 	}
+	
+	// -------------------------------------------- //
+	// MONEY UNIVERSE
+	// -------------------------------------------- //
+	
+	public static String moneyUniverse(String o)
+	{
+		Multiverse m = MCore.get().getMoneyMultiverse();
+		if (m.containsUniverse(o)) return o;
+		return m.getUniverseForWorldName(o);
+	}
+	
+	public static String moneyUniverse(com.massivecraft.mcore.store.Entity<?> o)
+	{
+		return o.getUniverse();
+	}
+	
+	public static String moneyUniverseFromObject(Object o)
+	{
+		if (o instanceof String) return moneyUniverse((String)o);
+		if (o instanceof com.massivecraft.mcore.store.Entity) return moneyUniverse((com.massivecraft.mcore.store.Entity<?>)o);
+		
+		String worldName = MUtil.extract(String.class, "worldName", o);
+		if (worldName != null)
+		{
+			return MCore.get().getMoneyMultiverse().getUniverseForWorldName(worldName);
+		}
+		
+		return null;
+	}
+	
 }

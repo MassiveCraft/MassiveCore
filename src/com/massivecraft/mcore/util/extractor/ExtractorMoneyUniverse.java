@@ -1,13 +1,13 @@
 package com.massivecraft.mcore.util.extractor;
 
-public class ExtractorWorld implements Extractor
+public class ExtractorMoneyUniverse implements Extractor
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ExtractorWorld i = new ExtractorWorld();
-	public static ExtractorWorld get() { return i; }
+	private static ExtractorMoneyUniverse i = new ExtractorMoneyUniverse();
+	public static ExtractorMoneyUniverse get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: EXTRACTOR
@@ -16,7 +16,7 @@ public class ExtractorWorld implements Extractor
 	@Override
 	public Object extract(Object o)
 	{
-		return ExtractorLogic.worldFromObject(o);
+		return ExtractorLogic.moneyUniverseFromObject(o);
 	}
 	
 }

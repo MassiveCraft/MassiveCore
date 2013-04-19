@@ -49,6 +49,7 @@ import com.massivecraft.mcore.InternalListener;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.WorldNameSetEngine;
 import com.massivecraft.mcore.util.extractor.Extractor;
+import com.massivecraft.mcore.util.extractor.ExtractorMoneyUniverse;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayer;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayerName;
 import com.massivecraft.mcore.util.extractor.ExtractorSender;
@@ -572,5 +573,8 @@ public class MUtil
 		
 		registerExtractor(World.class, "world", ExtractorWorld.get());
 		registerExtractor(String.class, "worldName", ExtractorWorldName.get());
+		
+		registerExtractor(String.class, "moneyUniverse", ExtractorMoneyUniverse.get());
+		registerExtractor(String.class, "accountId", ExtractorPlayerName.get());
 	}
 }
