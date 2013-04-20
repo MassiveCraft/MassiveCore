@@ -13,6 +13,7 @@ public class SimpleConfig
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
+	
 	protected transient Plugin plugin;
 	protected Plugin getPlugin() { return this.plugin; }
 	

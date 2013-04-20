@@ -4,6 +4,17 @@ import java.util.Comparator;
 
 public class ReversePriorityComparator implements Comparator<Prioritized>
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static ReversePriorityComparator i = new ReversePriorityComparator();
+	public static ReversePriorityComparator get() { return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE: COMPARATOR
+	// -------------------------------------------- //
+	
 	@Override
 	public int compare(Prioritized one, Prioritized two)
 	{
@@ -13,12 +24,5 @@ public class ReversePriorityComparator implements Comparator<Prioritized>
 		
 		return Integer.valueOf(two.getPriority()).compareTo(one.getPriority());
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static ReversePriorityComparator i = new ReversePriorityComparator();
-	public static ReversePriorityComparator get() { return i; }
 	
 }

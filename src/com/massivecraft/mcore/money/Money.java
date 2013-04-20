@@ -77,10 +77,20 @@ public class Money
 		return mixin.exists(universe(universe), accountId(accountId));
 	}
 	
+	public static boolean exists(Object account)
+	{
+		return exists(account, account);
+	}
+	
 	public static boolean create(Object universe, Object accountId)
 	{
 		if (disabled(universe)) return false;
 		return mixin.create(universe(universe), accountId(accountId));
+	}
+	
+	public static boolean create(Object account)
+	{
+		return create(account, account);
 	}
 	
 	// -------------------------------------------- //
@@ -93,10 +103,20 @@ public class Money
 		return mixin.get(universe(universe), accountId(accountId));
 	}
 	
+	public static double get(Object account)
+	{
+		return get(account, account);
+	}
+	
 	public static boolean set(Object universe, Object accountId, double amount)
 	{
 		if (disabled(universe)) return false;
 		return mixin.set(universe(universe), accountId(accountId), amount);
+	}
+	
+	public static boolean set(Object account, double amount)
+	{
+		return set(account, account, amount);
 	}
 	
 	// -------------------------------------------- //
@@ -109,10 +129,20 @@ public class Money
 		return mixin.add(universe(universe), accountId(accountId), amount);
 	}
 	
+	public static boolean add(Object account, double amount)
+	{
+		return add(account, account, amount);
+	}
+	
 	public static boolean subtract(Object universe, Object accountId, double amount)
 	{
 		if (disabled(universe)) return false;
 		return mixin.subtract(universe(universe), accountId(accountId), amount);
+	}
+	
+	public static boolean subtract(Object account, double amount)
+	{
+		return subtract(account, account, amount);
 	}
 	
 }

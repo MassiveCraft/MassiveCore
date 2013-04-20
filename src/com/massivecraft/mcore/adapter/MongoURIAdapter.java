@@ -14,7 +14,14 @@ import com.massivecraft.mcore.xlib.mongodb.MongoURI;
 public class MongoURIAdapter implements JsonDeserializer<MongoURI>, JsonSerializer<MongoURI>
 {
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	protected static MongoURIAdapter i = new MongoURIAdapter();
+	public static MongoURIAdapter get()	{ return i; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
@@ -42,11 +49,5 @@ public class MongoURIAdapter implements JsonDeserializer<MongoURI>, JsonSerializ
 	{
 		return new MongoURI(json.getAsString());
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static MongoURIAdapter i = new MongoURIAdapter();
-	public static MongoURIAdapter get()	{ return i; }
+
 }

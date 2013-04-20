@@ -23,17 +23,16 @@ public class FireworkEffectAdapter
 	// -------------------------------------------- //
 	
 	public static final String FLICKER = "flicker";
-    public static final String TRAIL = "trail";
-    public static final String COLORS = "colors";
-    public static final String FADE_COLORS = "fade-colors";
-    public static final String TYPE = "type";
+	public static final String TRAIL = "trail";
+	public static final String COLORS = "colors";
+	public static final String FADE_COLORS = "fade-colors";
+	public static final String TYPE = "type";
 	
-    public static final boolean FLICKER_DEFAULT = false;
-    public static final boolean TRAIL_DEFAULT = false;
-    public static final List<Color> COLORS_DEFAULT = Collections.unmodifiableList(MUtil.list(Color.GREEN));
-    public static final List<Color> FADE_COLORS_DEFAULT = Collections.unmodifiableList(new ArrayList<Color>());
-    public static final Type TYPE_DEFAULT = Type.BALL_LARGE;
-    
+	public static final boolean FLICKER_DEFAULT = false;
+	public static final boolean TRAIL_DEFAULT = false;
+	public static final List<Color> COLORS_DEFAULT = Collections.unmodifiableList(MUtil.list(Color.GREEN));
+	public static final List<Color> FADE_COLORS_DEFAULT = Collections.unmodifiableList(new ArrayList<Color>());
+	public static final Type TYPE_DEFAULT = Type.BALL_LARGE;
 	
 	// -------------------------------------------- //
 	// TO JSON
@@ -65,51 +64,51 @@ public class FireworkEffectAdapter
 		
 		JsonObject json = jsonElement.getAsJsonObject();
 		
-        boolean flicker = FLICKER_DEFAULT;
-        boolean trail = TRAIL_DEFAULT;
-        List<Color> colors = COLORS_DEFAULT;
-        List<Color> fadeColors = FADE_COLORS_DEFAULT;
-        Type type = TYPE_DEFAULT;
+		boolean flicker = FLICKER_DEFAULT;
+		boolean trail = TRAIL_DEFAULT;
+		List<Color> colors = COLORS_DEFAULT;
+		List<Color> fadeColors = FADE_COLORS_DEFAULT;
+		Type type = TYPE_DEFAULT;
 		
-        JsonElement element;
-        
-        element = json.get(FLICKER);
-        if (element != null)
-        {
-        	flicker = element.getAsBoolean();
-        }
-        
-        element = json.get(TRAIL);
-        if (element != null)
-        {
-        	trail = element.getAsBoolean();
-        }
-        
-        element = json.get(COLORS);
-        if (element != null)
-        {
-        	colors = toColorCollection(element);
-        }
-        
-        element = json.get(FADE_COLORS);
-        if (element != null)
-        {
-        	fadeColors = toColorCollection(element);
-        }
-        
-        element = json.get(TYPE);
-        if (element != null)
-        {
-        	type = Type.valueOf(element.getAsString());
-        }
+		JsonElement element;
+		
+		element = json.get(FLICKER);
+		if (element != null)
+		{
+			flicker = element.getAsBoolean();
+		}
+		
+		element = json.get(TRAIL);
+		if (element != null)
+		{
+			trail = element.getAsBoolean();
+		}
+		
+		element = json.get(COLORS);
+		if (element != null)
+		{
+			colors = toColorCollection(element);
+		}
+		
+		element = json.get(FADE_COLORS);
+		if (element != null)
+		{
+			fadeColors = toColorCollection(element);
+		}
+		
+		element = json.get(TYPE);
+		if (element != null)
+		{
+			type = Type.valueOf(element.getAsString());
+		}
 		
 		FireworkEffect ret = FireworkEffect.builder()
-        .flicker(flicker)
-        .trail(trail)
-        .withColor(colors)
-        .withFade(fadeColors)
-        .with(type)
-        .build();
+		.flicker(flicker)
+		.trail(trail)
+		.withColor(colors)
+		.withFade(fadeColors)
+		.with(type)
+		.build();
 		
 		return ret;
 	}

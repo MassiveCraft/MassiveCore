@@ -47,7 +47,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 	public static InventoryAdapter get() { return i; }
 
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
@@ -63,7 +63,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 	}
 	
 	// -------------------------------------------- //
-	// JSON
+	// IMPLEMENTATION
 	// -------------------------------------------- //
 	
 	public static JsonElement toJson(Inventory src)
