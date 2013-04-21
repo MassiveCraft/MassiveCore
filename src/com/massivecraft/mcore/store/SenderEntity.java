@@ -77,26 +77,6 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return SenderUtil.isRconId(this.getId());
 	}
 	
-	public boolean isBlock()
-	{
-		return SenderUtil.isBlockId(this.getId());
-	}
-	
-	public boolean isNonplayer()
-	{
-		return SenderUtil.isNonplayerId(this.getId());
-	}
-	
-	public boolean isStandardNonplayer()
-	{
-		return SenderUtil.isStandardNonplayerId(this.getId());
-	}
-	
-	public boolean isNonstandardNonplayer()
-	{
-		return SenderUtil.isNonstandardNonplayerId(this.getId());
-	}
-	
 	// GET
 	
 	// TODO: Usage of sender instead of id here is cheating but is good performance-wise so it can be ok.

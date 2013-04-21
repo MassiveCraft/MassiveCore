@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.event.MCoreSenderRegisterEvent;
 import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
-import com.massivecraft.mcore.sender.FakeBlockCommandSender;
 
 /**
  * We add an ID <--> CommandSender lookup feature.
@@ -45,12 +44,10 @@ public class SenderUtil
 	// Ids for standard-non-players
 	public final static String ID_CONSOLE = IDPREFIX+"console";
 	public final static String ID_RCON = IDPREFIX+"rcon";
-	public final static String ID_BLOCK = IDPREFIX+"block";
 	
 	// Names for standard-non-players
 	public final static String VANILLA_CONSOLE_NAME = "CONSOLE";
 	public final static String VANILLA_RCON_NAME = "Rcon";
-	public final static String VANILLA_BLOCK_NAME = "@";
 	
 	// -------------------------------------------- //
 	// REGISTRY
@@ -93,7 +90,6 @@ public class SenderUtil
 			{
 				register(getConsole());
 				register(getRcon());
-				register(getBlock());
 			}
 		});
 	}
@@ -122,47 +118,23 @@ public class SenderUtil
 		return ID_RCON.equals(o);
 	}
 	
-	public static boolean isBlockId(Object o)
-	{
-		return ID_BLOCK.equals(o);
-	}
-	
-	public static boolean isNonplayerId(Object o)
-	{
-		if (!isSenderId(o)) return false;
-		if (isPlayerId(o)) return false;
-		return true;
-	}
-	
-	public static boolean isStandardNonplayerId(Object o)
-	{
-		if (isConsoleId(o)) return true;
-		if (isRconId(o)) return true;
-		if (isBlockId(o)) return true;
-		return false;
-	}
-	
-	public static boolean isNonstandardNonplayerId(Object o)
-	{
-		if (!isSenderId(o)) return false;
-		if (isStandardNonplayerId(o)) return false;
-		if (isPlayerId(o)) return false;
-		return true;
-	}
-	
 	// -------------------------------------------- //
 	// SENDER/OBJECT TYPE CHECKING
 	// -------------------------------------------- //
 	
 	public static boolean isSender(Object o)
 	{
-		// The object must be a CommandSender and musn't be null.
 		return o instanceof CommandSender;
 	}
 	
 	public static boolean isPlayer(Object o)
 	{
 		return o instanceof Player;
+	}
+	
+	public static boolean isBlock(Object o)
+	{
+		return o instanceof BlockCommandSender;
 	}
 	
 	public static boolean isConsole(Object o)
@@ -179,32 +151,9 @@ public class SenderUtil
 		return true;
 	}
 	
-	public static boolean isBlock(Object o)
-	{
-		if (!(o instanceof BlockCommandSender)) return false;
-		if (!VANILLA_BLOCK_NAME.equals(((CommandSender)o).getName())) return false;
-		return true;
-	}
-	
 	public static boolean isNonplayer(Object o)
 	{
 		if (!isSender(o)) return false;
-		if (isPlayer(o)) return false;
-		return true;
-	}
-	
-	public static boolean isStandardNonplayer(Object o)
-	{
-		if (isConsole(o)) return true;
-		if (isRcon(o)) return true;
-		if (isBlock(o)) return true;
-		return false;
-	}
-	
-	public static boolean isNonstandardNonplayer(Object o)
-	{
-		if (!isSender(o)) return false;
-		if (isStandardNonplayer(o)) return false;
 		if (isPlayer(o)) return false;
 		return true;
 	}
@@ -219,8 +168,7 @@ public class SenderUtil
 		if (isPlayer(o)) return ((CommandSender)o).getName();
 		if (isConsole(o)) return ID_CONSOLE;
 		if (isRcon(o)) return ID_RCON;
-		if (isBlock(o)) return ID_BLOCK;
-		return IDPREFIX+((CommandSender)o).getName();
+		return ((CommandSender)o).getName();
 	}
 	
 	// -------------------------------------------- //
@@ -256,11 +204,6 @@ public class SenderUtil
 		return getAsRcon(getSender(senderId));
 	}
 	
-	public static BlockCommandSender getBlock(String senderId)
-	{
-		return getAsBlock(getSender(senderId));
-	}
-	
 	// MARCHAL STUFF
 	
 	public static CommandSender getAsSender(Object o)
@@ -275,6 +218,12 @@ public class SenderUtil
 		return (Player) o;
 	}
 	
+	public static BlockCommandSender getAsBlock(Object o)
+	{
+		if (!isBlock(o)) return null;
+		return (BlockCommandSender) o;
+	}
+	
 	public static ConsoleCommandSender getAsConsole(Object o)
 	{
 		if (!isConsole(o)) return null;
@@ -285,12 +234,6 @@ public class SenderUtil
 	{
 		if (!isRcon(o)) return null;
 		return (RemoteConsoleCommandSender) o;
-	}
-	
-	public static BlockCommandSender getAsBlock(Object o)
-	{
-		if (!isBlock(o)) return null;
-		return (BlockCommandSender) o;
 	}
 	
 	// -------------------------------------------- //
@@ -308,11 +251,6 @@ public class SenderUtil
 		CraftServer craftServer = (CraftServer)server;
 		MinecraftServer minecraftServer = craftServer.getServer();
 		return minecraftServer.remoteConsole;
-	}
-	
-	public static BlockCommandSender getBlock()
-	{
-		return FakeBlockCommandSender.get();
 	}
 	
 	// -------------------------------------------- //
