@@ -24,16 +24,18 @@ public interface MoneyMixin
 	public boolean create(String universe, String accountId);
 	
 	// -------------------------------------------- //
-	// GET AND SET
+	// CHECK
 	// -------------------------------------------- //
 	
 	public double get(String universe, String accountId);
-	public boolean set(String universe, String accountId, double amount);
+	public boolean has(String universe, String accountId, double amount);
+	
 	
 	// -------------------------------------------- //
 	// MODIFY
 	// -------------------------------------------- //
 	
+	public boolean set(String universe, String accountId, double amount);
 	public boolean add(String universe, String accountId, double amount);
 	public boolean subtract(String universe, String accountId, double amount);
 	

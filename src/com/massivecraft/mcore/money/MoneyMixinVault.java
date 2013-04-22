@@ -87,7 +87,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	}
 	
 	// -------------------------------------------- //
-	// GET AND SET
+	// CHECK
 	// -------------------------------------------- //
 	
 	@Override
@@ -97,15 +97,21 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	}
 	
 	@Override
-	public boolean set(String universe, String accountId, double amount)
-	{
-		double current = get(universe, accountId);
-		return add(universe, accountId, amount - current);
+	public boolean has(String universe, String accountId, double amount)
+	{	
+		return this.economy.has(accountId, universe, amount);
 	}
 	
 	// -------------------------------------------- //
 	// MODIFY
 	// -------------------------------------------- //
+	
+	@Override
+	public boolean set(String universe, String accountId, double amount)
+	{
+		double current = get(universe, accountId);
+		return add(universe, accountId, amount - current);
+	}
 	
 	@Override
 	public boolean add(String universe, String accountId, double amount)

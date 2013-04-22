@@ -94,7 +94,7 @@ public class Money
 	}
 	
 	// -------------------------------------------- //
-	// GET AND SET
+	// CHECK
 	// -------------------------------------------- //
 	
 	public static double get(Object universe, Object accountId)
@@ -108,6 +108,21 @@ public class Money
 		return get(account, account);
 	}
 	
+	public static boolean has(Object universe, Object accountId, double amount)
+	{
+		if (disabled(universe)) return false;
+		return mixin.has(universe(universe), accountId(accountId), amount);
+	}
+	
+	public static boolean has(Object account, double amount)
+	{
+		return has(account, account, amount);
+	}
+	
+	// -------------------------------------------- //
+	// MODIFY
+	// -------------------------------------------- //
+	
 	public static boolean set(Object universe, Object accountId, double amount)
 	{
 		if (disabled(universe)) return false;
@@ -118,10 +133,6 @@ public class Money
 	{
 		return set(account, account, amount);
 	}
-	
-	// -------------------------------------------- //
-	// MODIFY
-	// -------------------------------------------- //
 	
 	public static boolean add(Object universe, Object accountId, double amount)
 	{
