@@ -24,6 +24,15 @@ public abstract class ModuloRepeatTask implements Runnable
 	public void setPreviousMillis(long previousMillis) { this.previousMillis = previousMillis; }
 	
 	// -------------------------------------------- //
+	// INVOCATION NUMBER CALCULATION
+	// -------------------------------------------- //
+	
+	public long getInvocation(long now)
+	{
+		return now / this.getDelayMillis();
+	}
+	
+	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
@@ -50,15 +59,17 @@ public abstract class ModuloRepeatTask implements Runnable
 	@Override
 	public void run()
 	{
-		long now = System.currentTimeMillis();
-		long nowInvocationNumber = now / this.getDelayMillis();
-		long previousInvocationNumber = this.getPreviousMillis() / this.getDelayMillis();
+		long nowMillis = System.currentTimeMillis();
+		long previousMillis = this.getPreviousMillis();
 		
-		if (nowInvocationNumber == previousInvocationNumber) return;
+		long currentInvocation = this.getInvocation(nowMillis);
+		long previousInvocation = this.getInvocation(previousMillis);
 		
-		this.invoke();
+		if (currentInvocation == previousInvocation) return;
 		
-		this.setPreviousMillis(now);
+		this.invoke(nowMillis);
+		
+		this.setPreviousMillis(nowMillis);
 	}
 	
 	// -------------------------------------------- //
@@ -74,6 +85,6 @@ public abstract class ModuloRepeatTask implements Runnable
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract void invoke();
+	public abstract void invoke(long now);
 
 }

@@ -77,8 +77,8 @@ public abstract class Colls<C extends Coll<E>, E>
 		if (ret == null)
 		{
 			ret = this.createColl(collname);
-			ret.init();
 			this.name2coll.put(collname, ret);
+			ret.init();
 		}
 		return ret;
 	}
