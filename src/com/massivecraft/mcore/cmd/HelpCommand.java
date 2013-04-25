@@ -33,7 +33,7 @@ public class HelpCommand extends MCommand
 		{
 			if (subCommand.visibleTo(sender))
 			{
-				lines.add(subCommand.getUseageTemplate(this.commandChain, true, true));
+				lines.add(subCommand.getUseageTemplate(this.commandChain, true, true, sender));
 			}
 		}
 		

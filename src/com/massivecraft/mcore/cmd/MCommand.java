@@ -349,15 +349,31 @@ public abstract class MCommand
 	// HELP AND USAGE INFORMATION
 	// -------------------------------------------- //
 	
-	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
+	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc, boolean onlyFirstAlias, CommandSender sender)
 	{
 		StringBuilder ret = new StringBuilder();
-		ret.append(Txt.parse("<c>"));
+		
+		List<MCommand> commands = new ArrayList<MCommand>(commandChain);
+		commands.add(this);
+		
+		String commandGoodColor = Txt.parse("<c>");
+		String commandBadColor = Txt.parse("<bad>");
+		
+		ret.append(commandGoodColor);
 		ret.append('/');
 		
 		boolean first = true;
-		for (MCommand mc : commandChain)
+		for (MCommand mc : commands)
 		{
+			if (sender != null && !mc.requirementsAreMet(sender, false))
+			{
+				ret.append(commandBadColor);
+			}
+			else
+			{
+				ret.append(commandGoodColor);
+			}
+			
 			if (first && onlyFirstAlias)
 			{
 				ret.append(mc.aliases.get(0));
@@ -408,6 +424,11 @@ public abstract class MCommand
 		}
 		
 		return ret.toString();
+	}
+	
+	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
+	{
+		return getUseageTemplate(commandChain, addDesc, onlyFirstAlias, null);
 	}
 	
 	public String getUseageTemplate(List<MCommand> commandChain, boolean addDesc)
