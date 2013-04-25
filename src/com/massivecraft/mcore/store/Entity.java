@@ -60,7 +60,12 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		String id = this.getId();
 		if (id == null) return;
 		
-		this.getColl().changedIds.add(id);
+		Coll<E> coll = this.getColl();
+		if (coll == null) return;
+		
+		if (!coll.inited()) return;
+		
+		coll.changedIds.add(id);
 	}
 	
 	public ModificationState sync()
