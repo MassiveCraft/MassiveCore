@@ -169,9 +169,10 @@ public class MUtil
 	
 	public static boolean isSameChunk(Location one, Location two)
 	{
-		if (one.getBlockX() >> 4 != one.getBlockX() >> 4) return false;
-		if (one.getBlockZ() >> 4 != one.getBlockZ() >> 4) return false;
-		return one.getWorld().equals(two.getWorld());
+		if (one.getBlockX() >> 4 != two.getBlockX() >> 4) return false;
+		if (one.getBlockZ() >> 4 != two.getBlockZ() >> 4) return false;
+		if (one.getWorld() != two.getWorld()) return false;
+		return true;
 	}
 	
 	// -------------------------------------------- //
