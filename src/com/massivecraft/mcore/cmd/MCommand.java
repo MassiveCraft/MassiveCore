@@ -363,8 +363,10 @@ public abstract class MCommand
 		ret.append('/');
 		
 		boolean first = true;
-		for (MCommand mc : commands)
+		Iterator<MCommand> iter = commands.iterator();
+		while(iter.hasNext())
 		{
+			MCommand mc = iter.next();
 			if (sender != null && !mc.requirementsAreMet(sender, false))
 			{
 				ret.append(commandBadColor);
@@ -382,11 +384,14 @@ public abstract class MCommand
 			{
 				ret.append(Txt.implode(mc.aliases, ","));
 			}
-			ret.append(' ');
+			
+			if (iter.hasNext())
+			{
+				ret.append(' ');
+			}
+			
 			first = false;
 		}
-		
-		ret.append(Txt.implode(this.aliases, ","));
 		
 		List<String> args = new ArrayList<String>();
 		
