@@ -3,6 +3,7 @@ package com.massivecraft.mcore.ps;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.Txt;
 
 public class PSFormatAbstract implements PSFormat
@@ -13,6 +14,9 @@ public class PSFormatAbstract implements PSFormat
 	
 	private final String strNull;
 	private final String strStart;
+	
+	private final boolean useWorldDisplayname;
+	private final boolean useWorldAlias;
 	
 	private final String formatWorld;
 	private final String formatBlockX;
@@ -36,10 +40,12 @@ public class PSFormatAbstract implements PSFormat
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public PSFormatAbstract(String strNull, String strStart, String formatWorld, String formatBlockX, String formatBlockY, String formatBlockZ, String formatLocationX, String formatLocationY, String formatLocationZ, String formatChunkX, String formatChunkZ, String formatPitch, String formatYaw, String formatVelocityX, String formatVelocityY, String formatVelocityZ, String strGlue, String strStop)
+	public PSFormatAbstract(String strNull, String strStart, boolean useWorldDisplayname, boolean useWorldAlias, String formatWorld, String formatBlockX, String formatBlockY, String formatBlockZ, String formatLocationX, String formatLocationY, String formatLocationZ, String formatChunkX, String formatChunkZ, String formatPitch, String formatYaw, String formatVelocityX, String formatVelocityY, String formatVelocityZ, String strGlue, String strStop)
 	{
 		this.strNull = strNull;
 		this.strStart = strStart;
+		this.useWorldDisplayname = useWorldDisplayname;
+		this.useWorldAlias = useWorldAlias;
 		this.formatWorld = formatWorld;
 		this.formatBlockX = formatBlockX;
 		this.formatBlockY = formatBlockY;
@@ -82,8 +88,23 @@ public class PSFormatAbstract implements PSFormat
 		
 		Object val = null;
 		
-		val = ps.getWorld();
-		if (val != null) ret.add(String.format(this.formatWorld, val));
+		if (this.useWorldDisplayname)
+		{
+			val = ps.getWorld();
+			val = Mixin.getWorldDisplayName(val.toString());
+			if (val != null) ret.add(String.format(this.formatWorld, val));
+		}
+		else if (this.useWorldAlias)
+		{
+			val = ps.getWorld();
+			val = Mixin.getWorldAliasOrId(val.toString());
+			if (val != null) ret.add(String.format(this.formatWorld, val));
+		}
+		else
+		{
+			val = ps.getWorld();
+			if (val != null) ret.add(String.format(this.formatWorld, val));
+		}
 		
 		val = ps.getBlockX();
 		if (val != null) ret.add(String.format(this.formatBlockX, val));

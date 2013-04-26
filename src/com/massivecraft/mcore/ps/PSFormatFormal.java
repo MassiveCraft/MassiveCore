@@ -13,6 +13,8 @@ public class PSFormatFormal extends PSFormatAbstract
 		super(
 			"PS{NULL}",
 			"PS{",
+			false,
+			false,
 			PS.NAME_SERIALIZED_WORLD + ": %s",
 			PS.NAME_SERIALIZED_BLOCKX + ": %d",
 			PS.NAME_SERIALIZED_BLOCKY + ": %d",

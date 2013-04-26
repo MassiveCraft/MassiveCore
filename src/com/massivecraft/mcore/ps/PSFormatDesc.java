@@ -15,6 +15,8 @@ public class PSFormatDesc extends PSFormatAbstract
 		super(
 			Txt.parse("<silver><em>NULL"),
 			"",
+			false,
+			true,
 			Txt.parse("<k>") + PS.NAME_SERIALIZED_WORLD + Txt.parse(" <v>") + "%s",
 			Txt.parse("<k>") + PS.NAME_SERIALIZED_BLOCKX + Txt.parse(" <v>") + "%d",
 			Txt.parse("<k>") + PS.NAME_SERIALIZED_BLOCKY + Txt.parse(" <v>") + "%d",
