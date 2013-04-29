@@ -473,7 +473,7 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	public static Integer calcBlockCoord(Double location, Integer block, Integer chunk)
 	{
 		if (block != null) return block;
-		if (location != null) return (int) Math.floor(location);
+		if (location != null) return (int) Location.locToBlock(location);
 		if (chunk != null) return chunk * 16;
 		return null;
 	}
@@ -487,7 +487,7 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	public static Integer calcChunkCoord(Double location, Integer block, Integer chunk)
 	{
 		if (chunk != null) return chunk;
-		if (location != null) return location.intValue() >> 4;
+		if (location != null) return Location.locToBlock(location) >> 4;
 		if (block != null) return block >> 4;
 		return null;
 	}
