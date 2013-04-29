@@ -88,22 +88,18 @@ public class PSFormatAbstract implements PSFormat
 		
 		Object val = null;
 		
-		if (this.useWorldDisplayname)
+		val = ps.getWorld();
+		if (val != null)
 		{
-			val = ps.getWorld();
-			val = Mixin.getWorldDisplayName(val.toString());
-			if (val != null) ret.add(String.format(this.formatWorld, val));
-		}
-		else if (this.useWorldAlias)
-		{
-			val = ps.getWorld();
-			val = Mixin.getWorldAliasOrId(val.toString());
-			if (val != null) ret.add(String.format(this.formatWorld, val));
-		}
-		else
-		{
-			val = ps.getWorld();
-			if (val != null) ret.add(String.format(this.formatWorld, val));
+			if (this.useWorldDisplayname)
+			{
+				val = Mixin.getWorldDisplayName(val.toString());
+			}
+			else if (this.useWorldAlias)
+			{
+				val = Mixin.getWorldAliasOrId(val.toString());
+			}
+			ret.add(String.format(this.formatWorld, val));
 		}
 		
 		val = ps.getBlockX();
