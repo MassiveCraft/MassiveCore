@@ -41,6 +41,8 @@ permissions:
       mcore.cmd.mcore: true
       mcore.cmd.mcore.id: true
       mcore.cmd.mcore.version: true
+      mcore.cmd.mcore.mstore: true
+      mcore.cmd.mcore.mstore.copydb: true
       mcore.cmd.mcore.usys: true
       mcore.cmd.mcore.usys.multiverse: true
       mcore.cmd.mcore.usys.multiverse.list: true
