@@ -15,22 +15,22 @@ import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonParser;
 
-public class DriverGson extends DriverAbstract
+public class DriverFlatfile extends DriverAbstract
 {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
 	
 	private static final String DOTJSON = ".json";
-	public static final String NAME = "gson";
+	public static final String NAME = "flatfile";
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static DriverGson i = new DriverGson();
-	public static DriverGson get() { return i; }
-	private DriverGson() { super(NAME); }
+	private static DriverFlatfile i = new DriverFlatfile();
+	public static DriverFlatfile get() { return i; }
+	private DriverFlatfile() { super(NAME); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -39,10 +39,10 @@ public class DriverGson extends DriverAbstract
 	@Override
 	public Db getDb(String uri)
 	{
-		// "gson://" is 7 chars
-		File folder = new File(uri.substring(7));
+		// "flatfile://" is 8+3=11 chars
+		File folder = new File(uri.substring(NAME.length() + 3));
 		folder.mkdirs();
-		return new DbGson(this, folder);
+		return new DbFlatfile(this, folder);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class DriverGson extends DriverAbstract
 	{
 		Set<String> ret = new LinkedHashSet<String>();
 		
-		for (File f : ((DbGson)db).dir.listFiles())
+		for (File f : ((DbFlatfile)db).dir.listFiles())
 		{
 			if ( ! f.isDirectory()) continue;
 			ret.add(f.getName());

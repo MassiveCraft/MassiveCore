@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.massivecraft.mcore.util.DiscUtil;
 
-public class DbGson extends DbAbstract
+public class DbFlatfile extends DbAbstract
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -12,14 +12,14 @@ public class DbGson extends DbAbstract
 
 	public File dir;
 	
-	protected DriverGson driver;
-	@Override public DriverGson getDriver() { return driver; }
+	protected DriverFlatfile driver;
+	@Override public DriverFlatfile getDriver() { return driver; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCTORS
 	// -------------------------------------------- //
 	
-	public DbGson(DriverGson driver, File folder)
+	public DbFlatfile(DriverFlatfile driver, File folder)
 	{
 		this.driver = driver;
 		this.dir = folder;
