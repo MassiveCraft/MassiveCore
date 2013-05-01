@@ -1,4 +1,4 @@
-package com.massivecraft.mcore.usys.cmd;
+package com.massivecraft.mcore.mcorecmd;
 
 import java.util.ArrayList;
 import java.util.List;

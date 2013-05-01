@@ -1,4 +1,4 @@
-package com.massivecraft.mcore.usys.cmd;
+package com.massivecraft.mcore.mcorecmd;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.Multiverse;
@@ -7,15 +7,15 @@ import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
-public class CmdUsysUniverseDel extends MCommand
+public class CmdUsysUniverseClear extends MCommand
 {
-	public CmdUsysUniverseDel()
+	public CmdUsysUniverseClear()
 	{
-		this.addAliases("d", "del");
+		this.addAliases("c", "clear");
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_MULTIVERSE_DEL.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_UNIVERSE_CLEAR.node));
 	}
 	
 	@Override
@@ -28,19 +28,18 @@ public class CmdUsysUniverseDel extends MCommand
 		
 		if (universe.equals(MCore.DEFAULT))
 		{
-			msg("<b>You can't remove the default universe.");
-			msg("<b>Each multiverse contains a default universe.");
+			msg("<b>You can't clear the default universe.");
+			msg("<b>It contains the worlds that aren't assigned to a universe.");
 			return;
 		}
 		
-		if (!multiverse.containsUniverse(universe))
+		if (multiverse.clearUniverse(universe))
+		{
+			msg("<g>Cleared universe <h>%s<g> in multiverse <h>%s<g>.", universe, multiverse.getId());
+		}
+		else
 		{
 			msg("<b>No universe <h>%s<b> exists in multiverse <h>%s<b>.", universe, multiverse.getId());
-			return;
 		}
-		
-		multiverse.delUniverse(universe);
-		
-		msg("<g>Deleted universe <h>%s<g> in multiverse <h>%s<g>.", universe, multiverse.getId());
 	}
 }

@@ -1,4 +1,4 @@
-package com.massivecraft.mcore.usys.cmd;
+package com.massivecraft.mcore.mcorecmd;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.Multiverse;
