@@ -148,8 +148,9 @@ public class DriverMongo extends DriverAbstract
 		BasicDBObject dbo = MongoGsonConverter.gson2MongoObject(data);
 		Long mtime = System.currentTimeMillis();
 		dbo.put(MTIME_FIELD, mtime);
+		dbo.put(ID_FIELD, id);
 		
-		dbcoll.update(new BasicDBObject(ID_FIELD, id), dbo, true, false);
+		dbcoll.save(dbo);
 
 		return mtime;
 	}
