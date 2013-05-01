@@ -31,12 +31,22 @@ public class CmdMCoreMStoreCopydb extends MCoreCommand
 	{
 		// Args
 		final String fromAlias = this.arg(0);
+		final Db fromDb = MStore.getDb(fromAlias);
+		if (fromDb == null)
+		{
+			msg("<b>could not get the from-database.");
+			return;
+		}
+		
 		final String toAlias = this.arg(1);
+		final Db toDb = MStore.getDb(toAlias);
+		if (toDb == null)
+		{
+			msg("<b>could not get the to-database.");
+			return;
+		}
 		
 		// Prepare
-		final Db fromDb = MStore.getDb(fromAlias);
-		final Db toDb = MStore.getDb(toAlias);
-		
 		final Driver fromDriver = fromDb.getDriver();
 		final Driver toDriver = toDb.getDriver();
 		

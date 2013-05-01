@@ -70,7 +70,7 @@ public final class MongoGsonConverter
 		if (inElement.isJsonNull()) return null;
 		JsonPrimitive in = inElement.getAsJsonPrimitive();
 		if (in.isBoolean()) return in.getAsBoolean();
-		if (in.isNumber()) return in.getAsNumber();
+		if (in.isNumber()) return in.getAsNumber().doubleValue();
 		if (in.isString()) return in.getAsString();
 		throw new IllegalArgumentException("Unsupported value type for: " + in);
 	}
