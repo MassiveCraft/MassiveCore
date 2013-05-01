@@ -1,8 +1,9 @@
-package com.massivecraft.mcore.cmd;
+package com.massivecraft.mcore.mcorecmd;
 
 import com.massivecraft.mcore.ConfServer;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.MCorePerm;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdMcore extends MCommand

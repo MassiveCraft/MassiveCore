@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.massivecraft.mcore.cmd.CmdMcore;
+import com.massivecraft.mcore.mcorecmd.CmdMcore;
 import com.massivecraft.mcore.mcorecmd.CmdUsys;
 import com.massivecraft.mcore.util.MUtil;
 
