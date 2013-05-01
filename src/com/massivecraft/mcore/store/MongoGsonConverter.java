@@ -10,6 +10,7 @@ import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonNull;
 import com.massivecraft.mcore.xlib.gson.JsonObject;
 import com.massivecraft.mcore.xlib.gson.JsonPrimitive;
+import com.massivecraft.mcore.xlib.gson.internal.LazilyParsedNumber;
 import com.massivecraft.mcore.xlib.mongodb.BasicDBList;
 import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.mcore.xlib.mongodb.DBObject;
@@ -88,9 +89,42 @@ public final class MongoGsonConverter
 	{
 		if (inElement.isJsonNull()) return null;
 		JsonPrimitive in = inElement.getAsJsonPrimitive();
-		if (in.isBoolean()) return in.getAsBoolean();
-		if (in.isNumber()) return in.getAsNumber().doubleValue();
-		if (in.isString()) return in.getAsString();
+		
+		if (in.isBoolean())
+		{
+			return in.getAsBoolean();
+		}
+		
+		if (in.isNumber())
+		{
+			Number number = in.getAsNumber();
+			boolean floating;
+			
+			if (number instanceof LazilyParsedNumber)
+			{
+				floating = StringUtils.contains(number.toString(), '.');
+			}
+			else
+			{
+				floating = (number instanceof Double || number instanceof Float);
+			}
+			
+			if (floating)
+			{
+				return number.doubleValue();
+			}
+			else
+			{
+				return number.longValue();
+			}
+			
+		}
+		
+		if (in.isString())
+		{
+			return in.getAsString();
+		}
+		
 		throw new IllegalArgumentException("Unsupported value type for: " + in);
 	}
 	

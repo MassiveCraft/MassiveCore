@@ -133,6 +133,8 @@ public class DriverMongo extends DriverAbstract
 		DBCollection dbcoll = fixColl(coll);
 		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id));
 		if (raw == null) return null;
+		
+		raw.removeField(ID_FIELD);
 		Long mtime = (Long) raw.removeField(MTIME_FIELD);
 		
 		JsonElement element = MongoGsonConverter.mongo2GsonObject(raw);
