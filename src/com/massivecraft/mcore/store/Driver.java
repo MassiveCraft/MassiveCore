@@ -5,33 +5,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.massivecraft.mcore.store.idstrategy.IdStrategy;
-import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
+import com.massivecraft.mcore.xlib.gson.JsonElement;
 
-public interface Driver<R>
+public interface Driver
 {
 	// Returns the name of the driver.
 	public String getName();
 	
-	// This is the rawdata format this driver works with.
-	// Could for example be JsonElement or DBObject
-	public Class<R> getRawdataClass();
-	
-	// Comparison of raw data should be done through this method
-	public boolean equal(Object rawOne, Object rawTwo);
-	
-	// This is some sort of database specific id strategy with built in adapter
-	public boolean registerIdStrategy(IdStrategy idStrategy);
-	public IdStrategy getIdStrategy(String idStrategyName);
-	
-	// Get the default store adapter for the driver.
-	public StoreAdapter getStoreAdapter();
-	
 	// Get a database instance from the driver
-	public Db<R> getDb(String uri);
+	public Db getDb(String uri);
 	
 	// What collections are in the database?		
-	public Set<String> getCollnames(Db<?> db);
+	public Set<String> getCollnames(Db db);
 	
 	// Is id X in the collection?
 	public boolean containsId(Coll<?> coll, String id);
@@ -46,12 +31,12 @@ public interface Driver<R>
 	public Map<String, Long> getId2mtime(Coll<?> coll);
 	
 	// Load the raw data for X. The second part of the entry is the remote mtime at the load.
-	public Entry<R, Long> load(Coll<?> coll, String id);
+	public Entry<JsonElement, Long> load(Coll<?> coll, String id);
 	
 	// Save raw data as X
 	// Return value is the new mtime (we caused the change).
 	// If the mtime is null something failed.
-	public Long save(Coll<?> coll, String id, final Object rawData);
+	public Long save(Coll<?> coll, String id, JsonElement data);
 	
 	// Delete X
 	public void delete(Coll<?> coll, String id);

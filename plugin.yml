@@ -90,7 +90,7 @@ permissions:
   mcore.kit.rank0:
     default: false
     children:
-  massivechat.kit.default:
+  mcore.kit.default:
     default: true
     children:
-      massivechat.kit.rank0: true
+      mcore.kit.rank0: true

@@ -11,44 +11,33 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import com.massivecraft.mcore.store.idstrategy.IdStrategyOid;
-import com.massivecraft.mcore.store.idstrategy.IdStrategyUuid;
-import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
-import com.massivecraft.mcore.store.storeadapter.StoreAdapterGson;
 import com.massivecraft.mcore.util.DiscUtil;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonParser;
 
-public class DriverGson extends DriverAbstract<JsonElement>
+public class DriverGson extends DriverAbstract
 {
-	protected final static String DOTJSON = ".json";
-	
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// CONSTANTS
 	// -------------------------------------------- //
 	
-	@Override public Class<JsonElement> getRawdataClass() { return JsonElement.class; }
+	private static final String DOTJSON = ".json";
+	public static final String NAME = "gson";
 	
-	@Override
-	public boolean equal(Object rawOne, Object rawTwo)
-	{
-		JsonElement one = (JsonElement)rawOne;
-		JsonElement two = (JsonElement)rawTwo;
-		
-		if (one == null && two == null) return true;
-		if (one == null || two == null) return false;
-		
-		return one.toString().equals(two.toString());
-	}
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
-	@Override
-	public StoreAdapter getStoreAdapter()
-	{
-		return StoreAdapterGson.get();
-	}
+	private static DriverGson i = new DriverGson();
+	public static DriverGson get() { return i; }
+	private DriverGson() { super(NAME); }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 		
 	@Override
-	public Db<JsonElement> getDb(String uri)
+	public Db getDb(String uri)
 	{
 		// "gson://" is 7 chars
 		File folder = new File(uri.substring(7));
@@ -57,7 +46,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public Set<String> getCollnames(Db<?> db)
+	public Set<String> getCollnames(Db db)
 	{
 		Set<String> ret = new LinkedHashSet<String>();
 		
@@ -92,7 +81,7 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		// Scan the collection folder for .json files
 		File collDir = getCollDir(coll);
 		if ( ! collDir.isDirectory()) return ret;
-		for(File file : collDir.listFiles(JsonFileFilter.get()))
+		for (File file : collDir.listFiles(JsonFileFilter.get()))
 		{
 			ret.add(idFromFile(file));
 		}
@@ -130,10 +119,10 @@ public class DriverGson extends DriverAbstract<JsonElement>
 	}
 
 	@Override
-	public Long save(Coll<?> coll, String id, Object rawData)
+	public Long save(Coll<?> coll, String id, JsonElement data)
 	{
 		File file = fileFromId(coll, id);
-		String content = coll.getGson().toJson((JsonElement)rawData);
+		String content = coll.getGson().toJson(data);
 		if (DiscUtil.writeCatch(file, content) == false) return null;
 		return file.lastModified();
 	}
@@ -168,32 +157,5 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		return idFile;
 	}
 	
-	//----------------------------------------------//
-	// CONSTRUCTORS
-	//----------------------------------------------//
 	
-	public static String NAME = "gson";
-	
-	private DriverGson()
-	{
-		super(NAME);
-	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static DriverGson instance;
-	public static DriverGson get()
-	{
-		return instance;
-	}
-	
-	static
-	{
-		instance = new DriverGson();
-		instance.registerIdStrategy(IdStrategyOid.get());
-		instance.registerIdStrategy(IdStrategyUuid.get());
-	}
-
 }

@@ -25,17 +25,17 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public SenderColl(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing, String idStrategyName, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public SenderColl(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, String idStrategyName, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
 		super(name, entityClass, db, plugin, creative, lowercasing, idStrategyName, idComparator, entityComparator);
 	}
 	
-	public SenderColl(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing)
+	public SenderColl(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
 	{	
 		super(name, entityClass, db, plugin, creative, lowercasing);
 	}
 	
-	public SenderColl(String name, Class<E> entityClass, Db<?> db, Plugin plugin)
+	public SenderColl(String name, Class<E> entityClass, Db db, Plugin plugin)
 	{	
 		super(name, entityClass, db, plugin, true, true);
 	}

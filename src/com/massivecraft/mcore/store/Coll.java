@@ -18,9 +18,8 @@ import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.store.accessor.Accessor;
-import com.massivecraft.mcore.store.idstrategy.IdStrategy;
-import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
 import com.massivecraft.mcore.xlib.gson.Gson;
+import com.massivecraft.mcore.xlib.gson.JsonElement;
 
 public class Coll<E> implements CollInterface<E>
 {
@@ -64,15 +63,9 @@ public class Coll<E> implements CollInterface<E>
 		}
 	}
 	
-	protected Db<?> db;
-	@Override public Db<?> getDb() { return this.db; }
-	@Override public Driver<?> getDriver() { return this.db.getDriver(); }
-	
-	protected IdStrategy idStrategy;
-	@Override public IdStrategy getIdStrategy() { return this.idStrategy; }
-	
-	protected StoreAdapter storeAdapter;
-	@Override public StoreAdapter getStoreAdapter() { return this.storeAdapter; }
+	protected Db db;
+	@Override public Db getDb() { return this.db; }
+	@Override public Driver getDriver() { return this.db.getDriver(); }
 	
 	protected Object collDriverObject;
 	@Override public Object getCollDriverObject() { return this.collDriverObject; }
@@ -260,7 +253,7 @@ public class Coll<E> implements CollInterface<E>
 		// Check/Fix id
 		if (oid == null)
 		{
-			id = this.getIdStrategy().generate(this);
+			id = MStore.createId();
 		}
 		else
 		{
@@ -333,7 +326,7 @@ public class Coll<E> implements CollInterface<E>
 	// -------------------------------------------- //
 
 	protected Map<String, Long> lastMtime;
-	protected Map<String, Object> lastRaw;
+	protected Map<String, JsonElement> lastRaw;
 	protected Set<String> lastDefault;
 	
 	protected synchronized void clearSynclog(Object oid)
@@ -393,7 +386,7 @@ public class Coll<E> implements CollInterface<E>
 		E entity = this.id2entity.get(id);
 		if (entity == null) return;
 		
-		Object raw = this.getStoreAdapter().read(this, entity);
+		JsonElement raw = this.getGson().toJsonTree(entity, this.getEntityClass());
 		this.lastRaw.put(id, raw);
 		
 		if (this.isDefault(entity))
@@ -416,10 +409,10 @@ public class Coll<E> implements CollInterface<E>
 		
 		this.clearIdentifiedChanges(id);
 		
-		Entry<?, Long> entry = this.getDb().getDriver().load(this, id);
+		Entry<JsonElement, Long> entry = this.getDriver().load(this, id);
 		if (entry == null) return;
 		
-		Object raw = entry.getKey();
+		JsonElement raw = entry.getKey();
 		if (raw == null) return;
 		
 		Long mtime = entry.getValue();
@@ -427,7 +420,7 @@ public class Coll<E> implements CollInterface<E>
 		
 		E entity = this.get(id, true, false);
 		
-		this.getStoreAdapter().write(this, raw, entity);
+		this.copy(this.getGson().fromJson(raw, this.getEntityClass()), entity);
 		
 		// this.lastRaw.put(id, this.getStoreAdapter().read(this, entity));
 		// Store adapter again since result of a database read may be "different" from entity read.
@@ -500,11 +493,13 @@ public class Coll<E> implements CollInterface<E>
 		
 		return ModificationState.NONE;
 	}
+	
 	protected boolean examineHasLocalAlter(String id, E entity)
 	{
-		Object lastRaw = this.lastRaw.get(id);
-		Object currentRaw = this.storeAdapter.read(this, entity);
-		return (this.getDriver().equal(currentRaw, lastRaw) == false);
+		JsonElement lastRaw = this.lastRaw.get(id);
+		JsonElement currentRaw = this.getGson().toJsonTree(entity, this.getEntityClass());
+		
+		return !MStore.equal(lastRaw, currentRaw);
 	}
 	
 	@Override
@@ -602,7 +597,7 @@ public class Coll<E> implements CollInterface<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing, String idStrategyName, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, String idStrategyName, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -625,12 +620,6 @@ public class Coll<E> implements CollInterface<E>
 		// SUPPORTING SYSTEM
 		this.plugin = plugin;
 		this.db = db;
-		this.storeAdapter = this.db.getDriver().getStoreAdapter();
-		this.idStrategy = this.db.getDriver().getIdStrategy(idStrategyName);
-		if (this.idStrategy == null)
-		{
-			throw new IllegalArgumentException("UNKNOWN: The id stragegy \""+idStrategyName+"\" is unknown to the driver \""+db.getDriver().getName()+"\".");
-		}
 		this.collDriverObject = db.getCollDriverObject(this);
 		
 		// STORAGE
@@ -644,7 +633,7 @@ public class Coll<E> implements CollInterface<E>
 		
 		// SYNCLOG
 		this.lastMtime = new ConcurrentSkipListMap<String, Long>(idComparator);
-		this.lastRaw = new ConcurrentSkipListMap<String, Object>(idComparator);
+		this.lastRaw = new ConcurrentSkipListMap<String, JsonElement>(idComparator);
 		this.lastDefault = new ConcurrentSkipListSet<String>(idComparator);
 		
 		final Coll<E> me = this;
@@ -654,12 +643,12 @@ public class Coll<E> implements CollInterface<E>
 		};
 	}
 	
-	public Coll(String name, Class<E> entityClass, Db<?> db, Plugin plugin, boolean creative, boolean lowercasing)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
 	{
 		this(name, entityClass, db, plugin, creative, lowercasing, "uuid", null, null);
 	}
 	
-	public Coll(String name, Class<E> entityClass, Db<?> db, Plugin plugin)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
 	{
 		this(name, entityClass, db, plugin, false, false);
 	}

@@ -3,9 +3,8 @@ package com.massivecraft.mcore.store;
 import java.io.File;
 
 import com.massivecraft.mcore.util.DiscUtil;
-import com.massivecraft.mcore.xlib.gson.JsonElement;
 
-public class DbGson extends DbAbstract<JsonElement>
+public class DbGson extends DbAbstract
 {
 	// -------------------------------------------- //
 	// FIELDS

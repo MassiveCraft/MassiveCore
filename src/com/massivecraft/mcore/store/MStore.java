@@ -4,8 +4,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.massivecraft.mcore.ConfServer;
+import com.massivecraft.mcore.xlib.gson.JsonElement;
 
 public class MStore
 {
@@ -13,15 +15,15 @@ public class MStore
 	// DRIVER REGISTRY
 	// -------------------------------------------- //
 	
-	protected static Map<String, Driver<?>> drivers = new HashMap<String, Driver<?>>();
-	public static boolean registerDriver(Driver<?> driver)
+	private static Map<String, Driver> drivers = new HashMap<String, Driver>();
+	public static boolean registerDriver(Driver driver)
 	{
 		if (drivers.containsKey(driver.getName())) return false;
 		drivers.put(driver.getName(), driver);
 		return true;
 	}
 
-	public static Driver<?> getDriver(String id)
+	public static Driver getDriver(String id)
 	{
 		return drivers.get(id);
 	}
@@ -33,11 +35,32 @@ public class MStore
 	}
 	
 	// -------------------------------------------- //
+	// ID CREATION
+	// -------------------------------------------- //
+	
+	public static String createId()
+	{
+		return UUID.randomUUID().toString();
+	}
+	
+	// -------------------------------------------- //
+	// JSON ELEMENT EQUAL
+	// -------------------------------------------- //
+	
+	public static boolean equal(JsonElement one, JsonElement two)
+	{
+		if (one == null) return two == null;
+		if (two == null) return one == null;
+		
+		return one.toString().equals(two.toString());
+	}
+	
+	// -------------------------------------------- //
 	// FROODLSCHTEIN
 	// -------------------------------------------- //
 	
 	// We cache databases here
-	private static Map<String, Db<?>> uri2db = new HashMap<String, Db<?>>();
+	private static Map<String, Db> uri2db = new HashMap<String, Db>();
 	
 	public static String resolveAlias(String alias)
 	{
@@ -46,10 +69,10 @@ public class MStore
 		return resolveAlias(uri);
 	}
 	
-	public static Db<?> getDb(String alias)
+	public static Db getDb(String alias)
 	{
 		String uri = resolveAlias(alias);
-		Db<?> ret = uri2db.get(uri);
+		Db ret = uri2db.get(uri);
 		if (ret != null) return ret;
 		
 		try
@@ -65,10 +88,10 @@ public class MStore
 		return ret;
 	}
 	
-	public static Db<?> getDb(URI uri)
+	public static Db getDb(URI uri)
 	{
 		String scheme = uri.getScheme();
-		Driver<?> driver = getDriver(scheme);
+		Driver driver = getDriver(scheme);
 		if (driver == null) return null;
 		return driver.getDb(uri.toString());
 	}

@@ -7,8 +7,6 @@ import java.util.Map;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.Predictate;
-import com.massivecraft.mcore.store.idstrategy.IdStrategy;
-import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
 
 public interface CollInterface<E>
 {
@@ -25,10 +23,8 @@ public interface CollInterface<E>
 	// -------------------------------------------- //
 	public Plugin getPlugin();
 	
-	public Db<?> getDb();
-	public Driver<?> getDriver();
-	public StoreAdapter getStoreAdapter();
-	public IdStrategy getIdStrategy();
+	public Db getDb();
+	public Driver getDriver();
 	public Object getCollDriverObject();
 	
 	// -------------------------------------------- //

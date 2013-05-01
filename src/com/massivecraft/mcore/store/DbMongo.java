@@ -1,9 +1,8 @@
 package com.massivecraft.mcore.store;
 
-import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.mcore.xlib.mongodb.DB;
 
-public class DbMongo extends DbAbstract<BasicDBObject>
+public class DbMongo extends DbAbstract
 {
 	// -------------------------------------------- //
 	// FIELDS

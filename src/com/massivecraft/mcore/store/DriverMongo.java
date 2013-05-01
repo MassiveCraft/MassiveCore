@@ -9,10 +9,7 @@ import java.util.Set;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
-import com.massivecraft.mcore.store.idstrategy.IdStrategyOid;
-import com.massivecraft.mcore.store.idstrategy.IdStrategyUuid;
-import com.massivecraft.mcore.store.storeadapter.StoreAdapter;
-import com.massivecraft.mcore.store.storeadapter.StoreAdapterMongo;
+import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.mcore.xlib.mongodb.DB;
 import com.massivecraft.mcore.xlib.mongodb.DBCollection;
@@ -20,7 +17,7 @@ import com.massivecraft.mcore.xlib.mongodb.DBCursor;
 import com.massivecraft.mcore.xlib.mongodb.MongoClient;
 import com.massivecraft.mcore.xlib.mongodb.MongoClientURI;
 
-public class DriverMongo extends DriverAbstract<BasicDBObject>
+public class DriverMongo extends DriverAbstract
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -34,66 +31,27 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	public final static BasicDBObject dboKeysMtime = new BasicDBObject().append(MTIME_FIELD, 1);
 	public final static BasicDBObject dboKeysIdandMtime = new BasicDBObject().append(ID_FIELD, 1).append(MTIME_FIELD, 1);
 	
-	
-	//----------------------------------------------//
-	// CONSTRUCT
-	//----------------------------------------------//
-	
-	private DriverMongo()
-	{
-		super("mongodb");
-	}
-	
 	// -------------------------------------------- //
-	// INSTANCE
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	protected static DriverMongo instance;
-	public static DriverMongo get()
-	{
-		return instance;
-	}
-	
-	static
-	{
-		instance = new DriverMongo();
-		instance.registerIdStrategy(IdStrategyOid.get());
-		instance.registerIdStrategy(IdStrategyUuid.get());
-	}
+	protected static DriverMongo i = new DriverMongo();
+	public static DriverMongo get() { return i; }
+	private DriverMongo() { super("mongodb"); }
 	
 	// -------------------------------------------- //
 	// IMPLEMENTATION
 	// -------------------------------------------- //
 	
-	@Override public Class<BasicDBObject> getRawdataClass() { return BasicDBObject.class; }
-	
 	@Override
-	public boolean equal(Object rawOne, Object rawTwo)
-	{
-		BasicDBObject one = (BasicDBObject)rawOne;
-		BasicDBObject two = (BasicDBObject)rawTwo;
-		
-		if (one == null && two == null) return true;
-		if (one == null || two == null) return false;
-		
-		return one.equals(two);
-	}
-	
-	@Override
-	public StoreAdapter getStoreAdapter()
-	{
-		return StoreAdapterMongo.get();
-	}
-	
-	@Override
-	public Db<BasicDBObject> getDb(String uri)
+	public Db getDb(String uri)
 	{
 		DB db = this.getDbInner(uri);
 		return new DbMongo(this, db);
 	}
 
 	@Override
-	public Set<String> getCollnames(Db<?> db)
+	public Set<String> getCollnames(Db db)
 	{
 		return ((DbMongo)db).db.getCollectionNames();
 	}
@@ -170,27 +128,28 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	}
 
 	@Override
-	public Entry<BasicDBObject, Long> load(Coll<?> coll, String id)
+	public Entry<JsonElement, Long> load(Coll<?> coll, String id)
 	{
 		DBCollection dbcoll = fixColl(coll);
 		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id));
 		if (raw == null) return null;
 		Long mtime = (Long) raw.removeField(MTIME_FIELD);
-		return new SimpleEntry<BasicDBObject, Long>(raw, mtime);
+		
+		JsonElement element = MongoGsonConverter.mongo2GsonObject(raw);
+		
+		return new SimpleEntry<JsonElement, Long>(element, mtime);
 	}
 
 	@Override
-	public Long save(Coll<?> coll, String id, Object rawData)
+	public Long save(Coll<?> coll, String id, JsonElement data)
 	{		
 		DBCollection dbcoll = fixColl(coll);
 		
-		// We shallow copy here in order to stop the extra "_mtime" field from messing up the lastRaw.
-		BasicDBObject data = (BasicDBObject)rawData;
-		data = (BasicDBObject)data.clone();
+		BasicDBObject dbo = MongoGsonConverter.gson2MongoObject(data);
 		Long mtime = System.currentTimeMillis();
-		data.put(MTIME_FIELD, mtime);
+		dbo.put(MTIME_FIELD, mtime);
 		
-		dbcoll.update(new BasicDBObject(ID_FIELD, id), data, true, false);
+		dbcoll.update(new BasicDBObject(ID_FIELD, id), dbo, true, false);
 
 		return mtime;
 	}

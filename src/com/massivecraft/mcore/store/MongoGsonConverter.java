@@ -1,4 +1,4 @@
-package com.massivecraft.mcore.store.storeadapter;
+package com.massivecraft.mcore.store;
 
 import java.util.Map.Entry;
 
