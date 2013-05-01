@@ -21,14 +21,14 @@ import java.util.logging.Logger;
 /**
  *
  */
+@SuppressWarnings({"rawtypes", "unused"})
 public class LazyWriteableDBCallback extends LazyDBCallback {
 
     public LazyWriteableDBCallback( DBCollection coll ){
 	super(coll);
     }
 
-    @SuppressWarnings("rawtypes")
-	@Override
+    @Override
     public Object createObject( byte[] data, int offset ){
         LazyWriteableDBObject o = new LazyWriteableDBObject( data, offset, this );
         //log.info("Created inner BSONObject: " + o);
@@ -42,6 +42,5 @@ public class LazyWriteableDBCallback extends LazyDBCallback {
         return o;
     }
 
-    @SuppressWarnings("unused")
-	private static final Logger log = Logger.getLogger( LazyWriteableDBCallback.class.getName() );
+    private static final Logger log = Logger.getLogger( LazyWriteableDBCallback.class.getName() );
 }

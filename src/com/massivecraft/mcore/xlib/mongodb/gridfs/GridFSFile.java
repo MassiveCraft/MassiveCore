@@ -37,6 +37,7 @@ import com.massivecraft.mcore.xlib.mongodb.util.JSON;
  * The abstract class representing a GridFS file
  * @author antoine
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class GridFSFile implements DBObject {
 
     
@@ -46,6 +47,7 @@ public abstract class GridFSFile implements DBObject {
 
     /**
      * Saves the file entry to the files collection
+     * @throws MongoException 
      */
     public void save(){
         if ( _fs == null )
@@ -58,7 +60,7 @@ public abstract class GridFSFile implements DBObject {
      * This should be called after transferring a file.
      * @throws MongoException
      */
-    public void validate() throws MongoException {
+    public void validate(){
         if ( _fs == null )
             throw new MongoException( "no _fs" );
         if ( _md5 == null )
@@ -147,7 +149,6 @@ public abstract class GridFSFile implements DBObject {
      * note: to set aliases, call put( "aliases" , List<String> )
      * @return
      */
-    @SuppressWarnings("unchecked")
     public List<String> getAliases(){
         return (List<String>)_extradata.get( "aliases" );
     }
@@ -226,13 +227,11 @@ public abstract class GridFSFile implements DBObject {
         throw new UnsupportedOperationException();
     }
 
-    @SuppressWarnings("rawtypes")
-	public void putAll( Map m ){
+    public void putAll( Map m ){
         throw new UnsupportedOperationException();
     }
 
-    @SuppressWarnings("rawtypes")
-	public Map toMap(){
+    public Map toMap(){
         throw new UnsupportedOperationException();
     }
 
@@ -252,7 +251,6 @@ public abstract class GridFSFile implements DBObject {
         return keySet().contains( s );
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Set<String> keySet(){
         Set<String> keys = new HashSet();
         keys.addAll(VALID_FIELDS);
@@ -297,7 +295,6 @@ public abstract class GridFSFile implements DBObject {
     DBObject _extradata = new BasicDBObject();
     String _md5;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     final static Set<String> VALID_FIELDS = Collections.unmodifiableSet( new HashSet( Arrays.asList( new String[]{ 
                     "_id" , "filename" , "contentType" , "length" , "chunkSize" ,
                     "uploadDate" , "aliases" , "md5"

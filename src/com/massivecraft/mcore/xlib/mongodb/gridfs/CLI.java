@@ -18,18 +18,20 @@
 
 package com.massivecraft.mcore.xlib.mongodb.gridfs;
 
+import com.massivecraft.mcore.xlib.mongodb.DBObject;
+import com.massivecraft.mcore.xlib.mongodb.Mongo;
+import com.massivecraft.mcore.xlib.mongodb.MongoClient;
+import com.massivecraft.mcore.xlib.mongodb.util.Util;
+
 import java.io.File;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
-
-import com.massivecraft.mcore.xlib.mongodb.DBObject;
-import com.massivecraft.mcore.xlib.mongodb.Mongo;
-import com.massivecraft.mcore.xlib.mongodb.util.Util;
 
 
 /**
  * a simple CLI for Gridfs
  */
+@SuppressWarnings({"unused"})
 public class CLI {
     
     /**
@@ -48,10 +50,11 @@ public class CLI {
     private static String db = "test";
     
     private static Mongo _mongo = null;
+
     private static Mongo getMongo()
         throws Exception {
         if ( _mongo == null )
-            _mongo = new Mongo( host );
+            _mongo = new MongoClient( host );
         return _mongo;
     }
     
@@ -63,8 +66,7 @@ public class CLI {
         return _gridfs;
     }
 
-    @SuppressWarnings("unused")
-	public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         
         if ( args.length < 1 ){
             printUsage();

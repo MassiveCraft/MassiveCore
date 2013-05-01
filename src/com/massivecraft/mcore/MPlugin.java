@@ -56,7 +56,6 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		for (Coll<?> coll : Coll.instances)
 		{
 			if (coll.getPlugin() != this) continue;
-			coll.examineThread().interrupt();
 			coll.syncAll(); // TODO: Save outwards only? We may want to avoid loads at this stage...
 			Coll.instances.remove(coll);
 		}

@@ -24,6 +24,7 @@ import com.massivecraft.mcore.xlib.bson.BSONObject;
 import com.massivecraft.mcore.xlib.bson.LazyBSONCallback;
 import com.massivecraft.mcore.xlib.bson.io.BSONByteBuffer;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class LazyWriteableDBObject extends LazyDBObject {
 
     public LazyWriteableDBObject(BSONByteBuffer buff, LazyBSONCallback cbk){
@@ -64,7 +65,6 @@ public class LazyWriteableDBObject extends LazyDBObject {
 	/* (non-Javadoc)
 	 * @see org.bson.LazyBSONObject#putAll(java.util.Map)
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void putAll(Map m) {
 		writeable.putAll(m);

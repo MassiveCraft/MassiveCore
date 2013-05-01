@@ -24,6 +24,7 @@ import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 /**
  *
  */
+@SuppressWarnings({"rawtypes", "unused"})
 public class LazyDBCallback extends LazyBSONCallback implements DBCallback {
 
     public LazyDBCallback( DBCollection coll ){
@@ -31,8 +32,7 @@ public class LazyDBCallback extends LazyBSONCallback implements DBCallback {
         _db = _collection == null ? null : _collection.getDB();
     }
 
-    @SuppressWarnings("rawtypes")
-	@Override
+    @Override
     public Object createObject( byte[] data, int offset ){
         LazyDBObject o = new LazyDBObject( data, offset, this );
         //log.info("Created inner BSONObject: " + o);
@@ -52,6 +52,5 @@ public class LazyDBCallback extends LazyBSONCallback implements DBCallback {
 
     final DBCollection _collection;
     final DB _db;
-    @SuppressWarnings("unused")
-	private static final Logger log = Logger.getLogger( LazyDBCallback.class.getName() );
+    private static final Logger log = Logger.getLogger( LazyDBCallback.class.getName() );
 }

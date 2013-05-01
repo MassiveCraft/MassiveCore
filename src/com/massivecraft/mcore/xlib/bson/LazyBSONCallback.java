@@ -25,6 +25,7 @@ import com.massivecraft.mcore.xlib.mongodb.LazyDBObject;
 /**
  *
  */
+@SuppressWarnings({"rawtypes", "unused"})
 public class LazyBSONCallback extends EmptyBSONCallback {
 
     public void objectStart(){
@@ -63,7 +64,6 @@ public class LazyBSONCallback extends EmptyBSONCallback {
         return new LazyDBObject( data, offset, this );
     }
 
-    @SuppressWarnings("rawtypes")
 	public List createArray( byte[] data, int offset ){
         return new LazyDBList( data, offset, this );
     }
@@ -83,6 +83,5 @@ public class LazyBSONCallback extends EmptyBSONCallback {
         }
     }*/
     private Object _root;
-    @SuppressWarnings("unused")
-	private static final Logger log = Logger.getLogger( "org.bson.LazyBSONCallback" );
+    private static final Logger log = Logger.getLogger( "org.bson.LazyBSONCallback" );
 }

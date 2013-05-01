@@ -32,6 +32,7 @@ import com.massivecraft.mcore.xlib.bson.BSONObject;
 /**
  * This class enables to map simple Class fields to a BSON object fields
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class ReflectionDBObject implements DBObject {
     
     public Object get( String key ){
@@ -58,7 +59,6 @@ public abstract class ReflectionDBObject implements DBObject {
         return getWrapper().set( this , key , v );
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void putAll( Map m ){
         for ( Map.Entry entry : (Set<Map.Entry>)m.entrySet() ){
             put( entry.getKey().toString() , entry.getValue() );
@@ -91,7 +91,6 @@ public abstract class ReflectionDBObject implements DBObject {
         return false;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Map toMap() {
        Map m = new HashMap();
        Iterator i = this.keySet().iterator();
@@ -133,8 +132,7 @@ public abstract class ReflectionDBObject implements DBObject {
      * Represents a wrapper around the DBObject to interface with the Class fields
      */
     public static class JavaWrapper {
-        @SuppressWarnings("rawtypes")
-		JavaWrapper( Class c ){
+        JavaWrapper( Class c ){
             _class = c;
             _name = c.getName();
 
@@ -205,8 +203,7 @@ public abstract class ReflectionDBObject implements DBObject {
             }
         }
 
-        @SuppressWarnings("rawtypes")
-		Class getInternalClass( String path ){
+        Class getInternalClass( String path ){
             String cur = path;
             String next = null;
             final int idx = path.indexOf( "." );
@@ -228,16 +225,14 @@ public abstract class ReflectionDBObject implements DBObject {
             return w.getInternalClass( next );
         }
         
-        @SuppressWarnings("rawtypes")
-		final Class _class;
+        final Class _class;
         final String _name;
         final Map<String,FieldInfo> _fields;
         final Set<String> _keys;
     }
     
     static class FieldInfo {
-        @SuppressWarnings("rawtypes")
-		FieldInfo( String name , Class c ){
+        FieldInfo( String name , Class c ){
             _name = name;
             _class = c;
         }
@@ -249,8 +244,7 @@ public abstract class ReflectionDBObject implements DBObject {
         }
         
         final String _name;
-        @SuppressWarnings("rawtypes")
-		final Class _class;
+        final Class _class;
         Method _getter;
         Method _setter;
     }
@@ -260,8 +254,7 @@ public abstract class ReflectionDBObject implements DBObject {
      * @param c
      * @return
      */
-    @SuppressWarnings("rawtypes")
-	public static JavaWrapper getWrapperIfReflectionObject( Class c ){
+    public static JavaWrapper getWrapperIfReflectionObject( Class c ){
         if ( ReflectionDBObject.class.isAssignableFrom( c ) )
             return getWrapper( c );
         return null;
@@ -272,8 +265,7 @@ public abstract class ReflectionDBObject implements DBObject {
      * @param c
      * @return
      */
-    @SuppressWarnings("rawtypes")
-	public static JavaWrapper getWrapper( Class c ){
+    public static JavaWrapper getWrapper( Class c ){
         JavaWrapper w = _wrappers.get( c );
         if ( w == null ){
             w = new JavaWrapper( c );
@@ -282,8 +274,7 @@ public abstract class ReflectionDBObject implements DBObject {
         return w;
     }
     
-    @SuppressWarnings("rawtypes")
-	private static final Map<Class,JavaWrapper> _wrappers = Collections.synchronizedMap( new HashMap<Class,JavaWrapper>() );
+    private static final Map<Class,JavaWrapper> _wrappers = Collections.synchronizedMap( new HashMap<Class,JavaWrapper>() );
     private static final Set<String> IGNORE_FIELDS = new HashSet<String>();
     static {
         IGNORE_FIELDS.add( "Int" );

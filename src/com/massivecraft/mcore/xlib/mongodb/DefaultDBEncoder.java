@@ -12,13 +12,12 @@
  */
 package com.massivecraft.mcore.xlib.mongodb;
 
-import static com.massivecraft.mcore.xlib.bson.BSON.EOO;
-import static com.massivecraft.mcore.xlib.bson.BSON.OBJECT;
-import static com.massivecraft.mcore.xlib.bson.BSON.REF;
+import com.massivecraft.mcore.xlib.bson.BSONObject;
+import com.massivecraft.mcore.xlib.bson.BasicBSONEncoder;
+import com.massivecraft.mcore.xlib.bson.io.OutputBuffer;
+import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 
-import com.massivecraft.mcore.xlib.bson.*;
-import com.massivecraft.mcore.xlib.bson.io.*;
-import com.massivecraft.mcore.xlib.bson.types.*;
+import static com.massivecraft.mcore.xlib.bson.BSON.*;
 
 
 public class DefaultDBEncoder extends BasicBSONEncoder implements DBEncoder {
@@ -35,6 +34,12 @@ public class DefaultDBEncoder extends BasicBSONEncoder implements DBEncoder {
         public DBEncoder create( ){
             return new DefaultDBEncoder( );
         }
+
+        @Override
+        public String toString() {
+            return "DefaultDBEncoder.DefaultFactory";
+        }
+
     }
 
     @SuppressWarnings("deprecation")
@@ -78,6 +83,11 @@ public class DefaultDBEncoder extends BasicBSONEncoder implements DBEncoder {
     public static DBEncoderFactory FACTORY = new DefaultFactory();
 
     public DefaultDBEncoder( ){
+    }
+
+    @Override
+    public String toString() {
+        return "DefaultDBEncoder";
     }
 
 }

@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
  * @author scotthernandez
  * @author Kilroy Wuz Here
  */
+@SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public class LazyBSONObject implements BSONObject {
 
     public LazyBSONObject( byte[] data, LazyBSONCallback callback ){
@@ -135,7 +136,6 @@ public class LazyBSONObject implements BSONObject {
             return toArray(a);
         }
 
-        @SuppressWarnings( "unchecked" )
         @Override
         public <T> T[] toArray(T[] a) {
             int size = size();
@@ -203,8 +203,7 @@ public class LazyBSONObject implements BSONObject {
                     throw new UnsupportedOperationException("Read only");
                 }
 
-                @SuppressWarnings("rawtypes")
-				@Override
+                @Override
                 public boolean equals(Object o) {
                     if (!(o instanceof Map.Entry))
                         return false;
@@ -269,14 +268,12 @@ public class LazyBSONObject implements BSONObject {
             return new LazyBSONEntryIterator();
         }
 
-        @SuppressWarnings("rawtypes")
-		@Override
+        @Override
         public Object[] toArray() {
             Map.Entry[] array = new Map.Entry[size()];
             return toArray(array);
         }
 
-        @SuppressWarnings( "unchecked" )
         @Override
         public <T> T[] toArray(T[] a) {
             int size = size();
@@ -340,8 +337,7 @@ public class LazyBSONObject implements BSONObject {
         throw new UnsupportedOperationException( "Object is read only" );
     }
 
-    @SuppressWarnings("rawtypes")
-	public void putAll( Map m ){
+    public void putAll( Map m ){
         throw new UnsupportedOperationException( "Object is read only" );
     }
 
@@ -401,8 +397,7 @@ public class LazyBSONObject implements BSONObject {
         return elements;
     }
 
-    @SuppressWarnings("rawtypes")
-	public Map toMap(){
+    public Map toMap(){
         throw new UnsupportedOperationException( "Not Supported" );
     }
 
@@ -686,6 +681,5 @@ public class LazyBSONObject implements BSONObject {
     protected final BSONByteBuffer _input; // TODO - Guard this with synchronicity?
     // callback is kept to create sub-objects on the fly
     protected final LazyBSONCallback _callback;
-    @SuppressWarnings("unused")
-	private static final Logger log = Logger.getLogger( "org.bson.LazyBSONObject" );
+    private static final Logger log = Logger.getLogger( "org.bson.LazyBSONObject" );
 }

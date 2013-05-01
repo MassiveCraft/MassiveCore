@@ -18,6 +18,11 @@
 
 package com.massivecraft.mcore.xlib.mongodb;
 
+import com.massivecraft.mcore.xlib.bson.BSONObject;
+import com.massivecraft.mcore.xlib.mongodb.DBApiLayer.Result;
+import com.massivecraft.mcore.xlib.mongodb.util.Util;
+
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,14 +33,25 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.massivecraft.mcore.xlib.mongodb.DBApiLayer.Result;
-import com.massivecraft.mcore.xlib.mongodb.util.Util;
-
 /**
  * an abstract class that represents a logical database on a server
  * @dochub databases
  */
 public abstract class DB {
+    
+    private static final Set<String> _obedientCommands = new HashSet<String>();
+
+    static {
+        _obedientCommands.add("group");
+        _obedientCommands.add("aggregate");
+        _obedientCommands.add("collstats");
+        _obedientCommands.add("dbstats");
+        _obedientCommands.add("count");
+        _obedientCommands.add("distinct");
+        _obedientCommands.add("geonear");
+        _obedientCommands.add("geosearch");
+        _obedientCommands.add("geowalk");
+    }
 
     /**
      * @param mongo the mongo instance
@@ -45,6 +61,44 @@ public abstract class DB {
         _mongo = mongo;
     	_name = name;
         _options = new Bytes.OptionHolder( _mongo._netOptions );
+    }
+
+    /**
+     * Determines the read preference that should be used for the given command.
+     * @param command the <code>DBObject</code> representing the command
+     * @param requestedPreference the preference requested by the client.
+     * @return the read preference to use for the given command.  It will never return null.
+     * @see com.massivecraft.mcore.xlib.mongodb.ReadPreference
+     */
+    ReadPreference getCommandReadPreference(DBObject command, ReadPreference requestedPreference){
+        String comString = command.keySet().iterator().next();
+
+        if (comString.equals("getnonce") || comString.equals("authenticate")) {
+            return ReadPreference.primaryPreferred();
+        }
+
+        boolean primaryRequired;
+
+        // explicitly check mapreduce commands are inline
+        if(comString.equals("mapreduce")) {
+            Object out = command.get("out");
+            if (out instanceof BSONObject ){
+                BSONObject outMap = (BSONObject) out;
+                primaryRequired = outMap.get("inline") == null;
+            }
+            else
+                primaryRequired = true;
+        } else {
+           primaryRequired =  !_obedientCommands.contains(comString.toLowerCase());
+        }
+
+        if (primaryRequired) {
+            return ReadPreference.primary();
+        } else if (requestedPreference == null) {
+            return ReadPreference.primary();
+        } else {
+            return requestedPreference;
+        }
     }
 
     /**
@@ -95,6 +149,7 @@ public abstract class DB {
      * @param name the name of the collection to return
      * @param options options
      * @return the collection
+     * @throws MongoException
      */
     public DBCollection createCollection( String name, DBObject options ){
         if ( options != null ){
@@ -140,21 +195,52 @@ public abstract class DB {
      * @throws MongoException
      * @dochub commands
      */
-    public CommandResult command( DBObject cmd ) throws MongoException{
+    public CommandResult command( DBObject cmd ){
         return command( cmd, 0 );
     }
 
-    public CommandResult command( DBObject cmd, DBEncoder encoder ) throws MongoException{
+
+    /**
+     * Executes a database command.
+     * This method calls {@link DB#command(com.massivecraft.mcore.xlib.mongodb.DBObject, int, com.massivecraft.mcore.xlib.mongodb.DBEncoder) } with 0 as query option.
+     * @see <a href="http://mongodb.onconfluence.com/display/DOCS/List+of+Database+Commands">List of Commands</a>
+     * @param cmd dbobject representing the command to execute
+     * @param encoder 
+     * @return result of command from the database
+     * @throws MongoException
+     * @dochub commands
+     */
+    public CommandResult command( DBObject cmd, DBEncoder encoder ){
         return command( cmd, 0, encoder );
     }
 
-    public CommandResult command( DBObject cmd , int options, DBEncoder encoder )
-            throws MongoException {
-        return command(cmd, options, null, encoder);
+    /**
+     * Executes a database command.
+     * This method calls {@link DB#command(com.massivecraft.mcore.xlib.mongodb.DBObject, int, com.massivecraft.mcore.xlib.mongodb.ReadPreference, com.massivecraft.mcore.xlib.mongodb.DBEncoder) } with a null readPrefs.
+     * @see <a href="http://mongodb.onconfluence.com/display/DOCS/List+of+Database+Commands">List of Commands</a>
+     * @param cmd dbobject representing the command to execute
+     * @param options query options to use
+     * @param encoder 
+     * @return result of command from the database
+     * @throws MongoException
+     * @dochub commands
+     */
+    public CommandResult command( DBObject cmd , int options, DBEncoder encoder ){
+        return command(cmd, options, getReadPreference(), encoder);
     }
 
-    public CommandResult command( DBObject cmd , int options, ReadPreference readPrefs )
-            throws MongoException {
+    /**
+     * Executes a database command.
+     * This method calls {@link DB#command(com.massivecraft.mcore.xlib.mongodb.DBObject, int, com.massivecraft.mcore.xlib.mongodb.ReadPreference, com.massivecraft.mcore.xlib.mongodb.DBEncoder) } with a default encoder.
+     * @see <a href="http://mongodb.onconfluence.com/display/DOCS/List+of+Database+Commands">List of Commands</a>
+     * @param cmd dbobject representing the command to execute
+     * @param options query options to use
+     * @param readPrefs ReadPreferences for this command (nodes selection is the biggest part of this)
+     * @return result of command from the database
+     * @throws MongoException
+     * @dochub commands
+     */
+    public CommandResult command( DBObject cmd , int options, ReadPreference readPrefs ){
         return command(cmd, options, readPrefs, DefaultDBEncoder.FACTORY.create());
     }
 
@@ -164,12 +250,14 @@ public abstract class DB {
      * @param cmd dbobject representing the command to execute
      * @param options query options to use
      * @param readPrefs ReadPreferences for this command (nodes selection is the biggest part of this)
+     * @param encoder
      * @return result of command from the database
-     * @dochub commands
      * @throws MongoException
+     * @dochub commands
      */
-    public CommandResult command( DBObject cmd , int options, ReadPreference readPrefs, DBEncoder encoder )
-        throws MongoException {
+    public CommandResult command( DBObject cmd , int options, ReadPreference readPrefs, DBEncoder encoder ){
+        readPrefs = getCommandReadPreference(cmd, readPrefs);
+        cmd = wrapCommand(cmd, readPrefs);
 
         Iterator<DBObject> i =
                 getCollection("$cmd").__find(cmd, new BasicDBObject(), 0, -1, 0, options, readPrefs ,
@@ -179,9 +267,25 @@ public abstract class DB {
 
         DBObject res = i.next();
         ServerAddress sa = (i instanceof Result) ? ((Result) i).getServerAddress() : null;
-        CommandResult cr = new CommandResult(cmd, sa);
+        CommandResult cr = new CommandResult(sa);
         cr.putAll( res );
         return cr;
+    }
+
+    // Only append $readPreference meta-operator if connected to a mongos, read preference is not primary
+    // or secondary preferred,
+    // and command is an instance of BasicDBObject.  The last condition is unfortunate, but necessary in case
+    // the encoder is not capable of encoding a BasicDBObject
+    // Due to issues with compatibility between different versions of mongos, also wrap the command in a
+    // $query field, so that the $readPreference is not rejected
+    private DBObject wrapCommand(DBObject cmd, final ReadPreference readPrefs) {
+        if (getMongo().isMongosConnection() &&
+                !(ReadPreference.primary().equals(readPrefs) || ReadPreference.secondaryPreferred().equals(readPrefs)) &&
+                cmd instanceof BasicDBObject) {
+            cmd = new BasicDBObject("$query", cmd)
+                    .append(QueryOpBuilder.READ_PREFERENCE_META_OPERATOR, readPrefs.toDBObject());
+        }
+        return cmd;
     }
 
     /**
@@ -190,13 +294,13 @@ public abstract class DB {
      * @param cmd dbobject representing the command to execute
      * @param options query options to use
      * @return result of command from the database
-     * @dochub commands
      * @throws MongoException
+     * @dochub commands
      */
-    public CommandResult command( DBObject cmd , int options )
-        throws MongoException {
-	return command(cmd, options, getReadPreference());
+    public CommandResult command( DBObject cmd , int options ){
+    	return command(cmd, options, getReadPreference());
     }
+    
     /**
      * Executes a database command.
      * This method constructs a simple dbobject and calls {@link DB#command(com.massivecraft.mcore.xlib.mongodb.DBObject) }
@@ -204,9 +308,9 @@ public abstract class DB {
      * @param cmd command to execute
      * @return result of command from the database
      * @throws MongoException
+     * @dochub commands
      */
-    public CommandResult command( String cmd )
-        throws MongoException {
+    public CommandResult command( String cmd ){
         return command( new BasicDBObject( cmd , Boolean.TRUE ) );
     }
 
@@ -218,9 +322,9 @@ public abstract class DB {
      * @param options query options to use
      * @return result of command from the database
      * @throws MongoException
+     * @dochub commands
      */
-    public CommandResult command( String cmd, int options  )
-        throws MongoException {
+    public CommandResult command( String cmd, int options  ){
         return command( new BasicDBObject( cmd , Boolean.TRUE ), options );
     }
 
@@ -232,8 +336,7 @@ public abstract class DB {
      * @return The command result
      * @throws MongoException
      */
-    public CommandResult doEval( String code , Object ... args )
-        throws MongoException {
+    public CommandResult doEval( String code , Object ... args ){
 
         return command( BasicDBObjectBuilder.start()
                         .add( "$eval" , code )
@@ -250,8 +353,7 @@ public abstract class DB {
      * @return The object
      * @throws MongoException
      */
-    public Object eval( String code , Object ... args )
-        throws MongoException {
+    public Object eval( String code , Object ... args ){
 
         CommandResult res = doEval( code , args );
         res.throwOnError();
@@ -261,6 +363,7 @@ public abstract class DB {
     /**
      * Returns the result of "dbstats" command
      * @return
+     * @throws MongoException
      */
     public CommandResult getStats() {
         return command("dbstats");
@@ -288,8 +391,7 @@ public abstract class DB {
      * @return the names of collections in this database
      * @throws MongoException
      */
-    public Set<String> getCollectionNames()
-        throws MongoException {
+    public Set<String> getCollectionNames(){
 
         DBCollection namespaces = getCollection("system.namespaces");
         if (namespaces == null)
@@ -330,6 +432,7 @@ public abstract class DB {
      * Checks to see if a collection by name %lt;name&gt; exists.
      * @param collectionName The collection to test for existence
      * @return false if no collection by that name exists, true if a match to an existing collection was found
+     * @throws MongoException
      */
     public boolean collectionExists(String collectionName)
     {
@@ -376,8 +479,7 @@ public abstract class DB {
      * @return DBObject with error and status information
      * @throws MongoException
      */
-    public CommandResult getLastError()
-        throws MongoException {
+    public CommandResult getLastError(){
         return command(new BasicDBObject("getlasterror", 1));
     }
 
@@ -387,8 +489,7 @@ public abstract class DB {
      * @return
      * @throws MongoException
      */
-    public CommandResult getLastError( com.massivecraft.mcore.xlib.mongodb.WriteConcern concern )
-        throws MongoException {
+    public CommandResult getLastError( com.massivecraft.mcore.xlib.mongodb.WriteConcern concern ){
         return command( concern.getCommand() );
     }
 
@@ -400,8 +501,7 @@ public abstract class DB {
      * @return The command result
      * @throws MongoException
      */
-    public CommandResult getLastError( int w , int wtimeout , boolean fsync )
-        throws MongoException {
+    public CommandResult getLastError( int w , int wtimeout , boolean fsync ){
         return command( (new com.massivecraft.mcore.xlib.mongodb.WriteConcern( w, wtimeout , fsync )).getCommand() );
     }
 
@@ -452,8 +552,7 @@ public abstract class DB {
      * Drops this database. Removes all data on disk. Use with caution.
      * @throws MongoException
      */
-    public void dropDatabase()
-        throws MongoException {
+    public void dropDatabase(){
 
         CommandResult res = command(new BasicDBObject("dropDatabase", 1));
         res.throwOnError();
@@ -467,102 +566,95 @@ public abstract class DB {
      * @dochub authenticate
      */
     public boolean isAuthenticated() {
-	return ( _username != null );
+        return getAuthenticationCredentials() != null;
     }
 
     /**
-     *  Authenticates to db with the given name and password
+     *  Authenticates to db with the given credentials.  If this method (or {@code authenticateCommand} has already been
+     *  called with the same credentials and the authentication test succeeded, this method will return true.  If this method
+     *  has already been called with different credentials and the authentication test succeeded,
+     *  this method will throw an {@code IllegalStateException}.  If this method has already been called with any credentials
+     *  and the authentication test failed, this method will re-try the authentication test with the
+     *  given credentials.
      *
      * @param username name of user for this database
-     * @param passwd password of user for this database
+     * @param password password of user for this database
      * @return true if authenticated, false otherwise
-     * @throws MongoException
+     * @throws MongoException if authentication failed due to invalid user/pass, or other exceptions like I/O
+     * @throws IllegalStateException if authentiation test has already succeeded with different credentials
+     * @see #authenticateCommand(String, char[])
      * @dochub authenticate
      */
-    public boolean authenticate(String username, char[] passwd )
-        throws MongoException {
-
-        if ( username == null || passwd == null )
-            throw new NullPointerException( "username can't be null" );
-
-        if ( _username != null )
-	    throw new IllegalStateException( "can't call authenticate twice on the same DBObject" );
-
-        String hash = _hash( username , passwd );
-        CommandResult res = _doauth( username , hash.getBytes() );
-        if ( !res.ok())
-            return false;
-        _username = username;
-        _authhash = hash.getBytes();
-        return true;
+    public boolean authenticate(String username, char[] password ){
+        return authenticateCommandHelper(username, password).failure == null;
     }
 
     /**
-     *  Authenticates to db with the given name and password
+     *  Authenticates to db with the given credentials.  If this method (or {@code authenticate} has already been
+     *  called with the same credentials and the authentication test succeeded, this method will return true.  If this method
+     *  has already been called with different credentials and the authentication test succeeded,
+     *  this method will throw an {@code IllegalStateException}.  If this method has already been called with any credentials
+     *  and the authentication test failed, this method will re-try the authentication test with the
+     *  given credentials.
+     *
      *
      * @param username name of user for this database
-     * @param passwd password of user for this database
+     * @param password password of user for this database
      * @return the CommandResult from authenticate command
      * @throws MongoException if authentication failed due to invalid user/pass, or other exceptions like I/O
+     * @throws IllegalStateException if authentiation test has already succeeded with different credentials
+     * @see #authenticate(String, char[])
      * @dochub authenticate
      */
-    public CommandResult authenticateCommand(String username, char[] passwd )
-        throws MongoException {
-
-        if ( username == null || passwd == null )
-            throw new NullPointerException( "username can't be null" );
-
-        if ( _username != null )
-	    throw new IllegalStateException( "can't call authenticate twice on the same DBObject" );
-
-        String hash = _hash( username , passwd );
-        CommandResult res = _doauth( username , hash.getBytes() );
-        res.throwOnError();
-        _username = username;
-        _authhash = hash.getBytes();
-        return res;
+    public synchronized CommandResult authenticateCommand(String username, char[] password ){
+        CommandResultPair commandResultPair = authenticateCommandHelper(username, password);
+        if (commandResultPair.failure != null) {
+            throw commandResultPair.failure;
+        }
+        return commandResultPair.result;
     }
 
-    /*
-    boolean reauth(){
-        if ( _username == null || _authhash == null )
-            throw new IllegalStateException( "no auth info!" );
-        return _doauth( _username , _authhash );
-    }
-    */
+    private CommandResultPair authenticateCommandHelper(String username, char[] password) {
+        MongoCredential credentials =
+                MongoCredential.createMongoCRCredential(username, getName(), password);
+        if (getAuthenticationCredentials() != null) {
+            if (getAuthenticationCredentials().equals(credentials)) {
+                if (authenticationTestCommandResult != null) {
+                    return new CommandResultPair(authenticationTestCommandResult);
+                }
+            } else {
+                throw new IllegalStateException("can't authenticate twice on the same database");
+            }
+        }
 
-    DBObject _authCommand( String nonce ){
-        if ( _username == null || _authhash == null )
-            throw new IllegalStateException( "no auth info!" );
-
-        return _authCommand( nonce , _username , _authhash );
-    }
-
-    static DBObject _authCommand( String nonce , String username , byte[] hash ){
-        String key = nonce + username + new String( hash );
-
-        BasicDBObject cmd = new BasicDBObject();
-
-        cmd.put("authenticate", 1);
-        cmd.put("user", username);
-        cmd.put("nonce", nonce);
-        cmd.put("key", Util.hexMD5(key.getBytes()));
-
-        return cmd;
+        try {
+            authenticationTestCommandResult = doAuthenticate(credentials);
+            return new CommandResultPair(authenticationTestCommandResult);
+        } catch (CommandFailureException commandFailureException) {
+            return new CommandResultPair(commandFailureException);
+        }
     }
 
-    private CommandResult _doauth( String username , byte[] hash ){
-        CommandResult res = command(new BasicDBObject("getnonce", 1));
-        res.throwOnError();
+    class CommandResultPair {
+        CommandResult result;
+        CommandFailureException failure;
 
-        DBObject cmd = _authCommand( res.getString( "nonce" ) , username , hash );
-        return command(cmd);
+        public CommandResultPair(final CommandResult result) {
+            this.result = result;
+        }
+
+        public CommandResultPair(final CommandFailureException failure) {
+            this.failure = failure;
+        }
     }
+
+    abstract CommandResult doAuthenticate(MongoCredential credentials);
 
     /**
      * Adds a new user for this db
      * @param username
      * @param passwd
+     * @throws MongoException
      */
     public WriteResult addUser( String username , char[] passwd ){
         return addUser(username, passwd, false);
@@ -573,6 +665,7 @@ public abstract class DB {
      * @param username
      * @param passwd
      * @param readOnly if true, user will only be able to read
+     * @throws MongoException
      */
     public WriteResult addUser( String username , char[] passwd, boolean readOnly ){
         DBCollection c = getCollection( "system.users" );
@@ -587,6 +680,7 @@ public abstract class DB {
     /**
      * Removes a user for this db
      * @param username
+     * @throws MongoException
      */
     public WriteResult removeUser( String username ){
         DBCollection c = getCollection( "system.users" );
@@ -629,8 +723,7 @@ public abstract class DB {
      * @return DBObject with error and status information
      * @throws MongoException
      */
-    public CommandResult getPreviousError()
-        throws MongoException {
+    public CommandResult getPreviousError(){
         return command(new BasicDBObject("getpreverror", 1));
     }
 
@@ -639,8 +732,7 @@ public abstract class DB {
      * Used to clear all errors such that {@link DB#getPreviousError()} will return no error.
      * @throws MongoException
      */
-    public void resetError()
-        throws MongoException {
+    public void resetError(){
         command(new BasicDBObject("reseterror", 1));
     }
 
@@ -648,8 +740,7 @@ public abstract class DB {
      * For testing purposes only - this method forces an error to help test error handling
      * @throws MongoException
      */
-    public void forceError()
-        throws MongoException {
+    public void forceError(){
         command(new BasicDBObject("forceerror", 1));
     }
 
@@ -673,8 +764,8 @@ public abstract class DB {
     /**
      * Makes it possible to execute "read" queries on a slave node
      *
-     * @deprecated Replaced with ReadPreference.SECONDARY
-     * @see com.massivecraft.mcore.xlib.mongodb.ReadPreference.SECONDARY
+     * @deprecated Replaced with {@code ReadPreference.secondaryPreferred()}
+     * @see ReadPreference#secondaryPreferred()
      */
     @Deprecated
     public void slaveOk(){
@@ -712,8 +803,11 @@ public abstract class DB {
         return _options.get();
     }
 
-    public abstract void cleanCursors( boolean force ) throws MongoException;
+    public abstract void cleanCursors( boolean force );
 
+    MongoCredential getAuthenticationCredentials() {
+        return getMongo().getAuthority().getCredentialsStore().get(getName());
+    }
 
     final Mongo _mongo;
     final String _name;
@@ -723,7 +817,7 @@ public abstract class DB {
     private com.massivecraft.mcore.xlib.mongodb.ReadPreference _readPref;
     final Bytes.OptionHolder _options;
 
-    String _username;
-    byte[] _authhash = null;
-
+    // cached authentication command result, to return in case of multiple calls to authenticateCommand with the
+    // same credentials
+    private volatile CommandResult authenticationTestCommandResult;
 }

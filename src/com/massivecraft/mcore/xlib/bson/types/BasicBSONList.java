@@ -48,6 +48,7 @@ import java.util.*;
  * </pre></blockquote>
  * </p>
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class BasicBSONList extends ArrayList<Object> implements BSONObject {
 
     private static final long serialVersionUID = -4415279469780082174L;
@@ -80,7 +81,6 @@ public class BasicBSONList extends ArrayList<Object> implements BSONObject {
         return v;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void putAll( Map m ){
     	for ( Map.Entry entry : (Set<Map.Entry>)m.entrySet() ){
             put( entry.getKey().toString() , entry.getValue() );
@@ -137,7 +137,6 @@ public class BasicBSONList extends ArrayList<Object> implements BSONObject {
       return new StringRangeSet(size());
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Map toMap() {
         Map m = new HashMap();
         Iterator i = this.keySet().iterator();

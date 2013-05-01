@@ -15,10 +15,10 @@
  */
 package com.massivecraft.mcore.xlib.mongodb;
 
+import com.massivecraft.mcore.xlib.bson.BasicBSONDecoder;
+
 import java.io.IOException;
 import java.io.InputStream;
-
-import com.massivecraft.mcore.xlib.bson.BasicBSONDecoder;
 
 /**
  *
@@ -30,6 +30,11 @@ public class DefaultDBDecoder extends BasicBSONDecoder implements DBDecoder {
         @Override
         public DBDecoder create( ){
             return new DefaultDBDecoder( );
+        }
+
+        @Override
+        public String toString() {
+            return "DefaultDBDecoder.DefaultFactory";
         }
     }
 
@@ -57,4 +62,8 @@ public class DefaultDBDecoder extends BasicBSONDecoder implements DBDecoder {
         return (DBObject) cbk.get();
     }
 
+    @Override
+    public String toString() {
+        return "DefaultDBDecoder";
+    }
 }

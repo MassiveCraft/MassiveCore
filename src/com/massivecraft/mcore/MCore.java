@@ -14,7 +14,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.mcore.adapter.InventoryAdapter;
 import com.massivecraft.mcore.adapter.ItemStackAdapter;
-import com.massivecraft.mcore.adapter.MongoURIAdapter;
 import com.massivecraft.mcore.adapter.ObjectIdAdapter;
 import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
@@ -28,6 +27,7 @@ import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.Db;
+import com.massivecraft.mcore.store.ExamineThread;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.usys.AspectColl;
@@ -40,7 +40,6 @@ import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
-import com.massivecraft.mcore.xlib.mongodb.MongoURI;
 
 public class MCore extends MPlugin
 {
@@ -72,7 +71,6 @@ public class MCore extends MPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
-		.registerTypeAdapter(MongoURI.class, MongoURIAdapter.get())
 		.registerTypeAdapter(ObjectId.class, ObjectIdAdapter.get())
 		.registerTypeAdapter(UUID.class, UUIDAdapter.get())
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
@@ -120,6 +118,9 @@ public class MCore extends MPlugin
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		// Note this one must be before preEnable. dooh.
 		Coll.instances.clear();
+		
+		// Start the examine thread
+		ExamineThread.get().start();
 		
 		if ( ! preEnable()) return;
 		
@@ -215,6 +216,13 @@ public class MCore extends MPlugin
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		super.onDisable();
+		ExamineThread.get().interrupt();
 	}
 	
 }

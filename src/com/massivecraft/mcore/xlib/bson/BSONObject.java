@@ -24,6 +24,7 @@ import java.util.Set;
 /**
  * A key-value map that can be saved to the database.
  */
+@SuppressWarnings({"rawtypes"})
 public interface BSONObject {
 
     /**
@@ -44,8 +45,7 @@ public interface BSONObject {
      * Sets all key/value pairs from a map into this object
      * @param m the map
      */
-    @SuppressWarnings("rawtypes")
-	public void putAll( Map m );
+    public void putAll( Map m );
 
     /**
      * Gets a field from this object by a given name.
@@ -58,8 +58,7 @@ public interface BSONObject {
      * Returns a map representing this BSONObject.
      * @return the map
      */
-    @SuppressWarnings("rawtypes")
-	public Map toMap();
+    public Map toMap();
 
     /**
      * Removes a field with a given name from this object.

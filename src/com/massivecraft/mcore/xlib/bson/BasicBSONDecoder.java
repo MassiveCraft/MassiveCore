@@ -26,6 +26,7 @@ import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 /**
  * Basic implementation of BSONDecoder interface that creates BasicBSONObject instances
  */
+@SuppressWarnings({"unused"})
 public class BasicBSONDecoder implements BSONDecoder {
     public BSONObject readObject( byte[] b ){
         try {
@@ -505,7 +506,6 @@ public class BasicBSONDecoder implements BSONDecoder {
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
-    @SuppressWarnings("unused")
 	private static final boolean _isAscii( final byte b ){
         return b >=0 && b <= 127;
     }

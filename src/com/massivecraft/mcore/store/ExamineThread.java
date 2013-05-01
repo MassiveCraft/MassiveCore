@@ -1,31 +1,56 @@
 package com.massivecraft.mcore.store;
 
-public class ExamineThread<E> extends Thread
+public class ExamineThread extends Thread
 {
-	protected Coll<E> coll; 
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
 	
-	public ExamineThread(Coll<E> coll)
+	private static ExamineThread i = null;
+	public static ExamineThread get()
 	{
-		this.coll = coll;
-		this.setName("ExamineThread for "+coll.getName());
+		if (i == null || !i.isAlive()) i = new ExamineThread();
+		return i;
 	}
 	
-	// TODO: Implement logging and/or auto adjusting system for how long the sleep should be?
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public ExamineThread()
+	{
+		this.setName("MStore ExamineThread");
+	}
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private long lastDurationMillis = 0;
+	public long getLastDurationMillis() { return this.lastDurationMillis; }
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void run()
 	{
-		while(true)
+		while (true)
 		{
 			try
 			{
-				//long before = System.currentTimeMillis();
+				long before = System.currentTimeMillis();
+				for (Coll<?> coll: Coll.instances)
+				{
+					coll.findSuspects();
+				}
+				long after = System.currentTimeMillis();
+				long duration = after-before;
+				this.lastDurationMillis = duration;
 				
-				coll.findSuspects();
-				
-				//long after = System.currentTimeMillis();
-				
-				//coll.mplugin().log(this.getName()+ " complete. Took "+ (after-before) +"ms.");
+				//String message = Txt.parse("<i>ExamineThread iteration took <h>%dms<i>.", after-before);
+				//MCore.get().log(message);
 				
 				Thread.sleep(5000);
 			}

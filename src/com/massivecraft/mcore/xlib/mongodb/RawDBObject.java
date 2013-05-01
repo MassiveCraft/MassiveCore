@@ -55,6 +55,7 @@ import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 /**
  * This object wraps the binary object format ("BSON") used for the transport of serialized objects to / from the Mongo database.
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class RawDBObject implements DBObject {
 
     RawDBObject( ByteBuffer buf ){
@@ -75,7 +76,6 @@ public class RawDBObject implements DBObject {
         return e.getObject();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Map toMap() {
         Map m = new HashMap();
         Iterator i = this.keySet().iterator();
@@ -94,8 +94,7 @@ public class RawDBObject implements DBObject {
         throw new RuntimeException( "read only" );
     }
     
-    @SuppressWarnings("rawtypes")
-	public void putAll( Map m ){
+    public void putAll( Map m ){
         throw new RuntimeException( "read only" );
     }
 

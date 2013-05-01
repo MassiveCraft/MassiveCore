@@ -140,8 +140,6 @@ public interface CollInterface<E>
 	public Runnable getTickTask();
 	public void onTick();
 	
-	public Thread examineThread();
-	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //

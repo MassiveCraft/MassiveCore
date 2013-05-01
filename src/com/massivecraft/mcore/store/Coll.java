@@ -16,7 +16,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.MPlugin;
-import com.massivecraft.mcore.NaturalOrderComparator;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.store.accessor.Accessor;
 import com.massivecraft.mcore.store.idstrategy.IdStrategy;
@@ -599,9 +598,6 @@ public class Coll<E> implements CollInterface<E>
 		this.syncSuspects();
 	}
 	
-	protected ExamineThread<E> examineThread;
-	@Override public Thread examineThread() { return this.examineThread; }
-	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -636,11 +632,6 @@ public class Coll<E> implements CollInterface<E>
 			throw new IllegalArgumentException("UNKNOWN: The id stragegy \""+idStrategyName+"\" is unknown to the driver \""+db.getDriver().getName()+"\".");
 		}
 		this.collDriverObject = db.getCollDriverObject(this);
-		
-		if (idComparator == null)
-		{
-			idComparator = NaturalOrderComparator.get();
-		}
 		
 		// STORAGE
 		this.id2entity = new ConcurrentSkipListMap<String, E>(idComparator);
@@ -678,8 +669,6 @@ public class Coll<E> implements CollInterface<E>
 	{
 		if (this.inited()) return;
 		this.syncAll();
-		this.examineThread = new ExamineThread<E>(this);
-		this.examineThread.start();
 		instances.add(this);
 	}
 	

@@ -107,8 +107,8 @@ public class DriverGson extends DriverAbstract<JsonElement>
 		
 		// Scan the collection folder for .json files
 		File collDir = getCollDir(coll);
-		if ( ! collDir.isDirectory()) return ret;
-		for(File file : collDir.listFiles(JsonFileFilter.get()))
+		if (!collDir.isDirectory()) return ret;
+		for (File file : collDir.listFiles(JsonFileFilter.get()))
 		{
 			ret.put(idFromFile(file), file.lastModified());
 		}

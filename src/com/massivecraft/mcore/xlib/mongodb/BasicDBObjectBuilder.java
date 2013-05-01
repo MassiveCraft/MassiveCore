@@ -27,6 +27,7 @@ import java.util.Map;
  * example:
  *  BasicDBObjectBuilder.start().add( "name" , "eliot" ).add( "number" , 17 ).get()
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class BasicDBObjectBuilder {
 
     /**
@@ -59,7 +60,6 @@ public class BasicDBObjectBuilder {
      * @param m map to use
      * @return the new builder
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static BasicDBObjectBuilder start(Map m){
         BasicDBObjectBuilder b = new BasicDBObjectBuilder();
         Iterator<Map.Entry> i = m.entrySet().iterator();

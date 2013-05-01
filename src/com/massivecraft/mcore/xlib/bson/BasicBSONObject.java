@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
  * obj.put( "foo", "bar" );
  * </pre></blockquote>
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class BasicBSONObject extends LinkedHashMap<String,Object> implements BSONObject {
 
     private static final long serialVersionUID = -4415279469780082174L;
@@ -63,7 +64,6 @@ public class BasicBSONObject extends LinkedHashMap<String,Object> implements BSO
      * Creates a DBObject from a map.
      * @param m map to convert
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public BasicBSONObject(Map m) {
         super(m);
     }
@@ -72,8 +72,7 @@ public class BasicBSONObject extends LinkedHashMap<String,Object> implements BSO
      * Converts a DBObject to a map.
      * @return the DBObject
      */
-    @SuppressWarnings("rawtypes")
-	public Map toMap() {
+    public Map toMap() {
         return new LinkedHashMap<String,Object>(this);
     }
 
@@ -282,7 +281,6 @@ public class BasicBSONObject extends LinkedHashMap<String,Object> implements BSO
         return super.put( key , val );
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void putAll( Map m ){
         for ( Map.Entry entry : (Set<Map.Entry>)m.entrySet() ){
             put( entry.getKey().toString() , entry.getValue() );

@@ -18,7 +18,6 @@
 
 package com.massivecraft.mcore.xlib.bson.io;
 
-
 import java.io.*;
 import java.util.*;
 

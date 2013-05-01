@@ -12,9 +12,9 @@ import com.massivecraft.mcore.xlib.mongodb.util.JSON;
  * @author scotthernandez
  *
  */
+@SuppressWarnings({"unused"})
 public class LazyDBList extends LazyBSONList implements DBObject {
-    @SuppressWarnings("unused")
-	private static final long serialVersionUID = -4415279469780082174L;
+    private static final long serialVersionUID = -4415279469780082174L;
 
 	public LazyDBList(byte[] data, LazyBSONCallback callback) { super(data, callback); }
 	public LazyDBList(byte[] data, int offset, LazyBSONCallback callback) { super(data, offset, callback); }

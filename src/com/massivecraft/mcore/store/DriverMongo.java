@@ -17,12 +17,13 @@ import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.mcore.xlib.mongodb.DB;
 import com.massivecraft.mcore.xlib.mongodb.DBCollection;
 import com.massivecraft.mcore.xlib.mongodb.DBCursor;
-import com.massivecraft.mcore.xlib.mongodb.MongoURI;
+import com.massivecraft.mcore.xlib.mongodb.MongoClient;
+import com.massivecraft.mcore.xlib.mongodb.MongoClientURI;
 
 public class DriverMongo extends DriverAbstract<BasicDBObject>
 {
 	// -------------------------------------------- //
-	// STATIC
+	// CONSTANTS
 	// -------------------------------------------- //
 	
 	public final static String ID_FIELD = "_id";
@@ -32,6 +33,33 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	public final static BasicDBObject dboKeysId = new BasicDBObject().append(ID_FIELD, 1);
 	public final static BasicDBObject dboKeysMtime = new BasicDBObject().append(MTIME_FIELD, 1);
 	public final static BasicDBObject dboKeysIdandMtime = new BasicDBObject().append(ID_FIELD, 1).append(MTIME_FIELD, 1);
+	
+	
+	//----------------------------------------------//
+	// CONSTRUCT
+	//----------------------------------------------//
+	
+	private DriverMongo()
+	{
+		super("mongodb");
+	}
+	
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	protected static DriverMongo instance;
+	public static DriverMongo get()
+	{
+		return instance;
+	}
+	
+	static
+	{
+		instance = new DriverMongo();
+		instance.registerIdStrategy(IdStrategyOid.get());
+		instance.registerIdStrategy(IdStrategyUuid.get());
+	}
 	
 	// -------------------------------------------- //
 	// IMPLEMENTATION
@@ -184,11 +212,14 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 	
 	protected DB getDbInner(String uri)
 	{
-		MongoURI muri = new MongoURI(uri);
+		MongoClientURI muri = new MongoClientURI(uri);
 		
 		try
 		{
-			DB db = muri.connectDB();
+			// TODO: Create one of these per collection? Really? Perhaps I should cache.
+			MongoClient mongoClient = new MongoClient(muri);
+			
+			DB db = mongoClient.getDB(muri.getDatabase());
 			
 			if (muri.getUsername() == null) return db;
 			
@@ -206,30 +237,5 @@ public class DriverMongo extends DriverAbstract<BasicDBObject>
 			return null;
 		}
 	}
-	
-	//----------------------------------------------//
-	// CONSTRUCTORS
-	//----------------------------------------------//
-	
-	private DriverMongo()
-	{
-		super("mongodb");
-	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	protected static DriverMongo instance;
-	public static DriverMongo get()
-	{
-		return instance;
-	}
-	
-	static
-	{
-		instance = new DriverMongo();
-		instance.registerIdStrategy(IdStrategyOid.get());
-		instance.registerIdStrategy(IdStrategyUuid.get());
-	}
+
 }

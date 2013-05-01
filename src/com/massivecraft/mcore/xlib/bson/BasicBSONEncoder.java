@@ -72,7 +72,7 @@ import com.massivecraft.mcore.xlib.mongodb.DBRefBase;
  * this is meant to be pooled or cached
  * there is some per instance memory for string conversion, etc...
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes", "unused"})
 public class BasicBSONEncoder implements BSONEncoder {
     
     static final boolean DEBUG = false;
@@ -123,7 +123,6 @@ public class BasicBSONEncoder implements BSONEncoder {
     /**
      * this is really for embedded objects
      */
-    @SuppressWarnings("rawtypes")
 	protected int putObject( String name , BSONObject o ){
 
         if ( o == null )
@@ -196,7 +195,6 @@ public class BasicBSONEncoder implements BSONEncoder {
         return _buf.getPosition() - start;
     }
 
-	@SuppressWarnings("rawtypes")
 	protected void _putObjectField( String name , Object val ){
 
         if ( name.equals( "_transientFields" ) )
@@ -287,8 +285,7 @@ public class BasicBSONEncoder implements BSONEncoder {
         _buf.writeInt( sizePos , _buf.getPosition() - sizePos ); 
     }
 	
-    @SuppressWarnings("rawtypes")
-	private void putIterable( String name , Iterable l ){
+    private void putIterable( String name , Iterable l ){
         _put( ARRAY , name );
         final int sizePos = _buf.getPosition();
         _buf.writeInt( 0 );
@@ -304,8 +301,7 @@ public class BasicBSONEncoder implements BSONEncoder {
         _buf.writeInt( sizePos , _buf.getPosition() - sizePos );        
     }
     
-    @SuppressWarnings("rawtypes")
-	private void putMap( String name , Map m ){
+    private void putMap( String name , Map m ){
         _put( OBJECT , name );
         final int sizePos = _buf.getPosition();
         _buf.writeInt( 0 );
@@ -341,8 +337,7 @@ public class BasicBSONEncoder implements BSONEncoder {
         _buf.writeInt( temp , _buf.getPosition() - temp );
     }
 
-    @SuppressWarnings("unused")
-	protected void putCode( String name , Code code ){
+    protected void putCode( String name , Code code ){
         _put( CODE , name );
         int temp = _buf.getPosition();
         _putValueString( code.getCode() );

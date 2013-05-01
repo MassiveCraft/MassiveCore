@@ -68,6 +68,7 @@ public class GridFS {
      * in the given database. Set the preferred WriteConcern on the give DB with DB.setWriteConcern
      * @see com.massivecraft.mcore.xlib.mongodb.WriteConcern
      * @param db database to work with
+     * @throws MongoException 
      */
     public GridFS(DB db) {
         this(db, DEFAULT_BUCKET);
@@ -80,6 +81,7 @@ public class GridFS {
      * @see com.massivecraft.mcore.xlib.mongodb.WriteConcern
      * @param db database to work with
      * @param bucket bucket to use in the given database
+     * @throws MongoException 
      */
     public GridFS(DB db, String bucket) {
         _db = db;
@@ -109,7 +111,7 @@ public class GridFS {
      * @return cursor of file objects
      */
     public DBCursor getFileList(){
-        return _filesCollection.find().sort(new BasicDBObject("filename",1));
+        return getFileList(new BasicDBObject());
     }
 
     /**
@@ -119,7 +121,18 @@ public class GridFS {
      * @return cursor of file objects
      */
     public DBCursor getFileList( DBObject query ){
-        return _filesCollection.find( query ).sort(new BasicDBObject("filename",1));
+        return getFileList(query, new BasicDBObject("filename",1));
+    }
+
+    /**
+     * gets a filtered list of files stored in this gridfs, sorted by param sort
+     *
+     * @param query filter to apply
+     * @param sort sorting to apply
+     * @return cursor of file objects
+     */
+    public DBCursor getFileList( DBObject query, DBObject sort){
+        return _filesCollection.find( query ).sort(sort);
     }
 
 
@@ -131,6 +144,7 @@ public class GridFS {
      * finds one file matching the given id. Equivalent to findOne(id)
      * @param id
      * @return
+     * @throws MongoException 
      */
     public GridFSDBFile find( ObjectId id ){
         return findOne( id );
@@ -139,6 +153,7 @@ public class GridFS {
      * finds one file matching the given id.
      * @param id
      * @return
+     * @throws MongoException 
      */
     public GridFSDBFile findOne( ObjectId id ){
         return findOne( new BasicDBObject( "_id" , id ) );
@@ -147,6 +162,7 @@ public class GridFS {
      * finds one file matching the given filename
      * @param filename
      * @return
+     * @throws MongoException 
      */
     public GridFSDBFile findOne( String filename ){
         return findOne( new BasicDBObject( "filename" , filename ) );
@@ -155,6 +171,7 @@ public class GridFS {
      * finds one file matching the given query
      * @param query
      * @return
+     * @throws MongoException 
      */
     public GridFSDBFile findOne( DBObject query ){
         return _fix( _filesCollection.findOne( query ) );
@@ -164,26 +181,61 @@ public class GridFS {
      * finds a list of files matching the given filename
      * @param filename
      * @return
+     * @throws MongoException 
      */
     public List<GridFSDBFile> find( String filename ){
-        return find( new BasicDBObject( "filename" , filename ) );
+        return find( filename, null );
     }
+
+    /**
+     * finds a list of files matching the given filename
+     * @param filename
+     * @param sort
+     * @return
+     * @throws MongoException
+     */
+    public List<GridFSDBFile> find( String filename , DBObject sort){
+        return find( new BasicDBObject( "filename" , filename ), sort );
+    }
+
     /**
      * finds a list of files matching the given query
      * @param query
      * @return
+     * @throws MongoException
      */
     public List<GridFSDBFile> find( DBObject query ){
+        return find(query, null);
+    }
+
+    /**
+     * finds a list of files matching the given query
+     * @param query
+     * @param sort
+     * @return
+     * @throws MongoException 
+     */
+    public List<GridFSDBFile> find( DBObject query , DBObject sort){
         List<GridFSDBFile> files = new ArrayList<GridFSDBFile>();
 
-        DBCursor c = _filesCollection.find( query );
-        while ( c.hasNext() ){
-            files.add( _fix( c.next() ) );
+        DBCursor c = null;
+        try {
+            c = _filesCollection.find( query );
+            if (sort != null) {
+                c.sort(sort);
+            }
+            while ( c.hasNext() ){
+                files.add( _fix( c.next() ) );
+            }
+        } finally {
+             if (c != null){
+                 c.close();
+             }
         }
         return files;
     }
 
-    private GridFSDBFile _fix( Object o ){
+    protected GridFSDBFile _fix( Object o ){
         if ( o == null )
             return null;
 
@@ -203,6 +255,7 @@ public class GridFS {
     /**
      * removes the file matching the given id
      * @param id
+     * @throws MongoException 
      */
     public void remove( ObjectId id ){
         _filesCollection.remove( new BasicDBObject( "_id" , id ) );
@@ -212,6 +265,7 @@ public class GridFS {
     /**
      * removes all files matching the given filename
      * @param filename
+     * @throws MongoException 
      */
     public void remove( String filename ){
         remove( new BasicDBObject( "filename" , filename ) );
@@ -220,6 +274,7 @@ public class GridFS {
     /**
      * removes all files matching the given query
      * @param query
+     * @throws MongoException 
      */
     public void remove( DBObject query ){
         for ( GridFSDBFile f : find( query ) ){

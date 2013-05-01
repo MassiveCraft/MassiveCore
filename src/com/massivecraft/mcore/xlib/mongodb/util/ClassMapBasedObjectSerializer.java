@@ -31,6 +31,7 @@ import java.util.List;
  *
  * @author breinero
  */
+@SuppressWarnings({"rawtypes"})
 class ClassMapBasedObjectSerializer extends AbstractObjectSerializer {
 
     /**
@@ -41,8 +42,7 @@ class ClassMapBasedObjectSerializer extends AbstractObjectSerializer {
      * This means that it is only necessary assign ObjectSerializers to base classes. @see org.bson.util.ClassMap
      * @param serializer performs the serialization mapping specific to the @param key type
      */
-    @SuppressWarnings("rawtypes")
-	void addObjectSerializer(Class c, ObjectSerializer serializer) {
+    void addObjectSerializer(Class c, ObjectSerializer serializer) {
         _serializers.put(c , serializer);
     }
     

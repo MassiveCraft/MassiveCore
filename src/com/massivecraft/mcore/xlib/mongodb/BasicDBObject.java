@@ -18,11 +18,11 @@
 
 package com.massivecraft.mcore.xlib.mongodb;
 
-import java.util.Map;
-
-
 import com.massivecraft.mcore.xlib.bson.BasicBSONObject;
 import com.massivecraft.mcore.xlib.mongodb.util.JSON;
+
+
+import java.util.Map;
 
 /**
  * a basic implementation of bson object that is mongo specific.
@@ -32,6 +32,7 @@ import com.massivecraft.mcore.xlib.mongodb.util.JSON;
  * obj.put( "foo", "bar" );
  * </pre></blockquote>
  */
+@SuppressWarnings({"rawtypes"})
 public class BasicDBObject extends BasicBSONObject implements DBObject {
 
     private static final long serialVersionUID = -4415279469780082174L;
@@ -63,8 +64,7 @@ public class BasicDBObject extends BasicBSONObject implements DBObject {
      * Creates an object from a map.
      * @param m map to convert
      */
-    @SuppressWarnings("rawtypes")
-	public BasicDBObject(Map m) {
+    public BasicDBObject(Map m) {
         super(m);
     }
 
@@ -106,5 +106,5 @@ public class BasicDBObject extends BasicBSONObject implements DBObject {
         return newobj;
     }
     
-    private boolean _isPartialObject = false;
+    private boolean _isPartialObject;
 }

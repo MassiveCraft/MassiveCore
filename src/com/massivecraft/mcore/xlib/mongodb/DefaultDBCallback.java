@@ -19,19 +19,21 @@
 package com.massivecraft.mcore.xlib.mongodb;
 
 // Bson
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.massivecraft.mcore.xlib.bson.BSONObject;
 import com.massivecraft.mcore.xlib.bson.BasicBSONCallback;
 import com.massivecraft.mcore.xlib.bson.types.ObjectId;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class overrides BasicBSONCallback to implement some extra features specific to the Database.
  * For example DBRef type.
  * @author antoine
  */
+@SuppressWarnings({"rawtypes"})
 public class DefaultDBCallback extends BasicBSONCallback implements DBCallback {
 
     static class DefaultFactory implements DBCallbackFactory {
@@ -59,27 +61,41 @@ public class DefaultDBCallback extends BasicBSONCallback implements DBCallback {
 
     @Override
     public void objectStart(boolean array, String name){
-        _lastName = name;
+        _nameStack.addLast(name);
         super.objectStart( array , name );
     }
 
     @Override
     public Object objectDone(){
         BSONObject o = (BSONObject)super.objectDone();
-        if ( ! ( o instanceof List ) &&
+        String lastName = null;
+        if ( _nameStack.size() > 0 ){
+            lastName = _nameStack.removeLast();
+        }
+        if ( ! ( o instanceof List ) && lastName != null &&
              o.containsField( "$ref" ) &&
              o.containsField( "$id" ) ){
-            return cur().put( _lastName , new DBRef( _db, o ) );
+            return cur().put(lastName, new DBRef( _db, o ) );
         }
 
         return o;
     }
 
+    /**
+     * @return
+     * @throws MongoException
+     */
     @Override
     public BSONObject create(){
         return _create( null );
     }
 
+    /**
+     * @param array
+     * @param path
+     * @return
+     * @throws MongoException
+     */
     @Override
     public BSONObject create( boolean array , List<String> path ){
         if ( array )
@@ -87,8 +103,7 @@ public class DefaultDBCallback extends BasicBSONCallback implements DBCallback {
         return _create( path );
     }
 
-    @SuppressWarnings("rawtypes")
-	private DBObject _create( List<String> path ){
+    private DBObject _create( List<String> path ){
 
         Class c = null;
 
@@ -131,11 +146,11 @@ public class DefaultDBCallback extends BasicBSONCallback implements DBCallback {
 
     @Override
     public void reset(){
-        _lastName = null;
+        _nameStack = new LinkedList<String>();
         super.reset();
     }
 
-    private String _lastName;
+    private LinkedList<String> _nameStack;
     final DBCollection _collection;
     final DB _db;
     static final Logger LOGGER = Logger.getLogger( "com.mongo.DECODING" );

@@ -18,6 +18,16 @@
 
 package com.massivecraft.mcore.xlib.mongodb.util;
 
+import com.massivecraft.mcore.xlib.bson.BSON;
+import com.massivecraft.mcore.xlib.bson.BSONObject;
+import com.massivecraft.mcore.xlib.bson.BasicBSONCallback;
+import com.massivecraft.mcore.xlib.bson.types.*;
+import com.massivecraft.mcore.xlib.mongodb.BasicDBList;
+import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
+import com.massivecraft.mcore.xlib.mongodb.DBObject;
+import com.massivecraft.mcore.xlib.mongodb.DBRef;
+
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,136 +36,92 @@ import java.util.SimpleTimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-
-import com.massivecraft.mcore.xlib.bson.BSON;
-import com.massivecraft.mcore.xlib.bson.BSONObject;
-import com.massivecraft.mcore.xlib.bson.BasicBSONCallback;
-import com.massivecraft.mcore.xlib.bson.types.BSONTimestamp;
-import com.massivecraft.mcore.xlib.bson.types.Code;
-import com.massivecraft.mcore.xlib.bson.types.CodeWScope;
-import com.massivecraft.mcore.xlib.bson.types.MaxKey;
-import com.massivecraft.mcore.xlib.bson.types.MinKey;
-import com.massivecraft.mcore.xlib.bson.types.ObjectId;
-import com.massivecraft.mcore.xlib.mongodb.BasicDBList;
-import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
-import com.massivecraft.mcore.xlib.mongodb.DBObject;
-import com.massivecraft.mcore.xlib.mongodb.DBRef;
-
 public class JSONCallback extends BasicBSONCallback {
-    
+
     @Override
-    public BSONObject create(){
+    public BSONObject create() {
         return new BasicDBObject();
     }
-    
+
     @Override
     protected BSONObject createList() {
         return new BasicDBList();
     }
-    
-    public void objectStart(boolean array, String name){
+
+    public void objectStart(boolean array, String name) {
         _lastArray = array;
-        super.objectStart( array , name );
+        super.objectStart(array, name);
     }
 
-    public Object objectDone(){
+    public Object objectDone() {
         String name = curName();
         Object o = super.objectDone();
-	BSONObject b = (BSONObject)o;
+        if (_lastArray) {
+            return o;
+        }
+        BSONObject b = (BSONObject) o;
 
         // override the object if it's a special type
-        if (!_lastArray) {
-            if (b.containsField("$oid")) {
-                o = new ObjectId((String) b.get("$oid"));
-                if (!isStackEmpty()) {
-                    gotObjectId(name, (ObjectId) o);
-                } else {
-                    setRoot(o);
-                }
-            } else if (b.containsField("$date")) {
+        if (b.containsField("$oid")) {
+            o = new ObjectId((String) b.get("$oid"));
+        } else if (b.containsField("$date")) {
+            if (b.get("$date") instanceof Number) {
+                o = new Date(((Number) b.get("$date")).longValue());
+            } else {
+                SimpleDateFormat format = new SimpleDateFormat(_msDateFormat);
+                format.setCalendar(new GregorianCalendar(new SimpleTimeZone(0, "GMT")));
+                o = format.parse(b.get("$date").toString(), new ParsePosition(0));
 
-                if(b.get("$date") instanceof Number){
-                    o = new Date(((Number)b.get("$date")).longValue());
-                }else {
-                    SimpleDateFormat format = new SimpleDateFormat(_msDateFormat);
+                if (o == null) {
+                    // try older format with no ms
+                    format = new SimpleDateFormat(_secDateFormat);
                     format.setCalendar(new GregorianCalendar(new SimpleTimeZone(0, "GMT")));
                     o = format.parse(b.get("$date").toString(), new ParsePosition(0));
+                }
+            }
+        } else if (b.containsField("$regex")) {
+            o = Pattern.compile((String) b.get("$regex"),
+                    BSON.regexFlags((String) b.get("$options")));
+        } else if (b.containsField("$ts")) { //Legacy timestamp format
+            Integer ts = ((Number) b.get("$ts")).intValue();
+            Integer inc = ((Number) b.get("$inc")).intValue();
+            o = new BSONTimestamp(ts, inc);
+        } else if (b.containsField("$timestamp")) {
+            BSONObject tsObject = (BSONObject) b.get("$timestamp");
+            Integer ts = ((Number) tsObject.get("t")).intValue();
+            Integer inc = ((Number) tsObject.get("i")).intValue();
+            o = new BSONTimestamp(ts, inc);
+        } else if (b.containsField("$code")) {
+            if (b.containsField("$scope")) {
+                o = new CodeWScope((String) b.get("$code"), (DBObject) b.get("$scope"));
+            } else {
+                o = new Code((String) b.get("$code"));
+            }
+        } else if (b.containsField("$ref")) {
+            o = new DBRef(null, (String) b.get("$ref"), b.get("$id"));
+        } else if (b.containsField("$minKey")) {
+            o = new MinKey();
+        } else if (b.containsField("$maxKey")) {
+            o = new MaxKey();
+        } else if (b.containsField("$uuid")) {
+            o = UUID.fromString((String) b.get("$uuid"));
+        } else if (b.containsField("$binary")) {
+            int type = (Integer) b.get("$type");
+            byte[] bytes = (new Base64Codec()).decode((String) b.get("$binary"));
+            o = new Binary((byte) type, bytes);
+        }
 
-                    if (o == null) {
-                        // try older format with no ms
-                        format = new SimpleDateFormat(_secDateFormat);
-                        format.setCalendar(new GregorianCalendar(new SimpleTimeZone(0, "GMT")));
-                        o = format.parse(b.get("$date").toString(), new ParsePosition(0));
-                    }
-                }
-                if (!isStackEmpty()) {
-                    cur().put(name, o);
-                } else {
-                    setRoot(o);
-                }
-            } else if ( b.containsField( "$regex" ) ) {
-		o = Pattern.compile( (String)b.get( "$regex" ), 
-				     BSON.regexFlags( (String)b.get( "$options" )) );
-		if (!isStackEmpty()) {
-		    cur().put( name, o );
-		} else {
-		    setRoot(o);
-		}
-	    } else if ( b.containsField( "$ts" ) ) {
-                Long ts = ((Number)b.get("$ts")).longValue();
-                Long inc = ((Number)b.get("$inc")).longValue();
-		o = new BSONTimestamp(ts.intValue(), inc.intValue());
-		if (!isStackEmpty()) {
-		    cur().put( name, o );
-		} else {
-		    setRoot(o);
-		}
-	    } else if ( b.containsField( "$code" ) ) {
-                if (b.containsField("$scope")) {
-                    o = new CodeWScope((String)b.get("$code"), (DBObject)b.get("$scope"));
-                } else {
-                    o = new Code((String)b.get("$code"));
-                }
-		if (!isStackEmpty()) {
-		    cur().put( name, o );
-		} else {
-		    setRoot(o);
-		}
-	    } else if ( b.containsField( "$ref" ) ) {
-                o = new DBRef(null, (String)b.get("$ref"), b.get("$id"));
-		if (!isStackEmpty()) {
-		    cur().put( name, o );
-		} else {
-		    setRoot(o);
-		}
-	    } else if ( b.containsField( "$minKey" ) ) {
-                o = new MinKey();
-		if (!isStackEmpty()) {
-		    cur().put( name, o );
-		} else {
-		    setRoot(o);
-		}
-	    } else if ( b.containsField( "$maxKey" ) ) {
-                o = new MaxKey();
-		if (!isStackEmpty()) {
-		    cur().put( name, o );
-		} else {
-		    setRoot(o);
-		}
-	    } else if ( b.containsField( "$uuid" ) ) {
-                o = UUID.fromString((String)b.get("$uuid"));
-		if (!isStackEmpty()) {
-		    cur().put( name, o );
-		} else {
-		    setRoot(o);
-		}
-	    }
-	}
+        if (!isStackEmpty()) {
+            _put(name, o);
+        } else {
+            o = !BSON.hasDecodeHooks() ? o : BSON.applyDecodingHooks( o );
+            setRoot(o);
+        }
         return o;
     }
-    
+
     private boolean _lastArray = false;
-    
+
     public static final String _msDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String _secDateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 }

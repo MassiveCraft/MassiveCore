@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import com.massivecraft.mcore.xlib.bson.util.ClassMap;
 
+@SuppressWarnings({"rawtypes"})
 public class BSON {
 
     static final Logger LOGGER = Logger.getLogger( "org.bson.BSON" );
@@ -173,8 +174,7 @@ public class BSON {
 
     public static boolean hasDecodeHooks() { return _decodeHooks; }
 
-    @SuppressWarnings("rawtypes")
-	public static void addEncodingHook( Class c , Transformer t ){
+    public static void addEncodingHook( Class c , Transformer t ){
         _encodeHooks = true;
         List<Transformer> l = _encodingHooks.get( c );
         if ( l == null ){
@@ -184,8 +184,7 @@ public class BSON {
         l.add( t );
     }
 
-    @SuppressWarnings("rawtypes")
-	public static void addDecodingHook( Class c , Transformer t ){
+    public static void addDecodingHook( Class c , Transformer t ){
         _decodeHooks = true;
         List<Transformer> l = _decodingHooks.get( c );
         if ( l == null ){
@@ -223,8 +222,7 @@ public class BSON {
      * Returns the encoding hook(s) associated with the specified class
      *
      */
-    @SuppressWarnings("rawtypes")
-	public static List<Transformer> getEncodingHooks( Class c ){
+    public static List<Transformer> getEncodingHooks( Class c ){
         return _encodingHooks.get( c );
     }
 
@@ -239,24 +237,21 @@ public class BSON {
     /**
      * Remove all encoding hooks for a specific class.
      */
-    @SuppressWarnings("rawtypes")
-	public static void removeEncodingHooks( Class c ){
+    public static void removeEncodingHooks( Class c ){
         _encodingHooks.remove( c );
     }
 
     /**
      * Remove a specific encoding hook for a specific class.
      */
-    @SuppressWarnings("rawtypes")
-	public static void removeEncodingHook( Class c , Transformer t ){
+    public static void removeEncodingHook( Class c , Transformer t ){
         getEncodingHooks( c ).remove( t );
     }
 
    /**
      * Returns the decoding hook(s) associated with the specific class
      */
-    @SuppressWarnings("rawtypes")
-	public static List<Transformer> getDecodingHooks( Class c ){
+    public static List<Transformer> getDecodingHooks( Class c ){
         return _decodingHooks.get( c );
     }
 
@@ -271,16 +266,14 @@ public class BSON {
     /**
      * Remove all decoding hooks for a specific class.
      */
-    @SuppressWarnings("rawtypes")
-	public static void removeDecodingHooks( Class c ){
+    public static void removeDecodingHooks( Class c ){
         _decodingHooks.remove( c );
     }
 
     /**
      * Remove a specific encoding hook for a specific class.
      */
-    @SuppressWarnings("rawtypes")
-	public static void removeDecodingHook( Class c , Transformer t ){
+    public static void removeDecodingHook( Class c , Transformer t ){
         getDecodingHooks( c ).remove( t );
     }
 

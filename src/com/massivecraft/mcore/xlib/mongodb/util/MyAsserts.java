@@ -88,6 +88,11 @@ public class MyAsserts {
 	_assertEquals( a , b == null ? null : b.toString() );
     }
 
+    public static void assertSame(Object a, Object b) {
+        if ( a != b )
+            throw new MyAssert( a + " != " + b );
+    }
+
     public static void assertEquals( Object a , Object b ){
 	_assertEquals( a , b );
     }
@@ -113,6 +118,13 @@ public class MyAsserts {
     }
 
     public static void assertArrayEquals(byte[] expected, byte[] result) {
+        if (Arrays.equals(expected, result))
+            return;
+
+        throw new MyAssert("These arrays are different, but they might be big so not printing them here");
+    }
+
+    public static void assertArrayEquals(char[] expected, char[] result) {
         if (Arrays.equals(expected, result))
             return;
 
