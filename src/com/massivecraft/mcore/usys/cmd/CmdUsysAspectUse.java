@@ -2,7 +2,7 @@ package com.massivecraft.mcore.usys.cmd;
 
 import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.Multiverse;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARAspect;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
@@ -16,7 +16,7 @@ public class CmdUsysAspectUse extends MCommand
 		this.addRequiredArg("aspect");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_ASPECT_USE.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_ASPECT_USE.node));
 	}
 	
 	@Override

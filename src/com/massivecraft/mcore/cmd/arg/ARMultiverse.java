@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.MultiverseColl;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 
 public class ARMultiverse extends ARAbstractSelect<Multiverse>
 {
@@ -36,7 +36,7 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 	@Override
 	public boolean canList(CommandSender sender)
 	{
-		return Perm.CMD_USYS_MULTIVERSE_LIST.has(sender, false);
+		return MCorePerm.CMD_USYS_MULTIVERSE_LIST.has(sender, false);
 	}
 
 	@Override

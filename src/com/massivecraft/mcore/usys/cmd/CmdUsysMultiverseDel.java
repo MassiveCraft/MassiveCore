@@ -2,7 +2,7 @@ package com.massivecraft.mcore.usys.cmd;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.Multiverse;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -14,7 +14,7 @@ public class CmdUsysMultiverseDel extends MCommand
 		this.addAliases("d", "del");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_MULTIVERSE_DEL.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_MULTIVERSE_DEL.node));
 	}
 	
 	@Override

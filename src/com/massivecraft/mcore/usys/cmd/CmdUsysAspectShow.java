@@ -1,7 +1,7 @@
 package com.massivecraft.mcore.usys.cmd;
 
 import com.massivecraft.mcore.Aspect;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARAspect;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -14,7 +14,7 @@ public class CmdUsysAspectShow extends MCommand
 		this.addAliases("s", "show");
 		this.addRequiredArg("aspect");
 		
-		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_ASPECT_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_ASPECT_SHOW.node));
 	}
 	
 	@Override

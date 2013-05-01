@@ -1,7 +1,7 @@
 package com.massivecraft.mcore.usys.cmd;
 
 import com.massivecraft.mcore.Multiverse;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -14,7 +14,7 @@ public class CmdUsysUniverseNew extends MCommand
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_UNIVERSE_NEW.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_UNIVERSE_NEW.node));
 	}
 	
 	@Override

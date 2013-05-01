@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.AspectColl;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 
 public class ARAspect extends ARAbstractSelect<Aspect>
 {
@@ -36,7 +36,7 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	@Override
 	public boolean canList(CommandSender sender)
 	{
-		return Perm.CMD_USYS_ASPECT_LIST.has(sender, false);
+		return MCorePerm.CMD_USYS_ASPECT_LIST.has(sender, false);
 	}
 
 	@Override

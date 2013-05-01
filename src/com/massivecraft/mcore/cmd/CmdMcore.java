@@ -2,7 +2,7 @@ package com.massivecraft.mcore.cmd;
 
 import com.massivecraft.mcore.ConfServer;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
 public class CmdMcore extends MCommand
@@ -12,7 +12,7 @@ public class CmdMcore extends MCommand
 	public CmdMcore()
 	{
 		this.addAliases(ConfServer.getCmdAliases(MCORE));
-		this.addRequirements(ReqHasPerm.get(Perm.CMD_MCORE.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE.node));
 	}
 	
 	@Override

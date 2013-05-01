@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.AspectColl;
-import com.massivecraft.mcore.Perm;
+import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -18,7 +18,7 @@ public class CmdUsysAspectList extends MCommand
 		this.addAliases("l", "list");
 		this.addOptionalArg("page", "1");
 		
-		this.addRequirements(ReqHasPerm.get(Perm.CMD_USYS_ASPECT_LIST.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_ASPECT_LIST.node));
 	}
 	
 	@Override

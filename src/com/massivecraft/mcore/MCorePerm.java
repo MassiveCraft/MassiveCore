@@ -4,7 +4,7 @@ import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.mcore.util.PermUtil;
 
-public enum Perm
+public enum MCorePerm
 {
 	// -------------------------------------------- //
 	// ENUM
@@ -41,7 +41,7 @@ public enum Perm
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	Perm(final String permissionNode)
+	MCorePerm(final String permissionNode)
 	{
 		this.node = "mcore."+permissionNode;
 	}
