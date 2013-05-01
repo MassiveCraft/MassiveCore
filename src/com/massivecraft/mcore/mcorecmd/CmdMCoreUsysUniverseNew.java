@@ -1,20 +1,21 @@
 package com.massivecraft.mcore.mcorecmd;
 
+import java.util.List;
+
 import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.MCorePerm;
-import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
-public class CmdUsysUniverseNew extends MCommand
+public class CmdMCoreUsysUniverseNew extends MCoreCommand
 {
-	public CmdUsysUniverseNew()
+	public CmdMCoreUsysUniverseNew(List<String> aliases)
 	{
-		this.addAliases("n", "new");
+		super(aliases);
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_UNIVERSE_NEW.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_UNIVERSE_NEW.node));
 	}
 	
 	@Override

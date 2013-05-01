@@ -1,20 +1,21 @@
 package com.massivecraft.mcore.mcorecmd;
 
+import java.util.List;
+
 import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.MCorePerm;
-import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARAspect;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
-public class CmdUsysAspectShow extends MCommand
+public class CmdMCoreUsysAspectShow extends MCoreCommand
 {
-	public CmdUsysAspectShow()
+	public CmdMCoreUsysAspectShow(List<String> aliases)
 	{
-		this.addAliases("s", "show");
+		super(aliases);
 		this.addRequiredArg("aspect");
 		
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_ASPECT_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_ASPECT_SHOW.node));
 	}
 	
 	@Override

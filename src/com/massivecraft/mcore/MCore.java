@@ -19,8 +19,8 @@ import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.integration.vault.VaultFeatures;
-import com.massivecraft.mcore.mcorecmd.CmdMcore;
-import com.massivecraft.mcore.mcorecmd.CmdUsys;
+import com.massivecraft.mcore.mcorecmd.CmdMCore;
+import com.massivecraft.mcore.mcorecmd.CmdMCoreUsys;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
 import com.massivecraft.mcore.mixin.TeleportMixinCauseEngine;
@@ -83,16 +83,20 @@ public class MCore extends MPlugin
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// Commands
-	public CmdUsys cmdUsys;
-	public CmdMcore cmdMcore;
-	
 	// Aspects
 	private Aspect moneyAspect;
 	public Aspect getMoneyAspect() { return this.moneyAspect; }
 	public Multiverse getMoneyMultiverse() { return this.getMoneyAspect().getMultiverse(); }
 	
+	// Commands
+	private CmdMCore outerCmdMCore;
+	public CmdMCore getOuterCmdMCore() { return this.outerCmdMCore; }
+	
+	private CmdMCoreUsys outerCmdMCoreUsys;
+	public CmdMCoreUsys getOuterCmdMCoreUsys() { return this.outerCmdMCoreUsys; }
+	
 	// Runnables
+	// TODO: Make this one a singleton
 	private Runnable collTickTask = new Runnable()
 	{
 		public void run()
@@ -152,11 +156,11 @@ public class MCore extends MPlugin
 		);
 		
 		// Register commands
-		this.cmdUsys = new CmdUsys();
-		this.cmdUsys.register(this, true);
+		this.outerCmdMCore = new CmdMCore(ConfServer.aliasesOuterMCore);
+		this.outerCmdMCore.register(this);
 		
-		this.cmdMcore = new CmdMcore();
-		this.cmdMcore.register(this, true);
+		this.outerCmdMCoreUsys = new CmdMCoreUsys(ConfServer.aliasesOuterMCoreUsys);
+		this.outerCmdMCoreUsys.register(this);
 		
 		// Integration
 		this.integrate(

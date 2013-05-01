@@ -1,12 +1,10 @@
 package com.massivecraft.mcore;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import com.massivecraft.mcore.mcorecmd.CmdMcore;
-import com.massivecraft.mcore.mcorecmd.CmdUsys;
 import com.massivecraft.mcore.util.MUtil;
+
 
 public class ConfServer extends SimpleConfig
 {
@@ -22,23 +20,10 @@ public class ConfServer extends SimpleConfig
 	// FIELDS
 	// -------------------------------------------- //
 	
+	public static String serverid = UUID.randomUUID().toString();
 	public static String dburi = "gson://./mstore";
 	
-	public static String serverid = UUID.randomUUID().toString();
-	
-	public static Map<String, List<String>> cmdaliases = MUtil.map(
-		CmdUsys.USYS, MUtil.list(CmdUsys.USYS),
-		CmdMcore.MCORE, MUtil.list(CmdMcore.MCORE)
-	);
-	public static List<String> getCmdAliases(String name)
-	{
-		List<String> ret = cmdaliases.get(name);
-		if (ret == null)
-		{
-			ret = MUtil.list(name);
-			cmdaliases.put(name, ret);
-			i.save();
-		}
-		return ret;
-	}
+	public static List<String> aliasesOuterMCore = MUtil.list("mcore");
+	public static List<String> aliasesOuterMCoreUsys = MUtil.list("usys");
+
 }

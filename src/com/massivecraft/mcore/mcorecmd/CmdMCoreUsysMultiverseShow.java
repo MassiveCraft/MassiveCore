@@ -7,19 +7,18 @@ import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.MCorePerm;
-import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
-public class CmdUsysMultiverseShow extends MCommand
+public class CmdMCoreUsysMultiverseShow extends MCoreCommand
 {
-	public CmdUsysMultiverseShow()
+	public CmdMCoreUsysMultiverseShow(List<String> aliases)
 	{
-		this.addAliases("s", "show");
+		super(aliases);
 		this.addRequiredArg("multiverse");
 		
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_USYS_MULTIVERSE_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_MULTIVERSE_SHOW.node));
 	}
 	
 	@Override

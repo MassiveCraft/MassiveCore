@@ -6,68 +6,51 @@ permissions:
 # -------------------------------------------- #
 # THE REAL NODES
 # -------------------------------------------- #
-# usys command
-  mcore.cmd.usys: {description: manage the universe system, default: false}
-  mcore.cmd.usys.multiverse: {description: manage multiverses, default: false}
-  mcore.cmd.usys.multiverse.list: {description: list multiverses, default: false}
-  mcore.cmd.usys.multiverse.show: {description: show multiverse, default: false}
-  mcore.cmd.usys.multiverse.new: {description: create new multiverse, default: false}
-  mcore.cmd.usys.multiverse.del: {description: delete multiverse, default: false}
-  mcore.cmd.usys.universe: {description: manage universes, default: false}
-  mcore.cmd.usys.universe.new: {description: create new universe in multiverse, default: false}
-  mcore.cmd.usys.universe.del: {description: delete universe in multiverse, default: false}
-  mcore.cmd.usys.universe.clear: {description: clear universe in multiverse, default: false}
-  mcore.cmd.usys.world: {description: set a worlds universe in a multiverse, default: false}
-  mcore.cmd.usys.aspect: {description: manage aspects, default: false}
-  mcore.cmd.usys.aspect.list: {description: list aspects, default: false}
-  mcore.cmd.usys.aspect.show: {description: show aspect, default: false}
-  mcore.cmd.usys.aspect.use: {description: set multiverse for aspect, default: false}
-# mcore command
+# cmd
   mcore.cmd.mcore: {description: use the mcore command, default: false}
+  mcore.cmd.mcore.id: {description: see the server id, default: false}
+  mcore.cmd.mcore.version: {description: diplay plugin version, default: false}
+  mcore.cmd.mcore.usys: {description: manage the universe system, default: false}
+  mcore.cmd.mcore.usys.multiverse: {description: manage multiverses, default: false}
+  mcore.cmd.mcore.usys.multiverse.list: {description: list multiverses, default: false}
+  mcore.cmd.mcore.usys.multiverse.show: {description: show multiverse, default: false}
+  mcore.cmd.mcore.usys.multiverse.new: {description: create new multiverse, default: false}
+  mcore.cmd.mcore.usys.multiverse.del: {description: delete multiverse, default: false}
+  mcore.cmd.mcore.usys.universe: {description: manage universes, default: false}
+  mcore.cmd.mcore.usys.universe.new: {description: create new universe in multiverse, default: false}
+  mcore.cmd.mcore.usys.universe.del: {description: delete universe in multiverse, default: false}
+  mcore.cmd.mcore.usys.universe.clear: {description: clear universe in multiverse, default: false}
+  mcore.cmd.mcore.usys.world: {description: set a worlds universe in a multiverse, default: false}
+  mcore.cmd.mcore.usys.aspect: {description: manage aspects, default: false}
+  mcore.cmd.mcore.usys.aspect.list: {description: list aspects, default: false}
+  mcore.cmd.mcore.usys.aspect.show: {description: show aspect, default: false}
+  mcore.cmd.mcore.usys.aspect.use: {description: set multiverse for aspect, default: false}
 # misc
   mcore.notpdelay: {description: teleport without delay, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
 # -------------------------------------------- #
-  mcore.cmd.usys.multiverse.*:
-    default: false
-    children:
-      mcore.cmd.usys.multiverse.list: true
-      mcore.cmd.usys.multiverse.show: true
-      mcore.cmd.usys.multiverse.new: true
-      mcore.cmd.usys.multiverse.del: true
-  mcore.cmd.usys.universe.*:
-    default: false
-    children:
-      mcore.cmd.usys.universe.new: true
-      mcore.cmd.usys.universe.del: true
-      mcore.cmd.usys.universe.clear: true
-  mcore.cmd.usys.aspect.*:
-    default: false
-    children:
-      mcore.cmd.usys.aspect.list: true
-      mcore.cmd.usys.aspect.show: true
-      mcore.cmd.usys.aspect.use: true
-  mcore.cmd.usys.*:
-    default: false
-    children:
-      mcore.cmd.usys.multiverse: true
-      mcore.cmd.usys.multiverse.*: true
-      mcore.cmd.usys.universe: true
-      mcore.cmd.usys.universe.*: true
-      mcore.cmd.usys.world: true
-      mcore.cmd.usys.aspect: true
-      mcore.cmd.usys.aspect.*: true
-  mcore.cmd.*:
-    default: false
-    children:
-      mcore.cmd.usys: true
-      mcore.cmd.usys.*: true
-      mcore.cmd.mcore: true
   mcore.*:
     default: false
     children:
-      mcore.cmd.*: true
+      mcore.cmd.mcore: true
+      mcore.cmd.mcore.id: true
+      mcore.cmd.mcore.version: true
+      mcore.cmd.mcore.usys: true
+      mcore.cmd.mcore.usys.multiverse: true
+      mcore.cmd.mcore.usys.multiverse.list: true
+      mcore.cmd.mcore.usys.multiverse.show: true
+      mcore.cmd.mcore.usys.multiverse.new: true
+      mcore.cmd.mcore.usys.multiverse.del: true
+      mcore.cmd.mcore.usys.universe: true
+      mcore.cmd.mcore.usys.universe.new: true
+      mcore.cmd.mcore.usys.universe.del: true
+      mcore.cmd.mcore.usys.universe.clear: true
+      mcore.cmd.mcore.usys.world: true
+      mcore.cmd.mcore.usys.aspect: true
+      mcore.cmd.mcore.usys.aspect.list: true
+      mcore.cmd.mcore.usys.aspect.show: true
+      mcore.cmd.mcore.usys.aspect.use: true
       mcore.notpdelay: true
 # -------------------------------------------- #
 # KITS
@@ -76,15 +59,33 @@ permissions:
     default: op
     children:
       mcore.*: true
-  mcore.kit.readonly:
+  mcore.kit.rank3:
     default: false
     children:
-      mcore.cmd.usys: true
-      mcore.cmd.usys.multiverse: true
-      mcore.cmd.usys.multiverse.list: true
-      mcore.cmd.usys.multiverse.show: true
-      mcore.cmd.usys.universe: true
-      mcore.cmd.usys.aspect: true
-      mcore.cmd.usys.aspect.list: true
-      mcore.cmd.usys.aspect.show: true
+      mcore.kit.rank2: true
+  mcore.kit.rank2:
+    default: false
+    children:
+      mcore.kit.rank1: true
+  mcore.kit.rank1:
+    default: false
+    children:
+      mcore.kit.rank0: true
       mcore.cmd.mcore: true
+      mcore.cmd.mcore.id: true
+      mcore.cmd.mcore.version: true
+      mcore.cmd.mcore.usys: true
+      mcore.cmd.mcore.usys.multiverse: true
+      mcore.cmd.mcore.usys.multiverse.list: true
+      mcore.cmd.mcore.usys.multiverse.show: true
+      mcore.cmd.mcore.usys.aspect: true
+      mcore.cmd.mcore.usys.aspect.list: true
+      mcore.cmd.mcore.usys.aspect.show: true
+      mcore.notpdelay: true
+  mcore.kit.rank0:
+    default: false
+    children:
+  massivechat.kit.default:
+    default: true
+    children:
+      massivechat.kit.rank0: true

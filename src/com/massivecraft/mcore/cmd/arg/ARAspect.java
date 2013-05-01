@@ -36,7 +36,7 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	@Override
 	public boolean canList(CommandSender sender)
 	{
-		return MCorePerm.CMD_USYS_ASPECT_LIST.has(sender, false);
+		return MCorePerm.CMD_MCORE_USYS_ASPECT_LIST.has(sender, false);
 	}
 
 	@Override
