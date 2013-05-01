@@ -1,9 +1,9 @@
 package com.massivecraft.mcore.usys.cmd;
 
+import com.massivecraft.mcore.MultiverseColl;
 import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.usys.MultiverseColl;
 
 public class CmdUsysMultiverseNew extends MCommand
 {

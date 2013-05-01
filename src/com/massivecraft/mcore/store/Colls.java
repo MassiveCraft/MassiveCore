@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.massivecraft.mcore.usys.Aspect;
-import com.massivecraft.mcore.usys.Multiverse;
+import com.massivecraft.mcore.Aspect;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
 
 public abstract class Colls<C extends Coll<E>, E>

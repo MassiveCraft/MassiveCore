@@ -1,11 +1,11 @@
 package com.massivecraft.mcore.usys.cmd;
 
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.usys.Multiverse;
 
 public class CmdUsysUniverseDel extends MCommand
 {

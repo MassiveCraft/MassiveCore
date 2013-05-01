@@ -1,4 +1,4 @@
-package com.massivecraft.mcore.usys;
+package com.massivecraft.mcore;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.cmd.arg.ARUniverse;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;

@@ -11,9 +11,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
+import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.usys.Aspect;
-import com.massivecraft.mcore.usys.Multiverse;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonObject;

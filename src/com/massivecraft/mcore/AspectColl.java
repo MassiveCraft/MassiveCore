@@ -1,9 +1,8 @@
-package com.massivecraft.mcore.usys;
+package com.massivecraft.mcore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
 

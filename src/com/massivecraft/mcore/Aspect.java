@@ -1,10 +1,9 @@
-package com.massivecraft.mcore.usys;
+package com.massivecraft.mcore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.xlib.gson.annotations.SerializedName;
 

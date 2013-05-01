@@ -26,9 +26,9 @@ import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 

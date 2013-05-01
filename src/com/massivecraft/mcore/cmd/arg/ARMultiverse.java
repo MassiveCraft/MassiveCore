@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.mcore.Multiverse;
+import com.massivecraft.mcore.MultiverseColl;
 import com.massivecraft.mcore.Perm;
-import com.massivecraft.mcore.usys.Multiverse;
-import com.massivecraft.mcore.usys.MultiverseColl;
 
 public class ARMultiverse extends ARAbstractSelect<Multiverse>
 {

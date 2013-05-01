@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.mcore.Aspect;
+import com.massivecraft.mcore.AspectColl;
 import com.massivecraft.mcore.Perm;
-import com.massivecraft.mcore.usys.Aspect;
-import com.massivecraft.mcore.usys.AspectColl;
 
 public class ARAspect extends ARAbstractSelect<Aspect>
 {

@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore.usys.Multiverse;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.util.Txt;
 
 public class ARUniverse extends ArgReaderAbstract<String>

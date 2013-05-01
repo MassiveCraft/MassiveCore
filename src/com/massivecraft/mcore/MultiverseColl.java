@@ -1,6 +1,5 @@
-package com.massivecraft.mcore.usys;
+package com.massivecraft.mcore;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.MStore;
 

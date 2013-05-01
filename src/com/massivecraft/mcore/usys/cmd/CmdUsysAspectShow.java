@@ -1,10 +1,10 @@
 package com.massivecraft.mcore.usys.cmd;
 
+import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARAspect;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.usys.Aspect;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdUsysAspectShow extends MCommand

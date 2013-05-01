@@ -3,13 +3,13 @@ package com.massivecraft.mcore.usys.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.mcore.Aspect;
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.usys.Aspect;
-import com.massivecraft.mcore.usys.Multiverse;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdUsysMultiverseShow extends MCommand

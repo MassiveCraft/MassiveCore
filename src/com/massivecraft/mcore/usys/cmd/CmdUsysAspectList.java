@@ -3,12 +3,12 @@ package com.massivecraft.mcore.usys.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.mcore.Aspect;
+import com.massivecraft.mcore.AspectColl;
 import com.massivecraft.mcore.Perm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.usys.Aspect;
-import com.massivecraft.mcore.usys.AspectColl;
 import com.massivecraft.mcore.util.Txt;
 
 public class CmdUsysAspectList extends MCommand
