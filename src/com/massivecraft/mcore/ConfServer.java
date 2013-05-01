@@ -24,7 +24,9 @@ public class ConfServer extends SimpleConfig
 	public static String serverid = UUID.randomUUID().toString();
 	
 	public static Map<String, String> alias2uri = MUtil.map(
-		"default", "gson://./mstore"
+		"default", "flatfile",
+	    "flatfile", "flatfile://mstore",
+	    "mongodb", "mongodb://localhost:27017/mstore"
 	);
 	
 	public static String dburi = "default";

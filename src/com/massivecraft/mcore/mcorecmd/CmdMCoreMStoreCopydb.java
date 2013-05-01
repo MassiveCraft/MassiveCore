@@ -57,6 +57,7 @@ public class CmdMCoreMStoreCopydb extends MCoreCommand
 		int countCollTotal = collnames.size();
 		
 		// Do it!
+		long before = System.currentTimeMillis();
 		msg("<i>Now copying database with <h>%d <i>collections.", countCollTotal);
 		for (String collname : fromDb.getCollnames())
 		{
@@ -72,6 +73,9 @@ public class CmdMCoreMStoreCopydb extends MCoreCommand
 				toDriver.save(toColl, id, data.getKey());
 			}
 		}
+		long after = System.currentTimeMillis();
+		long duration = after - before;
+		msg("<g>The copy is now complete. <i>It took <h>%dms<i>.", duration);
 	}
 	
 }

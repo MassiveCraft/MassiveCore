@@ -2,6 +2,8 @@ package com.massivecraft.mcore.store;
 
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 import com.massivecraft.mcore.xlib.gson.JsonArray;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
@@ -15,8 +17,25 @@ import com.massivecraft.mcore.xlib.mongodb.DBObject;
 public final class MongoGsonConverter
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final String DOT_NORMAL = ".";
+	public static final String DOT_MONGO = "<dot>";
+	
+	public static final String DOLLAR_NORMAL = "$";
+	public static final String DOLLAR_MONGO = "<dollar>";
+	
+	// -------------------------------------------- //
 	// GSON 2 MONGO
 	// -------------------------------------------- //
+	
+	public static String gson2MongoKey(String key)
+	{
+		key = StringUtils.replace(key, DOT_NORMAL, DOT_MONGO);
+		key = StringUtils.replace(key, DOLLAR_NORMAL, DOLLAR_MONGO);
+		return key;
+	}
 	
 	public static BasicDBObject gson2MongoObject(JsonElement inElement)
 	{
@@ -24,7 +43,7 @@ public final class MongoGsonConverter
 		BasicDBObject out = new BasicDBObject();
 		for (Entry<String, JsonElement> entry : in.entrySet())
 		{
-			String key = entry.getKey();
+			String key = gson2MongoKey(entry.getKey());
 			JsonElement val = entry.getValue();
 			if (val.isJsonArray())
 			{
@@ -79,6 +98,13 @@ public final class MongoGsonConverter
 	// MONGO 2 GSON
 	// -------------------------------------------- //
 	
+	public static String mongo2GsonKey(String key)
+	{
+		key = StringUtils.replace(key, DOT_MONGO, DOT_NORMAL);
+		key = StringUtils.replace(key, DOLLAR_MONGO, DOLLAR_NORMAL);
+		return key;
+	}
+	
 	public static JsonObject mongo2GsonObject(DBObject inObject)
 	{
 		if (!(inObject instanceof BasicDBObject)) throw new IllegalArgumentException("Expected BasicDBObject as argument type!");
@@ -87,7 +113,7 @@ public final class MongoGsonConverter
 		JsonObject jsonObject = new JsonObject();
 		for (Entry<String, Object> entry : in.entrySet())
 		{
-			String key = entry.getKey();
+			String key = mongo2GsonKey(entry.getKey());
 			Object val = entry.getValue();
 			if (val instanceof BasicDBList)
 			{
