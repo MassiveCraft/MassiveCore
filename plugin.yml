@@ -14,6 +14,8 @@ permissions:
   mcore.cmd.mcore.id: {description: see the server id, default: false}
   mcore.cmd.mcore.version: {description: diplay plugin version, default: false}
   mcore.cmd.mcore.mstore: {description: use the mstore command, default: false}
+  mcore.cmd.mcore.mstore.stats: {description: show mstore statistics, default: false}
+  mcore.cmd.mcore.mstore.listcolls: {description: list collections in a database, default: false}
   mcore.cmd.mcore.mstore.copydb: {description: copy database content, default: false}
   mcore.cmd.mcore.usys: {description: use the usys command, default: false}
   mcore.cmd.mcore.usys.multiverse: {description: manage multiverses, default: false}
@@ -42,6 +44,8 @@ permissions:
       mcore.cmd.mcore.id: true
       mcore.cmd.mcore.version: true
       mcore.cmd.mcore.mstore: true
+      mcore.cmd.mcore.mstore.stats: true
+      mcore.cmd.mcore.mstore.listcolls: true
       mcore.cmd.mcore.mstore.copydb: true
       mcore.cmd.mcore.usys: true
       mcore.cmd.mcore.usys.multiverse: true
@@ -81,6 +85,9 @@ permissions:
       mcore.cmd.mcore: true
       mcore.cmd.mcore.id: true
       mcore.cmd.mcore.version: true
+      mcore.cmd.mcore.mstore: true
+      mcore.cmd.mcore.mstore.stats: true
+      mcore.cmd.mcore.mstore.listcolls: true
       mcore.cmd.mcore.usys: true
       mcore.cmd.mcore.usys.multiverse: true
       mcore.cmd.mcore.usys.multiverse.list: true

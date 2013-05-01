@@ -72,12 +72,12 @@ public class MStore
 	public static Db getDb(String alias)
 	{
 		String uri = resolveAlias(alias);
-		Db ret = uri2db.get(uri);
-		if (ret != null) return ret;
+		Db db = uri2db.get(uri);
+		if (db != null) return db;
 		
 		try
 		{
-			ret = getDb(new URI(uri));
+			db = getDb(new URI(uri));
 		}
 		catch (URISyntaxException e)
 		{
@@ -85,7 +85,9 @@ public class MStore
 			return null;
 		}
 		
-		return ret;
+		uri2db.put(uri, db);
+		
+		return db;
 	}
 	
 	public static Db getDb(URI uri)

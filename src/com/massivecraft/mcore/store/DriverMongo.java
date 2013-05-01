@@ -53,7 +53,9 @@ public class DriverMongo extends DriverAbstract
 	@Override
 	public Set<String> getCollnames(Db db)
 	{
-		return ((DbMongo)db).db.getCollectionNames();
+		Set<String> ret = ((DbMongo)db).db.getCollectionNames();
+		ret.remove("system.indexes");
+		return ret;
 	}
 	
 	@Override
