@@ -20,6 +20,7 @@ import com.massivecraft.mcore.adapter.UUIDAdapter;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.integration.vault.VaultFeatures;
 import com.massivecraft.mcore.mcorecmd.CmdMCore;
+import com.massivecraft.mcore.mcorecmd.CmdMCoreMStore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreUsys;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
@@ -27,9 +28,7 @@ import com.massivecraft.mcore.mixin.TeleportMixinCauseEngine;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
-import com.massivecraft.mcore.store.Db;
 import com.massivecraft.mcore.store.ExamineThread;
-import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.mcore.util.TimeDiffUtil;
 import com.massivecraft.mcore.util.TimeUnit;
@@ -76,8 +75,8 @@ public class MCore extends MPlugin
 	}
 	
 	public static String getServerId() { return ConfServer.serverid; }
-	private static Db<?> db;
-	public static Db<?> getDb() { return db; }
+	//private static Db<?> db;
+	//public static Db<?> getDb() { return db; }
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -94,6 +93,9 @@ public class MCore extends MPlugin
 	
 	private CmdMCoreUsys outerCmdMCoreUsys;
 	public CmdMCoreUsys getOuterCmdMCoreUsys() { return this.outerCmdMCoreUsys; }
+	
+	private CmdMCoreMStore outerCmdMCoreMStore;
+	public CmdMCoreMStore getOuterCmdMCoreMStore() { return this.outerCmdMCoreMStore; }
 	
 	// Runnables
 	// TODO: Make this one a singleton
@@ -128,7 +130,7 @@ public class MCore extends MPlugin
 		ConfServer.get().load();
 		
 		// Setup the default database
-		db = MStore.getDb(ConfServer.dburi);
+		//db = MStore.getDb(ConfServer.dburi);
 		
 		// Setup PlayerUtil and it's events
 		new PlayerUtil(this);
@@ -161,6 +163,9 @@ public class MCore extends MPlugin
 		
 		this.outerCmdMCoreUsys = new CmdMCoreUsys(ConfServer.aliasesOuterMCoreUsys);
 		this.outerCmdMCoreUsys.register(this);
+		
+		this.outerCmdMCoreMStore = new CmdMCoreMStore(ConfServer.aliasesOuterMCoreMStore);
+		this.outerCmdMCoreMStore.register(this);
 		
 		// Integration
 		this.integrate(

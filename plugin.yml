@@ -13,7 +13,9 @@ permissions:
   mcore.cmd.mcore: {description: use the mcore command, default: false}
   mcore.cmd.mcore.id: {description: see the server id, default: false}
   mcore.cmd.mcore.version: {description: diplay plugin version, default: false}
-  mcore.cmd.mcore.usys: {description: manage the universe system, default: false}
+  mcore.cmd.mcore.mstore: {description: use the mstore command, default: false}
+  mcore.cmd.mcore.mstore.copydb: {description: copy database content, default: false}
+  mcore.cmd.mcore.usys: {description: use the usys command, default: false}
   mcore.cmd.mcore.usys.multiverse: {description: manage multiverses, default: false}
   mcore.cmd.mcore.usys.multiverse.list: {description: list multiverses, default: false}
   mcore.cmd.mcore.usys.multiverse.show: {description: show multiverse, default: false}

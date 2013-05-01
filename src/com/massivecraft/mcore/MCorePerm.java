@@ -13,6 +13,8 @@ public enum MCorePerm
 	CMD_MCORE("cmd.mcore"),
 	CMD_MCORE_ID("cmd.mcore.id"),
 	CMD_MCORE_VERSION("cmd.mcore.version"),
+	CMD_MCORE_MSTORE("cmd.mcore.mstore"),
+	CMD_MCORE_MSTORE_COPYDB("cmd.mcore.mstore.copydb"),
 	CMD_MCORE_USYS("cmd.mcore.usys"),
 	CMD_MCORE_USYS_MULTIVERSE("cmd.mcore.usys.multiverse"),
 	CMD_MCORE_USYS_MULTIVERSE_LIST("cmd.mcore.usys.multiverse.list"),

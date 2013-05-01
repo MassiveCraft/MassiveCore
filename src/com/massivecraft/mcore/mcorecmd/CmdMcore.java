@@ -11,15 +11,19 @@ import com.massivecraft.mcore.util.MUtil;
 
 public class CmdMCore extends MCoreCommand
 {
-	public CmdMCoreId cmdMCoreId = new CmdMCoreId(MUtil.list("id"));
 	public CmdMCoreUsys cmdMCoreUsys = new CmdMCoreUsys(MUtil.list("usys"));
+	public CmdMCoreMStore cmdMCoreMStore = new CmdMCoreMStore(MUtil.list("mstore"));
+	public CmdMCoreId cmdMCoreId = new CmdMCoreId(MUtil.list("id"));
+	
 	
 	public CmdMCore(List<String> aliases)
 	{
 		super(aliases);
 		
 		this.addSubCommand(this.cmdMCoreUsys);
+		this.addSubCommand(this.cmdMCoreMStore);
 		this.addSubCommand(this.cmdMCoreId);
+		
 		this.addSubCommand(new VersionCommand(MCore.get(), MCorePerm.CMD_MCORE_VERSION.node, "v", "version"));
 		
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE.node));
