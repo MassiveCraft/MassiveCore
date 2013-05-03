@@ -2,9 +2,9 @@ package com.massivecraft.mcore.inventory;
 
 import org.bukkit.inventory.InventoryHolder;
 
-import net.minecraft.server.v1_5_R2.EntityHuman;
-import net.minecraft.server.v1_5_R2.ItemStack;
-import net.minecraft.server.v1_5_R2.PlayerInventory;
+import net.minecraft.server.v1_5_R3.EntityHuman;
+import net.minecraft.server.v1_5_R3.ItemStack;
+import net.minecraft.server.v1_5_R3.PlayerInventory;
 
 /**
  * This is an extended version of the NMS.PlayerInventory.
@@ -27,7 +27,6 @@ import net.minecraft.server.v1_5_R2.PlayerInventory;
  * m() (2 matches)
  * pickup(ItemStack) (2 matches)
  * PlayerInventory(EntityHuman)
- * 
  */
 public class MCorePlayerInventory extends PlayerInventory
 {

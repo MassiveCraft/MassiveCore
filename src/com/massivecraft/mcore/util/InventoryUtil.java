@@ -3,8 +3,8 @@ package com.massivecraft.mcore.util;
 import java.util.HashMap;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_5_R2.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftInventoryPlayer;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
