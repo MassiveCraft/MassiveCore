@@ -3,6 +3,7 @@ package com.massivecraft.mcore.integration.protocollib;
 import java.util.List;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.Packets;
@@ -51,6 +52,10 @@ public class EntityPotionColorPacketAdapter extends PacketAdapter
 			// ... fetch the entity ...
 			// NOTE: MetaData packets are only sent to players in the same world.
 			final Entity entity = packet.getEntityModifier(sendee.getWorld()).read(0);
+			
+			// Fireworks cannot have potion effects! They also reuse index 8 
+			// for sending their item stack, causing a crash if we don't bail out now.
+			if (entity instanceof Firework) return;
 			
 			// ... fetch the metadata ...
 			final List<WrappedWatchableObject> metadata = packet.getWatchableCollectionModifier().read(0);
