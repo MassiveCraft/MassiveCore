@@ -52,7 +52,7 @@ public class MStore
 		if (one == null) return two == null;
 		if (two == null) return one == null;
 		
-		return one.toString().equals(two.toString());
+		return GsonEqualsChecker.equals(one, two);
 	}
 	
 	// -------------------------------------------- //

@@ -139,7 +139,7 @@ public class DriverMongo extends DriverAbstract
 		Long mtime = ((Number)raw.removeField(MTIME_FIELD)).longValue();
 		raw.removeField(ID_FIELD);
 		
-		JsonElement element = MongoGsonConverter.mongo2GsonObject(raw);
+		JsonElement element = GsonMongoConverter.mongo2GsonObject(raw);
 		
 		return new SimpleEntry<JsonElement, Long>(element, mtime);
 	}
@@ -149,7 +149,7 @@ public class DriverMongo extends DriverAbstract
 	{		
 		DBCollection dbcoll = fixColl(coll);
 		
-		BasicDBObject dbo = MongoGsonConverter.gson2MongoObject(data);
+		BasicDBObject dbo = GsonMongoConverter.gson2MongoObject(data);
 		Long mtime = System.currentTimeMillis();
 		dbo.put(MTIME_FIELD, mtime);
 		dbo.put(ID_FIELD, id);

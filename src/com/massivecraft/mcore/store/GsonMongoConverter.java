@@ -15,7 +15,7 @@ import com.massivecraft.mcore.xlib.mongodb.BasicDBList;
 import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.mcore.xlib.mongodb.DBObject;
 
-public final class MongoGsonConverter
+public final class GsonMongoConverter
 {
 	// -------------------------------------------- //
 	// CONSTANTS
