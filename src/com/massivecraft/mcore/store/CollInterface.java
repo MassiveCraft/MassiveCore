@@ -107,6 +107,10 @@ public interface CollInterface<E>
 	public void clearSynclog(Object oid);
 	*/
 	
+	public Map<String, Long> getSyncMap(boolean in);
+	public long getSyncCount(String name, boolean in);
+	public void addSyncCount(String name, boolean in);
+	
 	// -------------------------------------------- //
 	// SYNC LOWLEVEL IO ACTIONS
 	// -------------------------------------------- //
