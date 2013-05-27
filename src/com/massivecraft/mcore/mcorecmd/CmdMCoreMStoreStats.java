@@ -56,10 +56,9 @@ public class CmdMCoreMStoreStats extends MCoreCommand
 	public void performColl(Coll<?> coll)
 	{
 		msg(Txt.titleize("MStore "+coll.getName()+" Statistics"));
-		
-		msg("<k>Entity Count: <v>%d", coll.getIds().size());
 		msg("<k>Basename: <v>%s", coll.getBasename());
 		msg("<k>Universe: <v>%s", coll.getUniverse());
+		msg("<k>Entity Count: <v>%d", coll.getIds().size());
 		msg("<k>Entity Class: <v>%s", coll.getEntityClass().getName());
 		msg("<k>Plugin: <v>%s", coll.getPlugin().getDescription().getFullName());
 		msg("<k>Database: <v>%s", coll.getDb().getName());
