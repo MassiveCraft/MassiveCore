@@ -49,7 +49,7 @@ public class CmdMCoreMStoreListcolls extends MCoreCommand
 			
 			Coll<?> coll = null;
 			
-			for (Coll<?> collCandidate : Coll.instances)
+			for (Coll<?> collCandidate : Coll.getInstances())
 			{
 				if (!collCandidate.getName().equals(collname)) continue;
 				if (collCandidate.getDb() != db) continue;

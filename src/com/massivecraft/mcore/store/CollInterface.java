@@ -141,6 +141,7 @@ public interface CollInterface<E>
 	// -------------------------------------------- //
 	
 	public void init();
+	public void deinit();
 	public boolean inited();
 	
 	

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,6 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.MPlugin;
+import com.massivecraft.mcore.NaturalOrderComparator;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.store.accessor.Accessor;
 import com.massivecraft.mcore.xlib.gson.Gson;
@@ -27,7 +30,31 @@ public class Coll<E> implements CollInterface<E>
 	// GLOBAL REGISTRY
 	// -------------------------------------------- //
 	
-	public static List<Coll<?>> instances = new CopyOnWriteArrayList<Coll<?>>(); 
+	// All instances registered here are considered inited.
+	private static List<Coll<?>> instances = new CopyOnWriteArrayList<Coll<?>>();
+	public static List<Coll<?>> getInstances() { return instances; }
+	
+	private static TreeSet<String> names = new TreeSet<String>(NaturalOrderComparator.get());
+	public static TreeSet<String> getNames() { return names; }
+	
+	// Log database syncronization for display in the "/mcore mstore stats" command.
+	private static Map<String, Long> name2out = new TreeMap<String, Long>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, Long> name2in = new TreeMap<String, Long>(String.CASE_INSENSITIVE_ORDER);
+	
+	public static long getSyncCount(String name, boolean in)
+	{
+		Long count = (in ? name2in.get(name) : name2out.get(name));
+		if (count == null) return 0;
+		return count;
+	}
+	
+	public static void addSyncCount(String name, boolean in)
+	{
+		long count = getSyncCount(name, in);
+		count++;
+		Map<String, Long> map = (in ? name2in : name2out);
+		map.put(name, count);
+	}
 	
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
@@ -516,16 +543,20 @@ public class Coll<E> implements CollInterface<E>
 			case LOCAL_ALTER:
 			case LOCAL_ATTACH:
 				 this.saveToRemote(id);
+				 if (this.inited()) addSyncCount(this.getName(), false);
 			break;
 			case LOCAL_DETACH:
 				this.removeAtRemote(id);
+				if (this.inited()) addSyncCount(this.getName(), false);
 			break;
 			case REMOTE_ALTER:
 			case REMOTE_ATTACH:
 				this.loadFromRemote(id);
+				if (this.inited()) addSyncCount(this.getName(), true);
 			break;
 			case REMOTE_DETACH:
 				this.removeAtLocal(id);
+				if (this.inited()) addSyncCount(this.getName(), true);
 			break;
 			default:
 				this.clearIdentifiedChanges(id);
@@ -657,8 +688,20 @@ public class Coll<E> implements CollInterface<E>
 	public void init()
 	{
 		if (this.inited()) return;
+		// TODO: Could this be more efficient by considering it's the first sync?
 		this.syncAll();
 		instances.add(this);
+		names.add(this.getName());
+	}
+	
+	@Override
+	public void deinit()
+	{
+		if (!this.inited()) return;
+		// TODO: Save outwards only? We may want to avoid loads at this stage...
+		this.syncAll();
+		instances.remove(this);
+		names.remove(this.getName());
 	}
 	
 	@Override

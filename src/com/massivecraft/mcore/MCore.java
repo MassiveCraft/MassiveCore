@@ -103,7 +103,7 @@ public class MCore extends MPlugin
 	{
 		public void run()
 		{
-			for (Coll<?> coll : Coll.instances)
+			for (Coll<?> coll : Coll.getInstances())
 			{
 				coll.onTick();
 			}
@@ -119,7 +119,9 @@ public class MCore extends MPlugin
 	{
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		// Note this one must be before preEnable. dooh.
-		Coll.instances.clear();
+		// TODO: Create something like "deinit all" (perhaps a forloop) to readd this.
+		// TODO: Test and ensure reload compat.
+		// Coll.instances.clear();
 		
 		// Start the examine thread
 		ExamineThread.get().start();

@@ -53,11 +53,10 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	public void onDisable()
 	{
 		// Collection shutdowns.
-		for (Coll<?> coll : Coll.instances)
+		for (Coll<?> coll : Coll.getInstances())
 		{
 			if (coll.getPlugin() != this) continue;
-			coll.syncAll(); // TODO: Save outwards only? We may want to avoid loads at this stage...
-			Coll.instances.remove(coll);
+			coll.deinit();
 		}
 		
 		log("Disabled");

@@ -263,7 +263,7 @@ public class InternalListener implements Listener
 	public void syncAllForPlayer(Player player)
 	{
 		String playerName = player.getName();
-		for (Coll<?> coll : Coll.instances)
+		for (Coll<?> coll : Coll.getInstances())
 		{
 			if (!(coll instanceof SenderColl)) continue;
 			SenderColl<?> pcoll = (SenderColl<?>)coll;

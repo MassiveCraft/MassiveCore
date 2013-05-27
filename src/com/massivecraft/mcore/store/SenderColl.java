@@ -123,7 +123,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	
 	public static void setSenderRefferences(String senderId, CommandSender sender)
 	{
-		for (Coll<?> coll : Coll.instances)
+		for (Coll<?> coll : Coll.getInstances())
 		{
 			if (!(coll instanceof SenderColl)) continue;
 			SenderColl<?> senderColl = (SenderColl<?>)coll;

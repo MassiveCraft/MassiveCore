@@ -41,7 +41,7 @@ public class ExamineThread extends Thread
 			try
 			{
 				long before = System.currentTimeMillis();
-				for (Coll<?> coll: Coll.instances)
+				for (Coll<?> coll : Coll.getInstances())
 				{
 					coll.findSuspects();
 				}
