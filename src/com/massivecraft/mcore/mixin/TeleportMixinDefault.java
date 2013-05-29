@@ -1,6 +1,7 @@
 package com.massivecraft.mcore.mixin;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -40,6 +41,12 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			throw new TeleporterException(Txt.parse("<b>Could not calculate the location: %s", e.getMessage()));
 		}
 		
+		// eject passengers and unmount before transport
+		player.eject();
+		Entity vehicle = player.getVehicle();
+		if (vehicle != null) vehicle.eject();
+		
+		// Do the teleport
 		TeleportMixinCauseEngine.get().setMixinCausedTeleportIncoming(true);
 		player.teleport(location);
 		TeleportMixinCauseEngine.get().setMixinCausedTeleportIncoming(false);
