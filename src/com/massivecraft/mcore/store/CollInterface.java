@@ -80,10 +80,18 @@ public interface CollInterface<E>
 	// -------------------------------------------- //
 	// ATTACH AND DETACH
 	// -------------------------------------------- //
+	
 	public String attach(E entity);
 	public String attach(E entity, Object oid);
+	
 	public E detachEntity(Object entity);
 	public E detachId(Object oid);
+	
+	public void preAttach(E entity, String id);
+	public void postAttach(E entity, String id);
+	
+	public void preDetach(E entity, String id);
+	public void postDetach(E entity, String id);
 	
 	// -------------------------------------------- //
 	// IDENTIFIED CHANGES

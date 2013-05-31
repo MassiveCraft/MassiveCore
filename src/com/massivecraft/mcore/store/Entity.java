@@ -15,6 +15,10 @@ import com.massivecraft.mcore.xlib.gson.Gson;
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
 public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 {
+	// -------------------------------------------- //
+	// COLL & ID
+	// -------------------------------------------- //
+	
 	protected transient Coll<E> coll;
 	protected void setColl(Coll<E> val) { this.coll = val; }
 	public Coll<E> getColl() { return this.coll; }
@@ -30,6 +34,10 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		
 		return coll.getUniverse();
 	}
+	
+	// -------------------------------------------- //
+	// ATTACH AND DETACH
+	// -------------------------------------------- //
 	
 	@SuppressWarnings("unchecked")
 	public String attach(Coll<E> coll)
@@ -54,6 +62,31 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 	{
 		return ! this.attached();
 	}
+	
+	
+	public void preAttach(String id)
+	{
+		
+	}
+	
+	public void postAttach(String id)
+	{
+		
+	}
+	
+	public void preDetach(String id)
+	{
+		
+	}
+	
+	public void postDetach(String id)
+	{
+		
+	}
+	
+	// -------------------------------------------- //
+	// SYNC AND IO ACTIONS
+	// -------------------------------------------- //
 	
 	public void changed()
 	{
@@ -91,15 +124,9 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		this.getColl().loadFromRemote(id);
 	}
 	
-	@Override
-	public String toString()
-	{
-		Gson gson = MCore.gson;
-		Coll<E> coll = this.getColl();
-		if (coll != null) gson = coll.getGson();
-		
-		return this.getClass().getSimpleName()+gson.toJson(this, this.getClass());
-	}
+	// -------------------------------------------- //
+	// DERPINGTON
+	// -------------------------------------------- //
 	
 	@SuppressWarnings("unchecked")
 	public E load(E that)
@@ -112,6 +139,10 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 	{
 		return false;
 	}
+	
+	// -------------------------------------------- //
+	// STANDARDS
+	// -------------------------------------------- //
 	
 	@Override
 	public int compareTo(E that)
@@ -138,4 +169,15 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		
 		return ret;
 	}
+	
+	@Override
+	public String toString()
+	{
+		Gson gson = MCore.gson;
+		Coll<E> coll = this.getColl();
+		if (coll != null) gson = coll.getGson();
+		
+		return this.getClass().getSimpleName()+gson.toJson(this, this.getClass());
+	}
+	
 }

@@ -273,6 +273,9 @@ public class Coll<E> implements CollInterface<E>
 			if (this.id2entity.containsKey(id)) return null;
 		}
 		
+		// PRE
+		this.preAttach(entity, id);
+		
 		// Add entity reference info
 		if (entity instanceof Entity)
 		{
@@ -291,29 +294,81 @@ public class Coll<E> implements CollInterface<E>
 			this.changedIds.add(id);
 		}
 		
+		// POST
+		this.postAttach(entity, id);
+		
 		return id;
 	}
 		
+	@SuppressWarnings("unchecked")
 	@Override
 	public E detachEntity(Object entity)
 	{
-		return this.detachId(this.getId(entity));
+		E e = (E)entity;
+		String id = this.getId(e);
+		this.detach(e, id);
+		return e;
 	}
 	
 	@Override
 	public E detachId(Object oid)
 	{
 		String id = this.fixId(oid);
-		if (id == null) return null;
+		E e = this.get(id);
+		this.detach(e, id);
+		return e;
+	}
+	
+	private void detach(E entity, String id)
+	{
+		// PRE
+		this.preDetach(entity, id);
 		
 		// Remove @ local
-		E ret = this.removeAtLocal(id);
+		this.removeAtLocal(id);
 		
 		// Identify the change
 		this.localDetachIds.add(id);
 		this.changedIds.add(id);
 		
-		return ret;
+		// POST
+		this.postDetach(entity, id);
+	}
+	
+	@Override
+	public void preAttach(E entity, String id)
+	{
+		if (entity instanceof Entity)
+		{
+			((Entity<?>)entity).preAttach(id);
+		}
+	}
+	
+	@Override
+	public void postAttach(E entity, String id)
+	{
+		if (entity instanceof Entity)
+		{
+			((Entity<?>)entity).postAttach(id);
+		}
+	}
+	
+	@Override
+	public void preDetach(E entity, String id)
+	{
+		if (entity instanceof Entity)
+		{
+			((Entity<?>)entity).preDetach(id);
+		}
+	}
+	
+	@Override
+	public void postDetach(E entity, String id)
+	{
+		if (entity instanceof Entity)
+		{
+			((Entity<?>)entity).postDetach(id);
+		}
 	}
 	
 	// -------------------------------------------- //
@@ -452,16 +507,25 @@ public class Coll<E> implements CollInterface<E>
 		Long mtime = entry.getValue();
 		if (mtime == null) return;
 		
-		E entity = this.get(id, true, false);
+		E entity = this.get(id, false);
+		if (entity != null)
+		{
+			// It did already exist
+			this.copy(this.getGson().fromJson(raw, this.getEntityClass()), entity);
+		}
+		else
+		{
+			// Create first
+			entity = this.createNewInstance();
+			
+			// Copy over data first
+			this.copy(this.getGson().fromJson(raw, this.getEntityClass()), entity);
+			
+			// Then attach!
+			this.attach(entity, oid, false);
+		}
 		
-		this.copy(this.getGson().fromJson(raw, this.getEntityClass()), entity);
-		
-		// this.lastRaw.put(id, this.getStoreAdapter().read(this, entity));
-		// Store adapter again since result of a database read may be "different" from entity read.
-		// WARN: This was causing many issues with config files not updating etc.
-		// The approach below may not work with MongoDB at all since that is not tested.
-		this.lastRaw.put(id, raw);
-		
+		this.lastRaw.put(id, raw);		
 		this.lastMtime.put(id, mtime);
 		this.lastDefault.remove(id);
 	}
