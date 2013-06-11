@@ -28,7 +28,7 @@ public class WorldMixinDefault extends WorldMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean canSee(Permissible permissible, String worldId)
+	public boolean canSeeWorld(Permissible permissible, String worldId)
 	{
 		return true;
 	}

@@ -69,9 +69,9 @@ public class Mixin
 	// STATIC EXPOSE: WORLD
 	// -------------------------------------------- //
 	
-	public static boolean canSee(Permissible permissible, String worldId)
+	public static boolean canSeeWorld(Permissible permissible, String worldId)
 	{
-		return getWorldMixin().canSee(permissible, worldId);
+		return getWorldMixin().canSeeWorld(permissible, worldId);
 	}
 	
 	public static List<String> getWorldIds()

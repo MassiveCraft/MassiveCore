@@ -10,7 +10,7 @@ import com.massivecraft.mcore.ps.PS;
 
 public interface WorldMixin
 {
-	public boolean canSee(Permissible permissible, String worldId);
+	public boolean canSeeWorld(Permissible permissible, String worldId);
 	
 	public List<String> getWorldIds();
 	

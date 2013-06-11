@@ -17,7 +17,7 @@ public abstract class WorldMixinAbstract implements WorldMixin
 		List<String> ret = new ArrayList<String>();
 		for (String worldId : this.getWorldIds())
 		{
-			if (!this.canSee(permissible, worldId)) continue;
+			if (!this.canSeeWorld(permissible, worldId)) continue;
 			ret.add(worldId);
 		}
 		return ret;
