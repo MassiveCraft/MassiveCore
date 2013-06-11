@@ -47,7 +47,7 @@ public class BukkitGlueCommand extends Command
 		for (String senderId : Mixin.getOnlineSenderIds())
 		{
 			if (!senderId.toLowerCase().startsWith(tokenlc)) continue;
-			if (!Mixin.isVisible(sender, senderId)) continue;
+			if (!Mixin.canSee(sender, senderId)) continue;
 			ret.add(senderId);
 		}
 		

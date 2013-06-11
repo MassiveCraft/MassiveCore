@@ -210,38 +210,21 @@ public class Mixin
 	// STATIC EXPOSE: VISIBILITY
 	// -------------------------------------------- //
 	
-	public static boolean isVisible(String watcherId, String watcheeId)
+	public static boolean canSee(String watcherId, String watcheeId)
 	{
-		return getVisibilityMixin().isVisible(watcherId, watcheeId);
+		return getVisibilityMixin().canSee(watcherId, watcheeId);
 	}
-	public static boolean isVisible(CommandSender watcher, String watcheeId)
+	public static boolean canSee(CommandSender watcher, String watcheeId)
 	{
-		return getVisibilityMixin().isVisible(watcher, watcheeId);
+		return getVisibilityMixin().canSee(watcher, watcheeId);
 	}
-	public static boolean isVisible(String watcherId, CommandSender watchee)
+	public static boolean canSee(String watcherId, CommandSender watchee)
 	{
-		return getVisibilityMixin().isVisible(watcherId, watchee);
+		return getVisibilityMixin().canSee(watcherId, watchee);
 	}
-	public static boolean isVisible(CommandSender watcher, CommandSender watchee)
+	public static boolean canSee(CommandSender watcher, CommandSender watchee)
 	{
-		return getVisibilityMixin().isVisible(watcher, watchee);
-	}
-	
-	public static void setVisible(String watcherId, String watcheeId, boolean visible)
-	{
-		getVisibilityMixin().setVisible(watcherId, watcheeId, visible);
-	}
-	public static void setVisible(CommandSender watcher, String watcheeId, boolean visible)
-	{
-		getVisibilityMixin().setVisible(watcher, watcheeId, visible);
-	}
-	public static void setVisible(String watcherId, CommandSender watchee, boolean visible)
-	{
-		getVisibilityMixin().setVisible(watcherId, watchee, visible);
-	}
-	public static void setVisible(CommandSender watcher, CommandSender watchee, boolean visible)
-	{
-		getVisibilityMixin().setVisible(watcher, watchee, visible);
+		return getVisibilityMixin().canSee(watcher, watchee);
 	}
 	
 	// -------------------------------------------- //

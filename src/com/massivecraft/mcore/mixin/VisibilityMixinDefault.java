@@ -19,25 +19,25 @@ public class VisibilityMixinDefault extends VisibilityMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean isVisible(String watcherId, String watcheeId)
+	public boolean canSee(String watcherId, String watcheeId)
 	{
-		return this.isVisible(SenderUtil.getSender(watcherId), SenderUtil.getSender(watcheeId));
+		return this.canSee(SenderUtil.getSender(watcherId), SenderUtil.getSender(watcheeId));
 	}
 	
 	@Override
-	public boolean isVisible(CommandSender watcher, String watcheeId)
+	public boolean canSee(CommandSender watcher, String watcheeId)
 	{
-		return this.isVisible(watcher, SenderUtil.getSender(watcheeId));
+		return this.canSee(watcher, SenderUtil.getSender(watcheeId));
 	}
 	
 	@Override
-	public boolean isVisible(String watcherId, CommandSender watchee)
+	public boolean canSee(String watcherId, CommandSender watchee)
 	{
-		return this.isVisible(SenderUtil.getSender(watcherId), watchee);
+		return this.canSee(SenderUtil.getSender(watcherId), watchee);
 	}
 	
 	@Override
-	public boolean isVisible(CommandSender watcher, CommandSender watchee)
+	public boolean canSee(CommandSender watcher, CommandSender watchee)
 	{
 		Player pwatcher = SenderUtil.getAsPlayer(watcher);
 		Player pwatchee = SenderUtil.getAsPlayer(watchee);
@@ -48,40 +48,4 @@ public class VisibilityMixinDefault extends VisibilityMixinAbstract
 		return pwatcher.canSee(pwatchee);
 	}
 	
-	@Override
-	public void setVisible(String watcherId, String watcheeId, boolean visible)
-	{
-		this.setVisible(SenderUtil.getSender(watcherId), SenderUtil.getSender(watcheeId), visible);
-	}
-	
-	@Override
-	public void setVisible(CommandSender watcher, String watcheeId, boolean visible)
-	{
-		this.setVisible(watcher, SenderUtil.getSender(watcheeId), visible);
-	}
-	
-	@Override
-	public void setVisible(String watcherId, CommandSender watchee, boolean visible)
-	{
-		this.setVisible(SenderUtil.getSender(watcherId), watchee, visible);
-	}
-	
-	@Override
-	public void setVisible(CommandSender watcher, CommandSender watchee, boolean visible)
-	{
-		Player pwatcher = SenderUtil.getAsPlayer(watcher);
-		Player pwatchee = SenderUtil.getAsPlayer(watchee);
-		
-		if (pwatcher == null) return;
-		if (pwatchee == null) return;
-		
-		if (visible)
-		{
-			pwatcher.showPlayer(pwatchee);
-		}
-		else
-		{
-			pwatcher.hidePlayer(pwatchee);
-		}
-	}
 }

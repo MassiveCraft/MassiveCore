@@ -92,7 +92,7 @@ public class InternalListener implements Listener
 		{
 			if (!senderId.toLowerCase().startsWith(tokenlc)) continue;
 			if (current.contains(senderId)) continue;
-			if (!Mixin.isVisible(watcher, senderId)) continue;
+			if (!Mixin.canSee(watcher, senderId)) continue;
 			
 			event.getTabCompletions().add(senderId);
 		}
