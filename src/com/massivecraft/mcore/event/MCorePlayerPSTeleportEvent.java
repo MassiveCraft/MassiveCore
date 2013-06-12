@@ -35,15 +35,20 @@ public class MCorePlayerPSTeleportEvent extends Event implements Cancellable, Ru
 	public PS getTo() { return this.to; }
 	public void setTo(PS to) { this.to = to; }
 	
+	private String desc;
+	public String getDesc() { return this.desc; }
+	public void setDesc(String desc) { this.desc = desc; }
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MCorePlayerPSTeleportEvent(String teleporteeId, PS from, PS to)
+	public MCorePlayerPSTeleportEvent(String teleporteeId, PS from, PS to, String desc)
 	{
 		this.teleporteeId = teleporteeId;
 		this.from = from;
 		this.to = to;
+		this.desc = desc;
 	}
 	
 	// -------------------------------------------- //

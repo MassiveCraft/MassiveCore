@@ -69,48 +69,49 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
+	public void teleport(String teleporteeId, PS to, String desc, int delaySeconds) throws TeleporterException
 	{
 		if (!SenderUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId)));
 		
 		if (delaySeconds > 0)
 		{
 			// With delay
-			if (destinationDesc != null)
+			if (desc != null)
 			{
-				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+destinationDesc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
+				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+desc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			else
 			{
 				Mixin.msg(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			
-			new ScheduledTeleport(teleporteeId, destinationPs, destinationDesc, delaySeconds).schedule();
+			new ScheduledTeleport(teleporteeId, to, desc, delaySeconds).schedule();
 		}
 		else
 		{
 			// Without delay AKA "now"/"at once"
 			
 			// Run event
-			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleporteeId, Mixin.getSenderPs(teleporteeId), destinationPs);
+			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleporteeId, Mixin.getSenderPs(teleporteeId), to, desc);
 			event.run();
 			if (event.isCancelled()) return;
 			if (event.getTo() == null) return;
-			destinationPs = event.getTo();
+			to = event.getTo();
+			desc = event.getDesc();
 			
-			if (destinationDesc != null)
+			if (desc != null)
 			{
-				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+destinationDesc+"<i>.");
+				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+desc+"<i>.");
 			}
 			
 			Player teleportee = SenderUtil.getPlayer(teleporteeId);
 			if (teleportee != null)
 			{
-				teleportPlayer(teleportee, destinationPs);
+				teleportPlayer(teleportee, to);
 			}
 			else
 			{
-				Mixin.setSenderPs(teleporteeId, destinationPs);
+				Mixin.setSenderPs(teleporteeId, to);
 			}
 		}
 	}
