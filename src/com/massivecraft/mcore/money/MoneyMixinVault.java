@@ -25,6 +25,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	public void activate()
 	{
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) return;
 		this.economy = rsp.getProvider();
 		Money.mixin(this);
 	}
