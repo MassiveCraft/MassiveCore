@@ -59,6 +59,10 @@ public abstract class ModuloRepeatTask implements Runnable
 	@Override
 	public void run()
 	{
+		// So the delay millis is lower than one? (could for example be zero)
+		// This probably means the task should not be executed at all.
+		if (this.getDelayMillis() < 1) return;
+			
 		long nowMillis = System.currentTimeMillis();
 		long previousMillis = this.getPreviousMillis();
 		
