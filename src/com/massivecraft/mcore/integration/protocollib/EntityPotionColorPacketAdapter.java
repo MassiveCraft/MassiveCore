@@ -64,7 +64,7 @@ public class EntityPotionColorPacketAdapter extends PacketAdapter
 			for (WrappedWatchableObject watchable : metadata)
 			{
 				// If the watchable is about potion effect color ...
-				if (watchable.getIndex() != 8) continue;
+				if (watchable.getIndex() != 7) continue;
 				
 				// ... run our custom async event to allow changing it ...
 				int oldColor = (Integer) watchable.getValue();
