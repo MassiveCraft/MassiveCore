@@ -351,6 +351,21 @@ public class Txt
 	}
 	
 	// -------------------------------------------- //
+	// START COLORS
+	// -------------------------------------------- //
+	// This method never returns null
+	
+	public static final String START_COLORS_REGEX = "^((?:§.)+).*$";
+	public static final Pattern START_COLORS_PATTERN = Pattern.compile(START_COLORS_REGEX);
+	
+	public static String getStartColors(String string)
+	{
+		Matcher matcher = START_COLORS_PATTERN.matcher(string);
+		if (!matcher.find()) return "";
+		return matcher.group(1);
+	}
+	
+	// -------------------------------------------- //
 	// Material name tools
 	// -------------------------------------------- //
 	

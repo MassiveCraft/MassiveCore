@@ -1,10 +1,10 @@
 package com.massivecraft.mcore.inventory;
 
-import org.bukkit.inventory.InventoryHolder;
+import net.minecraft.server.v1_6_R1.EntityHuman;
+import net.minecraft.server.v1_6_R1.ItemStack;
+import net.minecraft.server.v1_6_R1.PlayerInventory;
 
-import net.minecraft.server.v1_5_R3.EntityHuman;
-import net.minecraft.server.v1_5_R3.ItemStack;
-import net.minecraft.server.v1_5_R3.PlayerInventory;
+import org.bukkit.inventory.InventoryHolder;
 
 /**
  * This is an extended version of the NMS.PlayerInventory.
@@ -22,6 +22,16 @@ import net.minecraft.server.v1_5_R3.PlayerInventory;
  * 
  * a(EntityHuman) (2 matches)
  * g(int)
+ * getOwner()
+ * k() (2 matches)
+ * m() (2 matches)
+ * pickup(ItemStack) (2 matches)
+ * PlayerInventory(EntityHuman)
+ * 
+ * As of 1.6.1 these are the references:
+ * 
+ * a(EntityHuman) (2 matches)
+ * a(float)
  * getOwner()
  * k() (2 matches)
  * m() (2 matches)
@@ -62,11 +72,11 @@ public class MCorePlayerInventory extends PlayerInventory
 	// This method handles damage dealt to the armor inside the inventory.
 	// We simply ignore damage if there is no player.
 	@Override
-	public void g(int arg0)
+	public void a(float arg0)
 	{
 		if (this.player == null) return;
 		
-		super.g(arg0);
+		super.a(arg0);
 	}
 	
 	// If the player is null there is no owner.
