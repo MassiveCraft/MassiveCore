@@ -19,7 +19,7 @@ import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.integration.vault.VaultFeatures;
-import com.massivecraft.mcore.mcorecmd.CmdMCoretemp;
+import com.massivecraft.mcore.mcorecmd.CmdMCore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreMStore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreUsys;
 import com.massivecraft.mcore.mixin.ScheduledTeleportEngine;
@@ -88,8 +88,8 @@ public class MCore extends MPlugin
 	public Multiverse getMoneyMultiverse() { return this.getMoneyAspect().getMultiverse(); }
 	
 	// Commands
-	private CmdMCoretemp outerCmdMCore;
-	public CmdMCoretemp getOuterCmdMCore() { return this.outerCmdMCore; }
+	private CmdMCore outerCmdMCore;
+	public CmdMCore getOuterCmdMCore() { return this.outerCmdMCore; }
 	
 	private CmdMCoreUsys outerCmdMCoreUsys;
 	public CmdMCoreUsys getOuterCmdMCoreUsys() { return this.outerCmdMCoreUsys; }
@@ -160,7 +160,7 @@ public class MCore extends MPlugin
 		);
 		
 		// Register commands
-		this.outerCmdMCore = new CmdMCoretemp(ConfServer.aliasesOuterMCore);
+		this.outerCmdMCore = new CmdMCore(ConfServer.aliasesOuterMCore);
 		this.outerCmdMCore.register(this);
 		
 		this.outerCmdMCoreUsys = new CmdMCoreUsys(ConfServer.aliasesOuterMCoreUsys);

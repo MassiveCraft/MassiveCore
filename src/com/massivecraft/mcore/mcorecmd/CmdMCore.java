@@ -9,14 +9,14 @@ import com.massivecraft.mcore.cmd.VersionCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.MUtil;
 
-public class CmdMCoretemp extends MCoreCommand
+public class CmdMCore extends MCoreCommand
 {
 	public CmdMCoreUsys cmdMCoreUsys = new CmdMCoreUsys(MUtil.list("usys"));
 	public CmdMCoreMStore cmdMCoreMStore = new CmdMCoreMStore(MUtil.list("mstore"));
 	public CmdMCoreId cmdMCoreId = new CmdMCoreId(MUtil.list("id"));
 	
 	
-	public CmdMCoretemp(List<String> aliases)
+	public CmdMCore(List<String> aliases)
 	{
 		super(aliases);
 		
