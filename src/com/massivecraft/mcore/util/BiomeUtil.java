@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 
-import net.minecraft.server.v1_6_R1.BiomeBase;
-import net.minecraft.server.v1_6_R1.Chunk;
-import net.minecraft.server.v1_6_R1.WorldServer;
+import net.minecraft.server.v1_6_R2.BiomeBase;
+import net.minecraft.server.v1_6_R2.Chunk;
+import net.minecraft.server.v1_6_R2.WorldServer;
 
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_6_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_6_R2.CraftWorld;
 
 public class BiomeUtil
 {

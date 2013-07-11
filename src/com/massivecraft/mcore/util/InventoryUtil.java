@@ -2,9 +2,11 @@ package com.massivecraft.mcore.util;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_6_R1.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_6_R1.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftInventoryPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -13,10 +15,33 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.inventory.MCorePlayerInventory;
 
 public class InventoryUtil
 {
+	// -------------------------------------------- //
+	// UPDATES
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("deprecation")
+	public static void update(Player player)
+	{
+		player.updateInventory();
+	}
+	
+	public static void updateSoon(final Player player)
+	{
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				update(player);
+			}
+		});
+	}
+	
 	// -------------------------------------------- //
 	// EVENT INTERPRETATION
 	// -------------------------------------------- //

@@ -1,6 +1,6 @@
 main: com.massivecraft.mcore.MCore
 name: mcore
-version: 6.4.3
+version: 6.4.4_dev
 website: http://massivecraft.com/mcore
 authors: [Cayorion]
 description: §eMCore stands for MassiveCraft Core and is a plugin that contains libraries and features that other plugins make use of. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttp://massivecraft.com
