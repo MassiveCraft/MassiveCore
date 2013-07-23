@@ -40,7 +40,10 @@ public class MCoreConf extends Entity<MCoreConf>
 	
 	private Map<String, String> permissionDeniedFormats = MUtil.map(
 		"some.awesome.permission.node", "<b>You must be awesome to %s<b>.",
-		"some.derp.permission.node", "<b>Only derp people can %s<b>.\n<i>Ask a moderator to become derp."
+		"some.derp.permission.node.1", "derp",
+		"some.derp.permission.node.2", "derp",
+		"some.derp.permission.node.3", "derp",
+		"derp", "<b>Only derp people can %s<b>.\n<i>Ask a moderator to become derp."
 	);
 	public Map<String, String> getPermissionDeniedFormats() { return this.permissionDeniedFormats == null ? new LinkedHashMap<String, String>() : new LinkedHashMap<String, String>(this.permissionDeniedFormats); }
 	public void setPermissionDeniedFormats(Map<String, String> permissionDeniedFormats) { this.permissionDeniedFormats = permissionDeniedFormats == null ? new LinkedHashMap<String, String>() : new LinkedHashMap<String, String>(permissionDeniedFormats); this.changed(); }
@@ -74,7 +77,11 @@ public class MCoreConf extends Entity<MCoreConf>
 	
 	public String getPermissionDeniedFormat(String permissionName)
 	{
-		return this.getPermissionDeniedFormats().get(permissionName);
+		Map<String, String> map = this.getPermissionDeniedFormats();
+		String ret = map.get(permissionName);
+		if (ret == null) return null;
+		ret = MUtil.recurseResolveMap(ret, map);
+		return ret;
 	}
 	
 	public int getTpdelay(Permissible permissible)

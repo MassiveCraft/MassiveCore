@@ -145,6 +145,13 @@ public class MUtil
 		return ret;
 	}
 	
+	public static <T> T recurseResolveMap(T input, Map<T, T> map)
+	{
+		T output = map.get(input);
+		if (output == null) return input;
+		return recurseResolveMap(output, map);
+	}
+	
 	// -------------------------------------------- //
 	// LOCATIONS COMPARISON
 	// -------------------------------------------- //
