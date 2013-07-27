@@ -303,6 +303,19 @@ public class MUtil
 	// POTION DERP
 	// -------------------------------------------- //
 	
+	/**
+	 * Get just the potion effect bits. This is to work around bugs with potion parsing.
+	 * Workaround created by the WorldGuard team: https://github.com/sk89q/worldguard/commit/8dec32fa6a1238a11743cea8b8302a6c9d2aaa55
+	 * This issue is reported as BUKKIT-4612 "Potion.fromItemStack causes IllegalArgumentException: Instant potions cannot be extended"
+	 *
+	 * @param item item
+	 * @return new bits
+	 */
+	public static int getPotionEffectBits(ItemStack item)
+	{
+		return item.getDurability() & 0x3F;
+	} 
+	
 	public static List<PotionEffect> getPotionEffects(ItemStack itemStack)
 	{
 		if (itemStack == null) return null;
@@ -310,7 +323,7 @@ public class MUtil
 		
 		List<PotionEffect> ret = new ArrayList<PotionEffect>();
 		
-		Potion potion = Potion.fromItemStack(itemStack);
+		Potion potion = Potion.fromDamage(getPotionEffectBits(itemStack));
 		ret.addAll(potion.getEffects());
 		
 		PotionMeta meta = (PotionMeta) itemStack.getItemMeta();
