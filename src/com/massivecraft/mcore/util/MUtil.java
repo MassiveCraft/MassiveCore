@@ -102,7 +102,12 @@ public class MUtil
 		for (File playerfile : playerfiles)
 		{
 			String filename = playerfile.getName();
+			
+			// Ensure it's actually a .dat player filefile
+			if (!filename.toLowerCase().endsWith(".dat")) continue;
+			
 			String playername = filename.substring(0, filename.length()-4);
+			
 			ret.add(playername);
 		}
 		
