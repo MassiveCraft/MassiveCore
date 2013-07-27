@@ -29,6 +29,7 @@ public class MCoreConf extends Entity<MCoreConf>
 	public MCoreConf load(MCoreConf that)
 	{
 		this.permissionDeniedFormats = that.permissionDeniedFormats;
+		this.permissionToTpdelay = that.permissionToTpdelay;
 		
 		return this;
 	}
