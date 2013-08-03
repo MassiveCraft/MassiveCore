@@ -1,5 +1,6 @@
 package com.massivecraft.mcore.cmd;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.plugin.Plugin;
@@ -23,6 +24,11 @@ public class VersionCommand extends MCommand
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
+	
+	public VersionCommand(Plugin plugin, String permissionName, Collection<String> aliases)
+	{
+		this(plugin, permissionName, aliases.toArray(new String[0]));
+	}
 	
 	public VersionCommand(Plugin plugin, String permissionName, String... aliases)
 	{
