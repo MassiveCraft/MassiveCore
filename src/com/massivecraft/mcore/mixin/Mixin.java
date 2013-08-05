@@ -66,6 +66,10 @@ public class Mixin
 	public static ActualMixin getActualMixin() { return actualMixin; }
 	public static void setActualMixin(ActualMixin val) { actualMixin = val; }
 	
+	private static CommandMixin commandMixin = CommandMixinDefault.get();
+	public static CommandMixin getCommandMixin() { return commandMixin; }
+	public static void setCommandMixin(CommandMixin val) { commandMixin = val; }
+	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: WORLD
 	// -------------------------------------------- //
@@ -700,6 +704,25 @@ public class Mixin
 	public static boolean isActualLeave(MCorePlayerLeaveEvent event)
 	{
 		return getActualMixin().isActualLeave(event);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC EXPOSE: COMMAND
+	// -------------------------------------------- //
+	
+	public boolean dispatchCommand(CommandSender sender, String commandLine)
+	{
+		return getCommandMixin().dispatchCommand(sender, commandLine);
+	}
+	
+	public boolean dispatchCommand(SenderEntity<?> sender, String commandLine)
+	{
+		return getCommandMixin().dispatchCommand(sender, commandLine);
+	}
+	
+	public boolean dispatchCommand(String sender, String commandLine)
+	{
+		return getCommandMixin().dispatchCommand(sender, commandLine);
 	}
 	
 }
