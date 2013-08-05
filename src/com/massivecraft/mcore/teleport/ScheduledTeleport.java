@@ -1,6 +1,7 @@
-package com.massivecraft.mcore.mixin;
+package com.massivecraft.mcore.teleport;
 
-import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.mixin.TeleporterException;
 
 public class ScheduledTeleport implements Runnable
 {
@@ -11,8 +12,8 @@ public class ScheduledTeleport implements Runnable
 	private final String teleporteeId;
 	public String getTeleporteeId() { return this.teleporteeId; }
 	
-	private final PS destinationPs;
-	public PS getDestinationPs() { return this.destinationPs; }
+	private final PSGetter destinationGetter;
+	public PSGetter getDestinationGetter() { return this.destinationGetter; }
 	
 	private final String destinationDesc;
 	public String getDestinationDesc() { return this.destinationDesc; }
@@ -29,10 +30,10 @@ public class ScheduledTeleport implements Runnable
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public ScheduledTeleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds)
+	public ScheduledTeleport(String teleporteeId, PSGetter destinationGetter, String destinationDesc, int delaySeconds)
 	{
 		this.teleporteeId = teleporteeId;
-		this.destinationPs = destinationPs;
+		this.destinationGetter = destinationGetter;
 		this.destinationDesc = destinationDesc;
 		this.delaySeconds = delaySeconds;
 		this.dueMillis = 0;
@@ -68,7 +69,7 @@ public class ScheduledTeleport implements Runnable
 		
 		try
 		{
-			Mixin.teleport(this.getTeleporteeId(), this.getDestinationPs(), this.getDestinationDesc());
+			Mixin.teleport(this.getTeleporteeId(), this.getDestinationGetter(), this.getDestinationDesc());
 		}
 		catch (TeleporterException e)
 		{

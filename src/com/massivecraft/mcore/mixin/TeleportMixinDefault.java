@@ -7,6 +7,8 @@ import org.bukkit.util.Vector;
 
 import com.massivecraft.mcore.event.MCorePlayerPSTeleportEvent;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.teleport.PSGetter;
+import com.massivecraft.mcore.teleport.ScheduledTeleport;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
 
@@ -69,7 +71,7 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public void teleport(String teleporteeId, PS to, String desc, int delaySeconds) throws TeleporterException
+	public void teleport(String teleporteeId, PSGetter toGetter, String desc, int delaySeconds) throws TeleporterException
 	{
 		if (!SenderUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId)));
 		
@@ -85,11 +87,14 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 				Mixin.msg(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			
-			new ScheduledTeleport(teleporteeId, to, desc, delaySeconds).schedule();
+			new ScheduledTeleport(teleporteeId, toGetter, desc, delaySeconds).schedule();
 		}
 		else
 		{
 			// Without delay AKA "now"/"at once"
+			
+			// Resolve the getter
+			PS to = toGetter.getPS();
 			
 			// Run event
 			MCorePlayerPSTeleportEvent event = new MCorePlayerPSTeleportEvent(teleporteeId, Mixin.getSenderPs(teleporteeId), to, desc);

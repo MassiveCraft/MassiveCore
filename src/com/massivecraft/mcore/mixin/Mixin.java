@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.permissions.Permissible;
@@ -14,6 +13,8 @@ import org.bukkit.permissions.Permissible;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.ps.PS;
+import com.massivecraft.mcore.store.SenderEntity;
+import com.massivecraft.mcore.teleport.PSGetter;
 
 public class Mixin
 {
@@ -279,38 +280,274 @@ public class Mixin
 		return getTeleportMixin().isCausedByMixin(event);
 	}
 	
-	public static void teleport(Player teleportee, PS destinationPs) throws TeleporterException
+	// CommandSender & PS
+	public static void teleport(CommandSender teleportee, PS to) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, destinationPs);
+		getTeleportMixin().teleport(teleportee, to);
 	}
-	public static void teleport(Player teleportee, PS destinationPs, String destinationDesc) throws TeleporterException
+	public static void teleport(CommandSender teleportee, PS to, String desc) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc);
+		getTeleportMixin().teleport(teleportee, to, desc);
 	}
-	public static void teleport(Player teleportee, PS destinationPs, String destinationDesc, Permissible delayPermissible) throws TeleporterException
+	public static void teleport(CommandSender teleportee, PS to, String desc, Permissible delayPermissible) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc, delayPermissible);
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
 	}
-	public static void teleport(Player teleportee, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
+	public static void teleport(CommandSender teleportee, PS to, String desc, int delaySeconds) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, destinationPs, destinationDesc, delaySeconds);
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
 	}
 	
-	public static void teleport(String teleporteeId, PS destinationPs) throws TeleporterException
+	// CommandSender & CommandSender
+	public static void teleport(CommandSender teleportee, CommandSender to) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleporteeId, destinationPs);
+		getTeleportMixin().teleport(teleportee, to);
 	}
-	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc) throws TeleporterException
+	public static void teleport(CommandSender teleportee, CommandSender to, String desc) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleporteeId, destinationPs, destinationDesc);
+		getTeleportMixin().teleport(teleportee, to, desc);
 	}
-	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc, Permissible delayPermissible) throws TeleporterException
+	public static void teleport(CommandSender teleportee, CommandSender to, String desc, Permissible delayPermissible) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleporteeId, destinationPs, destinationDesc, delayPermissible);
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
 	}
-	public static void teleport(String teleporteeId, PS destinationPs, String destinationDesc, int delaySeconds) throws TeleporterException
+	public static void teleport(CommandSender teleportee, CommandSender to, String desc, int delaySeconds) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleporteeId, destinationPs, destinationDesc, delaySeconds);
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// CommandSender & SenderEntity
+	public static void teleport(CommandSender teleportee, SenderEntity<?> to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(CommandSender teleportee, SenderEntity<?> to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(CommandSender teleportee, SenderEntity<?> to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(CommandSender teleportee, SenderEntity<?> to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// CommandSender & String
+	public static void teleport(CommandSender teleportee, String to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(CommandSender teleportee, String to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(CommandSender teleportee, String to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(CommandSender teleportee, String to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// CommandSender & PSGetter
+	public static void teleport(CommandSender teleportee, PSGetter to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(CommandSender teleportee, PSGetter to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(CommandSender teleportee, PSGetter to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(CommandSender teleportee, PSGetter to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// SenderEntity & PS
+	public static void teleport(SenderEntity<?> teleportee, PS to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(SenderEntity<?> teleportee, PS to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(SenderEntity<?> teleportee, PS to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(SenderEntity<?> teleportee, PS to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// SenderEntity & CommandSender
+	public static void teleport(SenderEntity<?> teleportee, CommandSender to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(SenderEntity<?> teleportee, CommandSender to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(SenderEntity<?> teleportee, CommandSender to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(SenderEntity<?> teleportee, CommandSender to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// SenderEntity & SenderEntity
+	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// SenderEntity & String
+	public static void teleport(SenderEntity<?> teleportee, String to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(SenderEntity<?> teleportee, String to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(SenderEntity<?> teleportee, String to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(SenderEntity<?> teleportee, String to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// SenderEntity & PSGetter
+	public static void teleport(SenderEntity<?> teleportee, PSGetter to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(SenderEntity<?> teleportee, PSGetter to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(SenderEntity<?> teleportee, PSGetter to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(SenderEntity<?> teleportee, PSGetter to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// String & PS
+	public static void teleport(String teleportee, PS to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(String teleportee, PS to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(String teleportee, PS to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(String teleportee, PS to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// String & CommandSender
+	public static void teleport(String teleportee, CommandSender to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(String teleportee, CommandSender to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(String teleportee, CommandSender to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(String teleportee, CommandSender to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// String & SenderEntity
+	public static void teleport(String teleportee, SenderEntity<?> to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(String teleportee, SenderEntity<?> to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(String teleportee, SenderEntity<?> to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(String teleportee, SenderEntity<?> to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// String & String
+	public static void teleport(String teleportee, String to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(String teleportee, String to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(String teleportee, String to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(String teleportee, String to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+	}
+	
+	// String & PSGetter
+	public static void teleport(String teleportee, PSGetter to) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to);
+	}
+	public static void teleport(String teleportee, PSGetter to, String desc) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc);
+	}
+	public static void teleport(String teleportee, PSGetter to, String desc, Permissible delayPermissible) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+	}
+	public static void teleport(String teleportee, PSGetter to, String desc, int delaySeconds) throws TeleporterException
+	{
+		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
 	}
 	
 	// -------------------------------------------- //

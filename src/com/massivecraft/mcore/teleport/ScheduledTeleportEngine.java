@@ -1,4 +1,4 @@
-package com.massivecraft.mcore.mixin;
+package com.massivecraft.mcore.teleport;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 
