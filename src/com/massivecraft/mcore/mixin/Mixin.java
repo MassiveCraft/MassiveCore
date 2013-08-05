@@ -710,17 +710,17 @@ public class Mixin
 	// STATIC EXPOSE: COMMAND
 	// -------------------------------------------- //
 	
-	public boolean dispatchCommand(CommandSender sender, String commandLine)
+	public static boolean dispatchCommand(CommandSender sender, String commandLine)
 	{
 		return getCommandMixin().dispatchCommand(sender, commandLine);
 	}
 	
-	public boolean dispatchCommand(SenderEntity<?> sender, String commandLine)
+	public static boolean dispatchCommand(SenderEntity<?> sender, String commandLine)
 	{
 		return getCommandMixin().dispatchCommand(sender, commandLine);
 	}
 	
-	public boolean dispatchCommand(String sender, String commandLine)
+	public static boolean dispatchCommand(String sender, String commandLine)
 	{
 		return getCommandMixin().dispatchCommand(sender, commandLine);
 	}
