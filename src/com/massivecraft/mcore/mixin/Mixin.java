@@ -720,9 +720,14 @@ public class Mixin
 		return getCommandMixin().dispatchCommand(sender, commandLine);
 	}
 	
-	public static boolean dispatchCommand(String sender, String commandLine)
+	public static boolean dispatchCommand(String senderId, String commandLine)
 	{
-		return getCommandMixin().dispatchCommand(sender, commandLine);
+		return getCommandMixin().dispatchCommand(senderId, commandLine);
+	}
+	
+	public static boolean dispatchCommand(String presentId, String senderId, String commandLine)
+	{
+		return getCommandMixin().dispatchCommand(presentId, senderId, commandLine);
 	}
 	
 }
