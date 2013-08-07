@@ -314,14 +314,27 @@ public class MUtil
 	public static int getPotionEffectBits(ItemStack item)
 	{
 		return item.getDurability() & 0x3F;
-	} 
+	}
+	
+	/**
+	 * Checks if the given potion is a vial of water.
+	 *
+	 * @param item the item to check
+	 * @return true if it's a water vial
+	 */
+	public static boolean isWaterPotion(ItemStack item)
+	{
+		return getPotionEffectBits(item) == 0;
+	}
 	
 	public static List<PotionEffect> getPotionEffects(ItemStack itemStack)
 	{
 		if (itemStack == null) return null;
 		if (itemStack.getType() != Material.POTION) return null;
-		
+
 		List<PotionEffect> ret = new ArrayList<PotionEffect>();
+		
+		if (isWaterPotion(itemStack)) return ret;
 		
 		Potion potion = Potion.fromDamage(getPotionEffectBits(itemStack));
 		ret.addAll(potion.getEffects());
