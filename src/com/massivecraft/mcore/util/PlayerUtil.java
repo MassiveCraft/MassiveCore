@@ -115,6 +115,7 @@ public class PlayerUtil implements Listener
 	
 	public static boolean isJoined(Player player)
 	{
+		if (player == null) throw new NullPointerException("player was null");
 		return joinedPlayerNames.contains(player.getName());
 	}
 	
