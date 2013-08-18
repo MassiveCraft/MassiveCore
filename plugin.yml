@@ -1,6 +1,6 @@
 main: com.massivecraft.mcore.MCore
 name: mcore
-version: 6.6.0
+version: 6.6.1_dev
 website: http://massivecraft.com/mcore
 authors: [Cayorion]
 description: §eMCore stands for MassiveCraft Core and is a plugin that contains libraries and features that other plugins make use of. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttp://massivecraft.com
@@ -13,6 +13,7 @@ permissions:
   mcore.cmd.mcore: {description: use the mcore command, default: false}
   mcore.cmd.mcore.id: {description: see the server id, default: false}
   mcore.cmd.mcore.version: {description: diplay plugin version, default: false}
+  mcore.cmd.mcore.hearsound: {description: hear a sound, default: false}
   mcore.cmd.mcore.mstore: {description: use the mstore command, default: false}
   mcore.cmd.mcore.mstore.stats: {description: show mstore statistics, default: false}
   mcore.cmd.mcore.mstore.listcolls: {description: list collections in a database, default: false}
@@ -43,6 +44,7 @@ permissions:
       mcore.cmd.mcore: true
       mcore.cmd.mcore.id: true
       mcore.cmd.mcore.version: true
+      mcore.cmd.mcore.hearsound: true
       mcore.cmd.mcore.mstore: true
       mcore.cmd.mcore.mstore.stats: true
       mcore.cmd.mcore.mstore.listcolls: true
@@ -82,9 +84,7 @@ permissions:
     default: false
     children:
       mcore.kit.rank0: true
-      mcore.cmd.mcore: true
       mcore.cmd.mcore.id: true
-      mcore.cmd.mcore.version: true
       mcore.cmd.mcore.mstore: true
       mcore.cmd.mcore.mstore.stats: true
       mcore.cmd.mcore.mstore.listcolls: true
@@ -99,6 +99,9 @@ permissions:
   mcore.kit.rank0:
     default: false
     children:
+      mcore.cmd.mcore: true
+      mcore.cmd.mcore.hearsound: true
+      mcore.cmd.mcore.version: true
   mcore.kit.default:
     default: true
     children:
