@@ -96,13 +96,13 @@ public abstract class PlayerConnectionWrapAbstract extends PlayerConnection
 	// private final MinecraftServer minecraftServer;
 	// Same argumentation as above.
 	
-    // public boolean disconnected;
+	// public boolean disconnected;
 	// This one is set in two locations only from within this class
 	// 1. public void a(String s, Object[] aobject)
 	// 2. public void disconnect(String s)
 	// For that reason we update the reference upwards at those locations.
 	
-    // public EntityPlayer player;
+	// public EntityPlayer player;
 	// This one is set in two locations only from within this class
 	// 1. The constructor
 	// 2. public void a(Packet205ClientCommand packet205clientcommand)
@@ -162,251 +162,251 @@ public abstract class PlayerConnectionWrapAbstract extends PlayerConnection
 	// -------------------------------------------- //
 	
 	@Override
-    public CraftPlayer getPlayer()
-    {
-    	return this.inner.getPlayer();
-    }
-    
-	@Override
-    public void e()
-    {
-    	this.inner.e();
-    }
-    
-	@Override
-    public void disconnect(String s)
-    {
-    	this.inner.disconnect(s);
-    	this.disconnected = this.inner.disconnected;
-    }
-    
-	@Override
-    public void a(Packet27PlayerInput packet27playerinput)
-    {
-    	this.inner.a(packet27playerinput);
-    }
-    
-	@Override
-    public void a(Packet10Flying packet10flying)
-    {
-    	this.inner.a(packet10flying);
-    }
+	public CraftPlayer getPlayer()
+	{
+		return this.inner.getPlayer();
+	}
 	
 	@Override
-    public void a(double d0, double d1, double d2, float f, float f1)
-    {
-    	this.inner.a(d0, d1, d2, f, f1);
-    }
-    
-	@Override
-    public void teleport(Location dest)
-    {
-    	this.inner.teleport(dest);
-    }
-    
-	@Override
-    public void a(Packet14BlockDig packet14blockdig)
-    {
-    	this.inner.a(packet14blockdig);
-    }
-    
-	@Override
-    public void a(Packet15Place packet15place)
-    {
-    	this.inner.a(packet15place);
-    }
-    
-	@Override
-    public void a(String s, Object[] aobject)
-    {
-    	this.inner.a(s, aobject);
-    	this.disconnected = this.inner.disconnected;
-    }
-    
-	@Override
-    public void onUnhandledPacket(Packet packet)
+	public void e()
 	{
-    	this.inner.onUnhandledPacket(packet);
-    }
-    
-	@Override
-    public void sendPacket(Packet packet)
-	{
-    	this.inner.sendPacket(packet);
-    }
-    
-	@Override
-    public void a(Packet16BlockItemSwitch packet16blockitemswitch)
-	{
-    	this.inner.a(packet16blockitemswitch);
-    }
-    
-	@Override
-    public void a(Packet3Chat packet3chat)
-    {
-    	this.inner.a(packet3chat);
-    }
-    
-	@Override
-    public void chat(String s, boolean async)
-    {
-    	this.inner.chat(s, async);
-    }
+		this.inner.e();
+	}
 	
-    public void handleCommandPublic(String s)
+	@Override
+	public void disconnect(String s)
 	{
-        // CraftBukkit start
-        CraftPlayer player = this.getPlayer();
-
-        PlayerCommandPreprocessEvent event = new PlayerCommandPreprocessEvent(player, s, new LazyPlayerSet());
-        this.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return;
-        }
-
-        try {
-            this.getMinecraftServer().getLogger().info(event.getPlayer().getName() + " issued server command: " + event.getMessage()); // CraftBukkit
-            if (this.getServer().dispatchCommand(event.getPlayer(), event.getMessage().substring(1))) {
-                return;
-            }
-        } catch (org.bukkit.command.CommandException ex) {
-            player.sendMessage(org.bukkit.ChatColor.RED + "An internal error occurred while attempting to perform this command");
-            java.util.logging.Logger.getLogger(PlayerConnection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            return;
-        }
-        // CraftBukkit end
-
-        /* CraftBukkit start - No longer needed as we have already handled it in server.dispatchServerCommand above.
-        this.minecraftServer.getCommandHandler().a(this.player, s);
-        // CraftBukkit end */
-    }
-    
+		this.inner.disconnect(s);
+		this.disconnected = this.inner.disconnected;
+	}
+	
 	@Override
-    public void a(Packet18ArmAnimation packet18armanimation)
-    {
-    	this.inner.a(packet18armanimation);
-    }
-    
-	@Override
-    public void a(Packet19EntityAction packet19entityaction)
-    {
-    	this.inner.a(packet19entityaction);
-    }
-    
-	@Override
-    public void a(Packet255KickDisconnect packet255kickdisconnect)
+	public void a(Packet27PlayerInput packet27playerinput)
 	{
-    	this.inner.a(packet255kickdisconnect);
-    }
-    
+		this.inner.a(packet27playerinput);
+	}
+	
 	@Override
-    public int lowPriorityCount()
-    {
-    	return this.inner.lowPriorityCount();
-    }
-    
-	@Override
-    public void a(Packet7UseEntity packet7useentity)
+	public void a(Packet10Flying packet10flying)
 	{
-    	this.inner.a(packet7useentity);
-    }
-    
+		this.inner.a(packet10flying);
+	}
+	
 	@Override
-    public void a(Packet205ClientCommand packet205clientcommand)
-    {
-    	this.inner.a(packet205clientcommand);
-    	this.player = this.inner.player;
-    }
-    
+	public void a(double d0, double d1, double d2, float f, float f1)
+	{
+		this.inner.a(d0, d1, d2, f, f1);
+	}
+	
 	@Override
-    public boolean b()
-    {
-    	return this.inner.b();
-    }
-    
+	public void teleport(Location dest)
+	{
+		this.inner.teleport(dest);
+	}
+	
 	@Override
-    public void a(Packet9Respawn packet9respawn)
-    {
-    	this.inner.a(packet9respawn);
-    }
-    
+	public void a(Packet14BlockDig packet14blockdig)
+	{
+		this.inner.a(packet14blockdig);
+	}
+	
 	@Override
-    public void handleContainerClose(Packet101CloseWindow packet101closewindow)
-    {
-    	this.inner.handleContainerClose(packet101closewindow);
-    }
-    
+	public void a(Packet15Place packet15place)
+	{
+		this.inner.a(packet15place);
+	}
+	
 	@Override
-    public void a(Packet102WindowClick packet102windowclick)
-    {
-    	this.inner.a(packet102windowclick);
-    }
-    
+	public void a(String s, Object[] aobject)
+	{
+		this.inner.a(s, aobject);
+		this.disconnected = this.inner.disconnected;
+	}
+	
 	@Override
-    public void a(Packet108ButtonClick packet108buttonclick)
-    {
-    	this.inner.a(packet108buttonclick);
-    }
-    
+	public void onUnhandledPacket(Packet packet)
+	{
+		this.inner.onUnhandledPacket(packet);
+	}
+	
 	@Override
-    public void a(Packet107SetCreativeSlot packet107setcreativeslot)
-    {
-    	this.inner.a(packet107setcreativeslot);
-    }
-    
+	public void sendPacket(Packet packet)
+	{
+		this.inner.sendPacket(packet);
+	}
+	
 	@Override
-    public void a(Packet106Transaction packet106transaction)
-    {
-    	this.inner.a(packet106transaction);
-    }
-    
+	public void a(Packet16BlockItemSwitch packet16blockitemswitch)
+	{
+		this.inner.a(packet16blockitemswitch);
+	}
+	
 	@Override
-    public void a(Packet130UpdateSign packet130updatesign)
-    {
-    	this.inner.a(packet130updatesign);
-    }
-    
+	public void a(Packet3Chat packet3chat)
+	{
+		this.inner.a(packet3chat);
+	}
+	
 	@Override
-    public void a(Packet0KeepAlive packet0keepalive)
-    {
-    	this.inner.a(packet0keepalive);
-    }
-    
+	public void chat(String s, boolean async)
+	{
+		this.inner.chat(s, async);
+	}
+	
+	public void handleCommandPublic(String s)
+	{
+		// CraftBukkit start
+		CraftPlayer player = this.getPlayer();
+
+		PlayerCommandPreprocessEvent event = new PlayerCommandPreprocessEvent(player, s, new LazyPlayerSet());
+		this.getServer().getPluginManager().callEvent(event);
+
+		if (event.isCancelled()) {
+			return;
+		}
+
+		try {
+			this.getMinecraftServer().getLogger().info(event.getPlayer().getName() + " issued server command: " + event.getMessage()); // CraftBukkit
+			if (this.getServer().dispatchCommand(event.getPlayer(), event.getMessage().substring(1))) {
+				return;
+			}
+		} catch (org.bukkit.command.CommandException ex) {
+			player.sendMessage(org.bukkit.ChatColor.RED + "An internal error occurred while attempting to perform this command");
+			java.util.logging.Logger.getLogger(PlayerConnection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			return;
+		}
+		// CraftBukkit end
+
+		/* CraftBukkit start - No longer needed as we have already handled it in server.dispatchServerCommand above.
+		this.minecraftServer.getCommandHandler().a(this.player, s);
+		// CraftBukkit end */
+	}
+	
 	@Override
-    public boolean a()
-    {
-    	return this.inner.a();
-    }
-    
+	public void a(Packet18ArmAnimation packet18armanimation)
+	{
+		this.inner.a(packet18armanimation);
+	}
+	
 	@Override
-    public void a(Packet202Abilities packet202abilities)
-    {
-    	this.inner.a(packet202abilities);
-    }
-    
+	public void a(Packet19EntityAction packet19entityaction)
+	{
+		this.inner.a(packet19entityaction);
+	}
+	
 	@Override
-    public void a(Packet203TabComplete packet203tabcomplete)
-    {
-    	this.inner.a(packet203tabcomplete);
-    }
-    
+	public void a(Packet255KickDisconnect packet255kickdisconnect)
+	{
+		this.inner.a(packet255kickdisconnect);
+	}
+	
 	@Override
-    public void a(Packet204LocaleAndViewDistance packet204localeandviewdistance)
-    {
-    	this.inner.a(packet204localeandviewdistance);
-    }
-    
+	public int lowPriorityCount()
+	{
+		return this.inner.lowPriorityCount();
+	}
+	
 	@Override
-    public void a(Packet250CustomPayload packet250custompayload)
-    {
-    	this.inner.a(packet250custompayload);
-    }
-    
+	public void a(Packet7UseEntity packet7useentity)
+	{
+		this.inner.a(packet7useentity);
+	}
+	
 	@Override
-    public boolean c()
-    {
-    	return this.inner.c();
-    }
-    
+	public void a(Packet205ClientCommand packet205clientcommand)
+	{
+		this.inner.a(packet205clientcommand);
+		this.player = this.inner.player;
+	}
+	
+	@Override
+	public boolean b()
+	{
+		return this.inner.b();
+	}
+	
+	@Override
+	public void a(Packet9Respawn packet9respawn)
+	{
+		this.inner.a(packet9respawn);
+	}
+	
+	@Override
+	public void handleContainerClose(Packet101CloseWindow packet101closewindow)
+	{
+		this.inner.handleContainerClose(packet101closewindow);
+	}
+	
+	@Override
+	public void a(Packet102WindowClick packet102windowclick)
+	{
+		this.inner.a(packet102windowclick);
+	}
+	
+	@Override
+	public void a(Packet108ButtonClick packet108buttonclick)
+	{
+		this.inner.a(packet108buttonclick);
+	}
+	
+	@Override
+	public void a(Packet107SetCreativeSlot packet107setcreativeslot)
+	{
+		this.inner.a(packet107setcreativeslot);
+	}
+	
+	@Override
+	public void a(Packet106Transaction packet106transaction)
+	{
+		this.inner.a(packet106transaction);
+	}
+	
+	@Override
+	public void a(Packet130UpdateSign packet130updatesign)
+	{
+		this.inner.a(packet130updatesign);
+	}
+	
+	@Override
+	public void a(Packet0KeepAlive packet0keepalive)
+	{
+		this.inner.a(packet0keepalive);
+	}
+	
+	@Override
+	public boolean a()
+	{
+		return this.inner.a();
+	}
+	
+	@Override
+	public void a(Packet202Abilities packet202abilities)
+	{
+		this.inner.a(packet202abilities);
+	}
+	
+	@Override
+	public void a(Packet203TabComplete packet203tabcomplete)
+	{
+		this.inner.a(packet203tabcomplete);
+	}
+	
+	@Override
+	public void a(Packet204LocaleAndViewDistance packet204localeandviewdistance)
+	{
+		this.inner.a(packet204localeandviewdistance);
+	}
+	
+	@Override
+	public void a(Packet250CustomPayload packet250custompayload)
+	{
+		this.inner.a(packet250custompayload);
+	}
+	
+	@Override
+	public boolean c()
+	{
+		return this.inner.c();
+	}
+	
 }

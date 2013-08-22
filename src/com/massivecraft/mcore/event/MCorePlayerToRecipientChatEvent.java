@@ -20,18 +20,18 @@ public class MCorePlayerToRecipientChatEvent extends MCoreEvent
 	
 	private final Player sender;
 	public Player getSender() { return this.sender; }
-    
-    private final CommandSender recipient;
-    public CommandSender getRecipient() { return this.recipient; }
+	
+	private final CommandSender recipient;
+	public CommandSender getRecipient() { return this.recipient; }
 	
 	private String message;
 	public String getMessage() { return this.message; }
 	public void setMessage(String message) { this.message = message; }
-    
-    private String format;
-    public String getFormat() { return this.format; }
+	
+	private String format;
+	public String getFormat() { return this.format; }
 	public void setFormat(String format) { this.format = format; }
-    
+	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //

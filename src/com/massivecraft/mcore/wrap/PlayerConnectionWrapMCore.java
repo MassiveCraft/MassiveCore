@@ -81,193 +81,193 @@ public class PlayerConnectionWrapMCore extends PlayerConnectionWrapAbstract
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-    public void a(Packet3Chat packet3chat)
-    {
-        if (this.player.getChatFlags() == 2) {
-            this.sendPacket(new Packet3Chat(ChatMessage.e("chat.cannotSend").a(EnumChatFormat.RED)));
-        } else {
-            String s = packet3chat.message;
+	public void a(Packet3Chat packet3chat)
+	{
+		if (this.player.getChatFlags() == 2) {
+			this.sendPacket(new Packet3Chat(ChatMessage.e("chat.cannotSend").a(EnumChatFormat.RED)));
+		} else {
+			String s = packet3chat.message;
 
-            if (s.length() > 100) {
-                // CraftBukkit start
-                if (packet3chat.a_()) {
-                    Waitable waitable = new Waitable() {
-                        @Override
-                        protected Object evaluate() {
-                        	PlayerConnectionWrapMCore.this.disconnect("Chat message too long");
-                            return null;
-                        }
-                    };
+			if (s.length() > 100) {
+				// CraftBukkit start
+				if (packet3chat.a_()) {
+					Waitable waitable = new Waitable() {
+						@Override
+						protected Object evaluate() {
+							PlayerConnectionWrapMCore.this.disconnect("Chat message too long");
+							return null;
+						}
+					};
 
-                    this.getMinecraftServer().processQueue.add(waitable);
+					this.getMinecraftServer().processQueue.add(waitable);
 
-                    try {
-                        waitable.get();
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
-                } else {
-                    this.disconnect("Chat message too long");
-                }
-                // CraftBukkit end
-            } else {
-                s = StringUtils.normalizeSpace(s);
+					try {
+						waitable.get();
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					} catch (ExecutionException e) {
+						throw new RuntimeException(e);
+					}
+				} else {
+					this.disconnect("Chat message too long");
+				}
+				// CraftBukkit end
+			} else {
+				s = StringUtils.normalizeSpace(s);
 
-                for (int i = 0; i < s.length(); ++i) {
-                    if (!SharedConstants.isAllowedChatCharacter(s.charAt(i))) {
-                        // CraftBukkit start
-                        if (packet3chat.a_()) {
-                            Waitable waitable = new Waitable() {
-                                @Override
-                                protected Object evaluate() {
-                                    PlayerConnectionWrapMCore.this.disconnect("Illegal characters in chat");
-                                    return null;
-                                }
-                            };
+				for (int i = 0; i < s.length(); ++i) {
+					if (!SharedConstants.isAllowedChatCharacter(s.charAt(i))) {
+						// CraftBukkit start
+						if (packet3chat.a_()) {
+							Waitable waitable = new Waitable() {
+								@Override
+								protected Object evaluate() {
+									PlayerConnectionWrapMCore.this.disconnect("Illegal characters in chat");
+									return null;
+								}
+							};
 
-                            this.getMinecraftServer().processQueue.add(waitable);
+							this.getMinecraftServer().processQueue.add(waitable);
 
-                            try {
-                                waitable.get();
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                            } catch (ExecutionException e) {
-                                throw new RuntimeException(e);
-                            }
-                        } else {
-                            this.disconnect("Illegal characters in chat");
-                        }
-                        // CraftBukkit end
-                        return;
-                    }
-                }
+							try {
+								waitable.get();
+							} catch (InterruptedException e) {
+								Thread.currentThread().interrupt();
+							} catch (ExecutionException e) {
+								throw new RuntimeException(e);
+							}
+						} else {
+							this.disconnect("Illegal characters in chat");
+						}
+						// CraftBukkit end
+						return;
+					}
+				}
 
-                // CraftBukkit start
-                if (this.player.getChatFlags() == 1 && !s.startsWith("/")) {
-                    this.sendPacket(new Packet3Chat(ChatMessage.e("chat.cannotSend").a(EnumChatFormat.RED)));
-                    return;
-                }
+				// CraftBukkit start
+				if (this.player.getChatFlags() == 1 && !s.startsWith("/")) {
+					this.sendPacket(new Packet3Chat(ChatMessage.e("chat.cannotSend").a(EnumChatFormat.RED)));
+					return;
+				}
 
-                this.chat(s, packet3chat.a_());
+				this.chat(s, packet3chat.a_());
 
-                // This section stays because it is only applicable to packets
-                if (this.getChatSpamField().addAndGet(this, 20) > 200 && !this.getMinecraftServer().getPlayerList().isOp(this.player.getName())) { // CraftBukkit use thread-safe spam
-                    if (packet3chat.a_()) {
-                        Waitable waitable = new Waitable() {
-                            @Override
-                            protected Object evaluate() {
-                            	PlayerConnectionWrapMCore.this.disconnect("disconnect.spam");
-                                return null;
-                            }
-                        };
+				// This section stays because it is only applicable to packets
+				if (this.getChatSpamField().addAndGet(this, 20) > 200 && !this.getMinecraftServer().getPlayerList().isOp(this.player.getName())) { // CraftBukkit use thread-safe spam
+					if (packet3chat.a_()) {
+						Waitable waitable = new Waitable() {
+							@Override
+							protected Object evaluate() {
+								PlayerConnectionWrapMCore.this.disconnect("disconnect.spam");
+								return null;
+							}
+						};
 
-                        this.getMinecraftServer().processQueue.add(waitable);
+						this.getMinecraftServer().processQueue.add(waitable);
 
-                        try {
-                            waitable.get();
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        } catch (ExecutionException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        this.disconnect("disconnect.spam");
-                    }
-                }
-            }
-        }
-    }
+						try {
+							waitable.get();
+						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
+						} catch (ExecutionException e) {
+							throw new RuntimeException(e);
+						}
+					} else {
+						this.disconnect("disconnect.spam");
+					}
+				}
+			}
+		}
+	}
 	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void chat(String s, boolean async)
 	{
 		if (!this.player.dead) {
-            if (s.length() == 0) {
-                this.getMinecraftServer().getLogger().warning(this.player.getName() + " tried to send an empty message");
-                return;
-            }
+			if (s.length() == 0) {
+				this.getMinecraftServer().getLogger().warning(this.player.getName() + " tried to send an empty message");
+				return;
+			}
 
-            if (getPlayer().isConversing()) {
-                getPlayer().acceptConversationInput(s);
-                return;
-            }
+			if (getPlayer().isConversing()) {
+				getPlayer().acceptConversationInput(s);
+				return;
+			}
 
-            if (s.startsWith("/")) {
-                this.handleCommandPublic(s);
-                return;
-            } else {
-                Player player = this.getPlayer();
-                AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(async, player, s, new LazyPlayerSet());
-                this.getServer().getPluginManager().callEvent(event);
+			if (s.startsWith("/")) {
+				this.handleCommandPublic(s);
+				return;
+			} else {
+				Player player = this.getPlayer();
+				AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(async, player, s, new LazyPlayerSet());
+				this.getServer().getPluginManager().callEvent(event);
 
-                if (PlayerChatEvent.getHandlerList().getRegisteredListeners().length != 0) {
-                    // Evil plugins still listening to deprecated event
-                    final PlayerChatEvent queueEvent = new PlayerChatEvent(player, event.getMessage(), event.getFormat(), event.getRecipients());
-                    queueEvent.setCancelled(event.isCancelled());
-                    Waitable waitable = new Waitable() {
-                        @Override
-                        protected Object evaluate() {
-                            org.bukkit.Bukkit.getPluginManager().callEvent(queueEvent);
+				if (PlayerChatEvent.getHandlerList().getRegisteredListeners().length != 0) {
+					// Evil plugins still listening to deprecated event
+					final PlayerChatEvent queueEvent = new PlayerChatEvent(player, event.getMessage(), event.getFormat(), event.getRecipients());
+					queueEvent.setCancelled(event.isCancelled());
+					Waitable waitable = new Waitable() {
+						@Override
+						protected Object evaluate() {
+							org.bukkit.Bukkit.getPluginManager().callEvent(queueEvent);
 
-                            if (queueEvent.isCancelled()) {
-                                return null;
-                            }
-                            
-                            // MCore - start
-                            distributeMessage(false, queueEvent.getPlayer(), queueEvent.getRecipients(), queueEvent.getMessage(), queueEvent.getFormat());
-                            /*String message = String.format(queueEvent.getFormat(), queueEvent.getPlayer().getDisplayName(), queueEvent.getMessage());
-                            minecraftServerPublic.console.sendMessage(message);
-                            if (((LazyPlayerSet) queueEvent.getRecipients()).isLazy()) {
-                                for (Object player : minecraftServerPublic.getPlayerList().players) {
-                                    ((EntityPlayer) player).sendMessage(ChatMessage.d(message));
-                                }
-                            } else {
-                                for (Player player : queueEvent.getRecipients()) {
-                                    player.sendMessage(message);
-                                }
-                            }*/
-                            // MCore - end
-                            return null;
-                        }};
-                    if (async) {
-                    	this.getMinecraftServer().processQueue.add(waitable);
-                    } else {
-                        waitable.run();
-                    }
-                    try {
-                        waitable.get();
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt(); // This is proper habit for java. If we aren't handling it, pass it on!
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException("Exception processing chat event", e.getCause());
-                    }
-                } else {
-                    if (event.isCancelled()) {
-                        return;
-                    }
-                    
-                    // MCore - start
-                    distributeMessage(async, event.getPlayer(), event.getRecipients(), event.getMessage(), event.getFormat());
-                    /*s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
-                    minecraftServerPublic.console.sendMessage(s);
-                    if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
-                        for (Object recipient : minecraftServerPublic.getPlayerList().players) {
-                            ((EntityPlayer) recipient).sendMessage(ChatMessage.d(s));
-                        }
-                    } else {
-                        for (Player recipient : event.getRecipients()) {
-                            recipient.sendMessage(s);
-                        }
-                    }*/
-                    // MCore - end
-                }
-            }
-        }
+							if (queueEvent.isCancelled()) {
+								return null;
+							}
+							
+							// MCore - start
+							distributeMessage(false, queueEvent.getPlayer(), queueEvent.getRecipients(), queueEvent.getMessage(), queueEvent.getFormat());
+							/*String message = String.format(queueEvent.getFormat(), queueEvent.getPlayer().getDisplayName(), queueEvent.getMessage());
+							minecraftServerPublic.console.sendMessage(message);
+							if (((LazyPlayerSet) queueEvent.getRecipients()).isLazy()) {
+								for (Object player : minecraftServerPublic.getPlayerList().players) {
+									((EntityPlayer) player).sendMessage(ChatMessage.d(message));
+								}
+							} else {
+								for (Player player : queueEvent.getRecipients()) {
+									player.sendMessage(message);
+								}
+							}*/
+							// MCore - end
+							return null;
+						}};
+					if (async) {
+						this.getMinecraftServer().processQueue.add(waitable);
+					} else {
+						waitable.run();
+					}
+					try {
+						waitable.get();
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt(); // This is proper habit for java. If we aren't handling it, pass it on!
+					} catch (ExecutionException e) {
+						throw new RuntimeException("Exception processing chat event", e.getCause());
+					}
+				} else {
+					if (event.isCancelled()) {
+						return;
+					}
+					
+					// MCore - start
+					distributeMessage(async, event.getPlayer(), event.getRecipients(), event.getMessage(), event.getFormat());
+					/*s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
+					minecraftServerPublic.console.sendMessage(s);
+					if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
+						for (Object recipient : minecraftServerPublic.getPlayerList().players) {
+							((EntityPlayer) recipient).sendMessage(ChatMessage.d(s));
+						}
+					} else {
+						for (Player recipient : event.getRecipients()) {
+							recipient.sendMessage(s);
+						}
+					}*/
+					// MCore - end
+				}
+			}
+		}
 
-        return;
+		return;
 	}
 
 }
