@@ -31,6 +31,8 @@ public class ConfServer extends SimpleConfig
 	
 	public static String dburi = "default";
 	
+	public static boolean usingPlayerConnectionWrap = true;
+	
 	public static List<String> aliasesOuterMCore = MUtil.list("mcore");
 	public static List<String> aliasesOuterMCoreUsys = MUtil.list("usys");
 	public static List<String> aliasesOuterMCoreMStore = MUtil.list("mstore");

@@ -30,4 +30,18 @@ public abstract class MCoreEvent extends Event implements Runnable, Cancellable
 		Bukkit.getPluginManager().callEvent(this);
 	}
 	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public MCoreEvent()
+	{
+		super();
+	}
+	
+	public MCoreEvent(boolean isAsync)
+	{
+		super(isAsync);
+	}
+	
 }

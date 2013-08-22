@@ -13,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
@@ -32,6 +33,7 @@ import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
+import com.massivecraft.mcore.wrap.PlayerConnectionWrapMCore;
 
 public class InternalListener implements Listener
 {
@@ -50,6 +52,17 @@ public class InternalListener implements Listener
 	{
 		MCorePlayerLeaveEvent.player2event.clear();
 		Bukkit.getPluginManager().registerEvents(this, MCore.get());
+	}
+	
+	// -------------------------------------------- //
+	// PLAYER CONNECTION WRAP INJECTION
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void playerConnectionWrapInjection(final PlayerJoinEvent event)
+	{
+		if (!ConfServer.usingPlayerConnectionWrap) return;
+		new PlayerConnectionWrapMCore(event.getPlayer());
 	}
 	
 	// -------------------------------------------- //
