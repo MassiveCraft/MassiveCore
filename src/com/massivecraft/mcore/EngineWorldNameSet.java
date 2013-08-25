@@ -12,14 +12,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
-public class WorldNameSetEngine implements Listener
+public class EngineWorldNameSet implements Listener
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static WorldNameSetEngine i = new WorldNameSetEngine();
-	public static WorldNameSetEngine get() { return i; }
+	private static EngineWorldNameSet i = new EngineWorldNameSet();
+	public static EngineWorldNameSet get() { return i; }
 	
 	// -------------------------------------------- //
 	// SETUP

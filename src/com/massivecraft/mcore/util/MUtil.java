@@ -47,7 +47,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.mcore.InternalListener;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.WorldNameSetEngine;
+import com.massivecraft.mcore.EngineWorldNameSet;
 import com.massivecraft.mcore.util.extractor.Extractor;
 import com.massivecraft.mcore.util.extractor.ExtractorMoneyUniverse;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayer;
@@ -394,7 +394,7 @@ public class MUtil
 	
 	public static Set<String> getLoadedWorldNames()
 	{
-		return WorldNameSetEngine.get().getWorldNames();
+		return EngineWorldNameSet.get().getWorldNames();
 	}
 	
 	// -------------------------------------------- //

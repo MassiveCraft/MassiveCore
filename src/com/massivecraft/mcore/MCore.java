@@ -142,7 +142,8 @@ public class MCore extends MPlugin
 		InternalListener.get().setup();
 		ScheduledTeleportEngine.get().setup();
 		TeleportMixinCauseEngine.get().setup();
-		WorldNameSetEngine.get().setup();
+		EngineWorldNameSet.get().setup();
+		EngineOfflineCase.get().setup();
 		
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);

@@ -31,10 +31,8 @@ import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.SenderColl;
-import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
-import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.wrap.PlayerConnectionWrapMCore;
 
 public class InternalListener implements Listener
@@ -54,44 +52,6 @@ public class InternalListener implements Listener
 	{
 		MCorePlayerLeaveEvent.player2event.clear();
 		Bukkit.getPluginManager().registerEvents(this, MCore.get());
-	}
-	
-	// -------------------------------------------- //
-	// FORCE ONE PLAYER NAME CASE
-	// -------------------------------------------- //
-	// This is used with offline servers to prevent bugs on case sensitive file systems.
-	
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void forceOnePlayerNameCase(PlayerLoginEvent event)
-	{
-		// If we are enforcing one player name case ...
-		if (!ConfServer.forceOnePlayerNameCase) return;
-		
-		// ... and the server is running in offline mode ...
-		if (Bukkit.getOnlineMode()) return;
-		
-		// ... prepare vars ...
-		Player player = event.getPlayer();
-		String playerName = player.getName();
-		
-		// ... is the player already online? ...
-		for (Player onlinePlayer: Bukkit.getOnlinePlayers())
-		{
-			if (!playerName.equalsIgnoreCase(onlinePlayer.getName())) continue;
-			event.setResult(Result.KICK_OTHER);
-			event.setKickMessage(Txt.parse("<b>The player <h>%s <b>is already online.", onlinePlayer.getName()));
-			return;
-		}
-		
-		// ... is the first found file name different?
-		for (String pdname : MUtil.getPlayerDirectoryNames())
-		{
-			if (!playerName.equalsIgnoreCase(pdname)) continue;
-			if (playerName.equals(pdname)) break;
-			event.setResult(Result.KICK_OTHER);
-			event.setKickMessage(Txt.parse("<b>Invalid uppercase and lowercase letters in name.\n<i>Please spell this name like \"<h>%s<i>\".", pdname));
-		}
-		
 	}
 	
 	// -------------------------------------------- //
