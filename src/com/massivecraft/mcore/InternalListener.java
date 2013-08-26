@@ -1,6 +1,7 @@
 package com.massivecraft.mcore;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -13,7 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
@@ -26,6 +27,7 @@ import com.massivecraft.mcore.event.MCoreAfterPlayerRespawnEvent;
 import com.massivecraft.mcore.event.MCoreAfterPlayerTeleportEvent;
 import com.massivecraft.mcore.event.MCorePermissionDeniedFormatEvent;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
+import com.massivecraft.mcore.event.MCorePlayerToRecipientChatEvent;
 import com.massivecraft.mcore.event.MCoreSenderRegisterEvent;
 import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
 import com.massivecraft.mcore.mixin.Mixin;
@@ -33,7 +35,6 @@ import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
-import com.massivecraft.mcore.wrap.PlayerConnectionWrapMCore;
 
 public class InternalListener implements Listener
 {
@@ -55,14 +56,44 @@ public class InternalListener implements Listener
 	}
 	
 	// -------------------------------------------- //
-	// PLAYER CONNECTION WRAP INJECTION
+	// RECIPIENT CHAT
 	// -------------------------------------------- //
+	// A system to create per recipient events.
+	// It clears the recipient set so the event isn't cancelled completely.
+	// It will cause non async chat events not to fire.
 	
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void playerConnectionWrapInjection(final PlayerJoinEvent event)
+	public static void recipientChat(Player sender, String message, String format, Set<CommandSender> recipients)
 	{
-		if (!ConfServer.usingPlayerConnectionWrap) return;
-		new PlayerConnectionWrapMCore(event.getPlayer());
+		// For each of the recipients
+		for (CommandSender recipient : recipients)
+		{
+			// Run the event for this unique recipient
+			MCorePlayerToRecipientChatEvent event = new MCorePlayerToRecipientChatEvent(sender, recipient, message, format);
+			event.run();
+			
+			// Format and send with the format and message from this recipient's own event. 
+			String recipientMessage = String.format(event.getFormat(), sender.getDisplayName(), event.getMessage());
+			recipient.sendMessage(recipientMessage);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void recipientChat(final AsyncPlayerChatEvent event)
+	{
+		// Return unless we are using the recipient chat event
+		if (!ConfServer.useRecipientChatEvent) return;
+		
+		// Prepare vars
+		final Player sender = event.getPlayer();
+		String message = event.getMessage();
+		String format = event.getFormat();
+		
+		// Pick the recipients to avoid the message getting sent without canceling the event.
+		Set<CommandSender> recipients = new HashSet<CommandSender>(event.getRecipients());
+		event.getRecipients().clear();
+		
+		// Do it!
+		recipientChat(sender, message, format, recipients);
 	}
 	
 	// -------------------------------------------- //

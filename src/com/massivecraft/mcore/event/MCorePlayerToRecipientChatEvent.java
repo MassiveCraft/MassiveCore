@@ -36,9 +36,9 @@ public class MCorePlayerToRecipientChatEvent extends MCoreEvent
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MCorePlayerToRecipientChatEvent(boolean async, Player sender, CommandSender recipient, String message, String format)
+	public MCorePlayerToRecipientChatEvent(Player sender, CommandSender recipient, String message, String format)
 	{
-		super(async);
+		super(true);
 		this.sender = sender;
 		this.recipient = recipient;
 		this.message = message;
