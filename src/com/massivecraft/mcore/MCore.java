@@ -135,7 +135,6 @@ public class MCore extends MPlugin
 		//db = MStore.getDb(ConfServer.dburi);
 		
 		// Setup PlayerUtil and it's events
-		new PlayerUtil(this);
 		SenderIdMixinDefault.get().setup();
 		
 		// Register events
@@ -144,6 +143,7 @@ public class MCore extends MPlugin
 		TeleportMixinCauseEngine.get().setup();
 		EngineWorldNameSet.get().setup();
 		EngineOfflineCase.get().setup();
+		PlayerUtil.get().setup();
 		
 		// Schedule the collection ticker.
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
