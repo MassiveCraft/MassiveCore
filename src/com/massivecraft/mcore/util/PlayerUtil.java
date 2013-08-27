@@ -43,6 +43,8 @@ public class PlayerUtil implements Listener
 	
 	public void setup()
 	{
+		lowercaseToDeath.clear();
+		
 		joinedPlayerNames.clear();
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
