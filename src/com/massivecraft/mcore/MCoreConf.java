@@ -28,6 +28,8 @@ public class MCoreConf extends Entity<MCoreConf>
 	@Override
 	public MCoreConf load(MCoreConf that)
 	{
+		this.usingRecipientChatEvent = that.usingRecipientChatEvent;
+		this.forcingOnePlayerNameCase = that.forcingOnePlayerNameCase;
 		this.permissionDeniedFormats = that.permissionDeniedFormats;
 		this.permissionToTpdelay = that.permissionToTpdelay;
 		
@@ -38,6 +40,14 @@ public class MCoreConf extends Entity<MCoreConf>
 	// FIELDS
 	// -------------------------------------------- //
 	// These getters and setters are obnoxious, defensive copying, NPE avoiding and probably thread safe.
+	
+	private boolean usingRecipientChatEvent = true;
+	public boolean isUsingRecipientChatEvent() { return this.usingRecipientChatEvent; }
+	public void setUsingRecipientChatEvent(boolean usingRecipientChatEvent) { this.usingRecipientChatEvent = usingRecipientChatEvent; this.changed(); }
+	
+	private boolean forcingOnePlayerNameCase = true;
+	public boolean isForcingOnePlayerNameCase() { return this.forcingOnePlayerNameCase; }
+	public void setForcingOnePlayerNameCase(boolean forcingOnePlayerNameCase) { this.forcingOnePlayerNameCase = forcingOnePlayerNameCase; this.changed(); }
 	
 	private Map<String, String> permissionDeniedFormats = MUtil.map(
 		"some.awesome.permission.node", "<b>You must be awesome to %s<b>.",

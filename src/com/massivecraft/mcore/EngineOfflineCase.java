@@ -88,7 +88,7 @@ public class EngineOfflineCase implements Listener
 	public void forceOnePlayerNameCase(PlayerLoginEvent event)
 	{
 		// Stop if the feature is disabled
-		if (!ConfServer.forceOnePlayerNameCase) return;
+		if (!MCoreConf.get().isForcingOnePlayerNameCase()) return;
 		
 		// Stop if we are using online mode
 		if (Bukkit.getOnlineMode()) return;

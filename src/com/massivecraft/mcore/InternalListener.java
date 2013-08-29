@@ -81,7 +81,7 @@ public class InternalListener implements Listener
 	public void recipientChat(final AsyncPlayerChatEvent event)
 	{
 		// Return unless we are using the recipient chat event
-		if (!ConfServer.useRecipientChatEvent) return;
+		if (!MCoreConf.get().isUsingRecipientChatEvent()) return;
 		
 		// Prepare vars
 		final Player sender = event.getPlayer();
