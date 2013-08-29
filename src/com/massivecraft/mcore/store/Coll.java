@@ -18,8 +18,10 @@ import com.massivecraft.mcore.MPlugin;
 import com.massivecraft.mcore.NaturalOrderComparator;
 import com.massivecraft.mcore.Predictate;
 import com.massivecraft.mcore.store.accessor.Accessor;
+import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
+import com.massivecraft.mcore.xlib.gson.JsonSyntaxException;
 
 public class Coll<E> implements CollInterface<E>
 {
@@ -498,7 +500,19 @@ public class Coll<E> implements CollInterface<E>
 		
 		this.clearIdentifiedChanges(id);
 		
-		Entry<JsonElement, Long> entry = this.getDriver().load(this, id);
+		Entry<JsonElement, Long> entry = null;
+		try
+		{
+			entry = this.getDriver().load(this, id);
+		}
+		catch (JsonSyntaxException e)
+		{
+			MCore.get().log(Txt.parse("<b>Database could not load entity. Invalid JSON syntax. You edited a file manually and did it wrong?"));
+			MCore.get().log(Txt.parse("<k>Error: <v>%s", e.getMessage()));
+			MCore.get().log(Txt.parse("<k>Entity: <v>%s", id));
+			MCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
+			return;
+		}
 		if (entry == null) return;
 		
 		JsonElement raw = entry.getKey();
