@@ -154,7 +154,7 @@ public class InternalListener implements Listener
 		if (cause != DamageCause.BLOCK_EXPLOSION) return;
 		
 		// ... and that explosion is a fake ...
-		if (SmokeUtil.fakeExplosion == false) return;
+		if (!SmokeUtil.fakeExplosion.booleanValue()) return;
 		
 		// ... then cancel the event and the damage.
 		event.setCancelled(true);

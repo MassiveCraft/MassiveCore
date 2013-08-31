@@ -3,6 +3,7 @@ package com.massivecraft.mcore.util;
 import java.util.Collection;
 import java.util.Random;
 
+import org.apache.commons.lang.mutable.MutableBoolean;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 
@@ -89,14 +90,14 @@ public class SmokeUtil
 		fakeExplosion(location, 4F);
 	}
 	
-	public static Boolean fakeExplosion = false;
+	public static MutableBoolean fakeExplosion = new MutableBoolean(false);
 	public static void fakeExplosion(Location location, float power)
 	{
 		synchronized (fakeExplosion)
 		{
-			fakeExplosion = true;
+			fakeExplosion.setValue(true);
 			location.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), power, false, false);
-			fakeExplosion = false;
+			fakeExplosion.setValue(false);
 		}
 	}
 	
