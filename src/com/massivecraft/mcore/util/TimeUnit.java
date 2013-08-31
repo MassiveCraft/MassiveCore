@@ -148,4 +148,10 @@ public class TimeUnit implements Comparable<TimeUnit>
 		return this.millis == ((TimeUnit)other).millis;
 	}
 	
+	@Override
+	public final int hashCode()
+	{
+	    return (int)(this.millis^(this.millis>>>32));
+	}
+	
 }
