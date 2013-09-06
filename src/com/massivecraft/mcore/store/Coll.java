@@ -609,7 +609,20 @@ public class Coll<E> implements CollInterface<E>
 	protected boolean examineHasLocalAlter(String id, E entity)
 	{
 		JsonElement lastRaw = this.lastRaw.get(id);
-		JsonElement currentRaw = this.getGson().toJsonTree(entity, this.getEntityClass());
+		JsonElement currentRaw = null;
+		
+		try
+		{
+			currentRaw = this.getGson().toJsonTree(entity, this.getEntityClass());
+		}
+		catch (Exception e)
+		{
+			MCore.get().log(Txt.parse("<b>Database examineHasLocalAlter failed convert current entity to JSON tree."));
+			MCore.get().log(Txt.parse("<k>Error: <v>%s", e.getMessage()));
+			MCore.get().log(Txt.parse("<k>Entity: <v>%s", id));
+			MCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
+			throw e;
+		}
 		
 		return !MStore.equal(lastRaw, currentRaw);
 	}

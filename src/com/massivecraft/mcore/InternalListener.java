@@ -68,11 +68,11 @@ public class InternalListener implements Listener
 		for (CommandSender recipient : recipients)
 		{
 			// Run the event for this unique recipient
-			MCorePlayerToRecipientChatEvent event = new MCorePlayerToRecipientChatEvent(sender, recipient, message, format);
-			event.run();
+			MCorePlayerToRecipientChatEvent recipientEvent = new MCorePlayerToRecipientChatEvent(sender, recipient, message, format);
+			recipientEvent.run();
 			
 			// Format and send with the format and message from this recipient's own event. 
-			String recipientMessage = String.format(event.getFormat(), sender.getDisplayName(), event.getMessage());
+			String recipientMessage = String.format(recipientEvent.getFormat(), sender.getDisplayName(), recipientEvent.getMessage());
 			recipient.sendMessage(recipientMessage);
 		}
 	}
@@ -84,16 +84,32 @@ public class InternalListener implements Listener
 		if (!MCoreConf.get().isUsingRecipientChatEvent()) return;
 		
 		// Prepare vars
+		MCorePlayerToRecipientChatEvent recipientEvent;
 		final Player sender = event.getPlayer();
 		String message = event.getMessage();
 		String format = event.getFormat();
 		
 		// Pick the recipients to avoid the message getting sent without canceling the event.
-		Set<CommandSender> recipients = new HashSet<CommandSender>(event.getRecipients());
+		Set<Player> players = new HashSet<Player>(event.getRecipients());
 		event.getRecipients().clear();
 		
-		// Do it!
-		recipientChat(sender, message, format, recipients);
+		// For each of the players
+		for (Player recipient : players)
+		{
+			// Run the event for this unique recipient
+			recipientEvent = new MCorePlayerToRecipientChatEvent(sender, recipient, message, format);
+			recipientEvent.run();
+			
+			// Format and send with the format and message from this recipient's own event. 
+			String recipientMessage = String.format(recipientEvent.getFormat(), sender.getDisplayName(), recipientEvent.getMessage());
+			recipient.sendMessage(recipientMessage);
+		}
+		
+		// For the console
+		recipientEvent = new MCorePlayerToRecipientChatEvent(sender, Bukkit.getConsoleSender(), message, format);
+		recipientEvent.run();
+		event.setMessage(recipientEvent.getMessage());
+		event.setFormat(recipientEvent.getFormat());
 	}
 	
 	// -------------------------------------------- //
