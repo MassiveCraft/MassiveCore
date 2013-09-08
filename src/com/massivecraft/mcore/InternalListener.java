@@ -62,21 +62,6 @@ public class InternalListener implements Listener
 	// It clears the recipient set so the event isn't cancelled completely.
 	// It will cause non async chat events not to fire.
 	
-	public static void recipientChat(Player sender, String message, String format, Set<CommandSender> recipients)
-	{
-		// For each of the recipients
-		for (CommandSender recipient : recipients)
-		{
-			// Run the event for this unique recipient
-			MCorePlayerToRecipientChatEvent recipientEvent = new MCorePlayerToRecipientChatEvent(sender, recipient, message, format);
-			recipientEvent.run();
-			
-			// Format and send with the format and message from this recipient's own event. 
-			String recipientMessage = String.format(recipientEvent.getFormat(), sender.getDisplayName(), recipientEvent.getMessage());
-			recipient.sendMessage(recipientMessage);
-		}
-	}
-	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void recipientChat(final AsyncPlayerChatEvent event)
 	{
@@ -97,7 +82,7 @@ public class InternalListener implements Listener
 		for (Player recipient : players)
 		{
 			// Run the event for this unique recipient
-			recipientEvent = new MCorePlayerToRecipientChatEvent(sender, recipient, message, format);
+			recipientEvent = new MCorePlayerToRecipientChatEvent(event.isAsynchronous(), sender, recipient, message, format);
 			recipientEvent.run();
 			
 			// Format and send with the format and message from this recipient's own event. 
@@ -106,7 +91,7 @@ public class InternalListener implements Listener
 		}
 		
 		// For the console
-		recipientEvent = new MCorePlayerToRecipientChatEvent(sender, Bukkit.getConsoleSender(), message, format);
+		recipientEvent = new MCorePlayerToRecipientChatEvent(event.isAsynchronous(), sender, Bukkit.getConsoleSender(), message, format);
 		recipientEvent.run();
 		event.setMessage(recipientEvent.getMessage());
 		event.setFormat(recipientEvent.getFormat());
