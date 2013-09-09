@@ -52,6 +52,7 @@ public class SimpleConfig
 	protected static boolean contentRequestsDefaults(String content)
 	{
 		if (content == null) return false;
+		if (content.length() == 0) return false;
 		char c = content.charAt(0);
 		return c == 'd' || c == 'D';
 	}
