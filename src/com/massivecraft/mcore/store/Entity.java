@@ -45,7 +45,14 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 	
 	private JsonObject customData = null;
 	public JsonObject getCustomData() { return this.customData; }
-	public void setCustomData(JsonObject customData) { this.customData = customData; }
+	public String getCustomData(String key) { return customData == null ? null : this.customData.get(key).getAsString(); }
+	protected void setCustomData(JsonObject customData) { this.customData = customData; }
+	public void setCustomData(String key, String value) { 
+	    if (customData == null)
+	        customData = new JsonObject();
+	    this.customData.addProperty(key, value); 
+	}
+	public void clearCustomData(String key) { if (this.customData != null) this.customData.remove(key); }
 	
 	// -------------------------------------------- //
 	// ATTACH AND DETACH
