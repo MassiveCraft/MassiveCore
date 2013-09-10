@@ -14,6 +14,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.mcore.adapter.InventoryAdapter;
 import com.massivecraft.mcore.adapter.ItemStackAdapter;
+import com.massivecraft.mcore.adapter.JsonElementAdapter;
 import com.massivecraft.mcore.adapter.ObjectIdAdapter;
 import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
@@ -35,6 +36,10 @@ import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
+import com.massivecraft.mcore.xlib.gson.JsonArray;
+import com.massivecraft.mcore.xlib.gson.JsonNull;
+import com.massivecraft.mcore.xlib.gson.JsonObject;
+import com.massivecraft.mcore.xlib.gson.JsonPrimitive;
 
 public class MCore extends MPlugin
 {
@@ -66,6 +71,10 @@ public class MCore extends MPlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
+		.registerTypeAdapter(JsonNull.class, JsonElementAdapter.get())
+		.registerTypeAdapter(JsonPrimitive.class, JsonElementAdapter.get())
+		.registerTypeAdapter(JsonArray.class, JsonElementAdapter.get())
+		.registerTypeAdapter(JsonObject.class, JsonElementAdapter.get())
 		.registerTypeAdapter(ObjectId.class, ObjectIdAdapter.get())
 		.registerTypeAdapter(UUID.class, UUIDAdapter.get())
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
