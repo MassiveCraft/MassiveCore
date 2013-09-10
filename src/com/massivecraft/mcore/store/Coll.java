@@ -21,6 +21,7 @@ import com.massivecraft.mcore.store.accessor.Accessor;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
+import com.massivecraft.mcore.xlib.gson.JsonObject;
 import com.massivecraft.mcore.xlib.gson.JsonSyntaxException;
 
 public class Coll<E> implements CollInterface<E>
@@ -180,6 +181,17 @@ public class Coll<E> implements CollInterface<E>
 		}
 	}
 	
+	// This is used in parallel with the isDefault.
+	// Parallel usage is useful since we can then override isDeafult just like before.
+	public static boolean isCustomDataDefault(Object entity)
+	{
+		if (!(entity instanceof Entity)) return true;
+		JsonObject customData = ((Entity<?>)entity).getCustomData();
+		if (customData == null) return true;
+		if (customData.entrySet().size() == 0) return true;
+		return false;
+	}
+	
 	// -------------------------------------------- //
 	// COPY AND CREATE
 	// -------------------------------------------- //
@@ -196,6 +208,7 @@ public class Coll<E> implements CollInterface<E>
 			Entity eto = (Entity)oto;
 			
 			eto.load(efrom);
+			eto.setCustomData(efrom.getCustomData());
 		}
 		else
 		{
@@ -480,7 +493,7 @@ public class Coll<E> implements CollInterface<E>
 		JsonElement raw = this.getGson().toJsonTree(entity, this.getEntityClass());
 		this.lastRaw.put(id, raw);
 		
-		if (this.isDefault(entity))
+		if (this.isDefault(entity) && isCustomDataDefault(entity))
 		{
 			this.db.getDriver().delete(this, id);
 			this.lastDefault.add(id);
