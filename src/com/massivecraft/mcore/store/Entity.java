@@ -43,9 +43,12 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 	// Do you want to use this in your plugin?
 	// Make sure you don't overwrites some other plugins data!
 	
-	private JsonObject customData = null;
+	private JsonObject customData = new JsonObject();
 	public JsonObject getCustomData() { return this.customData; }
-	public void setCustomData(JsonObject customData) { this.customData = customData; }
+	public String getCustomData(String key) { return this.customData.get(key).getAsString(); }
+	protected void setCustomData(JsonObject customData) { this.customData = customData; }
+	public void setCustomData(String key, String value) { this.customData.addProperty(key, value); }
+	public void clearCustomData(String key) { this.customData.remove(key); }
 	
 	// -------------------------------------------- //
 	// ATTACH AND DETACH
