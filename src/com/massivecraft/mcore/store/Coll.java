@@ -518,9 +518,9 @@ public class Coll<E> implements CollInterface<E>
 		{
 			entry = this.getDriver().load(this, id);
 		}
-		catch (JsonSyntaxException e)
+		catch (Exception e)
 		{
-			MCore.get().log(Txt.parse("<b>Database could not load entity. Invalid JSON syntax. You edited a file manually and did it wrong?"));
+			MCore.get().log(Txt.parse("<b>Database could not load entity. You edited a file manually and made wrong JSON?"));
 			MCore.get().log(Txt.parse("<k>Error: <v>%s", e.getMessage()));
 			MCore.get().log(Txt.parse("<k>Entity: <v>%s", id));
 			MCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
