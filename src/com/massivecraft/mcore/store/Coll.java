@@ -22,7 +22,6 @@ import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonObject;
-import com.massivecraft.mcore.xlib.gson.JsonSyntaxException;
 
 public class Coll<E> implements CollInterface<E>
 {
