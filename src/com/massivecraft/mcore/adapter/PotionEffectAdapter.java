@@ -6,6 +6,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.gson.JsonObject;
 
+@SuppressWarnings("deprecation")
 public class PotionEffectAdapter
 {
 	// -------------------------------------------- //

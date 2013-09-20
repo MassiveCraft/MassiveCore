@@ -389,11 +389,6 @@ public class Txt
 		return getNicedEnum(material);
 	}
 	
-	public static String getMaterialName(int materialId)
-	{
-		return getMaterialName(Material.getMaterial(materialId));
-	}
-	
 	// -------------------------------------------- //
 	// Paging and chrome-tools like titleize
 	// -------------------------------------------- //

@@ -43,6 +43,7 @@ import com.massivecraft.mcore.xlib.gson.JsonSerializer;
  * way. This serializer requires manual updating to work but produces clean
  * json. See the file itemstackformat.txt for more info.
  */
+@SuppressWarnings("deprecation")
 public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack>
 {
 	// -------------------------------------------- //

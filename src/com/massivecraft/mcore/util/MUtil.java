@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.minecraft.server.v1_6_R2.DedicatedServer;
+import net.minecraft.server.v1_6_R3.DedicatedServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,7 +27,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_6_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_6_R3.CraftServer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -327,6 +327,7 @@ public class MUtil
 		return getPotionEffectBits(item) == 0;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static List<PotionEffect> getPotionEffects(ItemStack itemStack)
 	{
 		if (itemStack == null) return null;

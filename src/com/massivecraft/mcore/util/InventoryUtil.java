@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -185,7 +185,7 @@ public class InventoryUtil
 	{
 		if (itemStack == null) return true;
 		if (itemStack.getAmount() == 0) return true;
-		if (itemStack.getTypeId() == 0) return true;
+		if (itemStack.getType() == Material.AIR) return true;
 		return false;
 	}
 	

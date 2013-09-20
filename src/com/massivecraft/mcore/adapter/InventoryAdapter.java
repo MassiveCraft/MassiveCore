@@ -2,8 +2,8 @@ package com.massivecraft.mcore.adapter;
 
 import java.lang.reflect.Type;
 
-import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
