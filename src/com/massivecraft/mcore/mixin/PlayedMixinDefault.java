@@ -4,10 +4,8 @@ import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.SenderUtil;
 
 public class PlayedMixinDefault extends PlayedMixinAbstract
 {
@@ -26,8 +24,7 @@ public class PlayedMixinDefault extends PlayedMixinAbstract
 	public boolean isOnline(String senderId)
 	{
 		if (senderId == null) return false;
-		CommandSender sender = SenderUtil.getSender(senderId);
-		return sender != null;
+		return Mixin.getOnlineSenderIds().contains(senderId);
 	}
 	
 	@Override
