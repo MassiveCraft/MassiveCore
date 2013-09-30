@@ -32,10 +32,15 @@ public class Couple<A, B> implements Entry<A, B>, Cloneable, Serializable
 	public Couple<A, B> withSecond(B second) { return valueOf(first, second); }
 	
 	// -------------------------------------------- //
-	// PRIVATE CONSTRUCTOR
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private Couple(A first, B second)
+	public Couple()
+	{
+		this(null, null);
+	}
+	
+	public Couple(A first, B second)
 	{
 		this.first = first;
 		this.second = second;
