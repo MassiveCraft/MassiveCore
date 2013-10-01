@@ -450,6 +450,36 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
+	// COLLECTION MANIPULATION
+	// -------------------------------------------- //
+	
+	public static <T> T removeByIndex(Collection<T> coll, int index)
+	{
+		if (coll == null) throw new NullPointerException("coll");
+		
+		if (coll instanceof List<?>)
+		{
+			return ((List<T>)coll).remove(index);
+		}
+		
+		if (index < 0) throw new IndexOutOfBoundsException("index < 0");
+		if (index >= coll.size()) throw new IndexOutOfBoundsException("index > collection size");
+		
+		int i = -1;
+		Iterator<T> iter = coll.iterator();
+		while (iter.hasNext())
+		{
+			i++;
+			T ret = iter.next();
+			if (i != index) continue;
+			iter.remove();
+			return ret;
+		}
+		
+		return null;
+	}
+	
+	// -------------------------------------------- //
 	// LE NICE RANDOM
 	// -------------------------------------------- //
 	
