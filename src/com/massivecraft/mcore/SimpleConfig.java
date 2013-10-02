@@ -62,6 +62,7 @@ public class SimpleConfig
 		if (this.getFile().isFile())
 		{
 			String content = DiscUtil.readCatch(this.getFile());
+			content = content.trim();
 			Object toShallowLoad = null;
 			if (contentRequestsDefaults(content))
 			{

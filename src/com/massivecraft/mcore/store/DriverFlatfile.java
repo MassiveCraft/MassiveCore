@@ -113,6 +113,7 @@ public class DriverFlatfile extends DriverAbstract
 		if (mtime == 0) return null;
 		String content = DiscUtil.readCatch(file);
 		if (content == null) return null;
+		content = content.trim();
 		if (content.length() == 0) return null;
 		JsonElement raw = new JsonParser().parse(content);
 		return new SimpleEntry<JsonElement, Long>(raw, mtime);
