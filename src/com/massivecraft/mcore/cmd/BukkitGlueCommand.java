@@ -1,6 +1,7 @@
 package com.massivecraft.mcore.cmd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -28,7 +29,16 @@ public class BukkitGlueCommand extends Command
 	public boolean execute(CommandSender sender, String commandLabel, String[] args)
 	{
 		if ( ! plugin.isEnabled()) return false;
-		this.mcommand.execute(sender, Txt.tokenizeArguments(Txt.implode(args, " ")));
+		List<String> argList;
+		if (this.mcommand.isUsingTokenizer())
+		{
+			argList = Txt.tokenizeArguments(Txt.implode(args, " "));
+		}
+		else
+		{
+			argList = new ArrayList<String>(Arrays.asList(args));
+		}
+		this.mcommand.execute(sender, argList);
 		return true;
 	}
 	

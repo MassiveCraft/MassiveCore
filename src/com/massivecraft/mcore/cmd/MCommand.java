@@ -70,6 +70,12 @@ public abstract class MCommand
 	public boolean getErrorOnToManyArgs() { return this.errorOnToManyArgs; }
 	public void setErrorOnToManyArgs(boolean val) { this.errorOnToManyArgs = val; }
 	
+	// FIELD: usingTokenizer
+	// Should the arguments be parsed considering quotes and backslashes and such?
+	protected boolean usingTokenizer;
+	public boolean isUsingTokenizer() { return this.usingTokenizer; }
+	public void setUsingTokenizer(boolean usingTokenizer) { this.usingTokenizer = usingTokenizer; }
+	
 	// FIELD: requirements
 	// All these requirements must be met for the command to be executable;
 	protected List<Req> requirements;
@@ -214,6 +220,7 @@ public abstract class MCommand
 		this.requirements = new ArrayList<Req>();
 		
 		this.errorOnToManyArgs = true;
+		this.usingTokenizer = true;
 		
 		this.desc = null;
 		
