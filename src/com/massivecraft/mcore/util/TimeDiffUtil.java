@@ -71,6 +71,7 @@ public class TimeDiffUtil
 		if (!matcherFull.matches()) throw new NullPointerException("Invalid time diff format.");
 		
 		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<TimeUnit, Long>();
+		if (formated.equals("0")) return ret;
 		
 		Matcher matcherPart = patternPart.matcher(formated);
 		while (matcherPart.find())
@@ -166,6 +167,11 @@ public class TimeDiffUtil
 	{
 		String comma = String.format(commaFormat, Txt.parse(color));
 		String and = String.format(andFormat, Txt.parse(color));
+		
+		if (unitcounts.isEmpty())
+		{
+			return formated(TimeUnit.SECOND, 0, entryFormat);
+		}
 		
 		List<String> parts = new ArrayList<String>();
 		for (Entry<TimeUnit, Long> entry : unitcounts.entrySet())
