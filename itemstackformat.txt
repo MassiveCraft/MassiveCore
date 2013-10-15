@@ -70,6 +70,18 @@
 				...
 			]
 		}
+		AttributeModifiers:
+		[
+			{
+				UUIDMost: long
+				UUIDLeast: long
+				AttributeName: str (one of "generic.attackDamage", "generic.followRange", "generic.knockbackResistance", "generic.maxHealth", "generic.movementSpeed", "horse.jumpStrength" or "zombie.spawnReinforcements")
+				Name: str (may not be empty (or null?))
+				Amount: double
+				Operation: int (0, 1 or 2)
+			}
+			...
+		]
 	}
 }
 
