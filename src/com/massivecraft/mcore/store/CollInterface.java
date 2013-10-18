@@ -52,11 +52,14 @@ public interface CollInterface<E>
 	// BEHAVIOR
 	// -------------------------------------------- //
 	
+	public boolean isLazy();
+	public void setLazy(boolean lazy);
+	
 	public boolean isCreative();
-	public void setCreative(boolean val);
+	public void setCreative(boolean creative);
 	
 	public boolean isLowercasing();
-	public void setLowercasing(boolean val);
+	public void setLowercasing(boolean lowercasing);
 	
 	// A default entity will not be saved.
 	// This is often used together with creative collections to save disc space.

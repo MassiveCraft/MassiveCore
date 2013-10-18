@@ -14,7 +14,7 @@ public class MCoreConfColl extends Coll<MCoreConf>
 	public static MCoreConfColl get() { return i; }
 	private MCoreConfColl()
 	{
-		super("mcore_conf", MCoreConf.class, MStore.getDb(ConfServer.dburi), MCore.get(), true, false);
+		super("mcore_conf", MCoreConf.class, MStore.getDb(ConfServer.dburi), MCore.get());
 	}
 	
 	// -------------------------------------------- //
@@ -25,7 +25,7 @@ public class MCoreConfColl extends Coll<MCoreConf>
 	public void init()
 	{
 		super.init();
-		this.get(MCore.INSTANCE);
+		MCoreConf.i = this.get(MCore.INSTANCE, true);
 	}
 	
 	@Override

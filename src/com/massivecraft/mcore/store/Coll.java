@@ -153,7 +153,11 @@ public class Coll<E> implements CollInterface<E>
 	// -------------------------------------------- //
 	// BEHAVIOR
 	// -------------------------------------------- //
-
+	
+	protected boolean lazy;
+	@Override public boolean isLazy() { return this.lazy; }
+	@Override public void setLazy(boolean lazy) { this.lazy = lazy; }
+	
 	protected boolean creative;
 	@Override public boolean isCreative() { return this.creative; }
 	@Override public void setCreative(boolean creative) { this.creative = creative; }
@@ -754,7 +758,7 @@ public class Coll<E> implements CollInterface<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean lazy, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -771,6 +775,7 @@ public class Coll<E> implements CollInterface<E>
 		
 		// WHAT DO WE HANDLE?
 		this.entityClass = entityClass;
+		this.lazy = lazy;
 		this.creative = creative;
 		this.lowercasing = lowercasing;
 		
@@ -800,14 +805,14 @@ public class Coll<E> implements CollInterface<E>
 		};
 	}
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean lazy, boolean creative, boolean lowercasing)
 	{
-		this(name, entityClass, db, plugin, creative, lowercasing, null, null);
+		this(name, entityClass, db, plugin, lazy, creative, lowercasing, null, null);
 	}
 	
 	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
 	{
-		this(name, entityClass, db, plugin, false, false);
+		this(name, entityClass, db, plugin, false, false, false);
 	}
 	
 	@Override

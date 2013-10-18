@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.PermUtil;
@@ -16,10 +15,8 @@ public class MCoreConf extends Entity<MCoreConf>
 	// META
 	// -------------------------------------------- //
 	
-	public static MCoreConf get()
-	{
-		return MCoreConfColl.get().get(MCore.INSTANCE);
-	}
+	protected static transient MCoreConf i;
+	public static MCoreConf get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
