@@ -33,8 +33,9 @@ public interface CollInterface<E>
 	public Map<String, E> getId2entity();
 	public E get(Object oid);
 	public E get(Object oid, boolean creative);
-	public Collection<String> getIds();
-	public Collection<String> getIdsRemote();
+	public Collection<String> getIds(); // All ideas we know of whether they are loaded or not
+	public Collection<String> getIdsRemote(); // All remote ids loaded sync via driver
+	public Collection<String> getIdsLoaded(); // All locally loaded ids
 	public boolean containsId(Object oid);
 	
 	public Map<E, String> getEntity2id();

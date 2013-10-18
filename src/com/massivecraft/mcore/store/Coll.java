@@ -87,7 +87,15 @@ public class Coll<E> implements CollInterface<E>
 	// STORAGE
 	// -------------------------------------------- //
 	
+	// All
+	protected Set<String> ids;
+	
+	// Loaded
 	protected Map<String, E> id2entity;
+	protected Map<E, String> entity2id;
+	
+	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.ids); }
+	
 	@Override public Map<String, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override 
 	public E get(Object oid) 
@@ -109,23 +117,25 @@ public class Coll<E> implements CollInterface<E>
 		return this.create(id, noteChange);
 	}
 	
-	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
+	@Override public Collection<String> getIdsLoaded() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
 	@Override public Collection<String> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
 	@Override
 	public boolean containsId(Object oid)
 	{
 		String id = this.fixId(oid);
 		if (id == null) return false;
-		return this.id2entity.containsKey(id);
+		return this.ids.contains(id);
 	}
 	
-	// Get the id for this entity.
-	protected Map<E, String> entity2id;
 	@Override public Map<E, String> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
 	@Override public String getId(Object entity) { return this.entity2id.get(entity); }
 	@Override public boolean containsEntity(Object entity) { return this.entity2id.containsKey(entity); };
 	
-	@Override public Collection<E> getAll() { return Collections.unmodifiableCollection(this.entity2id.keySet()); }
+	@Override public Collection<E> getAll()
+	{
+		
+		return Collections.unmodifiableCollection(this.entity2id.keySet());
+	}
 	@Override public Collection<E> getAll(Predictate<? super E> where) { return MStoreUtil.uglySQL(this.getAll(), where, null, null, null); }
 	@Override public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, null, null); }
 	@Override public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, null); }
@@ -302,6 +312,7 @@ public class Coll<E> implements CollInterface<E>
 		}
 		
 		// Attach
+		this.ids.add(id);
 		this.id2entity.put(id, entity);
 		this.entity2id.put(entity, id);
 		
@@ -460,6 +471,8 @@ public class Coll<E> implements CollInterface<E>
 		if (entity == null) return null;
 		
 		this.entity2id.remove(entity);
+		
+		this.ids.remove(id);
 		
 		// Remove entity reference info
 		if (entity instanceof Entity)
@@ -726,7 +739,7 @@ public class Coll<E> implements CollInterface<E>
 		// Compile a list of all ids (both remote and local)
 		Set<String> allids = new HashSet<String>();
 		allids.addAll(id2RemoteMtime.keySet());
-		allids.addAll(this.id2entity.keySet());
+		allids.addAll(this.ids);
 		
 		// Check for modifications
 		for (String id : allids)
@@ -785,6 +798,7 @@ public class Coll<E> implements CollInterface<E>
 		this.collDriverObject = db.getCollDriverObject(this);
 		
 		// STORAGE
+		this.ids = new ConcurrentSkipListSet<String>(idComparator);
 		this.id2entity = new ConcurrentSkipListMap<String, E>(idComparator);
 		this.entity2id = new ConcurrentSkipListMap<E, String>(entityComparator);
 		
