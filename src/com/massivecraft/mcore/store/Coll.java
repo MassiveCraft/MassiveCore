@@ -551,7 +551,7 @@ public class Coll<E> implements CollInterface<E>
 			this.attach(entity, oid, false);
 		}
 		
-		this.lastRaw.put(id, raw);		
+		this.lastRaw.put(id, raw);
 		this.lastMtime.put(id, mtime);
 		this.lastDefault.remove(id);
 	}
@@ -754,7 +754,7 @@ public class Coll<E> implements CollInterface<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, String idStrategyName, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -802,7 +802,7 @@ public class Coll<E> implements CollInterface<E>
 	
 	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
 	{
-		this(name, entityClass, db, plugin, creative, lowercasing, "uuid", null, null);
+		this(name, entityClass, db, plugin, creative, lowercasing, null, null);
 	}
 	
 	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
