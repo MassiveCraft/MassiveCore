@@ -1,6 +1,7 @@
 package com.massivecraft.mcore;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.permissions.Permissible;
@@ -19,23 +20,15 @@ public class MCoreConf extends Entity<MCoreConf>
 	public static MCoreConf get() { return i; }
 	
 	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public MCoreConf load(MCoreConf that)
-	{
-		this.usingRecipientChatEvent = that.usingRecipientChatEvent;
-		this.forcingOnePlayerNameCase = that.forcingOnePlayerNameCase;
-		this.permissionDeniedFormats = that.permissionDeniedFormats;
-		this.permissionToTpdelay = that.permissionToTpdelay;
-		
-		return this;
-	}
-	
-	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
+	
+	public List<String> aliasesOuterMCore = MUtil.list("mcore");
+	
+	public List<String> aliasesOuterMCoreUsys = MUtil.list("usys");
+	
+	public List<String> aliasesOuterMCoreMStore = MUtil.list("mstore");
+	
 	// These getters and setters are obnoxious, defensive copying, NPE avoiding and probably thread safe.
 	
 	private boolean usingRecipientChatEvent = true;

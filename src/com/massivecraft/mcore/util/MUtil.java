@@ -45,7 +45,7 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.mcore.InternalListener;
+import com.massivecraft.mcore.EngineMainMCore;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.EngineWorldNameSet;
 import com.massivecraft.mcore.util.extractor.Extractor;
@@ -291,7 +291,7 @@ public class MUtil
 	
 	public static String kickReason(PlayerQuitEvent event)
 	{
-		return InternalListener.kickedPlayerReasons.get(event.getPlayer().getName());
+		return EngineMainMCore.kickedPlayerReasons.get(event.getPlayer().getName());
 	}
 	
 	public static boolean causedByKick(PlayerQuitEvent event)
@@ -647,4 +647,5 @@ public class MUtil
 		registerExtractor(String.class, "moneyUniverse", ExtractorMoneyUniverse.get());
 		registerExtractor(String.class, "accountId", ExtractorPlayerName.get());
 	}
+	
 }

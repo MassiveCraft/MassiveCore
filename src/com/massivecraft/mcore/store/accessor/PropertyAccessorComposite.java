@@ -22,4 +22,5 @@ public class PropertyAccessorComposite implements PropertyAccessor
 	{
 		return this.getter.get(entity);
 	}
+	
 }

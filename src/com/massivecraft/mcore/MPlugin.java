@@ -38,6 +38,9 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		// Create Gson
 		this.gson = this.getGsonBuilder().create();
 		
+		// Listener
+		Bukkit.getPluginManager().registerEvents(this, this);
+		
 		return true;
 	}
 	

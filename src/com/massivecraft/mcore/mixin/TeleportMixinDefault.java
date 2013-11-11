@@ -49,9 +49,9 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 		if (vehicle != null) vehicle.eject();
 		
 		// Do the teleport
-		TeleportMixinCauseEngine.get().setMixinCausedTeleportIncoming(true);
+		EngineTeleportMixinCause.get().setMixinCausedTeleportIncoming(true);
 		player.teleport(location);
-		TeleportMixinCauseEngine.get().setMixinCausedTeleportIncoming(false);
+		EngineTeleportMixinCause.get().setMixinCausedTeleportIncoming(false);
 		
 		// Bukkit velocity
 		Vector velocity = null;

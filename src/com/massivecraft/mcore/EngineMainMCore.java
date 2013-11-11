@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -22,6 +21,7 @@ import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.event.MCoreAfterPlayerRespawnEvent;
 import com.massivecraft.mcore.event.MCoreAfterPlayerTeleportEvent;
@@ -36,23 +36,30 @@ import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
 
-public class InternalListener implements Listener
+public class EngineMainMCore extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static InternalListener i = new InternalListener();
-	public static InternalListener get() { return i; }
+	private static EngineMainMCore i = new EngineMainMCore();
+	public static EngineMainMCore get() { return i; }
 	
 	// -------------------------------------------- //
-	// REGISTER
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void setup()
+	@Override
+	public Plugin getPlugin()
 	{
+		return MCore.get();
+	}
+	
+	@Override
+	public void activate()
+	{
+		super.activate();
 		MCorePlayerLeaveEvent.player2event.clear();
-		Bukkit.getPluginManager().registerEvents(this, MCore.get());
 	}
 	
 	// -------------------------------------------- //
@@ -315,4 +322,5 @@ public class InternalListener implements Listener
 			pcoll.syncId(playerName);
 		}
 	}
+	
 }

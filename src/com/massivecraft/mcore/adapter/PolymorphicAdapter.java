@@ -70,4 +70,5 @@ public class PolymorphicAdapter<T> implements JsonDeserializer<T>, JsonSerialize
 		}
 		return context.deserialize(jsonObject.get(VALUE), typeClass);
 	}
+	
 }

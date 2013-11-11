@@ -48,4 +48,5 @@ public abstract class EntityAccessorAbstract implements EntityAccessor
 	{
 		this.copy(from, to, DEFAULT_TRANSPARENT);
 	}
+	
 }

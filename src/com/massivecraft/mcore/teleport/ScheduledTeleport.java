@@ -45,17 +45,17 @@ public class ScheduledTeleport implements Runnable
 		
 	public boolean isScheduled()
 	{
-		return ScheduledTeleportEngine.get().isScheduled(this);
+		return EngineScheduledTeleport.get().isScheduled(this);
 	}
 	
 	public ScheduledTeleport schedule()
 	{
-		return ScheduledTeleportEngine.get().schedule(this);
+		return EngineScheduledTeleport.get().schedule(this);
 	}
 	
 	public boolean unschedule()
 	{
-		return ScheduledTeleportEngine.get().unschedule(this);
+		return EngineScheduledTeleport.get().unschedule(this);
 	}
 	
 	// -------------------------------------------- //

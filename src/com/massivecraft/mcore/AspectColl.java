@@ -44,5 +44,6 @@ public class AspectColl extends Coll<Aspect>
 			ret.add(aspect);
 		}
 		return ret;
-	}	
+	}
+	
 }

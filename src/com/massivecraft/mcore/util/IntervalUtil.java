@@ -10,6 +10,7 @@ public class IntervalUtil
 	// -------------------------------------------- //
 	// PARSING SIMPLE
 	// -------------------------------------------- //
+	
 	public static Double parseDouble(String str, Double def)
 	{
 		if (str == null) return def;
@@ -144,4 +145,5 @@ public class IntervalUtil
 			return parseInteger(data, def);
 		}
 	}
+	
 }

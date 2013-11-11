@@ -1,22 +1,35 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import java.util.List;
-
 import com.massivecraft.mcore.ConfServer;
 import com.massivecraft.mcore.MCorePerm;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
-public class CmdMCoreId extends MCoreCommand
+public class CmdMCoreId extends MCommand
 {
-	public CmdMCoreId(List<String> aliases)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreId()
 	{
-		super(aliases);
+		// Aliases
+		this.addAliases("id");
+		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_ID.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
 	{
 		this.msg("<i>The id of this server is \"<h>%s<i>\".", ConfServer.serverid);
 	}
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 }

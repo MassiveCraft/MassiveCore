@@ -1,23 +1,34 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import java.util.List;
-
 import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.MCorePerm;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
-public class CmdMCoreUsysWorld extends MCoreCommand
+public class CmdMCoreUsysWorld extends MCommand
 {
-	public CmdMCoreUsysWorld(List<String> aliases)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreUsysWorld()
 	{
-		super(aliases);
+		// Aliases
+		this.addAliases("w", "world");
+		
+		// Args
 		this.addRequiredArg("world");
 		this.addRequiredArg("universe");
 		this.addRequiredArg("multiverse");
 		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_WORLD.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -45,4 +56,5 @@ public class CmdMCoreUsysWorld extends MCoreCommand
 			msg("<i>World <h>%s <i>is already in universe <h>%s <i>in multiverse <h>%s<i>.", worldName, universe, multiverse.getId());
 		}
 	}
+	
 }

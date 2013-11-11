@@ -76,4 +76,5 @@ public class PotionEffectAdapter
 		
 		return new PotionEffect(pet, duration, amplifier, ambient);
 	}
+	
 }

@@ -12,6 +12,10 @@ import com.massivecraft.mcore.util.Txt;
 
 public class VersionCommand extends MCommand
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
 	public static final String NOT_SPECIFIED = Txt.parse("<em><silver>not specified");
 	
 	// -------------------------------------------- //
@@ -84,7 +88,5 @@ public class VersionCommand extends MCommand
 	{
 		sendMessage(Txt.parse("<pink>%s: <aqua>%s", Txt.upperCaseFirst(key), value == null ? NOT_SPECIFIED : value));
 	}
-	
 
-	
 }

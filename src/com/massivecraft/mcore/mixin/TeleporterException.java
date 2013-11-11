@@ -6,7 +6,7 @@ public class TeleporterException extends Exception
 	
 	public TeleporterException()
 	{
-		super();
+		
 	}
 
 	public TeleporterException(String message)

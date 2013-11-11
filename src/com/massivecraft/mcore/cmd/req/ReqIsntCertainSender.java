@@ -43,4 +43,5 @@ public class ReqIsntCertainSender extends ReqAbstract
 	{
 		return Txt.parse("<b>Player can't be <h>%s<b>.", Mixin.getDisplayName(this.getSenderId()));
 	}
+	
 }

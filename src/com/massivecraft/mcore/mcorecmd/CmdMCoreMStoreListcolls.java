@@ -1,12 +1,12 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import com.massivecraft.mcore.ConfServer;
 import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.NaturalOrderComparator;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARString;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.store.Coll;
@@ -14,16 +14,27 @@ import com.massivecraft.mcore.store.Db;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.util.Txt;
 
-public class CmdMCoreMStoreListcolls extends MCoreCommand
+public class CmdMCoreMStoreListcolls extends MCommand
 {
-	public CmdMCoreMStoreListcolls(List<String> aliases)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreMStoreListcolls()
 	{
-		super(aliases);
+		// Aliases
+		this.addAliases("listcolls");
 		
+		// Args
 		this.addOptionalArg("db", ConfServer.dburi);
 		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_MSTORE_LISTCOLLS.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

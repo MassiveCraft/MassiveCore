@@ -42,4 +42,5 @@ public abstract class IntegrationFeaturesAbstract implements IntegrationFeatures
 	{
 		
 	}
+	
 }

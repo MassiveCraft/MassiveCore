@@ -56,4 +56,5 @@ public class MCoreAfterPlayerTeleportEvent extends Event implements Runnable
 	{
 		Bukkit.getPluginManager().callEvent(this);
 	}
+	
 }

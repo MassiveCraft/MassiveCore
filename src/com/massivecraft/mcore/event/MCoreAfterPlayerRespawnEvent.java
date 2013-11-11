@@ -49,4 +49,5 @@ public class MCoreAfterPlayerRespawnEvent extends Event implements Runnable
 	{
 		Bukkit.getPluginManager().callEvent(this);
 	}
+	
 }

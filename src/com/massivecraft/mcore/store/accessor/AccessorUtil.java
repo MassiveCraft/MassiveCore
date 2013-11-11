@@ -171,5 +171,4 @@ public class AccessorUtil
 		return new PropertyAccessorComposite(getter, setter);
 	}
 	
-	
 }

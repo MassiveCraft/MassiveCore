@@ -7,28 +7,30 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.mcore.EngineAbstract;
 import com.massivecraft.mcore.MCore;
 
-public class TeleportMixinCauseEngine implements Listener 
+public class EngineTeleportMixinCause extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static TeleportMixinCauseEngine i = new TeleportMixinCauseEngine();
-	public static TeleportMixinCauseEngine get() { return i; }
-	public TeleportMixinCauseEngine() {}
+	private static EngineTeleportMixinCause i = new EngineTeleportMixinCause();
+	public static EngineTeleportMixinCause get() { return i; }
+	public EngineTeleportMixinCause() {}
 	
 	// -------------------------------------------- //
-	// SETUP
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void setup()
+	@Override
+	public Plugin getPlugin()
 	{
-		Bukkit.getPluginManager().registerEvents(this, MCore.get());
+		return MCore.get();
 	}
 
 	// -------------------------------------------- //

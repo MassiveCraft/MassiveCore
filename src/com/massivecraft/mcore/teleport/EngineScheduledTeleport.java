@@ -3,25 +3,25 @@ package com.massivecraft.mcore.teleport;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.mcore.EngineAbstract;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 
-public class ScheduledTeleportEngine implements Listener, Runnable
+public class EngineScheduledTeleport extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static ScheduledTeleportEngine i = new ScheduledTeleportEngine();
-	public static ScheduledTeleportEngine get() { return i; }
+	private static EngineScheduledTeleport i = new EngineScheduledTeleport();
+	public static EngineScheduledTeleport get() { return i; }
 	
 	// -------------------------------------------- //
 	// SCHEDULED TELEPORT INDEX
@@ -56,13 +56,32 @@ public class ScheduledTeleportEngine implements Listener, Runnable
 	}
 	
 	// -------------------------------------------- //
-	// SETUP
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void setup()
+	@Override
+	public Plugin getPlugin()
 	{
-		Bukkit.getPluginManager().registerEvents(this, MCore.get());
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(MCore.get(), this, 1, 1);
+		return MCore.get();
+	}
+	
+	@Override
+	public Long getPeriod()
+	{
+		return 1L;
+	}
+	
+	@Override
+	public void run()
+	{
+		long now = System.currentTimeMillis();
+		for (ScheduledTeleport st : teleporteeIdToScheduledTeleport.values())
+		{
+			if (st.isDue(now))
+			{
+				st.run();
+			}
+		}
 	}
 	
 	// -------------------------------------------- //
@@ -84,23 +103,6 @@ public class ScheduledTeleportEngine implements Listener, Runnable
 		
 		// ... and inform the teleportee.
 		Mixin.msg(scheduledTeleport.getTeleporteeId(), "<rose>Cancelled <i>teleport to <h>"+scheduledTeleport.getDestinationDesc()+"<i>.");
-	}
-
-	// -------------------------------------------- //
-	// LISTENER
-	// -------------------------------------------- //
-	
-	@Override
-	public void run()
-	{
-		long now = System.currentTimeMillis();
-		for (ScheduledTeleport st : teleporteeIdToScheduledTeleport.values())
-		{
-			if (st.isDue(now))
-			{
-				st.run();
-			}
-		}
 	}
 	
 }

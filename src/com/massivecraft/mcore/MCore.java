@@ -1,6 +1,7 @@
 package com.massivecraft.mcore;
 
 import java.lang.reflect.Modifier;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -18,18 +19,19 @@ import com.massivecraft.mcore.adapter.JsonElementAdapter;
 import com.massivecraft.mcore.adapter.ObjectIdAdapter;
 import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
+import com.massivecraft.mcore.cmd.MCoreBukkitSimpleCommandMap;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.integration.vault.VaultFeatures;
 import com.massivecraft.mcore.mcorecmd.CmdMCore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreMStore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreUsys;
 import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
-import com.massivecraft.mcore.mixin.TeleportMixinCauseEngine;
+import com.massivecraft.mcore.mixin.EngineTeleportMixinCause;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.ExamineThread;
-import com.massivecraft.mcore.teleport.ScheduledTeleportEngine;
+import com.massivecraft.mcore.teleport.EngineScheduledTeleport;
 import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.mcore.util.TimeDiffUtil;
 import com.massivecraft.mcore.util.TimeUnit;
@@ -147,37 +149,40 @@ public class MCore extends MPlugin
 		SenderIdMixinDefault.get().setup();
 		
 		// Register events
-		InternalListener.get().setup();
-		ScheduledTeleportEngine.get().setup();
-		TeleportMixinCauseEngine.get().setup();
-		EngineWorldNameSet.get().setup();
-		EngineOfflineCase.get().setup();
+		EngineMainMCore.get().activate();
+		EngineScheduledTeleport.get().activate();
+		EngineTeleportMixinCause.get().activate();
+		EngineWorldNameSet.get().activate();
+		EngineOfflineCase.get().activate(); // TODO: Make all engines
 		PlayerUtil.get().setup();
 		
-		// Schedule the collection ticker.
+		// Tasks
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
 		
-		// Initialize Internal Collections
+		// Collections
 		MultiverseColl.get().init();
 		AspectColl.get().init();
 		MCoreConfColl.get().init();
 		
-		// Init aspects
+		// Aspects
 		this.moneyAspect = AspectColl.get().get("mcore_money", true);
 		this.moneyAspect.register();
 		this.moneyAspect.setDesc(
 			"<i>The aspect used for how much money a player has"
 		);
 		
+		// Inject our command map with dynamic tweaks
+		MCoreBukkitSimpleCommandMap.inject();
+		
 		// Register commands
-		this.outerCmdMCore = new CmdMCore(ConfServer.aliasesOuterMCore);
-		this.outerCmdMCore.register(this);
+		this.outerCmdMCore = new CmdMCore() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCore; } };
+		this.outerCmdMCore.register();
 		
-		this.outerCmdMCoreUsys = new CmdMCoreUsys(ConfServer.aliasesOuterMCoreUsys);
-		this.outerCmdMCoreUsys.register(this);
+		this.outerCmdMCoreUsys = new CmdMCoreUsys() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCoreUsys; } };
+		this.outerCmdMCoreUsys.register();
 		
-		this.outerCmdMCoreMStore = new CmdMCoreMStore(ConfServer.aliasesOuterMCoreMStore);
-		this.outerCmdMCoreMStore.register(this);
+		this.outerCmdMCoreMStore = new CmdMCoreMStore() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCoreMStore; } };
+		this.outerCmdMCoreMStore.register();
 		
 		// Integration
 		this.integrate(

@@ -31,4 +31,5 @@ public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 		
 		return result;
 	}
+	
 }

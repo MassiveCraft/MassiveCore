@@ -90,6 +90,11 @@ public class MStore
 		return db;
 	}
 	
+	public static Db getDb()
+	{
+		return getDb(ConfServer.dburi);
+	}
+	
 	public static Db getDb(URI uri)
 	{
 		String scheme = uri.getScheme();

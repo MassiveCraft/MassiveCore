@@ -84,4 +84,5 @@ public class EntityPotionColorPacketAdapter extends PacketAdapter
 			e.printStackTrace();
 		}
 	}
+	
 }

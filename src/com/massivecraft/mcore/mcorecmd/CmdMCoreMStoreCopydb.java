@@ -1,12 +1,12 @@
 package com.massivecraft.mcore.mcorecmd;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.MCorePerm;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.Db;
@@ -14,17 +14,28 @@ import com.massivecraft.mcore.store.Driver;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 
-public class CmdMCoreMStoreCopydb extends MCoreCommand
+public class CmdMCoreMStoreCopydb extends MCommand
 {
-	public CmdMCoreMStoreCopydb(List<String> aliases)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreMStoreCopydb()
 	{
-		super(aliases);
+		// Aliases
+		this.addAliases("copydb");
 		
+		// Args
 		this.addRequiredArg("from");
 		this.addRequiredArg("to");
 		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_MSTORE_COPYDB.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()

@@ -8,11 +8,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.bukkit.plugin.Plugin;
 
-public class EngineWorldNameSet implements Listener
+public class EngineWorldNameSet extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -22,18 +22,25 @@ public class EngineWorldNameSet implements Listener
 	public static EngineWorldNameSet get() { return i; }
 	
 	// -------------------------------------------- //
-	// SETUP
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void setup()
+	@Override
+	public Plugin getPlugin()
 	{
+		return MCore.get();
+	}
+	
+	@Override
+	public void activate()
+	{
+		super.activate();
+		
 		this.worldNamesInner.clear();
 		for (World world : Bukkit.getWorlds())
 		{
 			this.worldNamesInner.add(world.getName());
 		}
-		
-		Bukkit.getPluginManager().registerEvents(this, MCore.get());
 	}
 	
 	// -------------------------------------------- //

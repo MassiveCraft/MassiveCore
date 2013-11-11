@@ -1,33 +1,35 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import java.util.List;
-
 import com.massivecraft.mcore.MCorePerm;
-import com.massivecraft.mcore.cmd.HelpCommand;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.MUtil;
 
-public class CmdMCoreUsysUniverse extends MCoreCommand
+public class CmdMCoreUsysUniverse extends MCommand
 {
-	public CmdMCoreUsysUniverseNew cmdUsysUniverseNew = new CmdMCoreUsysUniverseNew(MUtil.list("n", "new"));
-	public CmdMCoreUsysUniverseDel cmdUsysUniverseDel = new CmdMCoreUsysUniverseDel(MUtil.list("d", "del"));
-	public CmdMCoreUsysUniverseClear cmdUsysUniverseClear = new CmdMCoreUsysUniverseClear(MUtil.list("c", "clear"));
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
-	public CmdMCoreUsysUniverse(List<String> aliases)
+	public CmdMCoreUsysUniverseNew cmdUsysUniverseNew = new CmdMCoreUsysUniverseNew();
+	public CmdMCoreUsysUniverseDel cmdUsysUniverseDel = new CmdMCoreUsysUniverseDel();
+	public CmdMCoreUsysUniverseClear cmdUsysUniverseClear = new CmdMCoreUsysUniverseClear();
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreUsysUniverse()
 	{
-		super(aliases);
-		
+		// SubCommands
 		this.addSubCommand(this.cmdUsysUniverseNew);
 		this.addSubCommand(this.cmdUsysUniverseDel);
 		this.addSubCommand(this.cmdUsysUniverseClear);
 		
+		// Aliases
+		this.addAliases("u", "universe");
+		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_UNIVERSE.node));
 	}
-	
-	@Override
-	public void perform()
-	{
-		this.getCommandChain().add(this);
-		HelpCommand.getInstance().execute(this.sender, this.args, this.commandChain);
-	}
+
 }

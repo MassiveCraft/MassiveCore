@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftInventoryCustom;
 import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftInventoryPlayer;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -25,19 +26,21 @@ public class InventoryUtil
 	// -------------------------------------------- //
 	
 	@SuppressWarnings("deprecation")
-	public static void update(Player player)
+	public static void update(HumanEntity human)
 	{
+		if (!(human instanceof Player)) return;
+		Player player = (Player)human;
 		player.updateInventory();
 	}
 	
-	public static void updateSoon(final Player player)
+	public static void updateSoon(final HumanEntity human)
 	{
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				update(player);
+				update(human);
 			}
 		});
 	}

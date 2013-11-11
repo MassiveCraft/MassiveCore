@@ -1,35 +1,37 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import java.util.List;
-
 import com.massivecraft.mcore.MCorePerm;
-import com.massivecraft.mcore.cmd.HelpCommand;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
-import com.massivecraft.mcore.util.MUtil;
 
-public class CmdMCoreUsysMultiverse extends MCoreCommand
+public class CmdMCoreUsysMultiverse extends MCommand
 {
-	public CmdMCoreUsysMultiverseList cmdUsysMultiverseList = new CmdMCoreUsysMultiverseList(MUtil.list("l", "list"));
-	public CmdMCoreUsysMultiverseShow cmdUsysMultiverseShow = new CmdMCoreUsysMultiverseShow(MUtil.list("s", "show"));
-	public CmdMCoreUsysMultiverseNew cmdUsysMultiverseNew = new CmdMCoreUsysMultiverseNew(MUtil.list("n", "new"));
-	public CmdMCoreUsysMultiverseDel cmdUsysMultiverseDel = new CmdMCoreUsysMultiverseDel(MUtil.list("d", "del"));
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
-	public CmdMCoreUsysMultiverse(List<String> aliases)
+	public CmdMCoreUsysMultiverseList cmdUsysMultiverseList = new CmdMCoreUsysMultiverseList();
+	public CmdMCoreUsysMultiverseShow cmdUsysMultiverseShow = new CmdMCoreUsysMultiverseShow();
+	public CmdMCoreUsysMultiverseNew cmdUsysMultiverseNew = new CmdMCoreUsysMultiverseNew();
+	public CmdMCoreUsysMultiverseDel cmdUsysMultiverseDel = new CmdMCoreUsysMultiverseDel();
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreUsysMultiverse()
 	{
-		super(aliases);
-		
+		// SubCommands
 		this.addSubCommand(this.cmdUsysMultiverseList);
 		this.addSubCommand(this.cmdUsysMultiverseShow);
 		this.addSubCommand(this.cmdUsysMultiverseNew);
 		this.addSubCommand(this.cmdUsysMultiverseDel);
 		
+		// Aliases
+		this.addAliases("m", "multiverse");
+		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_MULTIVERSE.node));
 	}
-	
-	@Override
-	public void perform()
-	{
-		this.getCommandChain().add(this);
-		HelpCommand.getInstance().execute(this.sender, this.args, this.commandChain);
-	}
+
 }

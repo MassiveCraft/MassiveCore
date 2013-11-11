@@ -33,4 +33,5 @@ public class MCorePermissionDeniedFormatEvent extends MCoreEvent
 		this.permissionName = permissionName;
 		this.format = null;
 	}
+	
 }

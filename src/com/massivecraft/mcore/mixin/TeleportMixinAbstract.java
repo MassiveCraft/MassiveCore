@@ -30,7 +30,7 @@ public abstract class TeleportMixinAbstract implements TeleportMixin
 	@Override
 	public boolean isCausedByMixin(PlayerTeleportEvent event)
 	{
-		return TeleportMixinCauseEngine.get().isCausedByTeleportMixin(event);
+		return EngineTeleportMixinCause.get().isCausedByTeleportMixin(event);
 	}
 	
 	// -------------------------------------------- //

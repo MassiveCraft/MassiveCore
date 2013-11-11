@@ -7,9 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.Txt;
@@ -35,7 +35,7 @@ import com.massivecraft.mcore.util.Txt;
  * After that you get kicked when using an incorrect casing.
  * 
  */
-public class EngineOfflineCase implements Listener
+public class EngineOfflineCase extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -45,11 +45,20 @@ public class EngineOfflineCase implements Listener
 	public static EngineOfflineCase get() { return i; }
 	
 	// -------------------------------------------- //
-	// SETUP
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public void setup()
+	@Override
+	public Plugin getPlugin()
 	{
+		return MCore.get();
+	}
+	
+	@Override
+	public void activate()
+	{
+		super.activate();
+		
 		this.lowerToCorrect.clear();
 		
 		for (Player player : Bukkit.getOnlinePlayers())
@@ -61,8 +70,6 @@ public class EngineOfflineCase implements Listener
 		{
 			this.registerCase(pdname);
 		}
-		
-		Bukkit.getPluginManager().registerEvents(this, MCore.get());
 	}
 	
 	// -------------------------------------------- //
@@ -70,10 +77,6 @@ public class EngineOfflineCase implements Listener
 	// -------------------------------------------- //
 	
 	private Map<String, String> lowerToCorrect = new HashMap<String, String>();
-	
-	// -------------------------------------------- //
-	// UTIL
-	// -------------------------------------------- //
 	
 	private void registerCase(String playerName)
 	{

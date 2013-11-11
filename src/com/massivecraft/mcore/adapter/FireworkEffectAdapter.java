@@ -141,4 +141,5 @@ public class FireworkEffectAdapter
 		
 		return ret;
 	}
+	
 }

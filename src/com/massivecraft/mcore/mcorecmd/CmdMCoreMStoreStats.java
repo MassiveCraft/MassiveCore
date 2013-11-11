@@ -1,9 +1,9 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import java.util.List;
 import java.util.Map.Entry;
 
 import com.massivecraft.mcore.MCorePerm;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARColl;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.store.Coll;
@@ -11,16 +11,27 @@ import com.massivecraft.mcore.store.ExamineThread;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.Txt;
 
-public class CmdMCoreMStoreStats extends MCoreCommand
+public class CmdMCoreMStoreStats extends MCommand
 {
-	public CmdMCoreMStoreStats(List<String> aliases)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreMStoreStats()
 	{
-		super(aliases);
+		// Aliases
+		this.addAliases("stats");
 		
+		// Args
 		this.addOptionalArg("coll", Coll.TOTAL);
 		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_MSTORE_STATS.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -82,4 +93,5 @@ public class CmdMCoreMStoreStats extends MCoreCommand
 			msg("<k>%s <v>%d", entry.getKey(), entry.getValue());
 		}
 	}
+	
 }

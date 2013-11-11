@@ -6,19 +6,32 @@ import java.util.List;
 import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.MultiverseColl;
 import com.massivecraft.mcore.MCorePerm;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.util.Txt;
 
-public class CmdMCoreUsysMultiverseList extends MCoreCommand
+public class CmdMCoreUsysMultiverseList extends MCommand
 {
-	public CmdMCoreUsysMultiverseList(List<String> aliases)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreUsysMultiverseList()
 	{
-		super(aliases);
+		// Aliases
+		this.addAliases("l", "list");
+		
+		// Args
 		this.addOptionalArg("page", "1");
 		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_MULTIVERSE_LIST.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -38,4 +51,5 @@ public class CmdMCoreUsysMultiverseList extends MCoreCommand
 		lines = Txt.parseWrap(lines);
 		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Multiverse List", sender));
 	}
+	
 }

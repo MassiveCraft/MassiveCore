@@ -59,4 +59,5 @@ public class UUIDAdapter implements JsonDeserializer<UUID>, JsonSerializer<UUID>
 	{
 		return convertStringToUUID(jsonElement.getAsString());
 	}
+	
 }

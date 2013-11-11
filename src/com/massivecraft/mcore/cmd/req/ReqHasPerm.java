@@ -38,4 +38,5 @@ public class ReqHasPerm extends ReqAbstract
 	{
 		return PermUtil.getDeniedMessage(this.perm);
 	}
+	
 }

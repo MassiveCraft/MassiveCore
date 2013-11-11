@@ -36,7 +36,7 @@ public abstract class MCoreEvent extends Event implements Runnable, Cancellable
 	
 	public MCoreEvent()
 	{
-		super();
+		
 	}
 	
 	public MCoreEvent(boolean isAsync)

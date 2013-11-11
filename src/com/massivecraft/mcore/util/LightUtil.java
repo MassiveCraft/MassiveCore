@@ -38,4 +38,5 @@ public class LightUtil
 		WorldServer worldServer = cworld.getHandle();
 		worldServer.A(x, y, z);
 	}
+	
 }

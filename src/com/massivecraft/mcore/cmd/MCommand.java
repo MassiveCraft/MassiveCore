@@ -3,11 +3,9 @@ package com.massivecraft.mcore.cmd;
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.Lang;
 import com.massivecraft.mcore.MCore;
@@ -16,11 +14,10 @@ import com.massivecraft.mcore.cmd.arg.ArgResult;
 import com.massivecraft.mcore.cmd.req.Req;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.util.BukkitCommandUtil;
 import com.massivecraft.mcore.util.PermUtil;
 import com.massivecraft.mcore.util.Txt;
 
-public abstract class MCommand
+public class MCommand
 {	
 	// -------------------------------------------- //
 	// COMMAND BEHAVIOR
@@ -116,7 +113,7 @@ public abstract class MCommand
 	{
 		if (this.descPermission != null) return this.descPermission;
 		// Otherwise we try to find one.
-		for (Req req : this.requirements)
+		for (Req req : this.getRequirements())
 		{
 			if ( ! (req instanceof ReqHasPerm)) continue;
 			return ((ReqHasPerm)req).getPerm();
@@ -161,46 +158,13 @@ public abstract class MCommand
 	// BUKKIT INTEGRATION
 	// -------------------------------------------- //
 	
-	public boolean register()
-	{
-		return register(MCore.get(), true);
-	}
+	protected final MCoreBukkitCommand bukkitCommand = new MCoreBukkitCommand(this);
+	public MCoreBukkitCommand getBukkitCommand() { return this.bukkitCommand; }
 	
-	public boolean register(Plugin plugin)
+	public void register()
 	{
-		return this.register(plugin, true);
-	}
-	
-	public boolean register(boolean override)
-	{
-		return this.register(MCore.get(), override);
-	}
-	
-	public boolean register(Plugin plugin, boolean override)
-	{
-		boolean ret = false;
-		
-		SimpleCommandMap scm = BukkitCommandUtil.getBukkitCommandMap();
-		
-		for (String alias : this.getAliases())
-		{
-			BukkitGlueCommand bgc = new BukkitGlueCommand(alias, this, plugin);
-			
-			if (override)
-			{
-				// Our commands are more important than your commands :P
-				Map<String, Command> knownCommands = BukkitCommandUtil.getKnownCommandsFromSimpleCommandMap(scm);
-				String lowerLabel = bgc.getName().trim().toLowerCase();
-				knownCommands.remove(lowerLabel);
-			}
-			
-			if (scm.register(MCore.get().getDescription().getName(), bgc))
-			{
-				ret = true;
-			}
-		}
-		
-		return ret;
+		SimpleCommandMap scm = BukkitCommandDoor.getSimpleCommandMap();
+		scm.register(MCore.get().getDescription().getName(), this.getBukkitCommand());
 	}
 	
 	// -------------------------------------------- //
@@ -209,9 +173,8 @@ public abstract class MCommand
 	
 	public MCommand()
 	{
-		this.descPermission = null;
-		
 		this.subCommands = new ArrayList<MCommand>();
+		
 		this.aliases = new ArrayList<String>();
 		
 		this.requiredArgs = new ArrayList<String>();
@@ -223,6 +186,7 @@ public abstract class MCommand
 		this.usingTokenizer = true;
 		
 		this.desc = null;
+		this.descPermission = null;
 		
 		this.visibilityMode = VisibilityMode.VISIBLE; 
 	}
@@ -242,15 +206,15 @@ public abstract class MCommand
 		
 		this.fixSenderVars();
 		
-		this.args = args;
-		this.commandChain = commandChain;
+		this.setArgs(args);
+		this.setCommandChain(commandChain);
 
 		// Is there a matching sub command?
 		if (args.size() > 0 )
 		{
-			for (MCommand subCommand: this.subCommands)
+			for (MCommand subCommand: this.getSubCommands())
 			{
-				if (subCommand.aliases.contains(args.get(0)))
+				if (subCommand.getAliases().contains(args.get(0)))
 				{
 					args.remove(0);
 					commandChain.add(this);
@@ -260,7 +224,7 @@ public abstract class MCommand
 			}
 		}
 		
-		if ( ! validCall(this.sender, this.args)) return;
+		if ( ! validCall(this.sender, this.getArgs())) return;
 		
 		perform();
 	}
@@ -273,8 +237,12 @@ public abstract class MCommand
 	}
 	
 	// This is where the command action is performed.
-	public abstract void perform();
-	
+	public void perform()
+	{
+		// Per default we just act as the help command!
+		this.getCommandChain().add(this);
+		HelpCommand.get().execute(this.sender, this.getArgs(), this.getCommandChain());
+	}
 	
 	// -------------------------------------------- //
 	// CALL VALIDATION
@@ -323,7 +291,7 @@ public abstract class MCommand
 	
 	public boolean validArgs(List<String> args, CommandSender sender)
 	{
-		if (args.size() < this.requiredArgs.size())
+		if (args.size() < this.getRequiredArgs().size())
 		{
 			if (sender != null)
 			{
@@ -333,12 +301,12 @@ public abstract class MCommand
 			return false;
 		}
 		
-		if (args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs)
+		if (args.size() > this.getRequiredArgs().size() + this.getOptionalArgs().size() && this.getErrorOnToManyArgs())
 		{
 			if (sender != null)
 			{
 				// Get the to many string slice
-				List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
+				List<String> theToMany = args.subList(this.getRequiredArgs().size() + this.optionalArgs.size(), args.size());
 				msg(Lang.COMMAND_TO_MANY_ARGS, Txt.implodeCommaAndDot(theToMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
 				msg(Lang.COMMAND_TO_MANY_ARGS2);
 				sender.sendMessage(this.getUseageTemplate());
@@ -385,11 +353,11 @@ public abstract class MCommand
 			
 			if (first && onlyFirstAlias)
 			{
-				ret.append(mc.aliases.get(0));
+				ret.append(mc.getAliases().get(0));
 			}
 			else
 			{
-				ret.append(Txt.implode(mc.aliases, ","));
+				ret.append(Txt.implode(mc.getAliases(), ","));
 			}
 			
 			if (iter.hasNext())
@@ -402,12 +370,12 @@ public abstract class MCommand
 		
 		List<String> args = new ArrayList<String>();
 		
-		for (String requiredArg : this.requiredArgs)
+		for (String requiredArg : this.getRequiredArgs())
 		{
 			args.add("<"+requiredArg+">");
 		}
 		
-		for (Entry<String, String> optionalArg : this.optionalArgs.entrySet())
+		for (Entry<String, String> optionalArg : this.getOptionalArgs().entrySet())
 		{
 			String val = optionalArg.getValue();
 			if (val == null)
@@ -516,7 +484,7 @@ public abstract class MCommand
 	public String arg(int idx)
 	{
 		if ( ! this.argIsSet(idx)) return null;
-		return this.args.get(idx);
+		return this.getArgs().get(idx);
 	}
 	
 	public <T> T arg(int idx, ArgReader<T> argReader)
@@ -537,9 +505,9 @@ public abstract class MCommand
 	{
 		if ( ! this.argIsSet(idx)) return null;
 		int from = idx;
-		int to = args.size();
+		int to = this.getArgs().size();
 		if (to <= from) return "";
-		return Txt.implode(this.args.subList(from, to), " ");
+		return Txt.implode(this.getArgs().subList(from, to), " ");
 	}
 	
 	public <T> T argConcatFrom(int idx, ArgReader<T> argReader)

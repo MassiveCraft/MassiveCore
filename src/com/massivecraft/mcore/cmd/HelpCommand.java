@@ -8,19 +8,28 @@ import com.massivecraft.mcore.util.Txt;
 
 public class HelpCommand extends MCommand
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static HelpCommand i = new HelpCommand();
+	public static HelpCommand get() { return i; }
 	private HelpCommand()
 	{
-		super();
 		this.addAliases("?", "h", "help");
 		this.setDesc("");
 		this.addOptionalArg("page","1");
 	}
 	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
 	@Override
 	public void perform()
 	{
-		if (this.commandChain.size() == 0) return;
-		MCommand parentCommand = this.commandChain.get(this.commandChain.size()-1);
+		if (this.getCommandChain().size() == 0) return;
+		MCommand parentCommand = this.getCommandChain().get(this.getCommandChain().size()-1);
 		
 		ArrayList<String> lines = new ArrayList<String>();
 		
@@ -29,11 +38,11 @@ public class HelpCommand extends MCommand
 			lines.add(Txt.parse("<a>#<i> "+helpline));
 		}
 		
-		for(MCommand subCommand : parentCommand.getSubCommands())
+		for (MCommand subCommand : parentCommand.getSubCommands())
 		{
 			if (subCommand.visibleTo(sender))
 			{
-				lines.add(subCommand.getUseageTemplate(this.commandChain, true, true, sender));
+				lines.add(subCommand.getUseageTemplate(this.getCommandChain(), true, true, sender));
 			}
 		}
 		
@@ -41,13 +50,5 @@ public class HelpCommand extends MCommand
 		if (pagenumber == null) return;
 		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \""+parentCommand.getAliases().get(0)+"\"", sender));
 	}
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static HelpCommand i = new HelpCommand();
-	public static HelpCommand getInstance() { return i; }
-	public static HelpCommand get() { return i; }
 	
 }

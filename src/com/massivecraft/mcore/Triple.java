@@ -81,5 +81,4 @@ public class Triple<A, B, C> implements Cloneable, Serializable
 		return this;
 	}
 	
-	
 }

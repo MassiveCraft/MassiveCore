@@ -93,4 +93,3 @@ public class SimpleConfig
 		DiscUtil.writeCatch(file, content);
 	}
 }
-

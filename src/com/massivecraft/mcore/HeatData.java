@@ -81,7 +81,5 @@ public final class HeatData
 		
 		return valueOf(heatTarget, now);
 	}
-	
-	
-	
+
 }

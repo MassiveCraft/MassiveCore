@@ -1,22 +1,33 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import java.util.List;
-
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.Multiverse;
 import com.massivecraft.mcore.MCorePerm;
+import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARMultiverse;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
 
-public class CmdMCoreUsysMultiverseDel extends MCoreCommand
+public class CmdMCoreUsysMultiverseDel extends MCommand
 {
-	public CmdMCoreUsysMultiverseDel(List<String> aliases)
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public CmdMCoreUsysMultiverseDel()
 	{
-		super(aliases);
+		// Aliases
+		this.addAliases("d", "del");
+		
+		// Args
 		this.addRequiredArg("multiverse");
 		
+		// Requirements
 		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_MULTIVERSE_DEL.node));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public void perform()
@@ -36,4 +47,5 @@ public class CmdMCoreUsysMultiverseDel extends MCoreCommand
 		
 		msg("<g>Deleted multiverse <h>%s<g>.", id);
 	}
+	
 }
