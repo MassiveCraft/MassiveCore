@@ -72,4 +72,5 @@ public class MStoreUtil
 		if (fromIndex == 0 && toIndex == ret.size()-1) return ret;
 		return new ArrayList<T>(ret.subList(fromIndex, toIndex));
 	}
+	
 }
