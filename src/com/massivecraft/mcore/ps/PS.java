@@ -247,16 +247,32 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 		this.blockX = blockX;
 		this.blockY = blockY;
 		this.blockZ = blockZ;
-		this.locationX = locationX;
-		this.locationY = locationY;
-		this.locationZ = locationZ;
+		this.locationX = throwIfStrange(locationX, NAME_VERBOOSE_LOCATIONX);
+		this.locationY = throwIfStrange(locationY, NAME_VERBOOSE_LOCATIONY);
+		this.locationZ = throwIfStrange(locationZ, NAME_VERBOOSE_LOCATIONZ);
 		this.chunkX = chunkX;
 		this.chunkZ = chunkZ;
-		this.pitch = pitch;
-		this.yaw = yaw;
-		this.velocityX = velocityX;
-		this.velocityY = velocityY;
-		this.velocityZ = velocityZ;
+		this.pitch = throwIfStrange(pitch, NAME_VERBOOSE_PITCH);
+		this.yaw = throwIfStrange(yaw, NAME_VERBOOSE_YAW);
+		this.velocityX = throwIfStrange(velocityX, NAME_VERBOOSE_VELOCITYX);
+		this.velocityY = throwIfStrange(velocityY, NAME_VERBOOSE_VELOCITYY);
+		this.velocityZ = throwIfStrange(velocityZ, NAME_VERBOOSE_VELOCITYZ);
+	}
+	
+	public static Double throwIfStrange(Double d, String name)
+	{
+		if (d == null) return null;
+		if (d.isInfinite()) throw new IllegalArgumentException(name + " should not be Infinite!");
+		if (d.isNaN()) throw new IllegalArgumentException(name + " should not be NaN!");
+		return d;
+	}
+	
+	public static Float throwIfStrange(Float f, String name)
+	{
+		if (f == null) return null;
+		if (f.isInfinite()) throw new IllegalArgumentException(name + " should not be Infinite!");
+		if (f.isNaN()) throw new IllegalArgumentException(name + " should not be NaN!");
+		return f;
 	}
 	
 	// -------------------------------------------- //
