@@ -84,7 +84,7 @@ public class MCore extends MPlugin
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
 		.registerTypeAdapter(PlayerInventory.class, PlayerInventoryAdapter.get())
 		.registerTypeAdapter(PS.class, PSAdapter.get())
-        .registerTypeAdapterFactory(ModdedEnumTypeAdapter.ENUM_FACTORY);
+		.registerTypeAdapterFactory(ModdedEnumTypeAdapter.ENUM_FACTORY);
 	}
 	
 	public static String getServerId() { return ConfServer.serverid; }
