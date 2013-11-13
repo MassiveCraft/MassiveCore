@@ -16,6 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.massivecraft.mcore.adapter.InventoryAdapter;
 import com.massivecraft.mcore.adapter.ItemStackAdapter;
 import com.massivecraft.mcore.adapter.JsonElementAdapter;
+import com.massivecraft.mcore.adapter.ModdedEnumTypeAdapter;
 import com.massivecraft.mcore.adapter.ObjectIdAdapter;
 import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
@@ -82,7 +83,8 @@ public class MCore extends MPlugin
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
 		.registerTypeAdapter(PlayerInventory.class, PlayerInventoryAdapter.get())
-		.registerTypeAdapter(PS.class, PSAdapter.get());
+		.registerTypeAdapter(PS.class, PSAdapter.get())
+        .registerTypeAdapterFactory(ModdedEnumTypeAdapter.ENUM_FACTORY);
 	}
 	
 	public static String getServerId() { return ConfServer.serverid; }
