@@ -12,73 +12,76 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 	
 	// MOVE
 	
-	/*public boolean move(double amount, String causeId, String fromId, String toId, Collection<String> categories)
+	// this is the abstract one
+	/*
+	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories)
 	{
-		// LOL this one shall be abstract still :3
+		// TODO Auto-generated method stub
+		return false;
 	}*/
 	
-	public boolean move(double amount, String causeId, String fromId, String toId, String... categories)
+	public boolean move(String fromId, String toId, String byId, double amount, String... categories)
 	{
-		return this.move(amount, causeId, fromId, toId, Arrays.asList(categories));
+		return this.move(fromId, toId, byId, amount, Arrays.asList(categories));
 	}
 	
-	public boolean move(double amount, String causeId, String fromId, String toId)
+	public boolean move(String fromId, String toId, String byId, double amount)
 	{
-		return this.move(amount, causeId, fromId, toId, new ArrayList<String>());
+		return this.move(fromId, toId, byId, amount, new ArrayList<String>());
 	}
 	
 	// SPAWN
 	
-	public boolean spawn(double amount, String causeId, String toId, Collection<String> categories)
+	public boolean spawn(String toId, String byId, double amount, Collection<String> categories)
 	{
 		// Based on Move
-		return this.move(amount, causeId, null, toId, categories);
+		return this.move(null, toId, byId, amount, categories);
 	}
 	
-	public boolean spawn(double amount, String causeId, String toId, String... categories)
+	public boolean spawn(String toId, String byId, double amount, String... categories)
 	{
-		return this.spawn(amount, causeId, toId, Arrays.asList(categories));
+		return this.spawn(toId, byId, amount, Arrays.asList(categories));
 	}
 	
-	public boolean spawn(double amount, String causeId, String toId)
+	public boolean spawn(String toId, String byId, double amount)
 	{
-		return this.spawn(amount, causeId, toId, new ArrayList<String>());
+		return this.spawn(toId, byId, amount, new ArrayList<String>());
 	}
 	
 	// DESPAWN
 	
-	public boolean despawn(double amount, String causeId, String fromId, Collection<String> categories)
+	public boolean despawn(String fromId, String byId, double amount, Collection<String> categories)
 	{
 		// Based on Move
-		return this.move(amount, causeId, fromId, null, categories);
+		return this.move(fromId, null, byId, amount, categories);
 	}
 	
-	public boolean despawn(double amount, String causeId, String fromId, String... categories)
+	public boolean despawn(String fromId, String byId, double amount, String... categories)
 	{
-		return this.despawn(amount, causeId, fromId, Arrays.asList(categories));
+		return this.despawn(fromId, byId, amount, Arrays.asList(categories));
 	}
 	
-	public boolean despawn(double amount, String causeId, String fromId)
+	public boolean despawn(String fromId, String byId, double amount)
 	{
-		return this.despawn(amount, causeId, fromId, new ArrayList<String>());
+		return this.despawn(fromId, byId, amount, new ArrayList<String>());
 	}
 	
 	// SET
 	
-	public boolean set(double amount, String causeId, String accountId, Collection<String> categories)
+	public boolean set(String accountId, String byId, double amount, Collection<String> categories)
 	{
 		// Based on Move
-		return this.move(amount - this.get(accountId), causeId, null, accountId, categories);
+		return this.move(null, accountId, byId, amount - this.get(accountId), categories);
 	}
 	
-	public boolean set(double amount, String causeId, String accountId, String... categories)
+	public boolean set(String accountId, String byId, double amount, String... categories)
 	{
-		return this.set(amount, causeId, accountId, Arrays.asList(categories));
+		return this.set(accountId, byId, amount, Arrays.asList(categories));
 	}
 	
-	public boolean set(double amount, String causeId, String accountId)
+	public boolean set(String accountId, String byId, double amount)
 	{
-		return this.set(amount, causeId, accountId, new ArrayList<String>());
+		return this.set(accountId, byId, amount, new ArrayList<String>());
 	}
 	
 }

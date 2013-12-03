@@ -117,7 +117,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean move(double amount, String causeId, String fromId, String toId, Collection<String> categories)
+	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories)
 	{
 		// Ensure positive direction
 		if (amount < 0)

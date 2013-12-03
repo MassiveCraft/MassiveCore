@@ -20,6 +20,10 @@ public class Money
 	
 	public static String accountId(Object account)
 	{
+		// It's OK to send to or from null...
+		if (account == null) return null;
+		
+		// ... but if something is supplied we must manage to extract an id.
 		String ret = MUtil.extract(String.class, "accountId", account);
 		if (ret == null) throw new IllegalArgumentException("extraction of accountId from object failed");
 		return ret;
@@ -100,82 +104,82 @@ public class Money
 	
 	// MOVE
 	
-	public static boolean move(double amount, Object cause, Object from, Object to, Collection<String> categories)
+	public static boolean move(Object from, Object to, Object by, double amount, Collection<String> categories)
 	{
 		if (disabled()) return false;
-		return mixin.move(amount, accountId(cause), accountId(from), accountId(to), categories);
+		return mixin.move(accountId(from), accountId(to), accountId(by), amount, categories);
 	}
 	
-	public static boolean move(double amount, Object cause, Object from, Object to, String... categories)
+	public static boolean move(Object from, Object to, Object by, double amount, String... categories)
 	{
 		if (disabled()) return false;
-		return mixin.move(amount, accountId(cause), accountId(from), accountId(to), categories);
+		return mixin.move(accountId(from), accountId(to), accountId(by), amount, categories);
 	}
 	
-	public static boolean move(double amount, Object cause, Object from, Object to)
+	public static boolean move(Object from, Object to, Object by, double amount)
 	{
 		if (disabled()) return false;
-		return mixin.move(amount, accountId(cause), accountId(from), accountId(to));
+		return mixin.move(accountId(from), accountId(to), accountId(by), amount);
 	}
 	
 	// SPAWN
 	
-	public static boolean spawn(double amount, Object cause, Object to, Collection<String> categories)
+	public static boolean spawn(Object to, Object by, double amount, Collection<String> categories)
 	{
 		if (disabled()) return false;
-		return mixin.spawn(amount, accountId(cause), accountId(to), categories);
+		return mixin.spawn(accountId(to), accountId(by), amount, categories);
 	}
 	
-	public static boolean spawn(double amount, Object cause, Object to, String... categories)
+	public static boolean spawn(Object to, Object by, double amount, String... categories)
 	{
 		if (disabled()) return false;
-		return mixin.spawn(amount, accountId(cause), accountId(to), categories);
+		return mixin.spawn(accountId(to), accountId(by), amount, categories);
 	}
 	
-	public static boolean spawn(double amount, Object cause, Object toId)
+	public static boolean spawn(Object toId, Object by, double amount)
 	{
 		if (disabled()) return false;
-		return mixin.spawn(amount, accountId(cause), accountId(toId));
+		return mixin.spawn(accountId(toId), accountId(by), amount);
 	}
 	
 	// DESPAWN
 	
-	public static boolean despawn(double amount, Object cause, Object from, Collection<String> categories)
+	public static boolean despawn(Object from, Object by, double amount, Collection<String> categories)
 	{
 		if (disabled()) return false;
-		return mixin.despawn(amount, accountId(cause), accountId(from), categories);
+		return mixin.despawn(accountId(from), accountId(by), amount, categories);
 	}
 	
-	public static boolean despawn(double amount, Object cause, Object from, String... categories)
+	public static boolean despawn(Object from, Object by, double amount, String... categories)
 	{
 		if (disabled()) return false;
-		return mixin.despawn(amount, accountId(cause), accountId(from), categories);
+		return mixin.despawn(accountId(from), accountId(by), amount, categories);
 	}
 	
-	public static boolean despawn(double amount, Object cause, Object from)
+	public static boolean despawn(Object from, Object by, double amount)
 	{
 		if (disabled()) return false;
-		return mixin.despawn(amount, accountId(cause), accountId(from));
+		return mixin.despawn(accountId(from), accountId(by), amount);
 	}
 	
 	// SET
 	
-	public static boolean set(double amount, Object cause, Object account, Collection<String> categories)
+	public static boolean set(Object account, Object by, double amount, Collection<String> categories)
 	{
 		if (disabled()) return false;
-		return mixin.set(amount, accountId(cause), accountId(account), categories);
+		return mixin.set(accountId(account), accountId(by), amount, categories);
 	}
 	
-	public static boolean set(double amount, Object cause, Object account, String... categories)
+	public static boolean set(Object account, Object by, double amount, String... categories)
 	{
 		if (disabled()) return false;
-		return mixin.set(amount, accountId(cause), accountId(account), categories);
+		return mixin.set(accountId(account), accountId(by), amount, categories);
 	}
 	
-	public static boolean set(double amount, Object cause, Object account)
+	public static boolean set(Object account, Object by, double amount)
 	{
 		if (disabled()) return false;
-		return mixin.set(amount, accountId(cause), accountId(account));
+		return mixin.set(accountId(account), accountId(by), amount);
 	}
 	
 }

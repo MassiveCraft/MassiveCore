@@ -36,20 +36,20 @@ public interface MoneyMixin
 	// MODIFY
 	// -------------------------------------------- //
 	
-	public boolean move(double amount, String causeId, String fromId, String toId, Collection<String> categories);
-	public boolean move(double amount, String causeId, String fromId, String toId, String... categories);
-	public boolean move(double amount, String causeId, String fromId, String toId);
+	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories);
+	public boolean move(String fromId, String toId, String byId, double amount, String... categories);
+	public boolean move(String fromId, String toId, String byId, double amount);
 	
-	public boolean spawn(double amount, String causeId, String toId, Collection<String> categories);
-	public boolean spawn(double amount, String causeId, String toId, String... categories);
-	public boolean spawn(double amount, String causeId, String toId);
+	public boolean spawn(String toId, String byId, double amount, Collection<String> categories);
+	public boolean spawn(String toId, String byId, double amount, String... categories);
+	public boolean spawn(String toId, String byId, double amount);
 	
-	public boolean despawn(double amount, String causeId, String fromId, Collection<String> categories);
-	public boolean despawn(double amount, String causeId, String fromId, String... categories);
-	public boolean despawn(double amount, String causeId, String fromId);
+	public boolean despawn(String fromId, String byId, double amount, Collection<String> categories);
+	public boolean despawn(String fromId, String byId, double amount, String... categories);
+	public boolean despawn(String fromId, String byId, double amount);
 	
-	public boolean set(double amount, String causeId, String accountId, Collection<String> categories);
-	public boolean set(double amount, String causeId, String accountId, String... categories);
-	public boolean set(double amount, String causeId, String accountId);
+	public boolean set(String accountId, String byId, double amount, Collection<String> categories);
+	public boolean set(String accountId, String byId, double amount, String... categories);
+	public boolean set(String accountId, String byId, double amount);
 	
 }
