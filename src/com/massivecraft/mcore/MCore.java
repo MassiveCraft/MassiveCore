@@ -95,11 +95,6 @@ public class MCore extends MPlugin
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// Aspects
-	private Aspect moneyAspect;
-	public Aspect getMoneyAspect() { return this.moneyAspect; }
-	public Multiverse getMoneyMultiverse() { return this.getMoneyAspect().getMultiverse(); }
-	
 	// Commands
 	private CmdMCore outerCmdMCore;
 	public CmdMCore getOuterCmdMCore() { return this.outerCmdMCore; }
@@ -165,13 +160,6 @@ public class MCore extends MPlugin
 		MultiverseColl.get().init();
 		AspectColl.get().init();
 		MCoreConfColl.get().init();
-		
-		// Aspects
-		this.moneyAspect = AspectColl.get().get("mcore_money", true);
-		this.moneyAspect.register();
-		this.moneyAspect.setDesc(
-			"<i>The aspect used for how much money a player has"
-		);
 		
 		// Inject our command map with dynamic tweaks
 		MCoreBukkitSimpleCommandMap.inject();

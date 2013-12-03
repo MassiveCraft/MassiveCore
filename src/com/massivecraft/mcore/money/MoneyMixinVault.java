@@ -1,9 +1,13 @@
 package com.massivecraft.mcore.money;
 
+import java.util.Collection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.massivecraft.mcore.util.MUtil;
+
+
 
 
 
@@ -24,6 +28,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	
 	public void activate()
 	{
+		if (Money.mixin() != null) return;
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
 		if (rsp == null) return;
 		this.economy = rsp.getProvider();
@@ -46,7 +51,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean enabled(String universe)
+	public boolean enabled()
 	{
 		return this.economy.isEnabled();
 	}
@@ -56,19 +61,19 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public String format(String universe, double amount)
+	public String format(double amount)
 	{
 		return this.economy.format(amount);
 	}
 	
 	@Override
-	public String singular(String universe)
+	public String singular()
 	{
 		return this.economy.currencyNameSingular();		
 	}
 	
 	@Override
-	public String plural(String universe)
+	public String plural()
 	{
 		return this.economy.currencyNamePlural();
 	}
@@ -78,15 +83,15 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean exists(String universe, String accountId)
+	public boolean exists(String accountId)
 	{
-		return this.economy.hasAccount(accountId, universe);
+		return this.economy.hasAccount(accountId);
 	}
 	
 	@Override
-	public boolean create(String universe, String accountId)
+	public boolean create(String accountId)
 	{
-		return this.ensureExists(universe, accountId);
+		return this.ensureExists(accountId);
 	}
 	
 	// -------------------------------------------- //
@@ -94,19 +99,17 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public double get(String universe, String accountId)
+	public double get(String accountId)
 	{
-		this.ensureExists(universe, accountId);
-		
-		return this.economy.getBalance(accountId, universe);
+		this.ensureExists(accountId);
+		return this.economy.getBalance(accountId);
 	}
 	
 	@Override
-	public boolean has(String universe, String accountId, double amount)
+	public boolean has(String accountId, double amount)
 	{
-		this.ensureExists(universe, accountId);
-		
-		return this.economy.has(accountId, universe, amount);
+		this.ensureExists(accountId);
+		return this.economy.has(accountId, amount);
 	}
 	
 	// -------------------------------------------- //
@@ -114,48 +117,63 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean set(String universe, String accountId, double amount)
+	public boolean move(double amount, String causeId, String fromId, String toId, Collection<String> categories)
 	{
-		double current = get(universe, accountId);
-		return add(universe, accountId, amount - current);
-	}
-	
-	@Override
-	public boolean add(String universe, String accountId, double amount)
-	{
-		if (amount < 0) return subtract(universe, accountId, -amount);
+		// Ensure positive direction
+		if (amount < 0)
+		{
+			amount *= -1;
+			String temp = fromId;
+			fromId = toId;
+			toId = temp;
+		}
 		
-		this.ensureExists(universe, accountId);
+		// Ensure the accounts exist
+		if (fromId != null) this.ensureExists(fromId);
+		if (toId != null) this.ensureExists(toId);
 		
-		return economy.depositPlayer(accountId, universe, amount).transactionSuccess();
-	}
-	
-	@Override
-	public boolean subtract(String universe, String accountId, double amount)
-	{
-		if (amount < 0) return add(universe, accountId, -amount);
+		// Subtract From
+		if (fromId != null)
+		{
+			if (!economy.withdrawPlayer(fromId, amount).transactionSuccess())
+			{
+				return false;
+			}
+		}
 		
-		this.ensureExists(universe, accountId);
+		// Add To
+		if (toId != null)
+		{
+			if (!economy.depositPlayer(toId, amount).transactionSuccess())
+			{
+				if (fromId != null)
+				{
+					// Undo the withdraw
+					economy.depositPlayer(fromId, amount);
+				}
+				return false;
+			}
+		}
 		
-		return economy.withdrawPlayer(accountId, universe, amount).transactionSuccess();
+		return true;
 	}
 	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
 	
-	public boolean ensureExists(String universe, String accountId)
+	public boolean ensureExists(String accountId)
 	{
-		if (this.economy.hasAccount(accountId, universe)) return true;
+		if (this.economy.hasAccount(accountId)) return true;
 		
-		if (!this.economy.createPlayerAccount(accountId, universe)) return false;
+		if (!this.economy.createPlayerAccount(accountId)) return false;
 		
 		if (MUtil.isValidPlayerName(accountId)) return true;
 		
-		double balance = this.economy.getBalance(accountId, universe);
-		economy.withdrawPlayer(accountId, universe, balance);
+		double balance = this.economy.getBalance(accountId);
+		economy.withdrawPlayer(accountId, balance);
 		
 		return true;
 	}
-	
+
 }

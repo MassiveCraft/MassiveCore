@@ -1,5 +1,7 @@
 package com.massivecraft.mcore.money;
 
+import java.util.Collection;
+
 import com.massivecraft.mcore.util.MUtil;
 
 public class Money
@@ -16,16 +18,9 @@ public class Money
 	// EXTRACT
 	// -------------------------------------------- //
 	
-	public static String universe(Object universe)
+	public static String accountId(Object account)
 	{
-		String ret = MUtil.extract(String.class, "moneyUniverse", universe);
-		if (ret == null) throw new IllegalArgumentException("extraction of universe from object failed");
-		return ret;
-	}
-	
-	public static String accountId(Object accountId)
-	{
-		String ret = MUtil.extract(String.class, "accountId", accountId);
+		String ret = MUtil.extract(String.class, "accountId", account);
 		if (ret == null) throw new IllegalArgumentException("extraction of accountId from object failed");
 		return ret;
 	}
@@ -34,126 +29,153 @@ public class Money
 	// ENABLED
 	// -------------------------------------------- //
 	
-	public static boolean enabled(Object universe)
+	public static boolean enabled()
 	{
 		if (mixin == null) return false;
-		return mixin.enabled(universe(universe));
+		return mixin.enabled();
 	}
 	
-	public static boolean disabled(Object universe)
+	public static boolean disabled()
 	{
-		return !enabled(universe);
+		return !enabled();
 	}
 	
 	// -------------------------------------------- //
 	// FORMAT AND NAME
 	// -------------------------------------------- //
 	
-	public static String format(Object universe, double amount)
+	public static String format(double amount)
 	{
-		if (disabled(universe)) return String.valueOf(amount);
-		return mixin.format(universe(universe), amount);
+		if (disabled()) return String.valueOf(amount);
+		return mixin.format(amount);
 	}
 	
-	public static String singular(Object universe)
+	public static String singular()
 	{
-		if (disabled(universe)) return "singular";
-		return mixin.singular(universe(universe));
+		if (disabled()) return "singular";
+		return mixin.singular();
 	}
 	
-	public static String plural(Object universe)
+	public static String plural()
 	{
-		if (disabled(universe)) return "plural";
-		return mixin.plural(universe(universe));
+		if (disabled()) return "plural";
+		return mixin.plural();
 	}
 	
 	// -------------------------------------------- //
-	// EXISTS AND CREATE
+	// EXISTANCE
 	// -------------------------------------------- //
-	
-	public static boolean exists(Object universe, Object accountId)
-	{
-		if (disabled(universe)) return false;
-		return mixin.exists(universe(universe), accountId(accountId));
-	}
 	
 	public static boolean exists(Object account)
 	{
-		return exists(account, account);
-	}
-	
-	public static boolean create(Object universe, Object accountId)
-	{
-		if (disabled(universe)) return false;
-		return mixin.create(universe(universe), accountId(accountId));
+		if (disabled()) return false;
+		return mixin.exists(accountId(account));
 	}
 	
 	public static boolean create(Object account)
 	{
-		return create(account, account);
+		if (disabled()) return false;
+		return mixin.create(accountId(account));
 	}
 	
 	// -------------------------------------------- //
 	// CHECK
 	// -------------------------------------------- //
 	
-	public static double get(Object universe, Object accountId)
-	{
-		if (disabled(universe)) return 0D;
-		return mixin.get(universe(universe), accountId(accountId));
-	}
-	
 	public static double get(Object account)
 	{
-		return get(account, account);
-	}
-	
-	public static boolean has(Object universe, Object accountId, double amount)
-	{
-		if (disabled(universe)) return false;
-		return mixin.has(universe(universe), accountId(accountId), amount);
+		if (disabled()) return 0D;
+		return mixin.get(accountId(account));
 	}
 	
 	public static boolean has(Object account, double amount)
 	{
-		return has(account, account, amount);
+		if (disabled()) return false;
+		return mixin.has(accountId(account), amount);
 	}
 	
 	// -------------------------------------------- //
 	// MODIFY
 	// -------------------------------------------- //
 	
-	public static boolean set(Object universe, Object accountId, double amount)
+	// MOVE
+	
+	public static boolean move(double amount, Object cause, Object from, Object to, Collection<String> categories)
 	{
-		if (disabled(universe)) return false;
-		return mixin.set(universe(universe), accountId(accountId), amount);
+		if (disabled()) return false;
+		return mixin.move(amount, accountId(cause), accountId(from), accountId(to), categories);
 	}
 	
-	public static boolean set(Object account, double amount)
+	public static boolean move(double amount, Object cause, Object from, Object to, String... categories)
 	{
-		return set(account, account, amount);
+		if (disabled()) return false;
+		return mixin.move(amount, accountId(cause), accountId(from), accountId(to), categories);
 	}
 	
-	public static boolean add(Object universe, Object accountId, double amount)
+	public static boolean move(double amount, Object cause, Object from, Object to)
 	{
-		if (disabled(universe)) return false;
-		return mixin.add(universe(universe), accountId(accountId), amount);
+		if (disabled()) return false;
+		return mixin.move(amount, accountId(cause), accountId(from), accountId(to));
 	}
 	
-	public static boolean add(Object account, double amount)
+	// SPAWN
+	
+	public static boolean spawn(double amount, Object cause, Object to, Collection<String> categories)
 	{
-		return add(account, account, amount);
+		if (disabled()) return false;
+		return mixin.spawn(amount, accountId(cause), accountId(to), categories);
 	}
 	
-	public static boolean subtract(Object universe, Object accountId, double amount)
+	public static boolean spawn(double amount, Object cause, Object to, String... categories)
 	{
-		if (disabled(universe)) return false;
-		return mixin.subtract(universe(universe), accountId(accountId), amount);
+		if (disabled()) return false;
+		return mixin.spawn(amount, accountId(cause), accountId(to), categories);
 	}
 	
-	public static boolean subtract(Object account, double amount)
+	public static boolean spawn(double amount, Object cause, Object toId)
 	{
-		return subtract(account, account, amount);
+		if (disabled()) return false;
+		return mixin.spawn(amount, accountId(cause), accountId(toId));
+	}
+	
+	// DESPAWN
+	
+	public static boolean despawn(double amount, Object cause, Object from, Collection<String> categories)
+	{
+		if (disabled()) return false;
+		return mixin.despawn(amount, accountId(cause), accountId(from), categories);
+	}
+	
+	public static boolean despawn(double amount, Object cause, Object from, String... categories)
+	{
+		if (disabled()) return false;
+		return mixin.despawn(amount, accountId(cause), accountId(from), categories);
+	}
+	
+	public static boolean despawn(double amount, Object cause, Object from)
+	{
+		if (disabled()) return false;
+		return mixin.despawn(amount, accountId(cause), accountId(from));
+	}
+	
+	// SET
+	
+	public static boolean set(double amount, Object cause, Object account, Collection<String> categories)
+	{
+		if (disabled()) return false;
+		return mixin.set(amount, accountId(cause), accountId(account), categories);
+	}
+	
+	public static boolean set(double amount, Object cause, Object account, String... categories)
+	{
+		if (disabled()) return false;
+		return mixin.set(amount, accountId(cause), accountId(account), categories);
+	}
+	
+	public static boolean set(double amount, Object cause, Object account)
+	{
+		if (disabled()) return false;
+		return mixin.set(amount, accountId(cause), accountId(account));
 	}
 	
 }
