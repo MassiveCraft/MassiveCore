@@ -36,19 +36,20 @@ public class CmdMCoreUsysAspectList extends MCommand
 	@Override
 	public void perform()
 	{
+		// Args
 		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
 		
-		// Create Messages
+		// Create Lines
 		List<String> lines = new ArrayList<String>();
 		
 		for (Aspect aspect : AspectColl.get().getAllRegistered())
 		{
-			lines.add("<h>"+aspect.getId()+" <white>--> <h>"+aspect.getMultiverse().getId());
+			String line = Txt.parse("<h>"+aspect.getId()+" <white>--> <h>"+aspect.getMultiverse().getId());
+			lines.add(line);
 		}
 				
 		// Send them
-		lines = Txt.parseWrap(lines);
 		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Aspect List", sender));	
 	}
 	

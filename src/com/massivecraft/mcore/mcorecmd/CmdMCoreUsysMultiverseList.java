@@ -36,19 +36,19 @@ public class CmdMCoreUsysMultiverseList extends MCommand
 	@Override
 	public void perform()
 	{
+		// Args
 		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
 		if (pageHumanBased == null) return;
 		
-		// Create Messages
+		// Create Lines
 		List<String> lines = new ArrayList<String>();
-		
 		for (Multiverse multiverse : MultiverseColl.get().getAll())
 		{
-			lines.add("<h>"+multiverse.getId()+" <i>has "+Txt.implodeCommaAndDot(multiverse.getUniverses(), "<aqua>%s", "<i>, ", " <i>and ", "<i>."));
+			String line = Txt.parse("<h>"+multiverse.getId()+" <i>has "+Txt.implodeCommaAndDot(multiverse.getUniverses(), "<aqua>%s", "<i>, ", " <i>and ", "<i>."));
+			lines.add(line);
 		}
 				
 		// Send them
-		lines = Txt.parseWrap(lines);
 		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Multiverse List", sender));
 	}
 	

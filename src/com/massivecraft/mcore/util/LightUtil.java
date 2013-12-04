@@ -1,21 +1,25 @@
 package com.massivecraft.mcore.util;
 
-import net.minecraft.server.v1_6_R3.WorldServer;
+import net.minecraft.server.v1_7_R1.WorldServer;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
 
 /**
  * Find the method by going through CraftBlock.setTypeId()
  * The method should look something like this:
  * 
- *     public void A(int i, int j, int k) {
-        if (!this.worldProvider.f) {
-            this.c(EnumSkyBlock.SKY, i, j, k);
+ *
+    public boolean t(int i, int j, int k) {
+        boolean flag = false;
+
+        if (!this.worldProvider.g) {
+            flag |= this.c(EnumSkyBlock.SKY, i, j, k);
         }
 
-        this.c(EnumSkyBlock.BLOCK, i, j, k);
+        flag |= this.c(EnumSkyBlock.BLOCK, i, j, k);
+        return flag;
     }
  * 
  */
@@ -36,7 +40,7 @@ public class LightUtil
 	{
 		CraftWorld cworld = (CraftWorld)world;
 		WorldServer worldServer = cworld.getHandle();
-		worldServer.A(x, y, z);
+		worldServer.t(x, y, z);
 	}
 	
 }

@@ -1,8 +1,8 @@
 package com.massivecraft.mcore.inventory;
 
-import net.minecraft.server.v1_6_R3.EntityHuman;
-import net.minecraft.server.v1_6_R3.ItemStack;
-import net.minecraft.server.v1_6_R3.PlayerInventory;
+import net.minecraft.server.v1_7_R1.EntityHuman;
+import net.minecraft.server.v1_7_R1.ItemStack;
+import net.minecraft.server.v1_7_R1.PlayerInventory;
 
 import org.bukkit.inventory.InventoryHolder;
 
@@ -11,13 +11,13 @@ import org.bukkit.inventory.InventoryHolder;
  * It is extended in such a way that it has a no-arg constructor.
  * It is mainly used for deserialization of PlayerInventor.
  * 
- * What is tricky about the NMS.PlayerInventory is that it does hold a link/field to the holder/player.
- * It is however acceptable for this field "public EntityHuman player" to be null as long as some internal methods are rewritten.
- * 
- * NPE evasion is achieved by overriding all internal methods using the player field.
+ * There is a link/field to the holder/player.
+ * We override internal methods where necessary.
  * 
  * How to update:
- * Do go to NMS.PlayerInventory and search for references to "player".
+ * Make sure there is a no-arg constructor.
+ * Search for references to "public EntityHuman player".
+ * 
  * As of 1.5.1 these are the references:
  * 
  * a(EntityHuman) (2 matches)
@@ -28,7 +28,7 @@ import org.bukkit.inventory.InventoryHolder;
  * pickup(ItemStack) (2 matches)
  * PlayerInventory(EntityHuman)
  * 
- * As of 1.6.1 and 1.6.2 and 1.6.4 these are the references:
+ * As of 1.6.1 and 1.6.2 and 1.6.4 and 1.7.2 these are the references:
  * 
  * a(EntityHuman) (2 matches)
  * a(float)
@@ -37,6 +37,7 @@ import org.bukkit.inventory.InventoryHolder;
  * m() (2 matches)
  * pickup(ItemStack) (2 matches)
  * PlayerInventory(EntityHuman)
+ * 
  */
 
 public class MCorePlayerInventory extends PlayerInventory
@@ -51,7 +52,7 @@ public class MCorePlayerInventory extends PlayerInventory
 	}
 	
 	// -------------------------------------------- //
-	// NPE EVASION 
+	// OVERRIDE
 	// -------------------------------------------- //
 	
 	// Is the entityhuman within reach?

@@ -5,22 +5,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.Chunk;
-import net.minecraft.server.v1_6_R3.WorldServer;
+import net.minecraft.server.v1_7_R1.BiomeBase;
+import net.minecraft.server.v1_7_R1.Chunk;
+import net.minecraft.server.v1_7_R1.WorldServer;
 
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
 
 public class BiomeUtil
 {
 	public static Map<Integer, String> getBiomeIdNames()
 	{
 		Map<Integer, String> ret = new LinkedHashMap<Integer, String>();
-		for(BiomeBase bb : BiomeBase.biomes)
+		for (BiomeBase bb : BiomeBase.n())
 		{
 			if (bb == null) continue;
-			ret.put(bb.id, bb.y);
+			ret.put(bb.id, bb.af);
 		}
 		return ret;
 	}	
@@ -33,7 +33,7 @@ public class BiomeUtil
 		BiomeBase biomeBase = worldServer.getBiome(x, z);
 		
 		Integer id = biomeBase.id;
-		String name = biomeBase.y;
+		String name = biomeBase.af;
 		
 		return new SimpleEntry<Integer, String>(id, name);
 	}
@@ -43,7 +43,7 @@ public class BiomeUtil
 		CraftWorld craftWorld = (CraftWorld)world;
 		WorldServer worldServer = craftWorld.getHandle();
 		
-		BiomeBase bb = BiomeBase.biomes[id];
+		BiomeBase bb = BiomeBase.getBiome(id);
 		if (craftWorld.loadChunk(x >> 4, z >> 4, false)) {
 			Chunk chunk = worldServer.getChunkAtWorldCoords(x, z);
 

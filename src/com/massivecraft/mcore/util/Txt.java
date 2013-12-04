@@ -172,19 +172,20 @@ public class Txt
 	}
 	
 	// -------------------------------------------- //
-	// Wrapping the Craftbukkit TextWrapper
+	// SPLIT AT LINEBREAKS
 	// -------------------------------------------- //
+	
 	public static ArrayList<String> wrap(final String string)
 	{
-		return wrap(Arrays.asList(string.split("\\r?\\n")));
+		return new ArrayList<String>(Arrays.asList(string.split("\\r?\\n")));
 	}
 	
 	public static ArrayList<String> wrap(final Collection<String> strings)
 	{
 		ArrayList<String> ret = new ArrayList<String>();
-		for (String line : strings)
+		for (String string : strings)
 		{
-			ret.addAll(Arrays.asList(TextWrapper.wrapText(line)));
+			ret.addAll(wrap(string));
 		}
 		return ret;
 	}
