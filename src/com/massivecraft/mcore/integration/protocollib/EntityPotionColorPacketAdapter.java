@@ -3,12 +3,11 @@ package com.massivecraft.mcore.integration.protocollib;
 import java.util.List;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Firework;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.comphenix.protocol.Packets;
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.ConnectionSide;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -22,7 +21,11 @@ public class EntityPotionColorPacketAdapter extends PacketAdapter
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private EntityPotionColorPacketAdapter() { super(MCore.get(), ConnectionSide.SERVER_SIDE, ListenerPriority.NORMAL, Packets.Server.ENTITY_METADATA); }
+	//private EntityPotionColorPacketAdapter() { super(MCore.get(), ConnectionSide.SERVER_SIDE, ListenerPriority.NORMAL, Packets.Server.ENTITY_METADATA); }
+	private EntityPotionColorPacketAdapter()
+	{
+		super(PacketAdapter.params().plugin(MCore.get()).serverSide().listenerPriority(ListenerPriority.NORMAL).types(PacketType.Play.Server.ENTITY_METADATA));
+	}
 	private static EntityPotionColorPacketAdapter i = new EntityPotionColorPacketAdapter();
 	public static EntityPotionColorPacketAdapter get() { return i; }
 	
@@ -55,7 +58,9 @@ public class EntityPotionColorPacketAdapter extends PacketAdapter
 			
 			// Fireworks cannot have potion effects! They also reuse index 8 
 			// for sending their item stack, causing a crash if we don't bail out now.
-			if (entity instanceof Firework) return;
+			// We could have done: if (entity instanceof Firework) return;
+			// But it's actually more safe to use a whitelist than a blacklist.
+			if (!(entity instanceof LivingEntity)) return;
 			
 			// ... fetch the metadata ...
 			final List<WrappedWatchableObject> metadata = packet.getWatchableCollectionModifier().read(0);

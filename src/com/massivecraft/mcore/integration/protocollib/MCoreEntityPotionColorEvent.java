@@ -23,6 +23,7 @@ public class MCoreEntityPotionColorEvent extends Event implements Runnable
 	private final Player sendee;
 	public Player getSendee() { return this.sendee; }
 	
+	// TODO: Should probably be made a LivingEntity instead? 
 	private final Entity entity;
 	public Entity getEntity() { return this.entity; }
 	
