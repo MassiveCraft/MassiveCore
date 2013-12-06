@@ -11,6 +11,7 @@ import com.massivecraft.mcore.util.MUtil;
 
 
 
+
 import net.milkbowl.vault.economy.Economy;
 
 public class MoneyMixinVault extends MoneyMixinAbstract
@@ -117,7 +118,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories)
+	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories, String message)
 	{
 		// Ensure positive direction
 		if (amount < 0)
@@ -175,5 +176,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 		
 		return true;
 	}
+
+	
 
 }
