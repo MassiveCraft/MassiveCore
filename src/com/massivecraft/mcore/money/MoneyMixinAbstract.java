@@ -15,7 +15,7 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 	
 	public boolean move(String fromId, String toId, String byId, double amount, String category, String message)
 	{
-		return this.move(fromId, toId, byId, amount, Arrays.asList(category), message);
+		return this.move(fromId, toId, byId, amount, (category == null ? null : Arrays.asList(category)), message);
 	}
 	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories)
 	{
@@ -23,7 +23,7 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 	}
 	public boolean move(String fromId, String toId, String byId, double amount, String category)
 	{
-		return this.move(fromId, toId, byId, amount, Arrays.asList(category), null);
+		return this.move(fromId, toId, byId, amount, (category == null ? null : Arrays.asList(category)), null);
 	}
 	public boolean move(String fromId, String toId, String byId, double amount)
 	{
