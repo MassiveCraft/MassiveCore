@@ -417,16 +417,7 @@ public class Txt
 	
 	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title, CommandSender sender)
 	{
-		int pageheight;
-		if (sender instanceof Player)
-		{
-			pageheight = PAGEHEIGHT_PLAYER;
-		}
-		else
-		{
-			pageheight = PAGEHEIGHT_CONSOLE;
-		}
-		return getPage(lines, pageHumanBased, title, pageheight);
+		return getPage(lines, pageHumanBased, title, (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE);
 	}
 	
 	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title, int pageheight)
