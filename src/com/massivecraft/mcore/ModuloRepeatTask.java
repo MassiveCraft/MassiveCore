@@ -23,6 +23,8 @@ public abstract class ModuloRepeatTask implements Runnable
 	public long getPreviousMillis() { return this.previousMillis; }
 	public void setPreviousMillis(long previousMillis) { this.previousMillis = previousMillis; }
 	
+	private Integer taskId = null;
+	
 	// -------------------------------------------- //
 	// INVOCATION NUMBER CALCULATION
 	// -------------------------------------------- //
@@ -80,9 +82,22 @@ public abstract class ModuloRepeatTask implements Runnable
 	// EIGEN
 	// -------------------------------------------- //
 	
+	@Deprecated
 	public int schedule(Plugin plugin)
 	{
-		return Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 1, 1);
+		this.activate(plugin);
+		return this.taskId;
+	}
+	
+	public void activate(Plugin plugin)
+	{
+		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 1, 1);
+	}
+	
+	public void deactivate()
+	{
+		if (this.taskId == null) return;
+		Bukkit.getScheduler().cancelTask(this.taskId);
 	}
 	
 	// -------------------------------------------- //

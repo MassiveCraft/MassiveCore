@@ -77,7 +77,18 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	
 	public String getMessageInvalid()
 	{
-		return Txt.parse("<b>Invalid, page must be between 1 and %d.", this.size());
+		if (this.size() == 0)
+		{
+			return this.getMessageEmpty();
+		}
+		else if (this.size() == 1)
+		{
+			return Txt.parse("<b>Invalid, there is only one page.", this.size());
+		}
+		else
+		{
+			return Txt.parse("<b>Invalid, page must be between 1 and %d.", this.size());
+		}
 	}
 	
 	@Override
