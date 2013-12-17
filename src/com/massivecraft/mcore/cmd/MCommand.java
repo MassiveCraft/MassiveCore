@@ -73,6 +73,12 @@ public class MCommand
 	public boolean isUsingTokenizer() { return this.usingTokenizer; }
 	public void setUsingTokenizer(boolean usingTokenizer) { this.usingTokenizer = usingTokenizer; }
 	
+	// FIELD: usingSmartQuotesRemoval
+	// Are "smart" quotes replaced with normal characters?
+	protected boolean usingSmartQuotesRemoval;
+	public boolean isUsingSmartQuotesRemoval() { return this.usingSmartQuotesRemoval; }
+	public void setUsingSmartQuotesRemoval(boolean usingSmartQuotesRemoval) { this.usingSmartQuotesRemoval = usingSmartQuotesRemoval; }
+	
 	// FIELD: requirements
 	// All these requirements must be met for the command to be executable;
 	protected List<Req> requirements;
@@ -184,6 +190,7 @@ public class MCommand
 		
 		this.errorOnToManyArgs = true;
 		this.usingTokenizer = true;
+		this.usingSmartQuotesRemoval = true;
 		
 		this.desc = null;
 		this.descPermission = null;

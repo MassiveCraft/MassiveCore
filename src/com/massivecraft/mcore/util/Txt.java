@@ -490,6 +490,42 @@ public class Txt
 	}
 	
 	// -------------------------------------------- //
+	// "SMART" QUOTES
+	// -------------------------------------------- //
+	// The quite stupid "Smart quotes" design idea means replacing normal characters with mutated UTF-8 alternatives.
+	// The normal characters look good in Minecraft.
+	// The UFT-8 "smart" alternatives look quite bad.
+	// http://www.fileformat.info/info/unicode/block/general_punctuation/list.htm
+	
+	public static String removeSmartQuotes(String string)
+	{
+		if (string == null) return null;
+		
+		// LEFT SINGLE QUOTATION MARK
+		string = string.replace("\u2018", "'");
+		
+		// RIGHT SINGLE QUOTATION MARK
+		string = string.replace("\u2019", "'");
+		
+		// LEFT DOUBLE QUOTATION MARK
+		string = string.replace("\u201C", "\"");
+		
+		// RIGHT DOUBLE QUOTATION MARK
+		string = string.replace("\u201D", "\"");
+		
+		// ONE DOT LEADER
+		string = string.replace("\u2024", ".");
+		
+		// TWO DOT LEADER
+		string = string.replace("\u2025", "..");
+		
+		// HORIZONTAL ELLIPSIS
+		string = string.replace("\u2026", "...");
+
+		return string;
+	}
+	
+	// -------------------------------------------- //
 	// String comparison
 	// -------------------------------------------- //
 	

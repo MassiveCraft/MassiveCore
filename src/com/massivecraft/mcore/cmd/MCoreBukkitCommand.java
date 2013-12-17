@@ -82,6 +82,16 @@ public class MCoreBukkitCommand extends Command
 			argList = new ArrayList<String>(Arrays.asList(args));
 		}
 		
+		if (this.mcommand.isUsingSmartQuotesRemoval())
+		{
+			List<String> oldArgList = argList;
+			argList = new ArrayList<String>();
+			for (String arg : oldArgList)
+			{
+				argList.add(Txt.removeSmartQuotes(arg));
+			}
+		}
+		
 		this.mcommand.execute(sender, argList);
 		
 		return true;
