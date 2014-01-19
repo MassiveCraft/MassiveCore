@@ -119,7 +119,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 		}
 		else
 		{
-			Logger.getLogger("Minecraft").log(level, this.logPrefixPlain + imploded);
+			Logger.getLogger("Minecraft").log(level, ChatColor.stripColor(this.logPrefixPlain + imploded));
 		}
 	}
 }
