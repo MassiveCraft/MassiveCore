@@ -230,10 +230,8 @@ public class InventoryUtil
 			
 			PlayerInventory pinventory = (PlayerInventory)inventory;
 			
-			pret.setHelmet(pinventory.getHelmet() == null ? null : new ItemStack(pinventory.getHelmet()));
-			pret.setChestplate(pinventory.getChestplate() == null ? null : new ItemStack(pinventory.getChestplate()));
-			pret.setLeggings(pinventory.getLeggings() == null ? null : new ItemStack(pinventory.getLeggings()));
-			pret.setBoots(pinventory.getBoots() == null ? null : new ItemStack(pinventory.getBoots()));
+			ItemStack[] armorContents = cloneItemStacks(pinventory.getArmorContents());
+			ret.setArmorContents(armorContents);
 		}
 		else
 		{
