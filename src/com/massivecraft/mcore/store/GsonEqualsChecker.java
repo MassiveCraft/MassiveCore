@@ -134,16 +134,7 @@ public class GsonEqualsChecker
 			Number oneNumber = one.getAsNumber();
 			Number twoNumber = two.getAsNumber();
 			
-			boolean floating;
-			if (oneNumber instanceof LazilyParsedNumber)
-			{
-				floating = StringUtils.contains(oneNumber.toString(), '.');
-			}
-			else
-			{
-				floating = (oneNumber instanceof Double || oneNumber instanceof Float);
-			}
-			
+			boolean floating = isFloating(oneNumber);
 			if (floating)
 			{
 				// Our epsilon is pretty big in order to see float and double as the same.
@@ -173,5 +164,14 @@ public class GsonEqualsChecker
 		if (twoObject == null) return false;
 		
 		return twoObject == JsonNull.INSTANCE;
+	}
+	
+	public static boolean isFloating(Number number)
+	{
+		if (number instanceof LazilyParsedNumber)
+		{
+			return StringUtils.contains(number.toString(), '.');
+		}
+		return (number instanceof Double || number instanceof Float);
 	}
 }

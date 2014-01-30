@@ -61,6 +61,7 @@ public abstract class MPlugin extends JavaPlugin implements Listener
 	// DISABLE
 	// -------------------------------------------- //
 	
+	@Override
 	public void onDisable()
 	{
 		// Collection shutdowns.
