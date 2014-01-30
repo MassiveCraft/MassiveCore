@@ -15,7 +15,7 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	public abstract String typename();
 	public abstract T select(String str, CommandSender sender);
 	public abstract Collection<String> altNames(CommandSender sender);
-	public boolean canList(CommandSender sender) { return true; }
+	public boolean canList(CommandSender sender) { return this.altNames(sender).size() < 50; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
