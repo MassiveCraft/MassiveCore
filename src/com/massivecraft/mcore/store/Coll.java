@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -229,9 +230,11 @@ public class Coll<E> implements CollInterface<E>
 			JsonObject jfrom = (JsonObject)ofrom;
 			JsonObject jto = (JsonObject)oto;
 			// Clear To
-			for (Entry<String, JsonElement> entry : jto.entrySet())
+			Iterator<Entry<String, JsonElement>> iter = jto.entrySet().iterator();
+			while (iter.hasNext())
 			{
-				jto.remove(entry.getKey());
+				iter.next();
+				iter.remove();
 			}
 			// Copy
 			for (Entry<String, JsonElement> entry : jfrom.entrySet())
