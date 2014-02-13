@@ -1,8 +1,6 @@
 package com.massivecraft.mcore.cmd;
 
 import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -11,7 +9,6 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.craftbukkit.v1_7_R1.CraftServer;
 import org.bukkit.plugin.SimplePluginManager;
 
-@SuppressWarnings("unchecked")
 public class BukkitCommandDoor
 {
 	// -------------------------------------------- //
@@ -28,30 +25,6 @@ public class BukkitCommandDoor
 		return getCraftServer().getCommandMap();
 	}
 	
-	public static void setSimpleCommandMap(SimpleCommandMap simpleCommandMap)
-	{
-		set(CraftServer.class, "commandMap", getCraftServer(), simpleCommandMap);
-	}
-	
-	public static SimplePluginManager getSimplePluginManager()
-	{
-		return (SimplePluginManager)Bukkit.getPluginManager();
-	}
-	
-	// -------------------------------------------- //
-	// SIMPLE COMMAND MAP
-	// -------------------------------------------- //
-	
-	public static Map<String, Command> getSimpleCommandMapDotKnownCommands(SimpleCommandMap simpleCommandMap)
-	{
-		return (Map<String, Command>) get(SimpleCommandMap.class, "knownCommands", simpleCommandMap);
-	}
-	
-	public static Set<String> getSimpleCommandMapDotAliases(SimpleCommandMap simpleCommandMap)
-	{
-		return (Set<String>) get(SimpleCommandMap.class, "aliases", simpleCommandMap);
-	}
-	
 	// -------------------------------------------- //
 	// SIMPLE PLUGIN MANAGER
 	// -------------------------------------------- //
@@ -61,11 +34,6 @@ public class BukkitCommandDoor
 		return (CommandMap) get(SimplePluginManager.class, "commandMap", simplePluginManager);
 	}
 	
-	public static void setSimplePluginManagerCommandMap(SimplePluginManager simplePluginManager, CommandMap commandMap)
-	{
-		set(SimplePluginManager.class, "commandMap", simplePluginManager, commandMap);
-	}
-	
 	// -------------------------------------------- //
 	// COMMAND 
 	// -------------------------------------------- //
@@ -73,11 +41,6 @@ public class BukkitCommandDoor
 	public static CommandMap getCommandDotCommandMap(Command command)
 	{
 		return (CommandMap) get(Command.class, "commandMap", command);
-	}
-	
-	public static void setCommandDotCommandMap(Command command, CommandMap commandMap)
-	{
-		set(Command.class, "commandMap", command, commandMap);
 	}
 	
 	// -------------------------------------------- //

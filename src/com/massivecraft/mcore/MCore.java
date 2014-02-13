@@ -20,7 +20,6 @@ import com.massivecraft.mcore.adapter.ModdedEnumTypeAdapter;
 import com.massivecraft.mcore.adapter.ObjectIdAdapter;
 import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
-import com.massivecraft.mcore.cmd.MCoreBukkitSimpleCommandMap;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.integration.vault.VaultFeatures;
 import com.massivecraft.mcore.mcorecmd.CmdMCore;
@@ -160,9 +159,6 @@ public class MCore extends MPlugin
 		MultiverseColl.get().init();
 		AspectColl.get().init();
 		MCoreConfColl.get().init();
-		
-		// Inject our command map with dynamic tweaks
-		MCoreBukkitSimpleCommandMap.inject();
 		
 		// Register commands
 		this.outerCmdMCore = new CmdMCore() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCore; } };
