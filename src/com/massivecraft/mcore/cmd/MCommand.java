@@ -4,11 +4,9 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.Lang;
-import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.cmd.arg.ArgReader;
 import com.massivecraft.mcore.cmd.arg.ArgResult;
 import com.massivecraft.mcore.cmd.req.Req;
@@ -18,7 +16,28 @@ import com.massivecraft.mcore.util.PermUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class MCommand
-{	
+{
+	// -------------------------------------------- //
+	// REGISTER
+	// -------------------------------------------- //
+	// MCore commands are a bit special when it comes to registration.
+	//
+	// I want my users to be able to edit the command aliases and I want
+	// them to be able to do so during server runtime without having to use the /reload command.
+	// 
+	// To provide a truly neat experience I place the command aliases in a mstore database configuration file.
+	// As such these config files are polled for changes and loaded into the server automatically.
+	// If someone changed the command aliases we must update all Bukkit command registrations.
+	// 
+	// In order to achieve this we run a task once a second (see com.massivecraft.mcore.EngineCommandRegistration).
+	// This task unregisters /all/ registered MCommands and then register them all again.
+	// When registering again we use the fresh and current aliases.
+	
+	private static transient Set<MCommand> registeredCommands = new LinkedHashSet<MCommand>();
+	public static Set<MCommand> getRegisteredCommands() { return registeredCommands; }
+	public void register() { getRegisteredCommands().add(this); }
+	public void unregister() { getRegisteredCommands().remove(this); }
+	
 	// -------------------------------------------- //
 	// COMMAND BEHAVIOR
 	// -------------------------------------------- //
@@ -159,19 +178,6 @@ public class MCommand
 	public CommandSender sender;
 	public Player me;
 	public boolean senderIsConsole;
-	
-	// -------------------------------------------- //
-	// BUKKIT INTEGRATION
-	// -------------------------------------------- //
-	
-	protected final MCoreBukkitCommand bukkitCommand = new MCoreBukkitCommand(this);
-	public MCoreBukkitCommand getBukkitCommand() { return this.bukkitCommand; }
-	
-	public void register()
-	{
-		SimpleCommandMap scm = BukkitCommandDoor.getSimpleCommandMap();
-		scm.register(MCore.get().getDescription().getName(), this.getBukkitCommand());
-	}
 	
 	// -------------------------------------------- //
 	// CONSTRUCTORS AND EXECUTOR

@@ -25,44 +25,15 @@ public class MCoreBukkitCommand extends Command
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MCoreBukkitCommand(MCommand mcommand)
+	public MCoreBukkitCommand(String name, MCommand mcommand)
 	{
 		super(
-			mcommand.getClass().getSimpleName(), // The name field is final. MCommand aliases/names are not final so we simply use the class name.
-			null, // Set description to null. Instead we override the getter.
-			null, // Set usage to null. Instead we override the getter.
-			new ArrayList<String>() // Set aliases to "null". Instead we override the getter.
+			name,
+			mcommand.getDesc(),
+			mcommand.getUseageTemplate(),
+			new ArrayList<String>() // We don't use aliases
 		);
-		
 		this.mcommand = mcommand;
-	}
-
-	// -------------------------------------------- //
-	// OVERRIDE: GETTERS
-	// -------------------------------------------- //
-	
-	@Override
-	public String getDescription()
-	{
-		return this.getMcommand().getDesc();
-	}
-	
-	@Override
-	public String getUsage()
-	{
-		return this.getMcommand().getUseageTemplate();
-	}
-	
-	@Override
-	public List<String> getAliases()
-	{
-		return this.getMcommand().getAliases();
-	}
-	
-	@Override
-	public String getLabel()
-	{
-		return this.getMcommand().getAliases().get(0);
 	}
 	
 	// -------------------------------------------- //
