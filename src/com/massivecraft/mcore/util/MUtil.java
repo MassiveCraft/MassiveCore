@@ -490,6 +490,18 @@ public class MUtil
 		return new ArrayList<T>(coll).get(index);
 	}
 	
+	public static <T> List<T> random(Collection<T> coll, int count)
+	{
+		List<T> ret = new ArrayList<T>(coll);
+		if (count < 0) count = 0;
+		while (ret.size() > count)
+		{
+			int index = MCore.random.nextInt(ret.size());
+			ret.remove(index);
+		}
+		return ret;
+	}
+	
 	// -------------------------------------------- //
 	// LE NICE EQUALS and compare
 	// -------------------------------------------- //

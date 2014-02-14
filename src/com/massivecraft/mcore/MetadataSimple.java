@@ -50,12 +50,19 @@ public class MetadataSimple extends MetadataValueAdapter
 		metadatable.setMetadata(key, new MetadataSimple(plugin, value));
 	}
 	
-	public static Object get(Metadatable metadatable, String key)
+	public static MetadataValue getMeta(Metadatable metadatable, String key)
 	{
 		List<MetadataValue> metaValues = metadatable.getMetadata(key);
 		if (metaValues == null) return null;
 		if (metaValues.size() < 1) return null;
-		return metaValues.get(0).value();
+		return metaValues.get(0);
+	}
+	
+	public static Object get(Metadatable metadatable, String key)
+	{
+		MetadataValue metaValue = getMeta(metadatable, key);
+		if (metaValue == null) return null;
+		return metaValue.value();
 	}
 	
 }
