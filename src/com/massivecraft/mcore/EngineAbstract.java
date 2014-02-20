@@ -2,6 +2,7 @@ package com.massivecraft.mcore;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
+import org.bukkit.scheduler.BukkitTask;
 
 public abstract class EngineAbstract implements Engine
 {
@@ -9,8 +10,8 @@ public abstract class EngineAbstract implements Engine
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private Integer taskId;
-	@Override public Integer getTaskId() { return this.taskId; }
+	private BukkitTask task;
+	@Override public Integer getTaskId() { return this.task.getTaskId(); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -22,7 +23,14 @@ public abstract class EngineAbstract implements Engine
 		Bukkit.getPluginManager().registerEvents(this, this.getPlugin());
 		if (this.getPeriod() != null)
 		{
-			this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.getPlugin(), this, this.getDelay(), this.getPeriod());
+			if (this.isSync())
+			{
+				Bukkit.getScheduler().runTaskTimer(this.getPlugin(), this, this.getDelay(), this.getPeriod());
+			}
+			else
+			{
+				Bukkit.getScheduler().runTaskTimerAsynchronously(this.getPlugin(), this, this.getDelay(), this.getPeriod());
+			}
 		}
 	}
 
@@ -30,10 +38,10 @@ public abstract class EngineAbstract implements Engine
 	public void deactivate()
 	{
 		HandlerList.unregisterAll(this);
-		if (this.getTaskId() != null)
+		if (this.task != null)
 		{
-			Bukkit.getScheduler().cancelTask(this.getTaskId());
-			this.taskId = null;
+			this.task.cancel();
+			this.task = null;
 		}
 	}
 	
@@ -53,6 +61,18 @@ public abstract class EngineAbstract implements Engine
 	public void run()
 	{
 		
+	}
+	
+	@Override
+	public BukkitTask getBukkitTask()
+	{
+		return this.task;
+	}
+	
+	@Override
+	public boolean isSync()
+	{
+		return true;
 	}
 	
 }

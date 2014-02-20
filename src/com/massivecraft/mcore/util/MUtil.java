@@ -487,7 +487,16 @@ public class MUtil
 		if (coll.size() == 0) return null;
 		if (coll.size() == 1) return coll.iterator().next();
 		int index = MCore.random.nextInt(coll.size());
-		return new ArrayList<T>(coll).get(index);
+		List<T> list = null;
+		if (coll instanceof List<?>)
+		{
+			list = (List<T>)coll;
+		}
+		else
+		{
+			list = new ArrayList<T>(coll);
+		}
+		return list.get(index);
 	}
 	
 	public static <T> List<T> random(Collection<T> coll, int count)
