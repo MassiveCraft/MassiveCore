@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.minecraft.server.v1_7_R1.DedicatedServer;
+import net.minecraft.server.v1_7_R2.DedicatedServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,7 +27,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_7_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -44,6 +44,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.mcore.EngineMainMCore;
 import com.massivecraft.mcore.MCore;
@@ -283,7 +284,12 @@ public class MUtil
 		Entity ret = edbeEvent.getDamager();
 		if (ret instanceof Projectile)
 		{
-			ret = ((Projectile)ret).getShooter();
+			Projectile projectile = (Projectile)ret;
+			ProjectileSource projectileSource = projectile.getShooter();
+			if (projectileSource instanceof Entity)
+			{
+				ret = (Entity)projectileSource;
+			}
 		}
 		return ret;
 	}
