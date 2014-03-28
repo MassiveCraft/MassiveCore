@@ -142,6 +142,7 @@ public class DriverMongo extends DriverAbstract
 		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id));
 		if (raw == null) return null;
 		
+		raw.removeField(ID_FIELD);
 		Long mtime = 0L;
 		Object mtimeObject = raw.removeField(MTIME_FIELD);
 		if (mtimeObject != null)
