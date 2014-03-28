@@ -78,6 +78,14 @@ public class CmdMCoreMStoreCopydb extends MCommand
 			
 			Collection<String> ids = fromDriver.getIds(fromColl);
 			msg("<i>Now copying collection <h>%d/%d %s <i>with <h>%d <i>documents.", countCollCurrent, countCollTotal, collname, ids.size());
+			
+			// Do a load check to verify we have access to this folder.
+			if (ids.size() > 0 && fromDriver.load(fromColl, ids.iterator().next()) == null)
+			{
+				msg("<b>Skipping <h>%s <b>since could not load data.", collname);
+				continue;
+			}
+			
 			for (String id : ids)
 			{
 				Entry<JsonElement, Long> data = fromDriver.load(fromColl, id);

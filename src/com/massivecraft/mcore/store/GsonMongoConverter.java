@@ -38,10 +38,9 @@ public final class GsonMongoConverter
 		return key;
 	}
 	
-	public static BasicDBObject gson2MongoObject(JsonElement inElement)
+	public static BasicDBObject gson2MongoObject(JsonElement inElement, BasicDBObject out)
 	{
 		JsonObject in = inElement.getAsJsonObject();
-		BasicDBObject out = new BasicDBObject();
 		for (Entry<String, JsonElement> entry : in.entrySet())
 		{
 			String key = gson2MongoKey(entry.getKey());
@@ -60,6 +59,11 @@ public final class GsonMongoConverter
 			}
 		}
 		return out;
+	}
+	
+	public static BasicDBObject gson2MongoObject(JsonElement inElement)
+	{
+		return gson2MongoObject(inElement, new BasicDBObject());
 	}
 	
 	public static BasicDBList gson2MongoArray(JsonElement inElement)

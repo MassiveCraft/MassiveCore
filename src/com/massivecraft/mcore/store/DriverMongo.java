@@ -70,10 +70,14 @@ public class DriverMongo extends DriverAbstract
 	public Long getMtime(Coll<?> coll, String id)
 	{
 		DBCollection dbcoll = fixColl(coll);
+		
 		BasicDBObject found = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id), dboKeysMtime);
 		if (found == null) return null;
-		if ( ! found.containsField(MTIME_FIELD)) return null; // This should not happen! But better to ignore than crash?
-		return found.getLong(MTIME_FIELD);
+		
+		// In case there is no _mtime set we assume 0. Probably a manual database addition by the server owner.
+		long mtime = found.getLong(MTIME_FIELD, 0);
+		
+		return mtime;
 	}
 	
 	@Override
@@ -116,8 +120,10 @@ public class DriverMongo extends DriverAbstract
 			{
 				BasicDBObject raw = (BasicDBObject)cursor.next();
 				Object remoteId = raw.get(ID_FIELD);
-				if ( ! raw.containsField(MTIME_FIELD)) continue; // This should not happen! But better to ignore than crash?
-				Long mtime = raw.getLong(MTIME_FIELD);
+				
+				// In case there is no _mtime set we assume 0. Probably a manual database addition by the server owner.
+				long mtime = raw.getLong(MTIME_FIELD, 0);
+				
 				ret.put(remoteId.toString(), mtime);
 			}
 		}
@@ -136,8 +142,12 @@ public class DriverMongo extends DriverAbstract
 		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id));
 		if (raw == null) return null;
 		
-		Long mtime = ((Number)raw.removeField(MTIME_FIELD)).longValue();
-		raw.removeField(ID_FIELD);
+		Long mtime = 0L;
+		Object mtimeObject = raw.removeField(MTIME_FIELD);
+		if (mtimeObject != null)
+		{
+			mtime = ((Number)mtimeObject).longValue();
+		}
 		
 		JsonElement element = GsonMongoConverter.mongo2GsonObject(raw);
 		
@@ -149,10 +159,13 @@ public class DriverMongo extends DriverAbstract
 	{		
 		DBCollection dbcoll = fixColl(coll);
 		
-		BasicDBObject dbo = GsonMongoConverter.gson2MongoObject(data);
+		BasicDBObject dbo = new BasicDBObject();
+		
 		Long mtime = System.currentTimeMillis();
-		dbo.put(MTIME_FIELD, mtime);
 		dbo.put(ID_FIELD, id);
+		dbo.put(MTIME_FIELD, mtime);
+		
+		GsonMongoConverter.gson2MongoObject(data, dbo);
 		
 		dbcoll.save(dbo);
 
