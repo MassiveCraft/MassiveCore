@@ -191,6 +191,10 @@ public class MCore extends MPlugin
 		test("1months2ms");
 		*/
 		
+		// Delete Files (at once and additionally after all plugins loaded)
+		TaskDeleteFiles.get().run();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this, TaskDeleteFiles.get());
+		
 		this.postEnable();
 	}
 	
@@ -232,6 +236,7 @@ public class MCore extends MPlugin
 	{
 		super.onDisable();
 		ExamineThread.get().interrupt();
+		TaskDeleteFiles.get().run();
 	}
 	
 }

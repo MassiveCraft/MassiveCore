@@ -1,5 +1,6 @@
 package com.massivecraft.mcore;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,10 @@ public class MCoreConf extends Entity<MCoreConf>
 	);
 	public Map<String, Integer> getPermissionToTpdelay() { return this.permissionToTpdelay == null ? new LinkedHashMap<String, Integer>() : new LinkedHashMap<String, Integer>(this.permissionToTpdelay); }
 	public void setPermissionToTpdelay(Map<String, Integer> permissionToTpdelay) { this.permissionToTpdelay = permissionToTpdelay == null ? new LinkedHashMap<String, Integer>() : new LinkedHashMap<String, Integer>(permissionToTpdelay); this.changed(); }
+	
+	private List<String> deleteFiles = new ArrayList<String>();
+	public List<String> getDeleteFiles() { return this.deleteFiles == null ? new ArrayList<String>() : new ArrayList<String>(this.deleteFiles); }
+	public void setDeleteFiles(List<String> deleteFiles) { this.deleteFiles = deleteFiles == null ? new ArrayList<String>() : new ArrayList<String>(deleteFiles); this.changed(); }
 	
 	// -------------------------------------------- //
 	// HELP ACCESS
