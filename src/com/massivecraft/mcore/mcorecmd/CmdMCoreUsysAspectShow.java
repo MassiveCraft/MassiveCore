@@ -22,7 +22,7 @@ public class CmdMCoreUsysAspectShow extends MCommand
 		this.addRequiredArg("aspect");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_ASPECT_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_ASPECT_SHOW.node));
 	}
 	
 	// -------------------------------------------- //

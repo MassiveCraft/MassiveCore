@@ -24,7 +24,7 @@ public class CmdMCoreUsysAspectUse extends MCommand
 		this.addRequiredArg("multiverse");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_ASPECT_USE.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_ASPECT_USE.node));
 	}
 	
 	// -------------------------------------------- //

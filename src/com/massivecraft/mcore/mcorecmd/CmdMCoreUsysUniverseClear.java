@@ -23,7 +23,7 @@ public class CmdMCoreUsysUniverseClear extends MCommand
 		this.addRequiredArg("multiverse");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_UNIVERSE_CLEAR.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_UNIVERSE_CLEAR.node));
 	}
 	
 	// -------------------------------------------- //

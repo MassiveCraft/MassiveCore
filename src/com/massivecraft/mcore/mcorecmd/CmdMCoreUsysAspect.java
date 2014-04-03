@@ -29,7 +29,7 @@ public class CmdMCoreUsysAspect extends MCommand
 		this.addAliases("a", "aspect");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_ASPECT.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_ASPECT.node));
 	}
 
 }

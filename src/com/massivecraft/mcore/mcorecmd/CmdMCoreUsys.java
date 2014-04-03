@@ -31,7 +31,7 @@ public class CmdMCoreUsys extends MCommand
 		this.addAliases("usys");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS.node));
 	}
 
 }

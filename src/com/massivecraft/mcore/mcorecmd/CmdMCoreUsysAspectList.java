@@ -26,7 +26,7 @@ public class CmdMCoreUsysAspectList extends MCommand
 		this.addOptionalArg("page", "1");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_ASPECT_LIST.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_ASPECT_LIST.node));
 	}
 	
 	// -------------------------------------------- //

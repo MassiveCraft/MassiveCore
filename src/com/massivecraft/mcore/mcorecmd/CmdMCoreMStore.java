@@ -29,7 +29,7 @@ public class CmdMCoreMStore extends MCommand
 		this.addAliases("mstore");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_MSTORE.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.MSTORE.node));
 	}
 
 }

@@ -26,7 +26,7 @@ public class CmdMCoreMStoreStats extends MCommand
 		this.addOptionalArg("coll", Coll.TOTAL);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_MSTORE_STATS.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.MSTORE_STATS.node));
 	}
 	
 	// -------------------------------------------- //

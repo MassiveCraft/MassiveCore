@@ -25,7 +25,7 @@ public class CmdMCoreHearsound extends MCommand
 		this.setErrorOnToManyArgs(false);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_HEARSOUND.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.HEARSOUND.node));
 		this.addRequirements(ReqIsPlayer.get());
 	}
 	

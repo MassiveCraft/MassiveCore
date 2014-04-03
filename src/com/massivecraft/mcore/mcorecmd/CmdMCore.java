@@ -16,7 +16,7 @@ public class CmdMCore extends MCommand
 	public CmdMCoreMStore cmdMCoreMStore = new CmdMCoreMStore();
 	public CmdMCoreId cmdMCoreId = new CmdMCoreId();
 	public CmdMCoreHearsound cmdMCoreHearsound = new CmdMCoreHearsound();
-	public VersionCommand cmdMCoreVersion = new VersionCommand(MCore.get(), MCorePerm.CMD_MCORE_VERSION.node, "v", "version");
+	public VersionCommand cmdMCoreVersion = new VersionCommand(MCore.get(), MCorePerm.VERSION.node, "v", "version");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -32,7 +32,7 @@ public class CmdMCore extends MCommand
 		this.addSubCommand(this.cmdMCoreVersion);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.BASECOMMAND.node));
 	}
 
 }

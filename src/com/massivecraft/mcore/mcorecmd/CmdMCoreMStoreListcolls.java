@@ -29,7 +29,7 @@ public class CmdMCoreMStoreListcolls extends MCommand
 		this.addOptionalArg("db", ConfServer.dburi);
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_MSTORE_LISTCOLLS.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.MSTORE_LISTCOLLS.node));
 	}
 	
 	// -------------------------------------------- //

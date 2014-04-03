@@ -30,7 +30,7 @@ public class CmdMCoreMStoreCopydb extends MCommand
 		this.addRequiredArg("to");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_MSTORE_COPYDB.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.MSTORE_COPYDB.node));
 	}
 	
 	// -------------------------------------------- //

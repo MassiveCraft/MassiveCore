@@ -36,7 +36,7 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 	@Override
 	public boolean canList(CommandSender sender)
 	{
-		return MCorePerm.CMD_MCORE_USYS_MULTIVERSE_LIST.has(sender, false);
+		return MCorePerm.USYS_MULTIVERSE_LIST.has(sender, false);
 	}
 
 	@Override

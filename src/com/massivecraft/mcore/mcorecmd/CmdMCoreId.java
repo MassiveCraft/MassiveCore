@@ -17,7 +17,7 @@ public class CmdMCoreId extends MCommand
 		this.addAliases("id");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_ID.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.ID.node));
 	}
 	
 	// -------------------------------------------- //

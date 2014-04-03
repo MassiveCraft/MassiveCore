@@ -10,29 +10,29 @@ permissions:
 # THE REAL NODES
 # -------------------------------------------- #
 # cmd
-  mcore.cmd.mcore: {description: use the mcore command, default: false}
-  mcore.cmd.mcore.id: {description: see the server id, default: false}
-  mcore.cmd.mcore.version: {description: diplay plugin version, default: false}
-  mcore.cmd.mcore.hearsound: {description: hear a sound, default: false}
-  mcore.cmd.mcore.mstore: {description: use the mstore command, default: false}
-  mcore.cmd.mcore.mstore.stats: {description: show mstore statistics, default: false}
-  mcore.cmd.mcore.mstore.listcolls: {description: list collections in a database, default: false}
-  mcore.cmd.mcore.mstore.copydb: {description: copy database content, default: false}
-  mcore.cmd.mcore.usys: {description: use the usys command, default: false}
-  mcore.cmd.mcore.usys.multiverse: {description: manage multiverses, default: false}
-  mcore.cmd.mcore.usys.multiverse.list: {description: list multiverses, default: false}
-  mcore.cmd.mcore.usys.multiverse.show: {description: show multiverse, default: false}
-  mcore.cmd.mcore.usys.multiverse.new: {description: create new multiverse, default: false}
-  mcore.cmd.mcore.usys.multiverse.del: {description: delete multiverse, default: false}
-  mcore.cmd.mcore.usys.universe: {description: manage universes, default: false}
-  mcore.cmd.mcore.usys.universe.new: {description: create new universe in multiverse, default: false}
-  mcore.cmd.mcore.usys.universe.del: {description: delete universe in multiverse, default: false}
-  mcore.cmd.mcore.usys.universe.clear: {description: clear universe in multiverse, default: false}
-  mcore.cmd.mcore.usys.world: {description: set a worlds universe in a multiverse, default: false}
-  mcore.cmd.mcore.usys.aspect: {description: manage aspects, default: false}
-  mcore.cmd.mcore.usys.aspect.list: {description: list aspects, default: false}
-  mcore.cmd.mcore.usys.aspect.show: {description: show aspect, default: false}
-  mcore.cmd.mcore.usys.aspect.use: {description: set multiverse for aspect, default: false}
+  mcore.basecommand: {description: use the MCore base command, default: false}
+  mcore.id: {description: see the server id, default: false}
+  mcore.version: {description: diplay plugin version, default: false}
+  mcore.hearsound: {description: hear a sound, default: false}
+  mcore.mstore: {description: use the mstore command, default: false}
+  mcore.mstore.stats: {description: show mstore statistics, default: false}
+  mcore.mstore.listcolls: {description: list collections in a database, default: false}
+  mcore.mstore.copydb: {description: copy database content, default: false}
+  mcore.usys: {description: use the usys command, default: false}
+  mcore.usys.multiverse: {description: manage multiverses, default: false}
+  mcore.usys.multiverse.list: {description: list multiverses, default: false}
+  mcore.usys.multiverse.show: {description: show multiverse, default: false}
+  mcore.usys.multiverse.new: {description: create new multiverse, default: false}
+  mcore.usys.multiverse.del: {description: delete multiverse, default: false}
+  mcore.usys.universe: {description: manage universes, default: false}
+  mcore.usys.universe.new: {description: create new universe in multiverse, default: false}
+  mcore.usys.universe.del: {description: delete universe in multiverse, default: false}
+  mcore.usys.universe.clear: {description: clear universe in multiverse, default: false}
+  mcore.usys.world: {description: set a worlds universe in a multiverse, default: false}
+  mcore.usys.aspect: {description: manage aspects, default: false}
+  mcore.usys.aspect.list: {description: list aspects, default: false}
+  mcore.usys.aspect.show: {description: show aspect, default: false}
+  mcore.usys.aspect.use: {description: set multiverse for aspect, default: false}
 # misc
   mcore.notpdelay: {description: teleport without delay, default: false}
 # -------------------------------------------- #
@@ -41,29 +41,29 @@ permissions:
   mcore.*:
     default: false
     children:
-      mcore.cmd.mcore: true
-      mcore.cmd.mcore.id: true
-      mcore.cmd.mcore.version: true
-      mcore.cmd.mcore.hearsound: true
-      mcore.cmd.mcore.mstore: true
-      mcore.cmd.mcore.mstore.stats: true
-      mcore.cmd.mcore.mstore.listcolls: true
-      mcore.cmd.mcore.mstore.copydb: true
-      mcore.cmd.mcore.usys: true
-      mcore.cmd.mcore.usys.multiverse: true
-      mcore.cmd.mcore.usys.multiverse.list: true
-      mcore.cmd.mcore.usys.multiverse.show: true
-      mcore.cmd.mcore.usys.multiverse.new: true
-      mcore.cmd.mcore.usys.multiverse.del: true
-      mcore.cmd.mcore.usys.universe: true
-      mcore.cmd.mcore.usys.universe.new: true
-      mcore.cmd.mcore.usys.universe.del: true
-      mcore.cmd.mcore.usys.universe.clear: true
-      mcore.cmd.mcore.usys.world: true
-      mcore.cmd.mcore.usys.aspect: true
-      mcore.cmd.mcore.usys.aspect.list: true
-      mcore.cmd.mcore.usys.aspect.show: true
-      mcore.cmd.mcore.usys.aspect.use: true
+      mcore.basecommand: true
+      mcore.id: true
+      mcore.version: true
+      mcore.hearsound: true
+      mcore.mstore: true
+      mcore.mstore.stats: true
+      mcore.mstore.listcolls: true
+      mcore.mstore.copydb: true
+      mcore.usys: true
+      mcore.usys.multiverse: true
+      mcore.usys.multiverse.list: true
+      mcore.usys.multiverse.show: true
+      mcore.usys.multiverse.new: true
+      mcore.usys.multiverse.del: true
+      mcore.usys.universe: true
+      mcore.usys.universe.new: true
+      mcore.usys.universe.del: true
+      mcore.usys.universe.clear: true
+      mcore.usys.world: true
+      mcore.usys.aspect: true
+      mcore.usys.aspect.list: true
+      mcore.usys.aspect.show: true
+      mcore.usys.aspect.use: true
       mcore.notpdelay: true
 # -------------------------------------------- #
 # KITS
@@ -84,24 +84,24 @@ permissions:
     default: false
     children:
       mcore.kit.rank0: true
-      mcore.cmd.mcore.id: true
-      mcore.cmd.mcore.mstore: true
-      mcore.cmd.mcore.mstore.stats: true
-      mcore.cmd.mcore.mstore.listcolls: true
-      mcore.cmd.mcore.usys: true
-      mcore.cmd.mcore.usys.multiverse: true
-      mcore.cmd.mcore.usys.multiverse.list: true
-      mcore.cmd.mcore.usys.multiverse.show: true
-      mcore.cmd.mcore.usys.aspect: true
-      mcore.cmd.mcore.usys.aspect.list: true
-      mcore.cmd.mcore.usys.aspect.show: true
+      mcore.id: true
+      mcore.mstore: true
+      mcore.mstore.stats: true
+      mcore.mstore.listcolls: true
+      mcore.usys: true
+      mcore.usys.multiverse: true
+      mcore.usys.multiverse.list: true
+      mcore.usys.multiverse.show: true
+      mcore.usys.aspect: true
+      mcore.usys.aspect.list: true
+      mcore.usys.aspect.show: true
       mcore.notpdelay: true
   mcore.kit.rank0:
     default: false
     children:
-      mcore.cmd.mcore: true
-      mcore.cmd.mcore.hearsound: true
-      mcore.cmd.mcore.version: true
+      mcore.basecommand: true
+      mcore.hearsound: true
+      mcore.version: true
   mcore.kit.default:
     default: true
     children:

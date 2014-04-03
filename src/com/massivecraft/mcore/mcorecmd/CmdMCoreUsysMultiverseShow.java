@@ -27,7 +27,7 @@ public class CmdMCoreUsysMultiverseShow extends MCommand
 		this.addRequiredArg("multiverse");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_MULTIVERSE_SHOW.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_MULTIVERSE_SHOW.node));
 	}
 	
 	// -------------------------------------------- //

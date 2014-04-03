@@ -23,7 +23,7 @@ public class CmdMCoreUsysUniverseDel extends MCommand
 		this.addRequiredArg("multiverse");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_MULTIVERSE_DEL.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_MULTIVERSE_DEL.node));
 	}
 	
 	// -------------------------------------------- //

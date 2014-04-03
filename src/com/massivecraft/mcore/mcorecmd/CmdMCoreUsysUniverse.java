@@ -29,7 +29,7 @@ public class CmdMCoreUsysUniverse extends MCommand
 		this.addAliases("u", "universe");
 		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MCorePerm.CMD_MCORE_USYS_UNIVERSE.node));
+		this.addRequirements(ReqHasPerm.get(MCorePerm.USYS_UNIVERSE.node));
 	}
 
 }
