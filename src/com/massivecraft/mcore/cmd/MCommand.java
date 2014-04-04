@@ -223,16 +223,19 @@ public class MCommand
 		this.setCommandChain(commandChain);
 
 		// Is there a matching sub command?
-		if (args.size() > 0 )
+		if (args.size() > 0)
 		{
 			for (MCommand subCommand: this.getSubCommands())
 			{
-				if (subCommand.getAliases().contains(args.get(0)))
+				for (String alias : subCommand.getAliases())
 				{
-					args.remove(0);
-					commandChain.add(this);
-					subCommand.execute(sender, args, commandChain);
-					return;
+					if (args.get(0).equalsIgnoreCase(alias))
+					{
+						args.remove(0);
+						commandChain.add(this);
+						subCommand.execute(sender, args, commandChain);
+						return;
+					}
 				}
 			}
 		}
