@@ -63,9 +63,26 @@ public class MCoreConf extends Entity<MCoreConf>
 	public void setDeleteFiles(List<String> deleteFiles) { this.deleteFiles = deleteFiles == null ? new ArrayList<String>() : new ArrayList<String>(deleteFiles); this.changed(); }
 	
 	// Used in the MongoDB mstore driver.
-	private WriteConcern mongoDbWriteConcern = WriteConcern.ACKNOWLEDGED;
-	public WriteConcern getMongoDbWriteConcern() { return this.mongoDbWriteConcern; }
-	public void setMongoDbWriteConcern(WriteConcern mongoDbWriteConcern) { this.mongoDbWriteConcern = mongoDbWriteConcern; this.changed(); }
+	private boolean catchingMongoDbErrorsOnSave = true;
+	public boolean isCatchingMongoDbErrorsOnSave() { return this.catchingMongoDbErrorsOnSave; }
+	public void setCatchingMongoDbErrorsOnSave(boolean catchingMongoDbErrorsOnSave) { this.catchingMongoDbErrorsOnSave = catchingMongoDbErrorsOnSave; this.changed(); }
+	
+	private boolean catchingMongoDbErrorsOnDelete = true;
+	public boolean isCatchingMongoDbErrorsOnDelete() { return this.catchingMongoDbErrorsOnDelete; }
+	public void setCatchingMongoDbErrorsOnDelete(boolean catchingMongoDbErrorsOnDelete) { this.catchingMongoDbErrorsOnDelete = catchingMongoDbErrorsOnDelete; this.changed(); }
+	
+	public static WriteConcern getMongoDbWriteConcern(boolean catchingErrors)
+	{
+		return catchingErrors ? WriteConcern.ACKNOWLEDGED : WriteConcern.ERRORS_IGNORED;
+	}
+	public WriteConcern getMongoDbWriteConcernSave()
+	{
+		return getMongoDbWriteConcern(this.isCatchingMongoDbErrorsOnSave());
+	}
+	public WriteConcern getMongoDbWriteConcernDelete()
+	{
+		return getMongoDbWriteConcern(this.isCatchingMongoDbErrorsOnDelete());
+	}
 	
 	// -------------------------------------------- //
 	// HELP ACCESS

@@ -169,7 +169,7 @@ public class DriverMongo extends DriverAbstract
 		
 		GsonMongoConverter.gson2MongoObject(data, dbo);
 		
-		dbcoll.save(dbo, MCoreConf.get().getMongoDbWriteConcern());
+		dbcoll.save(dbo, MCoreConf.get().getMongoDbWriteConcernSave());
 
 		return mtime;
 	}
@@ -178,7 +178,7 @@ public class DriverMongo extends DriverAbstract
 	public void delete(Coll<?> coll, String id)
 	{
 		DBCollection dbcoll = fixColl(coll);
-		dbcoll.remove(new BasicDBObject(ID_FIELD, id), MCoreConf.get().getMongoDbWriteConcern());
+		dbcoll.remove(new BasicDBObject(ID_FIELD, id), MCoreConf.get().getMongoDbWriteConcernDelete());
 	}
 
 	//----------------------------------------------//
