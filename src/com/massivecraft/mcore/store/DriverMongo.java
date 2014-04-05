@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
+import com.massivecraft.mcore.MCoreConf;
 import com.massivecraft.mcore.xlib.gson.JsonElement;
 import com.massivecraft.mcore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.mcore.xlib.mongodb.DB;
@@ -168,7 +169,7 @@ public class DriverMongo extends DriverAbstract
 		
 		GsonMongoConverter.gson2MongoObject(data, dbo);
 		
-		dbcoll.save(dbo);
+		dbcoll.save(dbo, MCoreConf.get().getMongoDbWriteConcern());
 
 		return mtime;
 	}
@@ -176,7 +177,8 @@ public class DriverMongo extends DriverAbstract
 	@Override
 	public void delete(Coll<?> coll, String id)
 	{
-		fixColl(coll).remove(new BasicDBObject(ID_FIELD, id));
+		DBCollection dbcoll = fixColl(coll);
+		dbcoll.remove(new BasicDBObject(ID_FIELD, id), MCoreConf.get().getMongoDbWriteConcern());
 	}
 
 	//----------------------------------------------//

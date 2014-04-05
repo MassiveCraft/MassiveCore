@@ -10,6 +10,7 @@ import org.bukkit.permissions.Permissible;
 import com.massivecraft.mcore.store.Entity;
 import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.PermUtil;
+import com.massivecraft.mcore.xlib.mongodb.WriteConcern;
 
 public class MCoreConf extends Entity<MCoreConf>
 {
@@ -60,6 +61,11 @@ public class MCoreConf extends Entity<MCoreConf>
 	private List<String> deleteFiles = new ArrayList<String>();
 	public List<String> getDeleteFiles() { return this.deleteFiles == null ? new ArrayList<String>() : new ArrayList<String>(this.deleteFiles); }
 	public void setDeleteFiles(List<String> deleteFiles) { this.deleteFiles = deleteFiles == null ? new ArrayList<String>() : new ArrayList<String>(deleteFiles); this.changed(); }
+	
+	// Used in the MongoDB mstore driver.
+	private WriteConcern mongoDbWriteConcern = WriteConcern.ACKNOWLEDGED;
+	public WriteConcern getMongoDbWriteConcern() { return this.mongoDbWriteConcern; }
+	public void setMongoDbWriteConcern(WriteConcern mongoDbWriteConcern) { this.mongoDbWriteConcern = mongoDbWriteConcern; this.changed(); }
 	
 	// -------------------------------------------- //
 	// HELP ACCESS
