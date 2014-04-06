@@ -1,7 +1,6 @@
 package com.massivecraft.mcore;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,45 +30,45 @@ public class MCoreConf extends Entity<MCoreConf>
 	
 	public List<String> aliasesOuterMCoreMStore = MUtil.list("mstore");
 	
-	// These getters and setters are obnoxious, defensive copying, NPE avoiding and probably thread safe.
+	public boolean usingRecipientChatEvent = true;
 	
-	private boolean usingRecipientChatEvent = true;
-	public boolean isUsingRecipientChatEvent() { return this.usingRecipientChatEvent; }
-	public void setUsingRecipientChatEvent(boolean usingRecipientChatEvent) { this.usingRecipientChatEvent = usingRecipientChatEvent; this.changed(); }
+	public boolean forcingOnePlayerNameCase = true;
 	
-	private boolean forcingOnePlayerNameCase = true;
-	public boolean isForcingOnePlayerNameCase() { return this.forcingOnePlayerNameCase; }
-	public void setForcingOnePlayerNameCase(boolean forcingOnePlayerNameCase) { this.forcingOnePlayerNameCase = forcingOnePlayerNameCase; this.changed(); }
-	
-	private Map<String, String> permissionDeniedFormats = MUtil.map(
+	public Map<String, String> permissionDeniedFormats = MUtil.map(
 		"some.awesome.permission.node", "<b>You must be awesome to %s<b>.",
 		"some.derp.permission.node.1", "derp",
 		"some.derp.permission.node.2", "derp",
 		"some.derp.permission.node.3", "derp",
 		"derp", "<b>Only derp people can %s<b>.\n<i>Ask a moderator to become derp."
 	);
-	public Map<String, String> getPermissionDeniedFormats() { return this.permissionDeniedFormats == null ? new LinkedHashMap<String, String>() : new LinkedHashMap<String, String>(this.permissionDeniedFormats); }
-	public void setPermissionDeniedFormats(Map<String, String> permissionDeniedFormats) { this.permissionDeniedFormats = permissionDeniedFormats == null ? new LinkedHashMap<String, String>() : new LinkedHashMap<String, String>(permissionDeniedFormats); this.changed(); }
 	
-	private Map<String, Integer> permissionToTpdelay = MUtil.map(
+	public String getPermissionDeniedFormat(String permissionName)
+	{
+		Map<String, String> map = this.permissionDeniedFormats;
+		String ret = map.get(permissionName);
+		if (ret == null) return null;
+		ret = MUtil.recurseResolveMap(ret, map);
+		return ret;
+	}
+	
+	public Map<String, Integer> permissionToTpdelay = MUtil.map(
 		"mcore.notpdelay", 0,
 		"default", 10
 	);
-	public Map<String, Integer> getPermissionToTpdelay() { return this.permissionToTpdelay == null ? new LinkedHashMap<String, Integer>() : new LinkedHashMap<String, Integer>(this.permissionToTpdelay); }
-	public void setPermissionToTpdelay(Map<String, Integer> permissionToTpdelay) { this.permissionToTpdelay = permissionToTpdelay == null ? new LinkedHashMap<String, Integer>() : new LinkedHashMap<String, Integer>(permissionToTpdelay); this.changed(); }
 	
-	private List<String> deleteFiles = new ArrayList<String>();
-	public List<String> getDeleteFiles() { return this.deleteFiles == null ? new ArrayList<String>() : new ArrayList<String>(this.deleteFiles); }
-	public void setDeleteFiles(List<String> deleteFiles) { this.deleteFiles = deleteFiles == null ? new ArrayList<String>() : new ArrayList<String>(deleteFiles); this.changed(); }
+	public int getTpdelay(Permissible permissible)
+	{
+		Integer ret = PermUtil.pickFirstVal(permissible, permissionToTpdelay);
+		if (ret == null) ret = 0;
+		return ret;
+	}
+	
+	public List<String> deleteFiles = new ArrayList<String>();
 	
 	// Used in the MongoDB mstore driver.
-	private boolean catchingMongoDbErrorsOnSave = true;
-	public boolean isCatchingMongoDbErrorsOnSave() { return this.catchingMongoDbErrorsOnSave; }
-	public void setCatchingMongoDbErrorsOnSave(boolean catchingMongoDbErrorsOnSave) { this.catchingMongoDbErrorsOnSave = catchingMongoDbErrorsOnSave; this.changed(); }
+	public boolean catchingMongoDbErrorsOnSave = true;
 	
-	private boolean catchingMongoDbErrorsOnDelete = true;
-	public boolean isCatchingMongoDbErrorsOnDelete() { return this.catchingMongoDbErrorsOnDelete; }
-	public void setCatchingMongoDbErrorsOnDelete(boolean catchingMongoDbErrorsOnDelete) { this.catchingMongoDbErrorsOnDelete = catchingMongoDbErrorsOnDelete; this.changed(); }
+	public boolean catchingMongoDbErrorsOnDelete = true;
 	
 	public static WriteConcern getMongoDbWriteConcern(boolean catchingErrors)
 	{
@@ -77,47 +76,14 @@ public class MCoreConf extends Entity<MCoreConf>
 	}
 	public WriteConcern getMongoDbWriteConcernSave()
 	{
-		return getMongoDbWriteConcern(this.isCatchingMongoDbErrorsOnSave());
+		return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnSave);
 	}
 	public WriteConcern getMongoDbWriteConcernDelete()
 	{
-		return getMongoDbWriteConcern(this.isCatchingMongoDbErrorsOnDelete());
+		return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnDelete);
 	}
 	
-	// -------------------------------------------- //
-	// HELP ACCESS
-	// -------------------------------------------- //
-	
-	public String setPermissionDeniedFormat(String permissionName, String permissionDeniedFormat)
-	{
-		Map<String, String> temp = this.getPermissionDeniedFormats();
-		String ret = temp.put(permissionName, permissionDeniedFormat);
-		this.setPermissionDeniedFormats(temp);
-		return ret;
-	}
-	
-	public String removePermissionDeniedFormat(String permissionName)
-	{
-		Map<String, String> temp = this.getPermissionDeniedFormats();
-		String ret = temp.remove(permissionName);
-		this.setPermissionDeniedFormats(temp);
-		return ret;
-	}
-	
-	public String getPermissionDeniedFormat(String permissionName)
-	{
-		Map<String, String> map = this.getPermissionDeniedFormats();
-		String ret = map.get(permissionName);
-		if (ret == null) return null;
-		ret = MUtil.recurseResolveMap(ret, map);
-		return ret;
-	}
-	
-	public int getTpdelay(Permissible permissible)
-	{
-		Integer ret = PermUtil.pickFirstVal(permissible, this.getPermissionToTpdelay());
-		if (ret == null) ret = 0;
-		return ret;
-	}
+	public String variableBook = "***book***";
+	public boolean usingVariableBook = true;
 	
 }

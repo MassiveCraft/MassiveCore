@@ -34,7 +34,7 @@ public enum MCorePerm
 	USYS_ASPECT_SHOW("usys.aspect.show"),
 	USYS_ASPECT_USE("usys.aspect.use"),
 	NOTPDELAY("notpdelay"),
-	
+	VARIABLEBOOK("variablebook"),
 	// END OF LIST
 	;
 	

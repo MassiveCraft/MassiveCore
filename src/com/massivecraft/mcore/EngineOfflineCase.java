@@ -91,7 +91,7 @@ public class EngineOfflineCase extends EngineAbstract
 	public void forceOnePlayerNameCase(PlayerLoginEvent event)
 	{
 		// Stop if the feature is disabled
-		if (!MCoreConf.get().isForcingOnePlayerNameCase()) return;
+		if (!MCoreConf.get().forcingOnePlayerNameCase) return;
 		
 		// Stop if we are using online mode
 		if (Bukkit.getOnlineMode()) return;

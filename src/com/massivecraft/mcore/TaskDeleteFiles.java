@@ -18,7 +18,7 @@ public class TaskDeleteFiles implements Runnable
 	@Override
 	public void run()
 	{
-		for (String deleteFile : MCoreConf.get().getDeleteFiles())
+		for (String deleteFile : MCoreConf.get().deleteFiles)
 		{
 			File file = new File(deleteFile);
 			file.delete();

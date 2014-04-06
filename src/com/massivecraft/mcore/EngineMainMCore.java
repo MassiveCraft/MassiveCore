@@ -2,12 +2,15 @@ package com.massivecraft.mcore;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,9 +21,13 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.event.MCoreAfterPlayerRespawnEvent;
@@ -35,6 +42,7 @@ import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
+import com.massivecraft.mcore.util.Txt;
 
 public class EngineMainMCore extends EngineAbstract
 {
@@ -73,7 +81,7 @@ public class EngineMainMCore extends EngineAbstract
 	public void recipientChat(final AsyncPlayerChatEvent event)
 	{
 		// Return unless we are using the recipient chat event
-		if (!MCoreConf.get().isUsingRecipientChatEvent()) return;
+		if (!MCoreConf.get().usingRecipientChatEvent) return;
 		
 		// Prepare vars
 		MCorePlayerToRecipientChatEvent recipientEvent;
@@ -148,6 +156,56 @@ public class EngineMainMCore extends EngineAbstract
 			
 			event.getTabCompletions().add(senderId);
 		}
+	}
+	
+	// -------------------------------------------- //
+	// VARIABLE BOOK
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void variableBook(PlayerCommandPreprocessEvent event)
+	{
+		event.setMessage(variableBook(event.getPlayer(), event.getMessage()));
+	}
+	
+	@EventHandler(priority = EventPriority.LOW)
+	public void variableBook(AsyncPlayerChatEvent event)
+	{
+		event.setMessage(variableBook(event.getPlayer(), event.getMessage()));
+	}
+	
+	public static String variableBook(Player player, String message)
+	{
+		// If we are using command variable book ...
+		if (!MCoreConf.get().usingVariableBook) return message;
+		
+		// ... and the player has a book text ...
+		String bookText = getBookText(player);
+		if (bookText == null) return message;
+		
+		// ... and permission to use command variable book ...
+		if (!MCorePerm.VARIABLEBOOK.has(player, false)) return message;
+		
+		// ... then replace.
+		return StringUtils.replace(message, MCoreConf.get().variableBook, bookText);
+	}
+	
+	public static String getBookText(CommandSender sender)
+	{
+		if (sender == null) return null;
+		if (!(sender instanceof HumanEntity)) return null;
+		HumanEntity human = (HumanEntity)sender;
+		ItemStack item = human.getItemInHand();
+		if (item == null) return null;
+		if (!item.hasItemMeta()) return null;
+		ItemMeta itemMeta = item.getItemMeta();
+		if (!(itemMeta instanceof BookMeta)) return null;
+		BookMeta bookMeta = (BookMeta)itemMeta;
+		if (!bookMeta.hasPages()) return null;
+		List<String> pages = bookMeta.getPages();
+		String ret = Txt.implode(pages, " ");
+		ret = ret.replaceAll("\\n+", " ");
+		return ret;
 	}
 	
 	// -------------------------------------------- //
