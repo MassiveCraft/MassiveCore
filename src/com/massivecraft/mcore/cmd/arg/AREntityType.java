@@ -26,23 +26,38 @@ public class AREntityType extends ARAbstractSelect<EntityType>
 		return "entity type";
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public EntityType select(String arg, CommandSender sender)
 	{
-		return EntityType.fromName(arg);
+		arg = getComparable(arg);
+		
+		// Custom Detection
+		if (arg.contains("pig") && (arg.contains("man") || arg.contains("zombie"))) return EntityType.PIG_ZOMBIE;
+		
+		// Algorithmic General Detection
+		for (EntityType entityType : EntityType.values())
+		{
+			if (getComparable(entityType.toString()).equals(arg)) return entityType;
+		}
+		
+		// Nothing found
+		return null;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
 		List<String> ret = new ArrayList<String>();
 		for (EntityType entityType : EntityType.values())
 		{
-			ret.add(entityType.getName());
+			ret.add(getComparable(entityType.toString()));
 		}
 		return ret;
+	}
+	
+	public static String getComparable(String string)
+	{
+		return string.toLowerCase().replaceAll("[_-\\s]+", "");
 	}
 	
 }
