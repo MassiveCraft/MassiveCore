@@ -57,7 +57,7 @@ public class AREntityType extends ARAbstractSelect<EntityType>
 	
 	public static String getComparable(String string)
 	{
-		return string.toLowerCase().replaceAll("[_-\\s]+", "");
+		return string.toLowerCase().replaceAll("[_\\-\\s]+", "");
 	}
 	
 }
