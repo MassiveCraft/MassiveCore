@@ -2,13 +2,10 @@ package com.massivecraft.mcore;
 
 import java.lang.reflect.Modifier;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -33,8 +30,6 @@ import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.ExamineThread;
 import com.massivecraft.mcore.teleport.EngineScheduledTeleport;
 import com.massivecraft.mcore.util.PlayerUtil;
-import com.massivecraft.mcore.util.TimeDiffUtil;
-import com.massivecraft.mcore.util.TimeUnit;
 import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
@@ -177,19 +172,7 @@ public class MCore extends MPlugin
 			VaultFeatures.get()
 		);
 		
-		/*
-		test("");
-		test("+1day");
-		test("1day");
-		test("1 day");
-		test("-1day");
-		test("1week4d");
-		test("+1week-4d");
-		test("day");
-		test("1month");
-		test("1months");
-		test("1months2ms");
-		*/
+		// test();
 		
 		// Delete Files (at once and additionally after all plugins loaded)
 		TaskDeleteFiles.get().run();
@@ -198,37 +181,24 @@ public class MCore extends MPlugin
 		this.postEnable();
 	}
 	
-	public void test(String diffString)
+	public void test()
 	{
 		log("===========================");
-		log("Testing Diff String \""+diffString+"\":");
+		log("===========================");
+		log("===========================");
 		
 		try
 		{
-			Map<TimeUnit, Long> unitcounts = TimeDiffUtil.unitcounts(diffString);
-			for (Entry<TimeUnit, Long> entry : unitcounts.entrySet())
-			{
-				System.out.println(entry.getValue()+": "+entry.getKey());
-			}
-			
-			System.out.println("---");
-			
-			long millis = TimeDiffUtil.millis(unitcounts);
-			log("millis: "+millis);
-			
-			String verboose = ChatColor.stripColor(TimeDiffUtil.formatedVerboose(unitcounts));
-			String minimal = ChatColor.stripColor(TimeDiffUtil.formatedMinimal(unitcounts));
-			log("verboose: "+verboose);
-			log("minimal: "+minimal);
-			
-			long millisRec = TimeDiffUtil.millis(minimal);
-			log("millisRec: "+millisRec);
-			log("matches: "+(millis == millisRec));
+			// whatever you fee like
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+		
+		log("===========================");
+		log("===========================");
+		log("===========================");
 	}
 	
 	@Override
