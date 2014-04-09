@@ -2,6 +2,8 @@ package com.massivecraft.mcore;
 
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.UUID;
 
@@ -29,7 +31,9 @@ import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.ExamineThread;
 import com.massivecraft.mcore.teleport.EngineScheduledTeleport;
+import com.massivecraft.mcore.util.MUtil;
 import com.massivecraft.mcore.util.PlayerUtil;
+import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.bson.types.ObjectId;
 import com.massivecraft.mcore.xlib.gson.Gson;
 import com.massivecraft.mcore.xlib.gson.GsonBuilder;
@@ -155,6 +159,7 @@ public class MCore extends MPlugin
 		MultiverseColl.get().init();
 		AspectColl.get().init();
 		MCoreConfColl.get().init();
+		MCoreMPlayerColl.get().init();
 		
 		// Register commands
 		this.outerCmdMCore = new CmdMCore() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCore; } };
@@ -172,7 +177,7 @@ public class MCore extends MPlugin
 			VaultFeatures.get()
 		);
 		
-		// test();
+		//test();
 		
 		// Delete Files (at once and additionally after all plugins loaded)
 		TaskDeleteFiles.get().run();
@@ -189,7 +194,18 @@ public class MCore extends MPlugin
 		
 		try
 		{
-			// whatever you fee like
+			// whatever you feel like
+			for (int i = 0; i <= 1; i++)
+			{
+				Map<String, UUID> map = PlayerUtil.getPlayerIds(MUtil.list("Cayorion", "MonMarty", "Thortuna", "yendor46", "Gethelp", "Th3_Drunk_Monk", "Ryciera", "Jamescl", "spectec", "Tom1804", "imboring56", "BigBellyBuddah", "MrHappyTinkles", "BabaManga", "_Omnomivore_", "Cielian", "BboyMVB", "MrWackeo", "Kellock93", "Feykronos", "Unluvable", "DanyWood", "jadex224", "MinecraftSpartan", "ravenwolfthorn", "ELtongo", "Azas", "TazeHD", "BillyA835", "duhsigil", "Sahrotaar", "Alj23"));
+				for (Entry<String, UUID> entry : map.entrySet())
+				{
+					String playerName = entry.getKey();
+					UUID playerId = entry.getValue();
+					log(Txt.parse("<k>%s <v>%s", playerName, playerId.toString()));
+				}
+				log("===========================");
+			}
 		}
 		catch (Exception e)
 		{
