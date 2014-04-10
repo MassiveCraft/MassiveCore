@@ -177,11 +177,21 @@ public class MCore extends MPlugin
 			VaultFeatures.get()
 		);
 		
-		//test();
-		
 		// Delete Files (at once and additionally after all plugins loaded)
 		TaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, TaskDeleteFiles.get());
+		
+		//test();
+		
+		// Schedule fetch all
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				PlayerUtil.fetchAllIds();
+			}
+		});
 		
 		this.postEnable();
 	}
