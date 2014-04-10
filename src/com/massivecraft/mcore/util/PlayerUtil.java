@@ -24,6 +24,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.massivecraft.mcore.MCore;
@@ -151,6 +152,8 @@ public class PlayerUtil implements Listener
 	// PLAYER ID <---> PLAYER NAME
 	// -------------------------------------------- //
 	
+	// getPlayerName
+	
 	public static String getPlayerName(final UUID playerId, final boolean usingCache, final boolean usingMojangApi)
 	{
 		List<UUID> playerIds = Collections.singletonList(playerId);
@@ -166,6 +169,8 @@ public class PlayerUtil implements Listener
 		return getPlayerName(playerId, true);
 	}
 	
+	// getPlayerId
+	
 	public static UUID getPlayerId(final String playerName, final boolean usingCache, final boolean usingMojangApi)
 	{
 		List<String> playerNames = Collections.singletonList(playerName);
@@ -180,6 +185,19 @@ public class PlayerUtil implements Listener
 	{
 		return getPlayerId(playerName, true);
 	}
+	
+	// Update Cache on Login
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void playerIdPlayerName(PlayerLoginEvent event)
+	{
+		final String playerName = event.getPlayer().getName();
+		final UUID playerId = event.getPlayer().getUniqueId();
+		MCoreMPlayer mplayer = MCoreMPlayer.get(playerId, true);
+		mplayer.setName(playerName);
+	}
+	
+	// Core Methods
 	
 	// I suggest using ...
 	// final Map<String, UUID> ret = new TreeMap<String, UUID>(String.CASE_INSENSITIVE_ORDER);
