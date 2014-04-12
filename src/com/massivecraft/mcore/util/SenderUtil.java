@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import net.minecraft.server.v1_7_R2.MinecraftServer;
+import net.minecraft.server.v1_7_R3.MinecraftServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -17,7 +17,7 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.MCore;
