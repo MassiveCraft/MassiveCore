@@ -1,8 +1,8 @@
 package com.massivecraft.mcore.inventory;
 
-import net.minecraft.server.v1_7_R2.EntityHuman;
-import net.minecraft.server.v1_7_R2.ItemStack;
-import net.minecraft.server.v1_7_R2.PlayerInventory;
+import net.minecraft.server.v1_7_R3.EntityHuman;
+import net.minecraft.server.v1_7_R3.ItemStack;
+import net.minecraft.server.v1_7_R3.PlayerInventory;
 
 import org.bukkit.inventory.InventoryHolder;
 
