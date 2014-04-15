@@ -1,15 +1,13 @@
 package com.massivecraft.mcore.event;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-public class MCoreAfterPlayerTeleportEvent extends Event implements Runnable
+public class MCoreAfterPlayerTeleportEvent extends MCoreEvent
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -23,7 +21,7 @@ public class MCoreAfterPlayerTeleportEvent extends Event implements Runnable
 	// FIELD
 	// -------------------------------------------- //
 	
-	protected final PlayerTeleportEvent bukkitEvent;
+	private final PlayerTeleportEvent bukkitEvent;
 	public PlayerTeleportEvent getBukkitEvent() { return this.bukkitEvent; }
 	
 	public Location getFrom() { return this.bukkitEvent.getFrom(); }
@@ -45,16 +43,6 @@ public class MCoreAfterPlayerTeleportEvent extends Event implements Runnable
 	public MCoreAfterPlayerTeleportEvent(PlayerTeleportEvent bukkitEvent)
 	{
 		this.bukkitEvent = bukkitEvent;
-	}
-	
-	// -------------------------------------------- //
-	// HANDY RUN SHORTCUT
-	// -------------------------------------------- //
-	
-	@Override
-	public void run()
-	{
-		Bukkit.getPluginManager().callEvent(this);
 	}
 	
 }

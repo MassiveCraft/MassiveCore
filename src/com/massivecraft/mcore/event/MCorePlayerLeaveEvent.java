@@ -32,19 +32,19 @@ public class MCorePlayerLeaveEvent extends Event implements Runnable
 	// FIELD
 	// -------------------------------------------- //
 	
-	protected final Player player;
+	private final Player player;
 	public Player getPlayer() { return this.player; }
 	
-	protected final boolean preDisconnect;
+	private final boolean preDisconnect;
 	public boolean isPreDisconnect() { return this.preDisconnect; }
 	public boolean isPostDisconnect() { return !this.isPreDisconnect(); }
 	
-	protected final String caller;
+	private final String caller;
 	public String getCaller() { return this.caller; }
 	public boolean isQuit() { return "quit".equals(caller); }
 	public boolean isKick() { return "kick".equals(caller); }
 	
-	protected final String message;
+	private final String message;
 	public String getMessage() { return this.message; }
 	
 	// -------------------------------------------- //

@@ -1,13 +1,11 @@
 package com.massivecraft.mcore.event;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class MCoreAfterPlayerRespawnEvent extends Event implements Runnable
+public class MCoreAfterPlayerRespawnEvent extends MCoreEvent
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -21,10 +19,10 @@ public class MCoreAfterPlayerRespawnEvent extends Event implements Runnable
 	// FIELD
 	// -------------------------------------------- //
 	
-	protected final Location deathLocation;
+	private final Location deathLocation;
 	public Location getDeathLocation() { return this.deathLocation; }
 	
-	protected final PlayerRespawnEvent bukkitEvent;
+	private final PlayerRespawnEvent bukkitEvent;
 	public PlayerRespawnEvent getBukkitEvent() { return this.bukkitEvent; }
 	
 	public Location getRespawnLocation() { return this.bukkitEvent.getRespawnLocation(); }
@@ -38,16 +36,6 @@ public class MCoreAfterPlayerRespawnEvent extends Event implements Runnable
 	{
 		this.bukkitEvent = bukkitEvent;
 		this.deathLocation = deathLocation;
-	}
-	
-	// -------------------------------------------- //
-	// HANDY RUN SHORTCUT
-	// -------------------------------------------- //
-	
-	@Override
-	public void run()
-	{
-		Bukkit.getPluginManager().callEvent(this);
 	}
 	
 }
