@@ -1,10 +1,12 @@
 package com.massivecraft.mcore;
 
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.store.Coll;
+import com.massivecraft.mcore.store.IndexUniqueField;
 import com.massivecraft.mcore.store.MStore;
 import com.massivecraft.mcore.util.MUtil;
 
@@ -22,8 +24,29 @@ public class MCoreMPlayerColl extends Coll<MCoreMPlayer>
 	}
 
 	// -------------------------------------------- //
+	// FIELD
+	// -------------------------------------------- //
+	
+	private IndexUniqueField<String, MCoreMPlayer> indexName = new IndexUniqueField<String, MCoreMPlayer>(new TreeMap<String, MCoreMPlayer>(String.CASE_INSENSITIVE_ORDER));
+	public IndexUniqueField<String, MCoreMPlayer> getIndexName() { return this.indexName; }
+	
+	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public void postAttach(MCoreMPlayer entity, String id)
+	{
+		super.postAttach(entity, id);
+		this.getIndexName().update(entity, entity.getName());
+	}
+	
+	@Override
+	public void postDetach(MCoreMPlayer entity, String id)
+	{
+		super.postDetach(entity, id);
+		this.getIndexName().removeObject(entity);
+	}
 	
 	@Override
 	public String fixId(Object oid)
@@ -43,14 +66,8 @@ public class MCoreMPlayerColl extends Coll<MCoreMPlayer>
 			// Handle Player Name
 			if (MUtil.isValidPlayerName(string))
 			{
-				// TODO: Improve the speed of this using an index!
-				for (MCoreMPlayer mplayer : this.getAll())
-				{
-					String name = mplayer.getName();
-					if (name == null) continue;
-					if (!string.equals(name.toLowerCase())) continue;
-					return mplayer.getId();
-				}
+				MCoreMPlayer mplayer = this.getIndexName().getObject(string);
+				if (mplayer != null) return mplayer.getId();
 			}
 				
 			return string;
