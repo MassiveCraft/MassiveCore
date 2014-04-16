@@ -44,6 +44,12 @@ public class MCoreMPlayer extends Entity<MCoreMPlayer>
 	
 	private String name = null;
 	public String getName() { return this.name; }
-	public void setName(String name) { this.name = name; this.changed(); }
+	public void setName(String name)
+	{
+		this.name = name;
+		if (!this.attached()) return;
+		MCoreMPlayerColl.get().getIndexName().update(this, name);
+		this.changed();
+	}
 	
 }
