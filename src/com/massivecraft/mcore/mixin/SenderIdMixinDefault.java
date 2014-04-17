@@ -19,7 +19,7 @@ import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.event.MCorePlayerLeaveEvent;
 import com.massivecraft.mcore.event.MCoreSenderRegisterEvent;
 import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.mcore.util.SenderUtil;
 import com.massivecraft.mcore.util.Txt;
 
@@ -62,7 +62,7 @@ public class SenderIdMixinDefault extends SenderIdMixinAbstract implements Liste
 		}
 		
 		// Add offline players
-		for (String id : MUtil.getPlayerDirectoryNames())
+		for (String id : PlayerUtil.getDirectoryPlayerNames())
 		{
 			// Check if this player was added already since it's online
 			if (this.onlinePlayerIds.contains(id)) continue;

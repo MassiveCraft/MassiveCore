@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import net.minecraft.server.v1_7_R2.MinecraftServer;
+import net.minecraft.server.v1_7_R3.MinecraftServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -17,7 +18,7 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.MCore;
@@ -26,10 +27,11 @@ import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
 
 /**
  * We add an ID <--> CommandSender lookup feature.
- * Each player has an id which is the name of the player. Players are retrievable by id using Bukkit.getPlayerExact().
+ * Each player has an id which is the UUID of the player.
+ * Players are retrievable by id using Bukkit.getPlayer().
  * Other command senders have no true id. We make it so they have.
  * Non-player-sender-ids always start with and ampersand (@). This is to avoid clashes with regular player names.
- * The id is simply "@"+CommandSender.getName() with exception for the block command sender which we call "@block".
+ * The id is simply "@"+CommandSender.getName()
  * Non standard CommandSenders must be manually registered to the util using the register method.
  */
 public class SenderUtil
@@ -54,7 +56,6 @@ public class SenderUtil
 	// -------------------------------------------- //
 	
 	protected static Map<String, CommandSender> idToSender = new TreeMap<String, CommandSender>(String.CASE_INSENSITIVE_ORDER);
-	protected static Map<String, String> idToListName = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
 	
 	public static synchronized boolean register(CommandSender sender)
 	{
@@ -82,7 +83,7 @@ public class SenderUtil
 	
 	static
 	{
-		// Since the console and rcon does not exist we schedule the register for these senders.
+		// Since the console and rcon initially does not exist we schedule the register for these senders.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
 		{
 			@Override
@@ -100,12 +101,15 @@ public class SenderUtil
 	
 	public static boolean isSenderId(Object o)
 	{
-		return o instanceof String;
+		return o instanceof String || o instanceof UUID;
 	}
 	
 	public static boolean isPlayerId(Object o)
 	{
-		return MUtil.isValidPlayerName(o);
+		if (o instanceof UUID) return true;
+		if (!(o instanceof String)) return false;
+		String string = (String)o;
+		return MUtil.isValidPlayerName(string) || MUtil.isValidUUID(string);
 	}
 	
 	public static boolean isConsoleId(Object o)
@@ -162,6 +166,7 @@ public class SenderUtil
 	// GET ID
 	// -------------------------------------------- //
 	
+	// TODO: Returns outdated value (name instead of ID)
 	public static String getSenderId(Object o)
 	{
 		if (!isSender(o)) return null;
@@ -177,13 +182,22 @@ public class SenderUtil
 	
 	// ACTUALL LOGIC
 	
+	// Note: Handles both player id and name.
 	public static synchronized CommandSender getSender(String senderId)
 	{
 		if (senderId == null) return null;
-		if (isPlayerId(senderId))
+		
+		if (MUtil.isValidPlayerName(senderId))
 		{
 			return Bukkit.getPlayerExact(senderId);
 		}
+		
+		if (MUtil.isValidUUID(senderId))
+		{
+			UUID uuid = UUID.fromString(senderId);
+			return Bukkit.getPlayer(uuid);
+		}
+		
 		return idToSender.get(senderId);
 	}
 	

@@ -32,8 +32,6 @@ public class MCoreConf extends Entity<MCoreConf>
 	
 	public boolean usingRecipientChatEvent = true;
 	
-	public boolean forcingOnePlayerNameCase = true;
-	
 	public Map<String, String> permissionDeniedFormats = MUtil.map(
 		"some.awesome.permission.node", "<b>You must be awesome to %s<b>.",
 		"some.derp.permission.node.1", "derp",

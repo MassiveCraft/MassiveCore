@@ -3,9 +3,10 @@ package com.massivecraft.mcore.mixin;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import com.massivecraft.mcore.util.SenderUtil;
 
 public class DisplayNameMixinDefault extends DisplayNameMixinAbstract
 {
@@ -39,7 +40,7 @@ public class DisplayNameMixinDefault extends DisplayNameMixinAbstract
 		// Try Bukkit
 		if (ret == null)
 		{
-			Player player = Bukkit.getPlayerExact(senderId);
+			Player player = SenderUtil.getPlayer(senderId);
 			if (player != null)
 			{
 				ret = player.getDisplayName(); 
@@ -73,7 +74,7 @@ public class DisplayNameMixinDefault extends DisplayNameMixinAbstract
 			this.idToDisplayName.put(senderId, displayName);
 		}
 		
-		Player player = Bukkit.getPlayerExact(senderId);
+		Player player = SenderUtil.getPlayer(senderId);
 		if (player == null) return;
 		player.setDisplayName(this.getDisplayName(senderId));
 	}

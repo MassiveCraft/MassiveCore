@@ -1,11 +1,7 @@
 package com.massivecraft.mcore.mixin;
 
-import java.io.File;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-
-import com.massivecraft.mcore.util.MUtil;
 
 public class PlayedMixinDefault extends PlayedMixinAbstract
 {
@@ -41,13 +37,10 @@ public class PlayedMixinDefault extends PlayedMixinAbstract
 	{
 		if (this.isOnline(senderId)) return System.currentTimeMillis();
 		
-		String playerNameCC = Mixin.reqFix(senderId);
-		if (playerNameCC == null) return null;
-		
-		File playerFile = new File(MUtil.getPlayerDirectory(), playerNameCC+".dat");
-		long lastModified = playerFile.lastModified();
-		if (lastModified == 0) return null;
-		return lastModified;
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(senderId);
+		Long ret = offlinePlayer.getLastPlayed();
+		if (ret == 0) ret = null;
+		return ret;
 	}
 	
 }

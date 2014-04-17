@@ -148,7 +148,6 @@ public class MCore extends MPlugin
 		EngineScheduledTeleport.get().activate();
 		EngineTeleportMixinCause.get().activate();
 		EngineWorldNameSet.get().activate();
-		EngineOfflineCase.get().activate();
 		EngineCommandRegistration.get().activate(); // TODO: Make all engines
 		PlayerUtil.get().setup();
 		

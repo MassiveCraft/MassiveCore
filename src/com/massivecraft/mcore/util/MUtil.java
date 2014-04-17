@@ -1,6 +1,5 @@
 package com.massivecraft.mcore.util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,15 +18,11 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.minecraft.server.v1_7_R2.DedicatedServer;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -60,58 +55,27 @@ import com.massivecraft.mcore.util.extractor.ExtractorWorldName;
 public class MUtil
 {
 	// -------------------------------------------- //
-	// IS PLAYER ID
+	// IS VALID PLAYER NAME
 	// -------------------------------------------- //
 	
-	// Player id pattern, the regex for a valid minecraft username.
+	// The regex for a valid minecraft player name.
 	public final static Pattern playerNamePattern = Pattern.compile("^[a-zA-Z0-9_]{2,16}$");
 	
-	public static boolean isValidPlayerName(Object o)
+	public static boolean isValidPlayerName(String string)
 	{
-		if (!(o instanceof String)) return false;
-		return playerNamePattern.matcher((String) o).matches();
+		return playerNamePattern.matcher(string).matches();
 	}
 	
 	// -------------------------------------------- //
-	// PLAYER DIRECTORY
+	// IS VALID UUID
 	// -------------------------------------------- //
-	// A way of getting the player directory even when the server just started
 	
-	public static File getPlayerDirectory()
-	{
-		CraftServer cserver = (CraftServer)Bukkit.getServer();
-		DedicatedServer dserver = (DedicatedServer)cserver.getServer();
-		String levelName = dserver.propertyManager.getString("level-name", "world");
-		return new File(Bukkit.getWorldContainer(), new File(levelName, "players").getPath());
-	}
+	// The regex for a valid UUID in string form
+	public final static Pattern uuidPattern = Pattern.compile("^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$");
 	
-	public static List<String> getPlayerDirectoryNames()
+	public static boolean isValidUUID(String string)
 	{
-		List<String> ret = new ArrayList<String>();
-		
-		// Get the player directory
-		File playerDirectory = getPlayerDirectory();
-		
-		// List the files in the player folder
-		File[] playerfiles = playerDirectory.listFiles();
-		
-		// The player directory may not exist yet
-		if (playerfiles == null) return ret;
-		
-		// Populate by removing .dat
-		for (File playerfile : playerfiles)
-		{
-			String filename = playerfile.getName();
-			
-			// Ensure it's actually a .dat player filefile
-			if (!filename.toLowerCase().endsWith(".dat")) continue;
-			
-			String playername = filename.substring(0, filename.length()-4);
-			
-			ret.add(playername);
-		}
-		
-		return ret;
+		return uuidPattern.matcher(string).matches();
 	}
 	
 	// -------------------------------------------- //

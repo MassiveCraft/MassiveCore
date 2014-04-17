@@ -1,8 +1,8 @@
 package com.massivecraft.mcore.inventory;
 
-import net.minecraft.server.v1_7_R2.EntityHuman;
-import net.minecraft.server.v1_7_R2.ItemStack;
-import net.minecraft.server.v1_7_R2.PlayerInventory;
+import net.minecraft.server.v1_7_R3.EntityHuman;
+import net.minecraft.server.v1_7_R3.ItemStack;
+import net.minecraft.server.v1_7_R3.PlayerInventory;
 
 import org.bukkit.inventory.InventoryHolder;
 
@@ -28,7 +28,7 @@ import org.bukkit.inventory.InventoryHolder;
  * pickup(ItemStack) (2 matches)
  * PlayerInventory(EntityHuman)
  * 
- * As of 1.6.1 and 1.6.2 and 1.6.4 and 1.7.2 and 1.7.5 these are the references:
+ * As of 1.6.1 and 1.6.2 and 1.6.4 and 1.7.2 and 1.7.5 and 1.7.8 these are the references:
  * 
  * a(EntityHuman) (2 matches)
  * a(float)

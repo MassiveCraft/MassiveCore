@@ -1,5 +1,9 @@
 package com.massivecraft.mcore.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,11 +17,15 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import net.minecraft.server.v1_7_R2.EntityPlayer;
-import net.minecraft.server.v1_7_R2.PacketPlayOutUpdateHealth;
+import net.minecraft.server.v1_7_R3.DedicatedServer;
+import net.minecraft.server.v1_7_R3.EntityPlayer;
+import net.minecraft.server.v1_7_R3.NBTCompressedStreamTools;
+import net.minecraft.server.v1_7_R3.NBTTagCompound;
+import net.minecraft.server.v1_7_R3.PacketPlayOutUpdateHealth;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_7_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -151,6 +159,111 @@ public class PlayerUtil implements Listener
 		CraftPlayer cplayer = (CraftPlayer)player;
 		EntityPlayer eplayer = cplayer.getHandle();
 		eplayer.playerConnection.sendPacket(new PacketPlayOutUpdateHealth(cplayer.getScaledHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().e()));
+	}
+	
+	// -------------------------------------------- //
+	// PLAYER DIRECTORIES
+	// -------------------------------------------- //
+	// Getting the player directories even when the server just started.
+	// We also supply ways to pull player names or UUIDs.
+	
+	public static File getDirectoryBaseworld()
+	{
+		CraftServer cserver = (CraftServer)Bukkit.getServer();
+		DedicatedServer dserver = (DedicatedServer)cserver.getServer();
+		String levelName = dserver.propertyManager.getString("level-name", "world");
+		return new File(Bukkit.getWorldContainer(), levelName);
+	}
+	
+	public static File getDirectoryPlayerdata()
+	{
+		// after 1.7.8
+		// a2cce16b-9494-45ff-b5ff-0362ca687d4e.dat (the uuid)
+		return new File(getDirectoryBaseworld(), "playerdata");
+	}
+	
+	public static List<UUID> getDirectoryPlayerIds()
+	{
+		List<UUID> ret = new ArrayList<UUID>();
+		
+		// Get the directory
+		File directory = getDirectoryPlayerdata();
+		
+		// List the files in the directory
+		File[] files = directory.listFiles();
+		
+		// The directory may not exist
+		if (files == null) return ret;
+		
+		// Populate by removing .dat
+		for (File file : files)
+		{
+			String filename = file.getName();
+			
+			// Ensure it's actually a .dat player filefile
+			if (!filename.toLowerCase().endsWith(".dat")) continue;
+			
+			String uuid = filename.substring(0, filename.length()-4);
+			
+			try
+			{
+				ret.add(UUID.fromString(uuid));
+			}
+			catch (Exception e)
+			{
+				// ignored
+			}
+			
+		}
+		
+		return ret;
+	}
+	
+	public static List<String> getDirectoryPlayerNames()
+	{
+		List<String> ret = new ArrayList<String>();
+		
+		// Get the directory
+		File directory = getDirectoryPlayerdata();
+		
+		// List the files in the directory
+		File[] files = directory.listFiles();
+		
+		// The directory may not exist
+		if (files == null) return ret;
+		
+		// For each file
+		for (File file : files)
+		{
+			NBTTagCompound compound = loadTagCompound(file);
+			if (compound == null) continue;
+			
+			if (!compound.hasKey("bukkit")) continue;
+			NBTTagCompound bukkit = compound.getCompound("bukkit");
+			if (bukkit == null) continue;
+			
+			if (!bukkit.hasKey("lastKnownName")) continue;
+			String lastKnownName = bukkit.getString("lastKnownName");
+			if (lastKnownName == null) continue;
+			
+			ret.add(lastKnownName);
+		}
+		
+		return ret;
+	}
+	
+	public static NBTTagCompound loadTagCompound(File file)
+	{
+		if (!file.exists()) return null;
+		try
+		{
+			return NBTCompressedStreamTools.a((InputStream) (new FileInputStream(file)));
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	// -------------------------------------------- //
