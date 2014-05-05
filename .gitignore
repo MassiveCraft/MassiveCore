@@ -10,6 +10,10 @@
 # vim
 .*.sw[a-p]
 
+# Maven
+/target
+*.class
+
 # various other potential build files
 /build
 /bin
