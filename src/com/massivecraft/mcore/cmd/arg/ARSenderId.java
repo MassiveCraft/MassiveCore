@@ -2,6 +2,7 @@ package com.massivecraft.mcore.cmd.arg;
 
 import com.massivecraft.mcore.store.SenderIdSource;
 import com.massivecraft.mcore.store.SenderIdSourceMixinAllSenderIds;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class ARSenderId extends ARSenderIdAbstractPredsource<String>
 {
@@ -37,6 +38,12 @@ public class ARSenderId extends ARSenderIdAbstractPredsource<String>
 	@Override
 	public String getResultForSenderId(String senderId)
 	{
+		if (senderId == null) return null;
+		
+		// Convert names to ids so we can handle both
+		String betterId = IdUtil.getId(senderId);
+		if (betterId != null) return betterId;
+		
 		return senderId;
 	}
 	

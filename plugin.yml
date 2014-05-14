@@ -11,6 +11,7 @@ permissions:
 # -------------------------------------------- #
 # cmd
   mcore.basecommand: {description: use the MCore base command, default: false}
+  mcore.test: {description: run developer test, default: false}
   mcore.id: {description: see the server id, default: false}
   mcore.version: {description: diplay plugin version, default: false}
   mcore.hearsound: {description: hear a sound, default: false}
@@ -43,6 +44,7 @@ permissions:
     default: false
     children:
       mcore.basecommand: true
+      mcore.test: true
       mcore.id: true
       mcore.version: true
       mcore.hearsound: true

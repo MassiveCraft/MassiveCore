@@ -73,7 +73,7 @@ public class ScheduledTeleport implements Runnable
 		}
 		catch (TeleporterException e)
 		{
-			Mixin.message(this.getTeleporteeId(), e.getMessage());
+			Mixin.messageOne(this.getTeleporteeId(), e.getMessage());
 		}
 	}
 	

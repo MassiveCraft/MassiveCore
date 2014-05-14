@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class SenderIdSourceMixinAllSenderIds implements SenderIdSource
 {
@@ -23,7 +23,8 @@ public class SenderIdSourceMixinAllSenderIds implements SenderIdSource
 	public Collection<Collection<String>> getSenderIdCollections()
 	{
 		List<Collection<String>> ret = new ArrayList<Collection<String>>();
-		ret.add(Mixin.getAllSenderIds());
+		ret.add(IdUtil.getAllNames());
+		ret.add(IdUtil.getAllIds());
 		return ret;
 	}
 	

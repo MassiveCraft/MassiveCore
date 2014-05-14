@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class MCoreBukkitCommand extends Command
@@ -83,12 +84,12 @@ public class MCoreBukkitCommand extends Command
 		
 		String tokenlc = args[args.length - 1].toLowerCase();
 		
-		// Add ids of all online senders that match and isn't added yet. 
-		for (String senderId : Mixin.getOnlineSenderIds())
+		// Add names of all online senders that match and isn't added yet.
+		for (String senderName : IdUtil.getOnlineNames())
 		{
-			if (!senderId.toLowerCase().startsWith(tokenlc)) continue;
-			if (!Mixin.canSee(sender, senderId)) continue;
-			ret.add(senderId);
+			if (!senderName.toLowerCase().startsWith(tokenlc)) continue;
+			if (!Mixin.canSee(sender, senderName)) continue;
+			ret.add(senderName);
 		}
 		
 		return new ArrayList<String>(ret);

@@ -1,43 +1,38 @@
 package com.massivecraft.mcore.fetcher;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/**
- * Many thanks to evilmidget38!
- * This utility class is based on his work.
- * http://forums.bukkit.org/threads/player-name-uuid-fetcher.250926/
- */
-public class FetcherPlayerNameMojang implements Callable<Map<UUID, String>>
+public class FetcherById implements Callable<Map<Object, IdAndName>>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static final ExecutorService ES = Executors.newCachedThreadPool();
+	public static final ExecutorService ES = Executors.newFixedThreadPool(100);
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Collection<UUID> playerIds;
+	private final Collection<UUID> ids;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 
-	public FetcherPlayerNameMojang(Collection<UUID> playerIds)
+	public FetcherById(Collection<UUID> ids)
 	{
-		this.playerIds = playerIds;
+		this.ids = ids;
 	}
 	
 	// -------------------------------------------- //
@@ -45,34 +40,33 @@ public class FetcherPlayerNameMojang implements Callable<Map<UUID, String>>
 	// -------------------------------------------- //
 
 	@Override
-	public Map<UUID, String> call() throws Exception
+	public Map<Object, IdAndName> call() throws Exception
 	{
-		return fetch(this.playerIds);
+		return fetch(this.ids);
 	}
 	
 	// -------------------------------------------- //
 	// STATIC
 	// -------------------------------------------- //
 	
-	public static Map<UUID, String> fetch(Collection<UUID> playerIds) throws Exception
+	public static Map<Object, IdAndName> fetch(Collection<UUID> ids) throws Exception
 	{
 		// Create Tasks
-		final List<Callable<Entry<UUID, String>>> tasks = new ArrayList<Callable<Entry<UUID, String>>>();
-		for (UUID playerId : playerIds)
+		final List<Callable<Map<UUID, IdAndName>>> tasks = new ArrayList<Callable<Map<UUID, IdAndName>>>();
+		for (UUID id : ids)
 		{
-			tasks.add(new FetcherPlayerNameMojangSingle(playerId));
+			tasks.add(new FetcherByIdSingle(Arrays.asList(id)));
 		}
 		
 		// Invoke All Tasks
-		List<Future<Entry<UUID, String>>> futures = ES.invokeAll(tasks);
+		List<Future<Map<UUID, IdAndName>>> futures = ES.invokeAll(tasks);
 		
 		// Merge Return Value
-		Map<UUID, String> ret = new HashMap<UUID, String>();
-		for (Future<Entry<UUID, String>> future : futures)
+		Map<Object, IdAndName> ret = new HashMap<Object, IdAndName>();
+		for (Future<Map<UUID, IdAndName>> future : futures)
 		{
-			Entry<UUID, String> entry = future.get();
-			if (entry == null) continue;
-			ret.put(entry.getKey(), entry.getValue());
+			Map<UUID, IdAndName> map = future.get();
+			ret.putAll(map);
 		}
 		
 		return ret;

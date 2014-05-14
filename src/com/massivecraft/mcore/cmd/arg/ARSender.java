@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.store.SenderIdSource;
 import com.massivecraft.mcore.store.SenderIdSourceMixinAllSenderIds;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class ARSender extends ARSenderIdAbstractPredsource<CommandSender>
 {
@@ -20,12 +20,12 @@ public class ARSender extends ARSenderIdAbstractPredsource<CommandSender>
 	
 	public static ARSender getFull(SenderIdSource source)
 	{
-		return new ARSender(source, "sender", ArgPredictateStringEqualsLC.get());
+		return new ARSender(source, "player", ArgPredictateStringEqualsLC.get());
 	}
 	
 	public static ARSender getStart(SenderIdSource source)
 	{
-		return new ARSender(source, "sender", ArgPredictateStringStartsLC.get());
+		return new ARSender(source, "player", ArgPredictateStringStartsLC.get());
 	}
 	
 	private ARSender(SenderIdSource source, String typename, ArgPredictate<String> argPredictate)
@@ -40,7 +40,7 @@ public class ARSender extends ARSenderIdAbstractPredsource<CommandSender>
 	@Override
 	public CommandSender getResultForSenderId(String senderId)
 	{
-		return SenderUtil.getSender(senderId);
+		return IdUtil.getSender(senderId);
 	}
 	
 }

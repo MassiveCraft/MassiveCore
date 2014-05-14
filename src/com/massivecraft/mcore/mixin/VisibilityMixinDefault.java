@@ -1,9 +1,8 @@
 package com.massivecraft.mcore.mixin;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class VisibilityMixinDefault extends VisibilityMixinAbstract
 {
@@ -19,28 +18,10 @@ public class VisibilityMixinDefault extends VisibilityMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean canSee(String watcherId, String watcheeId)
+	public boolean canSee(Object watcherObject, Object watcheeObject)
 	{
-		return this.canSee(SenderUtil.getSender(watcherId), SenderUtil.getSender(watcheeId));
-	}
-	
-	@Override
-	public boolean canSee(CommandSender watcher, String watcheeId)
-	{
-		return this.canSee(watcher, SenderUtil.getSender(watcheeId));
-	}
-	
-	@Override
-	public boolean canSee(String watcherId, CommandSender watchee)
-	{
-		return this.canSee(SenderUtil.getSender(watcherId), watchee);
-	}
-	
-	@Override
-	public boolean canSee(CommandSender watcher, CommandSender watchee)
-	{
-		Player pwatcher = SenderUtil.getAsPlayer(watcher);
-		Player pwatchee = SenderUtil.getAsPlayer(watchee);
+		Player pwatcher = IdUtil.getPlayer(watcherObject);
+		Player pwatchee = IdUtil.getPlayer(watcheeObject);
 		
 		if (pwatcher == null) return true;
 		if (pwatchee == null) return true;

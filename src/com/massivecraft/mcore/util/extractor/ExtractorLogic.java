@@ -26,8 +26,7 @@ import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
 import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class ExtractorLogic
 {
@@ -35,7 +34,7 @@ public class ExtractorLogic
 	// SENDER
 	// -------------------------------------------- //
 	
-	public static CommandSender sender(String o) { return SenderUtil.getSender(o); }
+	public static CommandSender sender(String o) { return IdUtil.getSender(o); }
 	
 	public static CommandSender sender(PlayerEvent o) { return o.getPlayer(); }
 	public static CommandSender sender(BlockBreakEvent o) { return o.getPlayer(); }
@@ -94,11 +93,14 @@ public class ExtractorLogic
 	public static String senderIdFromObject(Object o)
 	{
 		if (o == null) return null;
-		if (o instanceof String) return (String)o;
-		if (o instanceof SenderEntity) return ((SenderEntity<?>)o).getId();
+		
+		String id = IdUtil.getId(o);
+		if (id != null) return id;
+		
 		CommandSender sender = senderFromObject(o);
 		if (sender == null) return null;
-		return SenderUtil.getSenderId(sender);
+		
+		return IdUtil.getId(sender);
 	}
 	
 	// -------------------------------------------- //

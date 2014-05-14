@@ -327,7 +327,7 @@ public class Coll<E> implements CollInterface<E>
 		if (entity instanceof Entity)
 		{
 			((Entity)entity).setColl(this);
-			((Entity)entity).setid(id);
+			((Entity)entity).setId(id);
 		}
 		
 		// Attach
@@ -497,7 +497,7 @@ public class Coll<E> implements CollInterface<E>
 		if (entity instanceof Entity)
 		{
 			((Entity)entity).setColl(null);
-			((Entity)entity).setid(null);
+			((Entity)entity).setId(null);
 		}
 		
 		return entity;
@@ -742,6 +742,14 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public void syncSuspects()
 	{
+		/*if (MCore.get().doderp)
+		{
+			if (this.changedIds.size() > 0)
+			{
+				System.out.println("Coll " + this.getName() + " had suspects " + Txt.implode(this.changedIds, " "));
+			}
+		}*/
+		
 		for (String id : this.changedIds)
 		{
 			this.syncId(id);

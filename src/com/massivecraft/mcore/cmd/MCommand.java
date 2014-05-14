@@ -450,34 +450,34 @@ public class MCommand
 	
 	public boolean sendMessage(String message)
 	{
-		return Mixin.message(this.sender, message);
+		return Mixin.messageOne(this.sender, message);
 	}
 	
 	public boolean sendMessage(String... messages)
 	{
-		return Mixin.message(this.sender, messages);
+		return Mixin.messageOne(this.sender, messages);
 	}
 	
 	public boolean sendMessage(Collection<String> messages)
 	{
-		return Mixin.message(this.sender, messages);
+		return Mixin.messageOne(this.sender, messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return Mixin.msg(this.sender, msg);
+		return Mixin.msgOne(this.sender, msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return Mixin.msg(this.sender, msg, args);
+		return Mixin.msgOne(this.sender, msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return Mixin.msg(this.sender, msgs);
+		return Mixin.msgOne(this.sender, msgs);
 	}
 	
 	// -------------------------------------------- //

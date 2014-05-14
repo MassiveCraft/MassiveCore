@@ -11,8 +11,8 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.mcore.EngineAbstract;
 import com.massivecraft.mcore.MCore;
 import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.MUtil;
-import com.massivecraft.mcore.util.SenderUtil;
 
 public class EngineScheduledTeleport extends EngineAbstract
 {
@@ -95,14 +95,14 @@ public class EngineScheduledTeleport extends EngineAbstract
 		if (MUtil.isSameBlock(event.getFrom(), event.getTo())) return;
 		
 		// ... and there is a ScheduledTeleport ...
-		ScheduledTeleport scheduledTeleport = teleporteeIdToScheduledTeleport.get(SenderUtil.getSenderId(event.getPlayer()));
+		ScheduledTeleport scheduledTeleport = teleporteeIdToScheduledTeleport.get(IdUtil.getId(event.getPlayer()));
 		if (scheduledTeleport == null) return;
 		
 		// ... unschedule it ...
 		scheduledTeleport.unschedule();
 		
 		// ... and inform the teleportee.
-		Mixin.msg(scheduledTeleport.getTeleporteeId(), "<rose>Cancelled <i>teleport to <h>"+scheduledTeleport.getDestinationDesc()+"<i>.");
+		Mixin.msgOne(scheduledTeleport.getTeleporteeId(), "<rose>Cancelled <i>teleport to <h>"+scheduledTeleport.getDestinationDesc()+"<i>.");
 	}
 	
 }

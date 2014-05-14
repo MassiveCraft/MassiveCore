@@ -1,10 +1,10 @@
 package com.massivecraft.mcore.cmd.req;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.Lang;
 import com.massivecraft.mcore.cmd.MCommand;
-import com.massivecraft.mcore.util.SenderUtil;
 
 public class ReqIsPlayer extends ReqAbstract
 {
@@ -24,7 +24,7 @@ public class ReqIsPlayer extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MCommand command)
 	{
-		return SenderUtil.isPlayer(sender);
+		return sender instanceof Player;
 	}
 	
 	@Override

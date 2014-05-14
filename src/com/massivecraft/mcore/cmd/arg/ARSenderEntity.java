@@ -3,6 +3,7 @@ package com.massivecraft.mcore.cmd.arg;
 import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.store.SenderEntity;
 import com.massivecraft.mcore.store.SenderIdSource;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstractPredsource<T>
 {
@@ -57,6 +58,12 @@ public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstrac
 	@Override
 	public T getResultForSenderId(String senderId)
 	{
+		if (senderId == null) return null;
+		
+		// Convert names to ids so we can handle both
+		String betterId = IdUtil.getId(senderId);
+		if (betterId != null) return this.coll.get(betterId);
+		
 		return this.coll.get(senderId);
 	}
 	

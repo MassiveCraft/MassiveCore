@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -22,6 +23,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -40,7 +42,8 @@ import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.SenderColl;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.FlyUtil;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
 import com.massivecraft.mcore.util.Txt;
 
@@ -68,6 +71,45 @@ public class EngineMainMCore extends EngineAbstract
 	{
 		super.activate();
 		MCorePlayerLeaveEvent.player2event.clear();
+	}
+	
+	// -------------------------------------------- //
+	// FLY UTIL & EVENT
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void updateFly(PlayerMoveEvent event)
+	{
+		// If a player ...
+		Player player = event.getPlayer();
+		
+		// ... moved from one block to another ...
+		if (event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
+		
+		// ... and the player is alive ...
+		if (player.isDead()) return;
+		
+		// ... trigger a fly update.
+		FlyUtil.update(player);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void negateNoCheatPlusBug(EntityDamageEvent event)
+	{
+		// If a player ...
+		if ( ! (event.getEntity() instanceof Player)) return;
+		Player player = (Player)event.getEntity();
+		
+		// ... is taking fall damage ...
+		if (event.getCause() != DamageCause.FALL) return;
+		
+		// ... within 2 seconds of flying ...
+		Long lastActive = FlyUtil.getLastActive(player);
+		if (lastActive == null) return;
+		if (System.currentTimeMillis() - lastActive > 2000) return;
+		
+		// ... cancel the event.
+		event.setCancelled(true);
 	}
 	
 	// -------------------------------------------- //
@@ -147,14 +189,14 @@ public class EngineMainMCore extends EngineAbstract
 		Set<String> current = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		current.addAll(event.getTabCompletions());
 		
-		// Add ids of all online senders that match and isn't added yet. 
-		for (String senderId : Mixin.getOnlineSenderIds())
+		// Add names of all online senders that match and isn't added yet. 
+		for (String senderName : IdUtil.getOnlineNames())
 		{
-			if (!senderId.toLowerCase().startsWith(tokenlc)) continue;
-			if (current.contains(senderId)) continue;
-			if (!Mixin.canSee(watcher, senderId)) continue;
+			if (!senderName.toLowerCase().startsWith(tokenlc)) continue;
+			if (current.contains(senderName)) continue;
+			if (!Mixin.canSee(watcher, senderName)) continue;
 			
-			event.getTabCompletions().add(senderId);
+			event.getTabCompletions().add(senderName);
 		}
 	}
 	
@@ -229,52 +271,54 @@ public class EngineMainMCore extends EngineAbstract
 	// -------------------------------------------- //
 	// PLAYER AND SENDER REFERENCES
 	// -------------------------------------------- //
+	// Note: For now we update both names and ids.
+	// That way collections in plugins that haven't yet undergone update will still work.
+	
+	public static void setSenderReferences(CommandSender sender, CommandSender reference)
+	{
+		String id = IdUtil.getId(sender);
+		if (id != null)
+		{
+			SenderColl.setSenderReferences(id, reference);
+		}
+		
+		String name = IdUtil.getName(sender);
+		if (name != null)
+		{
+			SenderColl.setSenderReferences(name, reference);
+		}
+	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void senderReferencesLoginLowest(PlayerLoginEvent event)
+	public void setSenderReferencesLoginLowest(PlayerLoginEvent event)
 	{
-		String id = SenderUtil.getSenderId(event.getPlayer());
-		CommandSender sender = event.getPlayer();
-		
-		SenderColl.setSenderRefferences(id, sender);
+		setSenderReferences(event.getPlayer(), event.getPlayer());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void senderReferencesLoginMonitor(PlayerLoginEvent event)
+	public void setSenderReferencesLoginMonitor(PlayerLoginEvent event)
 	{
 		if (event.getResult() == Result.ALLOWED) return;
 		
-		String id = SenderUtil.getSenderId(event.getPlayer());
-		CommandSender sender = null;
-		
-		SenderColl.setSenderRefferences(id, sender);
+		setSenderReferences(event.getPlayer(), null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void senderReferencesQuitMonitor(PlayerQuitEvent event)
+	public void setSenderReferencesQuitMonitor(PlayerQuitEvent event)
 	{
-		String id = SenderUtil.getSenderId(event.getPlayer());
-		CommandSender sender = null;
-		
-		SenderColl.setSenderRefferences(id, sender);
+		setSenderReferences(event.getPlayer(), null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void senderReferencesRegisterMonitor(MCoreSenderRegisterEvent event)
+	public void setSenderReferencesRegisterMonitor(MCoreSenderRegisterEvent event)
 	{
-		String id = SenderUtil.getSenderId(event.getSender());
-		CommandSender sender = event.getSender();
-		
-		SenderColl.setSenderRefferences(id, sender);
+		setSenderReferences(event.getSender(), event.getSender());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void senderReferencesUnregisterMonitor(MCoreSenderUnregisterEvent event)
+	public void setSenderReferencesUnregisterMonitor(MCoreSenderUnregisterEvent event)
 	{
-		String id = SenderUtil.getSenderId(event.getSender());
-		CommandSender sender = null;
-		
-		SenderColl.setSenderRefferences(id, sender);
+		setSenderReferences(event.getSender(), null);
 	}
 	
 	// -------------------------------------------- //
@@ -372,12 +416,15 @@ public class EngineMainMCore extends EngineAbstract
 	
 	public void syncAllForPlayer(Player player)
 	{
+		// TODO: For now we sync them both!
 		String playerName = player.getName();
+		String playerId = player.getUniqueId().toString();
 		for (Coll<?> coll : Coll.getInstances())
 		{
 			if (!(coll instanceof SenderColl)) continue;
 			SenderColl<?> pcoll = (SenderColl<?>)coll;
 			pcoll.syncId(playerName);
+			pcoll.syncId(playerId);
 		}
 	}
 	

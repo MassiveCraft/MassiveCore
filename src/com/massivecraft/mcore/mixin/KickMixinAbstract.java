@@ -1,18 +1,10 @@
 package com.massivecraft.mcore.mixin;
 
-import org.bukkit.command.CommandSender;
-
 public abstract class KickMixinAbstract implements KickMixin
 {
 	@Override
-	public boolean kick(CommandSender sender)
+	public boolean kick(Object senderObject)
 	{
-		return this.kick(sender, null);
-	}
-
-	@Override
-	public boolean kick(String senderId)
-	{
-		return this.kick(senderId, null);
+		return this.kick(senderObject, null);
 	}
 }

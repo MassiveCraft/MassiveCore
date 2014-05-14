@@ -252,6 +252,50 @@ public class InventoryUtil
 	}
 	
 	// -------------------------------------------- //
+	// EQUALS
+	// -------------------------------------------- //
+
+	public static boolean equals(ItemStack one, ItemStack two)
+	{
+		if (isNothing(one)) return isNothing(two);
+		if (isNothing(two)) return false;
+		return one.equals(two);
+	}
+	
+	public static boolean equals(ItemStack[] one, ItemStack[] two)
+	{
+		if (one == null) return two == null;
+		if (two == null) return false;
+		if (one.length != two.length) return false;
+		for (int i = 0; i < one.length; i++)
+		{
+			if (!equals(one[i], two[i])) return false;
+		}
+		return true;
+	}
+	
+	public static boolean equals(Inventory one, Inventory two)
+	{
+		if (one == null) return two == null;
+		if (two == null) return false;
+		if (!equals(one.getContents(), two.getContents())) return false;
+		if (one instanceof PlayerInventory)
+		{
+			PlayerInventory pone = (PlayerInventory)one;
+			if (two instanceof PlayerInventory)
+			{
+				PlayerInventory ptwo = (PlayerInventory)two;
+				return equals(pone.getArmorContents(), ptwo.getArmorContents());
+			}
+			else
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// -------------------------------------------- //
 	// SET CONTENT
 	// -------------------------------------------- //
 	// This one simply moves the content pointers from on inventory to another.

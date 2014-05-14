@@ -93,7 +93,7 @@ public class WorldMixinDefault extends WorldMixinAbstract
 		{
 			if (verbooseChange || verbooseSame)
 			{
-				Mixin.msg(sender, "<b>Unknown world <h>%s<b>.", worldId);
+				Mixin.msgOne(sender, "<b>Unknown world <h>%s<b>.", worldId);
 			}
 			return false;
 		}
@@ -109,7 +109,7 @@ public class WorldMixinDefault extends WorldMixinAbstract
 		{
 			if (verbooseSame)
 			{
-				Mixin.msg(sender, "<i>Spawn location is already <h>%s <i>for <h>%s<i>.", currentFormatted, worldDisplayName);
+				Mixin.msgOne(sender, "<i>Spawn location is already <h>%s <i>for <h>%s<i>.", currentFormatted, worldDisplayName);
 			}
 			return true;
 		}
@@ -117,7 +117,7 @@ public class WorldMixinDefault extends WorldMixinAbstract
 		// Report
 		if (verbooseChange)
 		{
-			Mixin.msg(sender, "<i>Changing spawn location from <h>%s <i>to <h>%s <i>for <h>%s<i>.", currentFormatted, goalFormatted, worldDisplayName);
+			Mixin.msgOne(sender, "<i>Changing spawn location from <h>%s <i>to <h>%s <i>for <h>%s<i>.", currentFormatted, goalFormatted, worldDisplayName);
 		}
 		
 		// Set it

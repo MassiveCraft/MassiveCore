@@ -1,16 +1,15 @@
 package com.massivecraft.mcore.store;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.bukkit.GameMode;
-import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 {
@@ -18,6 +17,8 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	// FIELDS
 	// -------------------------------------------- //
 	
+	// TODO: With the new IdUtil containing a built in index ;
+	// TODO: ; Do we even need this local-cache?
 	// We keep a reference to the sender to provide fast "reverse lookup".
 	// The sender reference is initiated here and is kept updated using the InternalListener
 	protected transient CommandSender sender = null;
@@ -26,19 +27,20 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	{
 		if ( ! this.senderInitiated)
 		{
-			this.sender = SenderUtil.getSender(this.getId());
+			this.sender = IdUtil.getSender(this.getId());
 			this.senderInitiated = true;
 		}
 		return this.sender;
 	}
-	
-	// -------------------------------------------- //
-	// FIXED ID
-	// -------------------------------------------- //
-	
-	public String getFixedId()
+
+	public String getName()
 	{
-		return Mixin.tryFix(this.getId());
+		return IdUtil.getName(this.getId());
+	}
+	
+	public UUID getUuid()
+	{
+		return IdUtil.getUuid(this.getId());
 	}
 	
 	// -------------------------------------------- //
@@ -57,48 +59,26 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	
 	// IS
 	
-	public boolean isSender()
-	{
-		return SenderUtil.isSenderId(this.getId());
-	}
-	
 	public boolean isPlayer()
 	{
-		return SenderUtil.isPlayerId(this.getId());
+		return IdUtil.isPlayerId(this.getId());
 	}
 	
 	public boolean isConsole()
 	{
-		return SenderUtil.isConsoleId(this.getId());
-	}
-	
-	public boolean isRcon()
-	{
-		return SenderUtil.isRconId(this.getId());
+		return IdUtil.isConsoleId(this.getId());
 	}
 	
 	// GET
 	
-	// TODO: Usage of sender instead of id here is cheating but is good performance-wise so it can be ok.
-	
 	public Player getPlayer()
 	{
-		return SenderUtil.getAsPlayer(this.getSender());
+		return IdUtil.getAsPlayer(this.getSender());
 	}
 	
 	public ConsoleCommandSender getConsole()
 	{
-		return SenderUtil.getAsConsole(this.getSender());
-	}
-	
-	public RemoteConsoleCommandSender getRcon()
-	{
-		return SenderUtil.getAsRcon(this.getSender());
-	}
-	
-	public BlockCommandSender getBlock()
-	{
-		return SenderUtil.getAsBlock(this.getSender());
+		return IdUtil.getAsConsole(this.getSender());
 	}
 	
 	// ONLINE / OFFLINE
@@ -141,46 +121,46 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	
 	public boolean sendMessage(String message)
 	{
-		return Mixin.message(this.getId(), message);
+		return Mixin.messageOne(this.getId(), message);
 	}
 	
 	public boolean sendMessage(String... messages)
 	{
-		return Mixin.message(this.getId(), messages);
+		return Mixin.messageOne(this.getId(), messages);
 	}
 	
 	public boolean sendMessage(Collection<String> messages)
 	{
-		return Mixin.message(this.getId(), messages);
+		return Mixin.messageOne(this.getId(), messages);
 	}
 	
 	// CONVENIENCE MSG
 	
 	public boolean msg(String msg)
 	{
-		return Mixin.msg(this.getId(), msg);
+		return Mixin.msgOne(this.getId(), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return Mixin.msg(this.getId(), msg, args);
+		return Mixin.msgOne(this.getId(), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return Mixin.msg(this.getId(), msgs);
+		return Mixin.msgOne(this.getId(), msgs);
 	}
 	
 	// CONVENIENCE GAME-MODE
 	
 	public GameMode getGameMode(GameMode def)
 	{
-		return SenderUtil.getGameMode(this.getId(), def);
+		return IdUtil.getGameMode(this.getId(), def);
 	}
 
 	public boolean isGameMode(GameMode gm, boolean def)
 	{
-		return SenderUtil.isGameMode(this.getId(), gm, def);
+		return IdUtil.isGameMode(this.getId(), gm, def);
 	}
 	
 }

@@ -3,7 +3,7 @@ package com.massivecraft.mcore.mixin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class CommandMixinDefault extends CommandMixinAbstract
 {
@@ -19,14 +19,14 @@ public class CommandMixinDefault extends CommandMixinAbstract
 	// -------------------------------------------- //
 
 	@Override
-	public boolean dispatchCommand(String presentId, String senderId, String commandLine)
+	public boolean dispatchCommand(Object presentObject, Object senderObject, String commandLine)
 	{
 		// Additional enforced presence
-		CommandSender present = SenderUtil.getSender(presentId);
+		CommandSender present = IdUtil.getSender(presentObject);
 		if (present == null) return false;
 		
 		// We must then of course have the presence of the sender
-		CommandSender sender = SenderUtil.getSender(senderId);
+		CommandSender sender = IdUtil.getSender(senderObject);
 		if (sender == null) return false;
 		
 		// Great! Let's do it!

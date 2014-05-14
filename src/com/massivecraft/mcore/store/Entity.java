@@ -25,7 +25,7 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 	public Coll<E> getColl() { return this.coll; }
 	
 	protected transient String id;
-	protected void setid(String id) { this.id = id; }
+	protected void setId(String id) { this.id = id; }
 	public String getId() { return this.id; }
 	
 	public String getUniverse()

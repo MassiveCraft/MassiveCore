@@ -1,10 +1,10 @@
 package com.massivecraft.mcore;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -19,19 +19,21 @@ import com.massivecraft.mcore.adapter.ModdedEnumTypeAdapter;
 import com.massivecraft.mcore.adapter.ObjectIdAdapter;
 import com.massivecraft.mcore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.mcore.adapter.UUIDAdapter;
+import com.massivecraft.mcore.event.MCoreUuidUpdateEvent;
+import com.massivecraft.mcore.fetcher.Fetcher;
+import com.massivecraft.mcore.fetcher.IdAndName;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.integration.vault.VaultFeatures;
 import com.massivecraft.mcore.mcorecmd.CmdMCore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreMStore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreUsys;
-import com.massivecraft.mcore.mixin.SenderIdMixinDefault;
 import com.massivecraft.mcore.mixin.EngineTeleportMixinCause;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.ps.PSAdapter;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.ExamineThread;
 import com.massivecraft.mcore.teleport.EngineScheduledTeleport;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.PlayerUtil;
 import com.massivecraft.mcore.util.Txt;
 import com.massivecraft.mcore.xlib.bson.types.ObjectId;
@@ -120,9 +122,20 @@ public class MCore extends MPlugin
 	// OVERRIDE
 	// -------------------------------------------- //
 	
+	public boolean doderp = false;
+	
 	@Override
 	public void onEnable()
 	{
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				doderp = true;
+			}
+		}, 20);
+		
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		// Note this one must be before preEnable. dooh.
 		// TODO: Create something like "deinit all" (perhaps a forloop) to readd this.
@@ -140,8 +153,8 @@ public class MCore extends MPlugin
 		// Setup the default database
 		//db = MStore.getDb(ConfServer.dburi);
 		
-		// Setup PlayerUtil and it's events
-		SenderIdMixinDefault.get().setup();
+		// Setup IdUtil
+		IdUtil.setup();
 		
 		// Register events
 		EngineMainMCore.get().activate();
@@ -158,7 +171,6 @@ public class MCore extends MPlugin
 		MultiverseColl.get().init();
 		AspectColl.get().init();
 		MCoreConfColl.get().init();
-		MCoreMPlayerColl.get().init();
 		
 		// Register commands
 		this.outerCmdMCore = new CmdMCore() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCore; } };
@@ -180,17 +192,31 @@ public class MCore extends MPlugin
 		TaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, TaskDeleteFiles.get());
 		
-		//test();
+		// test();
 		
-		// Schedule fetch all
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				PlayerUtil.fetchAllIds();
+				log(Txt.parse("<a>============================================"));
+				log(Txt.parse("<i>We are preparing for Mojangs switch to UUIDs."));
+				log(Txt.parse("<i>Learn more at: <aqua>https://forums.bukkit.org/threads/psa-the-switch-to-uuids-potential-plugin-server-breakage.250915/"));
+				
+				// TODO: NOTE!!! IMPORTANT EVEN LATER!
+				IdUtil.loadDatas();
+				
+				log(Txt.parse("<i>Now updating database for plugins that are ready ..."));
+				
+				MCoreUuidUpdateEvent event = new MCoreUuidUpdateEvent();
+				event.run();
+				
+				log(Txt.parse("<g> ... done!"));
+				log(Txt.parse("<i>(database saving will now commence which might lock the server for a while)"));
+				log(Txt.parse("<a>============================================"));
 			}
 		});
+		
 		
 		this.postEnable();
 	}
@@ -204,16 +230,59 @@ public class MCore extends MPlugin
 		try
 		{
 			// whatever you feel like
-			for (int i = 0; i <= 1; i++)
+			List<Object> objects = new ArrayList<Object>();
+			
+			//objects.add("Cayorion");
+			objects.add("a2cce16b-9494-45ff-b5ff-0362ca687d4e");
+			
+			//objects.add("a2cce16b-9494-45ff-b5ff-0362ca687d4a");
+			
+			objects.add("hnnn");
+			objects.add("hnnnbsarc");
+			
+			objects.add("NOT EVEN LEGIT");
+			
+			objects.add("MonMarty");
+			objects.add("Thortuna");
+			objects.add("yendor46");
+			objects.add("Gethelp");
+			objects.add("Th3_Drunk_Monk");
+			objects.add("Ryciera");
+			objects.add("Jamescl");
+			objects.add("spectec");
+			objects.add("Tom1804");
+			objects.add("imboring56");
+			objects.add("BigBellyBuddah");
+			objects.add("MrHappyTinkles");
+			objects.add("BabaManga");
+			objects.add("_Omnomivore_");
+			objects.add("Cielian");
+			objects.add("BboyMVB");
+			objects.add("MrWackeo");
+			objects.add("Kellock93");
+			objects.add("Feykronos");
+			objects.add("Unluvable");
+			objects.add("DanyWood");
+			objects.add("jadex224");
+			objects.add("MinecraftSpartan");
+			objects.add("ravenwolfthorn");
+			objects.add("ELtongo");
+			objects.add("Azas");
+			objects.add("TazeHD");
+			objects.add("BillyA835");
+			objects.add("duhsigil");
+			objects.add("Sahrotaar");
+			objects.add("Alj23");
+			
+			Set<IdAndName> idAndNames = Fetcher.fetch(objects);
+			
+			// Map<String, UUID> map = PlayerUtil.getPlayerIds(MUtil.list("Cayorion", "MonMarty", "Thortuna", "yendor46", "Gethelp", "Th3_Drunk_Monk", "Ryciera", "Jamescl", "spectec", "Tom1804", "imboring56", "BigBellyBuddah", "MrHappyTinkles", "BabaManga", "_Omnomivore_", "Cielian", "BboyMVB", "MrWackeo", "Kellock93", "Feykronos", "Unluvable", "DanyWood", "jadex224", "MinecraftSpartan", "ravenwolfthorn", "ELtongo", "Azas", "TazeHD", "BillyA835", "duhsigil", "Sahrotaar", "Alj23"));
+			
+			for (IdAndName idAndName: idAndNames)
 			{
-				Map<String, UUID> map = PlayerUtil.getPlayerIds(MUtil.list("Cayorion", "MonMarty", "Thortuna", "yendor46", "Gethelp", "Th3_Drunk_Monk", "Ryciera", "Jamescl", "spectec", "Tom1804", "imboring56", "BigBellyBuddah", "MrHappyTinkles", "BabaManga", "_Omnomivore_", "Cielian", "BboyMVB", "MrWackeo", "Kellock93", "Feykronos", "Unluvable", "DanyWood", "jadex224", "MinecraftSpartan", "ravenwolfthorn", "ELtongo", "Azas", "TazeHD", "BillyA835", "duhsigil", "Sahrotaar", "Alj23"));
-				for (Entry<String, UUID> entry : map.entrySet())
-				{
-					String playerName = entry.getKey();
-					UUID playerId = entry.getValue();
-					log(Txt.parse("<k>%s <v>%s", playerName, playerId.toString()));
-				}
-				log("===========================");
+				String name = idAndName.getName();
+				UUID id = idAndName.getId();
+				log(Txt.parse("<k>%s <v>%s", name, id));
 			}
 		}
 		catch (Exception e)
@@ -232,6 +301,7 @@ public class MCore extends MPlugin
 		super.onDisable();
 		ExamineThread.get().interrupt();
 		TaskDeleteFiles.get().run();
+		IdUtil.saveCachefileDatas();
 	}
 	
 }

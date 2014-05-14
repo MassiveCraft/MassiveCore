@@ -9,8 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.Predictate;
-import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.util.MUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {
@@ -41,51 +40,53 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	}
 	
 	// -------------------------------------------- //
-	// EXTRAS
+	// OVERRIDE: Coll
 	// -------------------------------------------- //
-	
-	public List<String> getFixedIds()
-	{
-		List<String> ret = new ArrayList<String>();
-		for (String senderId : this.getIds())
-		{
-			ret.add(Mixin.tryFix(senderId));
-		}
-		return ret;
-	}
-	
-	@Override
-	public Collection<Collection<String>> getSenderIdCollections()
-	{
-		List<Collection<String>> ret = new ArrayList<Collection<String>>();
-		ret.add(this.getFixedIds());
-		return ret;
-	}
-	
 	
 	@Override
 	public String fixId(Object oid)
 	{
 		if (oid == null) return null;
 		
-		String ret = null;
 		if (oid instanceof String) 
 		{
-			ret = (String)oid;
-		}
-		else if (oid.getClass() == this.entityClass)
-		{
-			ret = this.entity2id.get(oid);
-		}
-		else
-		{
-			ret = MUtil.extract(String.class, "senderId", oid);
+			String ret = (String)oid;
+			return this.isLowercasing() ? ret.toLowerCase() : ret;
 		}
 		
-		if (ret == null) return null;
+		if (oid.getClass() == this.entityClass)
+		{
+			return fixId(this.entity2id.get(oid));
+		}
 		
-		return this.isLowercasing() ? ret.toLowerCase() : ret;
+		return fixId(IdUtil.getId(oid));
 	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE: SenderIdSource
+	// -------------------------------------------- //
+	
+	@Override
+	public Collection<Collection<String>> getSenderIdCollections()
+	{
+		List<Collection<String>> ret = new ArrayList<Collection<String>>();
+		ret.add(this.getIds());
+		
+		List<String> names = new ArrayList<String>();
+		for (String id : this.getIds())
+		{
+			String name = IdUtil.getName(id);
+			if (name == null) continue;
+			names.add(name);
+		}
+		ret.add(names);
+		
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// EXTRAS
+	// -------------------------------------------- //
 	
 	public Collection<E> getAllOnline()
 	{
@@ -110,10 +111,10 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	}
 	
 	// -------------------------------------------- //
-	// SENDER REFFERENCE MANAGEMENT
+	// SENDER REFERENCE MANAGEMENT
 	// -------------------------------------------- //
 	
-	protected void setSenderRefference(String senderId, CommandSender sender)
+	protected void setSenderReference(String senderId, CommandSender sender)
 	{
 		 E senderEntity = this.get(senderId, false);
 		 if (senderEntity == null) return;
@@ -121,19 +122,20 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 		 senderEntity.senderInitiated = true;
 	}
 	
-	public static void setSenderRefferences(String senderId, CommandSender sender)
+	public static void setSenderReferences(String senderId, CommandSender sender)
 	{
 		for (Coll<?> coll : Coll.getInstances())
 		{
 			if (!(coll instanceof SenderColl)) continue;
 			SenderColl<?> senderColl = (SenderColl<?>)coll;
-			senderColl.setSenderRefference(senderId, sender);
+			senderColl.setSenderReference(senderId, sender);
 		}
 	}
 	
 	// -------------------------------------------- //
 	// ARGUMENT READERS
 	// -------------------------------------------- //
+	// TODO: Why were these removed?
 	
 	/*public ArgReader<E> getARFullAny()
 	{

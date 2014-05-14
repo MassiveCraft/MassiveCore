@@ -6,39 +6,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/**
- * Many thanks to evilmidget38!
- * This utility class is based on his work.
- * http://forums.bukkit.org/threads/player-name-uuid-fetcher.250926/
- */
-public class FetcherPlayerIdMojang implements Callable<Map<String, UUID>>
+public class FetcherByName implements Callable<Map<String, IdAndName>>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static final int BATCH_SIZE = FetcherPlayerIdMojangSingle.MAX_PAGE_SIZE;
-	public static final ExecutorService ES = Executors.newCachedThreadPool();
+	public static final ExecutorService ES = Executors.newFixedThreadPool(100);
+	public static final int BATCH_SIZE = FetcherByNameSingle.PROFILES_PER_REQUEST;
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Collection<String> playerNames;
+	private final Collection<String> names;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FetcherPlayerIdMojang(Collection<String> playerNames)
+	public FetcherByName(Collection<String> names)
 	{
-		this.playerNames = playerNames;
+		this.names = names;
 	}
 	
 	// -------------------------------------------- //
@@ -46,41 +40,40 @@ public class FetcherPlayerIdMojang implements Callable<Map<String, UUID>>
 	// -------------------------------------------- //
 
 	@Override
-	public Map<String, UUID> call() throws Exception
+	public Map<String, IdAndName> call() throws Exception
 	{
-		return fetch(this.playerNames);
+		return fetch(this.names);
 	}
 	
 	// -------------------------------------------- //
 	// STATIC
 	// -------------------------------------------- //
 	
-	public static Map<String, UUID> fetch(Collection<String> playerNames) throws Exception
+	public static Map<String, IdAndName> fetch(Collection<String> names) throws Exception
 	{
 		// Create batches
 		List<List<String>> batches = new ArrayList<List<String>>();
-		playerNames = new ArrayList<String>(playerNames);
-		while (playerNames.size() > 0)
+		names = new ArrayList<String>(names);
+		while (names.size() > 0)
 		{
-			List<String> batch = take(playerNames, BATCH_SIZE);
+			List<String> batch = take(names, BATCH_SIZE);
 			batches.add(batch);
 		}
 		
 		// Create Tasks
-		final List<Callable<Map<String, UUID>>> tasks = new ArrayList<Callable<Map<String, UUID>>>();
+		final List<Callable<Map<String, IdAndName>>> tasks = new ArrayList<Callable<Map<String, IdAndName>>>();
 		for (List<String> batch : batches)
 		{
-			tasks.add(new FetcherPlayerIdMojangSingle(batch));
+			tasks.add(new FetcherByNameSingle(batch));
 		}
 		
 		// Invoke All Tasks
-		List<Future<Map<String, UUID>>> futures = ES.invokeAll(tasks);
+		List<Future<Map<String, IdAndName>>> futures = ES.invokeAll(tasks);
 		
 		// Merge Return Value
-		Map<String, UUID> ret = new TreeMap<String, UUID> (String.CASE_INSENSITIVE_ORDER);
-		for (Future<Map<String, UUID>> future : futures)
+		Map<String, IdAndName> ret = new TreeMap<String, IdAndName> (String.CASE_INSENSITIVE_ORDER);
+		for (Future<Map<String, IdAndName>> future : futures)
 		{
-			
 			ret.putAll(future.get());
 		}
 		
