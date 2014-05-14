@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.store.SenderIdSource;
 import com.massivecraft.mcore.store.SenderIdSourceMixinAllSenderIds;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class ARPlayer extends ARSenderIdAbstractPredsource<Player>
 {
@@ -40,7 +40,7 @@ public class ARPlayer extends ARSenderIdAbstractPredsource<Player>
 	@Override
 	public Player getResultForSenderId(String senderId)
 	{
-		return SenderUtil.getPlayer(senderId);
+		return IdUtil.getPlayer(senderId);
 	}
 
 }

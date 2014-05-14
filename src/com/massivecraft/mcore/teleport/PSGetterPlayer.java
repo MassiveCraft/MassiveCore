@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.store.SenderEntity;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public final class PSGetterPlayer extends PSGetterAbstract
 {
@@ -33,7 +33,7 @@ public final class PSGetterPlayer extends PSGetterAbstract
 	
 	public static PSGetterPlayer valueOf(CommandSender player)
 	{
-		return new PSGetterPlayer(SenderUtil.getSenderId(player));
+		return new PSGetterPlayer(IdUtil.getId(player));
 	}
 	
 	public static PSGetterPlayer valueOf(SenderEntity<?> playerEntity)

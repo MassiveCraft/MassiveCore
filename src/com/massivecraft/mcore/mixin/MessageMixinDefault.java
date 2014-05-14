@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.Predictate;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class MessageMixinDefault extends MessageMixinAbstract
 {
@@ -21,44 +21,37 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean message(Collection<String> messages)
+	public boolean messageAll(Collection<String> messages)
 	{
 		if (messages == null) return false;
-		for (CommandSender sender : SenderUtil.getOnlineSenders())
+		for (CommandSender sender : IdUtil.getOnlineSenders())
 		{
-			this.message(sender, messages);
+			this.messageOne(sender, messages);
 		}
 		return true;
 	}
 	
 	@Override
-	public boolean message(Predictate<CommandSender> predictate, Collection<String> messages)
+	public boolean messagePredictate(Predictate<CommandSender> predictate, Collection<String> messages)
 	{
 		if (predictate == null) return false;
 		if (messages == null) return false;
-		for (CommandSender sender : SenderUtil.getOnlineSenders())
+		for (CommandSender sender : IdUtil.getOnlineSenders())
 		{
 			if (!predictate.apply(sender)) continue;
-			this.message(sender, messages);
+			this.messageOne(sender, messages);
 		}
 		return true;
 	}
 	
 	@Override
-	public boolean message(CommandSender sendee, Collection<String> messages)
+	public boolean messageOne(Object sendeeObject, Collection<String> messages)
 	{
+		CommandSender sendee = IdUtil.getSender(sendeeObject);
 		if (sendee == null) return false;
 		if (messages == null) return false;
 		sendee.sendMessage(messages.toArray(new String[0]));
 		return true;
-	}
-	
-	@Override
-	public boolean message(String sendeeId, Collection<String> messages)
-	{
-		if (sendeeId == null) return false;
-		if (messages == null) return false;
-		return this.message(SenderUtil.getSender(sendeeId), messages);
 	}
 
 }

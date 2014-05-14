@@ -1,6 +1,6 @@
 main: com.massivecraft.mcore.MCore
 name: mcore
-version: 7.1.0
+version: 7.2.0
 website: http://massivecraft.com/mcore
 authors: [Cayorion]
 description: §eMCore stands for MassiveCraft Core and is a plugin that contains libraries and features that other plugins make use of. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttp://massivecraft.com
@@ -11,6 +11,7 @@ permissions:
 # -------------------------------------------- #
 # cmd
   mcore.basecommand: {description: use the MCore base command, default: false}
+  mcore.test: {description: run developer test, default: false}
   mcore.id: {description: see the server id, default: false}
   mcore.version: {description: diplay plugin version, default: false}
   mcore.hearsound: {description: hear a sound, default: false}
@@ -43,6 +44,7 @@ permissions:
     default: false
     children:
       mcore.basecommand: true
+      mcore.test: true
       mcore.id: true
       mcore.version: true
       mcore.hearsound: true

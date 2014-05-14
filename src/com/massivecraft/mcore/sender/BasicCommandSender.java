@@ -6,11 +6,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissibleBase;
 
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class BasicCommandSender extends PermissibleBase implements CommandSender
 {
-	private final String name;
+	public final String name;
 	
 	public BasicCommandSender(String name, boolean op, boolean opChangeable)
 	{
@@ -55,7 +55,7 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 		}
 	}
 	
-	public boolean register()
+	public void register()
 	{
 		final BasicCommandSender ME = this;
 		
@@ -70,17 +70,17 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 		});
 		
 		// and register now
-		return this.registerImmediately();
+		registerImmediately();
 	}
 	
-	public boolean registerImmediately()
+	public void registerImmediately()
 	{
-		return SenderUtil.register(this);
+		IdUtil.register(this);
 	}
 	
-	public boolean unregister()
+	public void unregister()
 	{
-		return SenderUtil.unregister(this);
+		IdUtil.unregister(this);
 	}
 	
 }

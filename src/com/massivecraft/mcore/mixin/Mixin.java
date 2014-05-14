@@ -2,7 +2,6 @@ package com.massivecraft.mcore.mixin;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -45,10 +44,6 @@ public class Mixin
 	private static VisibilityMixin visibilityMixin = VisibilityMixinDefault.get();
 	public static VisibilityMixin getVisibilityMixin() { return visibilityMixin; }
 	public static void setVisibilityMixin(VisibilityMixin val) { visibilityMixin = val; }
-	
-	private static SenderIdMixin senderIdMixin = SenderIdMixinDefault.get();
-	public static SenderIdMixin getSenderIdMixin() { return senderIdMixin; }
-	public static void setSenderIdMixin(SenderIdMixin val) { senderIdMixin = val; }
 	
 	private static TeleportMixin teleportMixin = TeleportMixinDefault.get();
 	public static TeleportMixin getTeleportMixin() { return teleportMixin; }
@@ -128,24 +123,14 @@ public class Mixin
 	// STATIC EXPOSE: DISPLAY NAME
 	// -------------------------------------------- //
 	
-	public static String getDisplayName(String senderId)
+	public static String getDisplayName(Object senderObject)
 	{
-		return getDisplayNameMixin().getDisplayName(senderId);
+		return getDisplayNameMixin().getDisplayName(senderObject);
 	}
 	
-	public static void setDisplayName(String senderId, String displayName)
+	public static void setDisplayName(Object senderObject, String displayName)
 	{
-		getDisplayNameMixin().setDisplayName(senderId, displayName);
-	}
-	
-	public static String getDisplayName(CommandSender sender)
-	{
-		return getDisplayNameMixin().getDisplayName(sender);
-	}
-	
-	public static void setDisplayName(CommandSender sender, String displayName)
-	{
-		getDisplayNameMixin().setDisplayName(sender, displayName);
+		getDisplayNameMixin().setDisplayName(senderObject, displayName);
 	}
 	
 	// -------------------------------------------- //
@@ -176,103 +161,48 @@ public class Mixin
 	// STATIC EXPOSE: SENDER PS
 	// -------------------------------------------- //
 	
-	public static PS getSenderPs(String senderId)
+	public static PS getSenderPs(Object senderObject)
 	{
-		return getSenderPsMixin().getSenderPs(senderId);
+		return getSenderPsMixin().getSenderPs(senderObject);
 	}
 
-	public static void setSenderPs(String senderId, PS ps)
+	public static void setSenderPs(Object senderObject, PS ps)
 	{
-		getSenderPsMixin().setSenderPs(senderId, ps);
+		getSenderPsMixin().setSenderPs(senderObject, ps);
 	}
 	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: PLAYED
 	// -------------------------------------------- //
 	
-	public static boolean isOnline(String senderId)
+	public static boolean isOnline(Object senderObject)
 	{
-		return getPlayedMixin().isOnline(senderId);
+		return getPlayedMixin().isOnline(senderObject);
 	}
-	public static boolean isOffline(String senderId)
+	public static boolean isOffline(Object senderObject)
 	{
-		return getPlayedMixin().isOffline(senderId);
+		return getPlayedMixin().isOffline(senderObject);
 	}
-	public static Long getLastPlayed(String senderId)
+	public static Long getLastPlayed(Object senderObject)
 	{
-		return getPlayedMixin().getLastPlayed(senderId);
+		return getPlayedMixin().getLastPlayed(senderObject);
 	}
-	public static Long getFirstPlayed(String senderId)
+	public static Long getFirstPlayed(Object senderObject)
 	{
-		return getPlayedMixin().getFirstPlayed(senderId);
+		return getPlayedMixin().getFirstPlayed(senderObject);
 	}
-	public static boolean hasPlayedBefore(String senderId)
+	public static boolean hasPlayedBefore(Object senderObject)
 	{
-		return getPlayedMixin().hasPlayedBefore(senderId);
+		return getPlayedMixin().hasPlayedBefore(senderObject);
 	}
 	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: VISIBILITY
 	// -------------------------------------------- //
 	
-	public static boolean canSee(String watcherId, String watcheeId)
+	public static boolean canSee(Object watcherObject, Object watcheeObject)
 	{
-		return getVisibilityMixin().canSee(watcherId, watcheeId);
-	}
-	public static boolean canSee(CommandSender watcher, String watcheeId)
-	{
-		return getVisibilityMixin().canSee(watcher, watcheeId);
-	}
-	public static boolean canSee(String watcherId, CommandSender watchee)
-	{
-		return getVisibilityMixin().canSee(watcherId, watchee);
-	}
-	public static boolean canSee(CommandSender watcher, CommandSender watchee)
-	{
-		return getVisibilityMixin().canSee(watcher, watchee);
-	}
-	
-	// -------------------------------------------- //
-	// STATIC EXPOSE: SENDER ID
-	// -------------------------------------------- //
-	
-	public static String reqFix(String senderId)
-	{
-		return getSenderIdMixin().reqFix(senderId);
-	}
-	public static String tryFix(String senderId)
-	{
-		return getSenderIdMixin().tryFix(senderId);
-	}
-	public static boolean canFix(String senderId)
-	{
-		return getSenderIdMixin().canFix(senderId);
-	}
-	
-	public static Set<String> getAllSenderIds()
-	{
-		return getSenderIdMixin().getAllSenderIds();
-	}
-	public static Set<String> getOnlineSenderIds()
-	{
-		return getSenderIdMixin().getOnlineSenderIds();
-	}
-	public static Set<String> getOfflineSenderIds()
-	{
-		return getSenderIdMixin().getOfflineSenderIds();
-	}
-	
-	public static Set<String> getAllPlayerIds()
-	{
-		return getSenderIdMixin().getAllPlayerIds();
-	}
-	public static Set<String> getOnlinePlayerIds()
-	{
-		return getSenderIdMixin().getOnlinePlayerIds();
-	}
-	public static Set<String> getOfflinePlayerIds()
-	{
-		return getSenderIdMixin().getOfflinePlayerIds();
+		return getVisibilityMixin().canSee(watcherObject, watcheeObject);
 	}
 	
 	// -------------------------------------------- //
@@ -284,274 +214,94 @@ public class Mixin
 		return getTeleportMixin().isCausedByMixin(event);
 	}
 	
-	// CommandSender & PS
-	public static void teleport(CommandSender teleportee, PS to) throws TeleporterException
+	// PS
+	public static void teleport(Object teleporteeObject, PS to) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to);
+		getTeleportMixin().teleport(teleporteeObject, to);
 	}
-	public static void teleport(CommandSender teleportee, PS to, String desc) throws TeleporterException
+	public static void teleport(Object teleporteeObject, PS to, String desc) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc);
+		getTeleportMixin().teleport(teleporteeObject, to, desc);
 	}
-	public static void teleport(CommandSender teleportee, PS to, String desc, Permissible delayPermissible) throws TeleporterException
+	public static void teleport(Object teleporteeObject, PS to, String desc, Permissible delayPermissible) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delayPermissible);
 	}
-	public static void teleport(CommandSender teleportee, PS to, String desc, int delaySeconds) throws TeleporterException
+	public static void teleport(Object teleporteeObject, PS to, String desc, int delaySeconds) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// CommandSender & CommandSender
-	public static void teleport(CommandSender teleportee, CommandSender to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(CommandSender teleportee, CommandSender to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(CommandSender teleportee, CommandSender to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(CommandSender teleportee, CommandSender to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delaySeconds);
 	}
 	
-	// CommandSender & SenderEntity
-	public static void teleport(CommandSender teleportee, SenderEntity<?> to) throws TeleporterException
+	// CommandSender
+	public static void teleport(Object teleporteeObject, CommandSender to) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to);
+		getTeleportMixin().teleport(teleporteeObject, to);
 	}
-	public static void teleport(CommandSender teleportee, SenderEntity<?> to, String desc) throws TeleporterException
+	public static void teleport(Object teleporteeObject, CommandSender to, String desc) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc);
+		getTeleportMixin().teleport(teleporteeObject, to, desc);
 	}
-	public static void teleport(CommandSender teleportee, SenderEntity<?> to, String desc, Permissible delayPermissible) throws TeleporterException
+	public static void teleport(Object teleporteeObject, CommandSender to, String desc, Permissible delayPermissible) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delayPermissible);
 	}
-	public static void teleport(CommandSender teleportee, SenderEntity<?> to, String desc, int delaySeconds) throws TeleporterException
+	public static void teleport(Object teleporteeObject, CommandSender to, String desc, int delaySeconds) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// CommandSender & String
-	public static void teleport(CommandSender teleportee, String to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(CommandSender teleportee, String to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(CommandSender teleportee, String to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(CommandSender teleportee, String to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delaySeconds);
 	}
 	
-	// CommandSender & PSGetter
-	public static void teleport(CommandSender teleportee, PSGetter to) throws TeleporterException
+	// SenderEntity
+	public static void teleport(Object teleporteeObject, SenderEntity<?> to) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to);
+		getTeleportMixin().teleport(teleporteeObject, to);
 	}
-	public static void teleport(CommandSender teleportee, PSGetter to, String desc) throws TeleporterException
+	public static void teleport(Object teleporteeObject, SenderEntity<?> to, String desc) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc);
+		getTeleportMixin().teleport(teleporteeObject, to, desc);
 	}
-	public static void teleport(CommandSender teleportee, PSGetter to, String desc, Permissible delayPermissible) throws TeleporterException
+	public static void teleport(Object teleporteeObject, SenderEntity<?> to, String desc, Permissible delayPermissible) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delayPermissible);
 	}
-	public static void teleport(CommandSender teleportee, PSGetter to, String desc, int delaySeconds) throws TeleporterException
+	public static void teleport(Object teleporteeObject, SenderEntity<?> to, String desc, int delaySeconds) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// SenderEntity & PS
-	public static void teleport(SenderEntity<?> teleportee, PS to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(SenderEntity<?> teleportee, PS to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(SenderEntity<?> teleportee, PS to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(SenderEntity<?> teleportee, PS to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delaySeconds);
 	}
 	
-	// SenderEntity & CommandSender
-	public static void teleport(SenderEntity<?> teleportee, CommandSender to) throws TeleporterException
+	// String
+	public static void teleport(Object teleporteeObject, String to) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to);
+		getTeleportMixin().teleport(teleporteeObject, to);
 	}
-	public static void teleport(SenderEntity<?> teleportee, CommandSender to, String desc) throws TeleporterException
+	public static void teleport(Object teleporteeObject, String to, String desc) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc);
+		getTeleportMixin().teleport(teleporteeObject, to, desc);
 	}
-	public static void teleport(SenderEntity<?> teleportee, CommandSender to, String desc, Permissible delayPermissible) throws TeleporterException
+	public static void teleport(Object teleporteeObject, String to, String desc, Permissible delayPermissible) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delayPermissible);
 	}
-	public static void teleport(SenderEntity<?> teleportee, CommandSender to, String desc, int delaySeconds) throws TeleporterException
+	public static void teleport(Object teleporteeObject, String to, String desc, int delaySeconds) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// SenderEntity & SenderEntity
-	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(SenderEntity<?> teleportee, SenderEntity<?> to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delaySeconds);
 	}
 	
-	// SenderEntity & String
-	public static void teleport(SenderEntity<?> teleportee, String to) throws TeleporterException
+	// PSGetter
+	public static void teleport(Object teleporteeObject, PSGetter to) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to);
+		getTeleportMixin().teleport(teleporteeObject, to);
 	}
-	public static void teleport(SenderEntity<?> teleportee, String to, String desc) throws TeleporterException
+	public static void teleport(Object teleporteeObject, PSGetter to, String desc) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc);
+		getTeleportMixin().teleport(teleporteeObject, to, desc);
 	}
-	public static void teleport(SenderEntity<?> teleportee, String to, String desc, Permissible delayPermissible) throws TeleporterException
+	public static void teleport(Object teleporteeObject, PSGetter to, String desc, Permissible delayPermissible) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delayPermissible);
 	}
-	public static void teleport(SenderEntity<?> teleportee, String to, String desc, int delaySeconds) throws TeleporterException
+	public static void teleport(Object teleporteeObject, PSGetter to, String desc, int delaySeconds) throws TeleporterException
 	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// SenderEntity & PSGetter
-	public static void teleport(SenderEntity<?> teleportee, PSGetter to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(SenderEntity<?> teleportee, PSGetter to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(SenderEntity<?> teleportee, PSGetter to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(SenderEntity<?> teleportee, PSGetter to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// String & PS
-	public static void teleport(String teleportee, PS to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(String teleportee, PS to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(String teleportee, PS to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(String teleportee, PS to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// String & CommandSender
-	public static void teleport(String teleportee, CommandSender to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(String teleportee, CommandSender to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(String teleportee, CommandSender to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(String teleportee, CommandSender to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// String & SenderEntity
-	public static void teleport(String teleportee, SenderEntity<?> to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(String teleportee, SenderEntity<?> to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(String teleportee, SenderEntity<?> to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(String teleportee, SenderEntity<?> to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// String & String
-	public static void teleport(String teleportee, String to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(String teleportee, String to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(String teleportee, String to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(String teleportee, String to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
-	}
-	
-	// String & PSGetter
-	public static void teleport(String teleportee, PSGetter to) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to);
-	}
-	public static void teleport(String teleportee, PSGetter to, String desc) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc);
-	}
-	public static void teleport(String teleportee, PSGetter to, String desc, Permissible delayPermissible) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delayPermissible);
-	}
-	public static void teleport(String teleportee, PSGetter to, String desc, int delaySeconds) throws TeleporterException
-	{
-		getTeleportMixin().teleport(teleportee, to, desc, delaySeconds);
+		getTeleportMixin().teleport(teleporteeObject, to, desc, delaySeconds);
 	}
 	
 	// -------------------------------------------- //
@@ -559,137 +309,101 @@ public class Mixin
 	// -------------------------------------------- //
 	
 	// All
-	public static boolean message(String message)
+	public static boolean messageAll(String message)
 	{
-		return getMessageMixin().message(message);
+		return getMessageMixin().messageAll(message);
 	}
-	public static boolean message(String... messages)
+	public static boolean messageAll(String... messages)
 	{
-		return getMessageMixin().message(messages);
+		return getMessageMixin().messageAll(messages);
 	}
-	public static boolean message(Collection<String> messages)
+	public static boolean messageAll(Collection<String> messages)
 	{
-		return getMessageMixin().message(messages);
+		return getMessageMixin().messageAll(messages);
 	}
 	
 	// Predictate
-	public static boolean message(Predictate<CommandSender> predictate, String message)
+	public static boolean messagePredictate(Predictate<CommandSender> predictate, String message)
 	{
-		return getMessageMixin().message(predictate, message);
+		return getMessageMixin().messagePredictate(predictate, message);
 	}
-	public static boolean message(Predictate<CommandSender> predictate, String... messages)
+	public static boolean messagePredictate(Predictate<CommandSender> predictate, String... messages)
 	{
-		return getMessageMixin().message(predictate, messages);
+		return getMessageMixin().messagePredictate(predictate, messages);
 	}
-	public static boolean message(Predictate<CommandSender> predictate, Collection<String> messages)
+	public static boolean messagePredictate(Predictate<CommandSender> predictate, Collection<String> messages)
 	{
-		return getMessageMixin().message(predictate, messages);
+		return getMessageMixin().messagePredictate(predictate, messages);
 	}
 	
 	// One
-	public static boolean message(CommandSender sender, String message)
+	public static boolean messageOne(Object senderObject, String message)
 	{
-		return getMessageMixin().message(sender, message);
+		return getMessageMixin().messageOne(senderObject, message);
 	}
-	public static boolean message(CommandSender sender, String... messages)
+	public static boolean messageOne(Object senderObject, String... messages)
 	{
-		return getMessageMixin().message(sender, messages);
+		return getMessageMixin().messageOne(senderObject, messages);
 	}
-	public static boolean message(CommandSender sender, Collection<String> messages)
+	public static boolean messageOne(Object senderObject, Collection<String> messages)
 	{
-		return getMessageMixin().message(sender, messages);
-	}
-	
-	// One by id
-	public static boolean message(String senderId, String message)
-	{
-		return getMessageMixin().message(senderId, message);
-	}
-	public static boolean message(String senderId, String... messages)
-	{
-		return getMessageMixin().message(senderId, messages);
-	}
-	public static boolean message(String senderId, Collection<String> messages)
-	{
-		return getMessageMixin().message(senderId, messages);
+		return getMessageMixin().messageOne(senderObject, messages);
 	}
 	
 	// All
-	public static boolean msg(String msg)
+	public static boolean msgAll(String msg)
 	{
-		return getMessageMixin().msg(msg);
+		return getMessageMixin().msgAll(msg);
 	}
-	public static boolean msg(String msg, Object... args)
+	public static boolean msgAll(String msg, Object... args)
 	{
-		return getMessageMixin().msg(msg, args);
+		return getMessageMixin().msgAll(msg, args);
 	}
-	public static boolean msg(Collection<String> msgs)
+	public static boolean msgAll(Collection<String> msgs)
 	{
-		return getMessageMixin().msg(msgs);
+		return getMessageMixin().msgAll(msgs);
 	}
 	
 	// Predictate
-	public static boolean msg(Predictate<CommandSender> predictate, String msg)
+	public static boolean msgPredictate(Predictate<CommandSender> predictate, String msg)
 	{
-		return getMessageMixin().msg(predictate, msg);
+		return getMessageMixin().msgPredictate(predictate, msg);
 	}
-	public static boolean msg(Predictate<CommandSender> predictate, String msg, Object... args)
+	public static boolean msgPredictate(Predictate<CommandSender> predictate, String msg, Object... args)
 	{
-		return getMessageMixin().msg(predictate, msg, args);
+		return getMessageMixin().msgPredictate(predictate, msg, args);
 	}
-	public static boolean msg(Predictate<CommandSender> predictate, Collection<String> msgs)
+	public static boolean msgPredictate(Predictate<CommandSender> predictate, Collection<String> msgs)
 	{
-		return getMessageMixin().msg(predictate, msgs);
+		return getMessageMixin().msgPredictate(predictate, msgs);
 	}
 	
 	// One
-	public static boolean msg(CommandSender sender, String msg)
+	public static boolean msgOne(Object senderObject, String msg)
 	{
-		return getMessageMixin().msg(sender, msg);
+		return getMessageMixin().msgOne(senderObject, msg);
 	}
-	public static boolean msg(CommandSender sender, String msg, Object... args)
+	public static boolean msgOne(Object senderObject, String msg, Object... args)
 	{
-		return getMessageMixin().msg(sender, msg, args);
+		return getMessageMixin().msgOne(senderObject, msg, args);
 	}
-	public static boolean msg(CommandSender sender, Collection<String> msgs)
+	public static boolean msgOne(Object senderObject, Collection<String> msgs)
 	{
-		return getMessageMixin().msg(sender, msgs);
-	}
-	
-	// One by id
-	public static boolean msg(String senderId, String msg)
-	{
-		return getMessageMixin().msg(senderId, msg);
-	}
-	public static boolean msg(String senderId, String msg, Object... args)
-	{
-		return getMessageMixin().msg(senderId, msg, args);
-	}
-	public static boolean msg(String senderId, Collection<String> msgs)
-	{
-		return getMessageMixin().msg(senderId, msgs);
+		return getMessageMixin().msgOne(senderObject, msgs);
 	}
 	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: KICK
 	// -------------------------------------------- //
 	
-	public static boolean kick(CommandSender sender)
+	public static boolean kick(Object senderObject)
 	{
-		return getKickMixin().kick(sender);
-	}
-	public static boolean kick(String senderId)
-	{
-		return getKickMixin().kick(senderId);
+		return getKickMixin().kick(senderObject);
 	}
 	
-	public static boolean kick(CommandSender sender, String message)
+	public static boolean kick(Object senderObject, String message)
 	{
-		return getKickMixin().kick(sender, message);
-	}
-	public static boolean kick(String senderId, String message)
-	{
-		return getKickMixin().kick(senderId, message);
+		return getKickMixin().kick(senderObject, message);
 	}
 	
 	// -------------------------------------------- //
@@ -710,24 +424,14 @@ public class Mixin
 	// STATIC EXPOSE: COMMAND
 	// -------------------------------------------- //
 	
-	public static boolean dispatchCommand(CommandSender sender, String commandLine)
+	public static boolean dispatchCommand(Object senderObject, String commandLine)
 	{
-		return getCommandMixin().dispatchCommand(sender, commandLine);
+		return getCommandMixin().dispatchCommand(senderObject, commandLine);
 	}
 	
-	public static boolean dispatchCommand(SenderEntity<?> sender, String commandLine)
+	public static boolean dispatchCommand(Object presentObject, Object senderObject, String commandLine)
 	{
-		return getCommandMixin().dispatchCommand(sender, commandLine);
-	}
-	
-	public static boolean dispatchCommand(String senderId, String commandLine)
-	{
-		return getCommandMixin().dispatchCommand(senderId, commandLine);
-	}
-	
-	public static boolean dispatchCommand(String presentId, String senderId, String commandLine)
-	{
-		return getCommandMixin().dispatchCommand(presentId, senderId, commandLine);
+		return getCommandMixin().dispatchCommand(presentObject, senderObject, commandLine);
 	}
 	
 }

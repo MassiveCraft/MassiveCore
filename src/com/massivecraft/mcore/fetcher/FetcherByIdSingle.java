@@ -1,10 +1,12 @@
 package com.massivecraft.mcore.fetcher;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map.Entry;
-import java.util.AbstractMap.SimpleEntry;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
@@ -16,13 +18,13 @@ import org.json.simple.parser.JSONParser;
  * This utility class is based on his work.
  * http://forums.bukkit.org/threads/player-name-uuid-fetcher.250926/
  */
-public class FetcherPlayerNameMojangSingle implements Callable<Entry<UUID, String>>
+public class FetcherByIdSingle implements Callable<Map<UUID, IdAndName>>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public final static String URL_BASE = "https://sessionserver.mojang.com/session/minecraft/profile/";
+	public final static String PROFILE_URL = "https://sessionserver.mojang.com/session/minecraft/profile/";
 	public final static String KEY_NAME = "name";
 	public final static String KEY_CAUSE = "cause";
 	public final static String KEY_ERROR_MESSAGE = "errorMessage";
@@ -31,16 +33,15 @@ public class FetcherPlayerNameMojangSingle implements Callable<Entry<UUID, Strin
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final UUID playerId;
-	public UUID getPlayerId() { return this.playerId; }
+	private final Collection<UUID> ids;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public FetcherPlayerNameMojangSingle(UUID playerId)
+	public FetcherByIdSingle(Collection<UUID> ids)
 	{
-		this.playerId = playerId;
+		this.ids = ids;
 	}
 	
 	// -------------------------------------------- //
@@ -48,36 +49,52 @@ public class FetcherPlayerNameMojangSingle implements Callable<Entry<UUID, Strin
 	// -------------------------------------------- //
 
 	@Override
-	public Entry<UUID, String> call() throws Exception
+	public Map<UUID, IdAndName> call() throws Exception
 	{
-		String playerName = fetch(this.playerId);
-		if (playerName == null) return null;
-		return new SimpleEntry<UUID, String>(this.playerId, playerName);
+		return fetch(this.ids);
 	}
 	
 	// -------------------------------------------- //
 	// STATIC
 	// -------------------------------------------- //
 	
-	public static String fetch(UUID playerId) throws Exception
+	public static Map<UUID, IdAndName> fetch(Collection<UUID> ids) throws Exception
 	{
+		Map<UUID, IdAndName> ret = new HashMap<UUID, IdAndName>();
 		JSONParser jsonParser = new JSONParser();
-		HttpURLConnection connection = createConnection(playerId);
-		JSONObject response = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
-		String name = (String) response.get(KEY_NAME);
-		if (name == null) return null;
-		String cause = (String) response.get(KEY_CAUSE);
-		if (cause != null && cause.length() > 0)
+		
+		for (UUID id : ids)
 		{
-			String errorMessage = (String) response.get(KEY_ERROR_MESSAGE);
-			throw new IllegalStateException(errorMessage);
+			HttpURLConnection connection = createConnection(id);
+			InputStream inputStream = connection.getInputStream();
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+			
+			JSONObject response = (JSONObject) jsonParser.parse(inputStreamReader);
+			
+			inputStreamReader.close();
+			inputStream.close();
+			connection.disconnect();
+			
+			String name = (String) response.get(KEY_NAME);
+			// if (name == null) continue;
+			// No... we want to add null values as well.
+			
+			String cause = (String) response.get(KEY_CAUSE);
+			if (cause != null && cause.length() > 0)
+			{
+				String errorMessage = (String) response.get(KEY_ERROR_MESSAGE);
+				throw new IllegalStateException(errorMessage);
+			}
+			
+			ret.put(id, new IdAndName(id, name));
 		}
-		return name;
+		
+		return ret;
 	}
 	
-	private static HttpURLConnection createConnection(UUID playerId) throws Exception
+	private static HttpURLConnection createConnection(UUID id) throws Exception
 	{
-		URL url = new URL(URL_BASE + playerId.toString().replace("-", ""));
+		URL url = new URL(PROFILE_URL + id.toString().replace("-", ""));
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(15000);
 		connection.setReadTimeout(15000);

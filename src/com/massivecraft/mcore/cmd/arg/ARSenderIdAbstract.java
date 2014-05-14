@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.mcore.mixin.Mixin;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
@@ -50,13 +50,13 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 		else if (senderIds.contains(arg))
 		{
 			// Exact match
-			String senderId = Mixin.tryFix(arg);
+			String senderId = IdUtil.getName(arg);
 			ret.setResult(this.getResultForSenderId(senderId));
 		}
 		else
 		{
 			// Ambigious!
-			ret.getErrors().add("<b>Online "+this.getTypename()+" matching \"<h>"+arg+"<b>\" is ambigious.");
+			ret.getErrors().add("<b>"+this.getTypename()+" matching \"<h>"+arg+"<b>\" is ambigious.");
 			if (senderIds.size() >= MAX_COUNT)
 			{
 				// To many to list

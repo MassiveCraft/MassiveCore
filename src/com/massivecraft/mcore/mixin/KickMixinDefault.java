@@ -1,9 +1,8 @@
 package com.massivecraft.mcore.mixin;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class KickMixinDefault extends KickMixinAbstract
 {	
@@ -19,18 +18,9 @@ public class KickMixinDefault extends KickMixinAbstract
 	// -------------------------------------------- //
 
 	@Override
-	public boolean kick(CommandSender sender, String message)
+	public boolean kick(Object senderObject, String message)
 	{
-		Player player = SenderUtil.getAsPlayer(sender);
-		if (player == null) return false;
-		player.kickPlayer(message);
-		return true;
-	}
-	
-	@Override
-	public boolean kick(String senderId, String message)
-	{
-		Player player = SenderUtil.getPlayer(senderId);
+		Player player = IdUtil.getPlayer(senderObject);
 		if (player == null) return false;
 		player.kickPlayer(message);
 		return true;

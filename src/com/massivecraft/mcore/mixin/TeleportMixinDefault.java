@@ -9,7 +9,7 @@ import com.massivecraft.mcore.event.MCorePlayerPSTeleportEvent;
 import com.massivecraft.mcore.ps.PS;
 import com.massivecraft.mcore.teleport.PSGetter;
 import com.massivecraft.mcore.teleport.ScheduledTeleport;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class TeleportMixinDefault extends TeleportMixinAbstract
@@ -71,20 +71,21 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public void teleport(String teleporteeId, PSGetter toGetter, String desc, int delaySeconds) throws TeleporterException
+	public void teleport(Object teleporteeObject, PSGetter toGetter, String desc, int delaySeconds) throws TeleporterException
 	{
-		if (!SenderUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId)));
+		String teleporteeId = IdUtil.getId(teleporteeObject);
+		if (!IdUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId)));
 		
 		if (delaySeconds > 0)
 		{
 			// With delay
 			if (desc != null)
 			{
-				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+desc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
+				Mixin.msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			else
 			{
-				Mixin.msg(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
+				Mixin.msgOne(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			
 			new ScheduledTeleport(teleporteeId, toGetter, desc, delaySeconds).schedule();
@@ -106,10 +107,10 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			
 			if (desc != null)
 			{
-				Mixin.msg(teleporteeId, "<i>Teleporting to <h>"+desc+"<i>.");
+				Mixin.msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+"<i>.");
 			}
 			
-			Player teleportee = SenderUtil.getPlayer(teleporteeId);
+			Player teleportee = IdUtil.getPlayer(teleporteeId);
 			if (teleportee != null)
 			{
 				teleportPlayer(teleportee, to);

@@ -3,7 +3,9 @@ package com.massivecraft.mcore.event;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-public class MCoreSenderUnregisterEvent extends MCoreSenderEvent
+import com.massivecraft.mcore.util.IdData;
+
+public class MCoreSenderUnregisterEvent extends MCoreSenderRegistryEvent
 {	
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -17,9 +19,9 @@ public class MCoreSenderUnregisterEvent extends MCoreSenderEvent
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MCoreSenderUnregisterEvent(CommandSender sender)
+	public MCoreSenderUnregisterEvent(CommandSender sender, IdData data)
 	{
-		super(sender);
+		super(sender, data);
 	}
 	
 }

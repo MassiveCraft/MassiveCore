@@ -15,6 +15,7 @@ public class CmdMCore extends MCommand
 	public CmdMCoreUsys cmdMCoreUsys = new CmdMCoreUsys();
 	public CmdMCoreMStore cmdMCoreMStore = new CmdMCoreMStore();
 	public CmdMCoreId cmdMCoreId = new CmdMCoreId();
+	public CmdMCoreTest cmdMCoreTest = new CmdMCoreTest();
 	public CmdMCoreHearsound cmdMCoreHearsound = new CmdMCoreHearsound();
 	public VersionCommand cmdMCoreVersion = new VersionCommand(MCore.get(), MCorePerm.VERSION.node, "v", "version");
 	
@@ -28,6 +29,7 @@ public class CmdMCore extends MCommand
 		this.addSubCommand(this.cmdMCoreUsys);
 		this.addSubCommand(this.cmdMCoreMStore);
 		this.addSubCommand(this.cmdMCoreId);
+		this.addSubCommand(this.cmdMCoreTest);
 		this.addSubCommand(this.cmdMCoreHearsound);
 		this.addSubCommand(this.cmdMCoreVersion);
 		

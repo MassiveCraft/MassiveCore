@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class DisplayNameMixinDefault extends DisplayNameMixinAbstract
 {
@@ -30,27 +30,34 @@ public class DisplayNameMixinDefault extends DisplayNameMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public String getDisplayName(String senderId)
+	public String getDisplayName(Object senderObject)
 	{
+		String senderId = IdUtil.getId(senderObject);
 		if (senderId == null) return null;
 		
-		// Try Our Map
+		// Our Map
 		String ret = this.idToDisplayName.get(senderId);
 		
-		// Try Bukkit
+		// Bukkit
 		if (ret == null)
 		{
-			Player player = SenderUtil.getPlayer(senderId);
+			Player player = IdUtil.getPlayer(senderObject);
 			if (player != null)
 			{
 				ret = player.getDisplayName(); 
 			}
 		}
 		
-		// Try Fixed Id
+		// Fixed Name
 		if (ret == null)
 		{
-			ret = Mixin.tryFix(senderId);
+			ret = IdUtil.getName(senderObject);
+		}
+		
+		// Id Fallback
+		if (ret == null)
+		{
+			ret = senderId;
 		}
 		
 		// Ensure Colored
@@ -63,8 +70,11 @@ public class DisplayNameMixinDefault extends DisplayNameMixinAbstract
 	}
 
 	@Override
-	public void setDisplayName(String senderId, String displayName)
+	public void setDisplayName(Object senderObject, String displayName)
 	{
+		String senderId = IdUtil.getId(senderObject);
+		if (senderId == null) return;
+		
 		if (displayName == null)
 		{
 			this.idToDisplayName.remove(senderId);
@@ -74,9 +84,9 @@ public class DisplayNameMixinDefault extends DisplayNameMixinAbstract
 			this.idToDisplayName.put(senderId, displayName);
 		}
 		
-		Player player = SenderUtil.getPlayer(senderId);
+		Player player = IdUtil.getPlayer(senderObject);
 		if (player == null) return;
-		player.setDisplayName(this.getDisplayName(senderId));
+		player.setDisplayName(this.getDisplayName(senderObject));
 	}
 
 }

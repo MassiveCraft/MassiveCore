@@ -3,7 +3,7 @@ package com.massivecraft.mcore.mixin;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.mcore.ps.PS;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 
 public class SenderPsMixinDefault extends SenderPsMixinAbstract
 {
@@ -19,15 +19,15 @@ public class SenderPsMixinDefault extends SenderPsMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public PS getSenderPs(String senderId)
+	public PS getSenderPs(Object senderObject)
 	{
-		Player player = SenderUtil.getPlayer(senderId);
+		Player player = IdUtil.getPlayer(senderObject);
 		if (player == null) return null;
 		return PS.valueOf(player.getLocation());
 	}
 
 	@Override
-	public void setSenderPs(String senderId, PS ps)
+	public void setSenderPs(Object senderObject, PS ps)
 	{
 		// Bukkit does not support setting the physical state for offline players for now.
 	}

@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.mixin.Mixin;
-import com.massivecraft.mcore.util.SenderUtil;
+import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.Txt;
 
 public class ReqIsntCertainSender extends ReqAbstract
@@ -15,11 +15,8 @@ public class ReqIsntCertainSender extends ReqAbstract
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static ReqIsntCertainSender get(CommandSender sender) { return new ReqIsntCertainSender(sender); }
-	public ReqIsntCertainSender(CommandSender sender) { this.senderId = SenderUtil.getSenderId(sender); }
-	
-	public static ReqIsntCertainSender get(String senderId) { return new ReqIsntCertainSender(senderId); }
-	public ReqIsntCertainSender(String senderId) { this.senderId = senderId; }
+	public static ReqIsntCertainSender get(Object senderObject) { return new ReqIsntCertainSender(senderObject); }
+	public ReqIsntCertainSender(Object senderObject) { this.senderId = IdUtil.getId(senderObject); }
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -35,7 +32,7 @@ public class ReqIsntCertainSender extends ReqAbstract
 	@Override
 	public boolean apply(CommandSender sender, MCommand command)
 	{
-		return !this.getSenderId().equalsIgnoreCase(SenderUtil.getSenderId(sender));
+		return !this.getSenderId().equalsIgnoreCase(IdUtil.getId(sender));
 	}
 	
 	@Override

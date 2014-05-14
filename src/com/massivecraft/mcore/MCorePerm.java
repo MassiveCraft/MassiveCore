@@ -11,6 +11,7 @@ public enum MCorePerm
 	// -------------------------------------------- //
 	
 	BASECOMMAND("basecommand"),
+	TEST("test"),
 	ID("id"),
 	VERSION("version"),
 	HEARSOUND("hearsound"),

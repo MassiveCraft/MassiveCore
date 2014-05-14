@@ -1,5 +1,7 @@
 package com.massivecraft.mcore.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.Set;
@@ -70,12 +73,30 @@ public class MUtil
 	// IS VALID UUID
 	// -------------------------------------------- //
 	
-	// The regex for a valid UUID in string form
-	public final static Pattern uuidPattern = Pattern.compile("^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$");
-	
 	public static boolean isValidUUID(String string)
 	{
-		return uuidPattern.matcher(string).matches();
+		if (string == null) return false;
+		try
+		{
+			UUID.fromString(string);
+			return true;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+	
+	// -------------------------------------------- //
+	// STACK TRACE STRING
+	// -------------------------------------------- //
+	
+	public static String getStackTraceString()
+	{
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		new Throwable().printStackTrace(pw);
+		return sw.toString();
 	}
 	
 	// -------------------------------------------- //
@@ -488,7 +509,7 @@ public class MUtil
 	public static boolean equals(Object herp, Object derp)
 	{
 		if (herp == null) return derp == null;
-		if (derp == null) return herp == null;
+		if (derp == null) return false;
 		return herp.equals(derp);
 	}
 	
@@ -634,7 +655,7 @@ public class MUtil
 		registerExtractor(World.class, "world", ExtractorWorld.get());
 		registerExtractor(String.class, "worldName", ExtractorWorldName.get());
 		
-		registerExtractor(String.class, "accountId", ExtractorPlayerName.get());
+		registerExtractor(String.class, "accountId", ExtractorSenderId.get());
 	}
 	
 }

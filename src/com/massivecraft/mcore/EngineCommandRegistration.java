@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.cmd.MCommand;
@@ -103,14 +103,10 @@ public class EngineCommandRegistration extends EngineAbstract
 	// GETTERS
 	// -------------------------------------------- //
 	
-	public static CraftServer getCraftServer()
-	{
-		return (CraftServer)Bukkit.getServer();
-	}
-	
 	public static SimpleCommandMap getSimpleCommandMap()
 	{
-		return getCraftServer().getCommandMap();
+		Server server = Bukkit.getServer();
+		return (SimpleCommandMap) get(server.getClass(), "commandMap", server);
 	}
 	
 	@SuppressWarnings("unchecked")

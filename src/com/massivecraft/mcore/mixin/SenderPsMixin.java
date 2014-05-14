@@ -4,6 +4,6 @@ import com.massivecraft.mcore.ps.PS;
 
 public interface SenderPsMixin
 {
-	public PS getSenderPs(String senderId);
-	public void setSenderPs(String senderId, PS ps);
+	public PS getSenderPs(Object senderObject);
+	public void setSenderPs(Object senderObject, PS ps);
 }
