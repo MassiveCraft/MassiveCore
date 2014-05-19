@@ -3,6 +3,7 @@ package com.massivecraft.mcore.util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.bukkit.Bukkit;
@@ -11,7 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.massivecraft.mcore.MCore;
@@ -31,7 +34,9 @@ public class PlayerUtil implements Listener
 	
 	private static Set<String> joinedPlayerNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	
-	private static Map<String, PlayerDeathEvent> lowercaseToDeath = new HashMap<String, PlayerDeathEvent>();
+	private static Map<UUID, PlayerDeathEvent> idToDeath = new HashMap<UUID, PlayerDeathEvent>();
+	
+	private static Map<UUID, Long> idToLastMoveMillis = new HashMap<UUID, Long>(); 
 	
 	// -------------------------------------------- //
 	// SETUP
@@ -39,7 +44,7 @@ public class PlayerUtil implements Listener
 	
 	public void setup()
 	{
-		lowercaseToDeath.clear();
+		idToDeath.clear();
 		
 		joinedPlayerNames.clear();
 		for (Player player : Bukkit.getOnlinePlayers())
@@ -47,7 +52,65 @@ public class PlayerUtil implements Listener
 			joinedPlayerNames.add(player.getName());
 		}
 		
+		idToLastMoveMillis.clear();
+		
 		Bukkit.getPluginManager().registerEvents(this, MCore.get());
+	}
+	
+	// -------------------------------------------- //
+	// LAST MOVE & STAND STILL (MILLIS)
+	// -------------------------------------------- //
+	
+	public static void setLastMoveMillis(Player player, long millis)
+	{
+		if (player == null) return;
+		idToLastMoveMillis.put(player.getUniqueId(), millis);
+	}
+	
+	public static void setLastMoveMillis(Player player)
+	{
+		setLastMoveMillis(player, System.currentTimeMillis());
+	}
+	
+	public static long getLastMoveMillis(Player player)
+	{
+		if (player == null) return 0;
+		Long ret = idToLastMoveMillis.get(player.getUniqueId());
+		if (ret == null) return 0;
+		return ret;
+	}
+	
+	public static long getStandStillMillis(Player player)
+	{
+		if (player == null) return 0;
+		if (player.isDead()) return 0;
+		if (!player.isOnline()) return 0;
+		
+		Long ret = idToLastMoveMillis.get(player.getUniqueId());
+		if (ret == null) return 0;
+		
+		ret = System.currentTimeMillis() - ret;
+		
+		return ret;
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastMoveMillis(PlayerMoveEvent event)
+	{
+		if (MUtil.isSameBlock(event)) return;
+		setLastMoveMillis(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastMoveMillis(PlayerJoinEvent event)
+	{
+		setLastMoveMillis(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastMoveMillis(PlayerChangedWorldEvent event)
+	{
+		setLastMoveMillis(event.getPlayer());
 	}
 	
 	// -------------------------------------------- //
@@ -59,15 +122,15 @@ public class PlayerUtil implements Listener
 	public static boolean isDuplicateDeathEvent(PlayerDeathEvent event)
 	{
 		// Prepare the lowercase name ...
-		final String lowercase = event.getEntity().getName().toLowerCase();
+		final UUID id = event.getEntity().getUniqueId();
 		
 		// ... take a look at the currently stored event ...
-		PlayerDeathEvent current = lowercaseToDeath.get(lowercase);
+		PlayerDeathEvent current = idToDeath.get(id);
 		
 		if (current != null) return !current.equals(event);
 		
 		// ... otherwise store ... 
-		lowercaseToDeath.put(lowercase, event);
+		idToDeath.put(id, event);
 		
 		// ... schedule removal ...
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
@@ -75,7 +138,7 @@ public class PlayerUtil implements Listener
 			@Override
 			public void run()
 			{
-				lowercaseToDeath.remove(lowercase);
+				idToDeath.remove(id);
 			}
 		});
 		
