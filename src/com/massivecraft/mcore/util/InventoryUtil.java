@@ -45,6 +45,18 @@ public class InventoryUtil
 		});
 	}
 	
+	public static void updateLater(final HumanEntity human)
+	{
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				update(human);
+			}
+		}, 1);
+	}
+	
 	// -------------------------------------------- //
 	// EVENT INTERPRETATION
 	// -------------------------------------------- //
