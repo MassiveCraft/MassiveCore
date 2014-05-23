@@ -24,6 +24,7 @@ import java.util.TreeSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -140,6 +141,46 @@ public class MUtil
 		T output = map.get(input);
 		if (output == null) return input;
 		return recurseResolveMap(output, map);
+	}
+	
+	// -------------------------------------------- //
+	// GET BLOCKS
+	// -------------------------------------------- //
+	
+	public static List<Block> getBlocks(Location location, int halfWidth)
+	{
+		return getBlocks(location.getBlock(), halfWidth);
+	}
+	
+	public static List<Block> getBlocks(Block block, int halfWidth)
+	{
+		int xmin = block.getX() - halfWidth;
+		int ymin = block.getY() - halfWidth;
+		int zmin = block.getZ() - halfWidth;
+		
+		int xmax = block.getX() + halfWidth;
+		int ymax = block.getY() + halfWidth;
+		int zmax = block.getZ() + halfWidth;
+		
+		return getBlocks(block.getWorld(), xmin, ymin, zmin, xmax, ymax, zmax);
+	}
+	
+	public static List<Block> getBlocks(World world, int xmin, int ymin, int zmin, int xmax, int ymax, int zmax)
+	{
+		List<Block> blocks = new ArrayList<Block>();
+		
+		for (int x = xmin; x <= xmax; x++)
+		{
+			for (int y = ymin; y <= ymax; y++)
+			{
+				for (int z = zmin; z <= zmax; z++)
+				{
+					blocks.add(world.getBlockAt(x, y, z));
+				}	
+			}
+		}
+		
+		return blocks;
 	}
 	
 	// -------------------------------------------- //

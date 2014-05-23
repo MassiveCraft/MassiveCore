@@ -958,7 +958,8 @@ public class IdUtil implements Listener, Runnable
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			String message = Txt.parse("<b>NBT file couldn't be loaded: <h>%s<b>. Error: %s.", file.toString(), e.getMessage());
+			MCore.get().log(message);
 			return null;
 		}
 	}
