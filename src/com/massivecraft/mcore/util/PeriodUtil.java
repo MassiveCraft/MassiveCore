@@ -3,6 +3,8 @@ package com.massivecraft.mcore.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+
 public class PeriodUtil
 {
 	// -------------------------------------------- //
@@ -31,6 +33,31 @@ public class PeriodUtil
 	}
 	
 	// -------------------------------------------- //
+	// TICKS STORE
+	// -------------------------------------------- //
+	
+	private static Map<Object, Long> objectToTicks = new HashMap<Object, Long>();
+	
+	public static long getTicks(Object object)
+	{
+		Long ret = objectToTicks.get(object);
+		if (ret == null) ret = 0L;
+		return ret;
+	}
+	
+	public static void setTicks(Object object, Long ticks)
+	{
+		if (ticks == null || ticks == 0)
+		{
+			objectToTicks.remove(object);
+		}
+		else
+		{
+			objectToTicks.put(object, ticks);
+		}
+	}
+	
+	// -------------------------------------------- //
 	// RANDOM SIMPLE
 	// -------------------------------------------- //
 	
@@ -51,11 +78,18 @@ public class PeriodUtil
 	
 	public static boolean isNewPeriod(Object object, long length, long now)
 	{
+		// If the ticks are the same we are fine!
+		long currentTicks = Bukkit.getWorlds().get(0).getTime();
+		long lastTicks = getTicks(object);
+		if (currentTicks == lastTicks) return true;
+		
+		// Otherwise period must be new!
 		long currentPeriod = getPeriod(length, now);
 		long lastPeriod = getLastPeriod(object, length);
-		
 		if (currentPeriod == lastPeriod) return false;
 		
+		// And then we log data
+		setTicks(object, currentTicks);
 		setMillis(object, now);
 		
 		return true;

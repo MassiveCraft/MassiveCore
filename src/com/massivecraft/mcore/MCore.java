@@ -161,8 +161,8 @@ public class MCore extends MPlugin
 		EngineScheduledTeleport.get().activate();
 		EngineTeleportMixinCause.get().activate();
 		EngineWorldNameSet.get().activate();
-		EngineCommandRegistration.get().activate(); // TODO: Make all engines
-		PlayerUtil.get().setup();
+		EngineCommandRegistration.get().activate();
+		PlayerUtil.get().activate();
 		
 		// Tasks
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);

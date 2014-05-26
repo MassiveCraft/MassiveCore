@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -23,7 +22,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -42,7 +40,6 @@ import com.massivecraft.mcore.event.MCoreSenderUnregisterEvent;
 import com.massivecraft.mcore.mixin.Mixin;
 import com.massivecraft.mcore.store.Coll;
 import com.massivecraft.mcore.store.SenderColl;
-import com.massivecraft.mcore.util.FlyUtil;
 import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
 import com.massivecraft.mcore.util.Txt;
@@ -71,45 +68,6 @@ public class EngineMainMCore extends EngineAbstract
 	{
 		super.activate();
 		MCorePlayerLeaveEvent.player2event.clear();
-	}
-	
-	// -------------------------------------------- //
-	// FLY UTIL & EVENT
-	// -------------------------------------------- //
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void updateFly(PlayerMoveEvent event)
-	{
-		// If a player ...
-		Player player = event.getPlayer();
-		
-		// ... moved from one block to another ...
-		if (event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
-		
-		// ... and the player is alive ...
-		if (player.isDead()) return;
-		
-		// ... trigger a fly update.
-		FlyUtil.update(player);
-	}
-	
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void negateNoCheatPlusBug(EntityDamageEvent event)
-	{
-		// If a player ...
-		if ( ! (event.getEntity() instanceof Player)) return;
-		Player player = (Player)event.getEntity();
-		
-		// ... is taking fall damage ...
-		if (event.getCause() != DamageCause.FALL) return;
-		
-		// ... within 2 seconds of flying ...
-		Long lastActive = FlyUtil.getLastActive(player);
-		if (lastActive == null) return;
-		if (System.currentTimeMillis() - lastActive > 2000) return;
-		
-		// ... cancel the event.
-		event.setCancelled(true);
 	}
 	
 	// -------------------------------------------- //

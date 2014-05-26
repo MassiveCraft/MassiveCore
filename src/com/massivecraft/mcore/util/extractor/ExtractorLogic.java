@@ -87,6 +87,17 @@ public class ExtractorLogic
 	}
 	
 	// -------------------------------------------- //
+	// PLAYER
+	// -------------------------------------------- //
+	
+	public static Player playerFromObject(Object o)
+	{
+		CommandSender sender = senderFromObject(o);
+		if (sender instanceof Player) return (Player)sender;
+		return null;
+	}
+	
+	// -------------------------------------------- //
 	// SENDER ID
 	// -------------------------------------------- //
 	
@@ -104,14 +115,20 @@ public class ExtractorLogic
 	}
 	
 	// -------------------------------------------- //
-	// PLAYER
+	// SENDER NAME
 	// -------------------------------------------- //
 	
-	public static Player playerFromObject(Object o)
+	public static String senderNameFromObject(Object o)
 	{
+		if (o == null) return null;
+		
+		String name = IdUtil.getName(o);
+		if (name != null) return name;
+		
 		CommandSender sender = senderFromObject(o);
-		if (sender instanceof Player) return (Player)sender;
-		return null;
+		if (sender == null) return null;
+		
+		return IdUtil.getName(sender);
 	}
 	
 	// -------------------------------------------- //
@@ -120,7 +137,7 @@ public class ExtractorLogic
 	
 	public static String playerNameFromObject(Object o)
 	{
-		String senderId = senderIdFromObject(o);
+		String senderId = senderNameFromObject(o);
 		//if (SenderUtil.isPlayerId(senderId)) return senderId;
 		//return null;
 		return senderId;

@@ -24,6 +24,7 @@ public class Money
 		if (account == null) return null;
 		
 		// ... but if something is supplied we must manage to extract an id.
+		// NOTE: This ID is the name for now, later all money plugins will probably support UUIDs.
 		String ret = MUtil.extract(String.class, "accountId", account);
 		if (ret == null) throw new IllegalArgumentException("extraction of accountId from object failed");
 		return ret;

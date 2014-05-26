@@ -53,6 +53,7 @@ import com.massivecraft.mcore.util.extractor.ExtractorPlayer;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayerName;
 import com.massivecraft.mcore.util.extractor.ExtractorSender;
 import com.massivecraft.mcore.util.extractor.ExtractorSenderId;
+import com.massivecraft.mcore.util.extractor.ExtractorSenderName;
 import com.massivecraft.mcore.util.extractor.ExtractorWorld;
 import com.massivecraft.mcore.util.extractor.ExtractorWorldName;
 
@@ -696,7 +697,9 @@ public class MUtil
 		registerExtractor(World.class, "world", ExtractorWorld.get());
 		registerExtractor(String.class, "worldName", ExtractorWorldName.get());
 		
-		registerExtractor(String.class, "accountId", ExtractorSenderId.get());
+		// The accountId extractor is used for the money mixin.
+		// For now we act on the name instead of the ID since vault needs names.
+		registerExtractor(String.class, "accountId", ExtractorSenderName.get());
 	}
 	
 }

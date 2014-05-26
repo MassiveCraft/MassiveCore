@@ -7,19 +7,26 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.mcore.EngineAbstract;
 import com.massivecraft.mcore.MCore;
+import com.massivecraft.mcore.event.EventMCorePlayerUpdate;
+import com.massivecraft.mcore.event.MCoreAfterPlayerRespawnEvent;
+import com.massivecraft.mcore.event.MCoreAfterPlayerTeleportEvent;
 
-public class PlayerUtil implements Listener
+public class PlayerUtil extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -29,37 +36,71 @@ public class PlayerUtil implements Listener
 	public static PlayerUtil get() { return i; }
 	
 	// -------------------------------------------- //
-	// FIELDS
+	// OVERRIDE
 	// -------------------------------------------- //
 	
-	private static Set<String> joinedPlayerNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	
-	private static Map<UUID, PlayerDeathEvent> idToDeath = new HashMap<UUID, PlayerDeathEvent>();
-	
-	private static Map<UUID, Long> idToLastMoveMillis = new HashMap<UUID, Long>(); 
-	
-	// -------------------------------------------- //
-	// SETUP
-	// -------------------------------------------- //
-	
-	public void setup()
+	@Override
+	public void activate()
 	{
+		super.activate();
+		
 		idToDeath.clear();
 		
-		joinedPlayerNames.clear();
+		joinedPlayerIds.clear();
 		for (Player player : Bukkit.getOnlinePlayers())
 		{
-			joinedPlayerNames.add(player.getName());
+			joinedPlayerIds.add(player.getUniqueId());
 		}
 		
 		idToLastMoveMillis.clear();
+	}
+	
+	@Override
+	public Plugin getPlugin()
+	{
+		return MCore.get();
+	}
+	
+	// -------------------------------------------- //
+	// IS JOINED
+	// -------------------------------------------- //
+	
+	private static Set<UUID> joinedPlayerIds = new ConcurrentSkipListSet<UUID>();
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void isJoined(PlayerJoinEvent event)
+	{
+		final UUID id = event.getPlayer().getUniqueId();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				joinedPlayerIds.add(id);
+			}
+		});
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void isJoined(PlayerQuitEvent event)
+	{
+		final UUID id = event.getPlayer().getUniqueId();
+		joinedPlayerIds.remove(id);
+	}
+	
+	public static boolean isJoined(Player player)
+	{
+		if (player == null) throw new NullPointerException("player was null");
+		final UUID id = player.getUniqueId();
+		return joinedPlayerIds.contains(id);
 		
-		Bukkit.getPluginManager().registerEvents(this, MCore.get());
 	}
 	
 	// -------------------------------------------- //
 	// LAST MOVE & STAND STILL (MILLIS)
 	// -------------------------------------------- //
+	
+	private static Map<UUID, Long> idToLastMoveMillis = new HashMap<UUID, Long>(); 
 	
 	public static void setLastMoveMillis(Player player, long millis)
 	{
@@ -70,6 +111,25 @@ public class PlayerUtil implements Listener
 	public static void setLastMoveMillis(Player player)
 	{
 		setLastMoveMillis(player, System.currentTimeMillis());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastMoveMillis(PlayerMoveEvent event)
+	{
+		if (MUtil.isSameBlock(event)) return;
+		setLastMoveMillis(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastMoveMillis(PlayerJoinEvent event)
+	{
+		setLastMoveMillis(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastMoveMillis(PlayerChangedWorldEvent event)
+	{
+		setLastMoveMillis(event.getPlayer());
 	}
 	
 	public static long getLastMoveMillis(Player player)
@@ -94,30 +154,13 @@ public class PlayerUtil implements Listener
 		return ret;
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void setLastMoveMillis(PlayerMoveEvent event)
-	{
-		if (MUtil.isSameBlock(event)) return;
-		setLastMoveMillis(event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void setLastMoveMillis(PlayerJoinEvent event)
-	{
-		setLastMoveMillis(event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void setLastMoveMillis(PlayerChangedWorldEvent event)
-	{
-		setLastMoveMillis(event.getPlayer());
-	}
-	
 	// -------------------------------------------- //
 	// IS DUPLICATE DEATH EVENT
 	// -------------------------------------------- //
 	// Some times when players die the PlayerDeathEvent is fired twice.
 	// We want to ignore the extra calls.
+	
+	private static Map<UUID, PlayerDeathEvent> idToDeath = new HashMap<UUID, PlayerDeathEvent>();
 	
 	public static boolean isDuplicateDeathEvent(PlayerDeathEvent event)
 	{
@@ -153,37 +196,6 @@ public class PlayerUtil implements Listener
 	}
 	
 	// -------------------------------------------- //
-	// IS JOINED
-	// -------------------------------------------- //
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void joinMonitor(PlayerJoinEvent event)
-	{
-		final String playerName = event.getPlayer().getName();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				joinedPlayerNames.add(playerName);
-			}
-		});
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void quitMonitor(PlayerQuitEvent event)
-	{
-		final String playerName = event.getPlayer().getName();
-		joinedPlayerNames.remove(playerName);
-	}
-	
-	public static boolean isJoined(Player player)
-	{
-		if (player == null) throw new NullPointerException("player was null");
-		return joinedPlayerNames.contains(player.getName());
-	}
-	
-	// -------------------------------------------- //
 	// PACKET
 	// -------------------------------------------- //
 	
@@ -201,5 +213,246 @@ public class PlayerUtil implements Listener
 		eplayer.playerConnection.sendPacket(new PacketPlayOutUpdateHealth(cplayer.getScaledHealth(), eplayer.getFoodData().a(), eplayer.getFoodData().e()));
 		*/
 	}
+	
+	// -------------------------------------------- //
+	// SETTINGS BY EVENT
+	// -------------------------------------------- //
+	
+	public static void update(Player player)
+	{
+		EventMCorePlayerUpdate event = new EventMCorePlayerUpdate(player);
+		event.run();
+		
+		setMaxHealth(player, event.getMaxHealth());
+		setFlyAllowed(player, event.isFlyAllowed());
+		setFlyActive(player, event.isFlyActive());
+		setFlySpeed(player, event.getFlySpeed());
+	}
+	
+	public static void reset(Player player)
+	{
+		setMaxHealth(player, getMaxHealthDefault(player));
+		setFlyAllowed(player, isFlyAllowedDefault(player));
+		setFlyActive(player, isFlyActiveDefault(player));
+		setFlySpeed(player, getFlySpeedDefault(player));
+		
+		update(player);
+	}
+	
+	// Can't be cancelled
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void reset(PlayerJoinEvent event)
+	{
+		// If we have a player ...
+		Player player = event.getPlayer();
+		
+		// ... and the player is alive ...
+		if (player.isDead()) return;
+		
+		// ... trigger.
+		reset(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void update(MCoreAfterPlayerTeleportEvent event)
+	{
+		// If we have a player ...
+		Player player = event.getPlayer();
+		
+		// ... and the player is alive ...
+		if (player.isDead()) return;
+		
+		// ... trigger.
+		update(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void update(MCoreAfterPlayerRespawnEvent event)
+	{
+		// If we have a player ...
+		Player player = event.getPlayer();
+		
+		// ... and the player is alive ...
+		if (player.isDead()) return;
+		
+		// ... trigger.
+		update(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void update(PlayerChangedWorldEvent event)
+	{
+		// If we have a player ...
+		Player player = event.getPlayer();
+		
+		// ... and the player is alive ...
+		if (player.isDead()) return;
+		
+		// ... trigger.
+		update(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void update(PlayerMoveEvent event)
+	{
+		// If we have a player ...
+		Player player = event.getPlayer();
+		
+		// ... and the player is alive ...
+		if (player.isDead()) return;
+		
+		// ... and the player moved from one block to another ...
+		if (event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
+		
+		// ... trigger.
+		update(player);
+	}
+
+	// -------------------------------------------- //
+	// MAX HEALTH
+	// -------------------------------------------- //
+
+	public static boolean setMaxHealth(Player player, double maxHealth)
+	{	
+		// NoChange
+		if (getMaxHealth(player) == maxHealth) return false;
+		
+		// Apply
+		player.setMaxHealth(maxHealth);
+		
+		// Return
+		return true;
+	}
+	
+	public static double getMaxHealth(Player player)
+	{
+		return player.getMaxHealth();
+	}
+	
+	public static double getMaxHealthDefault(Player player)
+	{
+		return 20D;
+	}
+	
+	// -------------------------------------------- //
+	// FLY: ALLOWED
+	// -------------------------------------------- //
+	
+	public static boolean setFlyAllowed(Player player, boolean allowed)
+	{	
+		// NoChange
+		if (isFlyAllowed(player) == allowed) return false;
+		
+		// Apply
+		player.setFallDistance(0);
+		player.setAllowFlight(allowed);
+		player.setFallDistance(0);
+		
+		// Return
+		return true;
+	}
+	
+	public static boolean isFlyAllowed(Player player)
+	{
+		return player.getAllowFlight();
+	}
+	
+	public static boolean isFlyAllowedDefault(Player player)
+	{
+		return player.getGameMode() == GameMode.CREATIVE;
+	}
+	
+	// -------------------------------------------- //
+	// FLY: ACTIVE
+	// -------------------------------------------- //
+	
+	public static Map<UUID, Long> idToLastFlyActive = new HashMap<UUID, Long>();
+	public static Long getLastFlyActive(Player player)
+	{
+		return idToLastFlyActive.get(player.getUniqueId());
+	}
+	public static void setLastFlyActive(Player player, Long millis)
+	{
+		idToLastFlyActive.put(player.getUniqueId(), millis);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void negateNoCheatPlusBug(EntityDamageEvent event)
+	{
+		// If a player ...
+		if ( ! (event.getEntity() instanceof Player)) return;
+		Player player = (Player)event.getEntity();
+		
+		// ... is taking fall damage ...
+		if (event.getCause() != DamageCause.FALL) return;
+		
+		// ... within 2 seconds of flying ...
+		Long lastActive = getLastFlyActive(player);
+		if (lastActive == null) return;
+		if (System.currentTimeMillis() - lastActive > 2000) return;
+		
+		// ... cancel the event.
+		event.setCancelled(true);
+	}
+	
+	public static boolean setFlyActive(Player player, boolean active)
+	{
+		// Last Active Update
+		if (active)
+		{
+			setLastFlyActive(player, System.currentTimeMillis());
+		}
+		
+		// NoChange
+		if (isFlyActive(player) == active) return false;
+		
+		// Apply
+		player.setFallDistance(0);
+		player.setFlying(active);
+		player.setFallDistance(0);
+		
+		// Return
+		return true;
+	}
+	
+	public static boolean isFlyActive(Player player)
+	{
+		return player.isFlying();
+	}
+	
+	public static boolean isFlyActiveDefault(Player player)
+	{
+		return player.getGameMode() == GameMode.CREATIVE;
+	}
+	
+	// -------------------------------------------- //
+	// FLY: SPEED
+	// -------------------------------------------- //
+	
+	public final static float DEFAULT_FLY_SPEED = 0.1f;
+	
+	public static boolean setFlySpeed(Player player, float speed)
+	{
+		// NoChange
+		if (getFlySpeed(player) == speed) return false;
+		
+		// Apply
+		player.setFallDistance(0);
+		player.setFlySpeed(speed);
+		player.setFallDistance(0);
+		
+		// Return
+		return true;
+	}
+	
+	public static float getFlySpeed(Player player)
+	{
+		return player.getFlySpeed();
+	}
+	
+	public static float getFlySpeedDefault(Player player)
+	{
+		return DEFAULT_FLY_SPEED;
+	} 
 	
 }
