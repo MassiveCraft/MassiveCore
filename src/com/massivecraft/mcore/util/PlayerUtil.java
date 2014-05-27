@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.mcore.EngineAbstract;
@@ -172,6 +173,63 @@ public class PlayerUtil extends EngineAbstract
 		ret = System.currentTimeMillis() - ret;
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// LAST DAMAGE & NO DAMAGE (MILLIS)
+	// -------------------------------------------- //
+	
+	private static Map<UUID, Long> idToLastDamageMillis = new HashMap<UUID, Long>(); 
+	
+	public static void setLastDamageMillis(Player player, long millis)
+	{
+		if (player == null) return;
+		idToLastDamageMillis.put(player.getUniqueId(), millis);
+	}
+	
+	public static void setLastDamageMillis(Player player)
+	{
+		setLastDamageMillis(player, System.currentTimeMillis());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastDamageMillis(EntityDamageEvent event)
+	{
+		if (event.getDamage() <= 0) return;
+			
+		if ( ! (event.getEntity() instanceof Player)) return;
+		Player player = (Player)event.getEntity();
+		
+		setLastDamageMillis(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastDamageMillis(PlayerDeathEvent event)
+	{
+		setLastDamageMillis(event.getEntity());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void setLastDamageMillis(PlayerRespawnEvent event)
+	{
+		setLastDamageMillis(event.getPlayer());
+	}
+	
+	public static long getLastDamageMillis(Player player)
+	{
+		if (player == null) return 0;
+		Long ret = idToLastDamageMillis.get(player.getUniqueId());
+		if (ret == null) return 0;
+		return ret;
+	}
+	
+	public static long getNoDamageMillis(Player player)
+	{
+		if (player == null) return 0;
+		if (player.isDead()) return 0;
+		if (!player.isOnline()) return 0;
+		
+		return System.currentTimeMillis() - getLastDamageMillis(player);
 	}
 	
 	// -------------------------------------------- //
