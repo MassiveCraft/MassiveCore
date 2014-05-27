@@ -8,12 +8,16 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -44,7 +48,9 @@ public class PlayerUtil extends EngineAbstract
 	{
 		super.activate();
 		
-		idToDeath.clear();
+		idToDeathEvent.clear();
+		idToDamageEvent.clear();
+		idToArmSwingEvent.clear();
 		
 		joinedPlayerIds.clear();
 		for (Player player : Bukkit.getOnlinePlayers())
@@ -59,6 +65,20 @@ public class PlayerUtil extends EngineAbstract
 	public Plugin getPlugin()
 	{
 		return MCore.get();
+	}
+	
+	@Override
+	public Long getPeriod()
+	{
+		return 1L;
+	}
+	
+	@Override
+	public void run()
+	{
+		idToDeathEvent.clear();
+		idToDamageEvent.clear();
+		idToArmSwingEvent.clear();
 	}
 	
 	// -------------------------------------------- //
@@ -160,32 +180,23 @@ public class PlayerUtil extends EngineAbstract
 	// Some times when players die the PlayerDeathEvent is fired twice.
 	// We want to ignore the extra calls.
 	
-	private static Map<UUID, PlayerDeathEvent> idToDeath = new HashMap<UUID, PlayerDeathEvent>();
+	private static Map<UUID, PlayerDeathEvent> idToDeathEvent = new HashMap<UUID, PlayerDeathEvent>();
 	
 	public static boolean isDuplicateDeathEvent(PlayerDeathEvent event)
 	{
-		// Prepare the lowercase name ...
+		// Get the id ...
 		final UUID id = event.getEntity().getUniqueId();
 		
-		// ... take a look at the currently stored event ...
-		PlayerDeathEvent current = idToDeath.get(id);
+		// ... get current ...
+		PlayerDeathEvent current = idToDeathEvent.get(id);
 		
-		if (current != null) return !current.equals(event);
+		// ... object equality ...
+		if (current != null) return current != event;
 		
-		// ... otherwise store ... 
-		idToDeath.put(id, event);
+		// ... store ... 
+		idToDeathEvent.put(id, event);
 		
-		// ... schedule removal ...
-		Bukkit.getScheduler().scheduleSyncDelayedTask(MCore.get(), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				idToDeath.remove(id);
-			}
-		});
-		
-		// ... and return the fact that it was not a duplicate.
+		// ... and return.
 		return false;
 	}
 	
@@ -193,6 +204,75 @@ public class PlayerUtil extends EngineAbstract
 	public void isDuplicateDeathEventLowest(PlayerDeathEvent event)
 	{
 		isDuplicateDeathEvent(event);
+	}
+	
+	// -------------------------------------------- //
+	// DUPLICATE DAMAGE EVENT
+	// -------------------------------------------- //
+	// An entity damage by entity event is considered to be a duplicate if the damager already damaged the damagee this tick.
+	
+	private static Map<String, EntityDamageByEntityEvent> idToDamageEvent = new HashMap<String, EntityDamageByEntityEvent>();
+	
+	public static boolean isDuplicateDamageEvent(EntityDamageByEntityEvent event)
+	{
+		// Get the id ...
+		Entity damager = MUtil.getLiableDamager(event);
+		Entity damagee = event.getEntity();
+		if (damager == null) return false;
+		if (damagee == null) return false;
+		final String id = damager.getUniqueId().toString() + damagee.getUniqueId().toString();
+		
+		// ... get current ...
+		EntityDamageByEntityEvent current = idToDamageEvent.get(id);
+		
+		// ... object equality ...
+		if (current != null) return current != event;
+		
+		// ... store ... 
+		idToDamageEvent.put(id, event);
+		
+		// ... and return.
+		return false;
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void isDuplicateDamageEventLowest(EntityDamageByEntityEvent event)
+	{
+		isDuplicateDamageEvent(event);
+	}
+	
+	// -------------------------------------------- //
+	// DUPLICATE ARM SWING
+	// -------------------------------------------- //
+	// An entity damage by entity event is considered to be a duplicate if the damager already damaged the damagee this tick.
+	
+	private static Map<UUID, PlayerAnimationEvent> idToArmSwingEvent = new HashMap<UUID, PlayerAnimationEvent>();
+	
+	public static boolean isDuplicateArmSwingEvent(PlayerAnimationEvent event)
+	{
+		// Must be arm swing ...
+		if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return false;
+		
+		// Get the id ...
+		final UUID id = event.getPlayer().getUniqueId();
+		
+		// ... get current ...
+		PlayerAnimationEvent current = idToArmSwingEvent.get(id);
+		
+		// ... object equality ...
+		if (current != null) return current != event;
+		
+		// ... store ... 
+		idToArmSwingEvent.put(id, event);
+		
+		// ... and return.
+		return false;
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void isDuplicateArmSwingEventLowest(PlayerAnimationEvent event)
+	{
+		isDuplicateArmSwingEvent(event);
 	}
 	
 	// -------------------------------------------- //
