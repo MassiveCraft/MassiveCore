@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,7 +28,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
@@ -249,7 +252,9 @@ public class MUtil
 	// MATERIAL FACTS
 	// -------------------------------------------- //
 	
-	public final static Set<Material> foodMaterials = new HashSet<Material>(MUtil.list(
+	// FOOD
+	
+	public final static Set<Material> FOOD_MATERIALS = new HashSet<Material>(MUtil.list(
 		Material.APPLE,
 		Material.BREAD,
 		Material.COOKED_BEEF,
@@ -268,6 +273,132 @@ public class MUtil
 		Material.SPIDER_EYE
 	));
 	
+	// Archery
+	
+	public static boolean isArchery(Entity entity)
+	{
+		if (entity == null) return false;
+		return entity instanceof Arrow;
+	}
+	
+	public static boolean isArchery(EntityDamageByEntityEvent event)
+	{
+		return isArchery(event.getDamager());
+	}
+	
+	public static boolean isArchery(EntityDamageEvent event)
+	{
+		if ( ! (event instanceof EntityDamageByEntityEvent)) return false;
+		return isArchery((EntityDamageByEntityEvent)event);
+	}
+	
+	// Sword
+	
+	public static Set<Material> SWORD_MATERIALS = EnumSet.of(
+		Material.WOOD_SWORD,
+		Material.STONE_SWORD,
+		Material.IRON_SWORD,
+		Material.GOLD_SWORD,
+		Material.DIAMOND_SWORD
+	);
+	
+	public static boolean isSword(Material material)
+	{
+		return SWORD_MATERIALS.contains(material);
+	}
+	
+	public static boolean isSword(ItemStack item)
+	{
+		if (item == null) return false;
+		return isSword(item.getType());
+	}
+	
+	public static boolean isSword(Entity entity)
+	{
+		if (entity == null) return false;
+		if (!(entity instanceof LivingEntity)) return false;
+		LivingEntity lentity = (LivingEntity)entity;
+		return isSword(lentity.getEquipment().getItemInHand());
+	}
+	
+	public static boolean isSword(EntityDamageByEntityEvent event)
+	{
+		return isSword(event.getDamager());
+	}
+	
+	public static boolean isSword(EntityDamageEvent event)
+	{
+		if ( ! (event instanceof EntityDamageByEntityEvent)) return false;
+		return isSword((EntityDamageByEntityEvent)event);
+	}
+	
+	// Axe
+	
+	public static Set<Material> AXE_MATERIALS = EnumSet.of(
+		Material.WOOD_AXE,
+		Material.STONE_AXE,
+		Material.IRON_AXE,
+		Material.GOLD_AXE,
+		Material.DIAMOND_AXE
+	);
+	
+	public static boolean isAxe(Material material)
+	{
+		return AXE_MATERIALS.contains(material);
+	}
+	
+	public static boolean isAxe(ItemStack item)
+	{
+		if (item == null) return false;
+		return isAxe(item.getType());
+	}
+	
+	public static boolean isAxe(Entity entity)
+	{
+		if (entity == null) return false;
+		if (!(entity instanceof LivingEntity)) return false;
+		LivingEntity lentity = (LivingEntity)entity;
+		return isAxe(lentity.getEquipment().getItemInHand());
+	}
+	
+	public static boolean isAxe(EntityDamageByEntityEvent event)
+	{
+		return isAxe(event.getDamager());
+	}
+	
+	public static boolean isAxe(EntityDamageEvent event)
+	{
+		if ( ! (event instanceof EntityDamageByEntityEvent)) return false;
+		return isAxe((EntityDamageByEntityEvent)event);
+	}
+	
+	// Unarmed
+	
+	public static boolean isUnarmed(ItemStack item)
+	{
+		if (item == null) return true;
+		return InventoryUtil.isNothing(item);
+	}
+	
+	public static boolean isUnarmed(Entity entity)
+	{
+		if (entity == null) return false;
+		if (!(entity instanceof LivingEntity)) return false;
+		LivingEntity lentity = (LivingEntity)entity;
+		return isUnarmed(lentity.getEquipment().getItemInHand());
+	}
+	
+	public static boolean isUnarmed(EntityDamageByEntityEvent event)
+	{
+		return isUnarmed(event.getDamager());
+	}
+	
+	public static boolean isUnarmed(EntityDamageEvent event)
+	{
+		if ( ! (event instanceof EntityDamageByEntityEvent)) return false;
+		return isUnarmed((EntityDamageByEntityEvent)event);
+	}
+	
 	// -------------------------------------------- //
 	// EVENT DERP
 	// -------------------------------------------- //
@@ -284,7 +415,7 @@ public class MUtil
 		{
 			ret = Material.CAKE_BLOCK;
 		}
-		else if (foodMaterials.contains(event.getMaterial()))
+		else if (FOOD_MATERIALS.contains(event.getMaterial()))
 		{
 			ret = event.getMaterial();
 		}
