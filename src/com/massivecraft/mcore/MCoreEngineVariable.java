@@ -20,14 +20,14 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.Txt;
 
-public class EngineMCoreVariable extends EngineAbstract
+public class MCoreEngineVariable extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineMCoreVariable i = new EngineMCoreVariable();
-	public static EngineMCoreVariable get() { return i; }
+	private static MCoreEngineVariable i = new MCoreEngineVariable();
+	public static MCoreEngineVariable get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

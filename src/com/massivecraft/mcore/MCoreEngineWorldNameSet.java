@@ -12,14 +12,14 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.Plugin;
 
-public class EngineWorldNameSet extends EngineAbstract
+public class MCoreEngineWorldNameSet extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineWorldNameSet i = new EngineWorldNameSet();
-	public static EngineWorldNameSet get() { return i; }
+	private static MCoreEngineWorldNameSet i = new MCoreEngineWorldNameSet();
+	public static MCoreEngineWorldNameSet get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

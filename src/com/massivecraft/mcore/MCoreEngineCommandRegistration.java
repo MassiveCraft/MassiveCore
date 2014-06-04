@@ -14,14 +14,14 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.MCoreBukkitCommand;
 
-public class EngineCommandRegistration extends EngineAbstract
+public class MCoreEngineCommandRegistration extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineCommandRegistration i = new EngineCommandRegistration();
-	public static EngineCommandRegistration get() { return i; }
+	private static MCoreEngineCommandRegistration i = new MCoreEngineCommandRegistration();
+	public static MCoreEngineCommandRegistration get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

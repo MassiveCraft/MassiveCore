@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import com.massivecraft.mcore.EngineMCoreVariable;
+import com.massivecraft.mcore.MCoreEngineVariable;
 import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -27,7 +27,7 @@ public class CmdMCoreBufferClear extends MCommand
 	@Override
 	public void perform()
 	{
-		EngineMCoreVariable.setBuffer(sender, "");
+		MCoreEngineVariable.setBuffer(sender, "");
 		
 		msg("<i>Buffer Clear");
 	}

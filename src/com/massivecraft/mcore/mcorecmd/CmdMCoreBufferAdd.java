@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import com.massivecraft.mcore.EngineMCoreVariable;
+import com.massivecraft.mcore.MCoreEngineVariable;
 import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.req.ReqHasPerm;
@@ -34,9 +34,9 @@ public class CmdMCoreBufferAdd extends MCommand
 		String string = this.argConcatFrom(0);
 		if (string == null) return;
 		
-		String buffer = EngineMCoreVariable.getBuffer(sender);
+		String buffer = MCoreEngineVariable.getBuffer(sender);
 		buffer += string;
-		EngineMCoreVariable.setBuffer(sender, buffer);
+		MCoreEngineVariable.setBuffer(sender, buffer);
 		
 		msg("<i>Buffer Add");
 	}

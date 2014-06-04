@@ -48,9 +48,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.massivecraft.mcore.EngineMainMCore;
+import com.massivecraft.mcore.MCoreEngineMain;
 import com.massivecraft.mcore.MCore;
-import com.massivecraft.mcore.EngineWorldNameSet;
+import com.massivecraft.mcore.MCoreEngineWorldNameSet;
 import com.massivecraft.mcore.util.extractor.Extractor;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayer;
 import com.massivecraft.mcore.util.extractor.ExtractorPlayerName;
@@ -454,7 +454,7 @@ public class MUtil
 	
 	public static String kickReason(PlayerQuitEvent event)
 	{
-		return EngineMainMCore.kickedPlayerReasons.get(event.getPlayer().getName());
+		return MCoreEngineMain.kickedPlayerReasons.get(event.getPlayer().getName());
 	}
 	
 	public static boolean causedByKick(PlayerQuitEvent event)
@@ -558,7 +558,7 @@ public class MUtil
 	
 	public static Set<String> getLoadedWorldNames()
 	{
-		return EngineWorldNameSet.get().getWorldNames();
+		return MCoreEngineWorldNameSet.get().getWorldNames();
 	}
 	
 	// -------------------------------------------- //

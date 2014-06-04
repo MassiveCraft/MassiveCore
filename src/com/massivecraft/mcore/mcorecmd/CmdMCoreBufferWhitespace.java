@@ -1,6 +1,6 @@
 package com.massivecraft.mcore.mcorecmd;
 
-import com.massivecraft.mcore.EngineMCoreVariable;
+import com.massivecraft.mcore.MCoreEngineVariable;
 import com.massivecraft.mcore.MCorePerm;
 import com.massivecraft.mcore.cmd.MCommand;
 import com.massivecraft.mcore.cmd.arg.ARInteger;
@@ -37,9 +37,9 @@ public class CmdMCoreBufferWhitespace extends MCommand
 		
 		String string = Txt.repeat(" ", times);
 		
-		String buffer = EngineMCoreVariable.getBuffer(sender);
+		String buffer = MCoreEngineVariable.getBuffer(sender);
 		buffer += string;
-		EngineMCoreVariable.setBuffer(sender, buffer);
+		MCoreEngineVariable.setBuffer(sender, buffer);
 		
 		msg("<i>Buffer Whitespace");
 	}

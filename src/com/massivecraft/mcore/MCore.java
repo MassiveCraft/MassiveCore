@@ -161,12 +161,12 @@ public class MCore extends MPlugin
 		IdUtil.setup();
 		
 		// Register events
-		EngineMainMCore.get().activate();
-		EngineMCoreVariable.get().activate();
+		MCoreEngineMain.get().activate();
+		MCoreEngineVariable.get().activate();
 		EngineScheduledTeleport.get().activate();
 		EngineTeleportMixinCause.get().activate();
-		EngineWorldNameSet.get().activate();
-		EngineCommandRegistration.get().activate();
+		MCoreEngineWorldNameSet.get().activate();
+		MCoreEngineCommandRegistration.get().activate();
 		PlayerUtil.get().activate();
 		
 		// Tasks

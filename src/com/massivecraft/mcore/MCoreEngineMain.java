@@ -36,14 +36,14 @@ import com.massivecraft.mcore.store.SenderColl;
 import com.massivecraft.mcore.util.IdUtil;
 import com.massivecraft.mcore.util.SmokeUtil;
 
-public class EngineMainMCore extends EngineAbstract
+public class MCoreEngineMain extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineMainMCore i = new EngineMainMCore();
-	public static EngineMainMCore get() { return i; }
+	private static MCoreEngineMain i = new MCoreEngineMain();
+	public static MCoreEngineMain get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
