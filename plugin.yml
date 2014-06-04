@@ -1,134 +1,134 @@
-main: com.massivecraft.mcore.MCore
-name: mcore
+main: com.massivecraft.massivecore.MassiveCore
+name: MassiveCore
 version: 7.2.1
-website: http://massivecraft.com/mcore
+website: http://massivecraft.com/massivecore
 authors: [Cayorion]
-description: §eMCore stands for MassiveCraft Core and is a plugin that contains libraries and features that other plugins make use of. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttp://massivecraft.com
+description: §eMassiveCore is a plugin that contains libraries and features that other plugins make use of. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttp://massivecraft.com
 load: startup
 permissions:
 # -------------------------------------------- #
 # THE REAL NODES
 # -------------------------------------------- #
 # cmd
-  mcore.basecommand: {description: use the MCore base command, default: false}
-  mcore.test: {description: run developer test, default: false}
-  mcore.id: {description: see the server id, default: false}
-  mcore.version: {description: diplay plugin version, default: false}
-  mcore.hearsound: {description: hear a sound, default: false}
-  mcore.mstore: {description: use the mstore command, default: false}
-  mcore.mstore.stats: {description: show mstore statistics, default: false}
-  mcore.mstore.listcolls: {description: list collections in a database, default: false}
-  mcore.mstore.copydb: {description: copy database content, default: false}
-  mcore.usys: {description: use the usys command, default: false}
-  mcore.usys.multiverse: {description: manage multiverses, default: false}
-  mcore.usys.multiverse.list: {description: list multiverses, default: false}
-  mcore.usys.multiverse.show: {description: show multiverse, default: false}
-  mcore.usys.multiverse.new: {description: create new multiverse, default: false}
-  mcore.usys.multiverse.del: {description: delete multiverse, default: false}
-  mcore.usys.universe: {description: manage universes, default: false}
-  mcore.usys.universe.new: {description: create new universe in multiverse, default: false}
-  mcore.usys.universe.del: {description: delete universe in multiverse, default: false}
-  mcore.usys.universe.clear: {description: clear universe in multiverse, default: false}
-  mcore.usys.world: {description: set a worlds universe in a multiverse, default: false}
-  mcore.usys.aspect: {description: manage aspects, default: false}
-  mcore.usys.aspect.list: {description: list aspects, default: false}
-  mcore.usys.aspect.show: {description: show aspect, default: false}
-  mcore.usys.aspect.use: {description: set multiverse for aspect, default: false}
-  mcore.buffer: {description: use the buffer command, default: false}
-  mcore.buffer.print: {description: print buffer, default: false}
-  mcore.buffer.clear: {description: clear buffer, default: false}
-  mcore.buffer.set: {description: set buffer, default: false}
-  mcore.buffer.add: {description: add to buffer, default: false}
-  mcore.buffer.whitespace: {description: add whitespace to buffer, default: false}
+  massivecore.basecommand: {description: use the MassiveCore base command, default: false}
+  massivecore.test: {description: run developer test, default: false}
+  massivecore.id: {description: see the server id, default: false}
+  massivecore.version: {description: diplay plugin version, default: false}
+  massivecore.hearsound: {description: hear a sound, default: false}
+  massivecore.store: {description: use the mstore command, default: false}
+  massivecore.store.stats: {description: show mstore statistics, default: false}
+  massivecore.store.listcolls: {description: list collections in a database, default: false}
+  massivecore.store.copydb: {description: copy database content, default: false}
+  massivecore.usys: {description: use the usys command, default: false}
+  massivecore.usys.multiverse: {description: manage multiverses, default: false}
+  massivecore.usys.multiverse.list: {description: list multiverses, default: false}
+  massivecore.usys.multiverse.show: {description: show multiverse, default: false}
+  massivecore.usys.multiverse.new: {description: create new multiverse, default: false}
+  massivecore.usys.multiverse.del: {description: delete multiverse, default: false}
+  massivecore.usys.universe: {description: manage universes, default: false}
+  massivecore.usys.universe.new: {description: create new universe in multiverse, default: false}
+  massivecore.usys.universe.del: {description: delete universe in multiverse, default: false}
+  massivecore.usys.universe.clear: {description: clear universe in multiverse, default: false}
+  massivecore.usys.world: {description: set a worlds universe in a multiverse, default: false}
+  massivecore.usys.aspect: {description: manage aspects, default: false}
+  massivecore.usys.aspect.list: {description: list aspects, default: false}
+  massivecore.usys.aspect.show: {description: show aspect, default: false}
+  massivecore.usys.aspect.use: {description: set multiverse for aspect, default: false}
+  massivecore.buffer: {description: use the buffer command, default: false}
+  massivecore.buffer.print: {description: print buffer, default: false}
+  massivecore.buffer.clear: {description: clear buffer, default: false}
+  massivecore.buffer.set: {description: set buffer, default: false}
+  massivecore.buffer.add: {description: add to buffer, default: false}
+  massivecore.buffer.whitespace: {description: add whitespace to buffer, default: false}
 # misc
-  mcore.notpdelay: {description: teleport without delay, default: false}
-  mcore.variable.book: {description: replace ***book*** with content of book in your hand, default: false}
-  mcore.variable.buffer: {description: replace ***buffer*** with content of your buffer, default: false}
+  massivecore.notpdelay: {description: teleport without delay, default: false}
+  massivecore.variable.book: {description: replace ***book*** with content of book in your hand, default: false}
+  massivecore.variable.buffer: {description: replace ***buffer*** with content of your buffer, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
 # -------------------------------------------- #
-  mcore.*:
+  massivecore.*:
     default: false
     children:
-      mcore.basecommand: true
-      mcore.test: true
-      mcore.id: true
-      mcore.version: true
-      mcore.hearsound: true
-      mcore.mstore: true
-      mcore.mstore.stats: true
-      mcore.mstore.listcolls: true
-      mcore.mstore.copydb: true
-      mcore.usys: true
-      mcore.usys.multiverse: true
-      mcore.usys.multiverse.list: true
-      mcore.usys.multiverse.show: true
-      mcore.usys.multiverse.new: true
-      mcore.usys.multiverse.del: true
-      mcore.usys.universe: true
-      mcore.usys.universe.new: true
-      mcore.usys.universe.del: true
-      mcore.usys.universe.clear: true
-      mcore.usys.world: true
-      mcore.usys.aspect: true
-      mcore.usys.aspect.list: true
-      mcore.usys.aspect.show: true
-      mcore.usys.aspect.use: true
-      mcore.buffer: true
-      mcore.buffer.print: true
-      mcore.buffer.clear: true
-      mcore.buffer.set: true
-      mcore.buffer.add: true
-      mcore.buffer.whitespace: true
-      mcore.notpdelay: true
-      mcore.variable.book: true
-      mcore.variable.buffer: true
+      massivecore.basecommand: true
+      massivecore.test: true
+      massivecore.id: true
+      massivecore.version: true
+      massivecore.hearsound: true
+      massivecore.store: true
+      massivecore.store.stats: true
+      massivecore.store.listcolls: true
+      massivecore.store.copydb: true
+      massivecore.usys: true
+      massivecore.usys.multiverse: true
+      massivecore.usys.multiverse.list: true
+      massivecore.usys.multiverse.show: true
+      massivecore.usys.multiverse.new: true
+      massivecore.usys.multiverse.del: true
+      massivecore.usys.universe: true
+      massivecore.usys.universe.new: true
+      massivecore.usys.universe.del: true
+      massivecore.usys.universe.clear: true
+      massivecore.usys.world: true
+      massivecore.usys.aspect: true
+      massivecore.usys.aspect.list: true
+      massivecore.usys.aspect.show: true
+      massivecore.usys.aspect.use: true
+      massivecore.buffer: true
+      massivecore.buffer.print: true
+      massivecore.buffer.clear: true
+      massivecore.buffer.set: true
+      massivecore.buffer.add: true
+      massivecore.buffer.whitespace: true
+      massivecore.notpdelay: true
+      massivecore.variable.book: true
+      massivecore.variable.buffer: true
 # -------------------------------------------- #
 # KITS
 # -------------------------------------------- #
-  mcore.kit.operator:
+  massivecore.kit.operator:
     default: op
     children:
-      mcore.*: true
-  mcore.kit.rank3:
+      massivecore.*: true
+  massivecore.kit.rank3:
     default: false
     children:
-      mcore.kit.rank2: true
-  mcore.kit.rank2:
+      massivecore.kit.rank2: true
+  massivecore.kit.rank2:
     default: false
     children:
-      mcore.kit.rank1: true
-  mcore.kit.rank1:
+      massivecore.kit.rank1: true
+  massivecore.kit.rank1:
     default: false
     children:
-      mcore.kit.rank0: true
-      mcore.id: true
-      mcore.mstore: true
-      mcore.mstore.stats: true
-      mcore.mstore.listcolls: true
-      mcore.usys: true
-      mcore.usys.multiverse: true
-      mcore.usys.multiverse.list: true
-      mcore.usys.multiverse.show: true
-      mcore.usys.aspect: true
-      mcore.usys.aspect.list: true
-      mcore.usys.aspect.show: true
-      mcore.buffer: true
-      mcore.buffer.print: true
-      mcore.buffer.clear: true
-      mcore.buffer.set: true
-      mcore.buffer.add: true
-      mcore.buffer.whitespace: true
-      mcore.notpdelay: true
-      mcore.variable.book: true
-      mcore.variable.buffer: true
-  mcore.kit.rank0:
+      massivecore.kit.rank0: true
+      massivecore.id: true
+      massivecore.store: true
+      massivecore.store.stats: true
+      massivecore.store.listcolls: true
+      massivecore.usys: true
+      massivecore.usys.multiverse: true
+      massivecore.usys.multiverse.list: true
+      massivecore.usys.multiverse.show: true
+      massivecore.usys.aspect: true
+      massivecore.usys.aspect.list: true
+      massivecore.usys.aspect.show: true
+      massivecore.buffer: true
+      massivecore.buffer.print: true
+      massivecore.buffer.clear: true
+      massivecore.buffer.set: true
+      massivecore.buffer.add: true
+      massivecore.buffer.whitespace: true
+      massivecore.notpdelay: true
+      massivecore.variable.book: true
+      massivecore.variable.buffer: true
+  massivecore.kit.rank0:
     default: false
     children:
-      mcore.basecommand: true
-      mcore.hearsound: true
-      mcore.version: true
-  mcore.kit.default:
+      massivecore.basecommand: true
+      massivecore.hearsound: true
+      massivecore.version: true
+  massivecore.kit.default:
     default: true
     children:
-      mcore.kit.rank0: true
+      massivecore.kit.rank0: true
