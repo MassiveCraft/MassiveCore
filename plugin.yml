@@ -34,9 +34,16 @@ permissions:
   mcore.usys.aspect.list: {description: list aspects, default: false}
   mcore.usys.aspect.show: {description: show aspect, default: false}
   mcore.usys.aspect.use: {description: set multiverse for aspect, default: false}
+  mcore.buffer: {description: use the buffer command, default: false}
+  mcore.buffer.print: {description: print buffer, default: false}
+  mcore.buffer.clear: {description: clear buffer, default: false}
+  mcore.buffer.set: {description: set buffer, default: false}
+  mcore.buffer.add: {description: add to buffer, default: false}
+  mcore.buffer.whitespace: {description: add whitespace to buffer, default: false}
 # misc
   mcore.notpdelay: {description: teleport without delay, default: false}
-  mcore.variablebook: {description: replace ***book*** with content of book in your hand, default: false}
+  mcore.variable.book: {description: replace ***book*** with content of book in your hand, default: false}
+  mcore.variable.buffer: {description: replace ***buffer*** with content of your buffer, default: false}
 # -------------------------------------------- #
 # STAR NOTATION
 # -------------------------------------------- #
@@ -67,8 +74,15 @@ permissions:
       mcore.usys.aspect.list: true
       mcore.usys.aspect.show: true
       mcore.usys.aspect.use: true
+      mcore.buffer: true
+      mcore.buffer.print: true
+      mcore.buffer.clear: true
+      mcore.buffer.set: true
+      mcore.buffer.add: true
+      mcore.buffer.whitespace: true
       mcore.notpdelay: true
-      mcore.variablebook: true
+      mcore.variable.book: true
+      mcore.variable.buffer: true
 # -------------------------------------------- #
 # KITS
 # -------------------------------------------- #
@@ -99,8 +113,15 @@ permissions:
       mcore.usys.aspect: true
       mcore.usys.aspect.list: true
       mcore.usys.aspect.show: true
+      mcore.buffer: true
+      mcore.buffer.print: true
+      mcore.buffer.clear: true
+      mcore.buffer.set: true
+      mcore.buffer.add: true
+      mcore.buffer.whitespace: true
       mcore.notpdelay: true
-      mcore.variablebook: true
+      mcore.variable.book: true
+      mcore.variable.buffer: true
   mcore.kit.rank0:
     default: false
     children:

@@ -25,6 +25,7 @@ import com.massivecraft.mcore.fetcher.IdAndName;
 import com.massivecraft.mcore.integration.protocollib.ProtocolLibFeatures;
 import com.massivecraft.mcore.integration.vault.VaultFeatures;
 import com.massivecraft.mcore.mcorecmd.CmdMCore;
+import com.massivecraft.mcore.mcorecmd.CmdMCoreBuffer;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreMStore;
 import com.massivecraft.mcore.mcorecmd.CmdMCoreUsys;
 import com.massivecraft.mcore.mixin.EngineTeleportMixinCause;
@@ -105,6 +106,9 @@ public class MCore extends MPlugin
 	private CmdMCoreMStore outerCmdMCoreMStore;
 	public CmdMCoreMStore getOuterCmdMCoreMStore() { return this.outerCmdMCoreMStore; }
 	
+	private CmdMCoreBuffer outerCmdMCoreBuffer;
+	public CmdMCoreBuffer getOuterCmdMCoreBuffer() { return this.outerCmdMCoreBuffer; }
+	
 	// Runnables
 	// TODO: Make this one a singleton
 	private Runnable collTickTask = new Runnable()
@@ -158,6 +162,7 @@ public class MCore extends MPlugin
 		
 		// Register events
 		EngineMainMCore.get().activate();
+		EngineMCoreVariable.get().activate();
 		EngineScheduledTeleport.get().activate();
 		EngineTeleportMixinCause.get().activate();
 		EngineWorldNameSet.get().activate();
@@ -181,6 +186,9 @@ public class MCore extends MPlugin
 		
 		this.outerCmdMCoreMStore = new CmdMCoreMStore() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCoreMStore; } };
 		this.outerCmdMCoreMStore.register();
+		
+		this.outerCmdMCoreBuffer = new CmdMCoreBuffer() { public List<String> getAliases() { return MCoreConf.get().aliasesOuterMCoreBuffer; } };
+		this.outerCmdMCoreBuffer.register();
 		
 		// Integration
 		this.integrate(

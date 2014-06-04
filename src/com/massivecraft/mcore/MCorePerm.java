@@ -34,8 +34,16 @@ public enum MCorePerm
 	USYS_ASPECT_LIST("usys.aspect.list"),
 	USYS_ASPECT_SHOW("usys.aspect.show"),
 	USYS_ASPECT_USE("usys.aspect.use"),
+	BUFFER("buffer"),
+	BUFFER_PRINT("buffer.print"),
+	BUFFER_CLEAR("buffer.clear"),
+	BUFFER_SET("buffer.set"),
+	BUFFER_ADD("buffer.add"),
+	BUFFER_WHITESPACE("buffer.whitespace"),
 	NOTPDELAY("notpdelay"),
-	VARIABLEBOOK("variablebook"),
+	VARIABLE_BOOK("variable.book"),
+	VARIABLE_BUFFER("variable.buffer"),
+	
 	// END OF LIST
 	;
 	

@@ -30,6 +30,8 @@ public class MCoreConf extends Entity<MCoreConf>
 	
 	public List<String> aliasesOuterMCoreMStore = MUtil.list("mstore");
 	
+	public List<String> aliasesOuterMCoreBuffer = MUtil.list("buffer");
+	
 	public boolean usingRecipientChatEvent = true;
 	
 	public Map<String, String> permissionDeniedFormats = MUtil.map(
@@ -83,5 +85,8 @@ public class MCoreConf extends Entity<MCoreConf>
 	
 	public String variableBook = "***book***";
 	public boolean usingVariableBook = true;
+	
+	public String variableBuffer = "***buffer***";
+	public boolean usingVariableBuffer = true;
 	
 }
