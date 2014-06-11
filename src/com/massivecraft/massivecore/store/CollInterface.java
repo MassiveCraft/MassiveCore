@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.store;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.plugin.Plugin;
@@ -42,10 +43,10 @@ public interface CollInterface<E>
 	public String getId(Object entity);
 	public boolean containsEntity(Object entity);
 	public Collection<E> getAll();
-	public Collection<E> getAll(Predictate<? super E> where);
-	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby);
-	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
-	public Collection<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Predictate<? super E> where);
+	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby);
+	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
 	
 	public String fixId(Object oid);
 	
