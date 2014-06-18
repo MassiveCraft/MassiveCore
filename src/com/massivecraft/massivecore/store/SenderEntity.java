@@ -105,18 +105,6 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		Mixin.setDisplayName(this.getId(), displayName);
 	}
 	
-	// LIST NAME
-	
-	public String getListName()
-	{
-		return Mixin.getListName(this.getId());
-	}
-	
-	public void setListName(String listName)
-	{
-		Mixin.setListName(this.getId(), listName);
-	}
-	
 	// CONVENIENCE SEND MESSAGE
 	
 	public boolean sendMessage(String message)

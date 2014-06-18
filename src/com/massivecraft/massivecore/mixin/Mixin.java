@@ -29,10 +29,6 @@ public class Mixin
 	public static DisplayNameMixin getDisplayNameMixin() { return displayNameMixin; }
 	public static void setDisplayNameMixin(DisplayNameMixin val) { displayNameMixin = val; }
 	
-	private static ListNameMixin listNameMixin = ListNameMixinDefault.get();
-	public static ListNameMixin getListNameMixin() { return listNameMixin; }
-	public static void setListNameMixin(ListNameMixin val) { listNameMixin = val; }
-	
 	private static SenderPsMixin senderPsMixin = SenderPsMixinDefault.get();
 	public static SenderPsMixin getSenderPsMixin() { return senderPsMixin; }
 	public static void setSenderPsMixin(SenderPsMixin val) { senderPsMixin = val; }
@@ -131,30 +127,6 @@ public class Mixin
 	public static void setDisplayName(Object senderObject, String displayName)
 	{
 		getDisplayNameMixin().setDisplayName(senderObject, displayName);
-	}
-	
-	// -------------------------------------------- //
-	// STATIC EXPOSE: LIST NAME
-	// -------------------------------------------- //
-	
-	public static String getListName(String senderId)
-	{
-		return getListNameMixin().getListName(senderId);
-	}
-	
-	public static void setListName(String senderId, String listName)
-	{
-		getListNameMixin().setListName(senderId, listName);
-	}
-	
-	public static String getListName(CommandSender sender)
-	{
-		return getListNameMixin().getListName(sender);
-	}
-	
-	public static void setListName(CommandSender sender, String listName)
-	{
-		getListNameMixin().setListName(sender, listName);
 	}
 	
 	// -------------------------------------------- //
