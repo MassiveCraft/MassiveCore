@@ -124,9 +124,9 @@ public class Mixin
 		return getDisplayNameMixin().getDisplayName(senderObject);
 	}
 	
-	public static void setDisplayName(Object senderObject, String displayName)
+	public static String getDisplayName(Object senderObject, Object watcherObject)
 	{
-		getDisplayNameMixin().setDisplayName(senderObject, displayName);
+		return getDisplayNameMixin().getDisplayName(senderObject, watcherObject);
 	}
 	
 	// -------------------------------------------- //

@@ -100,9 +100,9 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return Mixin.getDisplayName(this.getId());
 	}
 	
-	public void setDisplayName(String displayName)
+	public String getDisplayName(Object watcherObject)
 	{
-		Mixin.setDisplayName(this.getId(), displayName);
+		return Mixin.getDisplayName(this.getId(), watcherObject);
 	}
 	
 	// CONVENIENCE SEND MESSAGE
