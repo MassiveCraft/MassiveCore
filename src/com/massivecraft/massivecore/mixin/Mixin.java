@@ -119,9 +119,10 @@ public class Mixin
 	// STATIC EXPOSE: DISPLAY NAME
 	// -------------------------------------------- //
 	
+	@Deprecated
 	public static String getDisplayName(Object senderObject)
 	{
-		return getDisplayNameMixin().getDisplayName(senderObject);
+		return getDisplayNameMixin().getDisplayName(senderObject, null);
 	}
 	
 	public static String getDisplayName(Object senderObject, Object watcherObject)

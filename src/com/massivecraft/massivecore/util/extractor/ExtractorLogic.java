@@ -25,8 +25,10 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class ExtractorLogic
 {
@@ -156,7 +158,6 @@ public class ExtractorLogic
 	public static World worldFromObject(Object o)
 	{
 		if (o instanceof World) return (World)o;
-		
 		if (o instanceof Block) return world((Block)o);
 		if (o instanceof Location) return world((Location)o);
 		if (o instanceof Entity) return world((Entity)o);
@@ -172,11 +173,37 @@ public class ExtractorLogic
 	
 	public static String worldNameFromObject(Object o)
 	{
-		if (o instanceof String) return (String)o;
+		if (o instanceof String)
+		{
+			String string = (String)o;
+			if (MUtil.isValidUUID(string))
+			{
+				String ret = worldNameViaPsMixin(string);
+				if (ret != null) return ret;
+			}
+			return string;
+		}
+		
 		if (o instanceof PS) return ((PS)o).getWorld();
+		
 		World world = worldFromObject(o);
-		if (world == null) return null;
-		return world.getName();
+		if (world != null) return world.getName();
+		
+		String ret = worldNameViaPsMixin(o);
+		if (ret != null) return ret;
+
+		return null;
+	}
+	
+	public static String worldNameViaPsMixin(Object senderObject)
+	{
+		if (senderObject == null) return null;
+		
+		PS ps = Mixin.getSenderPs(senderObject);
+		if (ps == null) return null;
+		
+		return ps.getWorld();
 	}
 	
 }
+

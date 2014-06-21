@@ -74,7 +74,7 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	public void teleport(Object teleporteeObject, PSGetter toGetter, String desc, int delaySeconds) throws TeleporterException
 	{
 		String teleporteeId = IdUtil.getId(teleporteeObject);
-		if (!IdUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId)));
+		if (!IdUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId, IdUtil.getConsole())));
 		
 		if (delaySeconds > 0)
 		{

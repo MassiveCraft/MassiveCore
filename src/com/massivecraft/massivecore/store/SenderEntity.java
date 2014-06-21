@@ -95,6 +95,7 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	
 	// DISPLAY NAME
 	
+	@Deprecated
 	public String getDisplayName()
 	{
 		return Mixin.getDisplayName(this.getId());

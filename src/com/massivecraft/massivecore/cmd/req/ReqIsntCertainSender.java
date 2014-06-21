@@ -38,7 +38,7 @@ public class ReqIsntCertainSender extends ReqAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return Txt.parse("<b>Player can't be <h>%s<b>.", Mixin.getDisplayName(this.getSenderId()));
+		return Txt.parse("<b>Player can't be <h>%s<b>.", Mixin.getDisplayName(this.getSenderId(), sender));
 	}
 	
 }

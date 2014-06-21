@@ -47,9 +47,23 @@ public class AREnum<T> extends ARAbstractSelect<T>
 		arg = getComparable(arg);
 		
 		// Algorithmic General Detection
+		
+		int startswithCount = 0;
+		T startswith = null;
 		for (T value : getEnumValues(this.clazz))
 		{
-			if (getComparable(value.toString()).equals(arg)) return value;
+			String comparable = getComparable(value.toString());
+			if (comparable.equals(arg)) return value;
+			if (comparable.startsWith(arg))
+			{
+				startswith = value;
+				startswithCount++;
+			}
+		}
+		
+		if (startswithCount == 1)
+		{
+			return startswith;
 		}
 		
 		// Nothing found

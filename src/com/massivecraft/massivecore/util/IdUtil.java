@@ -732,9 +732,23 @@ public class IdUtil implements Listener, Runnable
 		return MUtil.isValidPlayerName(string) || MUtil.isValidUUID(string);
 	}
 	
+	public static boolean isPlayer(Object senderObject)
+	{
+		String id = IdUtil.getId(senderObject);
+		if (id == null) return false;
+		return isPlayerId(id);
+	}
+	
 	public static boolean isConsoleId(String string)
 	{
 		return CONSOLE_ID.equals(string);
+	}
+	
+	public static boolean isConsole(Object senderObject)
+	{
+		String id = IdUtil.getId(senderObject);
+		if (id == null) return false;
+		return isConsoleId(id);
 	}
 	
 	// -------------------------------------------- //
