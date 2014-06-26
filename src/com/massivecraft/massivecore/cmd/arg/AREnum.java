@@ -44,6 +44,8 @@ public class AREnum<T> extends ARAbstractSelect<T>
 	@Override
 	public T select(String arg, CommandSender sender)
 	{
+		if (arg == null) return null;
+		
 		arg = getComparable(arg);
 		
 		// Algorithmic General Detection
