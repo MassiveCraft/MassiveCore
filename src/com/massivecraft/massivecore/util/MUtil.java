@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -102,6 +103,28 @@ public class MUtil
 		PrintWriter pw = new PrintWriter(sw);
 		new Throwable().printStackTrace(pw);
 		return sw.toString();
+	}
+	
+	// -------------------------------------------- //
+	// GET IP
+	// -------------------------------------------- //
+	
+	public static String getIp(CommandSender sender)
+	{
+		if (!(sender instanceof Player)) return null;
+		Player player = (Player)sender;
+		
+		InetSocketAddress address = player.getAddress();
+		if (address == null) return null;
+		
+		String ret = address.toString();
+		String[] parts = ret.split("/");
+        
+        ret = parts[1];
+        parts = ret.split(":");
+        
+        ret = parts[0];
+		return ret;
 	}
 	
 	// -------------------------------------------- //
