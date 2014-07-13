@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.inventory;
 
-import net.minecraft.server.v1_7_R3.EntityHuman;
-import net.minecraft.server.v1_7_R3.ItemStack;
-import net.minecraft.server.v1_7_R3.PlayerInventory;
+import net.minecraft.server.v1_7_R4.EntityHuman;
+import net.minecraft.server.v1_7_R4.ItemStack;
+import net.minecraft.server.v1_7_R4.PlayerInventory;
 
 import org.bukkit.inventory.InventoryHolder;
 
@@ -15,6 +15,7 @@ import org.bukkit.inventory.InventoryHolder;
  * We override internal methods where necessary.
  * 
  * How to update:
+ * https://github.com/Bukkit/CraftBukkit/commits/master/src/main/java/net/minecraft/server/PlayerInventory.java
  * Make sure there is a no-arg constructor.
  * Search for references to "public EntityHuman player".
  * 
@@ -28,7 +29,7 @@ import org.bukkit.inventory.InventoryHolder;
  * pickup(ItemStack) (2 matches)
  * PlayerInventory(EntityHuman)
  * 
- * As of 1.6.1 and 1.6.2 and 1.6.4 and 1.7.2 and 1.7.5 and 1.7.8 these are the references:
+ * As of 1.6.1 and 1.6.2 and 1.6.4 and 1.7.2 and 1.7.5 and 1.7.8 and 1.7.10 these are the references:
  * 
  * a(EntityHuman) (2 matches)
  * a(float)

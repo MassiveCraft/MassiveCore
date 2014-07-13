@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
