@@ -23,7 +23,6 @@ public class SenderIdSourceMixinAllSenderIds implements SenderIdSource
 	public Collection<Collection<String>> getSenderIdCollections()
 	{
 		List<Collection<String>> ret = new ArrayList<Collection<String>>();
-		ret.add(IdUtil.getAllNames());
 		ret.add(IdUtil.getAllIds());
 		return ret;
 	}

@@ -4,26 +4,39 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.Txt;
 
 public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 {
 	// -------------------------------------------- //
-	// CONSTANTS
+	// FIELDS
 	// -------------------------------------------- //
 	
-	public final static int MAX_COUNT = 10;
+	private final SenderIdSource source;
+	private final boolean online;
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public ARSenderIdAbstract(SenderIdSource source, boolean online)
+	{
+		this.source = source;
+		this.online = online;
+	}
+	
+	public ARSenderIdAbstract(SenderIdSource source)
+	{
+		this(source, false);
+	}
 	
 	// -------------------------------------------- //
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract String getTypename();
-	
 	public abstract T getResultForSenderId(String senderId);
-	
-	public abstract Collection<String> getSenderIdsFor(String arg, CommandSender sender);
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -32,44 +45,57 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 	@Override
 	public ArgResult<T> read(String arg, CommandSender sender)
 	{
+		// Create Ret
 		ArgResult<T> ret = new ArgResult<T>();
 		
-		Collection<String> senderIds = this.getSenderIdsFor(arg, sender);
+		// arg --> senderId
+		String senderId = this.getSenderIdFor(arg);
 		
-		if (senderIds.size() == 0)
+		// Populate Ret
+		if (senderId == null)
 		{
 			// No alternatives found
-			ret.setErrors("<b>No "+this.getTypename()+" matches \"<h>"+arg+"<b>\".");
-		}
-		else if (senderIds.size() == 1)
-		{
-			// Only one alternative found
-			String senderId = senderIds.iterator().next();
-			ret.setResult(this.getResultForSenderId(senderId));
-		}
-		else if (senderIds.contains(arg))
-		{
-			// Exact match
-			String senderId = IdUtil.getName(arg);
-			ret.setResult(this.getResultForSenderId(senderId));
+			ret.setErrors("<b>No player matches \"<h>"+arg+"<b>\".");
 		}
 		else
 		{
-			// Ambigious!
-			ret.getErrors().add("<b>"+this.getTypename()+" matching \"<h>"+arg+"<b>\" is ambigious.");
-			if (senderIds.size() >= MAX_COUNT)
-			{
-				// To many to list
-				ret.getErrors().add("<b>More than "+MAX_COUNT+" possible alternatives.");
-			}
-			else
-			{
-				// List the alternatives
-				ret.getErrors().add("<b>Did you mean "+Txt.implodeCommaAndDot(senderIds, "<h>%s", "<b>, ", " <b>or ", "<b>?"));
-			}
+			ret.setResult(this.getResultForSenderId(senderId));
 		}
 	
+		// Return Ret
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public String getSenderIdFor(String arg)
+	{
+		// Get senderId from the arg.
+		// Usually it's just the lowercase form.
+		// It might also be a name resolution.
+		String senderId = arg.toLowerCase();
+		String betterId = IdUtil.getId(senderId);
+		if (betterId != null) senderId = betterId;
+		
+		for (Collection<String> coll : this.source.getSenderIdCollections())
+		{
+			// If the senderId exists ...
+			if (!coll.contains(senderId)) continue;
+			
+			// ... and the online check passes ...
+			if (this.online && !Mixin.isOnline(senderId)) continue;
+			
+			// ... and the result is non null ...
+			T result = this.getResultForSenderId(senderId);
+			if (result == null) continue;
+			
+			// ... then we are go!
+			return senderId;
+		}
+		
+		return null;
 	}
 
 }

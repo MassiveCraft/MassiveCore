@@ -2,34 +2,36 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
-import com.massivecraft.massivecore.util.IdUtil;
 
-public class ARSenderId extends ARSenderIdAbstractPredsource<String>
+public class ARSenderId extends ARSenderIdAbstract<String>
 {
 	// -------------------------------------------- //
-	// INSTANCE & CONSTRUCT
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final ARSenderId full = getFull(SenderIdSourceMixinAllSenderIds.get());
-	public static ARSenderId getFull() { return full; }
-	
-	private static final ARSenderId start = getStart(SenderIdSourceMixinAllSenderIds.get());
-	public static ARSenderId getStart() { return start; }
-	
-	public static ARSenderId getFull(SenderIdSource source)
+	private ARSenderId(SenderIdSource source, boolean online)
 	{
-		return new ARSenderId(source, "player", ArgPredictateStringEqualsLC.get());
+		super(source, online);
 	}
 	
-	public static ARSenderId getStart(SenderIdSource source)
+	private ARSenderId(SenderIdSource source)
 	{
-		return new ARSenderId(source, "player", ArgPredictateStringStartsLC.get());
+		super(source);
 	}
 	
-	private ARSenderId(SenderIdSource source, String typename, ArgPredictate<String> argPredictate)
-	{
-		super(source, typename, argPredictate);
-	}
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static final ARSenderId i = new ARSenderId(SenderIdSourceMixinAllSenderIds.get());
+	public static ARSenderId get() { return i; }
+	
+	// -------------------------------------------- //
+	// GET
+	// -------------------------------------------- //
+	
+	public static ARSenderId get(SenderIdSource source, boolean online) { return new ARSenderId(source, online); }
+	public static ARSenderId get(SenderIdSource source) { return new ARSenderId(source); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -38,12 +40,6 @@ public class ARSenderId extends ARSenderIdAbstractPredsource<String>
 	@Override
 	public String getResultForSenderId(String senderId)
 	{
-		if (senderId == null) return null;
-		
-		// Convert names to ids so we can handle both
-		String betterId = IdUtil.getId(senderId);
-		if (betterId != null) return betterId;
-		
 		return senderId;
 	}
 	

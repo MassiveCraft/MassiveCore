@@ -2,35 +2,20 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class ARPlayer extends ARSenderIdAbstractPredsource<Player>
+public class ARPlayer extends ARSenderIdAbstract<Player>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final ARPlayer full = getFull(SenderIdSourceMixinAllSenderIds.get());
-	public static ARPlayer getFull() { return full; }
-	
-	private static final ARPlayer start = getStart(SenderIdSourceMixinAllSenderIds.get());
-	public static ARPlayer getStart() { return start; }
-	
-	public static ARPlayer getFull(SenderIdSource source)
+	private static final ARPlayer i = new ARPlayer();
+	public static ARPlayer get() { return i; }
+	private ARPlayer()
 	{
-		return new ARPlayer(source, "player", ArgPredictateStringEqualsLC.get());
-	}
-	
-	public static ARPlayer getStart(SenderIdSource source)
-	{
-		return new ARPlayer(source, "player", ArgPredictateStringStartsLC.get());
-	}
-	
-	private ARPlayer(SenderIdSource source, String typename, ArgPredictate<String> argPredictate)
-	{
-		super(source, typename, argPredictate);
+		super(SenderIdSourceMixinAllSenderIds.get());
 	}
 	
 	// -------------------------------------------- //
@@ -40,6 +25,7 @@ public class ARPlayer extends ARSenderIdAbstractPredsource<Player>
 	@Override
 	public Player getResultForSenderId(String senderId)
 	{
+		if (senderId == null) return null;
 		return IdUtil.getPlayer(senderId);
 	}
 

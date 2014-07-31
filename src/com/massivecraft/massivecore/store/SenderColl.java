@@ -9,17 +9,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.cmd.arg.ARSenderEntity;
+import com.massivecraft.massivecore.cmd.arg.ARSenderId;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	protected final SenderIdSource mixinedIdSource = new SenderIdSourceCombined(this, SenderIdSourceMixinAllSenderIds.get());
-	public SenderIdSource getMixinedIdSource() { return this.mixinedIdSource; }
-	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -70,22 +65,45 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	public Collection<Collection<String>> getSenderIdCollections()
 	{
 		List<Collection<String>> ret = new ArrayList<Collection<String>>();
+		
 		ret.add(this.getIds());
 		
-		List<String> names = new ArrayList<String>();
-		for (String id : this.getIds())
+		// For creative collections we must add all known ids.
+		// You could say the corresponding entities latently exist in the collection because it's creative.
+		if (this.isCreative())
 		{
-			String name = IdUtil.getName(id);
-			if (name == null) continue;
-			names.add(name);
+			ret.add(IdUtil.getAllIds());
 		}
-		ret.add(names);
 		
 		return ret;
 	}
 	
 	// -------------------------------------------- //
-	// EXTRAS
+	// ARGUMENT READERS
+	// -------------------------------------------- //
+	
+	public ARSenderEntity<E> getAREntity()
+	{
+		return ARSenderEntity.get(this);
+	}
+	
+	public ARSenderEntity<E> getAREntity(boolean online)
+	{
+		return ARSenderEntity.get(this, online);
+	}
+	
+	public ARSenderId getARId()
+	{
+		return ARSenderId.get(this);
+	}
+	
+	public ARSenderId getARId(boolean online)
+	{
+		return ARSenderId.get(this, online);
+	}
+	
+	// -------------------------------------------- //
+	// GET ALL ONLINE / OFFLINE
 	// -------------------------------------------- //
 	
 	public Collection<E> getAllOnline()
@@ -131,20 +149,5 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 			senderColl.setSenderReference(senderId, sender);
 		}
 	}
-	
-	// -------------------------------------------- //
-	// ARGUMENT READERS
-	// -------------------------------------------- //
-	// TODO: Why were these removed?
-	
-	/*public ArgReader<E> getARFullAny()
-	{
-		return ARSenderEntity.getFullAny(this);
-	}
-	
-	public ArgReader<E> getARStartAny()
-	{
-		return ARSenderEntity.getStartAny(this);
-	}*/
 
 }

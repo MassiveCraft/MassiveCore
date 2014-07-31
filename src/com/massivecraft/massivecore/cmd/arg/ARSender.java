@@ -2,35 +2,20 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class ARSender extends ARSenderIdAbstractPredsource<CommandSender>
+public class ARSender extends ARSenderIdAbstract<CommandSender>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final ARSender full = getFull(SenderIdSourceMixinAllSenderIds.get());
-	public static ARSender getFull() { return full; }
-	
-	private static final ARSender start = getStart(SenderIdSourceMixinAllSenderIds.get());
-	public static ARSender getStart() { return start; }
-	
-	public static ARSender getFull(SenderIdSource source)
+	private static final ARSender i = new ARSender();
+	public static ARSender get() { return i; }
+	private ARSender()
 	{
-		return new ARSender(source, "player", ArgPredictateStringEqualsLC.get());
-	}
-	
-	public static ARSender getStart(SenderIdSource source)
-	{
-		return new ARSender(source, "player", ArgPredictateStringStartsLC.get());
-	}
-	
-	private ARSender(SenderIdSource source, String typename, ArgPredictate<String> argPredictate)
-	{
-		super(source, typename, argPredictate);
+		super(SenderIdSourceMixinAllSenderIds.get());
 	}
 	
 	// -------------------------------------------- //
@@ -40,6 +25,7 @@ public class ARSender extends ARSenderIdAbstractPredsource<CommandSender>
 	@Override
 	public CommandSender getResultForSenderId(String senderId)
 	{
+		if (senderId == null) return null;
 		return IdUtil.getSender(senderId);
 	}
 	
