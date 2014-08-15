@@ -19,22 +19,22 @@ public class MassiveCoreBukkitCommand extends Command
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final MassiveCommand mcommand;
-	public MassiveCommand getMcommand() { return this.mcommand; }
+	private final MassiveCommand massiveCommand;
+	public MassiveCommand getMassiveCommand() { return this.massiveCommand; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MassiveCoreBukkitCommand(String name, MassiveCommand mcommand)
+	public MassiveCoreBukkitCommand(String name, MassiveCommand massiveCommand)
 	{
 		super(
 			name,
-			mcommand.getDesc(),
-			mcommand.getUseageTemplate(),
+			massiveCommand.getDesc(),
+			massiveCommand.getUseageTemplate(),
 			new ArrayList<String>() // We don't use aliases
 		);
-		this.mcommand = mcommand;
+		this.massiveCommand = massiveCommand;
 	}
 	
 	// -------------------------------------------- //
@@ -45,7 +45,7 @@ public class MassiveCoreBukkitCommand extends Command
 	public boolean execute(CommandSender sender, String commandLabel, String[] args)
 	{
 		List<String> argList;
-		if (this.mcommand.isUsingTokenizer())
+		if (this.massiveCommand.isUsingTokenizer())
 		{
 			argList = Txt.tokenizeArguments(Txt.implode(args, " "));
 		}
@@ -54,7 +54,7 @@ public class MassiveCoreBukkitCommand extends Command
 			argList = new ArrayList<String>(Arrays.asList(args));
 		}
 		
-		if (this.mcommand.isUsingSmartQuotesRemoval())
+		if (this.massiveCommand.isUsingSmartQuotesRemoval())
 		{
 			List<String> oldArgList = argList;
 			argList = new ArrayList<String>();
@@ -64,7 +64,7 @@ public class MassiveCoreBukkitCommand extends Command
 			}
 		}
 		
-		this.mcommand.execute(sender, argList);
+		this.massiveCommand.execute(sender, argList);
 		
 		return true;
 	}

@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,7 +37,8 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 	@Override
 	public Long getPeriod()
 	{
-		return 20L;
+		// Every second
+		return 1 * 20L;
 	}
 	
 	// -------------------------------------------- //
@@ -55,48 +57,81 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 	
 	public static void updateRegistrations()
 	{
-		// Get the SimpleCommandMap and it's knownCommands.
+		// Step #1: Hack into Bukkit and get the SimpleCommandMap and it's knownCommands.
 		SimpleCommandMap simpleCommandMap = getSimpleCommandMap();
 		Map<String, Command> knownCommands = getSimpleCommandMapDotKnownCommands(simpleCommandMap);
 		
+		// Step #2: Create a "name --> target" map that contains the MassiveCommands that /should/ be registered in Bukkit. 
+		Map<String, MassiveCommand> nameTargets = new HashMap<String, MassiveCommand>();
+		// For each MassiveCommand that is supposed to be registered ...
+		for (MassiveCommand massiveCommand : MassiveCommand.getRegisteredCommands())
+		{
+			// ... and for each of it's aliases ...
+			for (String alias : massiveCommand.getAliases())
+			{
+				// ... that aren't null ...
+				if (alias == null) continue;
+				
+				// ... clean the alias ...
+				alias = alias.trim().toLowerCase();
+				
+				// ... and put it in the map.
+				// NOTE: In case the same alias is used by many commands the overwrite occurs here!
+				nameTargets.put(alias, massiveCommand);
+			}
+		}
+		
+		// Step #3: Ensure the nameTargets created in Step #2 are registered in Bukkit.
+		// For each nameTarget entry ...
+		for (Entry<String, MassiveCommand> entry : nameTargets.entrySet())
+		{
+			String name = entry.getKey();
+			MassiveCommand target = entry.getValue();
+			
+			// ... find the current command registered in Bukkit under that name (if any) ...
+			Command current = knownCommands.get(name);
+			MassiveCommand massiveCurrent = getMassiveCommand(current);
+			
+			// ... and if the current command is not the target ...
+			// NOTE: We do this check since it's important we don't create new MassiveCoreBukkitCommands unless required.
+			// NOTE: Before I implemented this check I caused a memory leak in tandem with Spigots timings system.
+			if (target == massiveCurrent) continue;
+			
+			// ... unregister the current command if there is one ...
+			if (current != null)
+			{
+				knownCommands.remove(name);
+				current.unregister(simpleCommandMap);
+			}
+			
+			// ... create a new MassiveCoreBukkitCommand ...
+			MassiveCoreBukkitCommand command = new MassiveCoreBukkitCommand(name, target);
+			
+			// ... and finally register it.
+			simpleCommandMap.register("MassiveCore", command);
+		}
+		
+		// Step #4: Remove/Unregister MassiveCommands from Bukkit that are but should not be that any longer. 
 		// For each known command ...
 		Iterator<Entry<String, Command>> iter = knownCommands.entrySet().iterator();
 		while (iter.hasNext())
 		{
 			Entry<String, Command> entry = iter.next();
+			String name = entry.getKey();
 			Command command = entry.getValue();
 			
-			// ... if this command is a MassiveCoreBukkitCommand ...
-			if (!(command instanceof MassiveCoreBukkitCommand)) continue;
+			// ... that is a MassiveCoreBukkitCommand ...
+			MassiveCommand massiveCommand = getMassiveCommand(command);
+			if (massiveCommand == null) continue;
+			
+			// ... and not a target ...
+			if (nameTargets.containsKey(name)) continue;
 			
 			// ... unregister it.
 			command.unregister(simpleCommandMap);
 			iter.remove();
 		}
 		
-		// For each MCommand that is supposed to be registered ...
-		for (MassiveCommand mcommand : MassiveCommand.getRegisteredCommands())
-		{
-			// ... and for each of it's aliases ...
-			for (String alias : mcommand.getAliases())
-			{
-				// ... clean the alias ...
-				alias = alias.trim().toLowerCase();
-				
-				// ... unregister current occupant of that alias ...
-				Command previousOccupant = knownCommands.remove(alias);
-				if (previousOccupant != null)
-				{
-					previousOccupant.unregister(simpleCommandMap);
-				}
-				
-				// ... create a new MassiveCoreBukkitCommand ...
-				MassiveCoreBukkitCommand command = new MassiveCoreBukkitCommand(alias, mcommand);
-				
-				// ... and finally register it.
-				simpleCommandMap.register("MassiveCore", command);
-			}
-		}
 	}
 	
 	// -------------------------------------------- //
@@ -118,6 +153,14 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
+	
+	public static MassiveCommand getMassiveCommand(Command command)
+	{
+		if (command == null) return null;
+		if (!(command instanceof MassiveCoreBukkitCommand)) return null;
+		MassiveCoreBukkitCommand mcbc = (MassiveCoreBukkitCommand)command;
+		return mcbc.getMassiveCommand();
+	}
 	
 	public static Object get(Class<?> clazz, String fieldName, Object object)
 	{
