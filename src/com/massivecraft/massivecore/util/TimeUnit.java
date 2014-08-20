@@ -49,6 +49,14 @@ public class TimeUnit implements Comparable<TimeUnit>
 		ret.remove(SECOND);
 		return ret;
 	}
+	public static TreeSet<TimeUnit> getAllButMillisSecondsAndMinutes()
+	{
+		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
+		ret.remove(MILLISECOND);
+		ret.remove(SECOND);
+		ret.remove(MINUTE);
+		return ret;
+	}
 	
 	public static TimeUnit get(String timeUnitString)
 	{
