@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +41,18 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 		
 		// Listener
 		Bukkit.getPluginManager().registerEvents(this, this);
+
+		// Metrics
+		try
+		{
+			MetricsLite metrics = new MetricsLite(this);
+			metrics.start();
+		}
+		catch (IOException e)
+		{
+			String message = Txt.parse("<b>Metrics Initialization Failed :'(");
+			log(message);
+		}
 		
 		return true;
 	}
