@@ -8,6 +8,7 @@ import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryCustom;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -81,11 +82,20 @@ public class InventoryUtil
 		if (isOutside(event)) return false;
 		boolean topClicked = isTopInventory(event);
 		
+		if (event.getClick() == ClickType.NUMBER_KEY)
+		{
+			if (!topClicked) return false;
+			if (isSomething(event.getCurrentItem())) return false;
+			ItemStack hotbar = event.getView().getBottomInventory().getItem(event.getHotbarButton());
+			if (isNothing(hotbar)) return false;
+			return true;
+		}
+		
 		boolean ret = false;
 		
 		if (topClicked)
 		{
-			ret = (event.getCursor() != null && event.getCursor().getAmount() > 0);
+			ret = isSomething(event.getCursor());
 		}
 		else
 		{
@@ -100,11 +110,18 @@ public class InventoryUtil
 		if (isOutside(event)) return false;
 		boolean topClicked = isTopInventory(event);
 		
+		if (event.getClick() == ClickType.NUMBER_KEY)
+		{
+			if (!topClicked) return false;
+			if (isNothing(event.getCurrentItem())) return false;
+			return true;
+		}
+		
 		boolean ret = false;
 		
 		if (topClicked)
 		{
-			ret = (event.getCurrentItem() != null && event.getCurrentItem().getAmount() > 0);
+			ret = isSomething(event.getCurrentItem());
 		}
 		
 		return ret;
@@ -125,17 +142,6 @@ public class InventoryUtil
 	 */
 	public static ItemStack isEquipping(InventoryClickEvent event)
 	{
-		/*
-		System.out.println("---");
-		System.out.println("getInventory().getType() "+event.getInventory().getType());
-		System.out.println("getView().getTopInventory().getType() "+event.getView().getTopInventory().getType());
-		System.out.println("getView().getType() "+event.getView().getType());
-		System.out.println("getView().getBottomInventory().getType() "+event.getView().getBottomInventory().getType());
-		System.out.println("event.getSlotType() "+event.getSlotType());
-		System.out.println("event.getRawSlot() "+event.getRawSlot());
-		System.out.println("event.getSlot() "+event.getSlot());
-		*/
-		
 		boolean isShiftClick = event.isShiftClick();
 		InventoryType inventoryType = event.getInventory().getType();
 		SlotType slotType = event.getSlotType();
@@ -159,6 +165,41 @@ public class InventoryUtil
 			}
 			return null;
 		}
+	}
+	
+	// -------------------------------------------- //
+	// DEBUG
+	// -------------------------------------------- //
+	
+	public static void debug(InventoryClickEvent event)
+	{
+		System.out.println("===== DEBUG START =====");
+		System.out.println("event.getAction() " + event.getAction());
+		System.out.println("event.isLeftClick() " + event.isLeftClick());
+		System.out.println("event.isRightClick() " + event.isRightClick());
+		System.out.println("event.isShiftClick() " + event.isShiftClick());
+		System.out.println("event.getClick() " + event.getClick());
+		System.out.println("event.getCurrentItem() " + event.getCurrentItem());
+		System.out.println("event.getCursor() " + event.getCursor());
+		System.out.println("event.getHotbarButton() " + event.getHotbarButton());
+		System.out.println("getInventory().getType() "+event.getInventory().getType());
+		System.out.println("event.getRawSlot() " + event.getRawSlot());
+		System.out.println("event.getResult() " + event.getResult());
+		System.out.println("event.getSlot() " + event.getSlot());
+		System.out.println("event.getSlotType() " + event.getSlotType());
+		System.out.println("getView().getTopInventory().getType() "+event.getView().getTopInventory().getType());
+		System.out.println("getView().getType() "+event.getView().getType());
+		System.out.println("getView().getBottomInventory().getType() "+event.getView().getBottomInventory().getType());
+		System.out.println("event.getWhoClicked() " + event.getWhoClicked());
+		System.out.println("-----");
+		System.out.println("isOutside(event) " + isOutside(event));
+		System.out.println("isTopInventory(event) " + isTopInventory(event));
+		System.out.println("isBottomInventory(event) " + isBottomInventory(event));
+		System.out.println("isGiving(event) " + isGiving(event));
+		System.out.println("isTaking(event) " + isTaking(event));
+		System.out.println("isAltering(event) " + isAltering(event));
+		System.out.println("isEquipping(event) " + isEquipping(event));
+		System.out.println("===== DEBUG END =====");
 	}
 	
 	// -------------------------------------------- //
