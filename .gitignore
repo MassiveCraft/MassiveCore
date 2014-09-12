@@ -15,6 +15,7 @@
 /bin
 /dist
 /localexport.jardesc
+/dependency-reduced-pom.xml
 
 # Mac filesystem dust
 .DS_Store
