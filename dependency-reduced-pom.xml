@@ -6,13 +6,13 @@
   <name>MassiveCore</name>
   <version>7.5.0</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
     <defaultGoal>clean package install</defaultGoal>
     <resources>
       <resource>
         <targetPath>.</targetPath>
         <filtering>true</filtering>
-        <directory>.</directory>
+        <directory>${basedir}/src/main/resources/</directory>
         <includes>
           <include>*.yml</include>
           <include>*.md</include>

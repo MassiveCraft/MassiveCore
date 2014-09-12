@@ -13,11 +13,11 @@
 	<build>
 		<defaultGoal>clean package install</defaultGoal>
 		<finalName>MassiveCore</finalName>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>
-				<directory>.</directory>
+				<directory>${basedir}/src/main/resources/</directory>
 				<filtering>true</filtering>
 				<includes>
 					<include>*.yml</include>
