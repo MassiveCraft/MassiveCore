@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.google.gson.annotations.SerializedName;
 import com.massivecraft.massivecore.store.Entity;
-import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
 
 public class Aspect extends Entity<Aspect>
 {	

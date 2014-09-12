@@ -22,9 +22,9 @@ import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.util.Txt;
-import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class Coll<E> implements CollInterface<E>
 {

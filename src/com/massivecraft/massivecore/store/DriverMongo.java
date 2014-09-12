@@ -10,13 +10,13 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.mongodb.BasicDBObject;
-import com.massivecraft.massivecore.xlib.mongodb.DB;
-import com.massivecraft.massivecore.xlib.mongodb.DBCollection;
-import com.massivecraft.massivecore.xlib.mongodb.DBCursor;
-import com.massivecraft.massivecore.xlib.mongodb.MongoClient;
-import com.massivecraft.massivecore.xlib.mongodb.MongoClientURI;
+import com.google.gson.JsonElement;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 
 public class DriverMongo extends DriverAbstract
 {

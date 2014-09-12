@@ -9,7 +9,7 @@ import org.bukkit.permissions.Permissible;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermUtil;
-import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
+import com.mongodb.WriteConcern;
 
 public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 {

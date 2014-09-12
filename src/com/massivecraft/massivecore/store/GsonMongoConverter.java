@@ -3,17 +3,17 @@ package com.massivecraft.massivecore.store;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.bson.types.ObjectId;
 
-import com.massivecraft.massivecore.xlib.bson.types.ObjectId;
-import com.massivecraft.massivecore.xlib.gson.JsonArray;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonNull;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
-import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
-import com.massivecraft.massivecore.xlib.gson.internal.LazilyParsedNumber;
-import com.massivecraft.massivecore.xlib.mongodb.BasicDBList;
-import com.massivecraft.massivecore.xlib.mongodb.BasicDBObject;
-import com.massivecraft.massivecore.xlib.mongodb.DBObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.internal.LazilyParsedNumber;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 public final class GsonMongoConverter
 {

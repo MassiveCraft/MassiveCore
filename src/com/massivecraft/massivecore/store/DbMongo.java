@@ -1,6 +1,6 @@
 package com.massivecraft.massivecore.store;
 
-import com.massivecraft.massivecore.xlib.mongodb.DB;
+import com.mongodb.DB;
 
 public class DbMongo extends DbAbstract
 {

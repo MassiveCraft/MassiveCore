@@ -2,14 +2,15 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
 
-import com.massivecraft.massivecore.xlib.bson.types.ObjectId;
-import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
-import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonParseException;
-import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
-import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
-import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
+import org.bson.types.ObjectId;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 public class ObjectIdAdapter implements JsonDeserializer<ObjectId>, JsonSerializer<ObjectId>
 {

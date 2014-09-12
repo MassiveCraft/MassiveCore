@@ -4,12 +4,12 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.massivecraft.massivecore.xlib.gson.JsonArray;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonNull;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
-import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
-import com.massivecraft.massivecore.xlib.gson.internal.LazilyParsedNumber;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.internal.LazilyParsedNumber;
 
 public class GsonEqualsChecker
 {

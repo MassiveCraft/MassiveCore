@@ -50,12 +50,21 @@
 							<artifactSet>
 								<includes>
 									<include>com.google.code.gson:gson</include>
+									<include>org.mongodb:mongo-java-driver</include>
 								</includes>
 							</artifactSet>
 							<relocations>
 								<relocation>
 									<pattern>com.google.gson</pattern>
 									<shadedPattern>com.massivecraft.massivecore.xlib.gson</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>com.mongodb</pattern>
+									<shadedPattern>com.massivecraft.massivecore.xlib.mongodb</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.bson</pattern>
+									<shadedPattern>com.massivecraft.massivecore.xlib.bson</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
@@ -81,6 +90,11 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.12.3</version>
 		</dependency>
 	</dependencies>
 	

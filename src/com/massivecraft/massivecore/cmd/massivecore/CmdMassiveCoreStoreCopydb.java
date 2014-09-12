@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.Driver;
 import com.massivecraft.massivecore.store.MStore;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.google.gson.JsonElement;
 
 public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 {
