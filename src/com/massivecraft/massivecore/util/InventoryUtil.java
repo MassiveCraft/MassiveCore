@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -18,7 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.inventory.MassiveCorePlayerInventory;
+import com.massivecraft.massivecore.mixin.MassiveCorePlayerInventory;
+import com.massivecraft.massivecore.mixin.Mixin;
 
 public class InventoryUtil
 {
@@ -203,15 +202,6 @@ public class InventoryUtil
 	}
 	
 	// -------------------------------------------- //
-	// CREATE PLAYER INVENTORY
-	// -------------------------------------------- //
-	
-	public static PlayerInventory createPlayerInventory()
-	{
-		return new CraftInventoryPlayer(new MassiveCorePlayerInventory());
-	}
-	
-	// -------------------------------------------- //
 	// IS EMPTY?
 	// -------------------------------------------- //
 	
@@ -278,7 +268,7 @@ public class InventoryUtil
 		
 		if (inventory instanceof PlayerInventory)
 		{
-			PlayerInventory pret = createPlayerInventory();
+			PlayerInventory pret = Mixin.createPlayerInventory();
 			ret = pret;
 			
 			PlayerInventory pinventory = (PlayerInventory)inventory;
@@ -290,7 +280,7 @@ public class InventoryUtil
 		}
 		else
 		{
-			ret = new CraftInventoryCustom(holder, size, title);
+			ret = Mixin.createInventory(holder, size, title);
 		}
 		
 		ItemStack[] contents = cloneItemStacks(inventory.getContents());

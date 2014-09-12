@@ -2,14 +2,12 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
 
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.inventory.MassiveCorePlayerInventory;
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -162,7 +160,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			size = 36;
 			
 			// This is a PlayerInventory
-			ret = new CraftInventoryPlayer(new MassiveCorePlayerInventory());
+			ret = Mixin.createPlayerInventory();
 			PlayerInventory pret = (PlayerInventory)ret;
 			
 			// helmet
@@ -203,7 +201,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			size = jsonSize.getAsInt();
 			
 			// This is a "Custom" Inventory (content only).
-			ret = new CraftInventoryCustom(null, size);
+			ret = Mixin.createInventory(null, size, null);
 		}
 		
 		// Now process content

@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore.inventory;
+package com.massivecraft.massivecore.mixin;
 
 import net.minecraft.server.v1_7_R4.EntityHuman;
 import net.minecraft.server.v1_7_R4.ItemStack;

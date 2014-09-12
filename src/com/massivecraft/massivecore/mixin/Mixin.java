@@ -7,6 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.massivecore.Predictate;
@@ -28,6 +31,10 @@ public class Mixin
 	private static DisplayNameMixin displayNameMixin = DisplayNameMixinDefault.get();
 	public static DisplayNameMixin getDisplayNameMixin() { return displayNameMixin; }
 	public static void setDisplayNameMixin(DisplayNameMixin val) { displayNameMixin = val; }
+	
+	private static InventoryMixin inventoryMixin = InventoryMixinDefault.get();
+	public static InventoryMixin getInventoryMixin() { return inventoryMixin; }
+	public static void setDisplayNameMixin(InventoryMixin val) { inventoryMixin = val; }
 	
 	private static SenderPsMixin senderPsMixin = SenderPsMixinDefault.get();
 	public static SenderPsMixin getSenderPsMixin() { return senderPsMixin; }
@@ -128,6 +135,20 @@ public class Mixin
 	public static String getDisplayName(Object senderObject, Object watcherObject)
 	{
 		return getDisplayNameMixin().getDisplayName(senderObject, watcherObject);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC EXPOSE: INVENTORY
+	// -------------------------------------------- //
+	
+	public static PlayerInventory createPlayerInventory()
+	{
+		return getInventoryMixin().createPlayerInventory();
+	}
+	
+	public static Inventory createInventory(InventoryHolder holder, int size, String title)
+	{
+		return getInventoryMixin().createInventory(holder, size, title);
 	}
 	
 	// -------------------------------------------- //
