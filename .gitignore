@@ -1,22 +1,31 @@
-# Eclipse stuff
+# Eclipse
 /.classpath
 /.project
 /.settings
+/*.jardesc
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
 
 # NetBeans
 /nbproject
-/build.xml
 
 # vim
 .*.sw[a-p]
+
+# Maven
+/build.xml
+/target
+/dependency-reduced-pom.xml
 
 # various other potential build files
 /build
 /bin
 /dist
-/localexport.jardesc
-/dependency-reduced-pom.xml
+/manifest.mf
 
 # Mac filesystem dust
 .DS_Store
-/target
