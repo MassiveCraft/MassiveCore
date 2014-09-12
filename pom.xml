@@ -16,7 +16,9 @@
     <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
-        <directory>src</directory>
+        <targetPath>.</targetPath>
+        <directory>.</directory>
+        <filtering>true</filtering>
         <includes>
           <include>*.yml</include>
           <include>*.md</include>
