@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.mixin.MassiveCorePlayerInventory;
 import com.massivecraft.massivecore.mixin.Mixin;
 
 public class InventoryUtil

@@ -34,7 +34,7 @@ public class Mixin
 	
 	private static InventoryMixin inventoryMixin = InventoryMixinDefault.get();
 	public static InventoryMixin getInventoryMixin() { return inventoryMixin; }
-	public static void setDisplayNameMixin(InventoryMixin val) { inventoryMixin = val; }
+	public static void setInventoryMixin(InventoryMixin val) { inventoryMixin = val; }
 	
 	private static SenderPsMixin senderPsMixin = SenderPsMixinDefault.get();
 	public static SenderPsMixin getSenderPsMixin() { return senderPsMixin; }

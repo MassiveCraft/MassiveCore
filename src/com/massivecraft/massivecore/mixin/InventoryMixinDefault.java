@@ -1,10 +1,15 @@
 package com.massivecraft.massivecore.mixin;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftInventoryPlayer;
 
 public class InventoryMixinDefault extends InventoryMixinAbstract
 {	
@@ -22,17 +27,22 @@ public class InventoryMixinDefault extends InventoryMixinAbstract
 	@Override
 	public PlayerInventory createPlayerInventory()
 	{
-		return new CraftInventoryPlayer(new MassiveCorePlayerInventory());
+		List<World> worlds = Bukkit.getWorlds();
+		World world = worlds.get(0);
+		
+		Location location = world.getSpawnLocation().clone();
+		location.setY(999);
+		
+		Player player = (Player) world.spawnEntity(location, EntityType.PLAYER);
+		PlayerInventory ret = player.getInventory();
+		player.remove();
+		return ret;
 	}
 	
 	@Override
 	public Inventory createInventory(InventoryHolder holder, int size, String title)
 	{
-		if (title == null)
-		{
-			title = "Chest";
-		}
-		return new CraftInventoryCustom(holder, size, title);
+		return Bukkit.createInventory(holder, size, title);
 	}
 	
 }
