@@ -1,8 +1,6 @@
 package com.massivecraft.massivecore.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,15 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import net.minecraft.server.v1_7_R4.DedicatedServer;
-import net.minecraft.server.v1_7_R4.NBTCompressedStreamTools;
-import net.minecraft.server.v1_7_R4.NBTTagCompound;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -797,12 +790,6 @@ public class IdUtil implements Listener, Runnable
 	
 	public static void loadDatas()
 	{
-		MassiveCore.get().log(Txt.parse("<i>Loading Playerdat datas..."));
-		for (IdData data : getPlayerdatDatas())
-		{
-			update(data.getId(), data.getName(), data.getMillis(), false);
-		}
-		
 		MassiveCore.get().log(Txt.parse("<i>Loading Cachefile datas..."));
 		for (IdData data : getCachefileDatas())
 		{
@@ -871,111 +858,6 @@ public class IdUtil implements Listener, Runnable
 	public void run()
 	{
 		saveCachefileDatas();
-	}
-
-	// -------------------------------------------- //
-	// PLAYERDAT DATAS
-	// -------------------------------------------- //
-	// This data source is based on the player.dat files.
-	// It extracts relevant NBT contents.
-	// NOTE: The reason this section contains some NMS is because MassiveCore loads at startup. Some of the Bukkit API is broken then and I could not use it.
-	
-	public static File getBaseworldDirectory()
-	{
-		CraftServer cserver = (CraftServer)Bukkit.getServer();
-		DedicatedServer dserver = (DedicatedServer)cserver.getServer();
-		String levelName = dserver.propertyManager.getString("level-name", "world");
-		return new File(Bukkit.getWorldContainer(), levelName);
-	}
-	
-	public static File getPlayerdatDirectory()
-	{
-		// after 1.7.8
-		// a2cce16b-9494-45ff-b5ff-0362ca687d4e.dat (the uuid)
-		return new File(getBaseworldDirectory(), "playerdata");
-	}
-	
-	public static Set<IdData> getPlayerdatDatas()
-	{
-		Set<IdData> ret = new LinkedHashSet<IdData>();
-		
-		// Get the directory
-		File directory = getPlayerdatDirectory();
-		
-		// List the files in the directory
-		File[] files = directory.listFiles();
-		
-		// The directory may not exist
-		if (files == null) return ret;
-		
-		// For each file
-		for (File file : files)
-		{
-			IdData data = getPlayerdatData(file);
-			if (data == null) continue;
-			ret.add(data);
-		}
-		
-		return ret;
-	}
-	
-	// For the data to be interesting it must contain the bukkit.laskKnownName NBT entry.
-	// It's especially nice if bukkit.lastPlayed also is present.
-	// If bukkit.lastPlayed isn't present we will set lastPlayed millis to 0 in the data.
-	// This will mean the data is considered quite uncertain since data entries are prioritized after their millis.
-	public static IdData getPlayerdatData(File file)
-	{
-		// Get filename
-		String filename = file.getName();
-		
-		// Ensure filename ends with ".dat"
-		if (!filename.toLowerCase().endsWith(".dat")) return null;
-		
-		// Pick id through ".dat" removal
-		String id = filename.substring(0, filename.length()-4);
-		
-		// Ensure file name was of the correct format
-		UUID uuid = uuidFromString(id);
-		if (uuid == null) return null;
-		
-		// Load Compound
-		NBTTagCompound compound = loadTagCompound(file);
-		if (compound == null) return null;
-		
-		// Get Compound --> bukkit
-		if (!compound.hasKey("bukkit")) return null;
-		NBTTagCompound bukkit = compound.getCompound("bukkit");
-		if (bukkit == null) return null;
-		
-		// Get Compound --> bukkit --> lastKnownName
-		if (!bukkit.hasKey("lastKnownName")) return null;
-		String name = bukkit.getString("lastKnownName");
-		if (name == null) return null;
-		
-		// Last Played?
-		long lastPlayed = 0;
-		if (bukkit.hasKey("lastPlayed"))
-		{
-			lastPlayed = bukkit.getLong("lastPlayed");
-		}
-		
-		// Add to ret
-		return new IdData(id, name, lastPlayed);
-	}
-
-	public static NBTTagCompound loadTagCompound(File file)
-	{
-		if (!file.exists()) return null;
-		try
-		{
-			return NBTCompressedStreamTools.a((InputStream) (new FileInputStream(file)));
-		}
-		catch (Exception e)
-		{
-			String message = Txt.parse("<b>NBT file couldn't be loaded: <h>%s<b>. Error: %s.", file.toString(), e.getMessage());
-			MassiveCore.get().log(message);
-			return null;
-		}
 	}
 	
 	// -------------------------------------------- //
