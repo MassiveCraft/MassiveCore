@@ -26,7 +26,6 @@ import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreUsys;
 import com.massivecraft.massivecore.event.EventMassiveCoreUuidUpdate;
 import com.massivecraft.massivecore.fetcher.Fetcher;
 import com.massivecraft.massivecore.fetcher.IdAndName;
-import com.massivecraft.massivecore.integration.protocollib.IntegrationProtocolLib;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.mixin.EngineTeleportMixinCause;
 import com.massivecraft.massivecore.ps.PS;
@@ -192,7 +191,6 @@ public class MassiveCore extends MassivePlugin
 		
 		// Integration
 		this.integrate(
-			IntegrationProtocolLib.get(),
 			IntegrationVault.get()
 		);
 		
