@@ -207,18 +207,6 @@ public class MassiveCommand
 	// The commandChain is a list of the parent command chain used to get to this command.
 	public void execute(CommandSender sender, List<String> args, List<MassiveCommand> commandChain)
 	{
-		// Set the execution-time specific variables
-		this.sender = sender;
-		this.senderIsConsole = true;
-		this.me = null;
-		if (sender instanceof Player)
-		{
-			this.me = (Player) sender;
-			this.senderIsConsole = false;
-		}
-		
-		this.fixSenderVars();
-		
 		this.setArgs(args);
 		this.setCommandChain(commandChain);
 
@@ -240,12 +228,34 @@ public class MassiveCommand
 			}
 		}
 		
-		if ( ! validCall(this.sender, this.getArgs())) return;
+		// Set Sender Variables
+		this.sender = sender;
+		this.senderIsConsole = true;
+		this.me = null;
+		if (sender instanceof Player)
+		{
+			this.me = (Player) sender;
+			this.senderIsConsole = false;
+		}
+		this.fixSenderVars();
 		
+		if ( ! validCall(this.sender, this.getArgs())) return;
 		perform();
+		
+		// Unset Sender Variables
+		this.sender = null;
+		this.me = null;
+		this.unsetSenderVars();
 	}
 	
-	public void fixSenderVars() {};
+	public void fixSenderVars() 
+	{
+		
+	}
+	public void unsetSenderVars()
+	{
+		
+	}
 	
 	public void execute(CommandSender sender, List<String> args)
 	{
