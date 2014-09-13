@@ -8,14 +8,14 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.mixin.Mixin;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
 /**
  * This is my Gson adapter for Inventories.

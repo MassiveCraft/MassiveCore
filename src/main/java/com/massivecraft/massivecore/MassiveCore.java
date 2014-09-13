@@ -7,23 +7,15 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bson.types.ObjectId;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.massivecraft.massivecore.adapter.InventoryAdapter;
 import com.massivecraft.massivecore.adapter.ItemStackAdapter;
 import com.massivecraft.massivecore.adapter.JsonElementAdapter;
 import com.massivecraft.massivecore.adapter.ModdedEnumTypeAdapter;
-import com.massivecraft.massivecore.adapter.ObjectIdAdapter;
 import com.massivecraft.massivecore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.massivecore.adapter.UUIDAdapter;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCore;
@@ -43,6 +35,12 @@ import com.massivecraft.massivecore.teleport.EngineScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
+import com.massivecraft.massivecore.xlib.gson.JsonArray;
+import com.massivecraft.massivecore.xlib.gson.JsonNull;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 public class MassiveCore extends MassivePlugin
 {
@@ -78,7 +76,6 @@ public class MassiveCore extends MassivePlugin
 		.registerTypeAdapter(JsonPrimitive.class, JsonElementAdapter.get())
 		.registerTypeAdapter(JsonArray.class, JsonElementAdapter.get())
 		.registerTypeAdapter(JsonObject.class, JsonElementAdapter.get())
-		.registerTypeAdapter(ObjectId.class, ObjectIdAdapter.get())
 		.registerTypeAdapter(UUID.class, UUIDAdapter.get())
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())

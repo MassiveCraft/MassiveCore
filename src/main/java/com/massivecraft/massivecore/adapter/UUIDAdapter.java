@@ -3,13 +3,13 @@ package com.massivecraft.massivecore.adapter;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
+import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
 public class UUIDAdapter implements JsonDeserializer<UUID>, JsonSerializer<UUID>
 {
@@ -40,14 +40,14 @@ public class UUIDAdapter implements JsonDeserializer<UUID>, JsonSerializer<UUID>
 	// STATIC LOGIC
 	// -------------------------------------------- //
 	
-	public static String convertUUIDToString(UUID objectId)
+	public static String convertUUIDToString(UUID uuid)
 	{
-		return objectId.toString();
+		return uuid.toString();
 	}
 	
-	public static JsonPrimitive convertUUIDToJsonPrimitive(UUID objectId)
+	public static JsonPrimitive convertUUIDToJsonPrimitive(UUID uuid)
 	{
-		return new JsonPrimitive(convertUUIDToString(objectId));
+		return new JsonPrimitive(convertUUIDToString(uuid));
 	}
 	
 	public static UUID convertStringToUUID(String string)

@@ -37,7 +37,7 @@ import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
-import com.google.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 /**
  * Identification of a CommandSender can be done in 4 different ways.

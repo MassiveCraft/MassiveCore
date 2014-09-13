@@ -6,7 +6,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.util.DiscUtil;
-import com.google.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.Gson;
 
 public class SimpleConfig
 {

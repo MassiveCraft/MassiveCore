@@ -3,8 +3,8 @@ package com.massivecraft.massivecore.adapter;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 @SuppressWarnings("deprecation")
 public class PotionEffectAdapter

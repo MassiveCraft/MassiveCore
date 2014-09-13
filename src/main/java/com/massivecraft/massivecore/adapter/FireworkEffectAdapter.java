@@ -11,10 +11,10 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 
 import com.massivecraft.massivecore.util.MUtil;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import com.massivecraft.massivecore.xlib.gson.JsonArray;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 public class FireworkEffectAdapter
 {

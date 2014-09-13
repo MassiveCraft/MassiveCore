@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.massivecraft.massivecore.ConfServer;
-import com.google.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 public class MStore
 {

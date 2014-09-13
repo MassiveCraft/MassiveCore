@@ -9,7 +9,7 @@ import org.bukkit.permissions.Permissible;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermUtil;
-import com.mongodb.WriteConcern;
+import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
 
 public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 {
@@ -72,7 +72,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	
 	public static WriteConcern getMongoDbWriteConcern(boolean catchingErrors)
 	{
-		return catchingErrors ? WriteConcern.ACKNOWLEDGED : WriteConcern.ERRORS_IGNORED;
+		return catchingErrors ? WriteConcern.ACKNOWLEDGED : WriteConcern.UNACKNOWLEDGED;
 	}
 	public WriteConcern getMongoDbWriteConcernSave()
 	{

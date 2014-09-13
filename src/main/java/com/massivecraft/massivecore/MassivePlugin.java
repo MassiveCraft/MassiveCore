@@ -14,8 +14,8 @@ import com.massivecraft.massivecore.integration.IntegrationGlue;
 import com.massivecraft.massivecore.integration.Integration;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.util.Txt;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
 public abstract class MassivePlugin extends JavaPlugin implements Listener
 {
