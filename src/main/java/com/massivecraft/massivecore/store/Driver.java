@@ -18,6 +18,9 @@ public interface Driver
 	// What collections are in the database?		
 	public Set<String> getCollnames(Db db);
 	
+	// Rename a collection
+	public boolean renameColl(Db db, String from, String to);
+	
 	// Is id X in the collection?
 	public boolean containsId(Coll<?> coll, String id);
 	

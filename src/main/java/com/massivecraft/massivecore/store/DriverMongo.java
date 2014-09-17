@@ -60,6 +60,18 @@ public class DriverMongo extends DriverAbstract
 	}
 	
 	@Override
+	public boolean renameColl(Db db, String from, String to)
+	{
+		if (!this.getCollnames(db).contains(from)) return false;
+		if (this.getCollnames(db).contains(to)) return false;
+		
+		DB mdb = ((DbMongo)db).db;
+		mdb.getCollection(from).rename(to);
+		
+		return true;
+	}
+	
+	@Override
 	public boolean containsId(Coll<?> coll, String id)
 	{
 		DBCollection dbcoll = fixColl(coll);

@@ -58,6 +58,15 @@ public class DriverFlatfile extends DriverAbstract
 	
 		return ret;
 	}
+	
+	@Override
+	public boolean renameColl(Db db, String from, String to)
+	{
+		File dir = ((DbFlatfile)db).dir;
+		File fileFrom = new File(dir, from);
+		File fileTo = new File(dir, to);
+		return fileFrom.renameTo(fileTo);
+	}
 
 	@Override
 	public boolean containsId(Coll<?> coll, String id)
