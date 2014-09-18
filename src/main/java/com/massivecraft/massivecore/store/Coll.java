@@ -556,19 +556,34 @@ public class Coll<E> implements CollInterface<E>
 		}
 		catch (Exception e)
 		{
-			MassiveCore.get().log(Txt.parse("<b>Database could not load entity. You edited a file manually and made wrong JSON?"));
-			MassiveCore.get().log(Txt.parse("<k>Error: <v>%s", e.getMessage()));
-			MassiveCore.get().log(Txt.parse("<k>Entity: <v>%s", id));
-			MassiveCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
+			logLoadError(id, e.getMessage());
 			return;
 		}
-		if (entry == null) return;
+		
+		if (entry == null)
+		{
+			logLoadError(id, "MStore driver could not load data entry. The file might not be readable or simply not exist.");
+			return;
+		}
 		
 		JsonElement raw = entry.getKey();
-		if (raw == null) return;
+		if (raw == null)
+		{
+			logLoadError(id, "Raw data was null. Is the file completely empty?");
+			return;
+		}
+		if (raw.isJsonNull())
+		{
+			logLoadError(id, "Raw data was JSON null. It seems you have a file containing just the word \"null\". Why would you do this?");
+			return;
+		}
 		
 		Long mtime = entry.getValue();
-		if (mtime == null) return;
+		if (mtime == null)
+		{
+			logLoadError(id, "Last modification time (mtime) was null.");
+			return;
+		}
 		
 		// Calculate temp but handle raw cases.
 		E temp = null;
@@ -601,6 +616,14 @@ public class Coll<E> implements CollInterface<E>
 		this.lastRaw.put(id, raw);
 		this.lastMtime.put(id, mtime);
 		this.lastDefault.remove(id);
+	}
+	
+	public void logLoadError(String entityId, String error)
+	{
+		MassiveCore.get().log(Txt.parse("<b>Database could not load entity. You edited a file manually and made wrong JSON?"));
+		MassiveCore.get().log(Txt.parse("<k>Entity: <v>%s", entityId));
+		MassiveCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
+		MassiveCore.get().log(Txt.parse("<k>Error: <v>%s", error));
 	}
 	
 	// -------------------------------------------- //
