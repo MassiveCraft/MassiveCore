@@ -40,7 +40,7 @@ public class HelpCommand extends MassiveCommand
 		
 		for (MassiveCommand subCommand : parentCommand.getSubCommands())
 		{
-			if (subCommand.visibleTo(sender))
+			if (subCommand.isVisibleTo(sender))
 			{
 				lines.add(subCommand.getUseageTemplate(this.getCommandChain(), true, true, sender));
 			}

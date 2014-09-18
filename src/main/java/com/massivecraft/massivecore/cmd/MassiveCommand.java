@@ -239,7 +239,7 @@ public class MassiveCommand
 		}
 		this.fixSenderVars();
 		
-		if ( ! validCall(this.sender, this.getArgs())) return;
+		if ( ! isValidCall(this.sender, this.getArgs())) return;
 		perform();
 		
 		// Unset Sender Variables
@@ -277,14 +277,14 @@ public class MassiveCommand
 	/**
 	 * In this method we validate that all prerequisites to perform this command has been met.
 	 */
-	public boolean validCall(CommandSender sender, List<String> args)
+	public boolean isValidCall(CommandSender sender, List<String> args)
 	{
-		if ( ! this.requirementsAreMet(sender, true))
+		if ( ! this.isRequirementsMet(sender, true))
 		{
 			return false;
 		}
 		
-		if ( ! this.validArgs(args, sender))
+		if ( ! this.isArgsValid(args, sender))
 		{
 			return false;
 		}
@@ -292,14 +292,14 @@ public class MassiveCommand
 		return true;
 	}
 	
-	public boolean visibleTo(CommandSender sender)
+	public boolean isVisibleTo(CommandSender sender)
 	{
 		if (this.getVisibilityMode() == VisibilityMode.VISIBLE) return true;
 		if (this.getVisibilityMode() == VisibilityMode.INVISIBLE) return false;
-		return this.requirementsAreMet(sender, false);
+		return this.isRequirementsMet(sender, false);
 	}
 	
-	public boolean requirementsAreMet(CommandSender sender, boolean informSenderIfNot)
+	public boolean isRequirementsMet(CommandSender sender, boolean informSenderIfNot)
 	{
 		for (Req req : this.getRequirements())
 		{
@@ -315,7 +315,7 @@ public class MassiveCommand
 		return true;
 	}
 	
-	public boolean validArgs(List<String> args, CommandSender sender)
+	public boolean isArgsValid(List<String> args, CommandSender sender)
 	{
 		if (args.size() < this.getRequiredArgs().size())
 		{
@@ -341,9 +341,9 @@ public class MassiveCommand
 		}
 		return true;
 	}
-	public boolean validArgs(List<String> args)
+	public boolean isArgsValid(List<String> args)
 	{
-		return this.validArgs(args, null);
+		return this.isArgsValid(args, null);
 	}
 	
 	// -------------------------------------------- //
@@ -368,7 +368,7 @@ public class MassiveCommand
 		while(iter.hasNext())
 		{
 			MassiveCommand mc = iter.next();
-			if (sender != null && !mc.requirementsAreMet(sender, false))
+			if (sender != null && !mc.isRequirementsMet(sender, false))
 			{
 				ret.append(commandBadColor);
 			}
