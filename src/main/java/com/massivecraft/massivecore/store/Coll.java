@@ -352,8 +352,17 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public E detachEntity(Object entity)
 	{
+		if (entity == null) throw new NullPointerException("entity");
+		
 		E e = (E)entity;
 		String id = this.getId(e);
+		if (id == null)
+		{
+			// It seems the entity is already detached.
+			// In such case just silently return it.
+			return e;
+		}
+		
 		this.detach(e, id);
 		return e;
 	}
@@ -361,6 +370,8 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public E detachId(Object oid)
 	{
+		if (oid == null) throw new NullPointerException("oid");
+		
 		String id = this.fixId(oid);
 		E e = this.get(id);
 		this.detach(e, id);
@@ -369,6 +380,9 @@ public class Coll<E> implements CollInterface<E>
 	
 	private void detach(E entity, String id)
 	{
+		if (entity == null) throw new NullPointerException("entity");
+		if (id == null) throw new NullPointerException("id");
+		
 		// PRE
 		this.preDetach(entity, id);
 		
@@ -429,6 +443,8 @@ public class Coll<E> implements CollInterface<E>
 	
 	protected synchronized void clearIdentifiedChanges(Object oid)
 	{
+		if (oid == null) throw new NullPointerException("oid");
+		
 		String id = this.fixId(oid);
 		this.localAttachIds.remove(id);
 		this.localDetachIds.remove(id);
@@ -445,6 +461,8 @@ public class Coll<E> implements CollInterface<E>
 	
 	protected synchronized void clearSynclog(Object oid)
 	{
+		if (oid == null) throw new NullPointerException("oid");
+		
 		String id = this.fixId(oid);
 		this.lastMtime.remove(id);
 		this.lastRaw.remove(id);
@@ -482,7 +500,10 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public synchronized E removeAtLocal(Object oid)
 	{
+		if (oid == null) throw new NullPointerException("oid");
+		
 		String id = this.fixId(oid);
+		
 		this.clearIdentifiedChanges(id);
 		this.clearSynclog(id);
 		
@@ -506,6 +527,8 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public synchronized void removeAtRemote(Object oid)
 	{
+		if (oid == null) throw new NullPointerException("oid");
+		
 		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);
@@ -517,6 +540,8 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public synchronized void saveToRemote(Object oid)
 	{
+		if (oid == null) throw new NullPointerException("oid");
+		
 		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);
@@ -545,6 +570,8 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public synchronized void loadFromRemote(Object oid)
 	{
+		if (oid == null) throw new NullPointerException("oid");
+		
 		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);

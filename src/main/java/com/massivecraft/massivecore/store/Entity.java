@@ -57,10 +57,11 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		return coll.attach((E) this);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public E detach()
 	{
 		Coll<E> coll = this.getColl();
-		if (coll == null) return null;
+		if (coll == null) return (E)this;
 		
 		return coll.detachEntity(this);
 	}
