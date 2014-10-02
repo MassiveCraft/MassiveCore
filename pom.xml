@@ -11,7 +11,7 @@
 	</properties>
 	
 	<build>
-		<defaultGoal>clean install</defaultGoal>
+		<defaultGoal>install</defaultGoal>
 		<finalName>MassiveCore</finalName>
 		<sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
 		<resources>
