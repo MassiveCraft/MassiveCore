@@ -149,7 +149,7 @@ public class Coll<E> implements CollInterface<E>
 		if (oid == null) return null;
 		
 		String ret = null;
-		if (oid instanceof String) 
+		if (oid instanceof String)
 		{
 			ret = (String)oid;
 		}

@@ -41,20 +41,36 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	@Override
 	public String fixId(Object oid)
 	{
+		// A null oid should always return null.
 		if (oid == null) return null;
 		
-		if (oid instanceof String) 
+		String ret = null;
+		
+		if (oid instanceof String)
 		{
-			String ret = (String)oid;
-			return this.isLowercasing() ? ret.toLowerCase() : ret;
+			ret = (String)oid;
+		}
+		else if (oid.getClass() == this.entityClass)
+		{
+			ret = this.entity2id.get(oid);
 		}
 		
-		if (oid.getClass() == this.entityClass)
+		if (ret == null)
 		{
-			return fixId(this.entity2id.get(oid));
+			ret = IdUtil.getId(oid);
 		}
 		
-		return fixId(IdUtil.getId(oid));
+		if (ret == null)
+		{
+			return null;
+		}
+		
+		if (this.isLowercasing())
+		{
+			ret = ret.toLowerCase();
+		}
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //
