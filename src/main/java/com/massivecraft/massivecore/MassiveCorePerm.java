@@ -40,6 +40,7 @@ public enum MassiveCorePerm
 	BUFFER_SET("buffer.set"),
 	BUFFER_ADD("buffer.add"),
 	BUFFER_WHITESPACE("buffer.whitespace"),
+	CMDURL("cmdurl"),
 	NOTPDELAY("notpdelay"),
 	VARIABLE_BOOK("variable.book"),
 	VARIABLE_BUFFER("variable.buffer"),

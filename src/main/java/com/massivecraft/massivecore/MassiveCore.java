@@ -20,6 +20,7 @@ import com.massivecraft.massivecore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.massivecore.adapter.UUIDAdapter;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCore;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreBuffer;
+import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreCmdurl;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreStore;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreUsys;
 import com.massivecraft.massivecore.event.EventMassiveCoreUuidUpdate;
@@ -105,6 +106,9 @@ public class MassiveCore extends MassivePlugin
 	private CmdMassiveCoreBuffer outerCmdMassiveCoreBuffer;
 	public CmdMassiveCoreBuffer getOuterCmdMassiveCoreBuffer() { return this.outerCmdMassiveCoreBuffer; }
 	
+	private CmdMassiveCoreCmdurl outerCmdMassiveCoreCmdurl;
+	public CmdMassiveCoreCmdurl getOuterCmdMassiveCoreCmdurl() { return this.outerCmdMassiveCoreCmdurl; }
+	
 	// Runnables
 	// TODO: Make this one a singleton
 	private Runnable collTickTask = new Runnable()
@@ -185,6 +189,9 @@ public class MassiveCore extends MassivePlugin
 		
 		this.outerCmdMassiveCoreBuffer = new CmdMassiveCoreBuffer() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreBuffer; } };
 		this.outerCmdMassiveCoreBuffer.register();
+		
+		this.outerCmdMassiveCoreCmdurl = new CmdMassiveCoreCmdurl() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreCmdurl; } };
+		this.outerCmdMassiveCoreCmdurl.register();
 		
 		// Integration
 		this.integrate(

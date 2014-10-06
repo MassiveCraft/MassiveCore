@@ -32,6 +32,8 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	
 	public List<String> aliasesOuterMassiveCoreBuffer = MUtil.list("buffer");
 	
+	public List<String> aliasesOuterMassiveCoreCmdurl = MUtil.list("cmdurl");
+	
 	public boolean usingRecipientChatEvent = true;
 	
 	public Map<String, String> permissionDeniedFormats = MUtil.map(

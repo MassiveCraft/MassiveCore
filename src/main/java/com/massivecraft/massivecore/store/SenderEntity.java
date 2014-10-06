@@ -93,6 +93,21 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return Mixin.isOffline(this.getId());
 	}
 	
+	public Long getLastPlayed()
+	{
+		return Mixin.getLastPlayed(this.getId());
+	}
+	
+	public Long getFirstPlayed()
+	{
+		return Mixin.getFirstPlayed(this.getId());
+	}
+	
+	public boolean hasPlayedBefore()
+	{
+		return Mixin.hasPlayedBefore(this.getId());
+	}
+	
 	// DISPLAY NAME
 	
 	@Deprecated

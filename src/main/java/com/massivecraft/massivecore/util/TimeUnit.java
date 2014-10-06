@@ -36,25 +36,35 @@ public class TimeUnit implements Comparable<TimeUnit>
 		
 	private static final TreeSet<TimeUnit> all = new TreeSet<TimeUnit>();
 	public static TreeSet<TimeUnit> getAll() { return new TreeSet<TimeUnit>(all); }
+	
+	public static TreeSet<TimeUnit> getAllBut(TimeUnit... timeUnits)
+	{
+		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
+		for (TimeUnit timeUnit : timeUnits)
+		{
+			ret.remove(timeUnit);
+		}
+		return ret;
+	}
+	
 	public static TreeSet<TimeUnit> getAllButMillis()
 	{
-		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
-		ret.remove(MILLISECOND);
-		return ret;
+		return getAllBut(MILLISECOND);
 	}
+	
 	public static TreeSet<TimeUnit> getAllButMillisAndSeconds()
 	{
-		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
-		ret.remove(MILLISECOND);
-		ret.remove(SECOND);
-		return ret;
+		return getAllBut(MILLISECOND, SECOND);
 	}
+	
 	public static TreeSet<TimeUnit> getAllButMillisSecondsAndMinutes()
 	{
-		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
-		ret.remove(MILLISECOND);
-		ret.remove(SECOND);
-		ret.remove(MINUTE);
+		return getAllBut(MILLISECOND, SECOND, MINUTE);
+	}
+	
+	public static TreeSet<TimeUnit> getSpecific(TimeUnit... timeUnits)
+	{
+		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(Arrays.asList(timeUnits));
 		return ret;
 	}
 	
@@ -62,7 +72,7 @@ public class TimeUnit implements Comparable<TimeUnit>
 	{
 		if (timeUnitString == null) return null;
 		String timeUnitStringLowerCase = timeUnitString.toLowerCase(); 
-		for(TimeUnit timeUnit : all)
+		for (TimeUnit timeUnit : all)
 		{
 			for (String alias : timeUnit.aliases)
 			{
