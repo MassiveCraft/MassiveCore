@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.store;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -153,9 +154,17 @@ public class DriverMongo extends DriverAbstract
 	{
 		DBCollection dbcoll = fixColl(coll);
 		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id));
+		return loadRaw(raw);
+	}
+	
+	public Entry<JsonElement, Long> loadRaw(BasicDBObject raw)
+	{
 		if (raw == null) return null;
 		
+		// Throw away the id field
 		raw.removeField(ID_FIELD);
+		
+		// In case there is no _mtime set we assume 0. Probably a manual database addition by the server owner. 
 		Long mtime = 0L;
 		Object mtimeObject = raw.removeField(MTIME_FIELD);
 		if (mtimeObject != null)
@@ -163,9 +172,57 @@ public class DriverMongo extends DriverAbstract
 			mtime = ((Number)mtimeObject).longValue();
 		}
 		
+		// Convert MongoDB --> GSON
 		JsonElement element = GsonMongoConverter.mongo2GsonObject(raw);
 		
 		return new SimpleEntry<JsonElement, Long>(element, mtime);
+	}
+	
+	@Override
+	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll)
+	{
+		// Declare Ret
+		Map<String, Entry<JsonElement, Long>> ret = null;
+		
+		// Fix Coll
+		DBCollection dbcoll = fixColl(coll);
+		
+		// Find All
+		DBCursor cursor = dbcoll.find();
+		
+		try
+		{
+			// Create Ret
+			ret = new LinkedHashMap<String, Entry<JsonElement, Long>>(cursor.count());
+			
+			// For Each Found
+			while (cursor.hasNext())
+			{
+				BasicDBObject raw = (BasicDBObject)cursor.next();
+				
+				// Get ID
+				Object rawId = raw.removeField(ID_FIELD);
+				if (rawId == null) continue;
+				String id = rawId.toString();
+				
+				// Get Entry
+				Entry<JsonElement, Long> entry = loadRaw(raw);
+				//if (entry == null) continue;
+				// Actually allow adding null entries!
+				// they are informative failures!
+				
+				// Add
+				ret.put(id, entry);
+			}
+			
+		}
+		finally
+		{
+			cursor.close();
+		}
+		
+		// Return Ret
+		return ret;
 	}
 
 	@Override

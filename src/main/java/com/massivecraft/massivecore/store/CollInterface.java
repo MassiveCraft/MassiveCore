@@ -144,6 +144,7 @@ public interface CollInterface<E>
 	public void syncSuspects();
 	public void syncAll();
 	public void findSuspects();
+	public void initLoadAllFromRemote();
 	
 	// -------------------------------------------- //
 	// SYNC RUNNABLES / SCHEDULING

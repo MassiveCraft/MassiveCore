@@ -36,6 +36,9 @@ public interface Driver
 	// Load the raw data for X. The second part of the entry is the remote mtime at the load.
 	public Entry<JsonElement, Long> load(Coll<?> coll, String id);
 	
+	// Load all database content at once
+	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll);
+	
 	// Save raw data as X
 	// Return value is the new mtime (we caused the change).
 	// If the mtime is null something failed.

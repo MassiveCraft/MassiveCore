@@ -5,6 +5,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -101,16 +102,22 @@ public class DriverFlatfile extends DriverAbstract
 	@Override
 	public Map<String, Long> getId2mtime(Coll<?> coll)
 	{
+		// Create Ret
 		Map<String, Long> ret = new HashMap<String, Long>();
 		
-		// Scan the collection folder for .json files
+		// Get collection directory
 		File collDir = getCollDir(coll);
 		if (!collDir.isDirectory()) return ret;
+		
+		// For each .json file
 		for (File file : collDir.listFiles(JsonFileFilter.get()))
 		{
-			ret.put(idFromFile(file), file.lastModified());
+			String id = idFromFile(file);
+			long mtime = file.lastModified();
+			ret.put(id, mtime);
 		}
 		
+		// Return Ret
 		return ret;
 	}
 	
@@ -118,14 +125,62 @@ public class DriverFlatfile extends DriverAbstract
 	public Entry<JsonElement, Long> load(Coll<?> coll, String id)
 	{
 		File file = fileFromId(coll, id);
+		return loadFile(file);
+	}
+	
+	public Entry<JsonElement, Long> loadFile(File file)
+	{
 		Long mtime = file.lastModified();
 		if (mtime == 0) return null;
+		
+		JsonElement raw = loadFileJson(file);
+		if (raw == null) return null;
+		
+		return new SimpleEntry<JsonElement, Long>(raw, mtime);
+	}
+	
+	public JsonElement loadFileJson(File file)
+	{
 		String content = DiscUtil.readCatch(file);
 		if (content == null) return null;
+		
 		content = content.trim();
 		if (content.length() == 0) return null;
-		JsonElement raw = new JsonParser().parse(content);
-		return new SimpleEntry<JsonElement, Long>(raw, mtime);
+		
+		return new JsonParser().parse(content);
+	}
+	
+	@Override
+	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll)
+	{
+		// Declare Ret
+		Map<String, Entry<JsonElement, Long>> ret = null;
+		
+		// Get collection directory
+		File collDir = getCollDir(coll);
+		if ( ! collDir.isDirectory()) return ret;
+		
+		// Find All
+		File[] files = collDir.listFiles(JsonFileFilter.get());
+		
+		// Create Ret
+		ret = new LinkedHashMap<String, Entry<JsonElement, Long>>(files.length);
+		
+		// For Each Found
+		for (File file : files)
+		{
+			// Get ID
+			String id = idFromFile(file);
+			
+			// Get Entry
+			Entry<JsonElement, Long> entry = loadFile(file);
+			
+			// Add
+			ret.put(id, entry);
+		}
+		
+		// Return Ret
+		return ret;
 	}
 
 	@Override
@@ -148,24 +203,23 @@ public class DriverFlatfile extends DriverAbstract
 	// UTIL
 	// -------------------------------------------- //
 	
-	protected static File getCollDir(Coll<?> coll)
+	public static File getCollDir(Coll<?> coll)
 	{
 		return (File) coll.getCollDriverObject();
 	}
 	
-	protected static String idFromFile(File file)
+	public static String idFromFile(File file)
 	{
 		if (file == null) return null;
 		String name = file.getName();
-		return name.substring(0, name.length()-5);
+		return name.substring(0, name.length() - 5);
 	}
 	
-	protected static File fileFromId(Coll<?> coll, String id)
+	public static File fileFromId(Coll<?> coll, String id)
 	{
 		File collDir = getCollDir(coll);
-		File idFile = new File(collDir, id+DOTJSON);
+		File idFile = new File(collDir, id + DOTJSON);
 		return idFile;
 	}
-	
 	
 }

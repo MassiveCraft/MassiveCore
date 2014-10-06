@@ -566,12 +566,10 @@ public class Coll<E> implements CollInterface<E>
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void loadFromRemote(Object oid)
 	{
 		if (oid == null) throw new NullPointerException("oid");
-		
 		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);
@@ -586,6 +584,15 @@ public class Coll<E> implements CollInterface<E>
 			logLoadError(id, e.getMessage());
 			return;
 		}
+		
+		loadFromRemote(id, entry);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void loadFromRemote(Object oid, Entry<JsonElement, Long> entry)
+	{
+		if (oid == null) throw new NullPointerException("oid");
+		String id = this.fixId(oid);
 		
 		if (entry == null)
 		{
@@ -637,7 +644,7 @@ public class Coll<E> implements CollInterface<E>
 			this.copy(temp, entity);
 			
 			// Then attach!
-			this.attach(entity, oid, false);
+			this.attach(entity, id, false);
 		}
 		
 		this.lastRaw.put(id, raw);
@@ -843,6 +850,20 @@ public class Coll<E> implements CollInterface<E>
 		}
 	}
 	
+	@Override
+	public void initLoadAllFromRemote()
+	{
+		Map<String, Entry<JsonElement, Long>> idToEntryMap = this.getDb().getDriver().loadAll(this);
+		if (idToEntryMap == null) return;
+		
+		for (Entry<String, Entry<JsonElement, Long>> idToEntry : idToEntryMap.entrySet())
+		{
+			String id = idToEntry.getKey();
+			Entry<JsonElement, Long> entry = idToEntry.getValue();
+			loadFromRemote(id, entry);
+		}
+	}
+	
 	// -------------------------------------------- //
 	// SYNC RUNNABLES / SCHEDULING
 	// -------------------------------------------- //
@@ -927,8 +948,7 @@ public class Coll<E> implements CollInterface<E>
 	{
 		if (this.inited()) return;
 		
-		// TODO: Could this be more efficient by considering it's the first sync?
-		this.syncAll();
+		this.initLoadAllFromRemote();
 		
 		name2instance.put(this.getName(), this);
 	}
