@@ -22,7 +22,15 @@ public class ReversePriorityComparator implements Comparator<Prioritized>
 		if (two == null) return -1;
 		if (one == null) return 1;
 		
-		return Integer.valueOf(two.getPriority()).compareTo(one.getPriority());
+		int ret = Integer.valueOf(two.getPriority()).compareTo(one.getPriority());
+		
+		// We should only return 0 if the items actually are equal.
+		if (ret == 0 && ! one.equals(two))
+		{
+			ret = one.hashCode() - two.hashCode();
+		}
+		
+		return ret;
 	}
 	
 }

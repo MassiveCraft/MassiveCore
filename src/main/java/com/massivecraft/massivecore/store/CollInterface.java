@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 public interface CollInterface<E>
 {
@@ -131,7 +133,7 @@ public interface CollInterface<E>
 	public E removeAtLocal(Object oid);
 	public void removeAtRemote(Object oid);
 	public void saveToRemote(Object oid);
-	public void loadFromRemote(Object oid);
+	public void loadFromRemote(Object oid, Entry<JsonElement, Long> entry, boolean entrySupplied);
 	
 	// -------------------------------------------- //
 	// SYNC EXAMINE AND DO

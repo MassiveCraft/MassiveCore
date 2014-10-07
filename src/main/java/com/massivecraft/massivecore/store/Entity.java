@@ -134,7 +134,7 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		String id = this.getId();
 		if (id == null) return;
 		
-		this.getColl().loadFromRemote(id);
+		this.getColl().loadFromRemote(id, null, false);
 	}
 	
 	// -------------------------------------------- //

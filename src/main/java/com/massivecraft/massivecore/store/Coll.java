@@ -566,33 +566,27 @@ public class Coll<E> implements CollInterface<E>
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void loadFromRemote(Object oid)
+	public synchronized void loadFromRemote(Object oid, Entry<JsonElement, Long> entry, boolean entrySupplied)
 	{
 		if (oid == null) throw new NullPointerException("oid");
 		String id = this.fixId(oid);
 		
 		this.clearIdentifiedChanges(id);
 		
-		Entry<JsonElement, Long> entry = null;
-		try
+		if ( ! entrySupplied)
 		{
-			entry = this.getDriver().load(this, id);
+			try
+			{
+				entry = this.getDriver().load(this, id);
+			}
+			catch (Exception e)
+			{
+				logLoadError(id, e.getMessage());
+				return;
+			}
 		}
-		catch (Exception e)
-		{
-			logLoadError(id, e.getMessage());
-			return;
-		}
-		
-		loadFromRemote(id, entry);
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void loadFromRemote(Object oid, Entry<JsonElement, Long> entry)
-	{
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
 		
 		if (entry == null)
 		{
@@ -773,7 +767,7 @@ public class Coll<E> implements CollInterface<E>
 			break;
 			case REMOTE_ALTER:
 			case REMOTE_ATTACH:
-				this.loadFromRemote(id);
+				this.loadFromRemote(id, null, false);
 				if (this.inited())
 				{
 					this.addSyncCount(TOTAL, true);
@@ -860,7 +854,7 @@ public class Coll<E> implements CollInterface<E>
 		{
 			String id = idToEntry.getKey();
 			Entry<JsonElement, Long> entry = idToEntry.getValue();
-			loadFromRemote(id, entry);
+			loadFromRemote(id, entry, true);
 		}
 	}
 	
@@ -949,6 +943,7 @@ public class Coll<E> implements CollInterface<E>
 		if (this.inited()) return;
 		
 		this.initLoadAllFromRemote();
+		// this.syncAll();
 		
 		name2instance.put(this.getName(), this);
 	}

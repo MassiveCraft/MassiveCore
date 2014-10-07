@@ -22,7 +22,15 @@ public class PriorityComparator implements Comparator<Prioritized>
 		if (two == null) return 1;
 		if (one == null) return -1;
 		
-		return Integer.valueOf(one.getPriority()).compareTo(two.getPriority());
+		int ret = Integer.valueOf(one.getPriority()).compareTo(two.getPriority());
+		
+		// We should only return 0 if the items actually are equal.
+		if (ret == 0 && ! one.equals(two))
+		{
+			ret = two.hashCode() - one.hashCode();
+		}
+		
+		return ret;
 	}
 	
 }

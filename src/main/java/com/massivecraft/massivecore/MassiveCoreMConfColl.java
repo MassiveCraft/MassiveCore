@@ -28,11 +28,4 @@ public class MassiveCoreMConfColl extends Coll<MassiveCoreMConf>
 		MassiveCoreMConf.i = this.get(MassiveCore.INSTANCE, true);
 	}
 	
-	@Override
-	public synchronized void loadFromRemote(Object oid)
-	{
-		super.loadFromRemote(oid);
-		if ( ! this.inited()) return;
-	}
-	
 }
