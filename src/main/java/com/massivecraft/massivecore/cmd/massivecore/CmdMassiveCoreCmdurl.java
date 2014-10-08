@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
