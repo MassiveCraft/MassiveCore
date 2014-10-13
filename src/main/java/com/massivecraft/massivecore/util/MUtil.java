@@ -603,6 +603,23 @@ public class MUtil
 	}
 	
 	@SuppressWarnings("unchecked")
+	@SafeVarargs
+	public static <T> Set<T> treeset(T... items)
+	{
+		Set<T> ret;
+		if (items[0] instanceof String)
+		{
+			ret = (Set<T>) new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		}
+		else
+		{
+			ret = new TreeSet<T>();
+		}
+		ret.addAll(Arrays.asList(items));
+		return ret;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public static <K, V> Map<K, V> map(K key1, V value1, Object... objects)
 	{
 		Map<K, V> ret = new LinkedHashMap<K, V>();

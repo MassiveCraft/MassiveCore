@@ -34,6 +34,7 @@ import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.ExamineThread;
 import com.massivecraft.massivecore.teleport.EngineScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -51,6 +52,11 @@ public class MassiveCore extends MassivePlugin
 	
 	public final static String INSTANCE = "instance";
 	public final static String DEFAULT = "default";
+	
+	public final static Set<String> NOTHING = MUtil.treeset("", "none", "null", "nothing");
+	public final static Set<String> REMOVE = MUtil.treeset("clear", "c", "delete", "del", "d", "erase", "e", "remove", "rem", "r", "reset", "res");
+	public final static Set<String> NOTHING_REMOVE = MUtil.treeset("", "none", "null", "nothing", "clear", "c", "delete", "del", "d", "erase", "e", "remove", "rem", "r", "reset", "res");
+	
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
