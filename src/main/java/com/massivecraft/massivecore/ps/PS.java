@@ -1,6 +1,9 @@
 package com.massivecraft.massivecore.ps;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -837,6 +840,20 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	public static boolean inSameUniverse(PS one, PS two, Aspect aspect)
 	{
 		return inSameUniverse(one, two, aspect.getMultiverse());
+	}
+	
+	// -------------------------------------------- //
+	// GET SETS
+	// -------------------------------------------- //
+	
+	public static Set<PS> getDistinctChunks(Collection<PS> pss)
+	{
+		Set<PS> ret = new LinkedHashSet<PS>();
+		for (PS ps : pss)
+		{
+			ret.add(ps.getChunk(true));
+		}
+		return ret;
 	}
 	
 	// -------------------------------------------- //

@@ -653,6 +653,27 @@ public class MUtil
 		return ret;
 	}
 	
+	public static <K, V> Map<V, Set<K>> reverseIndex(Map<K, V> map)
+	{
+		Map<V, Set<K>> ret = new LinkedHashMap<V, Set<K>>();
+		
+		for (Entry<K, V> entry : map.entrySet())
+		{
+			K key = entry.getKey();
+			V value = entry.getValue();
+			
+			Set<K> set = ret.get(value);
+			if (set == null)
+			{
+				set = new HashSet<K>();
+				ret.put(value, set);
+			}
+			set.add(key);
+		}
+		
+		return ret;
+	}
+	
 	// -------------------------------------------- //
 	// COLLECTION MANIPULATION
 	// -------------------------------------------- //
