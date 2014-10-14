@@ -266,8 +266,10 @@ public class MassiveCommand
 	public void perform()
 	{
 		// Per default we just act as the help command!
-		this.getCommandChain().add(this);
-		HelpCommand.get().execute(this.sender, this.getArgs(), this.getCommandChain());
+		List<MassiveCommand> commandChain = new ArrayList<MassiveCommand>(this.getCommandChain());
+		commandChain.add(this);
+		
+		HelpCommand.get().execute(this.sender, this.getArgs(), commandChain);
 	}
 	
 	// -------------------------------------------- //
@@ -444,7 +446,7 @@ public class MassiveCommand
 	
 	public String getUseageTemplate(boolean addDesc)
 	{
-		return getUseageTemplate(this.commandChain, addDesc);
+		return getUseageTemplate(this.getCommandChain(), addDesc);
 	}
 	
 	public String getUseageTemplate()
