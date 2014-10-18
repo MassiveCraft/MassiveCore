@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -49,9 +48,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
+import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreEngineMain;
 import com.massivecraft.massivecore.MassiveCoreEngineWorldNameSet;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.util.extractor.Extractor;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayer;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayerName;
@@ -589,34 +592,21 @@ public class MUtil
 	// SIMPLE CONSTRUCTORS
 	// -------------------------------------------- //
 	
-	
 	@SafeVarargs
 	public static <T> List<T> list(T... items)
 	{
-		return new ArrayList<T>(Arrays.asList(items));
+		return new MassiveList<T>(Arrays.asList(items));
 	}
 	
 	@SafeVarargs
 	public static <T> Set<T> set(T... items)
 	{
-		return new LinkedHashSet<T>(Arrays.asList(items));
+		return new MassiveSet<T>(Arrays.asList(items));
 	}
 	
-	@SuppressWarnings("unchecked")
-	@SafeVarargs
-	public static <T> Set<T> treeset(T... items)
+	public static Set<String> treeset(String... items)
 	{
-		Set<T> ret;
-		if (items[0] instanceof String)
-		{
-			ret = (Set<T>) new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		}
-		else
-		{
-			ret = new TreeSet<T>();
-		}
-		ret.addAll(Arrays.asList(items));
-		return ret;
+		return new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get(), Arrays.asList(items));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -750,10 +740,27 @@ public class MUtil
 	
 	public static <T> int compare(Comparable<T> herp, T derp)
 	{
-		if (herp == null && derp == null) return 0;
-		if (herp == null) return -1;
-		if (derp == null) return +1;
+		Integer ret = compareNulls(herp, derp);
+		if (ret != null) return ret;
 		return herp.compareTo(derp);
+	}
+	
+	public static Integer compareNulls(Object one, Object two)
+	{
+		if (one == null && two == null) return 0;
+		if (one == null) return -1;
+		if (two == null) return +1;
+		return null;
+	}
+	
+	public static Integer compareWithList(Object one, Object two, List<? extends Object> list)
+	{
+		int oneIndex = list.indexOf(one);
+		int twoIndex = list.indexOf(two);
+		if (oneIndex != -1 && twoIndex != -1) return oneIndex - twoIndex;
+		if (oneIndex != -1) return -1;
+		if (twoIndex != -1) return +1;
+		return null;
 	}
 	
 	// -------------------------------------------- //

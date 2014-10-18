@@ -50,9 +50,28 @@ public class MassiveCommand
 	
 	public void addSubCommand(MassiveCommand subCommand)
 	{
+		this.addSubCommand(subCommand, this.subCommands.size());
+	}
+	
+	public void addSubCommand(MassiveCommand subCommand, MassiveCommand after)
+	{
+		int index = this.subCommands.indexOf(after);
+		if (index == -1)
+		{
+			index = this.subCommands.size();
+		}
+		else
+		{
+			index++;
+		}
+		this.addSubCommand(subCommand, index);
+	}
+	
+	public void addSubCommand(MassiveCommand subCommand, int index)
+	{
 		subCommand.commandChain.addAll(this.commandChain);
 		subCommand.commandChain.add(this);
-		this.subCommands.add(subCommand);
+		this.subCommands.add(index, subCommand);
 	}
 	
 	// FIELD: aliases

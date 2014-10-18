@@ -15,14 +15,29 @@ import org.bukkit.inventory.PlayerInventory;
 import com.massivecraft.massivecore.adapter.InventoryAdapter;
 import com.massivecraft.massivecore.adapter.ItemStackAdapter;
 import com.massivecraft.massivecore.adapter.JsonElementAdapter;
+import com.massivecraft.massivecore.adapter.MassiveListAdapter;
+import com.massivecraft.massivecore.adapter.MassiveMapAdapter;
+import com.massivecraft.massivecore.adapter.MassiveSetAdapter;
+import com.massivecraft.massivecore.adapter.MassiveTreeSetAdapter;
 import com.massivecraft.massivecore.adapter.ModdedEnumTypeAdapter;
 import com.massivecraft.massivecore.adapter.PlayerInventoryAdapter;
+import com.massivecraft.massivecore.adapter.MassiveTreeMapAdapter;
 import com.massivecraft.massivecore.adapter.UUIDAdapter;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCore;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreBuffer;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreCmdurl;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreStore;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreUsys;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveListDef;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveMapDef;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.collections.MassiveSetDef;
+import com.massivecraft.massivecore.collections.MassiveTreeMap;
+import com.massivecraft.massivecore.collections.MassiveTreeMapDef;
+import com.massivecraft.massivecore.collections.MassiveTreeSet;
+import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.event.EventMassiveCoreUuidUpdate;
 import com.massivecraft.massivecore.fetcher.Fetcher;
 import com.massivecraft.massivecore.fetcher.IdAndName;
@@ -88,6 +103,18 @@ public class MassiveCore extends MassivePlugin
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
 		.registerTypeAdapter(PlayerInventory.class, PlayerInventoryAdapter.get())
 		.registerTypeAdapter(PS.class, PSAdapter.get())
+		
+		.registerTypeAdapter(MassiveList.class, MassiveListAdapter.get())
+		.registerTypeAdapter(MassiveListDef.class, MassiveListAdapter.get())
+		.registerTypeAdapter(MassiveMap.class, MassiveMapAdapter.get())
+		.registerTypeAdapter(MassiveMapDef.class, MassiveMapAdapter.get())
+		.registerTypeAdapter(MassiveSet.class, MassiveSetAdapter.get())
+		.registerTypeAdapter(MassiveSetDef.class, MassiveSetAdapter.get())
+		.registerTypeAdapter(MassiveTreeMap.class, MassiveTreeMapAdapter.get())
+		.registerTypeAdapter(MassiveTreeMapDef.class, MassiveTreeMapAdapter.get())
+		.registerTypeAdapter(MassiveTreeSet.class, MassiveTreeSetAdapter.get())
+		.registerTypeAdapter(MassiveTreeSetDef.class, MassiveTreeSetAdapter.get())
+		
 		.registerTypeAdapterFactory(ModdedEnumTypeAdapter.ENUM_FACTORY);
 	}
 	

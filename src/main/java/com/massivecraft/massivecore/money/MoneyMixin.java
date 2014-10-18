@@ -15,8 +15,10 @@ public interface MoneyMixin
 	// -------------------------------------------- //
 	
 	public String format(double amount);
+	public String format(double amount, boolean includeUnit);
 	public String singular();
 	public String plural();
+	public int fractionalDigits();
 	
 	// -------------------------------------------- //
 	// EXISTANCE

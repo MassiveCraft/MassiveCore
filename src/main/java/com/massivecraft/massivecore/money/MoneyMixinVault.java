@@ -13,6 +13,7 @@ import com.massivecraft.massivecore.util.MUtil;
 
 
 
+
 import net.milkbowl.vault.economy.Economy;
 
 public class MoneyMixinVault extends MoneyMixinAbstract
@@ -63,9 +64,28 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public String format(double amount)
+	public String format(double amount, boolean includeUnit)
 	{
-		return this.economy.format(amount);
+		if (includeUnit)
+		{
+			return this.economy.format(amount);
+		}
+		else
+		{
+			int fractionalDigits = this.fractionalDigits();
+			if (fractionalDigits < 0)
+			{
+				return String.valueOf(amount);
+			}
+			else if (fractionalDigits == 0)
+			{
+				return String.valueOf((int)Math.round(amount));
+			}
+			else
+			{
+				return String.format("%." + fractionalDigits + "f", amount);
+			}
+		}
 	}
 	
 	@Override
@@ -78,6 +98,12 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	public String plural()
 	{
 		return this.economy.currencyNamePlural();
+	}
+	
+	@Override
+	public int fractionalDigits()
+	{
+		return this.economy.fractionalDigits();
 	}
 	
 	// -------------------------------------------- //

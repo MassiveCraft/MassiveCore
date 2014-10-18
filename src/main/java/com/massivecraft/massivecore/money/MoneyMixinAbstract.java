@@ -7,6 +7,15 @@ import java.util.Collection;
 public abstract class MoneyMixinAbstract implements MoneyMixin
 {
 	// -------------------------------------------- //
+	// FORMAT AND NAME
+	// -------------------------------------------- //
+	
+	public String format(double amount)
+	{
+		return this.format(amount, true);
+	}
+	
+	// -------------------------------------------- //
 	// MOVE
 	// -------------------------------------------- //
 	

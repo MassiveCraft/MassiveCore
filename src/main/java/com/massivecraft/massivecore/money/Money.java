@@ -55,6 +55,12 @@ public class Money
 		return mixin.format(amount);
 	}
 	
+	public static String format(double amount, boolean includeUnit)
+	{
+		if (disabled()) return String.valueOf(amount) + (includeUnit ? "$": "");
+		return mixin.format(amount, includeUnit);
+	}
+	
 	public static String singular()
 	{
 		if (disabled()) return "singular";
@@ -65,6 +71,12 @@ public class Money
 	{
 		if (disabled()) return "plural";
 		return mixin.plural();
+	}
+	
+	public static int fractionalDigits()
+	{
+		if (disabled()) return 0;
+		return mixin.fractionalDigits();
 	}
 	
 	// -------------------------------------------- //
