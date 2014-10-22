@@ -100,6 +100,10 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 		return this.economy.currencyNamePlural();
 	}
 	
+	// -------------------------------------------- //
+	// FRACTIONAL DIGITS
+	// -------------------------------------------- //
+	
 	@Override
 	public int fractionalDigits()
 	{
@@ -203,7 +207,5 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 		
 		return true;
 	}
-
-	
 
 }

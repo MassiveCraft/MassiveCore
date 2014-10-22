@@ -16,6 +16,30 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 	}
 	
 	// -------------------------------------------- //
+	// FRACTIONAL DIGITS
+	// -------------------------------------------- //
+	
+	@Override
+	public double prepare(double amount)
+	{
+		final int fractionalDigits = this.fractionalDigits();
+		
+		// -1 means infinite amount of fractional digits
+		if (fractionalDigits < 0) return amount;
+		
+		// 0 means no fractional digits
+		if (fractionalDigits == 0) return Math.ceil(amount);
+		
+		// OK! I'll have to calculate :P
+		int factor = (int) Math.round(Math.pow(10, fractionalDigits));
+		amount = amount * factor;
+		amount = Math.ceil(amount);
+		amount = amount / factor;
+		
+		return amount;
+	}
+	
+	// -------------------------------------------- //
 	// MOVE
 	// -------------------------------------------- //
 	

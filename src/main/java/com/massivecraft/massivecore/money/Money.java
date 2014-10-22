@@ -73,10 +73,20 @@ public class Money
 		return mixin.plural();
 	}
 	
+	// -------------------------------------------- //
+	// FRACTIONAL DIGITS
+	// -------------------------------------------- //
+	
 	public static int fractionalDigits()
 	{
 		if (disabled()) return 0;
 		return mixin.fractionalDigits();
+	}
+	
+	public static double prepare(double amount)
+	{
+		if (disabled()) return amount;
+		return mixin.prepare(amount);
 	}
 	
 	// -------------------------------------------- //
