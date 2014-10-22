@@ -247,24 +247,29 @@ public class MassiveCommand
 			}
 		}
 		
-		// Set Sender Variables
-		this.sender = sender;
-		this.senderIsConsole = true;
-		this.me = null;
-		if (sender instanceof Player)
+		try
 		{
-			this.me = (Player) sender;
-			this.senderIsConsole = false;
+			// Set Sender Variables
+			this.sender = sender;
+			this.senderIsConsole = true;
+			this.me = null;
+			if (sender instanceof Player)
+			{
+				this.me = (Player) sender;
+				this.senderIsConsole = false;
+			}
+			this.fixSenderVars();
+			
+			if ( ! isValidCall(this.sender, this.getArgs())) return;
+			perform();
 		}
-		this.fixSenderVars();
-		
-		if ( ! isValidCall(this.sender, this.getArgs())) return;
-		perform();
-		
-		// Unset Sender Variables
-		this.sender = null;
-		this.me = null;
-		this.unsetSenderVars();
+		finally
+		{
+			// Unset Sender Variables
+			this.sender = null;
+			this.me = null;
+			this.unsetSenderVars();
+		}
 	}
 	
 	public void fixSenderVars() 
