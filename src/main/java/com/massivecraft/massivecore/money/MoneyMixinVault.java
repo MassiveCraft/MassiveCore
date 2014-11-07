@@ -14,8 +14,10 @@ import com.massivecraft.massivecore.util.MUtil;
 
 
 
+
 import net.milkbowl.vault.economy.Economy;
 
+@SuppressWarnings("deprecation")
 public class MoneyMixinVault extends MoneyMixinAbstract
 {
 	// -------------------------------------------- //

@@ -381,26 +381,29 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 				final String key = entry.getKey();
 				final JsonElement value = entry.getValue();
 				
-				switch(key)
+				if (key.equals("world"))
 				{
-					case "world":
-						builder.world(value.getAsString());
-					break;
-					case "x":
-						builder.locationX(value.getAsDouble());
-					break;
-					case "y":
-						builder.locationY(value.getAsDouble());
-					break;
-					case "z":
-						builder.locationZ(value.getAsDouble());
-					break;
-					case "pitch":
-						builder.pitch(value.getAsFloat());
-					break;
-					case "yaw":
-						builder.yaw(value.getAsFloat());
-					break;
+					builder.world(value.getAsString());
+				}
+				else if (key.equals("x"))
+				{
+					builder.locationX(value.getAsDouble());
+				}
+				else if (key.equals("y"))
+				{
+					builder.locationY(value.getAsDouble());
+				}
+				else if (key.equals("z"))
+				{
+					builder.locationZ(value.getAsDouble());
+				}
+				else if (key.equals("pitch"))
+				{
+					builder.pitch(value.getAsFloat());
+				}
+				else if (key.equals("yaw"))
+				{
+					builder.yaw(value.getAsFloat());
 				}
 			}
 		}
@@ -412,50 +415,61 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 				final String key = entry.getKey();
 				final JsonElement value = entry.getValue();
 				
-				switch(key)
+				if (key.equals(NAME_SERIALIZED_WORLD))
 				{
-					case NAME_SERIALIZED_WORLD:
-						builder.world(value.getAsString());
-					break;
-					case NAME_SERIALIZED_BLOCKX:
-						builder.blockX(value.getAsInt());
-					break;
-					case NAME_SERIALIZED_BLOCKY:
-						builder.blockY(value.getAsInt());
-					break;
-					case NAME_SERIALIZED_BLOCKZ:
-						builder.blockZ(value.getAsInt());
-					break;
-					case NAME_SERIALIZED_LOCATIONX:
-						builder.locationX(value.getAsDouble());
-					break;
-					case NAME_SERIALIZED_LOCATIONY:
-						builder.locationY(value.getAsDouble());
-					break;
-					case NAME_SERIALIZED_LOCATIONZ:
-						builder.locationZ(value.getAsDouble());
-					break;
-					case NAME_SERIALIZED_CHUNKX:
-						builder.chunkX(value.getAsInt());
-					break;
-					case NAME_SERIALIZED_CHUNKZ:
-						builder.chunkZ(value.getAsInt());
-					break;
-					case NAME_SERIALIZED_PITCH:
-						builder.pitch(value.getAsFloat());
-					break;
-					case NAME_SERIALIZED_YAW:
-						builder.yaw(value.getAsFloat());
-					break;
-					case NAME_SERIALIZED_VELOCITYX:
-						builder.velocityX(value.getAsDouble());
-					break;
-					case NAME_SERIALIZED_VELOCITYY:
-						builder.velocityY(value.getAsDouble());
-					break;
-					case NAME_SERIALIZED_VELOCITYZ:
-						builder.velocityZ(value.getAsDouble());
-					break;
+					builder.world(value.getAsString());
+				}
+				else if (key.equals(NAME_SERIALIZED_BLOCKX))
+				{
+					builder.blockX(value.getAsInt());
+				}
+				else if (key.equals(NAME_SERIALIZED_BLOCKY))
+				{
+					builder.blockY(value.getAsInt());
+				}
+				else if (key.equals(NAME_SERIALIZED_BLOCKZ))
+				{
+					builder.blockZ(value.getAsInt());
+				}
+				else if (key.equals(NAME_SERIALIZED_LOCATIONX))
+				{
+					builder.locationX(value.getAsDouble());
+				}
+				else if (key.equals(NAME_SERIALIZED_LOCATIONY))
+				{
+					builder.locationY(value.getAsDouble());
+				}
+				else if (key.equals(NAME_SERIALIZED_LOCATIONZ))
+				{
+					builder.locationZ(value.getAsDouble());
+				}
+				else if (key.equals(NAME_SERIALIZED_CHUNKX))
+				{
+					builder.chunkX(value.getAsInt());
+				}
+				else if (key.equals(NAME_SERIALIZED_CHUNKZ))
+				{
+					builder.chunkZ(value.getAsInt());	
+				}
+				else if (key.equals(NAME_SERIALIZED_PITCH))
+				{
+					builder.pitch(value.getAsFloat());
+				}
+				else if (key.equals(NAME_SERIALIZED_YAW))
+				{
+					builder.yaw(value.getAsFloat());
+				}
+				else if (key.equals(NAME_SERIALIZED_VELOCITYX))
+				{
+					builder.velocityX(value.getAsDouble());
+				}
+				else if (key.equals(NAME_SERIALIZED_VELOCITYY))
+				{
+					builder.velocityY(value.getAsDouble());
+				}
+				else if (key.equals(NAME_SERIALIZED_VELOCITYZ))
+				{
+					builder.velocityZ(value.getAsDouble());
 				}
 			}
 		}

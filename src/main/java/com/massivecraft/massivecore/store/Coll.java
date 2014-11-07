@@ -731,7 +731,7 @@ public class Coll<E> implements CollInterface<E>
 			MassiveCore.get().log(Txt.parse("<k>Error: <v>%s", e.getMessage()));
 			MassiveCore.get().log(Txt.parse("<k>Entity: <v>%s", id));
 			MassiveCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
-			throw e;
+			throw new RuntimeException(e);
 		}
 		
 		return !MStore.equal(lastRaw, currentRaw);

@@ -102,11 +102,11 @@ public class IdUtil implements Listener, Runnable
 	public static Set<IdData> getDatas() { return datas; }
 	
 	// Id Index
-	private static Map<String, IdData> idToData = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, IdData> idToData = new ConcurrentSkipListMap<String, IdData>(String.CASE_INSENSITIVE_ORDER);
 	public static Map<String, IdData> getIdToData() { return idToData;  }
 	
 	// Name Index
-	private static Map<String, IdData> nameToData = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, IdData> nameToData = new ConcurrentSkipListMap<String, IdData>(String.CASE_INSENSITIVE_ORDER);
 	public static Map<String, IdData> getNameToData() { return nameToData; }
 	
 	// -------------------------------------------- //
@@ -114,17 +114,17 @@ public class IdUtil implements Listener, Runnable
 	// -------------------------------------------- //
 	// Used for chat tab completion, argument readers, etc.
 	
-	private static Set<String> onlineIds = new ConcurrentSkipListSet<>(String.CASE_INSENSITIVE_ORDER);
+	private static Set<String> onlineIds = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	public static Set<String> getOnlineIds() { return Collections.unmodifiableSet(onlineIds); }
 	
-	private static Set<String> onlineNames = new ConcurrentSkipListSet<>(String.CASE_INSENSITIVE_ORDER);
+	private static Set<String> onlineNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	public static Set<String> getOnlineNames() { return Collections.unmodifiableSet(onlineNames); }
 	
 	
-	private static Set<String> allIds = new ConcurrentSkipListSet<>(String.CASE_INSENSITIVE_ORDER);
+	private static Set<String> allIds = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	public static Set<String> getAllIds() { return Collections.unmodifiableSet(allIds); }
 	
-	private static Set<String> allNames = new ConcurrentSkipListSet<>(String.CASE_INSENSITIVE_ORDER);
+	private static Set<String> allNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	public static Set<String> getAllNames() { return Collections.unmodifiableSet(allNames); }
 	
 	// -------------------------------------------- //
@@ -133,8 +133,8 @@ public class IdUtil implements Listener, Runnable
 	// For registering extra custom CommandSender implementations.
 	// It's assumed that the getName() returns the name which is also the id.
 	
-	private static Map<String, CommandSender> registryIdToSender = new ConcurrentHashMap<>();
-	private static Map<CommandSender, String> registrySenderToId = new ConcurrentHashMap<>();
+	private static Map<String, CommandSender> registryIdToSender = new ConcurrentHashMap<String, CommandSender>();
+	private static Map<CommandSender, String> registrySenderToId = new ConcurrentHashMap<CommandSender, String>();
 	
 	public static void register(CommandSender sender)
 	{
