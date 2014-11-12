@@ -53,7 +53,14 @@ public class MassiveCommand
 		this.addSubCommand(subCommand, this.subCommands.size());
 	}
 	
-	public void addSubCommand(MassiveCommand subCommand, MassiveCommand after)
+	public void addSubCommand(MassiveCommand subCommand, int index)
+	{
+		subCommand.commandChain.addAll(this.commandChain);
+		subCommand.commandChain.add(this);
+		this.subCommands.add(index, subCommand);
+	}
+	
+	public void addSubCommandAfter(MassiveCommand subCommand, MassiveCommand after)
 	{
 		int index = this.subCommands.indexOf(after);
 		if (index == -1)
@@ -67,11 +74,19 @@ public class MassiveCommand
 		this.addSubCommand(subCommand, index);
 	}
 	
-	public void addSubCommand(MassiveCommand subCommand, int index)
+	public int removeSubCommand(MassiveCommand subCommand)
 	{
-		subCommand.commandChain.addAll(this.commandChain);
-		subCommand.commandChain.add(this);
-		this.subCommands.add(index, subCommand);
+		int index = this.subCommands.indexOf(subCommand);
+		this.subCommands.remove(index);
+		return index;
+	}
+	
+	public int replaceSubCommand(MassiveCommand subCommand, MassiveCommand replaced)
+	{
+		int index = this.removeSubCommand(replaced);
+		if (index < 0) return index;
+		this.addSubCommand(subCommand, index);
+		return index;
 	}
 	
 	// FIELD: aliases
