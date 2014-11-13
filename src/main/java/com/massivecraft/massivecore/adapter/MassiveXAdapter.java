@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
+import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Types;
 
 /**
  * This is the abstract adapter for all "Massive structures".
@@ -28,8 +30,10 @@ public abstract class MassiveXAdapter<T> implements JsonDeserializer<T>, JsonSer
 	@Override
 	public JsonElement serialize(T src, Type type, JsonSerializationContext context)
 	{
+		ParameterizedType ptype = (ParameterizedType) type;
+		
 		// Calculate def
-		Class<?> clazz = getClazz(type);
+		Class<?> clazz = getClazz(ptype);
 		boolean def = Def.class.isAssignableFrom(clazz);
 		
 		// If this is a Def ...
@@ -46,7 +50,7 @@ public abstract class MassiveXAdapter<T> implements JsonDeserializer<T>, JsonSer
 			{
 				// ... then serialize it as if it were the regular Java collection!
 				// SUPER TYPE x2 EXAMPLE: MassiveListDef --> MassiveList --> ArrayList
-				return context.serialize(src, getSuperType(getSuperType(type)));
+				return context.serialize(src, getSuperType(getSuperType(ptype)));
 			}
 		}
 		// If this a regular Massive structure and not a Def ...
@@ -54,15 +58,25 @@ public abstract class MassiveXAdapter<T> implements JsonDeserializer<T>, JsonSer
 		{
 			// ... then serialize it as if it were the regular java collection!
 			// SUPER TYPE x1 EXAMPLE: MassiveList --> ArrayList
-			return context.serialize(src, getSuperType(type));
+			return context.serialize(src, getSuperType(ptype));
 		}
 	}
 	
 	@Override
 	public T deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException
 	{
+		ParameterizedType ptype = (ParameterizedType) type;
+		
+		/*// TODO: Temporary Debug
+		if (MUtil.getStackTraceString().contains("com.massivecraft.factions.entity.FactionColl.init"))
+		{
+			typeDebug(ptype);
+			typeDebug(getSuperType(ptype));
+			typeDebug(getSuperType(getSuperType(ptype)));
+		}*/
+		
 		// Calculate def
-		Class<?> clazz = getClazz(type);
+		Class<?> clazz = getClazz(ptype);
 		boolean def = Def.class.isAssignableFrom(clazz);
 		
 		// If this is a Def ...
@@ -70,7 +84,7 @@ public abstract class MassiveXAdapter<T> implements JsonDeserializer<T>, JsonSer
 		{
 			// ... then deserialize it as if it were the regular Java collection!
 			// SUPER TYPE x2 EXAMPLE: MassiveListDef --> MassiveList --> ArrayList
-			Object parent = context.deserialize(json, getSuperType(getSuperType(type)));
+			Object parent = context.deserialize(json, getSuperType(getSuperType(ptype)));
 			return create(parent, def, json, type, context);
 		}
 		// If this a regular Massive structure and not a Def ...
@@ -87,11 +101,24 @@ public abstract class MassiveXAdapter<T> implements JsonDeserializer<T>, JsonSer
 			{
 				// ... then deserialize it as if it were the regular java collection!
 				// SUPER TYPE x1 EXAMPLE: MassiveList --> ArrayList
-				Object parent = context.deserialize(json, getSuperType(type));
+				Object parent = context.deserialize(json, getSuperType(ptype));
 				return create(parent, def, json, type, context);
 			}
 		}
 	}
+	
+	/*
+	public static void typeDebug(ParameterizedType ptype)
+	{
+		System.out.println("=== Type Debug Start ===");
+		
+		System.out.println(ptype.toString());
+		
+		ParameterizedType parameterizedType = (ParameterizedType) ptype;
+		System.out.println("Actual Type Arguments: " + Txt.implode(parameterizedType.getActualTypeArguments(), ", "));
+		
+		System.out.println("=== Type Debug End ===");
+	}*/
 	
 	// -------------------------------------------- //
 	// ABSTRACT
@@ -103,18 +130,38 @@ public abstract class MassiveXAdapter<T> implements JsonDeserializer<T>, JsonSer
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static Class<?> getClazz(Type type)
+	public static Class<?> getClazz(ParameterizedType ptype)
 	{
-		ParameterizedType parameterizedType = (ParameterizedType) type;
-		Class<?> clazz = (Class<?>)parameterizedType.getRawType();
-		return clazz;
+		return (Class<?>)ptype.getRawType();
 	}
 	
-	public static Type getSuperType(Type type)
+	public static ParameterizedType getSuperType(ParameterizedType ptype)
 	{
-		Class<?> clazz = getClazz(type);
-		Type superclazz = clazz.getGenericSuperclass();
-		return superclazz;
+		// ------- SELF -------
+		
+		// Get args
+		Type[] args = ptype.getActualTypeArguments();
+		
+		// Get clazz
+		Class<?> clazz = (Class<?>)ptype.getRawType();
+		
+		// ------- SUPER -------
+		
+		// Get stype
+		ParameterizedType sptype = (ParameterizedType) clazz.getGenericSuperclass();
+		
+		// Get sargs
+		// NOTE: These will be broken! we can however look at the count!
+		Type[] sargs = sptype.getActualTypeArguments();
+		
+		// Get sclazz
+		Class<?> sclazz = (Class<?>)sptype.getRawType();
+		
+		// ------- CONSTRUCTED -------
+		
+		Type[] typeArguments = Arrays.copyOfRange(args, 0, sargs.length);
+		
+		return $Gson$Types.newParameterizedTypeWithOwner(null, sclazz, typeArguments);
 	}
 	
 	public static Object getNewArgumentInstance(Type type, int index)
