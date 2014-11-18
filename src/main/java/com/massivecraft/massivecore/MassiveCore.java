@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore;
 
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -39,8 +38,6 @@ import com.massivecraft.massivecore.collections.MassiveTreeMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.event.EventMassiveCoreUuidUpdate;
-import com.massivecraft.massivecore.fetcher.Fetcher;
-import com.massivecraft.massivecore.fetcher.IdAndName;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.mixin.EngineTeleportMixinCause;
 import com.massivecraft.massivecore.ps.PS;
@@ -119,8 +116,6 @@ public class MassiveCore extends MassivePlugin
 	}
 	
 	public static String getServerId() { return ConfServer.serverid; }
-	//private static Db<?> db;
-	//public static Db<?> getDb() { return db; }
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -159,20 +154,9 @@ public class MassiveCore extends MassivePlugin
 	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public boolean doderp = false;
-	
 	@Override
 	public void onEnable()
 	{
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				doderp = true;
-			}
-		}, 20);
-		
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		// Note this one must be before preEnable. dooh.
 		// TODO: Create something like "deinit all" (perhaps a forloop) to readd this.
@@ -186,9 +170,6 @@ public class MassiveCore extends MassivePlugin
 		
 		// Load Server Config
 		ConfServer.get().load();
-		
-		// Setup the default database
-		//db = MStore.getDb(ConfServer.dburi);
 		
 		// Setup IdUtil
 		IdUtil.setup();
@@ -235,107 +216,24 @@ public class MassiveCore extends MassivePlugin
 		MassiveCoreTaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, MassiveCoreTaskDeleteFiles.get());
 		
-		// test();
-		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				log(Txt.parse("<a>============================================"));
-				log(Txt.parse("<i>We are preparing for Mojangs switch to UUIDs."));
-				log(Txt.parse("<i>Learn more at: <aqua>https://forums.bukkit.org/threads/psa-the-switch-to-uuids-potential-plugin-server-breakage.250915/"));
-				
-				// TODO: NOTE!!! IMPORTANT EVEN LATER!
 				IdUtil.loadDatas();
 				
-				log(Txt.parse("<i>Now updating database for plugins that are ready ..."));
+				log(Txt.parse("<i>Upgrading from player name to player uuid..."));
 				
 				EventMassiveCoreUuidUpdate event = new EventMassiveCoreUuidUpdate();
 				event.run();
 				
 				log(Txt.parse("<g> ... done!"));
 				log(Txt.parse("<i>(database saving will now commence which might lock the server for a while)"));
-				log(Txt.parse("<a>============================================"));
 			}
 		});
 		
-		
 		this.postEnable();
-	}
-	
-	public void test()
-	{
-		log("===========================");
-		log("===========================");
-		log("===========================");
-		
-		try
-		{
-			// whatever you feel like
-			List<Object> objects = new ArrayList<Object>();
-			
-			//objects.add("Cayorion");
-			objects.add("a2cce16b-9494-45ff-b5ff-0362ca687d4e");
-			
-			//objects.add("a2cce16b-9494-45ff-b5ff-0362ca687d4a");
-			
-			objects.add("hnnn");
-			objects.add("hnnnbsarc");
-			
-			objects.add("NOT EVEN LEGIT");
-			
-			objects.add("MonMarty");
-			objects.add("Thortuna");
-			objects.add("yendor46");
-			objects.add("Gethelp");
-			objects.add("Th3_Drunk_Monk");
-			objects.add("Ryciera");
-			objects.add("Jamescl");
-			objects.add("spectec");
-			objects.add("Tom1804");
-			objects.add("imboring56");
-			objects.add("BigBellyBuddah");
-			objects.add("MrHappyTinkles");
-			objects.add("BabaManga");
-			objects.add("_Omnomivore_");
-			objects.add("Cielian");
-			objects.add("BboyMVB");
-			objects.add("MrWackeo");
-			objects.add("Kellock93");
-			objects.add("Feykronos");
-			objects.add("Unluvable");
-			objects.add("DanyWood");
-			objects.add("jadex224");
-			objects.add("MinecraftSpartan");
-			objects.add("ravenwolfthorn");
-			objects.add("ELtongo");
-			objects.add("Azas");
-			objects.add("TazeHD");
-			objects.add("BillyA835");
-			objects.add("duhsigil");
-			objects.add("Sahrotaar");
-			objects.add("Alj23");
-			
-			Set<IdAndName> idAndNames = Fetcher.fetch(objects);
-			
-			// Map<String, UUID> map = PlayerUtil.getPlayerIds(MUtil.list("Cayorion", "MonMarty", "Thortuna", "yendor46", "Gethelp", "Th3_Drunk_Monk", "Ryciera", "Jamescl", "spectec", "Tom1804", "imboring56", "BigBellyBuddah", "MrHappyTinkles", "BabaManga", "_Omnomivore_", "Cielian", "BboyMVB", "MrWackeo", "Kellock93", "Feykronos", "Unluvable", "DanyWood", "jadex224", "MinecraftSpartan", "ravenwolfthorn", "ELtongo", "Azas", "TazeHD", "BillyA835", "duhsigil", "Sahrotaar", "Alj23"));
-			
-			for (IdAndName idAndName: idAndNames)
-			{
-				String name = idAndName.getName();
-				UUID id = idAndName.getId();
-				log(Txt.parse("<k>%s <v>%s", name, id));
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		log("===========================");
-		log("===========================");
-		log("===========================");
 	}
 	
 	@Override
