@@ -10,6 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.integration.IntegrationGlue;
 import com.massivecraft.massivecore.integration.Integration;
 import com.massivecraft.massivecore.store.Coll;
@@ -77,7 +78,10 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 	@Override
 	public void onDisable()
 	{
-		// Collection shutdowns.
+		// Commands
+		MassiveCommand.unregister(this);
+		
+		// Collections
 		for (Coll<?> coll : Coll.getInstances())
 		{
 			if (coll.getPlugin() != this) continue;

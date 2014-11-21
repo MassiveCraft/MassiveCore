@@ -193,19 +193,19 @@ public class MassiveCore extends MassivePlugin
 		
 		// Register commands
 		this.outerCmdMassiveCore = new CmdMassiveCore() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCore; } };
-		this.outerCmdMassiveCore.register();
+		this.outerCmdMassiveCore.register(this);
 		
 		this.outerCmdMassiveCoreUsys = new CmdMassiveCoreUsys() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreUsys; } };
-		this.outerCmdMassiveCoreUsys.register();
+		this.outerCmdMassiveCoreUsys.register(this);
 		
 		this.outerCmdMassiveCoreStore = new CmdMassiveCoreStore() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreStore; } };
-		this.outerCmdMassiveCoreStore.register();
+		this.outerCmdMassiveCoreStore.register(this);
 		
 		this.outerCmdMassiveCoreBuffer = new CmdMassiveCoreBuffer() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreBuffer; } };
-		this.outerCmdMassiveCoreBuffer.register();
+		this.outerCmdMassiveCoreBuffer.register(this);
 		
 		this.outerCmdMassiveCoreCmdurl = new CmdMassiveCoreCmdurl() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreCmdurl; } };
-		this.outerCmdMassiveCoreCmdurl.register();
+		this.outerCmdMassiveCoreCmdurl.register(this);
 		
 		// Integration
 		this.integrate(

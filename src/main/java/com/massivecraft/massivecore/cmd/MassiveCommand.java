@@ -5,8 +5,10 @@ import java.util.Map.Entry;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Lang;
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 import com.massivecraft.massivecore.cmd.arg.ArgResult;
 import com.massivecraft.massivecore.cmd.req.Req;
@@ -33,10 +35,56 @@ public class MassiveCommand
 	// This task unregisters /all/ registered MCommands and then register them all again.
 	// When registering again we use the fresh and current aliases.
 	
-	private static transient Set<MassiveCommand> registeredCommands = new LinkedHashSet<MassiveCommand>();
-	public static Set<MassiveCommand> getRegisteredCommands() { return registeredCommands; }
-	public void register() { getRegisteredCommands().add(this); }
-	public void unregister() { getRegisteredCommands().remove(this); }
+	private static transient Map<MassiveCommand, Plugin> registry = new LinkedHashMap<MassiveCommand, Plugin>();
+	
+	public static Set<MassiveCommand> getRegisteredCommands()
+	{
+		return registry.keySet();
+	}
+	
+	public static Map<MassiveCommand, Plugin> getRegistry()
+	{
+		return registry;
+	}
+	
+	public static void unregister(Plugin plugin)
+	{
+		Iterator<Entry<MassiveCommand, Plugin>> iter = registry.entrySet().iterator();
+		while (iter.hasNext())
+		{
+			Entry<MassiveCommand, Plugin> entry = iter.next();
+			if (plugin.equals(entry.getValue()))
+			{
+				iter.remove();
+			}
+		}
+	}
+	
+	@Deprecated
+	public void register()
+	{
+		this.register(MassiveCore.get());
+	}
+	
+	public Plugin register(Plugin plugin)
+	{
+		return registry.put(this, plugin);
+	}
+	
+	public void unregister()
+	{
+		registry.remove(this);
+	}
+	
+	public boolean isRegistered()
+	{
+		return registry.containsKey(this);
+	}
+	
+	public Plugin getRegisteredPlugin()
+	{
+		return registry.get(this);
+	}
 	
 	// -------------------------------------------- //
 	// COMMAND BEHAVIOR
