@@ -848,7 +848,11 @@ public class IdUtil implements Listener, Runnable
 		synchronized (CACHEFILE_LOCK)
 		{
 			String content = DiscUtil.readCatch(CACHEFILE);
+			
 			if (content == null) return new HashSet<IdData>();
+			content = content.trim();
+			if (content.length() == 0) return new HashSet<IdData>();
+			
 			Set<IdData> ret = MassiveCore.gson.fromJson(content, CACHEFILE_TYPE);
 			return ret;
 		}
