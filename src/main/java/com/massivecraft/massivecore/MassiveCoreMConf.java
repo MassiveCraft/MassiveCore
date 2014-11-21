@@ -24,7 +24,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// FIELDS
 	// -------------------------------------------- //
 	
-	public List<String> aliasesOuterMassiveCore = MUtil.list("massivecore", "mcore", "massivec", "mc");
+	public List<String> aliasesOuterMassiveCore = MUtil.list("massivecore", "mcore");
 	
 	public List<String> aliasesOuterMassiveCoreUsys = MUtil.list("usys");
 	
