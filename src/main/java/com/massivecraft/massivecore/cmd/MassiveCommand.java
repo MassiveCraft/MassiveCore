@@ -587,11 +587,7 @@ public class MassiveCommand
 	
 	public boolean argIsSet(int idx)
 	{
-		if (this.args.size() < idx+1)
-		{
-			return false;
-		}
-		return true;
+		return ! (this.args.size() < idx+1);
 	}
 	
 	// arg
