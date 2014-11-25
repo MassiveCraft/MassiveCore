@@ -1,15 +1,13 @@
 package com.massivecraft.massivecore.mixin;
 
-import java.util.List;
+import java.lang.reflect.Constructor;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.PlayerInventory;
+
+import com.massivecraft.massivecore.particleeffect.ReflectionUtils;
 
 public class InventoryMixinDefault extends InventoryMixinAbstract
 {	
@@ -21,22 +19,49 @@ public class InventoryMixinDefault extends InventoryMixinAbstract
 	public static InventoryMixinDefault get() { return i; }
 
 	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	public static Class<?> playerInventoryClass;
+	public static Class<?> entityHumanClass;
+	public static Constructor<?> playerInventoryConstructor;
+	public static Class<?> craftInventoryPlayerClass;
+	public static Constructor<?> craftInventoryPlayerConstructor;
+	
+	static
+	{
+		try
+		{
+			playerInventoryClass = ReflectionUtils.PackageType.MINECRAFT_SERVER.getClass("PlayerInventory");
+			entityHumanClass = ReflectionUtils.PackageType.MINECRAFT_SERVER.getClass("EntityHuman");
+			playerInventoryConstructor = ReflectionUtils.getConstructor(playerInventoryClass, entityHumanClass);
+			craftInventoryPlayerClass = ReflectionUtils.PackageType.CRAFTBUKKIT_INVENTORY.getClass("CraftInventoryPlayer");
+			craftInventoryPlayerConstructor = ReflectionUtils.getConstructor(craftInventoryPlayerClass, playerInventoryClass);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
 	public PlayerInventory createPlayerInventory()
 	{
-		List<World> worlds = Bukkit.getWorlds();
-		World world = worlds.get(0);
-		
-		Location location = world.getSpawnLocation().clone();
-		location.setY(999);
-		
-		Player player = (Player) world.spawnEntity(location, EntityType.PLAYER);
-		PlayerInventory ret = player.getInventory();
-		player.remove();
-		return ret;
+		try
+		{
+			Object playerInventory = playerInventoryConstructor.newInstance(new Object[]{null});
+			Object craftInventoryPlayer = craftInventoryPlayerConstructor.newInstance(playerInventory);
+			return (PlayerInventory)craftInventoryPlayer;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
