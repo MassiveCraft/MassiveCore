@@ -33,15 +33,15 @@ public class ARGameMode extends ARAbstractSelect<GameMode>
 		
 		arg = arg.toLowerCase();
 		
-		if (arg.startsWith("s"))
+		if (arg.startsWith("s") || arg.equals("0"))
 		{
 			ret = GameMode.SURVIVAL;
 		}
-		else if (arg.startsWith("c"))
+		else if (arg.startsWith("c") || arg.equals("1"))
 		{
 			ret = GameMode.CREATIVE;
 		}
-		else if (arg.startsWith("a"))
+		else if (arg.startsWith("a") || arg.equals("2"))
 		{
 			ret = GameMode.ADVENTURE;
 		}
