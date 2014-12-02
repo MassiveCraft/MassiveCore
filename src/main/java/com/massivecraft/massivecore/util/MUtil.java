@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -29,7 +30,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Arrow;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -107,6 +107,40 @@ public class MUtil
 		PrintWriter pw = new PrintWriter(sw);
 		new Throwable().printStackTrace(pw);
 		return sw.toString();
+	}
+	
+	// -------------------------------------------- //
+	// COLOR INT CODE
+	// -------------------------------------------- //
+	
+	public static int getCode(ChatColor chatColor)
+	{
+		switch (chatColor)
+		{
+			case BLACK: return 0x00;
+			case DARK_BLUE: return 0x1;
+			case DARK_GREEN: return 0x2;
+			case DARK_AQUA: return 0x3;
+			case DARK_RED: return 0x4;
+			case DARK_PURPLE: return 0x5;
+			case GOLD: return 0x6;
+			case GRAY: return 0x7;
+			case DARK_GRAY: return 0x8;
+			case BLUE: return 0x9;
+			case GREEN: return 0xA;
+			case AQUA: return 0xB;
+			case RED: return 0xC;
+			case LIGHT_PURPLE: return 0xD;
+			case YELLOW: return 0xE;
+			case WHITE: return 0xF;
+			case MAGIC: return 0x10;
+			case BOLD: return 0x11;
+			case STRIKETHROUGH: return 0x12;
+			case UNDERLINE: return 0x13;
+			case ITALIC: return 0x14;
+			case RESET: return 0x15;
+		}
+		throw new IllegalArgumentException("The chat color " + chatColor.name() + " is not yet supported!");
 	}
 	
 	// -------------------------------------------- //
