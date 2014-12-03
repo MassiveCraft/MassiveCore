@@ -137,22 +137,19 @@ public class MUtil
 		try
 		{
 			Object playersObject = methodGetOnlinePlayers.invoke(null);
-			if (playersObject instanceof Player[])
+			if (playersObject instanceof Collection<?>)
 			{
-				System.out.println(1);
-				Player[] playersArray = (Player[])playersObject;
-				return Arrays.asList(playersArray);
-			}
-			else if (playersObject instanceof Collection<?>)
-			{
-				System.out.println(2);
 				@SuppressWarnings("unchecked")
 				Collection<? extends Player> playersCollection = (Collection<? extends Player>)playersObject;
 				return playersCollection;
 			}
+			else if (playersObject instanceof Player[])
+			{
+				Player[] playersArray = (Player[])playersObject;
+				return Arrays.asList(playersArray);
+			}
 			else
 			{
-				System.out.println(3);
 				throw new RuntimeException("Unknown return type for getOnlinePlayers using reflection.");
 			}
 		}
