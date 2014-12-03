@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PacketType;
+import com.massivecraft.massivecore.util.MUtil;
 
 /**
  * <b>ParticleEffect Library</b>
@@ -721,7 +721,7 @@ public enum ParticleEffect {
 			}
 			String worldName = center.getWorld().getName();
 			double squared = range * range;
-			for (Player player : Bukkit.getOnlinePlayers()) {
+			for (Player player : MUtil.getOnlinePlayers()) {
 				if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > squared) {
 					continue;
 				}

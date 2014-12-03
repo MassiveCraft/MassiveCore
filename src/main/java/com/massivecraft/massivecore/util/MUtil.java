@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -67,6 +69,101 @@ import com.massivecraft.massivecore.util.extractor.ExtractorWorldName;
 
 public class MUtil
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	private static Method methodGetOnlinePlayers;
+	
+	static
+	{
+		methodGetOnlinePlayers = getMethodGetOnlinePlayers();
+	}
+	
+	// -------------------------------------------- //
+	// GET ONLINE PLAYERS
+	// -------------------------------------------- //
+	// It seems we can not always trust the Bukkit.getOnlinePlayers() method.
+	// Due to compilation issue this method might not exist in the form we compiled against.
+	// Spigot 1.8 and the 1.7 Bukkit might have been compiled slightly differently resulting in this issue.
+	// Issue Example: https://github.com/MassiveCraft/MassiveCore/issues/192
+	
+	public static Method getMethodGetOnlinePlayers()
+	{
+		Method ret = null;
+		
+		try
+		{
+			for (Method method : Bukkit.class.getDeclaredMethods())
+			{
+				// The method name must be getOnlinePlayers ...
+				if ( ! method.getName().equals("getOnlinePlayers")) continue;
+				
+				// ... if we find such a method it's better than nothing ...
+				if (ret == null) ret = method;
+				
+				// ... but if the method additionally returns a collection ...
+				if ( ! method.getReturnType().isAssignableFrom(Collection.class)) continue;
+				
+				// ... that is preferable ...
+				ret = method;
+				
+				// ... and we need not look any further.
+				break;
+			}
+			
+			ret.setAccessible(true);
+		}
+		catch (Exception e)
+		{
+			// If we fail we do so silently.
+			// This method is probably almost never going to be used anyways.
+		}
+		
+		return ret;
+	}
+	
+	public static Collection<? extends Player> getOnlinePlayers()
+	{
+		try
+		{
+			return Bukkit.getOnlinePlayers();
+		}
+		catch (Exception e)
+		{
+			// We probably just caught a NoSuchMethodError.
+		}
+		
+		try
+		{
+			Object playersObject = methodGetOnlinePlayers.invoke(null);
+			if (playersObject instanceof Player[])
+			{
+				System.out.println(1);
+				Player[] playersArray = (Player[])playersObject;
+				return Arrays.asList(playersArray);
+			}
+			else if (playersObject instanceof Collection<?>)
+			{
+				System.out.println(2);
+				@SuppressWarnings("unchecked")
+				Collection<? extends Player> playersCollection = (Collection<? extends Player>)playersObject;
+				return playersCollection;
+			}
+			else
+			{
+				System.out.println(3);
+				throw new RuntimeException("Unknown return type for getOnlinePlayers using reflection.");
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	// -------------------------------------------- //
 	// IS VALID PLAYER NAME
 	// -------------------------------------------- //

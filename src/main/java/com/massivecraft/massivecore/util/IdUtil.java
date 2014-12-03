@@ -2,7 +2,6 @@ package com.massivecraft.massivecore.util;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -181,7 +180,7 @@ public class IdUtil implements Listener, Runnable
 		Set<CommandSender> ret = new LinkedHashSet<CommandSender>();
 		
 		// Add Online Players
-		ret.addAll(Arrays.asList(Bukkit.getOnlinePlayers()));
+		ret.addAll(MUtil.getOnlinePlayers());
 		
 		// Add Console
 		ret.add(getConsole());
@@ -479,7 +478,6 @@ public class IdUtil implements Listener, Runnable
 		return getAsPlayer(getSender(senderObject));
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static CommandSender getSender(Object senderObject)
 	{
 		// Null Return
@@ -875,7 +873,7 @@ public class IdUtil implements Listener, Runnable
 		
 		long millis = System.currentTimeMillis();
 		
-		for (Player player : Bukkit.getOnlinePlayers())
+		for (Player player : MUtil.getOnlinePlayers())
 		{
 			String id = getId(player);
 			if (id == null) throw new NullPointerException("id");

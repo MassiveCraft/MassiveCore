@@ -54,7 +54,7 @@ public class PlayerUtil extends EngineAbstract
 		idToArmSwingEvent.clear();
 		
 		joinedPlayerIds.clear();
-		for (Player player : Bukkit.getOnlinePlayers())
+		for (Player player : MUtil.getOnlinePlayers())
 		{
 			joinedPlayerIds.add(player.getUniqueId());
 		}

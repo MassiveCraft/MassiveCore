@@ -24,7 +24,6 @@ public class InventoryUtil
 	// UPDATES
 	// -------------------------------------------- //
 	
-	@SuppressWarnings("deprecation")
 	public static void update(HumanEntity human)
 	{
 		if (!(human instanceof Player)) return;
