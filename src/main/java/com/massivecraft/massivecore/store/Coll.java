@@ -373,7 +373,9 @@ public class Coll<E> implements CollInterface<E>
 		if (oid == null) throw new NullPointerException("oid");
 		
 		String id = this.fixId(oid);
-		E e = this.get(id);
+		E e = this.get(id, false);
+		if (e == null) return null;
+		
 		this.detach(e, id);
 		return e;
 	}
