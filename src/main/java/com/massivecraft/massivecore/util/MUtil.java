@@ -129,7 +129,7 @@ public class MUtil
 		{
 			return Bukkit.getOnlinePlayers();
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			// We probably just caught a NoSuchMethodError.
 		}
