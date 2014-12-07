@@ -7,14 +7,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.massivecraft.massivecore.util.MUtil;
 
-
-
-
-
-
-
-
-
 import net.milkbowl.vault.economy.Economy;
 
 @SuppressWarnings("deprecation")
