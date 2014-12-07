@@ -29,13 +29,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Arrow;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -426,6 +426,79 @@ public class MUtil
 		return isUnarmed((EntityDamageByEntityEvent)event);
 	}
 	
+	public static boolean isAxe(BlockBreakEvent event)
+	{
+		return isAxe(event.getPlayer().getItemInHand());
+	}
+	
+	// Pickaxe
+	
+	public static Set<Material> PICKAXE_MATERIALS = EnumSet.of(
+		Material.WOOD_PICKAXE,
+		Material.STONE_PICKAXE,
+		Material.IRON_PICKAXE,
+		Material.GOLD_PICKAXE,
+		Material.DIAMOND_PICKAXE
+	);
+		
+	public static boolean isPickaxe(Material material)
+	{
+		return PICKAXE_MATERIALS.contains(material);
+	}
+	
+	public static boolean isPickaxe(ItemStack item)
+	{
+		if (item == null) return false;
+		return isPickaxe(item.getType());
+	}
+		
+	public static boolean isPickaxe(Entity entity)
+	{
+		if (entity == null) return false;
+		if (!(entity instanceof LivingEntity)) return false;
+		LivingEntity lentity = (LivingEntity)entity;
+		return isPickaxe(lentity.getEquipment().getItemInHand());
+	}
+		
+	public static boolean isPickaxe(BlockBreakEvent event)
+	{
+		return isPickaxe(event.getPlayer().getItemInHand());
+	}
+	
+	// Spade
+	
+	public static Set<Material> SPADE_MATERIALS = EnumSet.of(
+		Material.WOOD_SPADE,
+		Material.STONE_SPADE,
+		Material.IRON_SPADE,
+		Material.GOLD_SPADE,
+		Material.DIAMOND_SPADE
+	);
+			
+	public static boolean isSpade(Material material)
+	{
+		return SPADE_MATERIALS.contains(material);
+	}
+		
+	public static boolean isSpade(ItemStack item)
+	{
+		if (item == null) return false;
+		return isSpade(item.getType());
+	}
+			
+	public static boolean isSpade(Entity entity)
+	{
+		if (entity == null) return false;
+		if (!(entity instanceof LivingEntity)) return false;
+		LivingEntity lentity = (LivingEntity)entity;
+		return isSpade(lentity.getEquipment().getItemInHand());
+	}
+			
+	public static boolean isSpade(BlockBreakEvent event)
+	{
+		return isSpade(event.getPlayer().getItemInHand());
+	}
+		
 	// -------------------------------------------- //
 	// EVENT DERP
 	// -------------------------------------------- //
