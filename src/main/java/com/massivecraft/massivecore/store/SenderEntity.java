@@ -25,12 +25,16 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	protected transient boolean senderInitiated = false;
 	public CommandSender getSender()
 	{
-		if ( ! this.senderInitiated)
-		{
-			this.sender = IdUtil.getSender(this.getId());
-			this.senderInitiated = true;
-		}
+		if ( ! this.senderInitiated) this.initiateSender();
 		return this.sender;
+	}
+	
+	public void initiateSender()
+	{
+		String id = this.getId();
+		if (id == null) return;
+		this.sender = IdUtil.getSender(id);
+		this.senderInitiated = true;
 	}
 
 	public String getName()

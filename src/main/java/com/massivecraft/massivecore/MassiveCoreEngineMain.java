@@ -16,7 +16,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -174,6 +173,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	// Note: For now we update both names and ids.
 	// That way collections in plugins that haven't yet undergone update will still work.
 	
+	// This method sets the sender reference to what you decide.
 	public static void setSenderReferences(CommandSender sender, CommandSender reference)
 	{
 		String id = IdUtil.getId(sender);
@@ -189,35 +189,67 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		}
 	}
 	
+	// This method sets the sender reference based on it's online state.
+	public static void setSenderReferences(CommandSender sender)
+	{
+		CommandSender reference = sender;
+		if (sender instanceof Player)
+		{
+			Player player = (Player)sender;
+			if ( ! player.isOnline())
+			{
+				reference = null;
+			}
+		}
+		
+		setSenderReferences(sender, reference);
+	}
+	
+	// Same as above but next tick.
+	public static void setSenderReferencesSoon(final CommandSender sender)
+	{
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				setSenderReferences(sender);
+			}
+		});
+	}
+	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void setSenderReferencesLoginLowest(PlayerLoginEvent event)
 	{
-		setSenderReferences(event.getPlayer(), event.getPlayer());
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void setSenderReferencesLoginMonitor(PlayerLoginEvent event)
-	{
-		if (event.getResult() == Result.ALLOWED) return;
+		final Player player = event.getPlayer();
 		
-		setSenderReferences(event.getPlayer(), null);
+		// We set the reference at LOWEST so that it's present during this event.
+		setSenderReferences(player, player);
+		
+		// And the next tick we update the reference based on it's online state.
+		// Not all players succeed in logging in. They may for example be banned.
+		setSenderReferencesSoon(player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void setSenderReferencesQuitMonitor(PlayerQuitEvent event)
 	{
-		setSenderReferences(event.getPlayer(), null);
+		// PlayerQuitEvents are /probably/ trustworthy.
+		// We check ourselves the next tick just to be on the safe side.
+		setSenderReferencesSoon(event.getPlayer());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void setSenderReferencesRegisterMonitor(EventMassiveCoreSenderRegister event)
 	{
+		// This one we can however trust.
 		setSenderReferences(event.getSender(), event.getSender());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void setSenderReferencesUnregisterMonitor(EventMassiveCoreSenderUnregister event)
 	{
+		// This one we can however trust.
 		setSenderReferences(event.getSender(), null);
 	}
 	
