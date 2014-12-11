@@ -190,30 +190,22 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	}
 	
 	// This method sets the sender reference based on it's online state.
-	public static void setSenderReferences(CommandSender sender)
+	public static void setSenderReferences(Player player)
 	{
-		CommandSender reference = sender;
-		if (sender instanceof Player)
-		{
-			Player player = (Player)sender;
-			if ( ! player.isOnline())
-			{
-				reference = null;
-			}
-		}
-		
-		setSenderReferences(sender, reference);
+		Player reference = player;
+		if ( ! player.isOnline()) reference = null;
+		setSenderReferences(player, reference);
 	}
 	
 	// Same as above but next tick.
-	public static void setSenderReferencesSoon(final CommandSender sender)
+	public static void setSenderReferencesSoon(final Player player)
 	{
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				setSenderReferences(sender);
+				setSenderReferences(player);
 			}
 		});
 	}
@@ -223,7 +215,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	{
 		final Player player = event.getPlayer();
 		
-		// We set the reference at LOWEST so that it's present during this event.
+		// We set the reference at LOWEST so that it's present during this PlayerLoginEvent event.
 		setSenderReferences(player, player);
 		
 		// And the next tick we update the reference based on it's online state.
