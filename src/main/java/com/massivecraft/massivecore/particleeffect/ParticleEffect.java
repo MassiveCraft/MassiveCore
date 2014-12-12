@@ -12,15 +12,15 @@ import java.util.Map.Entry;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
-import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PacketType;
 import com.massivecraft.massivecore.util.MUtil;
 
 /**
  * <b>ParticleEffect Library</b>
  * <p>
- * This library was created by @DarkBlade12 based on content related to particles of @microgeek (names and packet parameters), it allows you to display all Minecraft particle effects on a Bukkit server
+ * This library was created by @DarkBlade12 and allows you to display all Minecraft particle effects on a Bukkit server
  * <p>
  * You are welcome to use it, modify it and redistribute it under the following conditions:
  * <ul>
@@ -28,156 +28,19 @@ import com.massivecraft.massivecore.util.MUtil;
  * <li>Don't remove this disclaimer
  * </ul>
  * <p>
+ * Special thanks:
+ * <ul>
+ * <li>@microgeek (original idea, names and packet parameters)
+ * <li>@ShadyPotato (1.8 names, ids and packet parameters)
+ * <li>@RingOfStorms (specific particle direction)
+ * </ul>
+ * <p>
  * <i>It would be nice if you provide credit to me if you use this class in a published project</i>
  * 
  * @author DarkBlade12
- * @version 1.5
+ * @version 1.6
  */
 public enum ParticleEffect {
-	/**
-	 * A particle effect which is displayed by exploding tnt and creepers:
-	 * <ul>
-	 * <li>It looks like a crowd of gray balls which are fading away
-	 * <li>The speed value has no influence on this particle effect
-	 * </ul>
-	 */
-	HUGE_EXPLOSION("hugeexplosion"),
-	/**
-	 * A particle effect which is displayed by exploding ghast fireballs and wither skulls:
-	 * <ul>
-	 * <li>It looks like a gray ball which is fading away
-	 * <li>The speed value slightly influences the size of this particle effect
-	 * </ul>
-	 */
-	LARGE_EXPLODE("largeexplode"),
-	/**
-	 * A particle effect which is displayed by launching fireworks:
-	 * <ul>
-	 * <li>It looks like a white star which is sparkling
-	 * <li>The speed value influences the velocity at which the particle flies off
-	 * </ul>
-	 */
-	FIREWORKS_SPARK("fireworksSpark"),
-	/**
-	 * A particle effect which is displayed by swimming entities and arrows in water:
-	 * <ul>
-	 * <li>It looks like a bubble
-	 * <li>The speed value influences the velocity at which the particle flies off
-	 * </ul>
-	 */
-	BUBBLE("bubble", true),
-	/**
-	 * A particle effect which is displayed by water:
-	 * <ul>
-	 * <li>It looks like a tiny blue square
-	 * <li>The speed value has no influence on this particle effect
-	 * </ul>
-	 */
-	SUSPEND("suspend", true),
-	/**
-	 * A particle effect which is displayed by air when close to bedrock and the in the void:
-	 * <ul>
-	 * <li>It looks like a tiny gray square
-	 * <li>The speed value has no influence on this particle effect
-	 * </ul>
-	 */
-	DEPTH_SUSPEND("depthSuspend"),
-	/**
-	 * A particle effect which is displayed by mycelium:
-	 * <ul>
-	 * <li>It looks like a tiny gray square
-	 * <li>The speed value has no influence on this particle effect
-	 * </ul>
-	 */
-	TOWN_AURA("townaura"),
-	/**
-	 * A particle effect which is displayed when landing a critical hit and by arrows:
-	 * <ul>
-	 * <li>It looks like a light brown cross
-	 * <li>The speed value influences the velocity at which the particle flies off
-	 * </ul>
-	 */
-	CRIT("crit"),
-	/**
-	 * A particle effect which is displayed when landing a hit with an enchanted weapon:
-	 * <ul>
-	 * <li>It looks like a cyan star
-	 * <li>The speed value influences the velocity at which the particle flies off
-	 * </ul>
-	 */
-	MAGIC_CRIT("magicCrit"),
-	/**
-	 * A particle effect which is displayed by primed tnt, torches, droppers, dispensers, end portals, brewing stands and monster spawners:
-	 * <ul>
-	 * <li>It looks like a little gray cloud
-	 * <li>The speed value influences the velocity at which the particle flies off
-	 * </ul>
-	 */
-	SMOKE("smoke"),
-	/**
-	 * A particle effect which is displayed by entities with active potion effects:
-	 * <ul>
-	 * <li>It looks like a colored swirl
-	 * <li>The speed value causes the particle to be colored black when set to 0
-	 * </ul>
-	 */
-	MOB_SPELL("mobSpell"),
-	/**
-	 * A particle effect which is displayed by entities with active potion effects applied through a beacon:
-	 * <ul>
-	 * <li>It looks like a transparent colored swirl
-	 * <li>The speed value causes the particle to be always colored black when set to 0
-	 * </ul>
-	 */
-	MOB_SPELL_AMBIENT("mobSpellAmbient"),
-	/**
-	 * A particle effect which is displayed when splash potions or bottles o' enchanting hit something:
-	 * <ul>
-	 * <li>It looks like a white swirl
-	 * <li>The speed value causes the particle to only move upwards when set to 0
-	 * </ul>
-	 */
-	SPELL("spell"),
-	/**
-	 * A particle effect which is displayed when instant splash potions hit something:
-	 * <ul>
-	 * <li>It looks like a white cross
-	 * <li>The speed value causes the particle to only move upwards when set to 0
-	 * </ul>
-	 */
-	INSTANT_SPELL("instantSpell"),
-	/**
-	 * A particle effect which is displayed by witches:
-	 * <ul>
-	 * <li>It looks like a purple cross
-	 * <li>The speed value causes the particle to only move upwards when set to 0
-	 * </ul>
-	 */
-	WITCH_MAGIC("witchMagic"),
-	/**
-	 * A particle effect which is displayed by note blocks:
-	 * <ul>
-	 * <li>It looks like a colored note
-	 * <li>The speed value causes the particle to be colored green when set to 0
-	 * </ul>
-	 */
-	NOTE("note"),
-	/**
-	 * A particle effect which is displayed by nether portals, endermen, ender pearls, eyes of ender, ender chests and dragon eggs:
-	 * <ul>
-	 * <li>It looks like a purple cloud
-	 * <li>The speed value influences the spread of this particle effect
-	 * </ul>
-	 */
-	PORTAL("portal"),
-	/**
-	 * A particle effect which is displayed by enchantment tables which are nearby bookshelves:
-	 * <ul>
-	 * <li>It looks like a cryptic white letter
-	 * <li>The speed value influences the spread of this particle effect
-	 * </ul>
-	 */
-	ENCHANTMENT_TABLE("enchantmenttable"),
 	/**
 	 * A particle effect which is displayed by exploding tnt and creepers:
 	 * <ul>
@@ -185,39 +48,47 @@ public enum ParticleEffect {
 	 * <li>The speed value influences the velocity at which the particle flies off
 	 * </ul>
 	 */
-	EXPLODE("explode"),
+	EXPLOSION_NORMAL("explode", 0, -1),
 	/**
-	 * A particle effect which is displayed by torches, active furnaces, magma cubes and monster spawners:
+	 * A particle effect which is displayed by exploding ghast fireballs and wither skulls:
 	 * <ul>
-	 * <li>It looks like a tiny flame
+	 * <li>It looks like a gray ball which is fading away
+	 * <li>The speed value slightly influences the size of this particle effect
+	 * </ul>
+	 */
+	EXPLOSION_LARGE("largeexplode", 1, -1),
+	/**
+	 * A particle effect which is displayed by exploding tnt and creepers:
+	 * <ul>
+	 * <li>It looks like a crowd of gray balls which are fading away
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	EXPLOSION_HUGE("hugeexplosion", 2, -1),
+	/**
+	 * A particle effect which is displayed by launching fireworks:
+	 * <ul>
+	 * <li>It looks like a white star which is sparkling
 	 * <li>The speed value influences the velocity at which the particle flies off
 	 * </ul>
 	 */
-	FLAME("flame"),
+	FIREWORKS_SPARK("fireworksSpark", 3, -1),
 	/**
-	 * A particle effect which is displayed by lava:
+	 * A particle effect which is displayed by swimming entities and arrows in water:
 	 * <ul>
-	 * <li>It looks like a spark
-	 * <li>The speed value has no influence on this particle effect
+	 * <li>It looks like a bubble
+	 * <li>The speed value influences the velocity at which the particle flies off
 	 * </ul>
 	 */
-	LAVA("lava"),
+	WATER_BUBBLE("bubble", 4, -1, false, true),
 	/**
-	 * A particle effect which is currently unused:
-	 * <ul>
-	 * <li>It looks like a transparent gray square
-	 * <li>The speed value has no influence on this particle effect
-	 * </ul>
-	 */
-	FOOTSTEP("footstep"),
-	/**
-	 * A particle effect which is displayed by swimming entities, rain dropping on the ground and shaking wolves:
+	 * A particle effect which is displayed by swimming entities and shaking wolves:
 	 * <ul>
 	 * <li>It looks like a blue drop
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	SPLASH("splash"),
+	WATER_SPLASH("splash", 5, -1),
 	/**
 	 * A particle effect which is displayed on water when fishing:
 	 * <ul>
@@ -225,7 +96,47 @@ public enum ParticleEffect {
 	 * <li>The speed value influences the velocity at which the particle flies off
 	 * </ul>
 	 */
-	WAKE("wake"),
+	WATER_WAKE("wake", 6, 7),
+	/**
+	 * A particle effect which is displayed by water:
+	 * <ul>
+	 * <li>It looks like a tiny blue square
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	SUSPENDED("suspended", 7, -1, false, true),
+	/**
+	 * A particle effect which is displayed by air when close to bedrock and the in the void:
+	 * <ul>
+	 * <li>It looks like a tiny gray square
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	SUSPENDED_DEPTH("depthSuspend", 8, -1),
+	/**
+	 * A particle effect which is displayed when landing a critical hit and by arrows:
+	 * <ul>
+	 * <li>It looks like a light brown cross
+	 * <li>The speed value influences the velocity at which the particle flies off
+	 * </ul>
+	 */
+	CRIT("crit", 9, -1),
+	/**
+	 * A particle effect which is displayed when landing a hit with an enchanted weapon:
+	 * <ul>
+	 * <li>It looks like a cyan star
+	 * <li>The speed value influences the velocity at which the particle flies off
+	 * </ul>
+	 */
+	CRIT_MAGIC("magicCrit", 10, -1),
+	/**
+	 * A particle effect which is displayed by primed tnt, torches, droppers, dispensers, end portals, brewing stands and monster spawners:
+	 * <ul>
+	 * <li>It looks like a little gray cloud
+	 * <li>The speed value influences the velocity at which the particle flies off
+	 * </ul>
+	 */
+	SMOKE_NORMAL("smoke", 11, -1),
 	/**
 	 * A particle effect which is displayed by fire, minecarts with furnace and blazes:
 	 * <ul>
@@ -233,31 +144,49 @@ public enum ParticleEffect {
 	 * <li>The speed value influences the velocity at which the particle flies off
 	 * </ul>
 	 */
-	LARGE_SMOKE("largesmoke"),
+	SMOKE_LARGE("largesmoke", 12, -1),
 	/**
-	 * A particle effect which is displayed when a mob dies:
+	 * A particle effect which is displayed when splash potions or bottles o' enchanting hit something:
 	 * <ul>
-	 * <li>It looks like a large white cloud
-	 * <li>The speed value influences the velocity at which the particle flies off
+	 * <li>It looks like a white swirl
+	 * <li>The speed value causes the particle to only move upwards when set to 0
 	 * </ul>
 	 */
-	CLOUD("cloud"),
+	SPELL("spell", 13, -1),
 	/**
-	 * A particle effect which is displayed by redstone ore, powered redstone, redstone torches and redstone repeaters:
+	 * A particle effect which is displayed when instant splash potions hit something:
 	 * <ul>
-	 * <li>It looks like a tiny colored cloud
-	 * <li>The speed value causes the particle to be colored red when set to 0
+	 * <li>It looks like a white cross
+	 * <li>The speed value causes the particle to only move upwards when set to 0
 	 * </ul>
 	 */
-	RED_DUST("reddust"),
+	SPELL_INSTANT("instantSpell", 14, -1),
 	/**
-	 * A particle effect which is displayed when snowballs or eggs hit something:
+	 * A particle effect which is displayed by entities with active potion effects:
 	 * <ul>
-	 * <li>It looks like a tiny part of the snowball icon
-	 * <li>The speed value has no influence on this particle effect
+	 * <li>It looks like a colored swirl
+	 * <li>The speed value causes the particle to be colored black when set to 0
+	 * <li>The particle color gets lighter when increasing the speed and darker when decreasing the speed
 	 * </ul>
 	 */
-	SNOWBALL_POOF("snowballpoof"),
+	SPELL_MOB("mobSpell", 15, -1),
+	/**
+	 * A particle effect which is displayed by entities with active potion effects applied through a beacon:
+	 * <ul>
+	 * <li>It looks like a transparent colored swirl
+	 * <li>The speed value causes the particle to be always colored black when set to 0
+	 * <li>The particle color gets lighter when increasing the speed and darker when decreasing the speed
+	 * </ul>
+	 */
+	SPELL_MOB_AMBIENT("mobSpellAmbient", 16, -1),
+	/**
+	 * A particle effect which is displayed by witches:
+	 * <ul>
+	 * <li>It looks like a purple cross
+	 * <li>The speed value causes the particle to only move upwards when set to 0
+	 * </ul>
+	 */
+	SPELL_WITCH("witchMagic", 17, -1),
 	/**
 	 * A particle effect which is displayed by blocks beneath a water source:
 	 * <ul>
@@ -265,7 +194,7 @@ public enum ParticleEffect {
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	DRIP_WATER("dripWater"),
+	DRIP_WATER("dripWater", 18, -1),
 	/**
 	 * A particle effect which is displayed by blocks beneath a lava source:
 	 * <ul>
@@ -273,31 +202,7 @@ public enum ParticleEffect {
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	DRIP_LAVA("dripLava"),
-	/**
-	 * A particle effect which is currently unused:
-	 * <ul>
-	 * <li>It looks like a tiny white cloud
-	 * <li>The speed value influences the velocity at which the particle flies off
-	 * </ul>
-	 */
-	SNOW_SHOVEL("snowshovel"),
-	/**
-	 * A particle effect which is displayed by slimes:
-	 * <ul>
-	 * <li>It looks like a tiny part of the slimeball icon
-	 * <li>The speed value has no influence on this particle effect
-	 * </ul>
-	 */
-	SLIME("slime"),
-	/**
-	 * A particle effect which is displayed when breeding and taming animals:
-	 * <ul>
-	 * <li>It looks like a red heart
-	 * <li>The speed value has no influence on this particle effect
-	 * </ul>
-	 */
-	HEART("heart"),
+	DRIP_LAVA("dripLava", 19, -1),
 	/**
 	 * A particle effect which is displayed when attacking a villager in a village:
 	 * <ul>
@@ -305,7 +210,7 @@ public enum ParticleEffect {
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	ANGRY_VILLAGER("angryVillager"),
+	VILLAGER_ANGRY("angryVillager", 20, -1),
 	/**
 	 * A particle effect which is displayed when using bone meal and trading with a villager in a village:
 	 * <ul>
@@ -313,16 +218,178 @@ public enum ParticleEffect {
 	 * <li>The speed value has no influence on this particle effect
 	 * </ul>
 	 */
-	HAPPY_VILLAGER("happyVillager");
+	VILLAGER_HAPPY("happyVillager", 21, -1),
+	/**
+	 * A particle effect which is displayed by mycelium:
+	 * <ul>
+	 * <li>It looks like a tiny gray square
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	TOWN_AURA("townaura", 22, -1),
+	/**
+	 * A particle effect which is displayed by note blocks:
+	 * <ul>
+	 * <li>It looks like a colored note
+	 * <li>The speed value causes the particle to be colored green when set to 0
+	 * </ul>
+	 */
+	NOTE("note", 23, -1),
+	/**
+	 * A particle effect which is displayed by nether portals, endermen, ender pearls, eyes of ender, ender chests and dragon eggs:
+	 * <ul>
+	 * <li>It looks like a purple cloud
+	 * <li>The speed value influences the spread of this particle effect
+	 * </ul>
+	 */
+	PORTAL("portal", 24, -1),
+	/**
+	 * A particle effect which is displayed by enchantment tables which are nearby bookshelves:
+	 * <ul>
+	 * <li>It looks like a cryptic white letter
+	 * <li>The speed value influences the spread of this particle effect
+	 * </ul>
+	 */
+	ENCHANTMENT_TABLE("enchantmenttable", 25, -1),
+	/**
+	 * A particle effect which is displayed by torches, active furnaces, magma cubes and monster spawners:
+	 * <ul>
+	 * <li>It looks like a tiny flame
+	 * <li>The speed value influences the velocity at which the particle flies off
+	 * </ul>
+	 */
+	FLAME("flame", 26, -1),
+	/**
+	 * A particle effect which is displayed by lava:
+	 * <ul>
+	 * <li>It looks like a spark
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	LAVA("lava", 27, -1),
+	/**
+	 * A particle effect which is currently unused:
+	 * <ul>
+	 * <li>It looks like a transparent gray square
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	FOOTSTEP("footstep", 28, -1),
+	/**
+	 * A particle effect which is displayed when a mob dies:
+	 * <ul>
+	 * <li>It looks like a large white cloud
+	 * <li>The speed value influences the velocity at which the particle flies off
+	 * </ul>
+	 */
+	CLOUD("cloud", 29, -1),
+	/**
+	 * A particle effect which is displayed by redstone ore, powered redstone, redstone torches and redstone repeaters:
+	 * <ul>
+	 * <li>It looks like a tiny colored cloud
+	 * <li>The speed value causes the particle to be colored red when set to 0
+	 * </ul>
+	 */
+	REDSTONE("reddust", 30, -1),
+	/**
+	 * A particle effect which is displayed when snowballs hit a block:
+	 * <ul>
+	 * <li>It looks like a little piece with the snowball texture
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	SNOWBALL("snowballpoof", 31, -1),
+	/**
+	 * A particle effect which is currently unused:
+	 * <ul>
+	 * <li>It looks like a tiny white cloud
+	 * <li>The speed value influences the velocity at which the particle flies off
+	 * </ul>
+	 */
+	SNOW_SHOVEL("snowshovel", 32, -1),
+	/**
+	 * A particle effect which is displayed by slimes:
+	 * <ul>
+	 * <li>It looks like a tiny part of the slimeball icon
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	SLIME("slime", 33, -1),
+	/**
+	 * A particle effect which is displayed when breeding and taming animals:
+	 * <ul>
+	 * <li>It looks like a red heart
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	HEART("heart", 34, -1),
+	/**
+	 * A particle effect which is displayed by barriers:
+	 * <ul>
+	 * <li>It looks like a red box with a slash through it
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	BARRIER("barrier", 35, 8),
+	/**
+	 * A particle effect which is displayed when breaking a tool or eggs hit a block:
+	 * <ul>
+	 * <li>It looks like a little piece with an item texture
+	 * </ul>
+	 */
+	ITEM_CRACK("iconcrack", 36, -1, true),
+	/**
+	 * A particle effect which is displayed when breaking blocks or sprinting:
+	 * <ul>
+	 * <li>It looks like a little piece with a block texture
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	BLOCK_CRACK("blockcrack", 37, -1, true),
+	/**
+	 * A particle effect which is displayed when falling:
+	 * <ul>
+	 * <li>It looks like a little piece with a block texture
+	 * </ul>
+	 */
+	BLOCK_DUST("blockdust", 38, 7, true),
+	/**
+	 * A particle effect which is displayed when rain hits the ground:
+	 * <ul>
+	 * <li>It looks like a blue droplet
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	WATER_DROP("droplet", 39, 8),
+	/**
+	 * A particle effect which is currently unused:
+	 * <ul>
+	 * <li>It has no visual effect
+	 * </ul>
+	 */
+	ITEM_TAKE("take", 40, 8),
+	/**
+	 * A particle effect which is displayed by elder guardians:
+	 * <ul>
+	 * <li>It looks like the shape of the elder guardian
+	 * <li>The speed value has no influence on this particle effect
+	 * </ul>
+	 */
+	MOB_APPEARANCE("mobappearance", 41, 8);
 
 	private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
+	private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
 	private final String name;
+	private final int id;
+	private final int requiredVersion;
+	private final boolean requiresData;
 	private final boolean requiresWater;
 
-	// Initialize map for quick name lookup
+	// Initialize map for quick name and id lookup
 	static {
 		for (ParticleEffect effect : values()) {
 			NAME_MAP.put(effect.name, effect);
+			ID_MAP.put(effect.id, effect);
 		}
 	}
 
@@ -330,10 +397,16 @@ public enum ParticleEffect {
 	 * Construct a new particle effect
 	 * 
 	 * @param name Name of this particle effect
+	 * @param id Id of this particle effect
+	 * @param requiredVersion Version which is required (1.x)
+	 * @param requiresData Indicates whether additional data is required for this particle effect
 	 * @param requiresWater Indicates whether water is required for this particle effect to display properly
 	 */
-	private ParticleEffect(String name, boolean requiresWater) {
+	private ParticleEffect(String name, int id, int requiredVersion, boolean requiresData, boolean requiresWater) {
 		this.name = name;
+		this.id = id;
+		this.requiredVersion = requiredVersion;
+		this.requiresData = requiresData;
 		this.requiresWater = requiresWater;
 	}
 
@@ -341,10 +414,26 @@ public enum ParticleEffect {
 	 * Construct a new particle effect with {@link #requiresWater} set to <code>false</code>
 	 * 
 	 * @param name Name of this particle effect
-	 * @see #ParticleEffect(String, boolean)
+	 * @param id Id of this particle effect
+	 * @param requiredVersion Version which is required (1.x)
+	 * @param requiresData Indicates whether additional data is required for this particle effect
+	 * @see #ParticleEffect(String, int, boolean, boolean)
 	 */
-	private ParticleEffect(String name) {
-		this(name, false);
+	private ParticleEffect(String name, int id, int requiredVersion, boolean requiresData) {
+		this(name, id, requiredVersion, requiresData, false);
+	}
+
+	/**
+	 * Construct a new particle effect with {@link #requiresData} and {@link #requiresWater} set to <code>false</code>
+	 * 
+	 * @param name Name of this particle effect
+	 * @param id Id of this particle effect
+	 * @param requiredVersion Version which is required (1.x)
+	 * @param requiresData Indicates whether additional data is required for this particle effect
+	 * @see #ParticleEffect(String, int, boolean)
+	 */
+	private ParticleEffect(String name, int id, int requiredVersion) {
+		this(name, id, requiredVersion, false);
 	}
 
 	/**
@@ -357,12 +446,51 @@ public enum ParticleEffect {
 	}
 
 	/**
+	 * Returns the id of this particle effect
+	 * 
+	 * @return The id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Returns the required version for this particle effect (1.x)
+	 * 
+	 * @return The required version
+	 */
+	public int getRequiredVersion() {
+		return requiredVersion;
+	}
+
+	/**
+	 * Determine if additional data is required for this particle effect
+	 * 
+	 * @return Whether additional data is required or not
+	 */
+	public boolean getRequiresData() {
+		return requiresData;
+	}
+
+	/**
 	 * Determine if water is required for this particle effect to display properly
 	 * 
 	 * @return Whether water is required or not
 	 */
 	public boolean getRequiresWater() {
 		return requiresWater;
+	}
+
+	/**
+	 * Determine if this particle effect is supported by your current server version
+	 * 
+	 * @return Whether the particle effect is supported or not
+	 */
+	public boolean isSupported() {
+		if (requiredVersion == -1) {
+			return true;
+		}
+		return ParticlePacket.getVersion() >= requiredVersion;
 	}
 
 	/**
@@ -382,6 +510,22 @@ public enum ParticleEffect {
 	}
 
 	/**
+	 * Returns the particle effect with the given id
+	 * 
+	 * @param id Id of the particle effect
+	 * @return The particle effect
+	 */
+	public static ParticleEffect fromId(int id) {
+		for (Entry<Integer, ParticleEffect> entry : ID_MAP.entrySet()) {
+			if (entry.getKey() != id) {
+				continue;
+			}
+			return entry.getValue();
+		}
+		return null;
+	}
+
+	/**
 	 * Determine if water is at a certain location
 	 * 
 	 * @param location Location to check
@@ -393,15 +537,19 @@ public enum ParticleEffect {
 	}
 
 	/**
-	 * Determine if an id is a block id
+	 * Determine if the distance between @param location and one of the players exceeds 256
 	 * 
-	 * @param id Id to check
-	 * @return Whether id is a block or not
+	 * @param location Location to check
+	 * @return Whether the distance exceeds 256 or not
 	 */
-	@SuppressWarnings("deprecation")
-	private static boolean isBlock(int id) {
-		Material material = Material.getMaterial(id);
-		return material != null && material.isBlock();
+	private static boolean isLongDistance(Location location, List<Player> players) {
+		for (Player player : players) {
+			if (player.getLocation().distance(location) < 256) {
+				continue;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -413,16 +561,24 @@ public enum ParticleEffect {
 	 * @param speed Display speed of the particles
 	 * @param amount Amount of particles
 	 * @param center Center location of the effect
-	 * @param range Range of the visibility (Maximum range for particles is usually 16, but it can differ for some types)
+	 * @param range Range of the visibility
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect requires additional data
 	 * @throws IllegalArgumentException If the particle effect requires water and none is at the center location
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, double)
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, double)
 	 */
-	public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) throws IllegalArgumentException {
+	public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) throws ParticleVersionException, ParticleDataException, IllegalArgumentException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if (requiresData) {
+			throw new ParticleDataException("This particle effect requires additional data");
+		}
 		if (requiresWater && !isWater(center)) {
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
-		new ParticleEffectPacket(name, offsetX, offsetY, offsetZ, speed, amount).sendTo(center, range);
+		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > 256, null).sendTo(center, range);
 	}
 
 	/**
@@ -435,41 +591,107 @@ public enum ParticleEffect {
 	 * @param amount Amount of particles
 	 * @param center Center location of the effect
 	 * @param players Receivers of the effect
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect requires additional data
 	 * @throws IllegalArgumentException If the particle effect requires water and none is at the center location
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, List)
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, List)
 	 */
-	public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, List<Player> players) throws IllegalArgumentException {
+	public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if (requiresData) {
+			throw new ParticleDataException("This particle effect requires additional data");
+		}
 		if (requiresWater && !isWater(center)) {
 			throw new IllegalArgumentException("There is no water at the center location");
 		}
-		new ParticleEffectPacket(name, offsetX, offsetY, offsetZ, speed, amount).sendTo(center, players);
+		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, isLongDistance(center, players), null).sendTo(center, players);
 	}
 
 	/**
-	 * Displays an icon crack (item break) particle effect which is only visible for all players within a certain range in the world of @param center
+	 * Displays a single particle which flies into a determined direction and is only visible for all players within a certain range in the world of @param center
 	 * 
-	 * @param id Id of the icon
-	 * @param data Data value
+	 * @param direction Direction of the particle
+	 * @param speed Display speed of the particle
+	 * @param center Center location of the effect
+	 * @param range Range of the visibility
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect requires additional data
+	 * @throws IllegalArgumentException If the particle effect requires water and none is at the center location
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, double)
+	 */
+	public void display(Vector direction, float speed, Location center, double range) throws ParticleVersionException, ParticleDataException, IllegalArgumentException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if (requiresData) {
+			throw new ParticleDataException("This particle effect requires additional data");
+		}
+		if (requiresWater && !isWater(center)) {
+			throw new IllegalArgumentException("There is no water at the center location");
+		}
+		new ParticlePacket(this, direction, speed, range > 256, null).sendTo(center, range);
+	}
+
+	/**
+	 * Displays a single particle which flies into a determined direction and is only visible for the specified players
+	 * 
+	 * @param direction Direction of the particle
+	 * @param speed Display speed of the particle
+	 * @param center Center location of the effect
+	 * @param players Receivers of the effect
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect requires additional data
+	 * @throws IllegalArgumentException If the particle effect requires water and none is at the center location
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, List)
+	 */
+	public void display(Vector direction, float speed, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException, IllegalArgumentException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if (requiresData) {
+			throw new ParticleDataException("This particle effect requires additional data");
+		}
+		if (requiresWater && !isWater(center)) {
+			throw new IllegalArgumentException("There is no water at the center location");
+		}
+		new ParticlePacket(this, direction, speed, isLongDistance(center, players), null).sendTo(center, players);
+	}
+
+	/**
+	 * Displays a particle effect which requires additional data and is only visible for all players within a certain range in the world of @param center
+	 * 
+	 * @param data Data of the effect
 	 * @param offsetX Maximum distance particles can fly away from the center on the x-axis
 	 * @param offsetY Maximum distance particles can fly away from the center on the y-axis
 	 * @param offsetZ Maximum distance particles can fly away from the center on the z-axis
 	 * @param speed Display speed of the particles
 	 * @param amount Amount of particles
 	 * @param center Center location of the effect
-	 * @param range Range of the visibility (Maximum range for particles is usually 16, but it can differ for some types)
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, double)
+	 * @param range Range of the visibility
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect does not require additional data
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, double)
 	 */
-	public static void displayIconCrack(int id, byte data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) {
-		new ParticleEffectPacket("iconcrack_" + id + "_" + data, offsetX, offsetY, offsetZ, speed, amount).sendTo(center, range);
+	public void display(ParticleData data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) throws ParticleVersionException, ParticleDataException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if (!requiresData) {
+			throw new ParticleDataException("This particle effect does not require additional data");
+		}
+		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, range > 256, data).sendTo(center, range);
 	}
 
 	/**
-	 * Displays an icon crack (item break) particle effect which is only visible for the specified players
+	 * Displays a particle effect which requires additional data and is only visible for the specified players
 	 * 
-	 * @param id Id of the icon
-	 * @param data Data value
+	 * @param data Data of the effect
 	 * @param offsetX Maximum distance particles can fly away from the center on the x-axis
 	 * @param offsetY Maximum distance particles can fly away from the center on the y-axis
 	 * @param offsetZ Maximum distance particles can fly away from the center on the z-axis
@@ -477,101 +699,218 @@ public enum ParticleEffect {
 	 * @param amount Amount of particles
 	 * @param center Center location of the effect
 	 * @param players Receivers of the effect
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, List)
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect does not require additional data
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, List)
 	 */
-	public static void displayIconCrack(int id, byte data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, List<Player> players) {
-		new ParticleEffectPacket("iconcrack_" + id + "_" + data, offsetX, offsetY, offsetZ, speed, amount).sendTo(center, players);
-	}
-
-	/**
-	 * Displays a block crack (block break) particle effect which is only visible for all players within a certain range in the world of @param center
-	 * 
-	 * @param id Id of the block
-	 * @param data Data value
-	 * @param offsetX Maximum distance particles can fly away from the center on the x-axis
-	 * @param offsetY Maximum distance particles can fly away from the center on the y-axis
-	 * @param offsetZ Maximum distance particles can fly away from the center on the z-axis
-	 * @param amount Amount of particles
-	 * @param center Center location of the effect
-	 * @param range Range of the visibility (Maximum range for particles is usually 16, but it can differ for some types)
-	 * @throws IllegalArgumentException If the specified id is not a block id
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, double)
-	 */
-	public static void displayBlockCrack(int id, byte data, float offsetX, float offsetY, float offsetZ, int amount, Location center, double range) throws IllegalArgumentException {
-		if (!isBlock(id)) {
-			throw new IllegalArgumentException("Invalid block id");
+	public void display(ParticleData data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		new ParticleEffectPacket("blockcrack_" + id + "_" + data, offsetX, offsetY, offsetZ, 0, amount).sendTo(center, range);
+		if (!requiresData) {
+			throw new ParticleDataException("This particle effect does not require additional data");
+		}
+		new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, isLongDistance(center, players), data).sendTo(center, players);
 	}
 
 	/**
-	 * Displays a block crack (block break) particle effect which is only visible for the specified players
+	 * Displays a single particle which requires additional data that flies into a determined direction and is only visible for all players within a certain range in the world of @param center
 	 * 
-	 * @param id Id of the block
-	 * @param data Data value
-	 * @param offsetX Maximum distance particles can fly away from the center on the x-axis
-	 * @param offsetY Maximum distance particles can fly away from the center on the y-axis
-	 * @param offsetZ Maximum distance particles can fly away from the center on the z-axis
-	 * @param amount Amount of particles
+	 * @param data Data of the effect
+	 * @param direction Direction of the particle
+	 * @param speed Display speed of the particles
+	 * @param center Center location of the effect
+	 * @param range Range of the visibility
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect does not require additional data
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, double)
+	 */
+	public void display(ParticleData data, Vector direction, float speed, Location center, double range) throws ParticleVersionException, ParticleDataException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
+		}
+		if (!requiresData) {
+			throw new ParticleDataException("This particle effect does not require additional data");
+		}
+		new ParticlePacket(this, direction, speed, range > 256, data).sendTo(center, range);
+	}
+
+	/**
+	 * Displays a single particle which requires additional data that flies into a determined direction and is only visible for the specified players
+	 * 
+	 * @param data Data of the effect
+	 * @param direction Direction of the particle
+	 * @param speed Display speed of the particles
 	 * @param center Center location of the effect
 	 * @param players Receivers of the effect
-	 * @throws IllegalArgumentException If the specified id is not a block id
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, List)
+	 * @throws ParticleVersionException If the particle effect is not supported by the server version
+	 * @throws ParticleDataException If the particle effect does not require additional data
+	 * @see ParticlePacket
+	 * @see ParticlePacket#sendTo(Location, List)
 	 */
-	public static void displayBlockCrack(int id, byte data, float offsetX, float offsetY, float offsetZ, int amount, Location center, List<Player> players) throws IllegalArgumentException {
-		if (!isBlock(id)) {
-			throw new IllegalArgumentException("Invalid block id");
+	public void display(ParticleData data, Vector direction, float speed, Location center, List<Player> players) throws ParticleVersionException, ParticleDataException {
+		if (!isSupported()) {
+			throw new ParticleVersionException("This particle effect is not supported by your server version");
 		}
-		new ParticleEffectPacket("blockcrack_" + id + "_" + data, offsetX, offsetY, offsetZ, 0, amount).sendTo(center, players);
+		if (!requiresData) {
+			throw new ParticleDataException("This particle effect does not require additional data");
+		}
+		new ParticlePacket(this, direction, speed, isLongDistance(center, players), data).sendTo(center, players);
 	}
 
 	/**
-	 * Displays a block dust particle effect which is only visible for all players within a certain range in the world of @param center
+	 * Represents the particle data for effects like {@link ParticleEffect#ITEM_CRACK}, {@link ParticleEffect#BLOCK_CRACK} and {@link ParticleEffect#BLOCK_DUST}
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
 	 * 
-	 * @param id Id of the block
-	 * @param data Data value
-	 * @param offsetX Maximum distance particles can fly away from the center on the x-axis
-	 * @param offsetY Maximum distance particles can fly away from the center on the y-axis
-	 * @param offsetZ Maximum distance particles can fly away from the center on the z-axis
-	 * @param speed Display speed of the particles
-	 * @param amount Amount of particles
-	 * @param center Center location of the effect
-	 * @param range Range of the visibility (Maximum range for particles is usually 16, but it can differ for some types)
-	 * @throws IllegalArgumentException If the specified id is not a block id
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, double)
+	 * @author DarkBlade12
+	 * @since 1.6
 	 */
-	public static void displayBlockDust(int id, byte data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) throws IllegalArgumentException {
-		if (!isBlock(id)) {
-			throw new IllegalArgumentException("Invalid block id");
+	public static abstract class ParticleData {
+		private final Material material;
+		private final byte data;
+		private final int[] packetData;
+
+		/**
+		 * Construct a new particle data
+		 * 
+		 * @param material Material of the item/block
+		 * @param data Data value of the item/block
+		 */
+		@SuppressWarnings("deprecation")
+		public ParticleData(Material material, byte data) {
+			this.material = material;
+			this.data = data;
+			this.packetData = new int[] { material.getId(), data };
 		}
-		new ParticleEffectPacket("blockdust_" + id + "_" + data, offsetX, offsetY, offsetZ, speed, amount).sendTo(center, range);
+
+		/**
+		 * Returns the material of this data
+		 * 
+		 * @return The material
+		 */
+		public Material getMaterial() {
+			return material;
+		}
+
+		/**
+		 * Returns the data value of this data
+		 * 
+		 * @return The data value
+		 */
+		public byte getData() {
+			return data;
+		}
+
+		/**
+		 * Returns the data as an int array for packet construction
+		 * 
+		 * @return The data for the packet
+		 */
+		public int[] getPacketData() {
+			return packetData;
+		}
+
+		/**
+		 * Returns the data as a string for pre 1.8 versions
+		 * 
+		 * @return The data string for the packet
+		 */
+		public String getPacketDataString() {
+			return "_" + packetData[0] + "_" + packetData[1];
+		}
 	}
 
 	/**
-	 * Displays a block dust particle effect which is only visible for the specified players
+	 * Represents the item data for the {@link ParticleEffect#ITEM_CRACK} effect
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
 	 * 
-	 * @param id Id of the block
-	 * @param data Data value
-	 * @param offsetX Maximum distance particles can fly away from the center on the x-axis
-	 * @param offsetY Maximum distance particles can fly away from the center on the y-axis
-	 * @param offsetZ Maximum distance particles can fly away from the center on the z-axis
-	 * @param speed Display speed of the particles
-	 * @param amount Amount of particles
-	 * @param center Center location of the effect
-	 * @param players Receivers of the effect
-	 * @throws IllegalArgumentException If the specified id is not a block id
-	 * @see ParticleEffectPacket
-	 * @see ParticleEffectPacket#sendTo(Location, List)
+	 * @author DarkBlade12
+	 * @since 1.6
 	 */
-	public static void displayBlockDust(int id, byte data, float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, List<Player> players) throws IllegalArgumentException {
-		if (!isBlock(id)) {
-			throw new IllegalArgumentException("Invalid block id");
+	public static final class ItemData extends ParticleData {
+		/**
+		 * Construct a new item data
+		 * 
+		 * @param material Material of the item
+		 * @param data Data value of the item
+		 * @see ParticleData#ParticleData(Material, byte)
+		 */
+		public ItemData(Material material, byte data) {
+			super(material, data);
 		}
-		new ParticleEffectPacket("blockdust_" + id + "_" + data, offsetX, offsetY, offsetZ, speed, amount).sendTo(center, players);
+	}
+
+	/**
+	 * Represents the block data for the {@link ParticleEffect#BLOCK_CRACK} and {@link ParticleEffect#BLOCK_DUST} effects
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.6
+	 */
+	public static final class BlockData extends ParticleData {
+		/**
+		 * Construct a new block data
+		 * 
+		 * @param material Material of the block
+		 * @param data Data value of the block
+		 * @throws IllegalArgumentException If the material is not a block
+		 * @see ParticleData#ParticleData(Material, byte)
+		 */
+		public BlockData(Material material, byte data) throws IllegalArgumentException {
+			super(material, data);
+			if (!material.isBlock()) {
+				throw new IllegalArgumentException("The material is not a block");
+			}
+		}
+	}
+
+	/**
+	 * Represents a runtime exception that is thrown if the displayed particle effect requires data and has none or vice-versa
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.6
+	 */
+	private static final class ParticleDataException extends RuntimeException {
+		private static final long serialVersionUID = 3203085387160737484L;
+
+		/**
+		 * Construct a new particle data exception
+		 * 
+		 * @param message Message that will be logged
+		 * @param cause Cause of the exception
+		 */
+		public ParticleDataException(String message) {
+			super(message);
+		}
+	}
+
+	/**
+	 * Represents a runtime exception that is thrown if the displayed particle effect requires a newer version
+	 * <p>
+	 * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+	 * 
+	 * @author DarkBlade12
+	 * @since 1.6
+	 */
+	private static final class ParticleVersionException extends RuntimeException {
+		private static final long serialVersionUID = 3203085387160737484L;
+
+		/**
+		 * Construct a new particle version exception
+		 * 
+		 * @param message Message that will be logged
+		 * @param cause Cause of the exception
+		 */
+		public ParticleVersionException(String message) {
+			super(message);
+		}
 	}
 
 	/**
@@ -582,33 +921,39 @@ public enum ParticleEffect {
 	 * @author DarkBlade12
 	 * @since 1.5
 	 */
-	public static final class ParticleEffectPacket {
+	public static final class ParticlePacket {
+		private static int version;
+		private static Class<?> enumParticle;
 		private static Constructor<?> packetConstructor;
 		private static Method getHandle;
 		private static Field playerConnection;
 		private static Method sendPacket;
 		private static boolean initialized;
-		private final String name;
+		private final ParticleEffect effect;
 		private final float offsetX;
 		private final float offsetY;
 		private final float offsetZ;
 		private final float speed;
 		private final int amount;
+		private final boolean longDistance;
+		private final ParticleData data;
 		private Object packet;
 
 		/**
-		 * Construct a new particle effect packet
+		 * Construct a new particle packet
 		 * 
-		 * @param name Name of the effect
+		 * @param effect Particle effect
 		 * @param offsetX Maximum distance particles can fly away from the center on the x-axis
 		 * @param offsetY Maximum distance particles can fly away from the center on the y-axis
 		 * @param offsetZ Maximum distance particles can fly away from the center on the z-axis
 		 * @param speed Display speed of the particles
 		 * @param amount Amount of particles
+		 * @param longDistance Indicates whether the maximum distance is increased from 256 to 65536
+		 * @param data Data of the effect
 		 * @throws IllegalArgumentException If the speed is lower than 0 or the amount is lower than 1
 		 * @see #initialize()
 		 */
-		public ParticleEffectPacket(String name, float offsetX, float offsetY, float offsetZ, float speed, int amount) throws IllegalArgumentException {
+		public ParticlePacket(ParticleEffect effect, float offsetX, float offsetY, float offsetZ, float speed, int amount, boolean longDistance, ParticleData data) throws IllegalArgumentException {
 			initialize();
 			if (speed < 0) {
 				throw new IllegalArgumentException("The speed is lower than 0");
@@ -616,12 +961,40 @@ public enum ParticleEffect {
 			if (amount < 1) {
 				throw new IllegalArgumentException("The amount is lower than 1");
 			}
-			this.name = name;
+			this.effect = effect;
 			this.offsetX = offsetX;
 			this.offsetY = offsetY;
 			this.offsetZ = offsetZ;
 			this.speed = speed;
 			this.amount = amount;
+			this.longDistance = longDistance;
+			this.data = data;
+		}
+
+		/**
+		 * Construct a new particle packet of a single particle flying into a determined direction
+		 * 
+		 * @param effect Particle effect
+		 * @param direction Direction of the particle
+		 * @param speed Display speed of the particle
+		 * @param longDistance Indicates whether the maximum distance is increased from 256 to 65536
+		 * @param data Data of the effect
+		 * @throws IllegalArgumentException If the speed is lower than 0
+		 * @see #initialize()
+		 */
+		public ParticlePacket(ParticleEffect effect, Vector direction, float speed, boolean longDistance, ParticleData data) throws IllegalArgumentException {
+			initialize();
+			if (speed < 0) {
+				throw new IllegalArgumentException("The speed is lower than 0");
+			}
+			this.effect = effect;
+			this.offsetX = (float) direction.getX();
+			this.offsetY = (float) direction.getY();
+			this.offsetZ = (float) direction.getZ();
+			this.speed = speed;
+			this.amount = 0;
+			this.longDistance = longDistance;
+			this.data = data;
 		}
 
 		/**
@@ -629,15 +1002,18 @@ public enum ParticleEffect {
 		 * <p>
 		 * <b>Note:</b> These fields only have to be initialized once, so it will return if {@link #initialized} is already set to <code>true</code>
 		 * 
-		 * @throws VersionIncompatibleException if accessed packets, fields or methods differ in your bukkit version
+		 * @throws VersionIncompatibleException if your bukkit version is not supported by this library
 		 */
 		public static void initialize() throws VersionIncompatibleException {
 			if (initialized) {
 				return;
 			}
 			try {
-				int version = Integer.parseInt(Character.toString(PackageType.getServerVersion().charAt(3)));
-				Class<?> packetClass = PackageType.MINECRAFT_SERVER.getClass(version < 7 ? "Packet63WorldParticles" : PacketType.PLAY_OUT_WORLD_PARTICLES.getName());
+				version = Integer.parseInt(Character.toString(PackageType.getServerVersion().charAt(3)));
+				if (version > 7) {
+					enumParticle = PackageType.MINECRAFT_SERVER.getClass("EnumParticle");
+				}
+				Class<?> packetClass = PackageType.MINECRAFT_SERVER.getClass(version < 7 ? "Packet63WorldParticles" : "PacketPlayOutWorldParticles");
 				packetConstructor = ReflectionUtils.getConstructor(packetClass);
 				getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
 				playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
@@ -646,6 +1022,15 @@ public enum ParticleEffect {
 				throw new VersionIncompatibleException("Your current bukkit version seems to be incompatible with this library", exception);
 			}
 			initialized = true;
+		}
+
+		/**
+		 * Returns the version of your server (1.x)
+		 * 
+		 * @return The version number
+		 */
+		public static int getVersion() {
+			return version;
 		}
 
 		/**
@@ -670,7 +1055,16 @@ public enum ParticleEffect {
 			if (packet == null) {
 				try {
 					packet = packetConstructor.newInstance();
-					ReflectionUtils.setValue(packet, true, "a", name);
+					Object id;
+					if (version < 8) {
+						id = effect.getName();
+						if (data != null) {
+							id = (String)id + data.getPacketDataString();
+						}
+					} else {
+						id = enumParticle.getEnumConstants()[effect.getId()];
+					}
+					ReflectionUtils.setValue(packet, true, "a", id);
 					ReflectionUtils.setValue(packet, true, "b", (float) center.getX());
 					ReflectionUtils.setValue(packet, true, "c", (float) center.getY());
 					ReflectionUtils.setValue(packet, true, "d", (float) center.getZ());
@@ -679,6 +1073,10 @@ public enum ParticleEffect {
 					ReflectionUtils.setValue(packet, true, "g", offsetZ);
 					ReflectionUtils.setValue(packet, true, "h", speed);
 					ReflectionUtils.setValue(packet, true, "i", amount);
+					if (version > 7) {
+						ReflectionUtils.setValue(packet, true, "j", longDistance);
+						ReflectionUtils.setValue(packet, true, "k", data == null ? new int[0] : data.getPacketData());
+					}
 				} catch (Exception exception) {
 					throw new PacketInstantiationException("Packet instantiation failed", exception);
 				}
