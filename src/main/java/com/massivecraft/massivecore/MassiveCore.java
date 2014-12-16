@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.massivecraft.massivecore.adapter.BackstringEnumSetAdapter;
 import com.massivecraft.massivecore.adapter.InventoryAdapter;
 import com.massivecraft.massivecore.adapter.ItemStackAdapter;
 import com.massivecraft.massivecore.adapter.JsonElementAdapter;
@@ -27,6 +28,7 @@ import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreBuffer;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreCmdurl;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreStore;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreUsys;
+import com.massivecraft.massivecore.collections.BackstringEnumSet;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.collections.MassiveMap;
@@ -111,6 +113,8 @@ public class MassiveCore extends MassivePlugin
 		.registerTypeAdapter(MassiveTreeMapDef.class, MassiveTreeMapAdapter.get())
 		.registerTypeAdapter(MassiveTreeSet.class, MassiveTreeSetAdapter.get())
 		.registerTypeAdapter(MassiveTreeSetDef.class, MassiveTreeSetAdapter.get())
+		
+		.registerTypeAdapter(BackstringEnumSet.class, BackstringEnumSetAdapter.get())
 		
 		.registerTypeAdapterFactory(ModdedEnumTypeAdapter.ENUM_FACTORY);
 	}
