@@ -8,12 +8,14 @@ import java.util.TreeSet;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginIdentifiableCommand;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MassiveCoreBukkitCommand extends Command
+public class MassiveCoreBukkitCommand extends Command implements PluginIdentifiableCommand
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -93,6 +95,16 @@ public class MassiveCoreBukkitCommand extends Command
 		}
 		
 		return new ArrayList<String>(ret);
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE: PLUGIN IDENTIFIABLE COMMAND
+	// -------------------------------------------- //
+	
+	@Override
+	public Plugin getPlugin()
+	{
+		return massiveCommand.getRegisteredPlugin();
 	}
 	
 }
