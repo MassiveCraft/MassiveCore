@@ -126,40 +126,43 @@ public class MUtil
 	
 	public static Collection<? extends Player> getOnlinePlayers()
 	{
+		// Fetch some kind of playersObject.
+		Object playersObject = null;
 		try
 		{
-			return Bukkit.getOnlinePlayers();
+			playersObject = Bukkit.getOnlinePlayers();
 		}
-		catch (Throwable e)
+		catch (Throwable t)
 		{
+			// That didn't work!
 			// We probably just caught a NoSuchMethodError.
+			// So let's try with reflection instead.
+			try
+			{
+				playersObject = methodGetOnlinePlayers.invoke(null);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
-		try
+		// Now return the playersObject.
+		if (playersObject instanceof Collection<?>)
 		{
-			Object playersObject = methodGetOnlinePlayers.invoke(null);
-			if (playersObject instanceof Collection<?>)
-			{
-				@SuppressWarnings("unchecked")
-				Collection<? extends Player> playersCollection = (Collection<? extends Player>)playersObject;
-				return playersCollection;
-			}
-			else if (playersObject instanceof Player[])
-			{
-				Player[] playersArray = (Player[])playersObject;
-				return Arrays.asList(playersArray);
-			}
-			else
-			{
-				throw new RuntimeException("Unknown return type for getOnlinePlayers using reflection.");
-			}
+			@SuppressWarnings("unchecked")
+			Collection<? extends Player> playersCollection = (Collection<? extends Player>)playersObject;
+			return playersCollection;
 		}
-		catch (Exception e)
+		else if (playersObject instanceof Player[])
 		{
-			e.printStackTrace();
+			Player[] playersArray = (Player[])playersObject;
+			return Arrays.asList(playersArray);
 		}
-		
-		return null;
+		else
+		{
+			throw new RuntimeException("Failed retrieving online players.");
+		}
 	}
 	
 	// -------------------------------------------- //
