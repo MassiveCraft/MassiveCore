@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -464,7 +465,8 @@ public class PlayerUtil extends EngineAbstract
 	
 	public static double getMaxHealth(Player player)
 	{
-		return player.getMaxHealth();
+		Damageable d = (Damageable) player;
+		return d.getMaxHealth();
 	}
 	
 	public static double getMaxHealthDefault(Player player)
