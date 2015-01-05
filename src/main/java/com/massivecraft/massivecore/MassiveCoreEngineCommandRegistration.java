@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.MassiveCoreBukkitCommand;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 
 public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 {
@@ -141,13 +141,13 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 	public static SimpleCommandMap getSimpleCommandMap()
 	{
 		Server server = Bukkit.getServer();
-		return (SimpleCommandMap) get(server.getClass(), "commandMap", server);
+		return (SimpleCommandMap) ReflectionUtil.getField(server.getClass(), "commandMap", server);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static Map<String, Command> getSimpleCommandMapDotKnownCommands(SimpleCommandMap simpleCommandMap)
 	{
-		return (Map<String, Command>) get(SimpleCommandMap.class, "knownCommands", simpleCommandMap);
+		return (Map<String, Command>) ReflectionUtil.getField(SimpleCommandMap.class, "knownCommands", simpleCommandMap);
 	}
 	
 	// -------------------------------------------- //
@@ -161,34 +161,5 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 		MassiveCoreBukkitCommand mcbc = (MassiveCoreBukkitCommand)command;
 		return mcbc.getMassiveCommand();
 	}
-	
-	public static Object get(Class<?> clazz, String fieldName, Object object)
-	{
-		try
-		{
-			Field field = clazz.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			return field.get(object);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
-	}
-	
-	public static void set(Class<?> clazz, String fieldName, Object object, Object value)
-	{
-		try
-		{
-			Field field = clazz.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			field.set(object, value);
-		}
-		catch (Exception e)
-		{
-			return;
-		}
-	}
-
 
 }
