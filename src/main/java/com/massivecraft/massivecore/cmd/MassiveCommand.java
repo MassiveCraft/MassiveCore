@@ -96,6 +96,21 @@ public class MassiveCommand
 	public List<MassiveCommand> getSubCommands() { return this.subCommands; }
 	public void setSubCommands(List<MassiveCommand> subCommands) { this.subCommands = subCommands; }
 	
+	public MassiveCommand getSubCommand(String alias)
+	{
+		for (MassiveCommand subCommand: this.getSubCommands())
+		{
+			for (String subAlias : subCommand.getAliases())
+			{
+				if (alias.equalsIgnoreCase(subAlias))
+				{
+					return subCommand;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public void addSubCommand(MassiveCommand subCommand)
 	{
 		this.addSubCommand(subCommand, this.subCommands.size());
@@ -295,18 +310,13 @@ public class MassiveCommand
 		// Is there a matching sub command?
 		if (args.size() > 0)
 		{
-			for (MassiveCommand subCommand: this.getSubCommands())
+			MassiveCommand subCommand = this.getSubCommand(args.get(0));
+			if (subCommand != null)
 			{
-				for (String alias : subCommand.getAliases())
-				{
-					if (args.get(0).equalsIgnoreCase(alias))
-					{
-						args.remove(0);
-						commandChain.add(this);
-						subCommand.execute(sender, args, commandChain);
-						return;
-					}
-				}
+				args.remove(0);
+				commandChain.add(this);
+				subCommand.execute(sender, args, commandChain);
+				return;
 			}
 		}
 		

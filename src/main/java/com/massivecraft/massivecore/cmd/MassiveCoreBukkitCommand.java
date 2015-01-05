@@ -56,29 +56,33 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args)
 	{
-		List<String> argList;
+		List<String> argList = this.createArgList(args);
+		this.massiveCommand.execute(sender, argList);
+		return true;
+	}
+	
+	public List<String> createArgList(String[] args)
+	{
+		List<String> ret;
 		if (this.massiveCommand.isUsingTokenizer())
 		{
-			argList = Txt.tokenizeArguments(Txt.implode(args, " "));
+			ret = Txt.tokenizeArguments(Txt.implode(args, " "));
 		}
 		else
 		{
-			argList = new ArrayList<String>(Arrays.asList(args));
+			ret = new ArrayList<String>(Arrays.asList(args));
 		}
 		
 		if (this.massiveCommand.isUsingSmartQuotesRemoval())
 		{
-			List<String> oldArgList = argList;
-			argList = new ArrayList<String>();
+			List<String> oldArgList = ret;
+			ret = new ArrayList<String>();
 			for (String arg : oldArgList)
 			{
-				argList.add(Txt.removeSmartQuotes(arg));
+				ret.add(Txt.removeSmartQuotes(arg));
 			}
 		}
-		
-		this.massiveCommand.execute(sender, argList);
-		
-		return true;
+		return ret;
 	}
 	
 	// -------------------------------------------- //
