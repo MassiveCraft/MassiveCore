@@ -1,21 +1,70 @@
 package com.massivecraft.massivecore.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReflectionUtil
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	private static Field FIELD_DOT_MODIFIERS;
+	
+	static
+	{
+		try
+		{
+			FIELD_DOT_MODIFIERS = Field.class.getDeclaredField("modifiers");
+			FIELD_DOT_MODIFIERS.setAccessible(true);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	// -------------------------------------------- //
+	// MAKE ACCESSIBLE
+	// -------------------------------------------- //
+	
+	public static boolean makeAccessible(Field field)
+	{
+		try
+		{
+			// Mark the field as accessible using reflection.
+			field.setAccessible(true);
+			
+			// Remove the final modifier from the field.
+			// http://stackoverflow.com/questions/2474017/using-reflection-to-change-static-final-file-separatorchar-for-unit-testing
+			FIELD_DOT_MODIFIERS.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+			
+			return true;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	// -------------------------------------------- //
+	// FIELD SIMPLE: GET & SET & TRANSFER
+	// -------------------------------------------- //
+	
 	public static Object getField(Class<?> clazz, String fieldName, Object object)
 	{
 		try
 		{
 			Field field = clazz.getDeclaredField(fieldName);
-			field.setAccessible(true);
+			makeAccessible(field);
 			return field.get(object);
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -25,12 +74,13 @@ public class ReflectionUtil
 		try
 		{
 			Field field = clazz.getDeclaredField(fieldName);
-			field.setAccessible(true);
+			makeAccessible(field);
 			field.set(object, value);
 			return true;
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -40,13 +90,14 @@ public class ReflectionUtil
 		try
 		{
 			Field field = clazz.getDeclaredField(fieldName);
-			field.setAccessible(true);
+			makeAccessible(field);
 			Object value = field.get(from);
 			field.set(to, value);
 			return true;
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -74,5 +125,7 @@ public class ReflectionUtil
 	{
 		return transferFields(clazz, from, to, null);
 	}
+	
+
 	
 }

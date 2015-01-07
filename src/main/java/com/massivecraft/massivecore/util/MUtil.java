@@ -1,7 +1,5 @@
 package com.massivecraft.massivecore.util;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -201,10 +199,97 @@ public class MUtil
 	
 	public static String getStackTraceString()
 	{
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		new Throwable().printStackTrace(pw);
-		return sw.toString();
+		List<String> strings = getStackTraceStrings();
+		strings.remove(0);
+		return Txt.implode(strings, "\n");
+	}
+	
+	public static List<String> getStackTraceStrings()
+	{
+		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+		elements = Arrays.copyOfRange(elements, 2, elements.length);
+		return getStackTraceStrings(elements);
+	}
+	
+	public static List<String> getStackTraceStrings(List<StackTraceElement> elements)
+	{
+		List<String> ret = new MassiveList<String>();
+		
+		for (StackTraceElement element : elements)
+		{
+			ret.add(getStackTraceString(element));
+		}
+		
+		return ret;
+	}
+	public static List<String> getStackTraceStrings(StackTraceElement[] elements)
+	{
+		return getStackTraceStrings(Arrays.asList(elements));
+	}
+	
+	// Same as the Java8 source but with color.
+	public static String getStackTraceString(StackTraceElement element)
+	{
+		ChatColor separatorColor = ChatColor.GRAY;
+		ChatColor classColor = ChatColor.YELLOW;
+		ChatColor methodColor = ChatColor.GREEN;
+		ChatColor fileColor = ChatColor.AQUA;
+		ChatColor lineColor = ChatColor.LIGHT_PURPLE;
+		
+		String className = element.getClassName();
+		String methodName = element.getMethodName();
+		boolean nativeMethod = element.isNativeMethod();
+		String fileName = element.getFileName();
+		int lineNumber = element.getLineNumber();
+		
+		StringBuilder ret = new StringBuilder();
+		
+		ret.append(classColor);
+		ret.append(className);
+		
+		ret.append(separatorColor);
+		ret.append(".");
+		
+		ret.append(methodColor);
+		ret.append(methodName);
+		
+		ret.append(separatorColor);
+		ret.append("(");
+		
+		ret.append(fileColor);
+		if (nativeMethod)
+		{
+			ret.append("Native Method");
+		}
+		else
+		{
+			if (fileName != null && lineNumber >= 0)
+			{
+				ret.append(fileName);
+				
+				ret.append(separatorColor);
+				ret.append(":");
+				
+				ret.append(lineColor);
+				ret.append(lineNumber);
+			}
+			else
+			{
+				if (fileName != null)
+				{
+					ret.append(fileName);
+				}
+				else
+				{
+					ret.append("Unknown Source");
+				}
+			}
+		}
+		
+		ret.append(separatorColor);
+		ret.append(")");
+		
+		return ret.toString();
 	}
 	
 	// -------------------------------------------- //
