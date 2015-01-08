@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -138,16 +139,18 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 	// GETTERS
 	// -------------------------------------------- //
 	
+	protected static Field SERVER_DOT_COMMAND_MAP = ReflectionUtil.getField(Bukkit.getServer().getClass(), "commandMap");
 	public static SimpleCommandMap getSimpleCommandMap()
 	{
 		Server server = Bukkit.getServer();
-		return (SimpleCommandMap) ReflectionUtil.getField(server.getClass(), "commandMap", server);
+		return (SimpleCommandMap) ReflectionUtil.getField(SERVER_DOT_COMMAND_MAP, server);
 	}
 	
+	protected static Field SIMPLE_COMMAND_MAP_DOT_KNOWN_COMMANDS = ReflectionUtil.getField(SimpleCommandMap.class, "knownCommands");
 	@SuppressWarnings("unchecked")
 	public static Map<String, Command> getSimpleCommandMapDotKnownCommands(SimpleCommandMap simpleCommandMap)
 	{
-		return (Map<String, Command>) ReflectionUtil.getField(SimpleCommandMap.class, "knownCommands", simpleCommandMap);
+		return (Map<String, Command>) ReflectionUtil.getField(SIMPLE_COMMAND_MAP_DOT_KNOWN_COMMANDS, simpleCommandMap);
 	}
 	
 	// -------------------------------------------- //

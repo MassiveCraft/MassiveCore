@@ -51,6 +51,38 @@ public class ReflectionUtil
 	}
 	
 	// -------------------------------------------- //
+	// FIELD GET
+	// -------------------------------------------- //
+	
+	public static Field getField(Class<?> clazz, String fieldName)
+	{
+		try
+		{
+			Field field = clazz.getDeclaredField(fieldName);
+			makeAccessible(field);
+			return field;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Object getField(Field field, Object object)
+	{
+		try
+		{
+			return field.get(object);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	// -------------------------------------------- //
 	// FIELD SIMPLE: GET & SET & TRANSFER
 	// -------------------------------------------- //
 	
