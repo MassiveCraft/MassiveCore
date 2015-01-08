@@ -598,6 +598,7 @@ public class IdUtil implements Listener, Runnable
 		return null;
 	}
 
+	// This method always returns null or a lower case String.
 	public static String getId(Object senderObject)
 	{
 		// Null Return
@@ -623,7 +624,7 @@ public class IdUtil implements Listener, Runnable
 		if (senderObject instanceof Player) return ((Player)senderObject).getUniqueId().toString();
 		
 		// CommandSender
-		if (senderObject instanceof CommandSender) return ((CommandSender)senderObject).getName();
+		if (senderObject instanceof CommandSender) return ((CommandSender)senderObject).getName().toLowerCase();
 		
 		// UUID
 		if (senderObject instanceof UUID) return ((UUID)senderObject).toString();

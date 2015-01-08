@@ -57,12 +57,8 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 		
 		if (ret == null)
 		{
-			ret = IdUtil.getId(oid);
-		}
-		
-		if (ret == null)
-		{
-			return null;
+			// Always lower case.
+			return IdUtil.getId(oid);
 		}
 		
 		if (this.isLowercasing())
