@@ -293,6 +293,128 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
+	// LIST OPERATIONS
+	// -------------------------------------------- //
+	
+	public static <T> List<T> repeat(T object, int times)
+	{
+		List<T> ret = new ArrayList<T>(times);
+		for (int i = 1; i <= times; i++)
+		{
+			ret.add(object);
+		}
+		return ret;
+	}
+	
+	public static void keepLeft(List<?> list, int maxlength)
+	{
+		if (list.size() <= maxlength) return;
+		list.subList(maxlength, list.size()).clear();
+	}
+	
+	public static void keepRight(List<?> list, int maxlength)
+	{
+		if (list.size() <= maxlength) return;
+		list.subList(0, maxlength).clear();
+	}
+	
+	public static <T> void padLeft(List<T> list, T object, int length)
+	{
+		if (list.size() >= length) return;
+		list.addAll(0, repeat(object, length - list.size()));
+	}
+	
+	public static <T> void padRight(List<T> list, T object, int length)
+	{
+		if (list.size() >= length) return;
+		list.addAll(repeat(object, length - list.size()));
+	}
+	
+	// -------------------------------------------- //
+	// ITERABLE MATH
+	// -------------------------------------------- //
+	
+	public static <T extends Number> double getSum(Iterable<T> numbers)
+	{
+		if (numbers == null) throw new NullPointerException("numbers");
+		
+		double sum = 0;
+		for (T number : numbers)
+		{
+			sum += number.doubleValue();
+		}
+		
+		return sum;
+	}
+	
+	public static <T extends Number> double getAverage(Iterable<T> numbers)
+	{
+		if (numbers == null) throw new NullPointerException("numbers");
+		
+		double sum = 0;
+		int count = 0;
+		for (T number : numbers)
+		{
+			sum += number.doubleValue();
+			count++;
+		}
+		
+		if (count == 0) throw new IllegalArgumentException("numbers empty");
+		
+		return sum / count;
+	}
+	
+	// -------------------------------------------- //
+	// TABLE OPERATIONS
+	// -------------------------------------------- //
+	
+	public static <T> List<List<T>> rotateLeft(List<List<T>> rows)
+	{
+		List<List<T>> ret = transpose(rows);
+		flipVertically(ret);
+		return ret;
+	}
+	
+	public static <T> List<List<T>> rotateRight(List<List<T>> rows)
+	{
+		List<List<T>> ret = transpose(rows);
+		flipHorizontally(ret);
+		return ret;
+	}
+	
+	public static <T> List<List<T>> transpose(List<List<T>> rows)
+	{
+		List<List<T>> ret = new ArrayList<List<T>>();
+		
+		final int n = rows.get(0).size();
+		
+		for (int i = 0; i < n; i++)
+		{
+			List<T> col = new ArrayList<T>();
+			for (List<T> row : rows)
+			{
+				col.add(row.get(i));
+			}
+			ret.add(col);
+		}
+		
+		return ret;
+	}
+	
+	public static <T> void flipHorizontally(List<List<T>> rows)
+	{
+		for (List<T> row : rows)
+		{
+			Collections.reverse(row);
+		}
+	}
+	
+	public static <T> void flipVertically(List<List<T>> rows)
+	{
+		Collections.reverse(rows);
+	}
+	
+	// -------------------------------------------- //
 	// COLOR INT CODE
 	// -------------------------------------------- //
 	

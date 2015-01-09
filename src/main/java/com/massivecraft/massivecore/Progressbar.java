@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -63,13 +65,13 @@ public class Progressbar
 	public Progressbar withQuota(double quota) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
 	public Progressbar withWidth(int width) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
 	public Progressbar withLeft(String left) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
-	public Progressbar solid(String solid) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
-	public Progressbar between(String between) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
-	public Progressbar empty(String empty) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
-	public Progressbar right(String right) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
-	public Progressbar solidsPerEmpty(double solidsPerEmpty) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
-	public Progressbar colorTag(String colorTag) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
-	public Progressbar roofToColor(Map<Double, String> roofToColor) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
+	public Progressbar withSolid(String solid) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
+	public Progressbar withBetween(String between) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
+	public Progressbar withEmpty(String empty) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
+	public Progressbar withRight(String right) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
+	public Progressbar withSolidsPerEmpty(double solidsPerEmpty) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
+	public Progressbar withColorTag(String colorTag) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
+	public Progressbar withRoofToColor(Map<Double, String> roofToColor) { return new Progressbar(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor); }
 	
 	// -------------------------------------------- //
 	// PRIVATE CONSTRUCTOR
@@ -106,13 +108,26 @@ public class Progressbar
 	{
 		return render(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor);
 	}
-		
+	
+	public List<String> renderList()
+	{
+		return renderList(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor);
+	}
+	
 	// -------------------------------------------- //
 	// STATIC UTIL
 	// -------------------------------------------- //
 	
 	public static String render(double quota, int width, String left, String solid, String between, String empty, String right, double solidsPerEmpty, String colorTag, Map<Double, String> roofToColor)
 	{
+		return Txt.implode(renderList(quota, width, left, solid, between, empty, right, solidsPerEmpty, colorTag, roofToColor), "");
+	}
+	
+	public static List<String> renderList(double quota, int width, String left, String solid, String between, String empty, String right, double solidsPerEmpty, String colorTag, Map<Double, String> roofToColor)
+	{
+		// Create Ret
+		List<String> ret = new ArrayList<String>();
+		
 		// Ensure between 0 and 1;
 		quota = limit(quota);
 		
@@ -125,16 +140,54 @@ public class Progressbar
 		// The rest is empty
 		int emptyCount = (int) ((width - solidCount) / solidsPerEmpty);
 		
-		// Create the non-parsed bar
-		String ret = left + Txt.repeat(solid, solidCount) + between + Txt.repeat(empty, emptyCount) + right;
+		// Color Parse Parts
+		left = colorParse(left, colorTag, color);
+		solid = colorParse(solid, colorTag, color);
+		between = colorParse(between, colorTag, color);
+		empty = colorParse(empty, colorTag, color);
+		right = colorParse(right, colorTag, color);
 		
-		// Replace color tag
-		ret = ret.replace(colorTag, color);
-				
-		// Parse amp color codes
-		ret = Txt.parse(ret);
+		// Combine Parts
+		if (left != null)
+		{
+			ret.add(left);
+		}
+		
+		if (solid != null)
+		{
+			for (int i = 1; i <= solidCount; i++)
+			{
+				ret.add(solid);
+			}
+		}
+		
+		if (between != null)
+		{
+			ret.add(between);
+		}
+		
+		if (empty != null)
+		{
+			for (int i = 1; i <= emptyCount; i++)
+			{
+				ret.add(empty);
+			}
+		}
+		
+		if (right != null)
+		{
+			ret.add(right);
+		}
 		
 		return ret;
+	}
+	
+	public static String colorParse(String string, String colorTag, String color)
+	{
+		if (string == null) return null;
+		string = string.replace(colorTag, color);
+		string = Txt.parse(string);
+		return string;
 	}
 	
 	public static double limit(double quota)
