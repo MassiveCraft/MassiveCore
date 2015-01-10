@@ -6,13 +6,13 @@ public class IdData
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private String id;
+	protected final String id;
 	public String getId() { return this.id; }
 	
-	private String name;
+	protected final String name;
 	public String getName() { return this.name; }
 	
-	private long millis;
+	protected final long millis;
 	public long getMillis() { return this.millis; }
 	
 	// -------------------------------------------- //
@@ -20,9 +20,12 @@ public class IdData
 	// -------------------------------------------- //
 	
 	// It's always good to have a no-arg constructor
+	// In our case it will be used by GSON.
 	public IdData()
 	{
-		
+		id = null;
+		name = null;
+		millis = 0;
 	}
 	
 	public IdData(String id, String name)
