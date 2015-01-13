@@ -1,13 +1,10 @@
 package com.massivecraft.massivecore;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-
 /**
  * This class will allow you to create non-tps-dependent repeating tasks.
  * It makes use of the Bukkit scheduler internally.
  */
-public abstract class ModuloRepeatTask implements Runnable
+public abstract class ModuloRepeatTask extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// FIELDS: RAW
@@ -23,7 +20,8 @@ public abstract class ModuloRepeatTask implements Runnable
 	public long getPreviousMillis() { return this.previousMillis; }
 	public void setPreviousMillis(long previousMillis) { this.previousMillis = previousMillis; }
 	
-	private Integer taskId = null;
+	// TODO: Convertion Dust
+	// private Integer taskId = null;
 	
 	// -------------------------------------------- //
 	// INVOCATION NUMBER CALCULATION
@@ -59,6 +57,12 @@ public abstract class ModuloRepeatTask implements Runnable
 	// -------------------------------------------- //
 	
 	@Override
+	public Long getPeriod()
+	{
+		return 1L;
+	}
+	
+	@Override
 	public void run()
 	{
 		// So the delay millis is lower than one? (could for example be zero)
@@ -76,28 +80,6 @@ public abstract class ModuloRepeatTask implements Runnable
 		this.invoke(nowMillis);
 		
 		this.setPreviousMillis(nowMillis);
-	}
-	
-	// -------------------------------------------- //
-	// EIGEN
-	// -------------------------------------------- //
-	
-	@Deprecated
-	public int schedule(Plugin plugin)
-	{
-		this.activate(plugin);
-		return this.taskId;
-	}
-	
-	public void activate(Plugin plugin)
-	{
-		this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, 1, 1);
-	}
-	
-	public void deactivate()
-	{
-		if (this.taskId == null) return;
-		Bukkit.getScheduler().cancelTask(this.taskId);
 	}
 	
 	// -------------------------------------------- //
