@@ -441,7 +441,15 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		if (meta2json)
 		{
 			if (!meta.hasTitle()) return;
-			json.add(BOOK_PAGES, convertStringList(meta.getPages()));
+			try
+			{
+				json.add(BOOK_PAGES, convertStringList(meta.getPages()));
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				// It seems CraftMetaBook#getPages some times throw an NPE.
+			}
 		}
 		else
 		{
