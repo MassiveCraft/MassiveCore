@@ -56,6 +56,10 @@ public class Mixin
 	public static MessageMixin getMessageMixin() { return messageMixin; }
 	public static void setMessageMixin(MessageMixin val) { messageMixin = val; }
 	
+	private static TitleMixin titleMixin = TitleMixinDefault.get();
+	public static TitleMixin getTitleMixin() { return titleMixin; }
+	public static void setTitleMixin(TitleMixin val) { titleMixin = val; }
+	
 	private static KickMixin kickMixin = KickMixinDefault.get();
 	public static KickMixin getKickMixin() { return kickMixin; }
 	public static void setKickMixin(KickMixin val) { kickMixin = val; }
@@ -384,6 +388,28 @@ public class Mixin
 	public static boolean msgOne(Object senderObject, Collection<String> msgs)
 	{
 		return getMessageMixin().msgOne(senderObject, msgs);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC EXPOSE: TITLE
+	// -------------------------------------------- //
+	
+	// Default
+	public static boolean sendTitleMessage(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle)
+	{
+		return getTitleMixin().sendTitleMessage(watcherObject, fadeIn, stay, fadeOut, mainTitle, subTitle);
+	}
+	
+	// Parsed
+	public static boolean sendTitleMsg(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle)
+	{
+		return getTitleMixin().sendTitleMsg(watcherObject, fadeIn, stay, fadeOut, mainTitle, subTitle);
+	}
+	
+	// Available
+	public static boolean isTitlesAvailable()
+	{
+		return getTitleMixin().isTitlesAvailable();
 	}
 	
 	// -------------------------------------------- //

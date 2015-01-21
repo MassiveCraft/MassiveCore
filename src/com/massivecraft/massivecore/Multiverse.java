@@ -161,7 +161,7 @@ public class Multiverse extends Entity<Multiverse>
 	{
 		for (Set<String> worldNames : this.uw.values())
 		{
-			if(worldNames.remove(worldName)) return true;
+			if (worldNames.remove(worldName)) return true;
 		}
 		return false;
 	}

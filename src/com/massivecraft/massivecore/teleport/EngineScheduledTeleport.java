@@ -122,7 +122,7 @@ public class EngineScheduledTeleport extends EngineAbstract
 		Entity entity = event.getEntity();
 		
 		// ... and that entity is a player ...
-		if(!(entity instanceof Player)) return;
+		if (!(entity instanceof Player)) return;
 		Player player = (Player)entity;
 		
 		// ... cancel teleport!
