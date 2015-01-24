@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
@@ -22,25 +23,28 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<T> read(String arg, CommandSender sender)
+	public T read(String arg, CommandSender sender)
 	{
-		ArgResult<T> result = new ArgResult<T>(this.select(arg, sender));
+		T result = this.select(arg, sender);
 		
-		if (!result.hasResult())
+		if (result == null)
 		{
-			result.getErrors().add("<b>No "+this.typename()+" matches \"<h>"+arg+"<b>\".");
+			MassiveCommandException errors = new MassiveCommandException();
+			errors.addErrorMsg("<b>No " + this.typename() + " matches \"<h>"+arg+"<b>\".");
 			if (this.canList(sender))
 			{
 				Collection<String> names = this.altNames(sender);
 				if (names.size() == 0)
 				{
-					result.getErrors().add("<i>Note: There is no "+this.typename()+" available.");
+					errors.addErrorMsg("<i>Note: There is no "+this.typename()+" available.");
 				}
 				else
 				{
-					result.getErrors().add("<i>Use "+Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));
+					errors.addErrorMsg("<i>Use "+Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));
 				}
 			}
+			
+			throw errors;
 		}
 		
 		return result;

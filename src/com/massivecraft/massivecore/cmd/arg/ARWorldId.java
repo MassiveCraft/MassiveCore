@@ -33,13 +33,13 @@ public class ARWorldId extends ARAbstractSelect<String>
 		
 		for (String worldId : visibleWorldIds)
 		{
-			if (!Mixin.canSeeWorld(sender, worldId)) continue;
+			if ( ! Mixin.canSeeWorld(sender, worldId)) continue;
 			if (arg.equalsIgnoreCase(worldId)) return worldId;
 		}
 		
 		for (String worldId : visibleWorldIds)
 		{
-			if (!Mixin.canSeeWorld(sender, worldId)) continue;
+			if ( ! Mixin.canSeeWorld(sender, worldId)) continue;
 			for (String worldAlias : Mixin.getWorldAliases(worldId))
 			{
 				if (arg.equalsIgnoreCase(worldAlias)) return worldId;
@@ -55,7 +55,7 @@ public class ARWorldId extends ARAbstractSelect<String>
 		List<String> ret = new ArrayList<String>();
 		for (String worldId : Mixin.getWorldIds())
 		{
-			if (!Mixin.canSeeWorld(sender, worldId)) continue;
+			if ( ! Mixin.canSeeWorld(sender, worldId)) continue;
 			ret.add(Mixin.getWorldDisplayName(worldId));
 		}
 		return ret;

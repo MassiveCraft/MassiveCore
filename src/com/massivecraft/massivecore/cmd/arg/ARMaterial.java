@@ -3,6 +3,8 @@ package com.massivecraft.massivecore.cmd.arg;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
+
 public class ARMaterial extends ArgReaderAbstract<Material>
 {
 	// -------------------------------------------- //
@@ -17,15 +19,18 @@ public class ARMaterial extends ArgReaderAbstract<Material>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<Material> read(String arg, CommandSender sender)
+	public Material read(String arg, CommandSender sender)
 	{
-		ArgResult<Material> result = new ArgResult<Material>(Material.matchMaterial(arg));
-		if (!result.hasResult())
+		Material ret = Material.matchMaterial(arg);
+		if (ret == null)
 		{
-			result.getErrors().add("<b>No material matches <h>"+arg+"<b>.");
-			result.getErrors().add("<i>Suggestion: <aqua>http://www.minecraftwiki.net/wiki/Data_values");
+			MassiveCommandException errors = new MassiveCommandException();
+			errors.addErrorMsg("<b>No material matches <h>"+arg+"<b>.");
+			errors.addErrorMsg("<i>Suggestion: <aqua>http://www.minecraftwiki.net/wiki/Data_values");
+			throw errors;
 		}
-		return result;
+		
+		return ret;
 	}
 	
 }

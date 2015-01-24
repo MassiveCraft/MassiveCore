@@ -35,8 +35,6 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 		
 		for (ChatColor cc : ChatColor.values())
 		{
-
-			
 			String ccstr = getToCompare(cc.name());
 			if ( ! ccstr.equals(arg)) continue;
 			ret = cc;

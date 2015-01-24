@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
+
 public class ARPermission extends ArgReaderAbstract<Permission>
 {
 	// -------------------------------------------- //
@@ -18,20 +20,20 @@ public class ARPermission extends ArgReaderAbstract<Permission>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<Permission> read(String arg, CommandSender sender)
+	public Permission read(String arg, CommandSender sender)
 	{
-		ArgResult<Permission> ret = new ArgResult<Permission>();
+		Permission ret = null;
 		
 		for (Permission permission : Bukkit.getPluginManager().getPermissions())
 		{
-			if (!permission.getName().equals(arg)) continue;
-			ret.setResult(permission);
+			if ( ! permission.getName().equals(arg)) continue;
+			ret = permission;
 			break;
 		}
 		
-		if (!ret.hasResult())
+		if (ret == null)
 		{
-			ret.setErrors("<b>No permission with the name \"<h>"+arg+"<b>\" was found.");
+			throw new MassiveCommandException("<b>No permission with the name \"<h>" + arg + "<b>\" was found.");
 		}
 		
 		return ret;

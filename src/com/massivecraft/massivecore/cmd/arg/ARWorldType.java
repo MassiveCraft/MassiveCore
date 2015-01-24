@@ -39,7 +39,7 @@ public class ARWorldType extends ARAbstractSelect<WorldType>
 		arg = arg.replace(".", "");
 		arg = arg.replace("normal", "");
 		arg = arg.replace("default", "");
-		arg = arg.replace("large", "");
+		arg = arg.replace("biomes", "");
 		
 		if (arg.equals(""))
 		{

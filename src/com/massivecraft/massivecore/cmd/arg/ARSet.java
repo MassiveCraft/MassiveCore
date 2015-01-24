@@ -40,34 +40,28 @@ public class ARSet<T> extends ArgReaderAbstract<Set<T>>
 	
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
-	public ArgResult<Set<T>> read(String arg, CommandSender sender)
+	public Set<T> read(String arg, CommandSender sender)
 	{
 		// Split into inner args
 		String[] innerArgs = arg.split("\\s+");
 		
 		// Create Ret
-		ArgResult<Set<T>> ret = new ArgResult<Set<T>>();
-		Set<T> result = new LinkedHashSet<T>();
+		Set<T> ret = new LinkedHashSet<T>();
+		
+		boolean duplicates = false;
 		
 		// For Each
 		for (String innerArg : innerArgs)
 		{
-			ArgResult<T> innerArgResult = this.getInnerArgReader().read(innerArg, sender);
+			T innerArgResult = this.getInnerArgReader().read(innerArg, sender);
 			
-			if (innerArgResult.hasErrors())
-			{
-				ret.setErrors(innerArgResult.getErrors());
-				return ret;
-			}
-			
-			if (warnOnDuplicates && ! result.add(innerArgResult.getResult()))
-			{
-				sender.sendMessage(Txt.parse("<i>An argument was passed in twice and got removed."));
-			}
+			duplicates = ( ! ret.add(innerArgResult) || duplicates);
 		}
 		
-		// Set Result
-		ret.setResult(result);
+		if (warnOnDuplicates && duplicates)
+		{
+			sender.sendMessage(Txt.parse("<i>Some duplicate arguments were removed"));
+		}
 		
 		// Return Ret
 		return ret;

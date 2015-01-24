@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.cmd.arg;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.SoundEffect;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.util.Txt;
 
 public class ARSoundEffect extends ArgReaderAbstract<SoundEffect>
@@ -19,17 +20,17 @@ public class ARSoundEffect extends ArgReaderAbstract<SoundEffect>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<SoundEffect> read(String arg, CommandSender sender)
+	public SoundEffect read(String arg, CommandSender sender)
 	{
-		ArgResult<SoundEffect> ret = new ArgResult<SoundEffect>();
+		SoundEffect ret;
 		
 		try
 		{
-			ret.setResult(SoundEffect.valueOf(arg));
+			ret = SoundEffect.valueOf(arg);
 		}
 		catch (Exception e)
 		{
-			ret.setErrors(Txt.parse("<b>") + e.getMessage());
+			throw new MassiveCommandException(Txt.parse("<b>") + e.getMessage());
 		}
 		return ret;
 	}

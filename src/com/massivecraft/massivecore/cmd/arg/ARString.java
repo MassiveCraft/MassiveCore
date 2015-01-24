@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
-public class ARString extends ARAbstractPrimitive<String>
+import org.bukkit.command.CommandSender;
+
+public class ARString extends ArgReaderAbstract<String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -12,15 +14,9 @@ public class ARString extends ARAbstractPrimitive<String>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "string";
-	}
 
 	@Override
-	public String convert(String arg) throws Exception
+	public String read(String arg, CommandSender sender)
 	{
 		return arg;
 	}

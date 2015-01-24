@@ -5,7 +5,8 @@ import java.util.List;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.SoundEffect;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARSoundEffects;
+import com.massivecraft.massivecore.cmd.arg.ARList;
+import com.massivecraft.massivecore.cmd.arg.ARSoundEffect;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 
@@ -37,7 +38,7 @@ public class CmdMassiveCoreHearsound extends MassiveCommand
 	public void perform()
 	{
 		// Args
-		List<SoundEffect> soundEffects = this.argConcatFrom(0, ARSoundEffects.get());
+		List<SoundEffect> soundEffects = this.argConcatFrom(0, ARList.get(ARSoundEffect.get()));
 		if (soundEffects == null) return;
 		
 		// Apply

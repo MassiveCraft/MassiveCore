@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -43,23 +44,23 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<T> read(String arg, CommandSender sender)
+	public T read(String arg, CommandSender sender)
 	{
 		// Create Ret
-		ArgResult<T> ret = new ArgResult<T>();
+		T ret;
 		
 		// arg --> senderId
 		String senderId = this.getSenderIdFor(arg);
+		// All of our subclasses return null if senderId is null
+		// Thus we don't need to check for that being null, but only check ret
 		
 		// Populate Ret
-		if (senderId == null)
+		ret = this.getResultForSenderId(senderId);
+		
+		if (ret == null)
 		{
 			// No alternatives found
-			ret.setErrors("<b>No player matches \"<h>"+arg+"<b>\".");
-		}
-		else
-		{
-			ret.setResult(this.getResultForSenderId(senderId));
+			throw new MassiveCommandException("<b>No player matches \"<h>"+arg+"<b>\".");
 		}
 	
 		// Return Ret

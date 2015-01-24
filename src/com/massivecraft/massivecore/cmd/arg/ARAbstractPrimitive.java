@@ -2,6 +2,8 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
+
 public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 {
 	// -------------------------------------------- //
@@ -16,17 +18,17 @@ public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<T> read(String arg, CommandSender sender)
+	public T read(String arg, CommandSender sender)
 	{
-		ArgResult<T> result = new ArgResult<T>();
+		T result;
 		
 		try
 		{
-			result.setResult(this.convert(arg));
+			result = this.convert(arg);
 		}
 		catch (Exception e)
 		{
-			result.getErrors().add("<b>Invalid "+this.typename()+" \"<h>"+arg+"\"<b>.");
+			throw new MassiveCommandException("<b>Invalid " + this.typename() + " \"<h>" + arg + "\"<b>.");
 		}
 		
 		return result;

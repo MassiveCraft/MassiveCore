@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.util.Txt;
 
 public class ARUniverse extends ArgReaderAbstract<String>
@@ -31,20 +32,21 @@ public class ARUniverse extends ArgReaderAbstract<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<String> read(String arg, CommandSender sender)
+	public String read(String arg, CommandSender sender)
 	{
-		ArgResult<String> result = new ArgResult<String>();
+		String result = new String();
 		
 		if (multiverse.containsUniverse(arg))
 		{
-			result.setResult(arg);
+			result = arg;
 		}
 		else
 		{
-			result.getErrors().add("<b>No universe \"<h>"+arg+"<b>\" exists in multiverse <h>"+this.multiverse.getId()+"<b>.");
-			
+			MassiveCommandException errors = new MassiveCommandException();
+			errors.addErrorMsg("<b>No universe \"<h>" + arg + "<b>\" exists in multiverse <h>" + this.multiverse.getId() + "<b>.");
 			Collection<String> names = new ArrayList<String>(multiverse.getUniverses());
-			result.getErrors().add("<i>Use "+Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));
+			errors.addErrorMsg("<i>Use " + Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));
+			throw errors;
 		}
 		
 		return result;

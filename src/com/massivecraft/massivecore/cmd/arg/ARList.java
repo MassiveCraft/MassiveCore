@@ -34,31 +34,21 @@ public class ARList<T> extends ArgReaderAbstract<List<T>>
 	
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
-	public ArgResult<List<T>> read(String arg, CommandSender sender)
+	public List<T> read(String arg, CommandSender sender)
 	{
 		// Split into inner args
 		String[] innerArgs = arg.split("\\s+");
 		
 		// Create Ret
-		ArgResult<List<T>> ret = new ArgResult<List<T>>();
-		List<T> result = new ArrayList<T>();
+		List<T> ret = new ArrayList<T>();
 		
 		// For Each
 		for (String innerArg : innerArgs)
 		{
-			ArgResult<T> innerArgResult = this.getInnerArgReader().read(innerArg, sender);
+			T innerArgResult = this.getInnerArgReader().read(innerArg, sender);
 			
-			if (innerArgResult.hasErrors())
-			{
-				ret.setErrors(innerArgResult.getErrors());
-				return ret;
-			}
-			
-			result.add(innerArgResult.getResult());
+			ret.add(innerArgResult);
 		}
-		
-		// Set Result
-		ret.setResult(result);
 		
 		// Return Ret
 		return ret;

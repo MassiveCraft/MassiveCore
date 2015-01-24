@@ -1,7 +1,14 @@
 package com.massivecraft.massivecore.cmd;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,7 +17,6 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
-import com.massivecraft.massivecore.cmd.arg.ArgResult;
 import com.massivecraft.massivecore.cmd.req.Req;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -336,6 +342,12 @@ public class MassiveCommand
 			if ( ! isValidCall(this.sender, this.getArgs())) return;
 			perform();
 		}
+		catch (MassiveCommandException ex)
+		{
+			// Sometimes arg readers (or commands themself)
+			// throw exceptions, to stop executing and notify the user.
+			Mixin.msgOne(sender, ex.getErrorMsgs());
+		}
 		finally
 		{
 			// Unset Sender Variables
@@ -360,7 +372,7 @@ public class MassiveCommand
 	}
 	
 	// This is where the command action is performed.
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		// Per default we just act as the help command!
 		List<MassiveCommand> commandChain = new ArrayList<MassiveCommand>(this.getCommandChain());
@@ -608,13 +620,13 @@ public class MassiveCommand
 		return this.getArgs().get(idx);
 	}
 	
-	public <T> T arg(int idx, ArgReader<T> argReader)
+	public <T> T arg(int idx, ArgReader<T> argReader) throws MassiveCommandException
 	{
 		String str = this.arg(idx);
 		return this.arg(str, argReader);
 	}
 	
-	public <T> T arg(int idx, ArgReader<T> argReader, T defaultNotSet)
+	public <T> T arg(int idx, ArgReader<T> argReader, T defaultNotSet) throws MassiveCommandException
 	{
 		String str = this.arg(idx);
 		return this.arg(str, argReader, defaultNotSet);
@@ -631,13 +643,13 @@ public class MassiveCommand
 		return Txt.implode(this.getArgs().subList(from, to), " ");
 	}
 	
-	public <T> T argConcatFrom(int idx, ArgReader<T> argReader)
+	public <T> T argConcatFrom(int idx, ArgReader<T> argReader) throws MassiveCommandException
 	{
 		String str = this.argConcatFrom(idx);
 		return this.arg(str, argReader);
 	}
 	
-	public <T> T argConcatFrom(int idx, ArgReader<T> argReader, T defaultNotSet)
+	public <T> T argConcatFrom(int idx, ArgReader<T> argReader, T defaultNotSet) throws MassiveCommandException
 	{
 		String str = this.argConcatFrom(idx);
 		return this.arg(str, argReader, defaultNotSet);
@@ -645,19 +657,18 @@ public class MassiveCommand
 	
 	// Core & Other
 	
-	public <T> T arg(ArgReader<T> argReader)
+	public <T> T arg(ArgReader<T> argReader) throws MassiveCommandException
 	{
 		return this.arg(null, argReader);
 	}
 	
-	public <T> T arg(String str, ArgReader<T> argReader)
+	public <T> T arg(String str, ArgReader<T> argReader) throws MassiveCommandException
 	{
-		ArgResult<T> result = argReader.read(str, this.sender);
-		if (result.hasErrors()) this.msg(result.getErrors());
-		return result.getResult();
+		T result = argReader.read(str, this.sender);
+		return result;
 	}
 	
-	public <T> T arg(String str, ArgReader<T> argReader, T defaultNotSet)
+	public <T> T arg(String str, ArgReader<T> argReader, T defaultNotSet) throws MassiveCommandException
 	{
 		if (str == null) return defaultNotSet;
 		return this.arg(str, argReader);

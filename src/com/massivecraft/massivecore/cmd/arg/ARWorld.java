@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
+
 public class ARWorld extends ArgReaderAbstract<World>
 {
 	// -------------------------------------------- //
@@ -18,27 +20,19 @@ public class ARWorld extends ArgReaderAbstract<World>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<World> read(String arg, CommandSender sender)
+	public World read(String arg, CommandSender sender)
 	{
-		ArgResult<World> ret = new ArgResult<World>();
+		World ret;
 		
-		ArgResult<String> inner = ARWorldId.get().read(arg, sender);
-		if (inner.hasErrors())
-		{
-			ret.setErrors(inner.getErrors());
-			return ret;
-		}
+		String inner = ARWorldId.get().read(arg, sender);
 		
-		String worldId = inner.getResult();
+		String worldId = inner;
 		
-		World world = Bukkit.getWorld(worldId);
-		if (world == null)
+		ret = Bukkit.getWorld(worldId);
+		
+		if (ret == null)
 		{
-			ret.setErrors("<b>The world could not be found.");
-		}
-		else
-		{
-			ret.setResult(world);
+			throw new MassiveCommandException("<b>The world could not be found.");
 		}
 		
 		return ret;

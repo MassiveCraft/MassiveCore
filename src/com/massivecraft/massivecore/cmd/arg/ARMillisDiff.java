@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -19,17 +20,18 @@ public class ARMillisDiff extends ArgReaderAbstract<Long>
 	// -------------------------------------------- //
 	
 	@Override
-	public ArgResult<Long> read(String arg, CommandSender sender)
+	public Long read(String arg, CommandSender sender)
 	{
-		ArgResult<Long> ret = new ArgResult<Long>();
+		Long ret;
 		try
 		{
-			ret.setResult(TimeDiffUtil.millis(arg));
+			ret = TimeDiffUtil.millis(arg);
 		}
 		catch (Exception e)
 		{
-			ret.setErrors(Txt.parse("<b>")+e.getMessage());
+			throw new MassiveCommandException(Txt.parse("<b>") + e.getMessage());
 		}
+		
 		return ret;
 	}
 	
