@@ -60,6 +60,12 @@ public class BackstringIterator<E> implements Iterator<E>
 		return this.set.convertFromString(current);
 	}
 	
+	@Override
+	public void remove()
+	{
+		throw new UnsupportedOperationException();
+	}
+	
 	// -------------------------------------------- //
 	// EXTRAS
 	// -------------------------------------------- //
