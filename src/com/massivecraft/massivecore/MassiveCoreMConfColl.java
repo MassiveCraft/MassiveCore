@@ -16,6 +16,16 @@ public class MassiveCoreMConfColl extends Coll<MassiveCoreMConf>
 	{
 		super("massivecore_mconf", MassiveCoreMConf.class, MStore.getDb(ConfServer.dburi), MassiveCore.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

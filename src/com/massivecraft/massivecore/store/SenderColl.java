@@ -33,6 +33,16 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	{	
 		super(name, entityClass, db, plugin, true, true, true);
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE: Coll

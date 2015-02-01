@@ -44,7 +44,6 @@ import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.mixin.EngineTeleportMixinCause;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
-import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.ExamineThread;
 import com.massivecraft.massivecore.teleport.EngineScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -141,19 +140,6 @@ public class MassiveCore extends MassivePlugin
 	private CmdMassiveCoreCmdurl outerCmdMassiveCoreCmdurl;
 	public CmdMassiveCoreCmdurl getOuterCmdMassiveCoreCmdurl() { return this.outerCmdMassiveCoreCmdurl; }
 	
-	// Runnables
-	// TODO: Make this one a singleton
-	private Runnable collTickTask = new Runnable()
-	{
-		public void run()
-		{
-			for (Coll<?> coll : Coll.getInstances())
-			{
-				coll.onTick();
-			}
-		}
-	};
-	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
@@ -178,7 +164,8 @@ public class MassiveCore extends MassivePlugin
 		// Setup IdUtil
 		IdUtil.setup();
 		
-		// Register events
+		// Engine
+		EngineCollTick.get().activate();
 		MassiveCoreEngineMain.get().activate();
 		MassiveCoreEngineVariable.get().activate();
 		EngineScheduledTeleport.get().activate();
@@ -186,9 +173,6 @@ public class MassiveCore extends MassivePlugin
 		MassiveCoreEngineWorldNameSet.get().activate();
 		MassiveCoreEngineCommandRegistration.get().activate();
 		PlayerUtil.get().activate();
-		
-		// Tasks
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this.collTickTask, 1, 1);
 		
 		// Collections
 		MultiverseColl.get().init();

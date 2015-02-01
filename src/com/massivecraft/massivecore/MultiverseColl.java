@@ -15,6 +15,16 @@ public class MultiverseColl extends Coll<Multiverse>
 	{
 		super("massivecore_multiverse", Multiverse.class, MStore.getDb("default"), MassiveCore.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// EXTRAS

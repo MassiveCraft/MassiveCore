@@ -18,6 +18,16 @@ public class AspectColl extends Coll<Aspect>
 	{
 		super("massivecore_aspect", Aspect.class, MStore.getDb("default"), MassiveCore.get());
 	}
+
+	// -------------------------------------------- //
+	// STACK TRACEABILITY
+	// -------------------------------------------- //
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+	}
 	
 	// -------------------------------------------- //
 	// EXTRAS
