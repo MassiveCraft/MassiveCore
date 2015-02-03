@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.Txt;
 
-public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
+public abstract class ARAbstractSelect<T> extends ARAbstract<T>
 {
 	// -------------------------------------------- //
 	// CONSTANT
@@ -22,7 +23,6 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract String typename();
 	public abstract T select(String str, CommandSender sender) throws MassiveException;
 	public abstract Collection<String> altNames(CommandSender sender);
 	public boolean canList(CommandSender sender) { return true; }
@@ -39,7 +39,7 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 		if (result != null) return result;
 		
 		MassiveException exception = new MassiveException();
-		exception.addMsg("<b>No %s matches \"<h>%s<b>\".", this.typename(), arg);
+		exception.addMsg("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
 		
 		if (this.canList(sender))
 		{			
@@ -50,7 +50,7 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 			
 			if (names.isEmpty())
 			{
-				exception.addMsg("<i>Note: There is no %s available.", this.typename());
+				exception.addMsg("<i>Note: There is no %s available.", this.getTypeName());
 			}
 			else if ( ! matches.isEmpty() && matches.size() < LIST_COUNT_MAX)
 			{
@@ -77,6 +77,7 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	
 	public List<String> getMatchingAltNames(String arg, CommandSender sender, int maxLevenshteinDistance)
 	{
+		if (arg == null) return Collections.emptyList(); // For some apparent reason this is required.
 		arg = arg.toLowerCase();
 		
 		// Try Levenshtein
@@ -94,8 +95,9 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	
 	public int getMaxLevenshteinDistanceForArg(String arg)
 	{
+		if (arg == null) return 0; // For some apparent reason this is required.
 		if (arg.length() <= 1) return 0; // When dealing with 1 character aliases, there is way too many options.
-		if (arg.length() < 8) return 1; // 1 is default.
+		if (arg.length() <= 7) return 1; // 1 is default.
 		
 		return 2;  // If it were 8 characters or more, we end up here. Because many characters allow for more typos.
 	}

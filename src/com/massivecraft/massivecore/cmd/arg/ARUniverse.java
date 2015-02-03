@@ -7,9 +7,10 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARUniverse extends ArgReaderAbstract<String>
+public class ARUniverse extends ARAbstract<String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -25,7 +26,7 @@ public class ARUniverse extends ArgReaderAbstract<String>
 	// -------------------------------------------- //
 	
 	protected Multiverse multiverse;
-	public Multiverse multiverse() { return this.multiverse; }
+	public Multiverse getMultiverse() { return this.multiverse; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -34,28 +35,29 @@ public class ARUniverse extends ArgReaderAbstract<String>
 	@Override
 	public String read(String arg, CommandSender sender) throws MassiveException
 	{
-		String result = new String();
-		
 		if (multiverse.containsUniverse(arg))
 		{
-			result = arg;
+			return arg;
 		}
 		else
 		{
-			MassiveException exception = new MassiveException();
-			exception.addMsg("<b>No universe \"<h>%s<b>\" exists in multiverse <h>%s<b>.", arg, this.multiverse.getId());
-			
 			Collection<String> names = new ArrayList<String>(multiverse.getUniverses());
 			String format = Txt.parse("<h>%s");
 			String comma = Txt.parse("<i>, ");
 			String and = Txt.parse(" <i>or ");
 			String dot = Txt.parse("<i>.");
-			exception.addMsg("<i>Use %s", Txt.implodeCommaAndDot(names, format, comma, and, dot));
 			
-			throw exception;
+			throw new MassiveException()
+			.addMsg("<b>No universe \"<h>%s<b>\" exists in multiverse <h>%s<b>.", arg, this.multiverse.getId())
+			.addMsg("<i>Use %s", Txt.implodeCommaAndDot(names, format, comma, and, dot));
 		}
-		
-		return result;
 	}
 	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		// MassiveSet is linked.
+		return new MassiveSet<String>(multiverse.getUniverses());
+	}
+
 }

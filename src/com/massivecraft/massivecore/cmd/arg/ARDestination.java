@@ -1,12 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Collection;
+
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.event.EventMassiveCoreDestination;
 import com.massivecraft.massivecore.teleport.Destination;
 
-public class ARDestination extends ArgReaderAbstract<Destination>
+public class ARDestination extends ARAbstract<Destination>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -34,6 +36,12 @@ public class ARDestination extends ArgReaderAbstract<Destination>
 		if ( ! ret.hasPs()) throw new MassiveException().addMessage(ret.getMessagePsNull(sender));
 		
 		return ret;
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return null;
 	}
 	
 }

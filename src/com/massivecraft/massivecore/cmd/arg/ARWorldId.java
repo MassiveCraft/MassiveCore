@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class ARWorldId extends ARAbstractSelect<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
 		return "world";
 	}
@@ -33,13 +34,15 @@ public class ARWorldId extends ARAbstractSelect<String>
 		
 		for (String worldId : visibleWorldIds)
 		{
-			if ( ! Mixin.canSeeWorld(sender, worldId)) continue;
+			// This was already done above in Mixin.getVisibleWorldIds(sender);
+			// if ( ! Mixin.canSeeWorld(sender, worldId)) continue;
 			if (arg.equalsIgnoreCase(worldId)) return worldId;
 		}
 		
 		for (String worldId : visibleWorldIds)
 		{
-			if ( ! Mixin.canSeeWorld(sender, worldId)) continue;
+			// This was already done above in Mixin.getVisibleWorldIds(sender);
+			// if ( ! Mixin.canSeeWorld(sender, worldId)) continue;
 			for (String worldAlias : Mixin.getWorldAliases(worldId))
 			{
 				if (arg.equalsIgnoreCase(worldAlias)) return worldId;
@@ -59,6 +62,12 @@ public class ARWorldId extends ARAbstractSelect<String>
 			ret.add(Mixin.getWorldDisplayName(worldId));
 		}
 		return ret;
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return Mixin.getVisibleWorldIds(sender);
 	}
 	
 }

@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.Difficulty;
 import org.bukkit.command.CommandSender;
@@ -9,6 +11,12 @@ import com.massivecraft.massivecore.util.MUtil;
 
 public class ARDifficulty extends ARAbstractSelect<Difficulty>
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final List<String> ALT_NAMES = Collections.unmodifiableList(MUtil.list("peaceful", "easy", "normal", "hard"));
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -19,44 +27,42 @@ public class ARDifficulty extends ARAbstractSelect<Difficulty>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "difficulty";
-	}
 
 	@Override
 	public Difficulty select(String arg, CommandSender sender)
 	{
-		Difficulty ret = null;
-		
 		arg = arg.toLowerCase();
 
 		if (arg.startsWith("p"))
 		{
-			ret = Difficulty.PEACEFUL;
+			return Difficulty.PEACEFUL;
 		}
 		else if (arg.startsWith("e"))
 		{
-			ret = Difficulty.EASY;
+			return Difficulty.EASY;
 		}
 		else if (arg.startsWith("n"))
 		{
-			ret = Difficulty.NORMAL;
+			return Difficulty.NORMAL;
 		}
 		else if (arg.startsWith("h"))
 		{
-			ret = Difficulty.HARD;
+			return Difficulty.HARD;
 		}
 		
-		return ret;
+		return null;
 	}
 
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
-		return MUtil.list("peaceful", "easy", "normal", "hard");
+		return ALT_NAMES;
 	}
-	
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
+	}
+
 }

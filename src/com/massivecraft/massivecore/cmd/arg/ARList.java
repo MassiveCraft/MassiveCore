@@ -1,31 +1,32 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 
-public class ARList<T> extends ArgReaderAbstract<List<T>>
+public class ARList<T> extends ARAbstract<List<T>>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	protected ArgReader<T> innerArgReader;
-	public ArgReader<T> getInnerArgReader() { return this.innerArgReader; }
+	protected AR<T> innerArgReader;
+	public AR<T> getInnerArgReader() { return this.innerArgReader; }
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <T> ARList<T> get(ArgReader<T> innerArgReader)
+	public static <T> ARList<T> get(AR<T> innerArgReader)
 	{
 		return new ARList<T>(innerArgReader);
 	}
 	
-	public ARList(ArgReader<T> innerArgReader)
+	public ARList(AR<T> innerArgReader)
 	{
 		this.innerArgReader = innerArgReader;
 	}
@@ -34,6 +35,12 @@ public class ARList<T> extends ArgReaderAbstract<List<T>>
 	// OVERRIDE
 	// -------------------------------------------- //
 	
+	@Override
+	public String getTypeName()
+	{
+		return innerArgReader.getTypeName();
+	}
+
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
 	public List<T> read(String arg, CommandSender sender) throws MassiveException
@@ -54,6 +61,12 @@ public class ARList<T> extends ArgReaderAbstract<List<T>>
 		
 		// Return Ret
 		return ret;
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.getInnerArgReader().getTabList(sender, arg);
 	}
 
 }

@@ -1,12 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Collection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 
-public class ARWorld extends ArgReaderAbstract<World>
+public class ARWorld extends ARAbstract<World>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -24,9 +26,7 @@ public class ARWorld extends ArgReaderAbstract<World>
 	{
 		World ret;
 		
-		String inner = ARWorldId.get().read(arg, sender);
-		
-		String worldId = inner;
+		String worldId = ARWorldId.get().read(arg, sender);
 		
 		ret = Bukkit.getWorld(worldId);
 		
@@ -38,4 +38,10 @@ public class ARWorld extends ArgReaderAbstract<World>
 		return ret;
 	}
 	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return ARWorldId.get().getTabList(sender, arg);
+	}
+
 }

@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.cmd.arg;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +27,7 @@ public class AREnum<T> extends ARAbstractSelect<T>
 	
 	public AREnum(Class<T> clazz)
 	{
+		if ( ! clazz.isEnum()) throw new IllegalArgumentException("passed clazz param must be an enum");
 		this.clazz = clazz;
 	}
 			
@@ -36,11 +36,11 @@ public class AREnum<T> extends ARAbstractSelect<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
 		return Txt.getNicedEnumString(clazz.getSimpleName());
 	}
-
+	
 	@Override
 	public T select(String arg, CommandSender sender)
 	{
@@ -50,63 +50,67 @@ public class AREnum<T> extends ARAbstractSelect<T>
 		
 		// Algorithmic General Detection
 		
-		int startswithCount = 0;
-		T startswith = null;
-		for (T value : getEnumValues(this.clazz))
+		T startsWith = null;
+		for (T value : getEnumValues(clazz))
 		{
-			String comparable = getComparable(value.toString());
+			String comparable = getComparable(value);
 			if (comparable.equals(arg)) return value;
 			if (comparable.startsWith(arg))
 			{
-				startswith = value;
-				startswithCount++;
+				// If there already were a result
+				// we have multiple results and stop.
+				if (startsWith != null) return null;
+				
+				// Else we set the result.
+				startsWith = value;
 			}
 		}
 		
-		if (startswithCount == 1)
-		{
-			return startswith;
-		}
-		
 		// Nothing found
-		return null;
+		return startsWith;
 	}
 
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
 		List<String> ret = new ArrayList<String>();
-		for (T value : getEnumValues(this.clazz))
+		for (T value : getEnumValues(clazz))
 		{
-			ret.add(getComparable(value.toString()));
+			ret.add(getComparable(value));
 		}
 		return ret;
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
 	}
 	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static String getComparable(String string)
-	{
-		return string.toLowerCase().replaceAll("[_\\-\\s]+", "");
-	}
-	
-	@SuppressWarnings("unchecked")
 	public static <T> T[] getEnumValues(Class<T> clazz)
 	{
-		try
-		{
-			Method method = clazz.getMethod("values");
-			Object o = method.invoke(null);
-			return (T[]) o;
-		}
-		catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+		if ( ! clazz.isEnum()) throw new IllegalArgumentException("passed clazz param must be an enum");
+		
+		T[] ret = clazz.getEnumConstants();
+		if (ret == null) throw new RuntimeException("failed to retrieve enum constants");
+		
+		return ret;
 	}
 	
+	public static String getComparable(Object value)
+	{
+		if (value == null) return null;
+		return getComparable(value.toString());
+	}
+	
+	public static String getComparable(String string)
+	{
+		if (string == null) return null;
+		return string.toLowerCase().replaceAll("[_\\-\\s]+", "");
+	}
+
 }

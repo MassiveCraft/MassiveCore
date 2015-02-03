@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
-public class ARDouble extends ARAbstractPrimitive<Double>
+import org.bukkit.command.CommandSender;
+
+public class ARDouble extends ARAbstractNumber<Double>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,15 +16,15 @@ public class ARDouble extends ARAbstractPrimitive<Double>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
-		return "double";
+		return "number with decimals";
 	}
-
+	
 	@Override
-	public Double convert(String arg) throws Exception
+	public Double valueOf(String arg, CommandSender sender) throws Exception
 	{
 		return Double.parseDouble(arg);
 	}
-	
+
 }

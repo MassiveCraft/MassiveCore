@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -11,7 +12,7 @@ import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSBuilder;
 import com.mysql.jdbc.StringUtils;
 
-public class ARPS extends ArgReaderAbstract<PS>
+public class ARPS extends ARAbstract<PS>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -201,6 +202,12 @@ public class ARPS extends ArgReaderAbstract<PS>
 		}
 		
 		return ret.build();
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return null;
 	}
 	
 	public static String getValue(String entry, String... prefixes)

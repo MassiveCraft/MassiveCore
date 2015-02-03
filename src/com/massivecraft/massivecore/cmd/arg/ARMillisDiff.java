@@ -1,11 +1,13 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 
-public class ARMillisDiff extends ArgReaderAbstract<Long>
+public class ARMillisDiff extends ARAbstractException<Long>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -19,19 +21,21 @@ public class ARMillisDiff extends ArgReaderAbstract<Long>
 	// -------------------------------------------- //
 	
 	@Override
-	public Long read(String arg, CommandSender sender) throws MassiveException
+	public String getTypeName()
 	{
-		Long ret;
-		try
-		{
-			ret = TimeDiffUtil.millis(arg);
-		}
-		catch (Exception e)
-		{
-			throw new MassiveException().addMsg("<b>%s", e.getMessage());
-		}
-		
-		return ret;
+		return "time amount";
 	}
 	
+	@Override
+	public Long valueOf(String arg, CommandSender sender) throws Exception
+	{
+		return TimeDiffUtil.millis(arg);
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return Collections.emptySet();
+	}
+
 }

@@ -1,8 +1,14 @@
 package com.massivecraft.massivecore.util;
 
-import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +16,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.PredictateStartsWithIgnoreCase;
 
 public class Txt
 {
@@ -565,6 +574,38 @@ public class Txt
 			}
 		}
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// FILTER
+	// -------------------------------------------- //
+	
+	public static <T> List<T> getFiltered(Collection<T> elements, Predictate<T> predictate)
+	{
+		List<T> ret = new ArrayList<T>();
+		
+		for (T element : elements)
+		{
+			if ( ! predictate.apply(element)) continue;
+			ret.add(element);
+		}
+		
+		return ret;
+	}
+	
+	public static <T> List<T> getFiltered(T[] elements, Predictate<T> predictate)
+	{
+		return getFiltered(Arrays.asList(elements), predictate);
+	}
+	
+	public static List<String> getStartsWithIgnoreCase(Collection<String> elements, String prefix)
+	{
+		return getFiltered(elements, PredictateStartsWithIgnoreCase.get(prefix));
+	}
+	
+	public static List<String> getStartsWithIgnoreCase(String[] elements, String prefix)
+	{
+		return getStartsWithIgnoreCase(Arrays.asList(elements), prefix);
 	}
 	
 	// -------------------------------------------- //

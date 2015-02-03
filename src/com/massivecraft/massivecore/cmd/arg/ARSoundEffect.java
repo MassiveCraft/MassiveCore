@@ -1,11 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.SoundEffect;
+import com.massivecraft.massivecore.collections.MassiveSet;
 
-public class ARSoundEffect extends ArgReaderAbstract<SoundEffect>
+public class ARSoundEffect extends ARAbstractException<SoundEffect>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -19,19 +22,28 @@ public class ARSoundEffect extends ArgReaderAbstract<SoundEffect>
 	// -------------------------------------------- //
 	
 	@Override
-	public SoundEffect read(String arg, CommandSender sender) throws MassiveException
+	public SoundEffect valueOf(String arg, CommandSender sender) throws Exception
 	{
-		SoundEffect ret;
+		return SoundEffect.valueOf(arg);
+	}
+	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		Set<String> ret = new MassiveSet<String>();
 		
-		try
+		for (String str : ARSound.get().getTabList(sender, arg))
 		{
-			ret = SoundEffect.valueOf(arg);
+			ret.add(str + "-");
 		}
-		catch (Exception e)
-		{
-			throw new MassiveException().addMsg("<b>%s", e.getMessage());
-		}
+		
 		return ret;
 	}
 	
+	@Override
+	public boolean allowSpaceAfterTab()
+	{
+		return false;
+	}
+
 }

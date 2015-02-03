@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
-public class ARFloat extends ARAbstractPrimitive<Float>
+import org.bukkit.command.CommandSender;
+
+public class ARFloat extends ARAbstractNumber<Float>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,15 +16,15 @@ public class ARFloat extends ARAbstractPrimitive<Float>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
-		return "integer";
+		return "number with decimals";
 	}
-
+	
 	@Override
-	public Float convert(String arg) throws Exception
+	public Float valueOf(String arg, CommandSender sender) throws Exception
 	{
 		return Float.parseFloat(arg);
 	}
-	
+
 }

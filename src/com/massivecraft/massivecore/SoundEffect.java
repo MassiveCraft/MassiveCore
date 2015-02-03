@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.cmd.arg.ARFloat;
 import com.massivecraft.massivecore.cmd.arg.ARSound;
 
 public final class SoundEffect implements Cloneable, Serializable
@@ -66,19 +67,18 @@ public final class SoundEffect implements Cloneable, Serializable
 		soundString = soundString.trim();
 		
 		String[] parts = soundString.split("[^a-zA-Z0-9_.]+");
-		Sound sound = ARSound.getSoundFromString(parts[0]);
-		if (sound == null) throw new IllegalArgumentException("Unknown sound \"" + parts[0] + "\"");
+		Sound sound = ARSound.get().read(parts[0]);
 		
 		float volume = 1.0f;
 		if (parts.length >= 2)
 		{
-			volume = Float.parseFloat(parts[1]);
+			volume = ARFloat.get().read(parts[1]);
 		}
 		
 		float pitch = 1.0f;
 		if (parts.length >= 3)
 		{
-			pitch = Float.parseFloat(parts[2]);
+			pitch = ARFloat.get().read(parts[2]);
 		}
 		
 		return SoundEffect.valueOf(sound, volume, pitch);

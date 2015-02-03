@@ -21,12 +21,6 @@ public class ARPotionEffectType extends ARAbstractSelect<PotionEffectType>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "potion effect type";
-	}
 
 	@Override
 	public PotionEffectType select(String str, CommandSender sender) throws MassiveException
@@ -64,6 +58,16 @@ public class ARPotionEffectType extends ARAbstractSelect<PotionEffectType>
 		// Return Ret
 		return ret;
 	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
 	
 	public static String getComparable(PotionEffectType potionEffectType)
 	{
@@ -76,5 +80,5 @@ public class ARPotionEffectType extends ARAbstractSelect<PotionEffectType>
 		if (string == null) return null;
 		return string.toLowerCase();
 	}
-	
+
 }

@@ -9,7 +9,7 @@ import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
+public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -44,6 +44,13 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
+	public String getTypeName()
+	{
+		if (online) return "online player";
+		else return "player";
+	}
+	
+	@Override
 	public T read(String arg, CommandSender sender) throws MassiveException
 	{
 		// Create Ret
@@ -60,7 +67,7 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 		if (ret == null)
 		{
 			// No alternatives found
-			throw new MassiveException().addMsg("<b>No player matches \"<h>%s<b>\".", arg);
+			throw new MassiveException().addMsg("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
 		}
 	
 		// Return Ret
@@ -83,7 +90,7 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 		for (Collection<String> coll : this.source.getSenderIdCollections())
 		{
 			// If the senderId exists ...
-			if (!coll.contains(senderId)) continue;
+			if ( ! coll.contains(senderId)) continue;
 			
 			// ... and the online check passes ...
 			if (this.online && !Mixin.isOnline(senderId)) continue;

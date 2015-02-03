@@ -1,11 +1,15 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 
-public class ARMaterial extends ArgReaderAbstract<Material>
+public class ARMaterial extends ARAbstract<Material>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -24,13 +28,25 @@ public class ARMaterial extends ArgReaderAbstract<Material>
 		Material ret = Material.matchMaterial(arg);
 		if (ret == null)
 		{
-			MassiveException exception = new MassiveException();
-			exception.addMsg("<b>No material matches <h>%s<b>.", arg);
-			exception.addMsg("<i>Suggestion: <aqua>http://www.minecraftwiki.net/wiki/Data_values");
-			throw exception;
+			throw new MassiveException()
+			.addMsg("<b>No material matches <h>%s<b>.", arg)
+			.addMsg("<i>https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/browse/src/main/java/org/bukkit/Material.java");
 		}
 		
 		return ret;
 	}
 	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		for (Material material : Material.values())
+		{
+			ret.add(material.name());
+		}
+		
+		return ret;
+	}
+
 }

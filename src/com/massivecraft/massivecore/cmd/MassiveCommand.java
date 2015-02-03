@@ -18,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.arg.ArgReader;
+import com.massivecraft.massivecore.cmd.arg.AR;
 import com.massivecraft.massivecore.cmd.req.Req;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -523,9 +523,10 @@ public class MassiveCommand
 	
 	public int getMaxLevenshteinDistanceForArg(String arg)
 	{
+		if (arg == null) return 0;
 		if (arg.length() <= 1) return 0; // When dealing with 1 character aliases, there is way too many options. So we don't suggest.
-		if (arg.length() <= 3) return 1; // When dealing with low length aliases, there too many options. So we won't suggest much
-		if (arg.length() < 8) return 2; // 2 is default.
+		if (arg.length() <= 4) return 1; // When dealing with low length aliases, there too many options. So we won't suggest much
+		if (arg.length() <= 7) return 2; // 2 is default.
 		
 		return 3; // If it were 8 characters or more, we end up here. Because many characters allow for more typos.
 	}
@@ -693,13 +694,13 @@ public class MassiveCommand
 		return this.getArgs().get(idx);
 	}
 	
-	public <T> T arg(int idx, ArgReader<T> argReader) throws MassiveException
+	public <T> T arg(int idx, AR<T> argReader) throws MassiveException
 	{
 		String str = this.arg(idx);
 		return this.arg(str, argReader);
 	}
 	
-	public <T> T arg(int idx, ArgReader<T> argReader, T defaultNotSet) throws MassiveException
+	public <T> T arg(int idx, AR<T> argReader, T defaultNotSet) throws MassiveException
 	{
 		String str = this.arg(idx);
 		return this.arg(str, argReader, defaultNotSet);
@@ -716,13 +717,13 @@ public class MassiveCommand
 		return Txt.implode(this.getArgs().subList(from, to), " ");
 	}
 	
-	public <T> T argConcatFrom(int idx, ArgReader<T> argReader) throws MassiveException
+	public <T> T argConcatFrom(int idx, AR<T> argReader) throws MassiveException
 	{
 		String str = this.argConcatFrom(idx);
 		return this.arg(str, argReader);
 	}
 	
-	public <T> T argConcatFrom(int idx, ArgReader<T> argReader, T defaultNotSet) throws MassiveException
+	public <T> T argConcatFrom(int idx, AR<T> argReader, T defaultNotSet) throws MassiveException
 	{
 		String str = this.argConcatFrom(idx);
 		return this.arg(str, argReader, defaultNotSet);
@@ -730,18 +731,17 @@ public class MassiveCommand
 	
 	// Core & Other
 	
-	public <T> T arg(ArgReader<T> argReader) throws MassiveException
+	public <T> T arg(AR<T> argReader) throws MassiveException
 	{
 		return this.arg(null, argReader);
 	}
 	
-	public <T> T arg(String str, ArgReader<T> argReader) throws MassiveException
+	public <T> T arg(String str, AR<T> argReader) throws MassiveException
 	{
-		T result = argReader.read(str, this.sender);
-		return result;
+		return argReader.read(str, this.sender);
 	}
 	
-	public <T> T arg(String str, ArgReader<T> argReader, T defaultNotSet) throws MassiveException
+	public <T> T arg(String str, AR<T> argReader, T defaultNotSet) throws MassiveException
 	{
 		if (str == null) return defaultNotSet;
 		return this.arg(str, argReader);

@@ -19,29 +19,20 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "chat color";
-	}
 
 	@Override
 	public ChatColor select(String arg, CommandSender sender)
 	{
-		ChatColor ret = null;
-		
-		arg = getToCompare(arg);
+		arg = getComparable(arg);
 		
 		for (ChatColor cc : ChatColor.values())
 		{
-			String ccstr = getToCompare(cc.name());
+			String ccstr = getComparable(cc.name());
 			if ( ! ccstr.equals(arg)) continue;
-			ret = cc;
-			break;
+			return cc;
 		}
 		
-		return ret;
+		return null;
 	}
 
 	@Override
@@ -51,7 +42,20 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 		
 		for (ChatColor cc : ChatColor.values())
 		{
-			ret.add(cc.toString()+getToCompare(cc.name()));
+			ret.add(cc.toString() + getComparable(cc.name()));
+		}
+		
+		return ret;
+	}
+	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		List<String> ret = new ArrayList<String>();
+		
+		for (ChatColor cc : ChatColor.values())
+		{
+			ret.add(getComparable(cc.name()));
 		}
 		
 		return ret;
@@ -63,12 +67,12 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 	
 	// "DARK_RED" --> "darkred"
 	// "DARK RED" --> "darkred"
-	public static String getToCompare(String str)
+	public static String getComparable(String string)
 	{
-		str = str.toLowerCase();
-		str = str.replace("_", "");
-		str = str.replace(" ", "");
-		return str;
+		string = string.toLowerCase();
+		string = string.replace("_", "");
+		string = string.replace(" ", "");
+		return string;
 	}
-	
+
 }

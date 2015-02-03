@@ -1,9 +1,16 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class ARPlayer extends ARSenderIdAbstract<Player>
 {
@@ -25,8 +32,23 @@ public class ARPlayer extends ARSenderIdAbstract<Player>
 	@Override
 	public Player getResultForSenderId(String senderId)
 	{
-		if (senderId == null) return null;
+		// Null check is done in IdUtil :)
 		return IdUtil.getPlayer(senderId);
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		for (String name : IdUtil.getOnlineNames())
+		{
+			if ( ! MUtil.isValidPlayerName(name)) continue;
+			if ( ! Mixin.canSee(sender, name)) continue;
+			ret.add(name);
+		}
+		
+		return ret;
 	}
 
 }

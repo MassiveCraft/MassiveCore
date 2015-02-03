@@ -20,12 +20,6 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "multiverse";
-	}
 
 	@Override
 	public Multiverse select(String arg, CommandSender sender)
@@ -45,4 +39,10 @@ public class ARMultiverse extends ARAbstractSelect<Multiverse>
 		return MultiverseColl.get().getIds();
 	}
 	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
+	}
+
 }

@@ -19,22 +19,15 @@ public class ARBiome extends ARAbstractSelect<Biome>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "biome";
-	}
 
 	@Override
 	public Biome select(String arg, CommandSender sender)
 	{
 		arg = getComparable(arg);
 		
-		String biomestr;
 		for (Biome biome : Biome.values())
 		{
-			biomestr = getComparable(biome.name());
+			String biomestr = getComparable(biome.name());
 			if (biomestr.equals(arg))
 			{
 				return biome;
@@ -63,17 +56,31 @@ public class ARBiome extends ARAbstractSelect<Biome>
 		
 		return ret;
 	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		List<String> ret = new ArrayList<String>();
+		
+		for (Biome biome : Biome.values())
+		{
+			ret.add(getComparable(biome.name()));
+		}
+		
+		return ret;
+	}
 	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static String getComparable(String str)
+	public static String getComparable(String string)
 	{
-		str = str.toLowerCase();
-		str = str.replace("_", "");
-		str = str.replace(" ", "");
-		return str;
+		if (string == null) return null;
+		string = string.toLowerCase();
+		string = string.replace("_", "");
+		string = string.replace(" ", "");
+		return string;
 	}
 	
 }

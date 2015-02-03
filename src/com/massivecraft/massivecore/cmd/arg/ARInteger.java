@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
-public class ARInteger extends ARAbstractPrimitive<Integer>
+import org.bukkit.command.CommandSender;
+
+public class ARInteger extends ARAbstractNumber<Integer>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,13 +16,13 @@ public class ARInteger extends ARAbstractPrimitive<Integer>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
-		return "integer";
+		return "number";
 	}
 
 	@Override
-	public Integer convert(String arg) throws Exception
+	public Integer valueOf(String arg, CommandSender sender) throws Exception
 	{
 		return Integer.parseInt(arg);
 	}

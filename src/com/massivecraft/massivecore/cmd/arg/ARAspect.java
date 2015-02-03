@@ -20,12 +20,6 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "aspect";
-	}
 
 	@Override
 	public Aspect select(String arg, CommandSender sender)
@@ -38,11 +32,17 @@ public class ARAspect extends ARAbstractSelect<Aspect>
 	{
 		return MassiveCorePerm.USYS_ASPECT_LIST.has(sender, false);
 	}
-
+	
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
 		return AspectColl.get().getIds();
+	}
+	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
 	}
 	
 }

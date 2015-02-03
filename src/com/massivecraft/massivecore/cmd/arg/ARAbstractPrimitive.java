@@ -2,36 +2,18 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.util.Txt;
 
-public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
-{
-	// -------------------------------------------- //
-	// ABSTRACT
-	// -------------------------------------------- //
-	
-	public abstract String typename();
-	public abstract T convert(String arg) throws Exception;
-	
+public abstract class ARAbstractPrimitive<T> extends ARAbstractException<T>
+{	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public T read(String arg, CommandSender sender) throws MassiveException
+	public String extractErrorMessage(String arg, CommandSender sender, Exception ex)
 	{
-		T result;
-		
-		try
-		{
-			result = this.convert(arg);
-		}
-		catch (Exception e)
-		{
-			throw new MassiveException().addMsg("<b>Invalid %s \"<h>%s<b>\".", this.typename(), arg);
-		}
-		
-		return result;
+		return Txt.parse("<b>\"<h>%s\"<b> is not a %s.", arg, this.getTypeName());
 	}
-	
+
 }

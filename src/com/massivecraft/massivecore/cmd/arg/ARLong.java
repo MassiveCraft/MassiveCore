@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
-public class ARLong extends ARAbstractPrimitive<Long>
+import org.bukkit.command.CommandSender;
+
+public class ARLong extends ARAbstractNumber<Long>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,15 +16,15 @@ public class ARLong extends ARAbstractPrimitive<Long>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
-		return "long";
+		return "number";
 	}
 
 	@Override
-	public Long convert(String arg) throws Exception
+	public Long valueOf(String arg, CommandSender sender) throws Exception
 	{
 		return Long.parseLong(arg);
 	}
-	
+
 }

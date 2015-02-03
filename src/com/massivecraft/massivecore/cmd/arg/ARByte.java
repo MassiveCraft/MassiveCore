@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
-public class ARByte extends ARAbstractPrimitive<Byte>
+import org.bukkit.command.CommandSender;
+
+public class ARByte extends ARAbstractNumber<Byte>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,15 +16,15 @@ public class ARByte extends ARAbstractPrimitive<Byte>
 	// -------------------------------------------- //
 	
 	@Override
-	public String typename()
+	public String getTypeName()
 	{
-		return "byte";
+		return "small number";
 	}
-
+	
 	@Override
-	public Byte convert(String arg) throws Exception
+	public Byte valueOf(String arg, CommandSender sender) throws Exception
 	{
 		return Byte.parseByte(arg);
 	}
-	
+
 }

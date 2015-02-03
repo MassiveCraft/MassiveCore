@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -8,7 +9,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.PotionEffectWrap;
 
-public class ARPotionEffectWrap extends ArgReaderAbstract<PotionEffectWrap>
+public class ARPotionEffectWrap extends ARAbstract<PotionEffectWrap>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -75,6 +76,12 @@ public class ARPotionEffectWrap extends ArgReaderAbstract<PotionEffectWrap>
 		
 		// Return Ret
 		return ret;
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return ARPotionEffectType.get().getTabList(sender, arg);
 	}
 	
 }

@@ -18,23 +18,23 @@ public class ARColl extends ARAbstractSelect<Coll<?>>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "coll";
-	}
 
 	@Override
 	public Coll<?> select(String arg, CommandSender sender)
 	{
 		return Coll.getMap().get(arg);
 	}
-
+	
 	@Override
 	public Collection<String> altNames(CommandSender sender)
 	{
 		return Coll.getNames();
+	}
+
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
 	}
 	
 }

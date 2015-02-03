@@ -9,27 +9,27 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 
-public class ARCombined extends ArgReaderAbstract<List<?>>
+public class ARCombined extends ARAbstract<List<?>>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	protected List<ArgReader<?>> inners;
-	public List<ArgReader<?>> getInners() { return this.inners; }
+	protected List<AR<?>> inners;
+	public List<AR<?>> getInners() { return this.inners; }
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static ARCombined get(Collection<ArgReader<?>> inners) { return new ARCombined(inners); }
-	public static ARCombined get(ArgReader<?>... inners) { return new ARCombined(inners); }
+	public static ARCombined get(Collection<AR<?>> inners) { return new ARCombined(inners); }
+	public static ARCombined get(AR<?>... inners) { return new ARCombined(inners); }
 	
-	public ARCombined(Collection<ArgReader<?>> inners)
+	public ARCombined(Collection<AR<?>> inners)
 	{
-		this.inners = new MassiveList<ArgReader<?>>(inners); 
+		this.inners = new MassiveList<AR<?>>(inners); 
 	}
-	public ARCombined(ArgReader<?>... inners)
+	public ARCombined(AR<?>... inners)
 	{
 		this(Arrays.asList(inners));
 	}
@@ -37,7 +37,15 @@ public class ARCombined extends ArgReaderAbstract<List<?>>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-
+	
+	
+	//TODO: How to do this?
+	/*@Override
+	public String getTypeName()
+	{
+		
+	}*/
+	
 	@Override
 	public List<?> read(String arg, CommandSender sender) throws MassiveException
 	{
@@ -54,7 +62,7 @@ public class ARCombined extends ArgReaderAbstract<List<?>>
 		for (int i = 0; i < parts.size(); i++)
 		{
 			String part = parts.get(i);
-			ArgReader<?> argReader = this.getInners().get(i);
+			AR<?> argReader = this.getInners().get(i);
 			
 			Object asdf = argReader.read(part, sender);
 			
@@ -63,6 +71,13 @@ public class ARCombined extends ArgReaderAbstract<List<?>>
 		
 		// Return Ret
 		return ret;
+	}
+	
+	//TODO: How to do this?
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return null; // ???
 	}
 
 }

@@ -19,12 +19,6 @@ public class AREntityType extends ARAbstractSelect<EntityType>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String typename()
-	{
-		return "entity type";
-	}
 
 	@Override
 	public EntityType select(String arg, CommandSender sender)
@@ -32,12 +26,13 @@ public class AREntityType extends ARAbstractSelect<EntityType>
 		arg = getComparable(arg);
 		
 		// Custom Detection
-		if (arg.contains("pig") && (arg.contains("man") || arg.contains("zombie"))) return EntityType.PIG_ZOMBIE;
+		if (arg.contains("pig") && ((arg.contains("man") || arg.contains("zombie")))) return EntityType.PIG_ZOMBIE;
 		
 		// Algorithmic General Detection
 		for (EntityType entityType : EntityType.values())
 		{
-			if (getComparable(entityType.toString()).equals(arg)) return entityType;
+			String compare = getComparable(entityType);
+			if (compare.equals(arg)) return entityType;
 		}
 		
 		// Nothing found
@@ -50,13 +45,30 @@ public class AREntityType extends ARAbstractSelect<EntityType>
 		List<String> ret = new ArrayList<String>();
 		for (EntityType entityType : EntityType.values())
 		{
-			ret.add(getComparable(entityType.toString()));
+			ret.add(getComparable(entityType));
 		}
 		return ret;
 	}
 	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return this.altNames(sender);
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public static String getComparable(EntityType entityType)
+	{
+		if (entityType == null) return null;
+		return getComparable(entityType.toString());
+	}
+	
 	public static String getComparable(String string)
 	{
+		if (string == null) return null;
 		return string.toLowerCase().replaceAll("[_\\-\\s]+", "");
 	}
 	
