@@ -10,13 +10,19 @@ import com.massivecraft.massivecore.util.Txt;
 public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 {
 	// -------------------------------------------- //
+	// CONSTANT
+	// -------------------------------------------- //
+	
+	public static final int LIST_COUNT_MAX = 50;
+	
+	// -------------------------------------------- //
 	// ABSTRACT
 	// -------------------------------------------- //
 	
 	public abstract String typename();
 	public abstract T select(String str, CommandSender sender);
 	public abstract Collection<String> altNames(CommandSender sender);
-	public boolean canList(CommandSender sender) { return this.altNames(sender).size() < 50; }
+	public boolean canList(CommandSender sender) { return true; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -31,12 +37,17 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 		{
 			MassiveCommandException exception = new MassiveCommandException();
 			exception.addMsg("<b>No %s matches \"<h>%s<b>\".", this.typename(), arg);
+			
 			if (this.canList(sender))
 			{
 				Collection<String> names = this.altNames(sender);
 				if (names.size() == 0)
 				{
 					exception.addMsg("<i>Note: There is no %s available.", this.typename());
+				}
+				else if (names.size() > LIST_COUNT_MAX)
+				{
+					exception.addMsg("<i>More than %d alternatives available.", LIST_COUNT_MAX);
 				}
 				else
 				{
