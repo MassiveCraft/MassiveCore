@@ -20,7 +20,7 @@ public class ARPermission extends ArgReaderAbstract<Permission>
 	// -------------------------------------------- //
 	
 	@Override
-	public Permission read(String arg, CommandSender sender)
+	public Permission read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		Permission ret = null;
 		
@@ -33,7 +33,7 @@ public class ARPermission extends ArgReaderAbstract<Permission>
 		
 		if (ret == null)
 		{
-			throw new MassiveCommandException("<b>No permission with the name \"<h>" + arg + "<b>\" was found.");
+			throw new MassiveCommandException().addMsg("<b>No permission with the name \"<h>%s<b>\" was found.", arg);
 		}
 		
 		return ret;

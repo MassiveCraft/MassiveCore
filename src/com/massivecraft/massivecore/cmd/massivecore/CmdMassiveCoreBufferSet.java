@@ -32,7 +32,6 @@ public class CmdMassiveCoreBufferSet extends MassiveCommand
 	public void perform()
 	{
 		String string = this.argConcatFrom(0);
-		if (string == null) return;
 		
 		MassiveCoreEngineVariable.setBuffer(sender, string);
 		

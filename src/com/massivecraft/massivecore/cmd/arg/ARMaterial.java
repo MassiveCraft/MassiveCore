@@ -19,15 +19,15 @@ public class ARMaterial extends ArgReaderAbstract<Material>
 	// -------------------------------------------- //
 	
 	@Override
-	public Material read(String arg, CommandSender sender)
+	public Material read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		Material ret = Material.matchMaterial(arg);
 		if (ret == null)
 		{
-			MassiveCommandException errors = new MassiveCommandException();
-			errors.addErrorMsg("<b>No material matches <h>"+arg+"<b>.");
-			errors.addErrorMsg("<i>Suggestion: <aqua>http://www.minecraftwiki.net/wiki/Data_values");
-			throw errors;
+			MassiveCommandException exception = new MassiveCommandException();
+			exception.addMsg("<b>No material matches <h>%s<b>.", arg);
+			exception.addMsg("<i>Suggestion: <aqua>http://www.minecraftwiki.net/wiki/Data_values");
+			throw exception;
 		}
 		
 		return ret;

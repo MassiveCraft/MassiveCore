@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.cmd.massivecore;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARAspect;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -30,10 +31,9 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Aspect aspect = this.arg(0, ARAspect.get());
-		if (aspect == null) return;
 		
 		msg(Txt.titleize("Aspect: "+aspect.getId()));
 		msg("<k>using multiverse: <v>%s",aspect.getMultiverse().getId());

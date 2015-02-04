@@ -44,7 +44,7 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public T read(String arg, CommandSender sender)
+	public T read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		// Create Ret
 		T ret;
@@ -60,7 +60,7 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 		if (ret == null)
 		{
 			// No alternatives found
-			throw new MassiveCommandException("<b>No player matches \"<h>"+arg+"<b>\".");
+			throw new MassiveCommandException().addMsg("<b>No player matches \"<h>%s<b>\".", arg);
 		}
 	
 		// Return Ret

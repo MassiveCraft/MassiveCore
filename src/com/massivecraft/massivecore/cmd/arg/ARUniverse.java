@@ -32,7 +32,7 @@ public class ARUniverse extends ArgReaderAbstract<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public String read(String arg, CommandSender sender)
+	public String read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		String result = new String();
 		
@@ -42,11 +42,17 @@ public class ARUniverse extends ArgReaderAbstract<String>
 		}
 		else
 		{
-			MassiveCommandException errors = new MassiveCommandException();
-			errors.addErrorMsg("<b>No universe \"<h>" + arg + "<b>\" exists in multiverse <h>" + this.multiverse.getId() + "<b>.");
+			MassiveCommandException exception = new MassiveCommandException();
+			exception.addMsg("<b>No universe \"<h>%s<b>\" exists in multiverse <h>%s<b>.", arg, this.multiverse.getId());
+			
 			Collection<String> names = new ArrayList<String>(multiverse.getUniverses());
-			errors.addErrorMsg("<i>Use " + Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));
-			throw errors;
+			String format = Txt.parse("<h>%s");
+			String comma = Txt.parse("<i>, ");
+			String and = Txt.parse(" <i>or ");
+			String dot = Txt.parse("<i>.");
+			exception.addMsg("<i>Use %s", Txt.implodeCommaAndDot(names, format, comma, and, dot));
+			
+			throw exception;
 		}
 		
 		return result;

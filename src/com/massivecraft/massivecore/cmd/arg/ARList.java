@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
+
 public class ARList<T> extends ArgReaderAbstract<List<T>>
 {
 	// -------------------------------------------- //
@@ -34,7 +36,7 @@ public class ARList<T> extends ArgReaderAbstract<List<T>>
 	
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
-	public List<T> read(String arg, CommandSender sender)
+	public List<T> read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		// Split into inner args
 		String[] innerArgs = arg.split("\\s+");

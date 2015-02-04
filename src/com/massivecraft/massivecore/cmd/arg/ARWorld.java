@@ -20,7 +20,7 @@ public class ARWorld extends ArgReaderAbstract<World>
 	// -------------------------------------------- //
 	
 	@Override
-	public World read(String arg, CommandSender sender)
+	public World read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		World ret;
 		
@@ -32,7 +32,7 @@ public class ARWorld extends ArgReaderAbstract<World>
 		
 		if (ret == null)
 		{
-			throw new MassiveCommandException("<b>The world could not be found.");
+			throw new MassiveCommandException().addMsg("<b>The world \"<h>%s<b>\" could not be found.", arg);
 		}
 		
 		return ret;

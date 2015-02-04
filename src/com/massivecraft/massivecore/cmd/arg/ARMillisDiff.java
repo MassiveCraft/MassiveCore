@@ -4,7 +4,6 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.util.TimeDiffUtil;
-import com.massivecraft.massivecore.util.Txt;
 
 public class ARMillisDiff extends ArgReaderAbstract<Long>
 {
@@ -20,7 +19,7 @@ public class ARMillisDiff extends ArgReaderAbstract<Long>
 	// -------------------------------------------- //
 	
 	@Override
-	public Long read(String arg, CommandSender sender)
+	public Long read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		Long ret;
 		try
@@ -29,7 +28,7 @@ public class ARMillisDiff extends ArgReaderAbstract<Long>
 		}
 		catch (Exception e)
 		{
-			throw new MassiveCommandException(Txt.parse("<b>") + e.getMessage());
+			throw new MassiveCommandException().addMsg("<b>%s", e.getMessage());
 		}
 		
 		return ret;

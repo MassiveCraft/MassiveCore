@@ -339,14 +339,15 @@ public class MassiveCommand
 			}
 			this.fixSenderVars();
 			
-			if ( ! isValidCall(this.sender, this.getArgs())) return;
-			perform();
+			if (isValidCall(this.sender, this.getArgs()))
+			{
+				perform();
+			}
 		}
 		catch (MassiveCommandException ex)
 		{
-			// Sometimes arg readers (or commands themself)
-			// throw exceptions, to stop executing and notify the user.
-			Mixin.msgOne(sender, ex.getErrorMsgs());
+			// Sometimes ArgReaders (or commands themself) throw exceptions, to stop executing and notify the user.
+			Mixin.messageOne(sender, ex.getMessages());
 		}
 		finally
 		{

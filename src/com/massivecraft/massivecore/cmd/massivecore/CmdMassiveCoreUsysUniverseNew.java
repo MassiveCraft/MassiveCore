@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.cmd.massivecore;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
@@ -30,10 +31,9 @@ public class CmdMassiveCoreUsysUniverseNew extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Multiverse multiverse = this.arg(1, ARMultiverse.get());
-		if (multiverse == null) return;
 		
 		String universe = this.arg(0);
 		

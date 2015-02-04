@@ -8,6 +8,7 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
@@ -35,10 +36,9 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveCommandException
 	{
 		Multiverse multiverse = this.arg(0, ARMultiverse.get());
-		if (multiverse == null) return;
 		
 		msg(Txt.titleize("Multiverse: "+multiverse.getId()));
 		

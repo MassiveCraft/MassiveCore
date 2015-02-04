@@ -19,14 +19,14 @@ public class ARSound extends ArgReaderAbstract<Sound>
 	// -------------------------------------------- //
 	
 	@Override
-	public Sound read(String arg, CommandSender sender)
+	public Sound read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		Sound result = getSoundFromString(arg);
 		if (result == null)
 		{
 			MassiveCommandException errors = new MassiveCommandException();
-			errors.addErrorMsg("<b>No sound matches \"<h>"+arg+"<b>\".");
-			errors.addErrorMsg("<aqua>https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/browse/src/main/java/org/bukkit/Sound.java");
+			errors.addMsg("<b>No sound matches \"<h>%s<b>\".", arg);
+			errors.addMsg("<aqua>https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/browse/src/main/java/org/bukkit/Sound.java");
 			throw errors;
 		}
 		return result;

@@ -12,13 +12,18 @@ public class HelpCommand extends MassiveCommand
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static HelpCommand i = new HelpCommand();
+	protected static HelpCommand i = new HelpCommand();
 	public static HelpCommand get() { return i; }
 	private HelpCommand()
 	{
+		// Aliases
 		this.addAliases("?", "h", "help");
+		
+		// Args
+		this.addOptionalArg("page", "1");
+		
+		// Other
 		this.setDesc("");
-		this.addOptionalArg("page","1");
 	}
 	
 	// -------------------------------------------- //
@@ -26,13 +31,17 @@ public class HelpCommand extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
-	{
+	public void perform() throws MassiveCommandException
+	{	
+		// Args
+		Integer pagenumber = this.arg(0, ARInteger.get(), 1);
+		
+		// Get parent command
 		if (this.getCommandChain().size() == 0) return;
 		MassiveCommand parentCommand = this.getCommandChain().get(this.getCommandChain().size()-1);
 		
+		// Create Lines
 		ArrayList<String> lines = new ArrayList<String>();
-		
 		for (String helpline : parentCommand.getHelp())
 		{
 			lines.add(Txt.parse("<a>#<i> "+helpline));
@@ -46,8 +55,7 @@ public class HelpCommand extends MassiveCommand
 			}
 		}
 		
-		Integer pagenumber = this.arg(0, ARInteger.get(), 1);
-		if (pagenumber == null) return;
+		// Send Lines
 		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \""+parentCommand.getAliases().get(0)+"\"", sender));
 	}
 	

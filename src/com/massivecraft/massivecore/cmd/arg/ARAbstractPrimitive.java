@@ -18,7 +18,7 @@ public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public T read(String arg, CommandSender sender)
+	public T read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		T result;
 		
@@ -28,7 +28,7 @@ public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 		}
 		catch (Exception e)
 		{
-			throw new MassiveCommandException("<b>Invalid " + this.typename() + " \"<h>" + arg + "\"<b>.");
+			throw new MassiveCommandException().addMsg("<b>Invalid %s \"<h>%s\"<b>.", this.typename(), arg);
 		}
 		
 		return result;

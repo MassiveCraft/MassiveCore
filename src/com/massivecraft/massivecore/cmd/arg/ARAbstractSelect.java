@@ -23,28 +23,32 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public T read(String arg, CommandSender sender)
+	public T read(String arg, CommandSender sender) throws MassiveCommandException
 	{
 		T result = this.select(arg, sender);
 		
 		if (result == null)
 		{
-			MassiveCommandException errors = new MassiveCommandException();
-			errors.addErrorMsg("<b>No " + this.typename() + " matches \"<h>"+arg+"<b>\".");
+			MassiveCommandException exception = new MassiveCommandException();
+			exception.addMsg("<b>No %s matches \"<h>%s<b>\".", this.typename(), arg);
 			if (this.canList(sender))
 			{
 				Collection<String> names = this.altNames(sender);
 				if (names.size() == 0)
 				{
-					errors.addErrorMsg("<i>Note: There is no "+this.typename()+" available.");
+					exception.addMsg("<i>Note: There is no %s available.", this.typename());
 				}
 				else
 				{
-					errors.addErrorMsg("<i>Use "+Txt.implodeCommaAndDot(names, "<h>%s", "<i>, ", " <i>or ", "<i>."));
+					String format = Txt.parse("<h>%s");
+					String comma = Txt.parse("<i>, ");
+					String and = Txt.parse(" <i>or ");
+					String dot = Txt.parse("<i>.");
+					exception.addMsg("<i>Use %s", Txt.implodeCommaAndDot(names, format, comma, and, dot));
 				}
 			}
 			
-			throw errors;
+			throw exception;
 		}
 		
 		return result;
