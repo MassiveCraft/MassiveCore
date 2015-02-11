@@ -63,6 +63,7 @@ public class Txt
 		parseReplacements.put("<orange>", "\u00A76");
 		parseReplacements.put("<silver>", "\u00A77");
 		parseReplacements.put("<gray>", "\u00A78");
+		parseReplacements.put("<grey>", "\u00A78");
 		parseReplacements.put("<blue>", "\u00A79");
 		parseReplacements.put("<lime>", "\u00A7a");
 		parseReplacements.put("<aqua>", "\u00A7b");
