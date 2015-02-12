@@ -20,7 +20,7 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	public abstract String typename();
-	public abstract T select(String str, CommandSender sender);
+	public abstract T select(String str, CommandSender sender) throws MassiveException;
 	public abstract Collection<String> altNames(CommandSender sender);
 	public boolean canList(CommandSender sender) { return true; }
 	
