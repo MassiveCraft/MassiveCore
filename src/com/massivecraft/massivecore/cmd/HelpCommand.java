@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.cmd;
 
 import java.util.ArrayList;
 
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.util.Txt;
@@ -31,7 +32,7 @@ public class HelpCommand extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{	
 		// Args
 		Integer pagenumber = this.arg(0, ARInteger.get(), 1);

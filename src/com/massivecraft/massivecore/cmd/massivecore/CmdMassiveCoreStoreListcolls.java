@@ -5,9 +5,9 @@ import java.util.TreeSet;
 
 import com.massivecraft.massivecore.ConfServer;
 import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.store.Coll;
@@ -38,7 +38,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		// Args
 		final String dbAlias = this.arg(0, ARString.get(), ConfServer.dburi);

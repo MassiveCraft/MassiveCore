@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 
 public class ARWorld extends ArgReaderAbstract<World>
 {
@@ -20,7 +20,7 @@ public class ARWorld extends ArgReaderAbstract<World>
 	// -------------------------------------------- //
 	
 	@Override
-	public World read(String arg, CommandSender sender) throws MassiveCommandException
+	public World read(String arg, CommandSender sender) throws MassiveException
 	{
 		World ret;
 		
@@ -32,7 +32,7 @@ public class ARWorld extends ArgReaderAbstract<World>
 		
 		if (ret == null)
 		{
-			throw new MassiveCommandException().addMsg("<b>The world \"<h>%s<b>\" could not be found.", arg);
+			throw new MassiveException().addMsg("<b>The world \"<h>%s<b>\" could not be found.", arg);
 		}
 		
 		return ret;

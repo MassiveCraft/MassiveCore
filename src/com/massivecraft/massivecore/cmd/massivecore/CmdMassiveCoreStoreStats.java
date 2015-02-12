@@ -3,8 +3,8 @@ package com.massivecraft.massivecore.cmd.massivecore;
 import java.util.Map.Entry;
 
 import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARColl;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.store.Coll;
@@ -35,7 +35,7 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		if (!this.argIsSet(0) || this.arg(0).equalsIgnoreCase(Coll.TOTAL))
 		{

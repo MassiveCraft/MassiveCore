@@ -4,8 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.VisibilityMode;
 import com.massivecraft.massivecore.cmd.arg.AREnum;
 import com.massivecraft.massivecore.cmd.arg.ARFloat;
@@ -46,7 +46,7 @@ public class CmdMassiveCoreTest extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		// Args
 		ParticleEffect particleEffect = this.arg(0, AREnum.get(ParticleEffect.class));

@@ -375,7 +375,7 @@ public class Txt
 	public static String getNicedEnumString(String str)
 	{
 		List<String> parts = new ArrayList<String>();  
-		for (String part : str.toLowerCase().split("_"))
+		for (String part : str.toLowerCase().split("[\\s_]+"))
 		{
 			parts.add(upperCaseFirst(part));
 		}

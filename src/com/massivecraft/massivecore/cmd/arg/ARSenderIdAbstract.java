@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -44,7 +44,7 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public T read(String arg, CommandSender sender) throws MassiveCommandException
+	public T read(String arg, CommandSender sender) throws MassiveException
 	{
 		// Create Ret
 		T ret;
@@ -60,7 +60,7 @@ public abstract class ARSenderIdAbstract<T> extends ArgReaderAbstract<T>
 		if (ret == null)
 		{
 			// No alternatives found
-			throw new MassiveCommandException().addMsg("<b>No player matches \"<h>%s<b>\".", arg);
+			throw new MassiveException().addMsg("<b>No player matches \"<h>%s<b>\".", arg);
 		}
 	
 		// Return Ret

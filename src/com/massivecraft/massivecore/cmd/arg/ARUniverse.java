@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.util.Txt;
 
 public class ARUniverse extends ArgReaderAbstract<String>
@@ -32,7 +32,7 @@ public class ARUniverse extends ArgReaderAbstract<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public String read(String arg, CommandSender sender) throws MassiveCommandException
+	public String read(String arg, CommandSender sender) throws MassiveException
 	{
 		String result = new String();
 		
@@ -42,7 +42,7 @@ public class ARUniverse extends ArgReaderAbstract<String>
 		}
 		else
 		{
-			MassiveCommandException exception = new MassiveCommandException();
+			MassiveException exception = new MassiveException();
 			exception.addMsg("<b>No universe \"<h>%s<b>\" exists in multiverse <h>%s<b>.", arg, this.multiverse.getId());
 			
 			Collection<String> names = new ArrayList<String>(multiverse.getUniverses());

@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 
 public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 {
@@ -18,7 +18,7 @@ public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public T read(String arg, CommandSender sender) throws MassiveCommandException
+	public T read(String arg, CommandSender sender) throws MassiveException
 	{
 		T result;
 		
@@ -28,7 +28,7 @@ public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 		}
 		catch (Exception e)
 		{
-			throw new MassiveCommandException().addMsg("<b>Invalid %s \"<h>%s\"<b>.", this.typename(), arg);
+			throw new MassiveException().addMsg("<b>Invalid %s \"<h>%s\"<b>.", this.typename(), arg);
 		}
 		
 		return result;

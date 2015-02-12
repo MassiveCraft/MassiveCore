@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 
 public class ARPermission extends ArgReaderAbstract<Permission>
 {
@@ -20,7 +20,7 @@ public class ARPermission extends ArgReaderAbstract<Permission>
 	// -------------------------------------------- //
 	
 	@Override
-	public Permission read(String arg, CommandSender sender) throws MassiveCommandException
+	public Permission read(String arg, CommandSender sender) throws MassiveException
 	{
 		Permission ret = null;
 		
@@ -33,7 +33,7 @@ public class ARPermission extends ArgReaderAbstract<Permission>
 		
 		if (ret == null)
 		{
-			throw new MassiveCommandException().addMsg("<b>No permission with the name \"<h>%s<b>\" was found.", arg);
+			throw new MassiveException().addMsg("<b>No permission with the name \"<h>%s<b>\" was found.", arg);
 		}
 		
 		return ret;

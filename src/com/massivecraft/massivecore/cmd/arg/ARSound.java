@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.cmd.arg;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 
 public class ARSound extends ArgReaderAbstract<Sound>
 {
@@ -19,12 +19,12 @@ public class ARSound extends ArgReaderAbstract<Sound>
 	// -------------------------------------------- //
 	
 	@Override
-	public Sound read(String arg, CommandSender sender) throws MassiveCommandException
+	public Sound read(String arg, CommandSender sender) throws MassiveException
 	{
 		Sound result = getSoundFromString(arg);
 		if (result == null)
 		{
-			MassiveCommandException errors = new MassiveCommandException();
+			MassiveException errors = new MassiveException();
 			errors.addMsg("<b>No sound matches \"<h>%s<b>\".", arg);
 			errors.addMsg("<aqua>https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/browse/src/main/java/org/bukkit/Sound.java");
 			throw errors;

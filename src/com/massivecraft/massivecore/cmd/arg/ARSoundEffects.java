@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.SoundEffect;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 
 /**
  * @deprecated use ARList
@@ -27,7 +27,7 @@ public class ARSoundEffects extends ArgReaderAbstract<List<SoundEffect>>
 	// -------------------------------------------- //
 	
 	@Override
-	public List<SoundEffect> read(String arg, CommandSender sender) throws MassiveCommandException
+	public List<SoundEffect> read(String arg, CommandSender sender) throws MassiveException
 	{
 		List<SoundEffect> ret = new ArrayList<SoundEffect>();
 		List<SoundEffect> result = new ArrayList<SoundEffect>();
@@ -45,7 +45,7 @@ public class ARSoundEffects extends ArgReaderAbstract<List<SoundEffect>>
 		}
 		catch (Exception e)
 		{
-			throw new MassiveCommandException().addMsg("<b>%s", e.getMessage());
+			throw new MassiveException().addMsg("<b>%s", e.getMessage());
 		}
 		return ret;
 	}

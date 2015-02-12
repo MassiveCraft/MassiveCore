@@ -2,8 +2,8 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.SoundEffect;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 
 public class ARSoundEffect extends ArgReaderAbstract<SoundEffect>
 {
@@ -19,7 +19,7 @@ public class ARSoundEffect extends ArgReaderAbstract<SoundEffect>
 	// -------------------------------------------- //
 	
 	@Override
-	public SoundEffect read(String arg, CommandSender sender) throws MassiveCommandException
+	public SoundEffect read(String arg, CommandSender sender) throws MassiveException
 	{
 		SoundEffect ret;
 		
@@ -29,7 +29,7 @@ public class ARSoundEffect extends ArgReaderAbstract<SoundEffect>
 		}
 		catch (Exception e)
 		{
-			throw new MassiveCommandException().addMsg("<b>%s", e.getMessage());
+			throw new MassiveException().addMsg("<b>%s", e.getMessage());
 		}
 		return ret;
 	}

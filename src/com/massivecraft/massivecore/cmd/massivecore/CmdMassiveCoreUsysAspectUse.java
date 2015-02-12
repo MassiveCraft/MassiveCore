@@ -2,9 +2,9 @@ package com.massivecraft.massivecore.cmd.massivecore;
 
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
 import com.massivecraft.massivecore.cmd.arg.ARAspect;
 import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -33,7 +33,7 @@ public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform() throws MassiveCommandException
+	public void perform() throws MassiveException
 	{
 		Aspect aspect = this.arg(0, ARAspect.get());
 		Multiverse multiverse = this.arg(1, ARMultiverse.get());

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.Txt;
 
 public class ARSet<T> extends ArgReaderAbstract<Set<T>>
@@ -41,7 +41,7 @@ public class ARSet<T> extends ArgReaderAbstract<Set<T>>
 	
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
-	public Set<T> read(String arg, CommandSender sender) throws MassiveCommandException
+	public Set<T> read(String arg, CommandSender sender) throws MassiveException
 	{
 		// Split into inner args
 		String[] innerArgs = arg.split("\\s+");

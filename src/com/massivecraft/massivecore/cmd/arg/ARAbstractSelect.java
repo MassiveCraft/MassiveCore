@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.cmd.MassiveCommandException;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
@@ -29,13 +29,13 @@ public abstract class ARAbstractSelect<T> extends ArgReaderAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public T read(String arg, CommandSender sender) throws MassiveCommandException
+	public T read(String arg, CommandSender sender) throws MassiveException
 	{
 		T result = this.select(arg, sender);
 		
 		if (result == null)
 		{
-			MassiveCommandException exception = new MassiveCommandException();
+			MassiveException exception = new MassiveException();
 			exception.addMsg("<b>No %s matches \"<h>%s<b>\".", this.typename(), arg);
 			
 			if (this.canList(sender))
