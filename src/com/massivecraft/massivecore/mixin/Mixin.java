@@ -395,15 +395,15 @@ public class Mixin
 	// -------------------------------------------- //
 	
 	// Default
-	public static boolean sendTitleMessage(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle)
+	public static boolean sendTitleMessage(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
 	{
-		return getTitleMixin().sendTitleMessage(watcherObject, fadeIn, stay, fadeOut, mainTitle, subTitle);
+		return getTitleMixin().sendTitleMessage(watcherObject, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
 	}
 	
 	// Parsed
-	public static boolean sendTitleMsg(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle)
+	public static boolean sendTitleMsg(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
 	{
-		return getTitleMixin().sendTitleMsg(watcherObject, fadeIn, stay, fadeOut, mainTitle, subTitle);
+		return getTitleMixin().sendTitleMsg(watcherObject, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
 	}
 	
 	// Available

@@ -6,11 +6,11 @@ public abstract class TitleMixinAbstract implements TitleMixin
 {	
 	// Parsed
 	@Override
-	public boolean sendTitleMsg(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle)
+	public boolean sendTitleMsg(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
 	{
-		if (mainTitle != null) mainTitle = Txt.parse(mainTitle);
-		if (subTitle != null) subTitle = Txt.parse(subTitle);
-		return this.sendTitleMessage(watcherObject, fadeIn, stay, fadeOut, mainTitle, subTitle);
+		if (titleMain != null) titleMain = Txt.parse(titleMain);
+		if (titleSub != null) titleSub = Txt.parse(titleSub);
+		return this.sendTitleMessage(watcherObject, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
 	}
 	
 }

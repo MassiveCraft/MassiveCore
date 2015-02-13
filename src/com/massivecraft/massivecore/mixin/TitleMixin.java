@@ -3,10 +3,10 @@ package com.massivecraft.massivecore.mixin;
 public interface TitleMixin
 {
 	// Abstract
-	public boolean sendTitleMessage(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle);
+	public boolean sendTitleMessage(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub);
 	
 	// Parsed
-	public boolean sendTitleMsg(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle);
+	public boolean sendTitleMsg(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub);
 	
 	// Available
 	public boolean isTitlesAvailable();

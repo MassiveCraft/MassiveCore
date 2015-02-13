@@ -19,17 +19,17 @@ public class TitleMixinDefault extends TitleMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean sendTitleMessage(Object watcherObject, int fadeIn, int stay, int fadeOut, String mainTitle, String subTitle)
+	public boolean sendTitleMessage(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
 	{
 		// Get the player
 		Player player = IdUtil.getPlayer(watcherObject);
 		if (player == null) return false;
 		
 		// If we don't send any message (empty is ok) we might end up displaying old messages.
-		if (subTitle == null)	subTitle = "";
-		if (mainTitle == null)	mainTitle = "";
+		if (titleSub == null)	titleSub = "";
+		if (titleMain == null)	titleMain = "";
 		
-		return TitleUtil.sendTitle(player, fadeIn, stay, fadeOut, mainTitle, subTitle);
+		return TitleUtil.sendTitle(player, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
 	}
 
 	@Override

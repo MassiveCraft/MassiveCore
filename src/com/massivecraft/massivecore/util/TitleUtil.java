@@ -113,7 +113,7 @@ public final class TitleUtil
 	// SEND TITLES
 	// -------------------------------------------- //
 	
-	public static boolean sendTitle(Player player, int fadeIn, int stay, int fadeOut, String title, String subtitle)
+	public static boolean sendTitle(Player player, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
 	{
 		if ( ! useTitles)
 		{
@@ -123,7 +123,7 @@ public final class TitleUtil
 		try
 		{
 			// Fadein, stay, fadeout
-			Object timesPacket = packetConstructorTimes.newInstance(timesEnum, null, fadeIn, stay, fadeOut);
+			Object timesPacket = packetConstructorTimes.newInstance(timesEnum, null, ticksIn, ticksStay, ticksOut);
 			sendPacket.invoke(playerConnection.get( getHandle.invoke(player) ), timesPacket);
 		}
 		catch (Exception e)
@@ -133,15 +133,15 @@ public final class TitleUtil
 			return false;
 		}
 		
-		if (title != null)
+		if (titleMain != null)
 		{
-			title = toJson(title);
+			titleMain = toJson(titleMain);
 			try
 			{
 				// Title
-				Object titleMain = chatSerializer.invoke(null, title);
-				Object titlePacket = packetConstructor.newInstance(titleEnum, titleMain);
-				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), titlePacket);	
+				Object titleMainChat = chatSerializer.invoke(null, titleMain);
+				Object titleMainPacket = packetConstructor.newInstance(titleEnum, titleMainChat);
+				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), titleMainPacket);	
 			}
 			catch (Exception e)
 			{
@@ -151,15 +151,15 @@ public final class TitleUtil
 			}
 		}
 
-		if (subtitle != null)
+		if (titleSub != null)
 		{
-			subtitle = toJson(subtitle);
+			titleSub = toJson(titleSub);
 			try
 			{
 				// SubTitle
-				Object subtitleMain = chatSerializer.invoke(null, subtitle);
-				Object subtitlesPacket = packetConstructor.newInstance(subtitleEnum, subtitleMain);
-				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), subtitlesPacket);
+				Object titleSubChat = chatSerializer.invoke(null, titleSub);
+				Object titleSubPacket = packetConstructor.newInstance(subtitleEnum, titleSubChat);
+				sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), titleSubPacket);
 			}
 			catch (Exception e)
 			{
