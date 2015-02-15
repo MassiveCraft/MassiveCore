@@ -21,6 +21,7 @@ public class MassiveException extends Exception
 	// -------------------------------------------- //
 	
 	protected List<String> messages = new MassiveList<String>();
+	public boolean hasMessages() { return ! this.messages.isEmpty(); }
 	public List<String> getMessages() { return this.messages; }
 	
 	@Override
