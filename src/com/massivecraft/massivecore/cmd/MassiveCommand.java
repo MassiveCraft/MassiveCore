@@ -348,7 +348,10 @@ public class MassiveCommand
 		catch (MassiveException ex)
 		{
 			// Sometimes ArgReaders (or commands themself) throw exceptions, to stop executing and notify the user.
-			Mixin.messageOne(sender, ex.getMessages());
+			if (ex.hasMessages())
+			{
+				Mixin.messageOne(sender, ex.getMessages());
+			}
 		}
 		finally
 		{
