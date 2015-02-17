@@ -112,16 +112,18 @@ public abstract class PagerAbstract<T> implements Pager<T>
 			return ret;
 		}
 		
+		int index = (number - 1) * this.getItemsPerPage();
 		for (T pageItem : pageItems)
 		{
 			if (stringifier != null)
 			{
-				ret.add(stringifier.toString(pageItem));
+				ret.add(stringifier.toString(pageItem, index));
 			}
 			else
 			{
 				ret.add(pageItem.toString());
 			}
+			index++;
 		}
 		
 		return ret;
