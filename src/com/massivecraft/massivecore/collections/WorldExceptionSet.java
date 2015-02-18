@@ -20,8 +20,7 @@ public class WorldExceptionSet
 	
 	public boolean contains(String world)
 	{
-		if (this.exceptions.contains(world)) return !this.standard;
-		return this.standard;
+		return this.standard != this.exceptions.contains(world);
 	}
 	
 	public boolean contains(World world)
