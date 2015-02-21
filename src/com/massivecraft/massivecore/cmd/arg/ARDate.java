@@ -6,7 +6,11 @@ import java.util.Date;
 
 public class ARDate extends ARAbstractPrimitive<Date>
 {
-	protected final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -28,7 +32,7 @@ public class ARDate extends ARAbstractPrimitive<Date>
 	@Override
 	public Date convert(String arg) throws Exception
 	{
-		return df.parse(arg);
+		return DATE_FORMAT.parse(arg);
 	}
 	
 }
