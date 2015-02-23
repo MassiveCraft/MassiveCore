@@ -26,9 +26,6 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	public void activate()
 	{
 		if (Money.mixin() != null) return;
-		RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
-		if (rsp == null) return;
-		this.economy = rsp.getProvider();
 		Money.mixin(this);
 	}
 	
@@ -41,7 +38,12 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private Economy economy = null;
+	public Economy getEconomy()
+	{
+		RegisteredServiceProvider<Economy> registeredServiceProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+		if (registeredServiceProvider == null) return null;
+		return registeredServiceProvider.getProvider();
+	}
 	
 	// -------------------------------------------- //
 	// ENABLED AND DISABLED
@@ -50,7 +52,9 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	@Override
 	public boolean enabled()
 	{
-		return this.economy.isEnabled();
+		Economy economy = this.getEconomy();
+		if (economy == null) return false;
+		return economy.isEnabled();
 	}
 	
 	// -------------------------------------------- //
@@ -62,7 +66,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	{
 		if (includeUnit)
 		{
-			return this.economy.format(amount);
+			return this.getEconomy().format(amount);
 		}
 		else
 		{
@@ -85,13 +89,13 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	@Override
 	public String singular()
 	{
-		return this.economy.currencyNameSingular();		
+		return this.getEconomy().currencyNameSingular();		
 	}
 	
 	@Override
 	public String plural()
 	{
-		return this.economy.currencyNamePlural();
+		return this.getEconomy().currencyNamePlural();
 	}
 	
 	// -------------------------------------------- //
@@ -101,7 +105,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	@Override
 	public int fractionalDigits()
 	{
-		return this.economy.fractionalDigits();
+		return this.getEconomy().fractionalDigits();
 	}
 	
 	// -------------------------------------------- //
@@ -111,7 +115,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	@Override
 	public boolean exists(String accountId)
 	{
-		return this.economy.hasAccount(accountId);
+		return this.getEconomy().hasAccount(accountId);
 	}
 	
 	@Override
@@ -128,14 +132,14 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	public double get(String accountId)
 	{
 		this.ensureExists(accountId);
-		return this.economy.getBalance(accountId);
+		return this.getEconomy().getBalance(accountId);
 	}
 	
 	@Override
 	public boolean has(String accountId, double amount)
 	{
 		this.ensureExists(accountId);
-		return this.economy.has(accountId, amount);
+		return this.getEconomy().has(accountId, amount);
 	}
 	
 	// -------------------------------------------- //
@@ -145,6 +149,8 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	@Override
 	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories, String message)
 	{
+		Economy economy = this.getEconomy();
+		
 		// Ensure positive direction
 		if (amount < 0)
 		{
@@ -190,13 +196,15 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	
 	public boolean ensureExists(String accountId)
 	{
-		if (this.economy.hasAccount(accountId)) return true;
+		Economy economy = this.getEconomy();
 		
-		if (!this.economy.createPlayerAccount(accountId)) return false;
+		if (economy.hasAccount(accountId)) return true;
+		
+		if (!economy.createPlayerAccount(accountId)) return false;
 		
 		if (MUtil.isValidPlayerName(accountId)) return true;
 		
-		double balance = this.economy.getBalance(accountId);
+		double balance = economy.getBalance(accountId);
 		economy.withdrawPlayer(accountId, balance);
 		
 		return true;
