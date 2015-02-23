@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.util;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1345,6 +1347,15 @@ public class MUtil
 		double prob = val % 1;
 		if (MassiveCore.random.nextDouble() < prob) ret += 1;
 		return ret;
+	}
+	
+	public static double round(double value, int places)
+	{
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 	
 	// -------------------------------------------- //
