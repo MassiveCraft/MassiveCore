@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -102,6 +103,7 @@ public class MassiveCommand
 	protected List<MassiveCommand> subCommands;
 	public List<MassiveCommand> getSubCommands() { return this.subCommands; }
 	public void setSubCommands(List<MassiveCommand> subCommands) { this.subCommands = subCommands; }
+	public boolean isParentCommand() { return this.getSubCommands().size() > 0; }
 	
 	public MassiveCommand getSubCommand(String alias)
 	{
@@ -437,8 +439,8 @@ public class MassiveCommand
 		{
 			if (sender != null)
 			{
-				msg(Lang.COMMAND_TO_FEW_ARGS);
-				sender.sendMessage(this.getUseageTemplate());
+				msg(Lang.COMMAND_TOO_FEW_ARGS);
+				sendMessage(this.getUseageTemplate());
 			}
 			return false;
 		}
@@ -447,11 +449,33 @@ public class MassiveCommand
 		{
 			if (sender != null)
 			{
-				// Get the to many string slice
-				List<String> theToMany = args.subList(this.getRequiredArgs().size() + this.optionalArgs.size(), args.size());
-				msg(Lang.COMMAND_TO_MANY_ARGS, Txt.implodeCommaAndDot(theToMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
-				msg(Lang.COMMAND_TO_MANY_ARGS2);
-				sender.sendMessage(this.getUseageTemplate());
+				if (this.isParentCommand())
+				{
+					String arg = this.arg(0);
+					
+					// Try Levenshtein
+					List<String> matches = this.getSimilarSubcommandAliases(arg, this.getMaxLevenshteinDistanceForArg(arg));
+					
+					msg(Lang.COMMAND_NO_SUCH_SUB, this.getUseageTemplate() + " " + arg);
+					if ( ! matches.isEmpty())
+					{
+						String suggest = Txt.parse(Txt.implodeCommaAnd(matches, "<i>, <c>", " <i>or <c>"));
+						msg(Lang.COMMAND_SUGGEST_SUB, this.getUseageTemplate() + " " + suggest);
+					}
+					else
+					{
+						msg(Lang.COMMAND_GET_HELP, this.getUseageTemplate());
+					}
+					
+				}
+				else
+				{
+					// Get the too many string slice
+					List<String> theTooMany = args.subList(this.getRequiredArgs().size() + this.optionalArgs.size(), args.size());
+					msg(Lang.COMMAND_TOO_MANY_ARGS, Txt.implodeCommaAndDot(theTooMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
+					msg(Lang.COMMAND_TOO_MANY_ARGS2);
+					sendMessage(this.getUseageTemplate());
+				}
 			}
 			return false;
 		}
@@ -460,6 +484,47 @@ public class MassiveCommand
 	public boolean isArgsValid(List<String> args)
 	{
 		return this.isArgsValid(args, null);
+	}
+	
+	// -------------------------------------------- //
+	// MATCHING SUGGESTIONS
+	// -------------------------------------------- //
+	
+	public List<String> getSimilarAliases(String arg, int maxLevenshteinDistance)
+	{
+		arg = arg.toLowerCase();
+		
+		List<String> matches = new ArrayList<String>();
+		
+		for (String alias : this.getAliases())
+		{
+			String aliaslc = alias.toLowerCase();
+			int distance = StringUtils.getLevenshteinDistance(arg, aliaslc);
+			if (distance > maxLevenshteinDistance) continue;
+			matches.add(alias);
+		}
+		return matches;
+	}
+	
+	public List<String> getSimilarSubcommandAliases(String arg, int maxLevenshteinDistance)
+	{
+		// Try Levenshtein
+		List<String> matches = new ArrayList<String>();
+		
+		for (MassiveCommand sub : this.getSubCommands())
+		{
+			matches.addAll(sub.getSimilarAliases(arg, maxLevenshteinDistance));
+		}
+		return matches;
+	}
+	
+	public int getMaxLevenshteinDistanceForArg(String arg)
+	{
+		if (arg.length() <= 1) return 0; // When dealing with 1 character aliases, there is way too many options. So we don't suggest.
+		if (arg.length() <= 3) return 1; // When dealing with low length aliases, there too many options. So we won't suggest much
+		if (arg.length() < 8) return 2; // 2 is default.
+		
+		return 3; // If it were 8 characters or more, we end up here. Because many characters allow for more typos.
 	}
 	
 	// -------------------------------------------- //
