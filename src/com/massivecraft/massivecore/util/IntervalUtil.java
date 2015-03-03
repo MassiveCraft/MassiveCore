@@ -92,28 +92,35 @@ public class IntervalUtil
 	// RANDOM SIMPLE
 	// -------------------------------------------- //
 	
-	public static int randomIntegerFromInterval(int min, int max)
+	public static int random(int min, int max)
 	{
-		return min+MassiveCore.random.nextInt(max-min+1);
+		return min + MassiveCore.random.nextInt(max - min + 1);
+	}
+	
+	public static long random(long min, long max)
+	{
+		return min + (long)(MassiveCore.random.nextDouble() * (max - min));
+	}
+	
+	public static double random(double min, double max)
+	{
+		return min + MassiveCore.random.nextDouble() * (max - min);
 	}
 	
 	public static int randomIntegerFromInterval(Entry<Integer, Integer> interval)
 	{
 		int min = interval.getKey();
 		int max = interval.getValue();
-		return randomIntegerFromInterval(min, max);
+		return random(min, max);
 	}
 	
-	public static double randomDoubleFromInterval(double min, double max)
-	{
-		return min+MassiveCore.random.nextDouble()*(max-min);
-	}
+	
 	
 	public static double randomDoubleFromInterval(Entry<Double, Double> interval)
 	{
 		double min = interval.getKey();
 		double max = interval.getValue();
-		return randomDoubleFromInterval(min, max);
+		return random(min, max);
 	}
 	
 	// -------------------------------------------- //
