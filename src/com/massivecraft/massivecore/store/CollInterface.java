@@ -56,9 +56,6 @@ public interface CollInterface<E>
 	// BEHAVIOR
 	// -------------------------------------------- //
 	
-	public boolean isLazy();
-	public void setLazy(boolean lazy);
-	
 	public boolean isCreative();
 	public void setCreative(boolean creative);
 	

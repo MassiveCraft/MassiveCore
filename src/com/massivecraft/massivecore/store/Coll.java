@@ -90,14 +90,11 @@ public class Coll<E> implements CollInterface<E>
 	// STORAGE
 	// -------------------------------------------- //
 	
-	// All
-	protected Set<String> ids;
-	
 	// Loaded
 	protected Map<String, E> id2entity;
 	protected Map<E, String> entity2id;
 	
-	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.ids); }
+	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
 	
 	@Override public Map<String, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override 
@@ -127,7 +124,7 @@ public class Coll<E> implements CollInterface<E>
 	{
 		String id = this.fixId(oid);
 		if (id == null) return false;
-		return this.ids.contains(id);
+		return this.id2entity.containsKey(id);
 	}
 	
 	@Override public Map<E, String> getEntity2id() { return Collections.unmodifiableMap(this.entity2id); }
@@ -165,10 +162,6 @@ public class Coll<E> implements CollInterface<E>
 	// -------------------------------------------- //
 	// BEHAVIOR
 	// -------------------------------------------- //
-	
-	protected boolean lazy;
-	@Override public boolean isLazy() { return this.lazy; }
-	@Override public void setLazy(boolean lazy) { this.lazy = lazy; }
 	
 	protected boolean creative;
 	@Override public boolean isCreative() { return this.creative; }
@@ -331,7 +324,6 @@ public class Coll<E> implements CollInterface<E>
 		}
 		
 		// Attach
-		this.ids.add(id);
 		this.id2entity.put(id, entity);
 		this.entity2id.put(entity, id);
 		
@@ -513,8 +505,6 @@ public class Coll<E> implements CollInterface<E>
 		if (entity == null) return null;
 		
 		this.entity2id.remove(entity);
-		
-		this.ids.remove(id);
 		
 		// Remove entity reference info
 		if (entity instanceof Entity)
@@ -830,7 +820,7 @@ public class Coll<E> implements CollInterface<E>
 		// Compile a list of all ids (both remote and local)
 		Set<String> allids = new HashSet<String>();
 		allids.addAll(id2RemoteMtime.keySet());
-		allids.addAll(this.ids);
+		allids.addAll(this.id2entity.keySet());
 		
 		// Check for modifications
 		for (String id : allids)
@@ -876,7 +866,7 @@ public class Coll<E> implements CollInterface<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean lazy, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -892,8 +882,7 @@ public class Coll<E> implements CollInterface<E>
 		}
 		
 		// WHAT DO WE HANDLE?
-		this.entityClass = entityClass;
-		this.lazy = lazy;
+		this.entityClass = entityClass;		
 		this.creative = creative;
 		this.lowercasing = lowercasing;
 		
@@ -908,7 +897,6 @@ public class Coll<E> implements CollInterface<E>
 			// Avoid "Classname cannot be cast to java.lang.Comparable" error in ConcurrentSkipListMap
 			entityComparator = HashCodeComparator.get();
 		}
-		this.ids = new ConcurrentSkipListSet<String>(idComparator);
 		this.id2entity = new ConcurrentSkipListMap<String, E>(idComparator);
 		this.entity2id = new ConcurrentSkipListMap<E, String>(entityComparator);
 		
@@ -929,14 +917,14 @@ public class Coll<E> implements CollInterface<E>
 		};
 	}
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean lazy, boolean creative, boolean lowercasing)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
 	{
-		this(name, entityClass, db, plugin, lazy, creative, lowercasing, null, null);
+		this(name, entityClass, db, plugin, creative, lowercasing, null, null);
 	}
 	
 	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
 	{
-		this(name, entityClass, db, plugin, false, false, false);
+		this(name, entityClass, db, plugin, false, false);
 	}
 	
 	@Override
