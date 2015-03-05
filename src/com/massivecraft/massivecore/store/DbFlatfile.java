@@ -2,56 +2,41 @@ package com.massivecraft.massivecore.store;
 
 import java.io.File;
 
-import com.massivecraft.massivecore.util.DiscUtil;
-
 public class DbFlatfile extends DbAbstract
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 
-	public File dir;
+	public File directory;
 	
 	protected DriverFlatfile driver;
 	@Override public DriverFlatfile getDriver() { return driver; }
 	
 	// -------------------------------------------- //
-	// CONSTRUCTORS
+	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public DbFlatfile(DriverFlatfile driver, File folder)
+	public DbFlatfile(DriverFlatfile driver, File directory)
 	{
 		this.driver = driver;
-		this.dir = folder;
+		this.directory = directory;
 	}
 	
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// OVERRIDE
 	// -------------------------------------------- //
 
 	@Override
-	public String getName()
+	public String getDbName()
 	{
-		return dir.getAbsolutePath();
+		return directory.getAbsolutePath();
 	}
 	
 	@Override
-	public boolean drop()
+	public Object createCollDriverObject(Coll<?> coll)
 	{
-		try
-		{
-			return DiscUtil.deleteRecursive(this.dir);
-		}
-		catch (Exception e)
-		{
-			return false;
-		}
-	}
-	
-	@Override
-	public Object getCollDriverObject(Coll<?> coll)
-	{
-		return new File(dir, coll.getName());
+		return new File(directory, coll.getName());
 	}
 	
 }

@@ -10,7 +10,6 @@ import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
-import com.massivecraft.massivecore.store.Driver;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
@@ -58,9 +57,6 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 		}
 		
 		// Prepare
-		final Driver fromDriver = fromDb.getDriver();
-		final Driver toDriver = toDb.getDriver();
-		
 		Set<String> collnames = fromDb.getCollnames();
 		
 		// Statistics
@@ -76,11 +72,11 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 			final Coll<?> fromColl = new Coll<Object>(collname, Object.class, fromDb, MassiveCore.get());
 			final Coll<?> toColl = new Coll<Object>(collname, Object.class, toDb, MassiveCore.get());
 			
-			Collection<String> ids = fromDriver.getIds(fromColl);
+			Collection<String> ids = fromDb.getIds(fromColl);
 			msg("<i>Now copying collection <h>%d/%d %s <i>with <h>%d <i>documents.", countCollCurrent, countCollTotal, collname, ids.size());
 			
 			// Do a load check to verify we have access to this folder.
-			if (ids.size() > 0 && fromDriver.load(fromColl, ids.iterator().next()) == null)
+			if (ids.size() > 0 && fromDb.load(fromColl, ids.iterator().next()) == null)
 			{
 				msg("<b>Skipping <h>%s <b>since could not load data.", collname);
 				continue;
@@ -88,8 +84,8 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 			
 			for (String id : ids)
 			{
-				Entry<JsonElement, Long> data = fromDriver.load(fromColl, id);
-				toDriver.save(toColl, id, data.getKey());
+				Entry<JsonElement, Long> data = fromDb.load(fromColl, id);
+				toDb.save(toColl, id, data.getKey());
 			}
 		}
 		long after = System.currentTimeMillis();

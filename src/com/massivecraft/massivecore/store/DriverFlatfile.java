@@ -41,9 +41,25 @@ public class DriverFlatfile extends DriverAbstract
 	public Db getDb(String uri)
 	{
 		// "flatfile://" is 8+3=11 chars
-		File folder = new File(uri.substring(NAME.length() + 3));
-		folder.mkdirs();
-		return new DbFlatfile(this, folder);
+		File directory = new File(uri.substring(NAME.length() + 3));
+		directory.mkdirs();
+		return new DbFlatfile(this, directory);
+	}
+	
+	@Override
+	public boolean dropDb(Db db)
+	{
+		if ( ! (db instanceof DbFlatfile)) throw new IllegalArgumentException("db");
+		DbFlatfile dbFlatfile = (DbFlatfile)db;
+		
+		try
+		{
+			return DiscUtil.deleteRecursive(dbFlatfile.directory);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
 	}
 
 	@Override
@@ -51,10 +67,10 @@ public class DriverFlatfile extends DriverAbstract
 	{
 		Set<String> ret = new LinkedHashSet<String>();
 		
-		for (File f : ((DbFlatfile)db).dir.listFiles())
+		for (File file : ((DbFlatfile)db).directory.listFiles())
 		{
-			if ( ! f.isDirectory()) continue;
-			ret.add(f.getName());
+			if ( ! file.isDirectory()) continue;
+			ret.add(file.getName());
 		}
 	
 		return ret;
@@ -63,7 +79,7 @@ public class DriverFlatfile extends DriverAbstract
 	@Override
 	public boolean renameColl(Db db, String from, String to)
 	{
-		File dir = ((DbFlatfile)db).dir;
+		File dir = ((DbFlatfile)db).directory;
 		File fileFrom = new File(dir, from);
 		File fileTo = new File(dir, to);
 		return fileFrom.renameTo(fileTo);
@@ -76,10 +92,10 @@ public class DriverFlatfile extends DriverAbstract
 	}
 	
 	@Override
-	public Long getMtime(Coll<?> coll, String id)
+	public long getMtime(Coll<?> coll, String id)
 	{
 		File file = fileFromId(coll, id);
-		if ( ! file.isFile()) return null;
+		if ( ! file.isFile()) return 0;
 		return file.lastModified();
 	}
 	
@@ -89,7 +105,7 @@ public class DriverFlatfile extends DriverAbstract
 		List<String> ret = new ArrayList<String>();
 		
 		// Scan the collection folder for .json files
-		File collDir = getCollDir(coll);
+		File collDir = getDirectory(coll);
 		if ( ! collDir.isDirectory()) return ret;
 		for (File file : collDir.listFiles(JsonFileFilter.get()))
 		{
@@ -105,15 +121,16 @@ public class DriverFlatfile extends DriverAbstract
 		// Create Ret
 		Map<String, Long> ret = new HashMap<String, Long>();
 		
-		// Get collection directory
-		File collDir = getCollDir(coll);
-		if (!collDir.isDirectory()) return ret;
+		// Get Directory
+		File directory = getDirectory(coll);
+		if ( ! directory.isDirectory()) return ret;
 		
 		// For each .json file
-		for (File file : collDir.listFiles(JsonFileFilter.get()))
+		for (File file : directory.listFiles(JsonFileFilter.get()))
 		{
 			String id = idFromFile(file);
 			long mtime = file.lastModified();
+			// TODO: Check is 0 here?
 			ret.put(id, mtime);
 		}
 		
@@ -130,11 +147,8 @@ public class DriverFlatfile extends DriverAbstract
 	
 	public Entry<JsonElement, Long> loadFile(File file)
 	{
-		Long mtime = file.lastModified();
-		if (mtime == 0) return null;
-		
+		long mtime = file.lastModified();
 		JsonElement raw = loadFileJson(file);
-		if (raw == null) return null;
 		
 		return new SimpleEntry<JsonElement, Long>(raw, mtime);
 	}
@@ -153,15 +167,15 @@ public class DriverFlatfile extends DriverAbstract
 	@Override
 	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll)
 	{
-		// Declare Ret
+		// Create Ret
 		Map<String, Entry<JsonElement, Long>> ret = null;
 		
-		// Get collection directory
-		File collDir = getCollDir(coll);
-		if ( ! collDir.isDirectory()) return ret;
+		// Get Directory
+		File directory = getDirectory(coll);
+		if ( ! directory.isDirectory()) return ret;
 		
 		// Find All
-		File[] files = collDir.listFiles(JsonFileFilter.get());
+		File[] files = directory.listFiles(JsonFileFilter.get());
 		
 		// Create Ret
 		ret = new LinkedHashMap<String, Entry<JsonElement, Long>>(files.length);
@@ -174,6 +188,9 @@ public class DriverFlatfile extends DriverAbstract
 			
 			// Get Entry
 			Entry<JsonElement, Long> entry = loadFile(file);
+			// NOTE: The entry can be a failed one with null and 0.
+			// NOTE: We add it anyways since it's an informative failure.
+			// NOTE: This is supported by our defined specification.
 			
 			// Add
 			ret.put(id, entry);
@@ -184,11 +201,11 @@ public class DriverFlatfile extends DriverAbstract
 	}
 
 	@Override
-	public Long save(Coll<?> coll, String id, JsonElement data)
+	public long save(Coll<?> coll, String id, JsonElement data)
 	{
 		File file = fileFromId(coll, id);
 		String content = coll.getGson().toJson(data);
-		if (DiscUtil.writeCatch(file, content) == false) return null;
+		if (DiscUtil.writeCatch(file, content) == false) return 0;
 		return file.lastModified();
 	}
 
@@ -203,7 +220,7 @@ public class DriverFlatfile extends DriverAbstract
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static File getCollDir(Coll<?> coll)
+	public static File getDirectory(Coll<?> coll)
 	{
 		return (File) coll.getCollDriverObject();
 	}
@@ -217,7 +234,7 @@ public class DriverFlatfile extends DriverAbstract
 	
 	public static File fileFromId(Coll<?> coll, String id)
 	{
-		File collDir = getCollDir(coll);
+		File collDir = getDirectory(coll);
 		File idFile = new File(collDir, id + DOTJSON);
 		return idFile;
 	}

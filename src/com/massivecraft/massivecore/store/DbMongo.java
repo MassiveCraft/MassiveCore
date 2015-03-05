@@ -24,32 +24,19 @@ public class DbMongo extends DbAbstract
 	}
 	
 	// -------------------------------------------- //
-	// IMPLEMENTATION
+	// OVERRIDE
 	// -------------------------------------------- //
 
 	@Override
-	public String getName()
+	public String getDbName()
 	{
 		return db.getName();
 	}
 	
 	@Override
-	public boolean drop()
-	{
-		try
-		{
-			this.db.dropDatabase();
-			return true;
-		}
-		catch (Exception e)
-		{
-			return false;
-		}
-	}
-	
-	@Override
-	public Object getCollDriverObject(Coll<?> coll)
+	public Object createCollDriverObject(Coll<?> coll)
 	{
 		return db.getCollection(coll.getName());
 	}
+	
 }

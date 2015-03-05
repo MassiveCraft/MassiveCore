@@ -7,7 +7,7 @@ public abstract class DriverAbstract implements Driver
 	// -------------------------------------------- //
 	
 	private final String name;
-	@Override public String getName() { return this.name; }
+	@Override public String getDriverName() { return this.name; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

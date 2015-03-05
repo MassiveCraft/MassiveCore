@@ -43,7 +43,7 @@ public class ExamineThread extends Thread
 				long before = System.currentTimeMillis();
 				for (Coll<?> coll : Coll.getInstances())
 				{
-					coll.findSuspects();
+					coll.identifyModifications();
 				}
 				long after = System.currentTimeMillis();
 				long duration = after-before;

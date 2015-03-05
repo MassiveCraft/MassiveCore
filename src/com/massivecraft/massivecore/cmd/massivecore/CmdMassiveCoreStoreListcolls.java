@@ -54,7 +54,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 		collnames.addAll(db.getCollnames());
 		
 		// Do it!
-		msg(Txt.titleize("Collections in "+db.getName()));
+		msg(Txt.titleize("Collections in "+db.getDbName()));
 		for (String collname : collnames)
 		{
 			String message = Txt.parse("<h>") + collname;
@@ -63,7 +63,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 			
 			for (Coll<?> collCandidate : Coll.getInstances())
 			{
-				if (!collCandidate.getName().equals(collname)) continue;
+				if ( ! collCandidate.getName().equals(collname)) continue;
 				if (collCandidate.getDb() != db) continue;
 				coll = collCandidate;
 				break;

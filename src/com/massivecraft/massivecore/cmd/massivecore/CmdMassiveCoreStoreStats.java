@@ -72,8 +72,8 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 		msg("<k>Entity Count: <v>%d", coll.getIds().size());
 		msg("<k>Entity Class: <v>%s", coll.getEntityClass().getName());
 		msg("<k>Plugin: <v>%s", coll.getPlugin().getDescription().getFullName());
-		msg("<k>Database: <v>%s", coll.getDb().getName());
-		msg("<k>Driver: <v>%s", coll.getDriver().getName());
+		msg("<k>Database: <v>%s", coll.getDb().getDbName());
+		msg("<k>Driver: <v>%s", coll.getDb().getDriverName());
 		
 		int limit;
 		

@@ -3,8 +3,10 @@ package com.massivecraft.massivecore;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -14,6 +16,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
@@ -34,6 +38,7 @@ import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.SmokeUtil;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 public class MassiveCoreEngineMain extends EngineAbstract
 {
@@ -321,34 +326,113 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	}
 	
 	// -------------------------------------------- //
+	// MASSIVE STORE: LOGIN SYNC
+	// -------------------------------------------- //
+	// This section handles the automatic sync of a players corresponding massive store entries on login.
+	// If possible the database IO is made during the AsyncPlayerPreLoginEvent to offloat the main server thread.
+	
+	protected Map<String, Map<SenderColl<?>, Entry<JsonElement, Long>>> idToRemoteEntries = new ConcurrentHashMap<String, Map<SenderColl<?>, Entry<JsonElement, Long>>>();
+	
+	// Intended to be ran asynchronously.
+	public void storeRemoteEntries(String playerId)
+	{
+		// Create remote entries ...
+		Map<SenderColl<?>, Entry<JsonElement, Long>> remoteEntries = createRemoteEntries(playerId);
+		
+		// ... and store them.
+		this.idToRemoteEntries.put(playerId, remoteEntries);
+	}
+	
+	// Intended to be ran synchronously.
+	// It will use remoteEntries from AsyncPlayerPreLoginEvent if possible.
+	// If no such remoteEntries are available it will create them and thus lock the main server thread a bit.
+	public Map<SenderColl<?>, Entry<JsonElement, Long>> getRemoteEntries(String playerId)
+	{
+		// If there are stored remote entries we used those ...
+		Map<SenderColl<?>, Entry<JsonElement, Long>> ret = idToRemoteEntries.remove(playerId);	
+		if (ret != null) return ret;
+		
+		// ... otherwise we create brand new ones.
+		return createRemoteEntries(playerId);
+	}
+	
+	// Used by the two methods above.
+	public Map<SenderColl<?>, Entry<JsonElement, Long>> createRemoteEntries(String playerId)
+	{
+		// Create Ret
+		Map<SenderColl<?>, Entry<JsonElement, Long>> ret = new HashMap<SenderColl<?>, Entry<JsonElement, Long>>();
+		
+		// Fill Ret
+		for (final SenderColl<?> coll : Coll.getSenderInstances())
+		{
+			Entry<JsonElement, Long> remoteEntry = coll.getDb().load(coll, playerId);
+			ret.put(coll, remoteEntry);
+		}
+		
+		// Return Ret
+		return ret;
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void massiveStoreLoginSync(AsyncPlayerPreLoginEvent event)
+	{
+		// DEBUG
+		// long before = System.nanoTime();
+		
+		// If the login was allowed ...
+		if (event.getLoginResult() != Result.ALLOWED) return;
+		
+		// ... get player id ...
+		final String playerId = event.getUniqueId().toString();
+		
+		// ... and store the remote entries.
+		this.storeRemoteEntries(playerId);
+		
+		// DEBUG
+		// long after = System.nanoTime();
+		// long duration = after - before;
+		// double ms = (double)duration / 1000000D;
+		// String message = Txt.parse("<i>AsyncPlayerPreLoginEvent for %s <i>took <h>%.2f <i>ms.", event.getName(), ms);
+		// MassiveCore.get().log(message);
+		// NOTE: I get values between 5 and 20 ms.
+	}
+	
+	// Can not be cancelled.
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void massiveStoreLoginSync(PlayerLoginEvent event)
+	{
+		// Get player id ...
+		final String playerId = event.getPlayer().getUniqueId().toString();
+		
+		// ... get remote entries ...
+		Map<SenderColl<?>, Entry<JsonElement, Long>> remoteEntries = getRemoteEntries(playerId);
+		
+		// ... and sync each of them.
+		for (Entry<SenderColl<?>, Entry<JsonElement, Long>> entry : remoteEntries.entrySet())
+		{
+			SenderColl<?> coll = entry.getKey();
+			Entry<JsonElement, Long> remoteEntry = entry.getValue();
+			coll.syncId(playerId, null, remoteEntry);
+		}
+	}
+	
+	// -------------------------------------------- //
 	// SYNC PLAYER ON LOGON AND LEAVE
 	// -------------------------------------------- //
-	
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public void syncOnPlayerLogin(PlayerLoginEvent event)
-	{
-		//MassiveCore.get().log("LOWEST syncOnPlayerLogin", event.getPlayer().getName());
-		this.syncAllForPlayer(event.getPlayer());
-	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void syncOnPlayerLeave(EventMassiveCorePlayerLeave event)
 	{
-		//MassiveCore.get().log("MONITOR syncOnPlayerLeave", event.getPlayer().getName());
+		// TODO: This is going to take quite a bit of power :(
 		this.syncAllForPlayer(event.getPlayer());
 	}
 	
 	public void syncAllForPlayer(Player player)
 	{
-		// TODO: For now we sync them both!
-		String playerName = player.getName();
 		String playerId = player.getUniqueId().toString();
-		for (Coll<?> coll : Coll.getInstances())
+		for (SenderColl<?> coll : Coll.getSenderInstances())
 		{
-			if (!(coll instanceof SenderColl)) continue;
-			SenderColl<?> pcoll = (SenderColl<?>)coll;
-			pcoll.syncId(playerName);
-			pcoll.syncId(playerId);
+			coll.syncId(playerId);
 		}
 	}
 	

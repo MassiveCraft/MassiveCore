@@ -109,15 +109,15 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		Coll<E> coll = this.getColl();
 		if (coll == null) return;
 		
-		if (!coll.inited()) return;
+		if ( ! coll.inited()) return;
 		
-		coll.changedIds.add(id);
+		coll.identifiedModifications.put(id, Modification.UNKNOWN);
 	}
 	
-	public ModificationState sync()
+	public Modification sync()
 	{
 		String id = this.getId();
-		if (id == null) return ModificationState.UNKNOWN;
+		if (id == null) return Modification.UNKNOWN;
 		return this.getColl().syncId(id);
 	}
 	
@@ -134,7 +134,7 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		String id = this.getId();
 		if (id == null) return;
 		
-		this.getColl().loadFromRemote(id, null, false);
+		this.getColl().loadFromRemote(id, null);
 	}
 	
 	// -------------------------------------------- //

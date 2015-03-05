@@ -27,7 +27,6 @@ public interface CollInterface<E>
 	public Plugin getPlugin();
 	
 	public Db getDb();
-	public Driver getDriver();
 	public Object getCollDriverObject();
 	
 	// -------------------------------------------- //
@@ -36,9 +35,8 @@ public interface CollInterface<E>
 	public Map<String, E> getId2entity();
 	public E get(Object oid);
 	public E get(Object oid, boolean creative);
-	public Collection<String> getIds(); // All ideas we know of whether they are loaded or not
-	public Collection<String> getIdsRemote(); // All remote ids loaded sync via driver
-	public Collection<String> getIdsLoaded(); // All locally loaded ids
+	public Collection<String> getIds();
+	public Collection<String> getIdsRemote();
 	public boolean containsId(Object oid);
 	
 	public Map<E, String> getEntity2id();
@@ -130,19 +128,21 @@ public interface CollInterface<E>
 	public E removeAtLocal(Object oid);
 	public void removeAtRemote(Object oid);
 	public void saveToRemote(Object oid);
-	public void loadFromRemote(Object oid, Entry<JsonElement, Long> entry, boolean entrySupplied);
+	public void loadFromRemote(Object oid, Entry<JsonElement, Long> remoteEntry);
 	
 	// -------------------------------------------- //
 	// SYNC EXAMINE AND DO
 	// -------------------------------------------- //
 	
-	public ModificationState examineId(Object oid);
-	public ModificationState examineId(Object oid, Long remoteMtime);
+	public Modification examineId(Object oid);
+	public Modification examineId(Object oid, Long remoteMtime);
 	
-	public ModificationState syncId(Object oid);
-	public void syncSuspects();
+	public Modification syncId(Object oid);
+	public Modification syncId(Object oid, Modification modificationState);
+	public Modification syncId(Object oid, Modification modificationState, Entry<JsonElement, Long> remoteEntry);
+	public void syncIdentified();
 	public void syncAll();
-	public void findSuspects();
+	public void identifyModifications();
 	public void initLoadAllFromRemote();
 	
 	// -------------------------------------------- //

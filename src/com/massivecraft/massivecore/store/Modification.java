@@ -1,6 +1,6 @@
 package com.massivecraft.massivecore.store;
 
-public enum ModificationState
+public enum Modification
 {
 	LOCAL_ALTER (true, true),
 	LOCAL_ATTACH (true, true),
@@ -19,7 +19,7 @@ public enum ModificationState
 	public boolean isLocal() { return this.local; }
 	public boolean isRemote() { return this.local == false; }
 	
-	private ModificationState(boolean modified, boolean local)
+	private Modification(boolean modified, boolean local)
 	{
 		this.modified = modified;
 		this.local = local;

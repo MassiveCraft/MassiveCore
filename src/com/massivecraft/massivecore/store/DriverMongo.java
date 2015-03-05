@@ -51,6 +51,23 @@ public class DriverMongo extends DriverAbstract
 		DB db = this.getDbInner(uri);
 		return new DbMongo(this, db);
 	}
+	
+	@Override
+	public boolean dropDb(Db db)
+	{
+		if ( ! (db instanceof DbMongo)) throw new IllegalArgumentException("db");
+		DbMongo dbMongo = (DbMongo)db;
+		
+		try
+		{
+			dbMongo.db.dropDatabase();
+			return true;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
 
 	@Override
 	public Set<String> getCollnames(Db db)
@@ -81,15 +98,17 @@ public class DriverMongo extends DriverAbstract
 	}
 	
 	@Override
-	public Long getMtime(Coll<?> coll, String id)
+	public long getMtime(Coll<?> coll, String id)
 	{
 		DBCollection dbcoll = fixColl(coll);
 		
 		BasicDBObject found = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id), dboKeysMtime);
-		if (found == null) return null;
+		if (found == null) return 0;
 		
-		// In case there is no _mtime set we assume 0. Probably a manual database addition by the server owner.
-		long mtime = found.getLong(MTIME_FIELD, 0);
+		// In case there is no _mtime set we assume 1337.
+		// NOTE: We can not use 0 since that one is reserved for errors.
+		// Probably a manual database addition by the server owner.
+		long mtime = found.getLong(MTIME_FIELD, 1337L);
 		
 		return mtime;
 	}
@@ -105,7 +124,7 @@ public class DriverMongo extends DriverAbstract
 		try
 		{
 			ret = new ArrayList<String>(cursor.count());
-			while(cursor.hasNext())
+			while (cursor.hasNext())
 			{
 				Object remoteId = cursor.next().get(ID_FIELD);
 				ret.add(remoteId.toString());
@@ -130,13 +149,15 @@ public class DriverMongo extends DriverAbstract
 		try
 		{
 			ret = new HashMap<String, Long>(cursor.count());
-			while(cursor.hasNext())
+			while (cursor.hasNext())
 			{
 				BasicDBObject raw = (BasicDBObject)cursor.next();
 				Object remoteId = raw.get(ID_FIELD);
 				
-				// In case there is no _mtime set we assume 0. Probably a manual database addition by the server owner.
-				long mtime = raw.getLong(MTIME_FIELD, 0);
+				// In case there is no _mtime set we assume 1337.
+				// NOTE: We can not use 0 since that one is reserved for errors.
+				// Probably a manual database addition by the server owner.
+				long mtime = raw.getLong(MTIME_FIELD, 1337L);
 				
 				ret.put(remoteId.toString(), mtime);
 			}
@@ -159,13 +180,15 @@ public class DriverMongo extends DriverAbstract
 	
 	public Entry<JsonElement, Long> loadRaw(BasicDBObject raw)
 	{
-		if (raw == null) return null;
+		if (raw == null) return new SimpleEntry<JsonElement, Long>(null, 0L);
 		
 		// Throw away the id field
 		raw.removeField(ID_FIELD);
 		
-		// In case there is no _mtime set we assume 0. Probably a manual database addition by the server owner. 
-		Long mtime = 0L;
+		// In case there is no _mtime set we assume 1337.
+		// NOTE: We can not use 0 since that one is reserved for errors.
+		// Probably a manual database addition by the server owner.
+		long mtime = 1337L;
 		Object mtimeObject = raw.removeField(MTIME_FIELD);
 		if (mtimeObject != null)
 		{
@@ -207,9 +230,9 @@ public class DriverMongo extends DriverAbstract
 				
 				// Get Entry
 				Entry<JsonElement, Long> entry = loadRaw(raw);
-				//if (entry == null) continue;
-				// Actually allow adding null entries!
-				// they are informative failures!
+				// NOTE: The entry can be a failed one with null and 0.
+				// NOTE: We add it anyways since it's an informative failure.
+				// NOTE: This is supported by our defined specification.
 				
 				// Add
 				ret.put(id, entry);
@@ -226,13 +249,13 @@ public class DriverMongo extends DriverAbstract
 	}
 
 	@Override
-	public Long save(Coll<?> coll, String id, JsonElement data)
+	public long save(Coll<?> coll, String id, JsonElement data)
 	{		
 		DBCollection dbcoll = fixColl(coll);
 		
 		BasicDBObject dbo = new BasicDBObject();
 		
-		Long mtime = System.currentTimeMillis();
+		long mtime = System.currentTimeMillis();
 		dbo.put(ID_FIELD, id);
 		dbo.put(MTIME_FIELD, mtime);
 		

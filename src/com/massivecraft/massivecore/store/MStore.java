@@ -18,8 +18,8 @@ public class MStore
 	private static Map<String, Driver> drivers = new HashMap<String, Driver>();
 	public static boolean registerDriver(Driver driver)
 	{
-		if (drivers.containsKey(driver.getName())) return false;
-		drivers.put(driver.getName(), driver);
+		if (drivers.containsKey(driver.getDriverName())) return false;
+		drivers.put(driver.getDriverName(), driver);
 		return true;
 	}
 

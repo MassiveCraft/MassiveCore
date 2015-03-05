@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.store;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,6 +45,17 @@ public class Coll<E> implements CollInterface<E>
 	public static Map<String, Coll<?>> getMap() { return umap; }
 	public static Set<String> getNames() { return unames; }
 	public static Collection<Coll<?>> getInstances() { return uinstances; }
+	public static Collection<SenderColl<?>> getSenderInstances()
+	{
+		List<SenderColl<?>> ret = new ArrayList<SenderColl<?>>();
+		for (Coll<?> coll : getInstances())
+		{
+			if ( ! (coll instanceof SenderColl)) continue;
+			SenderColl<?> senderColl = (SenderColl<?>)coll;
+			ret.add(senderColl);
+		}
+		return ret;
+	}
 	
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
@@ -81,7 +93,6 @@ public class Coll<E> implements CollInterface<E>
 	
 	protected Db db;
 	@Override public Db getDb() { return this.db; }
-	@Override public Driver getDriver() { return this.db.getDriver(); }
 	
 	protected Object collDriverObject;
 	@Override public Object getCollDriverObject() { return this.collDriverObject; }
@@ -94,8 +105,6 @@ public class Coll<E> implements CollInterface<E>
 	protected Map<String, E> id2entity;
 	protected Map<E, String> entity2id;
 	
-	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
-	
 	@Override public Map<String, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override 
 	public E get(Object oid) 
@@ -107,18 +116,18 @@ public class Coll<E> implements CollInterface<E>
 	{
 		return this.get(oid, creative, true);
 	}
-	protected E get(Object oid, boolean creative, boolean noteChange)
+	protected E get(Object oid, boolean creative, boolean noteModification)
 	{
 		String id = this.fixId(oid);
 		if (id == null) return null;
 		E ret = this.id2entity.get(id);
 		if (ret != null) return ret;
 		if ( ! creative) return null;
-		return this.create(id, noteChange);
+		return this.create(id, noteModification);
 	}
 	
-	@Override public Collection<String> getIdsLoaded() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
-	@Override public Collection<String> getIdsRemote() { return this.getDb().getDriver().getIds(this); }
+	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
+	@Override public Collection<String> getIdsRemote() { return this.getDb().getIds(this); }
 	@Override
 	public boolean containsId(Object oid)
 	{
@@ -270,10 +279,10 @@ public class Coll<E> implements CollInterface<E>
 		return this.create(oid, true);
 	}
 	
-	public synchronized E create(Object oid, boolean noteChange)
+	public synchronized E create(Object oid, boolean noteModification)
 	{
 		E entity = this.createNewInstance();
-		if (this.attach(entity, oid, noteChange) == null) return null;
+		if (this.attach(entity, oid, noteModification) == null) return null;
 		return entity;
 	}
 	
@@ -294,7 +303,7 @@ public class Coll<E> implements CollInterface<E>
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected synchronized String attach(E entity, Object oid, boolean noteChange)
+	protected synchronized String attach(E entity, Object oid, boolean noteModification)
 	{
 		// Check entity
 		if (entity == null) return null;
@@ -327,11 +336,10 @@ public class Coll<E> implements CollInterface<E>
 		this.id2entity.put(id, entity);
 		this.entity2id.put(entity, id);
 		
-		// Make note of the change
-		if (noteChange)
+		// Identify Modification
+		if (noteModification)
 		{
-			this.localAttachIds.add(id);
-			this.changedIds.add(id);
+			this.identifiedModifications.put(id, Modification.LOCAL_ATTACH);
 		}
 		
 		// POST
@@ -383,9 +391,8 @@ public class Coll<E> implements CollInterface<E>
 		// Remove @ local
 		this.removeAtLocal(id);
 		
-		// Identify the change
-		this.localDetachIds.add(id);
-		this.changedIds.add(id);
+		// Identify Modification
+		this.identifiedModifications.put(id, Modification.LOCAL_DETACH);
 		
 		// POST
 		this.postDetach(entity, id);
@@ -428,21 +435,16 @@ public class Coll<E> implements CollInterface<E>
 	}
 	
 	// -------------------------------------------- //
-	// IDENTIFIED CHANGES
+	// IDENTIFIED MODIFICATIONS
 	// -------------------------------------------- //
 	
-	protected Set<String> localAttachIds;
-	protected Set<String> localDetachIds;
-	protected Set<String> changedIds;
+	protected Map<String, Modification> identifiedModifications;
 	
-	protected synchronized void clearIdentifiedChanges(Object oid)
+	protected void removeIdentifiedModification(Object oid)
 	{
 		if (oid == null) throw new NullPointerException("oid");
-		
 		String id = this.fixId(oid);
-		this.localAttachIds.remove(id);
-		this.localDetachIds.remove(id);
-		this.changedIds.remove(id);
+		this.identifiedModifications.remove(id);
 	}
 	
 	// -------------------------------------------- //
@@ -463,7 +465,7 @@ public class Coll<E> implements CollInterface<E>
 		this.lastDefault.remove(id);
 	}
 	
-	// Log database syncronization for display in the "/massivecore mstore stats" command.
+	// Log database synchronization for display in the "/massivecore mstore stats" command.
 	private Map<String, Long> id2out = new TreeMap<String, Long>();
 	private Map<String, Long> id2in = new TreeMap<String, Long>();
 	
@@ -494,11 +496,11 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public synchronized E removeAtLocal(Object oid)
 	{
+		// Fix Id
 		if (oid == null) throw new NullPointerException("oid");
-		
 		String id = this.fixId(oid);
 		
-		this.clearIdentifiedChanges(id);
+		this.removeIdentifiedModification(id);
 		this.clearSynclog(id);
 		
 		E entity = this.id2entity.remove(id);
@@ -519,24 +521,24 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public synchronized void removeAtRemote(Object oid)
 	{
+		// Fix Id
 		if (oid == null) throw new NullPointerException("oid");
-		
 		String id = this.fixId(oid);
 		
-		this.clearIdentifiedChanges(id);
+		this.removeIdentifiedModification(id);
 		this.clearSynclog(id);
 		
-		this.getDb().getDriver().delete(this, id);
+		this.getDb().delete(this, id);
 	}
 	
 	@Override
 	public synchronized void saveToRemote(Object oid)
 	{
+		// Fix Id
 		if (oid == null) throw new NullPointerException("oid");
-		
 		String id = this.fixId(oid);
 		
-		this.clearIdentifiedChanges(id);
+		this.removeIdentifiedModification(id);
 		this.clearSynclog(id);
 		
 		E entity = this.id2entity.get(id);
@@ -547,31 +549,32 @@ public class Coll<E> implements CollInterface<E>
 		
 		if (this.isDefault(entity) && isCustomDataDefault(entity))
 		{
-			this.db.getDriver().delete(this, id);
+			this.getDb().delete(this, id);
 			this.lastDefault.add(id);
 		}
 		else
 		{
-			Long mtime = this.db.getDriver().save(this, id, raw);
-			if (mtime == null) return; // This fail should not happen often. We could handle it better though.
+			long mtime = this.getDb().save(this, id, raw);
+			if (mtime == 0) return; // This fail should not happen often. We could handle it better though.
 			this.lastMtime.put(id, mtime);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void loadFromRemote(Object oid, Entry<JsonElement, Long> entry, boolean entrySupplied)
+	public synchronized void loadFromRemote(Object oid, Entry<JsonElement, Long> remoteEntry)
 	{
+		// Fix Id
 		if (oid == null) throw new NullPointerException("oid");
 		String id = this.fixId(oid);
 		
-		this.clearIdentifiedChanges(id);
+		this.removeIdentifiedModification(id);
 		
-		if ( ! entrySupplied)
+		if (remoteEntry == null)
 		{
 			try
 			{
-				entry = this.getDriver().load(this, id);
+				remoteEntry = this.getDb().load(this, id);
 			}
 			catch (Exception e)
 			{
@@ -580,13 +583,20 @@ public class Coll<E> implements CollInterface<E>
 			}
 		}
 		
-		if (entry == null)
+		Long mtime = remoteEntry.getValue();
+		if (mtime == null)
 		{
-			logLoadError(id, "MStore driver could not load data entry. The file might not be readable or simply not exist.");
+			logLoadError(id, "Last modification time (mtime) was null. The file might not be readable or simply not exist.");
 			return;
 		}
 		
-		JsonElement raw = entry.getKey();
+		if (mtime == 0)
+		{
+			logLoadError(id, "Last modification time (mtime) was 0. The file might not be readable or simply not exist.");
+			return;
+		}
+		
+		JsonElement raw = remoteEntry.getKey();
 		if (raw == null)
 		{
 			logLoadError(id, "Raw data was null. Is the file completely empty?");
@@ -595,13 +605,6 @@ public class Coll<E> implements CollInterface<E>
 		if (raw.isJsonNull())
 		{
 			logLoadError(id, "Raw data was JSON null. It seems you have a file containing just the word \"null\". Why would you do this?");
-			return;
-		}
-		
-		Long mtime = entry.getValue();
-		if (mtime == null)
-		{
-			logLoadError(id, "Last modification time (mtime) was null.");
 			return;
 		}
 		
@@ -651,61 +654,63 @@ public class Coll<E> implements CollInterface<E>
 	// -------------------------------------------- //
 	
 	@Override
-	public ModificationState examineId(Object oid)
+	public Modification examineId(Object oid)
 	{
+		// Fix Id
+		if (oid == null) throw new NullPointerException("oid");
 		String id = this.fixId(oid);
-		return this.examineId(id, null, false);
+		
+		return this.examineId(id, null);
 	}
 	
 	@Override
-	public ModificationState examineId(Object oid, Long remoteMtime)
+	public Modification examineId(Object oid, Long remoteMtime)
 	{
-		String id = this.fixId(oid);
-		return this.examineId(id, remoteMtime, true);
-	}
-	
-	protected ModificationState examineId(Object oid, Long remoteMtime, boolean remoteMtimeSupplied)
-	{
+		// Fix Id
+		if (oid == null) throw new NullPointerException("oid");
 		String id = this.fixId(oid);
 		
-		if (this.localDetachIds.contains(id)) return ModificationState.LOCAL_DETACH;
-		if (this.localAttachIds.contains(id)) return ModificationState.LOCAL_ATTACH;
+		// Local Attach and Detach has the top priority.
+		// Otherwise newly attached entities would be removed thinking it was a remote detach.
+		// Otherwise newly detached entities would be loaded thinking it was a remote attach.
+		Modification ret = this.identifiedModifications.get(id);
+		if (ret == Modification.LOCAL_ATTACH || ret == Modification.LOCAL_DETACH) return ret;
 		
 		E localEntity = this.id2entity.get(id);
-		if ( ! remoteMtimeSupplied)
+		if (remoteMtime == null)
 		{
-			remoteMtime = this.getDriver().getMtime(this, id);
+			remoteMtime = this.getDb().getMtime(this, id);
 		}
 		
 		boolean existsLocal = (localEntity != null);
-		boolean existsRemote = (remoteMtime != null);
+		boolean existsRemote = (remoteMtime != 0);
 		
-		if ( ! existsLocal && ! existsRemote) return ModificationState.UNKNOWN;
+		if ( ! existsLocal && ! existsRemote) return Modification.UNKNOWN;
 		
 		if (existsLocal && existsRemote)
 		{
 			Long lastMtime = this.lastMtime.get(id);
-			if (remoteMtime.equals(lastMtime) == false) return ModificationState.REMOTE_ALTER;
+			if (remoteMtime.equals(lastMtime) == false) return Modification.REMOTE_ALTER;
 			
-			if (this.examineHasLocalAlter(id, localEntity)) return ModificationState.LOCAL_ALTER;
+			if (this.examineHasLocalAlter(id, localEntity)) return Modification.LOCAL_ALTER;
 		}
 		else if (existsLocal)
 		{
 			if (this.lastDefault.contains(id))
 			{
-				if (this.examineHasLocalAlter(id, localEntity)) return ModificationState.LOCAL_ALTER;
+				if (this.examineHasLocalAlter(id, localEntity)) return Modification.LOCAL_ALTER;
 			}
 			else
 			{
-				return ModificationState.REMOTE_DETACH;
+				return Modification.REMOTE_DETACH;
 			}
 		}
 		else if (existsRemote)
 		{
-			return ModificationState.REMOTE_ATTACH;
+			return Modification.REMOTE_ATTACH;
 		}
 		
-		return ModificationState.NONE;
+		return Modification.NONE;
 	}
 	
 	protected boolean examineHasLocalAlter(String id, E entity)
@@ -730,15 +735,36 @@ public class Coll<E> implements CollInterface<E>
 	}
 	
 	@Override
-	public ModificationState syncId(Object oid)
+	public Modification syncId(Object oid)
 	{
+		return this.syncId(oid, null);
+	}
+	
+	@Override
+	public Modification syncId(Object oid, Modification modification)
+	{
+		return this.syncId(oid, modification, null);
+	}
+	
+	@Override
+	public Modification syncId(Object oid, Modification modification, Entry<JsonElement, Long> remoteEntry)
+	{
+		// Fix Id
+		if (oid == null) throw new NullPointerException("oid");
 		String id = this.fixId(oid);
 		
-		ModificationState mstate = this.examineId(id);
+		if (modification == null || modification == Modification.UNKNOWN)
+		{
+			Long remoteMtime = null;
+			if (remoteEntry != null) remoteMtime = remoteEntry.getValue();
+			
+			modification = this.examineId(id, remoteMtime);
+		}
 		
-		//mplugin.log("syncId: It seems", id, "has state", mstate);
+		// DEBUG
+		// MassiveCore.get().log(Txt.parse("<k>Coll: <v>%s <k>Entity: <v>%s <k>Modification: <v>%s", this.getName(), id, modification));
 		
-		switch (mstate)
+		switch (modification)
 		{
 			case LOCAL_ALTER:
 			case LOCAL_ATTACH:
@@ -759,7 +785,7 @@ public class Coll<E> implements CollInterface<E>
 			break;
 			case REMOTE_ALTER:
 			case REMOTE_ATTACH:
-				this.loadFromRemote(id, null, false);
+				this.loadFromRemote(id, remoteEntry);
 				if (this.inited())
 				{
 					this.addSyncCount(TOTAL, true);
@@ -775,47 +801,18 @@ public class Coll<E> implements CollInterface<E>
 				}
 			break;
 			default:
-				this.clearIdentifiedChanges(id);
+				this.removeIdentifiedModification(id);
 			break;
 		}
 		
-		return mstate;
+		return modification;
 	}
 	
 	@Override
-	public void syncSuspects()
+	public void identifyModifications()
 	{
-		/*if (MassiveCore.get().doderp)
-		{
-			if (this.changedIds.size() > 0)
-			{
-				System.out.println("Coll " + this.getName() + " had suspects " + Txt.implode(this.changedIds, " "));
-			}
-		}*/
-		
-		for (String id : this.changedIds)
-		{
-			this.syncId(id);
-		}
-	}
-	
-	@Override
-	public void syncAll()
-	{
-		// Find all ids
-		Set<String> allids = new HashSet<String>(this.id2entity.keySet());
-		allids.addAll(this.getDriver().getIds(this));
-		for (String id : allids)
-		{
-			this.syncId(id);
-		}
-	}
-	
-	@Override
-	public void findSuspects()
-	{
-		// Get remote id and mtime snapshot
-		Map<String, Long> id2RemoteMtime = this.getDb().getDriver().getId2mtime(this);
+		// Get remote id2mtime snapshot
+		Map<String, Long> id2RemoteMtime = this.getDb().getId2mtime(this);
 		
 		// Compile a list of all ids (both remote and local)
 		Set<String> allids = new HashSet<String>();
@@ -826,27 +823,45 @@ public class Coll<E> implements CollInterface<E>
 		for (String id : allids)
 		{
 			Long remoteMtime = id2RemoteMtime.get(id);
-			ModificationState state = this.examineId(id, remoteMtime);
-			//mplugin.log("findSuspects: It seems", id, "has state", state);
-			if (state.isModified())
+			if (remoteMtime == null) remoteMtime = 0L;
+			
+			Modification modification = this.examineId(id, remoteMtime);
+			if (modification.isModified())
 			{
-				//System.out.println("It seems "+id+" has state "+state);
-				this.changedIds.add(id);
+				this.identifiedModifications.put(id, modification);
 			}
 		}
 	}
 	
 	@Override
+	public void syncIdentified()
+	{
+		for (Entry<String, Modification> entry : this.identifiedModifications.entrySet())
+		{
+			String id = entry.getKey();
+			Modification modification = entry.getValue();
+			this.syncId(id, modification);
+		}
+	}
+	
+	@Override
+	public void syncAll()
+	{
+		this.identifyModifications();
+		this.syncIdentified();
+	}
+	
+	@Override
 	public void initLoadAllFromRemote()
 	{
-		Map<String, Entry<JsonElement, Long>> idToEntryMap = this.getDb().getDriver().loadAll(this);
+		Map<String, Entry<JsonElement, Long>> idToEntryMap = this.getDb().loadAll(this);
 		if (idToEntryMap == null) return;
 		
 		for (Entry<String, Entry<JsonElement, Long>> idToEntry : idToEntryMap.entrySet())
 		{
 			String id = idToEntry.getKey();
-			Entry<JsonElement, Long> entry = idToEntry.getValue();
-			loadFromRemote(id, entry, true);
+			Entry<JsonElement, Long> remoteEntry = idToEntry.getValue();
+			loadFromRemote(id, remoteEntry);
 		}
 	}
 	
@@ -859,7 +874,7 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public void onTick()
 	{
-		this.syncSuspects();
+		this.syncIdentified();
 	}
 	
 	// -------------------------------------------- //
@@ -889,7 +904,7 @@ public class Coll<E> implements CollInterface<E>
 		// SUPPORTING SYSTEM
 		this.plugin = plugin;
 		this.db = db;
-		this.collDriverObject = db.getCollDriverObject(this);
+		this.collDriverObject = db.createCollDriverObject(this);
 		
 		// STORAGE
 		if (entityComparator == null && !Comparable.class.isAssignableFrom(entityClass))
@@ -900,10 +915,8 @@ public class Coll<E> implements CollInterface<E>
 		this.id2entity = new ConcurrentSkipListMap<String, E>(idComparator);
 		this.entity2id = new ConcurrentSkipListMap<E, String>(entityComparator);
 		
-		// IDENTIFIED CHANGES
-		this.localAttachIds = new ConcurrentSkipListSet<String>(idComparator);
-		this.localDetachIds = new ConcurrentSkipListSet<String>(idComparator);
-		this.changedIds = new ConcurrentSkipListSet<String>(idComparator);
+		// IDENTIFIED MODIFICATIONS
+		this.identifiedModifications = new ConcurrentSkipListMap<String, Modification>(idComparator);
 		
 		// SYNCLOG
 		this.lastMtime = new ConcurrentSkipListMap<String, Long>(idComparator);
@@ -941,7 +954,7 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public void deinit()
 	{
-		if (!this.inited()) return;
+		if ( ! this.inited()) return;
 		
 		// TODO: Save outwards only? We may want to avoid loads at this stage...
 		this.syncAll();
