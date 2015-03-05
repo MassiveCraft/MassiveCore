@@ -394,7 +394,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		// double ms = (double)duration / 1000000D;
 		// String message = Txt.parse("<i>AsyncPlayerPreLoginEvent for %s <i>took <h>%.2f <i>ms.", event.getName(), ms);
 		// MassiveCore.get().log(message);
-		// NOTE: I get values between 5 and 20 ms.
+		// NOTE: I get values between 5 and 55 ms!
 	}
 	
 	// Can not be cancelled.

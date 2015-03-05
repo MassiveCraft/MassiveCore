@@ -674,6 +674,11 @@ public class Coll<E> implements CollInterface<E>
 		// Otherwise newly attached entities would be removed thinking it was a remote detach.
 		// Otherwise newly detached entities would be loaded thinking it was a remote attach.
 		Modification ret = this.identifiedModifications.get(id);
+		// DEBUG
+		// if (Bukkit.isPrimaryThread())
+		// {
+		// 	MassiveCore.get().log(Txt.parse("<a>examineId <k>Coll: <v>%s <k>Entity: <v>%s <k>Modification: <v>%s", this.getName(), id, ret));
+		// }
 		if (ret == Modification.LOCAL_ATTACH || ret == Modification.LOCAL_DETACH) return ret;
 		
 		E localEntity = this.id2entity.get(id);
@@ -762,7 +767,7 @@ public class Coll<E> implements CollInterface<E>
 		}
 		
 		// DEBUG
-		// MassiveCore.get().log(Txt.parse("<k>Coll: <v>%s <k>Entity: <v>%s <k>Modification: <v>%s", this.getName(), id, modification));
+		// MassiveCore.get().log(Txt.parse("<a>syncId <k>Coll: <v>%s <k>Entity: <v>%s <k>Modification: <v>%s", this.getName(), id, modification));
 		
 		switch (modification)
 		{

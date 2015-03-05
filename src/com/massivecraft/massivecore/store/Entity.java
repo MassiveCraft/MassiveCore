@@ -111,7 +111,12 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		
 		if ( ! coll.inited()) return;
 		
-		coll.identifiedModifications.put(id, Modification.UNKNOWN);
+		// UNKNOWN is very unimportant really.
+		// LOCAL_ATTACH is for example much more important and should not be replaced.
+		if ( ! coll.identifiedModifications.containsKey(id))
+		{
+			coll.identifiedModifications.put(id, Modification.UNKNOWN);
+		}
 	}
 	
 	public Modification sync()
