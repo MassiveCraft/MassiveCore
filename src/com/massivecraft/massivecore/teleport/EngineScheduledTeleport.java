@@ -9,14 +9,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerMoveBlock;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class EngineScheduledTeleport extends EngineAbstract
 {
@@ -106,12 +105,9 @@ public class EngineScheduledTeleport extends EngineAbstract
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void cancelTeleport(PlayerMoveEvent event)
+	public void cancelTeleport(EventMassiveCorePlayerMoveBlock event)
 	{
-		// If the player moved from one block to another ...
-		if (MUtil.isSameBlock(event.getFrom(), event.getTo())) return;
-		
-		// ... cancel teleport!
+		// If the player moved from one block to another cancel teleport!
 		this.cancelTeleport(event.getPlayer());
 	}
 	

@@ -15,21 +15,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerChatTabCompleteEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerRespawn;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerTeleport;
 import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerMoveBlock;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderRegister;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderUnregister;
@@ -37,6 +31,7 @@ import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.SmokeUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
@@ -170,6 +165,17 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		
 		// ... then cancel the event and the damage.
 		event.setCancelled(true);
+	}
+	
+	// -------------------------------------------- //
+	// CHANGE BLOCK
+	// -------------------------------------------- //
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void playerChangeBlock(PlayerMoveEvent event)
+	{
+		if (MUtil.isSameBlock(event)) return;
+		new EventMassiveCorePlayerMoveBlock(event).run();
 	}
 	
 	// -------------------------------------------- //

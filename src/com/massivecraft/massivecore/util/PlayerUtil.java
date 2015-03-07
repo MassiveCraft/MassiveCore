@@ -15,8 +15,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -28,9 +28,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.event.EventMassiveCorePlayerUpdate;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerRespawn;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerTeleport;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerMoveBlock;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerUpdate;
 
 public class PlayerUtil extends EngineAbstract
 {
@@ -136,9 +137,8 @@ public class PlayerUtil extends EngineAbstract
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void setLastMoveMillis(PlayerMoveEvent event)
+	public void setLastMoveMillis(EventMassiveCorePlayerMoveBlock event)
 	{
-		if (MUtil.isSameBlock(event)) return;
 		setLastMoveMillis(event.getPlayer());
 	}
 	
