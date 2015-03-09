@@ -4,6 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.massivecraft.massivecore.event.EventMassiveCoreEngineActivate;
+import com.massivecraft.massivecore.event.EventMassiveCoreEngineDeactivate;
+
 public abstract class EngineAbstract implements Engine
 {
 	// -------------------------------------------- //
@@ -20,8 +23,16 @@ public abstract class EngineAbstract implements Engine
 	@Override
 	public void activate()
 	{
+		// Event
+		EventMassiveCoreEngineActivate event = new EventMassiveCoreEngineActivate(this);
+		event.run();
+		if (event.isCancelled()) return;
+		
+		// Listener
 		Bukkit.getPluginManager().registerEvents(this, this.getPlugin());
-		if (this.getPeriod() != null)
+		
+		// Scheduler
+		if (this.getPeriod() != null && this.getPeriod() > 0)
 		{
 			if (this.isSync())
 			{
@@ -32,17 +43,31 @@ public abstract class EngineAbstract implements Engine
 				Bukkit.getScheduler().runTaskTimerAsynchronously(this.getPlugin(), this, this.getDelay(), this.getPeriod());
 			}
 		}
+		
+		// Registered
+		Engine.ENGINES.add(this);
 	}
 
 	@Override
 	public void deactivate()
 	{
+		// Event
+		EventMassiveCoreEngineDeactivate event = new EventMassiveCoreEngineDeactivate(this);
+		event.run();
+		if (event.isCancelled()) return;
+		
+		//Listener
 		HandlerList.unregisterAll(this);
+		
+		// Scheduler
 		if (this.task != null)
 		{
 			this.task.cancel();
 			this.task = null;
 		}
+		
+		// Unregistered
+		Engine.ENGINES.remove(this);
 	}
 	
 	@Override
@@ -54,7 +79,7 @@ public abstract class EngineAbstract implements Engine
 	@Override
 	public Long getPeriod()
 	{
-		return null;
+		return -1L;
 	}
 	
 	@Override
