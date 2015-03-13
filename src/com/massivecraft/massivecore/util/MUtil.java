@@ -374,6 +374,22 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
+	// MAP OPERATIONS
+	// -------------------------------------------- //
+	
+	public static void keepLeft(Map<?, ?> map, int maxSize)
+	{
+		int i = 0;
+		Iterator<?> iter = map.entrySet().iterator();
+		while (iter.hasNext())
+		{
+			iter.next();
+			i++;
+			if (i > maxSize) iter.remove();
+		}
+	}
+	
+	// -------------------------------------------- //
 	// ITERABLE MATH
 	// -------------------------------------------- //
 	

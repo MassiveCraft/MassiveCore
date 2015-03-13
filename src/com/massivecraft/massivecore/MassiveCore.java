@@ -49,6 +49,7 @@ import com.massivecraft.massivecore.teleport.EngineScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
@@ -157,6 +158,9 @@ public class MassiveCore extends MassivePlugin
 		ExamineThread.get().start();
 		
 		if ( ! preEnable()) return;
+		
+		// TODO: This seems to fix most race conditions within the class asynchronous class loader.
+		System.out.println("TimeUnit.MILLIS_PER_MINUTE: " + TimeUnit.MILLIS_PER_MINUTE);
 		
 		// Load Server Config
 		ConfServer.get().load();

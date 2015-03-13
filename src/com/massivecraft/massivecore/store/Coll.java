@@ -440,7 +440,7 @@ public class Coll<E> implements CollInterface<E>
 	
 	protected Map<String, Modification> identifiedModifications;
 	
-	protected void removeIdentifiedModification(Object oid)
+	protected synchronized void removeIdentifiedModification(Object oid)
 	{
 		if (oid == null) throw new NullPointerException("oid");
 		String id = this.fixId(oid);
@@ -839,12 +839,16 @@ public class Coll<E> implements CollInterface<E>
 	}
 	
 	@Override
-	public void syncIdentified()
+	public void syncIdentified(boolean safe)
 	{
 		for (Entry<String, Modification> entry : this.identifiedModifications.entrySet())
 		{
 			String id = entry.getKey();
 			Modification modification = entry.getValue();
+			if (safe)
+			{
+				modification = null;
+			}
 			this.syncId(id, modification);
 		}
 	}
@@ -853,7 +857,7 @@ public class Coll<E> implements CollInterface<E>
 	public void syncAll()
 	{
 		this.identifyModifications();
-		this.syncIdentified();
+		this.syncIdentified(false);
 	}
 	
 	@Override
@@ -879,7 +883,7 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public void onTick()
 	{
-		this.syncIdentified();
+		this.syncIdentified(true);
 	}
 	
 	// -------------------------------------------- //

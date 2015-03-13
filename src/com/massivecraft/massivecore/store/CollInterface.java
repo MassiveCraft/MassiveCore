@@ -140,7 +140,7 @@ public interface CollInterface<E>
 	public Modification syncId(Object oid);
 	public Modification syncId(Object oid, Modification modificationState);
 	public Modification syncId(Object oid, Modification modificationState, Entry<JsonElement, Long> remoteEntry);
-	public void syncIdentified();
+	public void syncIdentified(boolean safe);
 	public void syncAll();
 	public void identifyModifications();
 	public void initLoadAllFromRemote();
