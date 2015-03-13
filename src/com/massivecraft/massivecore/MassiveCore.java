@@ -23,6 +23,7 @@ import com.massivecraft.massivecore.adapter.MassiveTreeSetAdapter;
 import com.massivecraft.massivecore.adapter.ModdedEnumTypeAdapter;
 import com.massivecraft.massivecore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.massivecore.adapter.UUIDAdapter;
+import com.massivecraft.massivecore.chestgui.EngineChestGui;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCore;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreBuffer;
 import com.massivecraft.massivecore.cmd.massivecore.CmdMassiveCoreCmdurl;
@@ -177,6 +178,7 @@ public class MassiveCore extends MassivePlugin
 		MassiveCoreEngineWorldNameSet.get().activate();
 		MassiveCoreEngineCommandRegistration.get().activate();
 		PlayerUtil.get().activate();
+		EngineChestGui.get().activate();
 		
 		// Collections
 		MultiverseColl.get().init();
