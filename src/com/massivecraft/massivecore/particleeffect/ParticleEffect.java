@@ -1409,6 +1409,11 @@ public enum ParticleEffect {
 		 * @return The version number
 		 */
 		public static int getVersion() {
+			// MASSIVECORE MODIFICATION START (Ensure initialized)
+			if (!initialized) {
+				initialize();
+			}
+			// MASSIVECORE MODIFICATION END (Ensure initialized)
 			return version;
 		}
 
