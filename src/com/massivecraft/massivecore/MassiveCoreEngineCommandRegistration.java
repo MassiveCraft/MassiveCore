@@ -109,7 +109,9 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 			MassiveCoreBukkitCommand command = new MassiveCoreBukkitCommand(name, target);
 			
 			// ... and finally register it.
-			simpleCommandMap.register("MassiveCore", command);
+			Plugin plugin = massiveCurrent.getRegisteredPlugin();
+			String pluginName = plugin != null ? plugin.getName() : "MassiveCore";
+			simpleCommandMap.register(pluginName, command);
 		}
 		
 		// Step #4: Remove/Unregister MassiveCommands from Bukkit that are but should not be that any longer. 
