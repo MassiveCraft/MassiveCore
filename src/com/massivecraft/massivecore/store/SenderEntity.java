@@ -171,4 +171,37 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return IdUtil.isGameMode(this.getId(), gm, def);
 	}
 	
+	// CONVENIENCE HEALTH
+	
+	public Double getHealth()
+	{
+		return Mixin.getHealth(this.getId());
+	}
+	public boolean setHealth(double health)
+	{
+		return Mixin.setHealth(this.getId(), health);
+	}
+	
+	public Double getMaxHealth()
+	{
+		return Mixin.getMaxHealth(this.getId());
+	}
+	public boolean setMaxHealth(double maxHealth)
+	{
+		return Mixin.setMaxHealth(this.getId(), maxHealth);
+	}
+	
+	public boolean damage(double damage)
+	{
+		return Mixin.damage(this.getId(), damage);
+	}
+	public boolean heal(Object senderObject, double heal)
+	{
+		return Mixin.heal(this.getId(), heal);
+	}
+	public boolean kill(Object senderObject)
+	{
+		return Mixin.kill(this.getId());
+	}
+	
 }
