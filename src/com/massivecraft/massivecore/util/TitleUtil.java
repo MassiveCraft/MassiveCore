@@ -50,7 +50,16 @@ public final class TitleUtil
 		try
 		{
 			// The enum used
-			titleEnumClass = PackageType.MINECRAFT_SERVER.getClass("EnumTitleAction");
+			try
+			{
+				titleEnumClass = PackageType.MINECRAFT_SERVER.getClass("EnumTitleAction");
+			}
+			catch (ClassNotFoundException e)
+			{
+				// Since 1.8.3
+				titleEnumClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutTitle$EnumTitleAction");
+			}
+			
 			// Get the enum values.
 			for (Object o : titleEnumClass.getEnumConstants())
 			{
@@ -62,7 +71,16 @@ public final class TitleUtil
 			
 			// Get chatserializer and chat component.
 			iChatBaseComponent = PackageType.MINECRAFT_SERVER.getClass("IChatBaseComponent");
-			chatSerializer = PackageType.MINECRAFT_SERVER.getClass("ChatSerializer").getDeclaredMethod("a", String.class);
+			
+			try
+			{
+				chatSerializer = PackageType.MINECRAFT_SERVER.getClass("ChatSerializer").getDeclaredMethod("a", String.class);
+			}
+			catch (ClassNotFoundException e)
+			{
+				// Since 1.8.3
+				chatSerializer = PackageType.MINECRAFT_SERVER.getClass("IChatBaseComponent$ChatSerializer").getDeclaredMethod("a", String.class);
+			}
 			
 			// Get packet and it's constructor
 			Class<?> packetClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutTitle");
@@ -82,8 +100,7 @@ public final class TitleUtil
 			playerConnection.setAccessible(true);
 			sendPacket.setAccessible(true);
 			
-			
-			// This suceeded, we use titles.
+			// This succeeded, we use titles.
 			useTitles = true;
 		}
 		catch (Exception e)
