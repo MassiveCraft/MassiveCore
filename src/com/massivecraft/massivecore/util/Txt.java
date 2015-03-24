@@ -219,8 +219,17 @@ public class Txt
 	
 	public static String repeat(String string, int times)
 	{
-		if (times <= 0) return "";
-		else return string + repeat(string, times-1);
+		// Create Ret
+		StringBuilder ret = new StringBuilder(times);
+		
+		// Fill Ret
+		for (int i = 0; i < times; i++)
+		{
+			ret.append(string);
+		}
+		
+		// Return Ret
+		return ret.toString();
 	}
 	
 	public static String implode(final Object[] list, final String glue, final String format)
