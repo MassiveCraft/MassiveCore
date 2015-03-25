@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.collections;
 
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
 
@@ -27,6 +28,11 @@ public class WorldExceptionSet
 	public boolean contains(World world)
 	{
 		return this.contains(world.getName());
+	}
+	
+	public boolean contains(Entity entity)
+	{
+		return this.contains(entity.getWorld());
 	}
 
 }

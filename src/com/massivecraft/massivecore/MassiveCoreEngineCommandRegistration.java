@@ -109,8 +109,8 @@ public class MassiveCoreEngineCommandRegistration extends EngineAbstract
 			MassiveCoreBukkitCommand command = new MassiveCoreBukkitCommand(name, target);
 			
 			// ... and finally register it.
-			Plugin plugin = massiveCurrent.getRegisteredPlugin();
-			String pluginName = plugin != null ? plugin.getName() : "MassiveCore";
+			Plugin plugin = command.getPlugin();
+			String pluginName = (plugin != null ? plugin.getName() : "MassiveCore");
 			simpleCommandMap.register(pluginName, command);
 		}
 		
