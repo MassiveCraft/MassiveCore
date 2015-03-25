@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * This subclass adds better constructors. 
@@ -46,5 +48,25 @@ public class MassiveList<E> extends ArrayList<E>
 	{
 		this(Arrays.asList(elements));
 	}
+	
+	// -------------------------------------------- //
+	// OPTIMIZE: REMOVE ALL & RETAIN ALL
+	// -------------------------------------------- //
+	// This will greatly reduce the complexity in cases with big sizes.
+	
+	@Override
+	public boolean removeAll(Collection<?> c)
+	{
+		if (c instanceof List) c = new HashSet<Object>(c);
+		return super.removeAll(c);
+	}
+	
+	@Override
+	public boolean retainAll(Collection<?> c)
+	{
+		if (c instanceof List) c = new HashSet<Object>(c);
+		return super.retainAll(c);
+	}
+	
 
 }
