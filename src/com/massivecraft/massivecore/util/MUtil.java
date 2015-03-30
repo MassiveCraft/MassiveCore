@@ -25,6 +25,7 @@ import java.util.TreeSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -477,7 +478,7 @@ public class MUtil
 	// COLOR INT CODE
 	// -------------------------------------------- //
 	
-	public static int getCode(ChatColor chatColor)
+	public static int getChatColorCode(ChatColor chatColor)
 	{
 		switch (chatColor)
 		{
@@ -505,6 +506,63 @@ public class MUtil
 			case RESET: return 0x15;
 		}
 		throw new IllegalArgumentException("The chat color " + chatColor.name() + " is not yet supported!");
+	}
+	
+	public static ChatColor getChatColor(int chatColorCode)
+	{
+		switch (chatColorCode)
+		{
+			case 0x00: return ChatColor.BLACK;
+			case 0x1: return ChatColor.DARK_BLUE;
+			case 0x2: return ChatColor.DARK_GREEN;
+			case 0x3: return ChatColor.DARK_AQUA;
+			case 0x4: return ChatColor.DARK_RED;
+			case 0x5: return ChatColor.DARK_PURPLE;
+			case 0x6: return ChatColor.GOLD;
+			case 0x7: return ChatColor.GRAY;
+			case 0x8: return ChatColor.DARK_GRAY;
+			case 0x9: return ChatColor.BLUE;
+			case 0xA: return ChatColor.GREEN;
+			case 0xB: return ChatColor.AQUA;
+			case 0xC: return ChatColor.RED;
+			case 0xD: return ChatColor.LIGHT_PURPLE;
+			case 0xE: return ChatColor.YELLOW;
+			case 0xF: return ChatColor.WHITE;
+			case 0x10: return ChatColor.MAGIC;
+			case 0x11: return ChatColor.BOLD;
+			case 0x12: return ChatColor.STRIKETHROUGH;
+			case 0x13: return ChatColor.UNDERLINE;
+			case 0x14: return ChatColor.ITALIC;
+			case 0x15: return ChatColor.RESET;
+		}
+		throw new IllegalArgumentException("The chat color code " + chatColorCode + " is not yet supported!");
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static ChatColor getChatColor(DyeColor dyeColor)
+	{
+		int dyeColorCode = dyeColor.getData();
+		
+		switch (dyeColorCode)
+		{
+			case 0x0: return ChatColor.WHITE;
+			case 0x1: return ChatColor.GOLD;
+			case 0x2: return ChatColor.LIGHT_PURPLE;
+			case 0x3: return ChatColor.AQUA;
+			case 0x4: return ChatColor.YELLOW;
+			case 0x5: return ChatColor.GREEN;
+			case 0x6: return ChatColor.LIGHT_PURPLE;
+			case 0x7: return ChatColor.DARK_GRAY;
+			case 0x8: return ChatColor.GRAY;
+			case 0x9: return ChatColor.DARK_AQUA;
+			case 0xA: return ChatColor.DARK_PURPLE;
+			case 0xB: return ChatColor.BLUE;
+			case 0xC: return ChatColor.GRAY;
+			case 0xD: return ChatColor.DARK_GREEN;
+			case 0xE: return ChatColor.RED;
+			case 0xF: return ChatColor.BLACK;
+		}
+		throw new IllegalArgumentException("The dye color " + dyeColor + " is not yet supported!");
 	}
 	
 	// -------------------------------------------- //

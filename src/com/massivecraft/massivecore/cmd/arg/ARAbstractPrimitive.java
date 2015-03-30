@@ -28,7 +28,7 @@ public abstract class ARAbstractPrimitive<T> extends ArgReaderAbstract<T>
 		}
 		catch (Exception e)
 		{
-			throw new MassiveException().addMsg("<b>Invalid %s \"<h>%s\"<b>.", this.typename(), arg);
+			throw new MassiveException().addMsg("<b>Invalid %s \"<h>%s<b>\".", this.typename(), arg);
 		}
 		
 		return result;

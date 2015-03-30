@@ -168,7 +168,7 @@ public class MassiveCommand
 	public void setAliases(List<String> aliases) { this.aliases = aliases; }
 	
 	public void addAliases(String... aliases) { this.aliases.addAll(Arrays.asList(aliases)); }
-	public void addAliases(List<String> aliases) { this.aliases.addAll(aliases); }
+	public void addAliases(Collection<String> aliases) { this.aliases.addAll(aliases); }
 	
 	// FIELD: requiredArgs
 	// These args must always be sent
