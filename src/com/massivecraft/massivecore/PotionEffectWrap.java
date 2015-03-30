@@ -25,6 +25,11 @@ public class PotionEffectWrap
 	public int getId() { return this.id; }
 	public void setId(int id) { this.id = id; }
 	
+	@SuppressWarnings("deprecation")
+	public void setPotionEffectType(PotionEffectType potionEffectType) { this.setId(potionEffectType.getId());}
+	@SuppressWarnings("deprecation")
+	public PotionEffectType getPotionEffectType() { return PotionEffectType.getById(this.getId()); }
+	
 	protected int amplifier;
 	public int getAmplifier() { return this.amplifier; }
 	public void setAmplifier(int amplifier) { this.amplifier = amplifier; }
@@ -137,6 +142,38 @@ public class PotionEffectWrap
 		
 		// ... then add.
 		addEffects(entity, potionEffectWraps);
+	}
+	
+	// -------------------------------------------- //
+	// TO STRING
+	// -------------------------------------------- //
+	
+	public String getListLine()
+	{
+		// Create Ret
+		StringBuilder ret = new StringBuilder();
+		
+		// Type Name (ID)
+		ret.append(this.getPotionEffectType().getName());
+		ret.append(' ');
+		
+		// Amplifier
+		ret.append(this.amplifier);
+		ret.append(' ');
+		
+		// Duration
+		ret.append(this.duration);
+		ret.append(' ');
+		
+		// Ambient
+		ret.append(this.ambient);
+		ret.append(' ');
+		
+		// Particles
+		ret.append(this.particles);
+		
+		// Return Ret
+		return ret.toString();
 	}
 	
 }

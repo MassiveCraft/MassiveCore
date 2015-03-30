@@ -21,6 +21,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.ArgReader;
 import com.massivecraft.massivecore.cmd.req.Req;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.PermUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -165,10 +166,12 @@ public class MassiveCommand
 	// The different names this commands will react to  
 	protected List<String> aliases;
 	public List<String> getAliases() { return this.aliases; }
-	public void setAliases(List<String> aliases) { this.aliases = aliases; }
 	
-	public void addAliases(String... aliases) { this.aliases.addAll(Arrays.asList(aliases)); }
+	public void setAliases(Collection<String> aliases) { this.aliases = new MassiveList<String>(aliases); }
+	public void setAliases(String... aliases) { this.setAliases(Arrays.asList(aliases)); }
+	
 	public void addAliases(Collection<String> aliases) { this.aliases.addAll(aliases); }
+	public void addAliases(String... aliases) { this.addAliases(Arrays.asList(aliases)); }
 	
 	// FIELD: requiredArgs
 	// These args must always be sent
