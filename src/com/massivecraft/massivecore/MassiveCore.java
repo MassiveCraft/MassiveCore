@@ -2,6 +2,7 @@ package com.massivecraft.massivecore;
 
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.adapter.BackstringEnumSetAdapter;
+import com.massivecraft.massivecore.adapter.EntryAdapter;
 import com.massivecraft.massivecore.adapter.InventoryAdapter;
 import com.massivecraft.massivecore.adapter.ItemStackAdapter;
 import com.massivecraft.massivecore.adapter.JsonElementAdapter;
@@ -116,6 +118,7 @@ public class MassiveCore extends MassivePlugin
 		.registerTypeAdapter(MassiveTreeSetDef.class, MassiveTreeSetAdapter.get())
 		
 		.registerTypeAdapter(BackstringEnumSet.class, BackstringEnumSetAdapter.get())
+		.registerTypeAdapter(Entry.class, EntryAdapter.get())
 		
 		.registerTypeAdapterFactory(ModdedEnumTypeAdapter.ENUM_FACTORY);
 	}

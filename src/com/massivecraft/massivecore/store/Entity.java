@@ -101,15 +101,22 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 	// SYNC AND IO ACTIONS
 	// -------------------------------------------- //
 	
-	public void changed()
+	public boolean isLive()
 	{
 		String id = this.getId();
-		if (id == null) return;
+		if (id == null) return false;
 		
 		Coll<E> coll = this.getColl();
-		if (coll == null) return;
+		if (coll == null) return false;
 		
-		if ( ! coll.inited()) return;
+		if ( ! coll.inited()) return false;
+		
+		return true;
+	}
+	
+	public void changed()
+	{
+		if ( ! this.isLive()) return;
 		
 		// UNKNOWN is very unimportant really.
 		// LOCAL_ATTACH is for example much more important and should not be replaced.
