@@ -114,8 +114,6 @@ public class IntervalUtil
 		return random(min, max);
 	}
 	
-	
-	
 	public static double randomDoubleFromInterval(Entry<Double, Double> interval)
 	{
 		double min = interval.getKey();

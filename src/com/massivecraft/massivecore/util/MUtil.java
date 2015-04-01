@@ -1288,7 +1288,7 @@ public class MUtil
 	{
 		if (coll.size() == 0) return null;
 		if (coll.size() == 1) return coll.iterator().next();
-		int index = MassiveCore.random.nextInt(coll.size());
+		
 		List<T> list = null;
 		if (coll instanceof List<?>)
 		{
@@ -1298,18 +1298,40 @@ public class MUtil
 		{
 			list = new ArrayList<T>(coll);
 		}
+		
+		int index = MassiveCore.random.nextInt(list.size());
 		return list.get(index);
 	}
 	
-	public static <T> List<T> random(Collection<T> coll, int count)
+	public static <T> List<T> randomSubset(Collection<T> coll, int count)
 	{
-		List<T> ret = new ArrayList<T>(coll);
+		// Clean Input
 		if (count < 0) count = 0;
+		
+		// Create Ret
+		List<T> ret = new ArrayList<T>(coll);
 		while (ret.size() > count)
 		{
 			int index = MassiveCore.random.nextInt(ret.size());
 			ret.remove(index);
 		}
+		
+		// Return Ret
+		return ret;
+	}
+	
+	public static <E> List<E> random(List<E> list, int count)
+	{
+		// Create Ret
+		List<E> ret = new MassiveList<E>();
+		
+		// Fill Ret
+		for (int i = 0; i < count; i++)
+		{
+			ret.add(MUtil.random(list));
+		}
+		
+		// Return Ret
 		return ret;
 	}
 	
