@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -225,6 +226,10 @@ public class InventoryUtil
 		return true;
 	}
 	
+	// -------------------------------------------- //
+	// TYPE CHECKING
+	// -------------------------------------------- //
+	
 	public static boolean isNothing(ItemStack itemStack)
 	{
 		if (itemStack == null) return true;
@@ -236,6 +241,45 @@ public class InventoryUtil
 	public static boolean isSomething(ItemStack itemStack)
 	{
 		return !isNothing(itemStack);
+	}
+	
+	public static void repair(ItemStack itemStack)
+	{
+		// Check Null
+		if (isNothing(itemStack)) return;
+		
+		// Check Repairable
+		Material material = itemStack.getType();
+		if ( ! isRepairable(material)) return;
+		
+		// Repair
+		itemStack.setDurability((short) 0);
+	}
+	
+	public static boolean isRepairable(Material material)
+	{
+		// Blocks are never repairable.
+		// Only items take damage in Minecraft.
+		if (material.isBlock()) return false;
+		
+		// This list was created by checking for the "B" notation on:
+		// http://minecraft.gamepedia.com/Data_values
+		if (material == Material.COAL) return false;
+		if (material == Material.GOLDEN_APPLE) return false;
+		if (material == Material.RAW_FISH) return false;
+		if (material == Material.COOKED_FISH) return false;
+		if (material == Material.INK_SACK) return false;
+		if (material == Material.MAP) return false;
+		if (material == Material.POTION) return false;
+		if (material == Material.MONSTER_EGG) return false;
+		if (material == Material.SKULL_ITEM) return false;
+		
+		// This lines actually catches most of the specific lines above.
+		// However we add this in anyways for future compatibility.
+		if ( ! material.getData().equals(MaterialData.class)) return false;
+		
+		// Otherwise repairable
+		return true;
 	}
 	
 	// -------------------------------------------- //
