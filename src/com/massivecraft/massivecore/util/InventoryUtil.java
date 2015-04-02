@@ -278,6 +278,10 @@ public class InventoryUtil
 		// However we add this in anyways for future compatibility.
 		if ( ! material.getData().equals(MaterialData.class)) return false;
 		
+		// We may also not repair things that can not take any damage.
+		// NOTE: MaxDurability should be renamed to MaxDamage.
+		if (material.getMaxDurability() == 0) return false;
+		
 		// Otherwise repairable
 		return true;
 	}
