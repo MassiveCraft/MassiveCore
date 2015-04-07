@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.util.MUtil;
 
-public class ARDifficulty extends ARAbstractSelect<Difficulty>
+public class ARDifficulty extends ARAbstractSelect<Difficulty> implements ARAllAble<Difficulty>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -63,6 +64,12 @@ public class ARDifficulty extends ARAbstractSelect<Difficulty>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		return this.altNames(sender);
+	}
+	
+	@Override
+	public Collection<Difficulty> getAll(CommandSender sender)
+	{
+		return Arrays.asList(Difficulty.values());
 	}
 
 }

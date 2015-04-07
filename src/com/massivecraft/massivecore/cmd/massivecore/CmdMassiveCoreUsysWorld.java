@@ -5,6 +5,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdMassiveCoreUsysWorld extends MassiveCommand
@@ -19,9 +20,9 @@ public class CmdMassiveCoreUsysWorld extends MassiveCommand
 		this.addAliases("w", "world");
 		
 		// Args
-		this.addRequiredArg("world");
-		this.addRequiredArg("universe");
-		this.addRequiredArg("multiverse");
+		this.addArg(ARString.get(), "world").setDesc("the world to move");
+		this.addArg(ARString.get(), "universe").setDesc("the universe to move the world ro");
+		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to move the world to");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_WORLD.node));
@@ -34,10 +35,9 @@ public class CmdMassiveCoreUsysWorld extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Multiverse multiverse = this.arg(2, ARMultiverse.get());
-		
-		String universe = this.arg(1);
-		String worldName = this.arg(0);
+		String worldName = (String) this.readArg();
+		String universe = (String) this.readArg();
+		Multiverse multiverse = (Multiverse) this.readArg();
 		
 		if (!multiverse.containsUniverse(universe))
 		{

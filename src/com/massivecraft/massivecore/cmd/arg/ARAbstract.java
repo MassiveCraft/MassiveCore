@@ -87,7 +87,8 @@ public abstract class ARAbstract<T> implements AR<T>
 	{
 		// Filter them to start with what the user typed in.
 		Collection<String> raw = this.getTabList(sender, arg);
-		if (raw == null) return Collections.emptyList();
+		if (raw == null || raw.isEmpty()) return Collections.emptyList();
+		
 		List<String> ret = Txt.getStartsWithIgnoreCase(raw, arg);
 		
 		// Here we do a lot of things related to spaces.
@@ -103,8 +104,7 @@ public abstract class ARAbstract<T> implements AR<T>
 	// PRIVATE: TAB COMPLETE CALCULATIONS
 	// -------------------------------------------- //
 	
-	// Should be private. But isn't currently for testing purposes.
-	static List<String> prepareForSpaces(List<String> suggestions)
+	public static List<String> prepareForSpaces(List<String> suggestions)
 	{
 		List<List<String>> suggestionParts = getParts(suggestions);
 		
@@ -199,32 +199,5 @@ public abstract class ARAbstract<T> implements AR<T>
 
 		return ret;
 	}
-
-	//TODO: Move this code somewhere else.
-	// Currently just kept here.
-	/*
-	private List<String> addSpaceAtEnd(MassiveCommand command, int argNumber, List<String> suggestions)
-	{
-		// This ArgReader must allow space at the end.
-		if ( ! this.allowSpaceAfterTab()) return suggestions;
-		// There must be exactly one suggestion.
-		if (suggestions.size() != 1) return suggestions;
-		
-		// The maximum size of args to pass in.
-		int argsSize = command.getOptionalArgs().size() + command.getRequiredArgs().size();
-		// If it accepts infinite arguments, just make it as high as possible.
-		if (command.getErrorOnToManyArgs()) argsSize = Integer.MAX_VALUE;
-		argsSize--; // It now becomes one smaller, so the size matches index.
-		
-		// So if this was the last arg meaning the user can't to type more in
-		// We will just stop here.
-		if (argNumber >= argsSize) return suggestions;
-		
-		// Get the suggestion.
-		String suggestion = suggestions.get(0);
-		// Add the space at the end.
-		suggestion += " ";
-		return new MassiveCoreSingleValueList<String>(suggestion);
-	}*/
 	
 }

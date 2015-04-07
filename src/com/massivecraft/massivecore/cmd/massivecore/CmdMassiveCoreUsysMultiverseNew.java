@@ -1,8 +1,10 @@
 package com.massivecraft.massivecore.cmd.massivecore;
 
 import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.MultiverseColl;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 public class CmdMassiveCoreUsysMultiverseNew extends MassiveCommand
@@ -17,7 +19,7 @@ public class CmdMassiveCoreUsysMultiverseNew extends MassiveCommand
 		this.addAliases("n", "new");
 		
 		// Args
-		this.addRequiredArg("multiverse");
+		this.addArg(ARString.get(), "multiverse").setDesc("name of multiverse to create");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_NEW.node));
@@ -28,9 +30,9 @@ public class CmdMassiveCoreUsysMultiverseNew extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveException
 	{
-		String id = this.arg(0);
+		String id = (String) this.readArg();
 		
 		if (MultiverseColl.get().containsId(id))
 		{

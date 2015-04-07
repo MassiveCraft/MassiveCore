@@ -10,7 +10,7 @@ import org.bukkit.permissions.Permission;
 
 import com.massivecraft.massivecore.MassiveException;
 
-public class ARPermission extends ARAbstract<Permission>
+public class ARPermission extends ARAbstract<Permission> implements ARAllAble<Permission>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -28,8 +28,7 @@ public class ARPermission extends ARAbstract<Permission>
 	{
 		for (Permission permission : Bukkit.getPluginManager().getPermissions())
 		{
-			if ( ! permission.getName().equals(arg)) continue;
-			return permission;
+			if (permission.getName().equals(arg)) return permission;
 		}
 		
 		throw new MassiveException().addMsg("<b>No permission with the name \"<h>%s<b>\" was found.", arg);
@@ -46,6 +45,12 @@ public class ARPermission extends ARAbstract<Permission>
 		}
 		
 		return ret;
+	}
+
+	@Override
+	public Collection<Permission> getAll(CommandSender sender)
+	{
+		return Bukkit.getPluginManager().getPermissions();
 	}
 
 }

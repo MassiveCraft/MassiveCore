@@ -25,7 +25,7 @@ public class DeprecatedCommand extends MassiveCommand
 		this.setAliases(aliases);
 		
 		// Args
-		this.setErrorOnToManyArgs(false);
+		this.setErrorOnTooManyArgs(false);
 		
 		// Visibility
 		this.setVisibilityMode(VisibilityMode.INVISIBLE);

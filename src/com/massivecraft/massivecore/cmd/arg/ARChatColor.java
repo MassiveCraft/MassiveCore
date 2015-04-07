@@ -1,13 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class ARChatColor extends ARAbstractSelect<ChatColor>
+public class ARChatColor extends ARAbstractSelect<ChatColor> implements ARAllAble<ChatColor>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -27,9 +28,8 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 		
 		for (ChatColor cc : ChatColor.values())
 		{
-			String ccstr = getComparable(cc.name());
-			if ( ! ccstr.equals(arg)) continue;
-			return cc;
+			String ccstr = getComparable(cc);
+			if (ccstr.equals(arg)) return cc;
 		}
 		
 		return null;
@@ -42,7 +42,7 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 		
 		for (ChatColor cc : ChatColor.values())
 		{
-			ret.add(cc.toString() + getComparable(cc.name()));
+			ret.add(cc.toString() + getComparable(cc));
 		}
 		
 		return ret;
@@ -55,15 +55,27 @@ public class ARChatColor extends ARAbstractSelect<ChatColor>
 		
 		for (ChatColor cc : ChatColor.values())
 		{
-			ret.add(getComparable(cc.name()));
+			ret.add(getComparable(cc));
 		}
 		
 		return ret;
 	}
 	
+	@Override
+	public Collection<ChatColor> getAll(CommandSender sender)
+	{
+		return Arrays.asList(ChatColor.values());
+	}
+	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
+	
+	public static String getComparable(ChatColor color)
+	{
+		if (color == null) return null;
+		return getComparable(color.name());
+	}
 	
 	// "DARK_RED" --> "darkred"
 	// "DARK RED" --> "darkred"

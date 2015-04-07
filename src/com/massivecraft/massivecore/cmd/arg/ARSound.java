@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 
-public class ARSound extends ARAbstract<Sound>
+public class ARSound extends ARAbstract<Sound> implements ARAllAble<Sound>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -48,7 +49,13 @@ public class ARSound extends ARAbstract<Sound>
 		
 		return ret;
 	}
-	
+
+	@Override
+	public Collection<Sound> getAll(CommandSender sender)
+	{
+		return Arrays.asList(Sound.values());
+	}
+
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //

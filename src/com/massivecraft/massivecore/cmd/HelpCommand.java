@@ -21,7 +21,7 @@ public class HelpCommand extends MassiveCommand
 		this.addAliases("?", "h", "help");
 		
 		// Args
-		this.addOptionalArg("page", "1");
+		this.addArg(ARInteger.get(), "page", "1");
 		
 		// Other
 		this.setDesc("");
@@ -35,17 +35,17 @@ public class HelpCommand extends MassiveCommand
 	public void perform() throws MassiveException
 	{	
 		// Args
-		Integer pagenumber = this.arg(0, ARInteger.get(), 1);
+		int pagenumber = (Integer) this.readArg(1); 
 		
 		// Get parent command
-		if (this.getCommandChain().size() == 0) return;
-		MassiveCommand parentCommand = this.getCommandChain().get(this.getCommandChain().size()-1);
+		if ( ! this.hasParentCommand()) return;
+		MassiveCommand parentCommand = this.getParentCommand();
 		
 		// Create Lines
 		ArrayList<String> lines = new ArrayList<String>();
 		for (String helpline : parentCommand.getHelp())
 		{
-			lines.add(Txt.parse("<a>#<i> "+helpline));
+			lines.add(Txt.parse("<a>#<i> " + helpline));
 		}
 		
 		for (MassiveCommand subCommand : parentCommand.getSubCommands())
@@ -57,7 +57,7 @@ public class HelpCommand extends MassiveCommand
 		}
 		
 		// Send Lines
-		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \""+parentCommand.getAliases().get(0)+"\"", sender));
+		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \"" + parentCommand.getAliases().get(0) + "\"", sender));
 	}
 	
 }

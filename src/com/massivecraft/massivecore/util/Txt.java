@@ -32,6 +32,8 @@ public class Txt
 	public static final Map<String, String> parseReplacements;
 	public static final Pattern parsePattern;
 	
+	public static final Pattern REGEX_WHITESPACE = Pattern.compile("\\s+");
+	
 	public static final long millisPerSecond = 1000;
 	public static final long millisPerMinute = 60 * millisPerSecond;
 	public static final long millisPerHour = 60 * millisPerMinute;

@@ -20,7 +20,7 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 		this.addAliases("s", "show");
 		
 		// Args
-		this.addRequiredArg("aspect");
+		this.addArg(ARAspect.get(), "aspect").setDesc("the aspect to show info about");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_ASPECT_SHOW.node));
@@ -33,7 +33,7 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Aspect aspect = this.arg(0, ARAspect.get());
+		Aspect aspect = (Aspect) this.readArg();
 		
 		msg(Txt.titleize("Aspect: "+aspect.getId()));
 		msg("<k>using multiverse: <v>%s",aspect.getMultiverse().getId());

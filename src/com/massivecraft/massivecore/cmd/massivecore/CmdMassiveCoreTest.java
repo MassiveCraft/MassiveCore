@@ -26,12 +26,12 @@ public class CmdMassiveCoreTest extends MassiveCommand
 		this.addAliases("test");
 		
 		// Arg
-		this.addRequiredArg("particleEffect");
-		this.addRequiredArg("offsetX");
-		this.addRequiredArg("offsetY");
-		this.addRequiredArg("offsetZ");
-		this.addRequiredArg("speed");
-		this.addRequiredArg("amount");
+		this.addArg(AREnum.get(ParticleEffect.class), "particleEffect").setDesc("the particle effect type to show");
+		this.addArg(ARFloat.get(), "offsetX").setDesc("the maximum offset on x-axis for this particle");
+		this.addArg(ARFloat.get(), "offsetY").setDesc("the maximum offset on y-axis for this particle");
+		this.addArg(ARFloat.get(), "offsetZ").setDesc("the maximum offset on z-axis for this particle");
+		this.addArg(ARFloat.get(), "speed").setDesc("the speed for this particle");
+		this.addArg(ARInteger.get(), "amount").setDesc("the amount of particles to show");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.TEST.node));
@@ -49,15 +49,15 @@ public class CmdMassiveCoreTest extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		ParticleEffect particleEffect = this.arg(0, AREnum.get(ParticleEffect.class));
+		ParticleEffect particleEffect = (ParticleEffect) this.readArg();
 		
 		Location center = me.getEyeLocation().add(0, 0, 0);
 		
-		Float offsetX = this.arg(1, ARFloat.get());
-		Float offsetY = this.arg(2, ARFloat.get());
-		Float offsetZ = this.arg(3, ARFloat.get());
-		Float speed = this.arg(4, ARFloat.get());
-		Integer amount = this.arg(5, ARInteger.get());
+		float offsetX = (Float) this.readArg();
+		float offsetY = (Float) this.readArg();
+		float offsetZ = (Float) this.readArg();
+		float speed = (Float) this.readArg();
+		int amount = (Integer) this.readArg();
 		
 		Player player = me;
 		

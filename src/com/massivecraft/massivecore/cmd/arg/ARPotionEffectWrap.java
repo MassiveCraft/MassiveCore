@@ -54,22 +54,22 @@ public class ARPotionEffectWrap extends ARAbstract<PotionEffectWrap>
 			}
 			else if (i == 1)
 			{
-				Integer amplifier = (Integer)part;
+				Integer amplifier = (Integer) part;
 				ret.setAmplifier(amplifier);
 			}
 			else if (i == 2)
 			{
-				Integer duration = (Integer)part;
+				Integer duration = (Integer) part;
 				ret.setDuration(duration);
 			}
 			else if (i == 3)
 			{
-				Boolean ambient = (Boolean)part;
+				Boolean ambient = (Boolean) part;
 				ret.setAmbient(ambient);
 			}
 			else if (i == 4)
 			{
-				Boolean particles = (Boolean)part;
+				Boolean particles = (Boolean) part;
 				ret.setParticles(particles);
 			}
 		}

@@ -35,11 +35,16 @@ public abstract class ARAbstractSelect<T> extends ARAbstract<T>
 	public T read(String arg, CommandSender sender) throws MassiveException
 	{
 		T result = this.select(arg, sender);
-		
 		if (result != null) return result;
 		
-		MassiveException exception = new MassiveException();
-		exception.addMsg("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
+		MassiveException exception = createExceptionForInvalidArg(arg, sender);
+		throw exception;
+	}
+	
+	public MassiveException createExceptionForInvalidArg(String arg, CommandSender sender)
+	{
+		MassiveException ret = new MassiveException();
+		ret.addMsg("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
 		
 		if (this.canList(sender))
 		{			
@@ -50,17 +55,19 @@ public abstract class ARAbstractSelect<T> extends ARAbstract<T>
 			
 			if (names.isEmpty())
 			{
-				exception.addMsg("<i>Note: There is no %s available.", this.getTypeName());
+				ret.addMsg("<i>Note: There is no %s available.", this.getTypeName());
 			}
-			else if ( ! matches.isEmpty() && matches.size() < LIST_COUNT_MAX)
+			else if ( ! matches.isEmpty() && matches.size() <= LIST_COUNT_MAX)
 			{
-				// For some reason the arguments doesn't get parsed.
-				String suggest = Txt.parse(Txt.implodeCommaAnd(matches, "<i>, <h>", " <i>or <h>"));
-				exception.addMsg("<i>Did you mean <h>%s<i>?", suggest);
+				String format = Txt.parse("<h>%s");
+				String comma = Txt.parse("<i>, ");
+				String and = Txt.parse(" <i>or ");
+				String dot = Txt.parse("<i>?");
+				ret.addMsg("<i>Did you mean %s", Txt.implodeCommaAndDot(matches, format, comma, and, dot));
 			}
 			else if (names.size() > LIST_COUNT_MAX)
 			{
-				exception.addMsg("<i>More than %d alternatives available.", LIST_COUNT_MAX);
+				ret.addMsg("<i>More than %d alternatives available.", LIST_COUNT_MAX);
 			}
 			else
 			{
@@ -68,11 +75,10 @@ public abstract class ARAbstractSelect<T> extends ARAbstract<T>
 				String comma = Txt.parse("<i>, ");
 				String and = Txt.parse(" <i>or ");
 				String dot = Txt.parse("<i>.");
-				exception.addMsg("<i>Use %s", Txt.implodeCommaAndDot(names, format, comma, and, dot));
+				ret.addMsg("<i>Use %s", Txt.implodeCommaAndDot(names, format, comma, and, dot));
 			}
 		}
-			
-		throw exception;
+		return ret;
 	}
 	
 	public List<String> getMatchingAltNames(String arg, CommandSender sender, int maxLevenshteinDistance)

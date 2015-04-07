@@ -21,8 +21,8 @@ public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 		this.addAliases("u", "use");
 		
 		// Args
-		this.addRequiredArg("aspect");
-		this.addRequiredArg("multiverse");
+		this.addArg(ARAspect.get(), "aspect").setDesc("the aspect to modify");
+		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse which the aspect should use");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_ASPECT_USE.node));
@@ -35,8 +35,8 @@ public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Aspect aspect = this.arg(0, ARAspect.get());
-		Multiverse multiverse = this.arg(1, ARMultiverse.get());
+		Aspect aspect = (Aspect) this.readArg();
+		Multiverse multiverse = (Multiverse) this.readArg();
 		
 		aspect.setMultiverse(multiverse);
 		

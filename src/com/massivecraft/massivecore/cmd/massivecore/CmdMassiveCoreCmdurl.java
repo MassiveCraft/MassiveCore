@@ -9,7 +9,9 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -27,7 +29,7 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 		this.addAliases("cmdurl");
 		
 		// Args
-		this.addRequiredArg("url");
+		this.addArg(ARString.get(), "url").setDesc("the url to load");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.CMDURL.node));
@@ -39,10 +41,10 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveException
 	{
 		// Args
-		String urlString = this.arg(0);
+		String urlString = (String) this.readArg();
 		
 		final URL url;
 		try

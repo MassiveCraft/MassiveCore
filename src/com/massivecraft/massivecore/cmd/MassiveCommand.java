@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.cmd;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -104,6 +105,7 @@ public class MassiveCommand
 	protected List<MassiveCommand> subCommands;
 	public List<MassiveCommand> getSubCommands() { return this.subCommands; }
 	public void setSubCommands(List<MassiveCommand> subCommands) { this.subCommands = subCommands; }
+	
 	public boolean isParentCommand() { return this.getSubCommands().size() > 0; }
 	
 	public MassiveCommand getSubCommand(String alias)
@@ -173,27 +175,144 @@ public class MassiveCommand
 	public void addAliases(Collection<String> aliases) { this.aliases.addAll(aliases); }
 	public void addAliases(String... aliases) { this.addAliases(Arrays.asList(aliases)); }
 	
+	// FIELD argSettings
+	// Settings for all args.
+	protected List<ArgSetting> argSettings;
+	public List<ArgSetting> getArgSettings() { return this.argSettings; }
+	public void setArgSettings(List<ArgSetting> argSettings) { this.argSettings = argSettings; }
+	
+	// The index is the same as the argument index.
+	// So argAt(x) should be read by getArgReader(x)
+	
+	public ArgSetting getArgSetting(int index)
+	{
+		if (this.isUsingConcatFrom() && this.getConcatFromIndex() < index) index = this.getConcatFromIndex();
+		return this.getArgSettings().get(index);
+	}
+	
+	public AR<?> getArgReader(int index)
+	{
+		ArgSetting setting = this.getArgSetting(index);
+		return setting.getReader();
+	}
+	
+	public boolean hasArgSettingForIndex(int index)
+	{
+		if (index < 0) return false;
+		if (this.isUsingConcatFrom() && this.getConcatFromIndex() < index) index = this.getConcatFromIndex();
+		if (this.getArgSettings().size() <= index) return false;
+		return true;
+	}
+	
+	// The actual setting.
+	public ArgSetting addArg(ArgSetting setting, boolean concatFromHere)
+	{
+		// Concat safety.
+		if (this.isUsingConcatFrom())
+		{
+			throw new IllegalStateException("You can't add args if a prior one concatenates.");
+		}
+		
+		// Req/optional safety.
+		int prior = this.getArgSettings().size()-1;
+		if (this.hasArgSettingForIndex(prior) && this.getArgSetting(prior).isOptional() && setting.isRequired())
+		{
+			throw new IllegalArgumentException("You can't add required args, if a prior one is optional.");
+		}
+		
+		// If false no change is made.
+		// If true change is made.
+		this.setUsingConcatFrom(concatFromHere);
+		
+		this.getArgSettings().add(setting);
+		return setting;
+	}
+	
+	// The actual setting without concat.
+	public ArgSetting addArg(ArgSetting setting)
+	{
+		return this.addArg(setting, false);
+	}
+	
+	// All
+	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, String def, boolean concatFromHere)
+	{
+		return this.addArg(ArgSetting.of(reader, requiredFromConsole, name, def), concatFromHere);
+	}
+	
+	// Without concat.
+	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, String def)
+	{
+		return this.addArg(reader, requiredFromConsole, name, def, false);
+	}
+	
+	// Without reqFromConsole.
+	public ArgSetting addArg(AR<?> reader, String name, String def, boolean concatFromHere)
+	{
+		return this.addArg(reader, false, name, def, concatFromHere);
+	}
+	
+	// Without default.
+	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, boolean concatFromHere)
+	{
+		return this.addArg(reader, requiredFromConsole, name, null, concatFromHere);
+	}
+	
+	// Without concat & reqFromConsole.
+	public ArgSetting addArg(AR<?> reader, String name, String def)
+	{
+		return this.addArg(reader, false, name, def, false);
+	}
+	
+	// Without concat and default.
+	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name)
+	{
+		return this.addArg(reader, requiredFromConsole, name, null, false);
+	}
+
+	// Without reqFromConsole and default.
+	public ArgSetting addArg(AR<?> reader, String name, boolean concatFromHere)
+	{
+		return this.addArg(reader, false, name, null, concatFromHere);
+	}
+
+	// Without concat, reqFromConsole and default.
+	public ArgSetting addArg(AR<?> reader, String name)
+	{
+		return this.addArg(reader, false, name, null, false);
+	}
+
 	// FIELD: requiredArgs
 	// These args must always be sent
-	protected List<String> requiredArgs;
-	public List<String> getRequiredArgs() { return this.requiredArgs; }
-	public void setRequiredArgs(List<String> requiredArgs) { this.requiredArgs = requiredArgs; }
+	@Deprecated protected List<String> requiredArgs;
+	@Deprecated public List<String> getRequiredArgs() { return this.requiredArgs; }
+	@Deprecated public void setRequiredArgs(List<String> requiredArgs) { this.requiredArgs = requiredArgs; }
 	
-	public void addRequiredArg(String arg) { this.requiredArgs.add(arg); }
+	@Deprecated public void addRequiredArg(String arg) { this.requiredArgs.add(arg); }
 	
 	// FIELD: optionalArgs
 	// These args are optional
-	protected Map<String, String> optionalArgs;
-	public Map<String, String> getOptionalArgs() { return this.optionalArgs; }
-	public void setOptionalArgs(Map<String, String> optionalArgs) { this.optionalArgs = optionalArgs; }
+	@Deprecated protected Map<String, String> optionalArgs;
+	@Deprecated public Map<String, String> getOptionalArgs() { return this.optionalArgs; }
+	@Deprecated public void setOptionalArgs(Map<String, String> optionalArgs) { this.optionalArgs = optionalArgs; }
 	
-	public void addOptionalArg(String arg, String def) { this.optionalArgs.put(arg, def); }
+	@Deprecated public void addOptionalArg(String arg, String def) { this.optionalArgs.put(arg, def); }
 	
 	// FIELD: errorOnToManyArgs
-	// Should an error be thrown if "to many" args are sent.
+	// Should an error be thrown if "too many" args are sent.
 	protected boolean errorOnToManyArgs;
-	public boolean getErrorOnToManyArgs() { return this.errorOnToManyArgs; }
-	public void setErrorOnToManyArgs(boolean val) { this.errorOnToManyArgs = val; }
+	public boolean isGivingErrorOnTooManyArgs() { return this.errorOnToManyArgs; }
+	public void setErrorOnTooManyArgs(boolean val) { this.errorOnToManyArgs = val; }
+	@Deprecated public boolean getErrorOnToManyArgs() { return this.isGivingErrorOnTooManyArgs(); }
+	@Deprecated public void setErrorOnToManyArgs(boolean val) { this.setErrorOnTooManyArgs(val); }
+	
+	// FIELD concatFrom 
+	// From which arg should the be concatenated.
+	protected boolean usingConcatFrom;
+	public boolean isUsingConcatFrom() { return this.usingConcatFrom; }
+	public void setUsingConcatFrom(boolean usingConcatFrom) { this.usingConcatFrom = usingConcatFrom; }
+	
+	public int getConcatFromIndex() { return this.getArgSettings().size() -1; }
 	
 	// FIELD: usingTokenizer
 	// Should the arguments be parsed considering quotes and backslashes and such?
@@ -283,10 +402,64 @@ public class MassiveCommand
 	public List<MassiveCommand> getCommandChain() { return this.commandChain; }
 	public void setCommandChain(List<MassiveCommand> commandChain) { this.commandChain = commandChain; }
 	
+	public MassiveCommand getParentCommand()
+	{
+		List<MassiveCommand> commandChain = this.getCommandChain();
+		if (commandChain == null) return null;
+		if (commandChain.isEmpty()) return null;
+		return commandChain.get(commandChain.size()-1);
+	}
+	
+	public boolean hasParentCommand() { return this.getParentCommand() != null; }
+	
+	// FIELD: nextArg
+	// The index of the next arg to read.
+	public int nextArg;
+	
 	// FIELDS: sender, me, senderIsConsole
 	public CommandSender sender;
 	public Player me;
 	public boolean senderIsConsole;
+	
+	// -------------------------------------------- //
+	// BACKWARDS COMPAT
+	// -------------------------------------------- //
+	
+	public boolean isUsingNewArgSystem()
+	{
+		return ! this.getArgSettings().isEmpty();
+	}
+	
+	public int getRequiredArgsAmountFor(CommandSender sender)
+	{
+		if ( ! this.isUsingNewArgSystem()) return this.getRequiredArgs().size();
+		
+		int ret = 0;
+		for (ArgSetting setting : this.getArgSettings())
+		{
+			if (setting.isRequiredFor(sender)) ret++;
+		}
+		
+		return ret;
+	}
+	
+	public int getOptionalArgsAmountFor(CommandSender sender)
+	{
+		if ( ! this.isUsingNewArgSystem()) return this.getOptionalArgs().size();
+		
+		int ret = 0;
+		for (ArgSetting setting : this.getArgSettings())
+		{
+			if (setting.isOptionalFor(sender)) ret++;
+		}
+		
+		return ret;
+	}
+	
+	public int getAllArgsAmountFor(CommandSender sender)
+	{
+		return this.getOptionalArgsAmountFor(sender) + this.getRequiredArgsAmountFor(sender);
+	}
 	
 	// -------------------------------------------- //
 	// CONSTRUCTORS AND EXECUTOR
@@ -298,12 +471,16 @@ public class MassiveCommand
 		
 		this.aliases = new ArrayList<String>();
 		
+		this.argSettings = new ArrayList<ArgSetting>();
+		
 		this.requiredArgs = new ArrayList<String>();
 		this.optionalArgs = new LinkedHashMap<String, String>();
 		
 		this.requirements = new ArrayList<Req>();
 		
 		this.errorOnToManyArgs = true;
+		this.usingConcatFrom = false;
+		
 		this.usingTokenizer = true;
 		this.usingSmartQuotesRemoval = true;
 		
@@ -316,6 +493,7 @@ public class MassiveCommand
 	// The commandChain is a list of the parent command chain used to get to this command.
 	public void execute(CommandSender sender, List<String> args, List<MassiveCommand> commandChain)
 	{
+		args = this.applyConcatFrom(args);
 		this.setArgs(args);
 		this.setCommandChain(commandChain);
 
@@ -335,6 +513,7 @@ public class MassiveCommand
 		try
 		{
 			// Set Sender Variables
+			this.nextArg = 0;
 			this.sender = sender;
 			this.senderIsConsole = true;
 			this.me = null;
@@ -361,6 +540,7 @@ public class MassiveCommand
 		finally
 		{
 			// Unset Sender Variables
+			this.nextArg = 0;
 			this.sender = null;
 			this.me = null;
 			this.unsetSenderVars();
@@ -379,6 +559,22 @@ public class MassiveCommand
 	public void execute(CommandSender sender, List<String> args)
 	{
 		execute(sender, args, new ArrayList<MassiveCommand>());
+	}
+	
+	public List<String> applyConcatFrom(List<String> args)
+	{
+		if ( ! this.isUsingConcatFrom()) return args;
+		
+		List<String> ret = new MassiveList<String>();
+		final int maxIdx = Math.min(this.getConcatFromIndex(), args.size());
+		ret.addAll(args.subList(0, maxIdx)); // The args that should not be concatenated.
+		
+		if (args.size() > maxIdx)
+		{
+			ret.add(Txt.implode(args.subList(maxIdx, args.size()), " "));
+		}
+		
+		return ret;
 	}
 	
 	// This is where the command action is performed.
@@ -424,60 +620,61 @@ public class MassiveCommand
 	{
 		for (Req req : this.getRequirements())
 		{
-			if ( ! req.apply(sender, this))
+			if (req.apply(sender, this)) continue;
+			
+			if (informSenderIfNot)
 			{
-				if (informSenderIfNot)
-				{
-					this.msg(req.createErrorMessage(sender, this));
-				}
-				return false;
+				Mixin.messageOne(sender, req.createErrorMessage(sender, this));
 			}
+			return false;
 		}
 		return true;
 	}
 	
 	public boolean isArgsValid(List<String> args, CommandSender sender)
 	{
-		if (args.size() < this.getRequiredArgs().size())
+		if (args.size() < this.getRequiredArgsAmountFor(sender))
 		{
 			if (sender != null)
 			{
-				msg(Lang.COMMAND_TOO_FEW_ARGS);
-				sendMessage(this.getUseageTemplate());
+				Mixin.msgOne(sender, Lang.COMMAND_TOO_FEW_ARGS);
+				Mixin.messageOne(sender, this.getUseageTemplate());
 			}
 			return false;
 		}
 		
-		if (args.size() > this.getRequiredArgs().size() + this.getOptionalArgs().size() && this.getErrorOnToManyArgs())
+		// We don't need to take argConcatFrom into account. Because at this point the args 
+		// are already concatenated and thus cannot be too many.
+		if (args.size() > this.getAllArgsAmountFor(sender) && this.isGivingErrorOnTooManyArgs())
 		{
 			if (sender != null)
 			{
 				if (this.isParentCommand())
 				{
-					String arg = this.arg(0);
+					String arg = args.get(0);
 					
 					// Try Levenshtein
 					List<String> matches = this.getSimilarSubcommandAliases(arg, this.getMaxLevenshteinDistanceForArg(arg));
 					
-					msg(Lang.COMMAND_NO_SUCH_SUB, this.getUseageTemplate() + " " + arg);
+					Mixin.msgOne(sender, Lang.COMMAND_NO_SUCH_SUB, this.getUseageTemplate() + " " + arg);
 					if ( ! matches.isEmpty())
 					{
 						String suggest = Txt.parse(Txt.implodeCommaAnd(matches, "<i>, <c>", " <i>or <c>"));
-						msg(Lang.COMMAND_SUGGEST_SUB, this.getUseageTemplate() + " " + suggest);
+						Mixin.msgOne(sender, Lang.COMMAND_SUGGEST_SUB, this.getUseageTemplate() + " " + suggest);
 					}
 					else
 					{
-						msg(Lang.COMMAND_GET_HELP, this.getUseageTemplate());
+						Mixin.msgOne(sender, Lang.COMMAND_GET_HELP, this.getUseageTemplate());
 					}
 					
 				}
 				else
 				{
 					// Get the too many string slice
-					List<String> theTooMany = args.subList(this.getRequiredArgs().size() + this.optionalArgs.size(), args.size());
-					msg(Lang.COMMAND_TOO_MANY_ARGS, Txt.implodeCommaAndDot(theTooMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
-					msg(Lang.COMMAND_TOO_MANY_ARGS2);
-					sendMessage(this.getUseageTemplate());
+					List<String> theTooMany = args.subList(this.getAllArgsAmountFor(sender), args.size());
+					Mixin.msgOne(sender, Lang.COMMAND_TOO_MANY_ARGS, Txt.implodeCommaAndDot(theTooMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
+					Mixin.msgOne(sender, Lang.COMMAND_TOO_MANY_ARGS2);
+					Mixin.messageOne(sender, this.getUseageTemplate());
 				}
 			}
 			return false;
@@ -495,12 +692,14 @@ public class MassiveCommand
 	
 	public List<String> getSimilarAliases(String arg, int maxLevenshteinDistance)
 	{
+		if (arg == null) return Collections.emptyList();
 		arg = arg.toLowerCase();
 		
 		List<String> matches = new ArrayList<String>();
 		
 		for (String alias : this.getAliases())
 		{
+			if (alias == null) continue;
 			String aliaslc = alias.toLowerCase();
 			int distance = StringUtils.getLevenshteinDistance(arg, aliaslc);
 			if (distance > maxLevenshteinDistance) continue;
@@ -511,6 +710,8 @@ public class MassiveCommand
 	
 	public List<String> getSimilarSubcommandAliases(String arg, int maxLevenshteinDistance)
 	{
+		if (arg == null) return Collections.emptyList();
+		
 		// Try Levenshtein
 		List<String> matches = new ArrayList<String>();
 		
@@ -579,26 +780,7 @@ public class MassiveCommand
 			first = false;
 		}
 		
-		List<String> args = new ArrayList<String>();
-		
-		for (String requiredArg : this.getRequiredArgs())
-		{
-			args.add("<"+requiredArg+">");
-		}
-		
-		for (Entry<String, String> optionalArg : this.getOptionalArgs().entrySet())
-		{
-			String val = optionalArg.getValue();
-			if (val == null)
-			{
-				val = "";
-			}
-			else
-			{
-				val = "="+val;
-			}
-			args.add("["+optionalArg.getKey()+val+"]");
-		}
+		List<String> args = this.getArgUseagesFor(sender);
 		
 		if (args.size() > 0)
 		{
@@ -615,6 +797,41 @@ public class MassiveCommand
 		}
 		
 		return ret.toString();
+	}
+	
+	protected List<String> getArgUseagesFor(CommandSender sender)
+	{
+		List<String> ret = new MassiveList<String>();
+		if (this.isUsingNewArgSystem())
+		{
+			for (ArgSetting setting : this.getArgSettings())
+			{
+				ret.add(setting.getUseageTemplateDisplayFor(sender));
+			}
+		}
+		else
+		{
+			for (String requiredArg : this.getRequiredArgs())
+			{
+				ret.add("<" + requiredArg + ">");
+			}
+			
+			for (Entry<String, String> optionalArg : this.getOptionalArgs().entrySet())
+			{
+				String val = optionalArg.getValue();
+				if (val == null)
+				{
+					val = "";
+				}
+				else
+				{
+					val = "=" + val;
+				}
+				ret.add("[" + optionalArg.getKey() + val + "]");
+			}
+		}
+		
+		return ret;
 	}
 	
 	public String getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
@@ -635,6 +852,92 @@ public class MassiveCommand
 	public String getUseageTemplate()
 	{
 		return getUseageTemplate(false);
+	}
+	
+ 	// -------------------------------------------- //
+	// TAB
+	// -------------------------------------------- //
+	
+	public List<String> getTabCompletions(List<String> args, CommandSender sender)
+	{
+		if (args == null) throw new IllegalArgumentException("args was mull");
+		if (sender == null) throw new IllegalArgumentException("sender was null");
+		if (args.isEmpty()) throw new IllegalArgumentException("args was empty");
+		
+		if (this.isParentCommand())
+		{
+			return this.getTabCompletionsSub(args, sender);
+		}
+		else if ( ! this.isUsingNewArgSystem())
+		{
+			return Collections.emptyList();
+		}
+		else
+		{
+			return this.getTabCompletionsArg(args, sender);
+		}
+	}
+	
+	protected List<String> getTabCompletionsSub(List<String> args, CommandSender sender)
+	{
+		// If this isn't the last argument...
+		if (args.size() != 1)
+		{
+			// ...we will ask the subcommand for tab completions.
+			MassiveCommand cmd = this.getSubCommand(args.get(0));
+			if (cmd == null) return Collections.emptyList();
+			args.remove(0);
+			return cmd.getTabCompletions(args, sender);
+		}
+
+		// ...else check the subcommands.
+		List<String> ret = new ArrayList<String>();
+		String token = args.get(args.size()-1).toLowerCase();
+		for (MassiveCommand sub : this.getSubCommands())
+		{
+			if ( ! this.shouldSenderTabCompleteSub(sender, sub)) continue;
+			ret.addAll(Txt.getStartsWithIgnoreCase(sub.getAliases(), token));
+		}
+		
+		return addSpaceAtEnd(ret);
+	}
+	
+	protected boolean shouldSenderTabCompleteSub(CommandSender sender, MassiveCommand sub)
+	{
+		if ( ! sub.isVisibleTo(sender)) return false;
+		if ( ! sub.isRequirementsMet(sender, false)) return false;
+		return true;
+	}
+	
+	protected List<String> getTabCompletionsArg(List<String> args, CommandSender sender)
+	{
+		args = this.applyConcatFrom(args);
+		
+		int index = args.size() - 1;
+		if ( ! this.hasArgSettingForIndex(index)) return Collections.emptyList();
+		AR<?> reader = this.getArgReader(index);
+		
+		List<String> ret = reader.getTabListFiltered(sender, args.get(index));
+		
+		// If the reader allows space after tab and this is not the last possible argument...
+		if (reader.allowSpaceAfterTab() && this.hasArgSettingForIndex(args.size()))
+		{
+			// ...we will sometimes add a space at the end. Depending on list size.
+			ret = addSpaceAtEnd(ret);
+		}
+		
+		return ret;
+	}
+	
+	protected static List<String> addSpaceAtEnd(List<String> suggestions)
+	{
+		if (suggestions.size() != 1) return suggestions;
+
+		// Get the suggestion.
+		String suggestion = suggestions.get(0);
+		// Add the space at the end.
+		suggestion += ' ';
+		return Collections.singletonList(suggestion);
 	}
 	
 	// -------------------------------------------- //
@@ -679,27 +982,101 @@ public class MassiveCommand
 	// ARGUMENT READERS
 	// -------------------------------------------- //
 	
-	// argIsSet
+	// Util
 	
 	public boolean argIsSet(int idx)
 	{
-		return ! (this.args.size() < idx+1);
+		if (idx < 0) return false;
+		if (idx+1 > this.getArgs().size()) return false;
+		return true;
 	}
 	
-	// arg
-	
-	public String arg(int idx)
+	public boolean argIsSet()
 	{
+		return this.argIsSet(nextArg);
+	}
+	
+	// Implicit index
+	
+	public String arg()
+	{
+		return this.argAt(nextArg);
+	}
+	
+	public Object readArg() throws MassiveException
+	{
+		return this.readArgAt(nextArg);
+	}
+
+	public Object readArg(Object defaultNotSet) throws MassiveException
+	{
+		return this.readArgAt(nextArg, defaultNotSet);
+	}
+
+	// Index logic
+	
+	public String argAt(int idx)
+	{
+		nextArg = idx + 1;
 		if ( ! this.argIsSet(idx)) return null;
 		return this.getArgs().get(idx);
 	}
 	
+	public Object readArgAt(int idx) throws MassiveException
+	{
+		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
+		String str = this.argAt(idx);
+		return this.readArgFrom(str, this.getArgSettings().get(idx).getReader());
+	}
+
+	@SuppressWarnings("unchecked")
+	public Object readArgAt(int idx, Object defaultNotSet) throws MassiveException
+	{
+		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
+		String str = this.argAt(idx);
+		return this.readArgFrom(str, (AR<Object>)this.getArgSettings().get(idx).getReader(), defaultNotSet);
+	}
+
+	// Core Logic
+	
+	public <T> T readArgFrom(AR<T> argReader) throws MassiveException
+	{
+		if (argReader == null) throw new IllegalArgumentException("argReader is null");
+		return this.readArgFrom(null, argReader);
+	}
+	
+	public <T> T readArgFrom(String str, AR<T> argReader) throws MassiveException
+	{
+		if (argReader == null) throw new IllegalArgumentException("argReader is null");
+		return argReader.read(str, this.sender);
+	}
+	
+	public <T> T readArgFrom(String str, AR<T> argReader, T defaultNotSet) throws MassiveException
+	{
+		if (str == null) return defaultNotSet;
+		return this.readArgFrom(str, argReader);
+	}
+	
+	// -------------------------------------------- //
+	// OLD ARGUMENT READERS
+	// -------------------------------------------- //
+
+	// arg
+	
+	@Deprecated
+	public String arg(int idx)
+	{
+		return this.argAt(idx);
+	}
+	
+	@Deprecated
 	public <T> T arg(int idx, AR<T> argReader) throws MassiveException
 	{
 		String str = this.arg(idx);
 		return this.arg(str, argReader);
 	}
 	
+	@Deprecated
 	public <T> T arg(int idx, AR<T> argReader, T defaultNotSet) throws MassiveException
 	{
 		String str = this.arg(idx);
@@ -708,6 +1085,7 @@ public class MassiveCommand
 	
 	// argConcatFrom
 	
+	@Deprecated
 	public String argConcatFrom(int idx)
 	{
 		if ( ! this.argIsSet(idx)) return null;
@@ -717,12 +1095,14 @@ public class MassiveCommand
 		return Txt.implode(this.getArgs().subList(from, to), " ");
 	}
 	
+	@Deprecated
 	public <T> T argConcatFrom(int idx, AR<T> argReader) throws MassiveException
 	{
 		String str = this.argConcatFrom(idx);
 		return this.arg(str, argReader);
 	}
 	
+	@Deprecated
 	public <T> T argConcatFrom(int idx, AR<T> argReader, T defaultNotSet) throws MassiveException
 	{
 		String str = this.argConcatFrom(idx);
@@ -731,16 +1111,19 @@ public class MassiveCommand
 	
 	// Core & Other
 	
+	@Deprecated
 	public <T> T arg(AR<T> argReader) throws MassiveException
 	{
 		return this.arg(null, argReader);
 	}
 	
+	@Deprecated
 	public <T> T arg(String str, AR<T> argReader) throws MassiveException
 	{
 		return argReader.read(str, this.sender);
 	}
 	
+	@Deprecated
 	public <T> T arg(String str, AR<T> argReader, T defaultNotSet) throws MassiveException
 	{
 		if (str == null) return defaultNotSet;

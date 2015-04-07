@@ -24,11 +24,9 @@ public class ARWorld extends ARAbstract<World>
 	@Override
 	public World read(String arg, CommandSender sender) throws MassiveException
 	{
-		World ret;
-		
 		String worldId = ARWorldId.get().read(arg, sender);
 		
-		ret = Bukkit.getWorld(worldId);
+		World ret = Bukkit.getWorld(worldId);
 		
 		if (ret == null)
 		{

@@ -1,13 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 
-public class AREntityType extends ARAbstractSelect<EntityType>
+public class AREntityType extends ARAbstractSelect<EntityType> implements ARAllAble<EntityType>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -54,6 +55,12 @@ public class AREntityType extends ARAbstractSelect<EntityType>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		return this.altNames(sender);
+	}
+	
+	@Override
+	public Collection<EntityType> getAll(CommandSender sender)
+	{
+		return Arrays.asList(EntityType.values());
 	}
 	
 	// -------------------------------------------- //

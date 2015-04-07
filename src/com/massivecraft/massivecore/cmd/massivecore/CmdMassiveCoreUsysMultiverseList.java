@@ -24,7 +24,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addOptionalArg("page", "1");
+		this.addArg(ARInteger.get(), "page", "1").setDesc("the page in the multiverse list");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_LIST.node));
@@ -38,7 +38,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		Integer pageHumanBased = this.arg(0, ARInteger.get(), 1);
+		int pageHumanBased = (Integer) this.readArg(1);
 		
 		// Create Lines
 		List<String> lines = new ArrayList<String>();

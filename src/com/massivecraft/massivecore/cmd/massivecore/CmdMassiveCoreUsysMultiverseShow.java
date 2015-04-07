@@ -25,7 +25,7 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 		this.addAliases("s", "show");
 		
 		// Args
-		this.addRequiredArg("multiverse");
+		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse to show info about");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_SHOW.node));
@@ -38,7 +38,7 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Multiverse multiverse = this.arg(0, ARMultiverse.get());
+		Multiverse multiverse = (Multiverse) this.readArg();
 		
 		msg(Txt.titleize("Multiverse: "+multiverse.getId()));
 		

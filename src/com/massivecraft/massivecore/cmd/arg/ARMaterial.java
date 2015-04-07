@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 
-public class ARMaterial extends ARAbstract<Material>
+public class ARMaterial extends ARAbstract<Material> implements ARAllAble<Material>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -47,6 +48,12 @@ public class ARMaterial extends ARAbstract<Material>
 		}
 		
 		return ret;
+	}
+	
+	@Override
+	public Collection<Material> getAll(CommandSender sender)
+	{
+		return Arrays.asList(Material.values());
 	}
 
 }

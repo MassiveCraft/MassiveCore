@@ -8,17 +8,19 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.util.Txt;
 
-public class ARSet<E> extends ARAbstract<Set<E>>
+public class ARSet<E> extends ARCollection<Set<E>>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final AR<E> elementArgReader;
+	protected final AR<E> elementArgReader;
 	public AR<E> getElementArgReader() { return this.elementArgReader; }
+	@Override public AR<E> getInnerArgReader() { return this.getElementArgReader(); }
 	
-	private final boolean warnOnDuplicates;
+	protected final boolean warnOnDuplicates;
 	public boolean getWarnOnDuplicate() { return warnOnDuplicates; }
 	
 	// -------------------------------------------- //
@@ -51,7 +53,7 @@ public class ARSet<E> extends ARAbstract<Set<E>>
 	public Set<E> read(String arg, CommandSender sender) throws MassiveException
 	{
 		// Split into inner args
-		String[] elementArgs = arg.split("\\s+");
+		String[] elementArgs = Txt.REGEX_WHITESPACE.split(arg);
 		
 		// Create Ret
 		Set<E> ret = new LinkedHashSet<E>();

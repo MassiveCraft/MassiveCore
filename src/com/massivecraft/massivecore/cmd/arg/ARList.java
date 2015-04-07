@@ -1,14 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.util.Txt;
 
-public class ARList<E> extends ARAbstract<List<E>>
+public class ARList<E> extends ARCollection<List<E>>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -16,6 +16,7 @@ public class ARList<E> extends ARAbstract<List<E>>
 	
 	protected AR<E> elementArgReader;
 	public AR<E> getElementArgReader() { return this.elementArgReader; }
+	@Override public AR<E> getInnerArgReader() { return this.getElementArgReader(); }
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -34,19 +35,13 @@ public class ARList<E> extends ARAbstract<List<E>>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String getTypeName()
-	{
-		return elementArgReader.getTypeName();
-	}
 
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
 	public List<E> read(String arg, CommandSender sender) throws MassiveException
 	{
 		// Split into inner args
-		String[] elementArgs = arg.split("\\s+");
+		String[] elementArgs = Txt.REGEX_WHITESPACE.split(arg);
 		
 		// Create Ret
 		List<E> ret = new ArrayList<E>();
@@ -61,12 +56,6 @@ public class ARList<E> extends ARAbstract<List<E>>
 		
 		// Return Ret
 		return ret;
-	}
-
-	@Override
-	public Collection<String> getTabList(CommandSender sender, String arg)
-	{
-		return this.getElementArgReader().getTabList(sender, arg);
 	}
 
 }

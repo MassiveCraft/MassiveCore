@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.util.MUtil;
 
-public class AREnvironment extends ARAbstractSelect<Environment>
+public class AREnvironment extends ARAbstractSelect<Environment> implements ARAllAble<Environment>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -73,6 +74,12 @@ public class AREnvironment extends ARAbstractSelect<Environment>
 		}
 		
 		return ret;
+	}
+	
+	@Override
+	public Collection<Environment> getAll(CommandSender sender)
+	{
+		return Arrays.asList(Environment.values());
 	}
 	
 	// -------------------------------------------- //

@@ -1,13 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.block.Biome;
 import org.bukkit.command.CommandSender;
 
-public class ARBiome extends ARAbstractSelect<Biome>
+public class ARBiome extends ARAbstractSelect<Biome> implements ARAllAble<Biome>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -27,17 +28,11 @@ public class ARBiome extends ARAbstractSelect<Biome>
 		
 		for (Biome biome : Biome.values())
 		{
-			String biomestr = getComparable(biome.name());
-			if (biomestr.equals(arg))
-			{
-				return biome;
-			}
+			String biomestr = getComparable(biome);
+			if (biomestr.equals(arg)) return biome;
 			
 			biomestr = String.valueOf(biome.ordinal());
-			if (biomestr.equals(arg))
-			{
-				return biome;
-			}
+			if (biomestr.equals(arg)) return biome;
 		}
 		
 		return null;
@@ -70,9 +65,22 @@ public class ARBiome extends ARAbstractSelect<Biome>
 		return ret;
 	}
 	
+	
+	@Override
+	public Collection<Biome> getAll(CommandSender sender)
+	{
+		return Arrays.asList(Biome.values());
+	}
+	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
+	
+	public static String getComparable(Biome biome)
+	{
+		if (biome == null) return null;
+		return getComparable(biome.name());
+	}
 	
 	public static String getComparable(String string)
 	{

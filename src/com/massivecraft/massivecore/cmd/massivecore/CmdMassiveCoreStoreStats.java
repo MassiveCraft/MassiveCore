@@ -24,7 +24,7 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 		this.addAliases("stats");
 		
 		// Args
-		this.addOptionalArg("coll", Coll.TOTAL);
+		this.addArg(ARColl.get(), "coll", Coll.TOTAL).setDesc("the coll to show info about");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.STORE_STATS.node));
@@ -37,13 +37,13 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		if (!this.argIsSet(0) || this.arg(0).equalsIgnoreCase(Coll.TOTAL))
+		if ( ! this.argIsSet(0) || this.argAt(0).equalsIgnoreCase(Coll.TOTAL))
 		{
 			this.performTotal();
 		}
 		else
 		{
-			Coll<?> coll = this.arg(0, ARColl.get());
+			Coll<?> coll = (Coll<?>) this.readArg();
 			this.performColl(coll);
 		}
 	}

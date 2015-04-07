@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class ARWorldId extends ARAbstractSelect<String>
+public class ARWorldId extends ARAbstractSelect<String> implements ARAllAble<String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -66,6 +66,12 @@ public class ARWorldId extends ARAbstractSelect<String>
 
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		return Mixin.getVisibleWorldIds(sender);
+	}
+
+	@Override
+	public Collection<String> getAll(CommandSender sender)
 	{
 		return Mixin.getVisibleWorldIds(sender);
 	}

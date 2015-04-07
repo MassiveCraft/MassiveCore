@@ -23,8 +23,7 @@ public class CmdMassiveCoreHearsound extends MassiveCommand
 		this.addAliases("hearsound", "hearsounds");
 		
 		// Args
-		this.addRequiredArg("sound(s)");
-		this.setErrorOnToManyArgs(false);
+		this.addArg(ARList.get(ARSoundEffect.get()), "sound(s)", true).setDesc("the sounds to hear");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.HEARSOUND.node));
@@ -35,11 +34,12 @@ public class CmdMassiveCoreHearsound extends MassiveCommand
 	// OVERRIDE
 	// -------------------------------------------- //
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void perform() throws MassiveException
 	{
 		// Args
-		List<SoundEffect> soundEffects = this.argConcatFrom(0, ARList.get(ARSoundEffect.get()));
+		List<SoundEffect> soundEffects = (List<SoundEffect>) this.readArg();
 		
 		// Apply
 		SoundEffect.runAll(soundEffects, me);

@@ -27,7 +27,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 		this.addAliases("listcolls");
 		
 		// Args
-		this.addOptionalArg("db", ConfServer.dburi);
+		this.addArg(ARString.get(), "db", ConfServer.dburi).setDesc("the database to list colls from");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.STORE_LISTCOLLS.node));
@@ -41,7 +41,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		final String dbAlias = this.arg(0, ARString.get(), ConfServer.dburi);
+		final String dbAlias = (String) this.readArg(ConfServer.dburi);
 		final Db db = MStore.getDb(dbAlias);
 		if (db == null)
 		{

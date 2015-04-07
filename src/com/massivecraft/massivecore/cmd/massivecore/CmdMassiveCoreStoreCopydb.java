@@ -6,7 +6,9 @@ import java.util.Set;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
@@ -25,8 +27,8 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 		this.addAliases("copydb");
 		
 		// Args
-		this.addRequiredArg("from");
-		this.addRequiredArg("to");
+		this.addArg(ARString.get(), "from").setDesc("the database to copy from");
+		this.addArg(ARString.get(), "to").setDesc("the database to copy to");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.STORE_COPYDB.node));
@@ -37,10 +39,10 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 	// -------------------------------------------- //
 	
 	@Override
-	public void perform()
+	public void perform() throws MassiveException
 	{
 		// Args
-		final String fromAlias = this.arg(0);
+		final String fromAlias = (String) this.readArg();
 		final Db fromDb = MStore.getDb(fromAlias);
 		if (fromDb == null)
 		{
@@ -48,7 +50,7 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 			return;
 		}
 		
-		final String toAlias = this.arg(1);
+		final String toAlias = (String) this.readArg();
 		final Db toDb = MStore.getDb(toAlias);
 		if (toDb == null)
 		{

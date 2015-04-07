@@ -1,18 +1,15 @@
 package com.massivecraft.massivecore.cmd;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.mixin.Mixin;
-import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class MassiveCoreBukkitCommand extends Command implements PluginIdentifiableCommand
@@ -21,7 +18,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final MassiveCommand massiveCommand;
+	protected final MassiveCommand massiveCommand;
 	public MassiveCommand getMassiveCommand() { return this.massiveCommand; }
 	
 	// -------------------------------------------- //
@@ -46,7 +43,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 	@Override
 	public Plugin getPlugin()
 	{
-		return massiveCommand.getRegisteredPlugin();
+		return this.getMassiveCommand().getRegisteredPlugin();
 	}
 	
 	// -------------------------------------------- //
@@ -57,26 +54,26 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 	public boolean execute(CommandSender sender, String commandLabel, String[] args)
 	{
 		List<String> argList = this.createArgList(args);
-		this.massiveCommand.execute(sender, argList);
+		this.getMassiveCommand().execute(sender, argList);
 		return true;
 	}
 	
 	public List<String> createArgList(String[] args)
 	{
 		List<String> ret;
-		if (this.massiveCommand.isUsingTokenizer())
+		if (this.getMassiveCommand().isUsingTokenizer())
 		{
 			ret = Txt.tokenizeArguments(Txt.implode(args, " "));
 		}
 		else
 		{
-			ret = new ArrayList<String>(Arrays.asList(args));
+			ret = MUtil.list(args);
 		}
 		
-		if (this.massiveCommand.isUsingSmartQuotesRemoval())
+		if (this.getMassiveCommand().isUsingSmartQuotesRemoval())
 		{
 			List<String> oldArgList = ret;
-			ret = new ArrayList<String>();
+			ret = new ArrayList<String>(oldArgList.size());
 			for (String arg : oldArgList)
 			{
 				ret.add(Txt.removeSmartQuotes(arg));
@@ -89,89 +86,58 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 	// OVERRIDE: TAB COMPLETE
 	// -------------------------------------------- //
 	
+	// NOTE: There is some Vanilla bugs, described here.
+	
+	// Test 1. These bugs occur when using commands provided by Bukkit plugins.
+	// Test 2. These bugs do also occur when using BungeeCoord commands.
+	// BungeeCoord commands are handled MUCH differently than Bukkit commands.
+	// In fact BungeeCoord commands are not related to Bukkit at all.
+	// Test 3. These bugs do also occur in plain singleplayer vanilla MineCraft.
+	
+	// These notes suggests that this is a client side bug and NOT a server side one.
+	
+	// BUG 1. Tab complete to first common prefix then normal.
+	// Desc: Tab completes to the first common prefix of the available completions
+	// after that it will tab complete normally.
+	// Happens when:
+	//	1. All possible suggestions has the same common prefix.
+	//	2. The common prefix must be of at least two characters,
+	//	3. There is more than one suggestion.
+	//	4. Tab completing from the end of the chat bar. (There is only text to the left)
+	//	5. The user typed in the beginning of the arg to tab complete.
+	
+	// BUG 2. Tab complete to first common prefix then nothing.
+	// Desc: Tab completes to the first common prefix of the available completions
+	// after that it will refuse to tab complete anymore.
+	// Happens when:
+	//	1. All possible suggestions has the same common prefix.
+	//	3. There is more than one suggestion.
+	//	4. Tab completing from the middle of the chat bar. (There text on both sides)
+	//	5. The user typed in the beginning of the arg to tab complete.
+	
 	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException
+	public List<String> tabComplete(CommandSender sender, String alias, String[] rawArgs) throws IllegalArgumentException
 	{
-		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		String tokenlc = args[args.length - 1].toLowerCase();
+		// The JavaDocs for Command says these checks will be made.
+		// So we should follow that contract.
+		if (sender == null) throw new IllegalArgumentException("sender must not be null");
+		if (rawArgs == null) throw new IllegalArgumentException("args must not be null");
+		if (alias == null) throw new IllegalArgumentException("args must not be null");
 		
-		// First we need a command to find the subcommands in.
-		MassiveCommand cmd = this.getSubCommand(args, massiveCommand);
-		
-		// So if we found a command, and it has subcommands
-		// we will suggest the aliases instead of senders.
-		if (cmd != null && cmd.getSubCommands().size() > 0)
-		{	
-			// If we compiled in Java 8, I could have used streams :(
-			for (MassiveCommand sub : cmd.getSubCommands())
-			{
-				if ( ! sub.isVisibleTo(sender)) continue;
-				for (String subAlias : sub.getAliases())
-				{
-					if ( ! subAlias.toLowerCase().startsWith(tokenlc)) continue;
-					ret.add(subAlias);
-				}
-			}
-			
-			// return, so senders is not suggested.
-			return new ArrayList<String>(ret);
-		}
-		
-		// If subcommands didn't work, we will try with senders.
-		List<String> superRet = super.tabComplete(sender, alias, args);
-		if (args.length == 0) return superRet;
-		
-		ret.addAll(superRet);
-		
-		// Add names of all online senders that match and isn't added yet.
-		for (String senderName : IdUtil.getOnlineNames())
+		List<String> args = new MassiveList<String>();
+		// When several spaces are next to each other, empty elements in the array will occur.
+		// To avoid such whitespace we do the following
+		// NOTE: The last arg can be empty, and will be in many cases.	
+		for (int i = 0; i < rawArgs.length-1; i++ )
 		{
-			if (!senderName.toLowerCase().startsWith(tokenlc)) continue;
-			if (!Mixin.canSee(sender, senderName)) continue;
-			ret.add(senderName);
+			String str = rawArgs[i];
+			if (str == null) continue;
+			if (str.isEmpty()) continue;
+			args.add(str);
 		}
-		
-		return new ArrayList<String>(ret);
-	}
-	
-	// -------------------------------------------- //
-	// PRIVATE: TAB COMPLETE
-	// -------------------------------------------- //
-	
-	private MassiveCommand getSubCommand(String[] args, MassiveCommand cmd)
-	{
-		// First we look in the basecommand, then in its subcommands,
-		// and the next subcommand and so on.
-		// Until we run out of args or no subcommand is found.
-		for (int i = 0; i < args.length-1; i++)
-		{
-			String arg = args[i];
-			// If no subcommand is found we will not look further.
-			if (cmd == null) break;
-
-			// We have to loop through the subcommands to see if any match the arg.
-			// if none exists we will get null, thus we break in case of null.
-			cmd = this.getSubCommand(arg, cmd);
-		}
-		
-		return cmd;
-	}
-	
-	private MassiveCommand getSubCommand(String arg, MassiveCommand cmd)
-	{
-		if (cmd == null || arg == null) return null;
-
-		// We will look in all its subcommands
-		for (MassiveCommand sub : cmd.getSubCommands())
-		{
-			// and in all those look for an alias that matches
-			for (String subAlias : sub.getAliases())
-			{
-				// If it matched we had success
-				if (subAlias.equalsIgnoreCase(arg)) return sub;
-			}
-		}
-		return null;
+		// Here we add the last element.
+		args.add(rawArgs[rawArgs.length-1]);
+		return this.getMassiveCommand().getTabCompletions(args, sender);
 	}
 	
 }

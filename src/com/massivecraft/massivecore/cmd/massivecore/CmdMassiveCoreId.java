@@ -29,7 +29,5 @@ public class CmdMassiveCoreId extends MassiveCommand
 	{
 		this.msg("<i>The id of this server is \"<h>%s<i>\".", ConfServer.serverid);
 	}
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
+
 }

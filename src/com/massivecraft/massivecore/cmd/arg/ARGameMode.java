@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.util.Txt;
 
-public class ARGameMode extends ARAbstractSelect<GameMode>
+public class ARGameMode extends ARAbstractSelect<GameMode> implements ARAllAble<GameMode>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -55,6 +56,12 @@ public class ARGameMode extends ARAbstractSelect<GameMode>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		return this.altNames(sender);
+	}
+	
+	@Override
+	public Collection<GameMode> getAll(CommandSender sender)
+	{
+		return Arrays.asList(GameMode.values());
 	}
 	
 	// -------------------------------------------- //

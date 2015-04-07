@@ -20,7 +20,7 @@ public class CmdMassiveCoreUsysMultiverseDel extends MassiveCommand
 		this.addAliases("d", "del");
 		
 		// Args
-		this.addRequiredArg("multiverse");
+		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse to delete");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_DEL.node));
@@ -33,7 +33,7 @@ public class CmdMassiveCoreUsysMultiverseDel extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Multiverse multiverse = this.arg(0, ARMultiverse.get());
+		Multiverse multiverse = (Multiverse) this.readArg();
 		
 		String id = multiverse.getId();
 		

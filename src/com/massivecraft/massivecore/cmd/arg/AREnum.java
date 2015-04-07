@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.util.Txt;
 
-public class AREnum<T> extends ARAbstractSelect<T>
+public class AREnum<T> extends ARAbstractSelect<T> implements ARAllAble<T>
 {
 	// -------------------------------------------- //
 	// FIELD
@@ -87,12 +88,19 @@ public class AREnum<T> extends ARAbstractSelect<T>
 		return this.altNames(sender);
 	}
 	
+	@Override
+	public Collection<T> getAll(CommandSender sender)
+	{
+		return Arrays.asList(getEnumValues(clazz));
+	}
+	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
 	
 	public static <T> T[] getEnumValues(Class<T> clazz)
 	{
+		if (clazz == null) throw new IllegalArgumentException("passed clazz param is null");
 		if ( ! clazz.isEnum()) throw new IllegalArgumentException("passed clazz param must be an enum");
 		
 		T[] ret = clazz.getEnumConstants();

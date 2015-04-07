@@ -15,8 +15,8 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final SenderIdSource source;
-	private final boolean online;
+	protected final SenderIdSource source;
+	protected final boolean online;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -53,16 +53,13 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	@Override
 	public T read(String arg, CommandSender sender) throws MassiveException
 	{
-		// Create Ret
-		T ret;
-		
 		// arg --> senderId
 		String senderId = this.getSenderIdFor(arg);
-		// All of our subclasses return null if senderId is null
-		// Thus we don't need to check for that being null, but only check ret
+		// All of our subclasses return null if senderId is null.
+		// Thus we don't need to check for that being null, but only check ret.
 		
-		// Populate Ret
-		ret = this.getResultForSenderId(senderId);
+		// Create & populate Ret
+		T ret = this.getResultForSenderId(senderId);
 		
 		if (ret == null)
 		{

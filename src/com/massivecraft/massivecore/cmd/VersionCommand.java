@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.cmd;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,19 +23,19 @@ public class VersionCommand extends MassiveCommand
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Plugin plugin;
+	protected final Plugin plugin;
 	public Plugin getPlugin() { return this.plugin; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public VersionCommand(Plugin plugin, String permissionName, Collection<String> aliases)
+	public VersionCommand(Plugin plugin, String permissionName, String... aliases)
 	{
-		this(plugin, permissionName, aliases.toArray(new String[0]));
+		this(plugin, permissionName, Arrays.asList(aliases));
 	}
 	
-	public VersionCommand(Plugin plugin, String permissionName, String... aliases)
+	public VersionCommand(Plugin plugin, String permissionName, Collection<String> aliases)
 	{
 		this.plugin = plugin;
 		

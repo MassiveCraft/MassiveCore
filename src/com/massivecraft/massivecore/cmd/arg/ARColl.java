@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.store.Coll;
 
-public class ARColl extends ARAbstractSelect<Coll<?>>
+public class ARColl extends ARAbstractSelect<Coll<?>> implements ARAllAble<Coll<?>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -35,6 +35,12 @@ public class ARColl extends ARAbstractSelect<Coll<?>>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		return this.altNames(sender);
+	}
+
+	@Override
+	public Collection<Coll<?>> getAll(CommandSender sender)
+	{
+		return Coll.getMap().values();
 	}
 	
 }

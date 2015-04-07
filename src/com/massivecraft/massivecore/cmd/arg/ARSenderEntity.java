@@ -11,13 +11,13 @@ import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstract<T>
+public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstract<T> implements ARAllAble<T>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final SenderColl<T> coll;
+	protected final SenderColl<T> coll;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -65,6 +65,12 @@ public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstrac
 		}
 		
 		return ret;
+	}
+
+	@Override
+	public Collection<T> getAll(CommandSender sender)
+	{
+		return coll.getAll();
 	}
 
 }

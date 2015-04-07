@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 
-public class ARPotionEffectType extends ARAbstractSelect<PotionEffectType>
+public class ARPotionEffectType extends ARAbstractSelect<PotionEffectType> implements ARAllAble<PotionEffectType>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -64,7 +65,13 @@ public class ARPotionEffectType extends ARAbstractSelect<PotionEffectType>
 	{
 		return this.altNames(sender);
 	}
-	
+
+	@Override
+	public Collection<PotionEffectType> getAll(CommandSender sender)
+	{
+		return Arrays.asList(PotionEffectType.values());
+	}
+
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
