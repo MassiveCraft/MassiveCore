@@ -24,6 +24,7 @@ import com.massivecraft.massivecore.cmd.req.Req;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.PermUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -1091,6 +1092,45 @@ public class MassiveCommand
 	public boolean msg(Collection<String> msgs)
 	{
 		return Mixin.msgOne(this.sender, msgs);
+	}
+	
+	// CONVENIENCE RAW
+	
+	public boolean sendRaw(Mson mson)
+	{
+		return Mixin.messageRawOne(this.sender, mson);
+	}
+	
+	public boolean sendRaw(Mson... mson)
+	{
+		return Mixin.messageRawOne(this.sender, mson);
+	}
+	
+	public boolean sendRaw(Collection<Mson> mson)
+	{
+		return Mixin.messageRawOne(this.sender, mson);
+	}
+	
+	// CONVENIENCE MSON
+	
+	public Mson mson()
+	{
+		return Mson.mson();
+	}
+	
+	public Mson mson(Object... parts)
+	{
+		return Mson.mson(parts);
+	}
+	
+	public List<Mson> msons(Object... parts)
+	{
+		return Mson.msons(parts);
+	}
+	
+	public List<Mson> msons(Collection<?> parts)
+	{
+		return Mson.msons(parts);
 	}
 	
 	// -------------------------------------------- //

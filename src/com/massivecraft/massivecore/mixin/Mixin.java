@@ -14,6 +14,7 @@ import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.teleport.Destination;
 
@@ -310,6 +311,48 @@ public class Mixin
 	public static boolean msgOne(Object senderObject, Collection<String> msgs)
 	{
 		return getMessageMixin().msgOne(senderObject, msgs);
+	}
+	
+	// RAW All
+	public static boolean messageRawAll(Mson mson)
+	{
+		return getMessageMixin().messageRawAll(mson);
+	}
+	public static boolean messageRawAll(Mson... msons)
+	{
+		return getMessageMixin().messageRawAll(msons);
+	}
+	public static boolean messageRawAll(Collection<Mson> msons)
+	{
+		return getMessageMixin().messageRawAll(msons);
+	}
+	
+	// RAW Predictate
+	public static boolean messageRawPredictate(Predictate<CommandSender> predictate, Mson mson)
+	{
+		return getMessageMixin().messageRawPredictate(predictate, mson);
+	}
+	public static boolean messageRawPredictate(Predictate<CommandSender> predictate, Mson... msons)
+	{
+		return getMessageMixin().messageRawPredictate(predictate, msons);
+	}
+	public static boolean messageRawPredictate(Predictate<CommandSender> predictate, Collection<Mson> msons)
+	{
+		return getMessageMixin().messageRawPredictate(predictate, msons);
+	}
+	
+	// RAW One
+	public static boolean messageRawOne(Object senderObject, Mson mson)
+	{
+		return getMessageMixin().messageRawOne(senderObject, mson);
+	}
+	public static boolean messageRawOne(Object senderObject, Mson... msons)
+	{
+		return getMessageMixin().messageRawOne(senderObject, msons);
+	}
+	public static boolean messageRawOne(Object senderObject, Collection<Mson> msons)
+	{
+		return getMessageMixin().messageRawOne(senderObject, msons);
 	}
 	
 	// -------------------------------------------- //

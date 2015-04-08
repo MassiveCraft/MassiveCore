@@ -9,6 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
@@ -157,6 +158,23 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	public boolean msg(Collection<String> msgs)
 	{
 		return Mixin.msgOne(this.getId(), msgs);
+	}
+	
+	// CONVENIENCE SEND RAW
+	
+	public boolean sendRaw(Mson mson)
+	{
+		return Mixin.messageRawOne(this.getId(), mson);
+	}
+	
+	public boolean sendRaw(Mson... msons)
+	{
+		return Mixin.messageRawOne(this.getId(), msons);
+	}
+	
+	public boolean sendRaw(Collection<Mson> msons)
+	{
+		return Mixin.messageRawOne(this.getId(), msons);
 	}
 	
 	// CONVENIENCE GAME-MODE

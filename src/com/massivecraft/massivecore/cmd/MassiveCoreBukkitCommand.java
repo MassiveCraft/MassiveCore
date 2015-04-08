@@ -35,7 +35,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 			name,
 			massiveCommand.getDesc(),
 			massiveCommand.getUseageTemplate(),
-			new ArrayList<String>() // We don't use aliases
+			Collections.<String>emptyList() // We don't use aliases
 		);
 		this.massiveCommand = massiveCommand;
 	}

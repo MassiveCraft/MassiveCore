@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.mixin;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.TitleUtil;
+import com.massivecraft.massivecore.util.PacketUtil;
 
 public class TitleMixinDefault extends TitleMixinAbstract
 {
@@ -29,13 +29,13 @@ public class TitleMixinDefault extends TitleMixinAbstract
 		if (titleSub == null)	titleSub = "";
 		if (titleMain == null)	titleMain = "";
 		
-		return TitleUtil.sendTitle(player, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
+		return PacketUtil.sendTitle(player, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
 	}
 
 	@Override
 	public boolean isTitlesAvailable()
 	{
-		return TitleUtil.isAvailable();
+		return PacketUtil.isTitleAvailable();
 	}
 
 }

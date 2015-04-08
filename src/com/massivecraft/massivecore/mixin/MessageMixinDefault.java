@@ -3,9 +3,12 @@ package com.massivecraft.massivecore.mixin;
 import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.PacketUtil;
 
 public class MessageMixinDefault extends MessageMixinAbstract
 {
@@ -51,6 +54,58 @@ public class MessageMixinDefault extends MessageMixinAbstract
 		if (sendee == null) return false;
 		if (messages == null) return false;
 		sendee.sendMessage(messages.toArray(new String[0]));
+		return true;
+	}
+	
+	// Raw message aka. JsonString
+	@Override
+	public boolean messageRawAll(Collection<Mson> msons)
+	{
+		if (msons == null) return false;
+		for (CommandSender sender : IdUtil.getOnlineSenders())
+		{
+			this.messageRawOne(sender, msons);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean messageRawPredictate(Predictate<CommandSender> predictate, Collection<Mson> msons)
+	{
+		if (predictate == null) return false;
+		if (msons == null) return false;
+		for (CommandSender sender : IdUtil.getOnlineSenders())
+		{
+			if ( ! predictate.apply(sender)) continue;
+			this.messageRawOne(sender, msons);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean messageRawOne(Object sendeeObject, Collection<Mson> msons)
+	{
+		if (msons == null) return false;
+		
+		CommandSender sender = IdUtil.getSender(sendeeObject);
+		if (sender == null) return false;
+		
+		if (sender instanceof Player && PacketUtil.isRawAvailable())
+		{
+			Player player = (Player) sender;
+			for (Mson mson : msons)
+			{
+				PacketUtil.sendRaw(player, mson.toRaw());
+			}
+		}
+		else
+		{
+			for (Mson mson : msons)
+			{
+				sender.sendMessage(mson.toPlain());
+			}
+		}
+
 		return true;
 	}
 
