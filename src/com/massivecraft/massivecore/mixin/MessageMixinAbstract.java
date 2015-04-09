@@ -19,7 +19,7 @@ public abstract class MessageMixinAbstract implements MessageMixin
 	@Override
 	public boolean messageAll(String message)
 	{
-		return this.messageAll(MUtil.list(message));
+		return this.messageAll(Arrays.asList(message));
 	}
 	
 	@Override
