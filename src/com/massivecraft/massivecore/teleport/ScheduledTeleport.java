@@ -12,11 +12,8 @@ public class ScheduledTeleport implements Runnable
 	private final String teleporteeId;
 	public String getTeleporteeId() { return this.teleporteeId; }
 	
-	private final PSGetter destinationGetter;
-	public PSGetter getDestinationGetter() { return this.destinationGetter; }
-	
-	private final String destinationDesc;
-	public String getDestinationDesc() { return this.destinationDesc; }
+	private final Destination destination;
+	public Destination getDestination() { return this.destination; }
 	
 	private final int delaySeconds;
 	public int getDelaySeconds() { return this.delaySeconds; }
@@ -30,11 +27,10 @@ public class ScheduledTeleport implements Runnable
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public ScheduledTeleport(String teleporteeId, PSGetter destinationGetter, String destinationDesc, int delaySeconds)
+	public ScheduledTeleport(String teleporteeId, Destination destination, int delaySeconds)
 	{
 		this.teleporteeId = teleporteeId;
-		this.destinationGetter = destinationGetter;
-		this.destinationDesc = destinationDesc;
+		this.destination = destination;
 		this.delaySeconds = delaySeconds;
 		this.dueMillis = 0;
 	}
@@ -69,7 +65,7 @@ public class ScheduledTeleport implements Runnable
 		
 		try
 		{
-			Mixin.teleport(this.getTeleporteeId(), this.getDestinationGetter(), this.getDestinationDesc());
+			Mixin.teleport(this.getTeleporteeId(), this.getDestination(), 0);
 		}
 		catch (TeleporterException e)
 		{

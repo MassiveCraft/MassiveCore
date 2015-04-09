@@ -102,7 +102,7 @@ public class EngineScheduledTeleport extends EngineAbstract
 		scheduledTeleport.unschedule();
 		
 		// ... and inform the teleportee.
-		Mixin.msgOne(scheduledTeleport.getTeleporteeId(), "<rose>Cancelled <i>teleport to <h>"+scheduledTeleport.getDestinationDesc()+"<i>.");
+		Mixin.msgOne(scheduledTeleport.getTeleporteeId(), "<rose>Cancelled <i>teleport to <h>"+scheduledTeleport.getDestination().getDesc(scheduledTeleport.getTeleporteeId())+"<i>.");
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

@@ -34,12 +34,12 @@ public class ChestGui
 	// FIELDS: ACTIONS
 	// -------------------------------------------- //
 	
-	protected Map<ItemStack, ChestAction> itemToAction = new MassiveMap<ItemStack, ChestAction>();
-	public Map<ItemStack, ChestAction> getItemToAction() { return this.itemToAction; }
-	public ChestAction removeAction(ItemStack item) { return this.itemToAction.remove(item); }
-	public ChestAction setAction(ItemStack item, ChestAction action) { return this.itemToAction.put(item, action); }
-	public ChestAction setAction(ItemStack item, String command) { return this.setAction(item, new ChestActionCommand(command)); }
-	public ChestAction getAction(ItemStack item) { return this.itemToAction.get(item); }
+	protected Map<Integer, ChestAction> indexToAction = new MassiveMap<Integer, ChestAction>();
+	public Map<Integer, ChestAction> getIndexToAction() { return this.indexToAction; }
+	public ChestAction removeAction(ItemStack item) { return this.indexToAction.remove(item); }
+	public ChestAction setAction(int index, ChestAction action) { return this.indexToAction.put(index, action); }
+	public ChestAction setAction(int index, String command) { return this.setAction(index, new ChestActionCommand(command)); }
+	public ChestAction getAction(int index) { return this.indexToAction.get(index); }
 	
 	// -------------------------------------------- //
 	// FIELDS: SOUND

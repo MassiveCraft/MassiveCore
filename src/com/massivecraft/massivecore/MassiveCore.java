@@ -180,6 +180,7 @@ public class MassiveCore extends MassivePlugin
 		EngineTeleportMixinCause.get().activate();
 		MassiveCoreEngineWorldNameSet.get().activate();
 		MassiveCoreEngineCommandRegistration.get().activate();
+		MassiveCoreEngineDestination.get().activate();
 		PlayerUtil.get().activate();
 		EngineChestGui.get().activate();
 		

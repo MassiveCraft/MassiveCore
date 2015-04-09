@@ -2,13 +2,12 @@ package com.massivecraft.massivecore.chestgui;
 
 import java.security.InvalidParameterException;
 
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class ChestActionCommand implements ChestAction
+public class ChestActionCommand extends ChestActionAbstract
 {
 	// -------------------------------------------- //
 	// FIELD
@@ -52,12 +51,8 @@ public class ChestActionCommand implements ChestAction
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean onClick(InventoryClickEvent event)
+	public boolean onClick(InventoryClickEvent event, Player player)
 	{
-		HumanEntity human = event.getWhoClicked();
-		if ( ! (human instanceof Player)) return false;
-		Player player = (Player)human;
-		
 		String commandLine = this.getCommandLine();
 		if (commandLine == null) return false;
 		

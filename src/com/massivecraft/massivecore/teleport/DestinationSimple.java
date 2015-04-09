@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.teleport;
 
 import com.massivecraft.massivecore.ps.PS;
 
-public final class PSGetterPS extends PSGetterAbstract
+public class DestinationSimple extends DestinationAbstract
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -10,24 +10,27 @@ public final class PSGetterPS extends PSGetterAbstract
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final PS ps;
+	protected PS ps = null;
+	public void setPs(PS ps) { this.ps = ps; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private PSGetterPS(PS ps)
+	public DestinationSimple()
 	{
-		this.ps = ps;
+		this(null, null);
 	}
 	
-	// -------------------------------------------- //
-	// VALUE OF
-	// -------------------------------------------- //
-	
-	public static PSGetterPS valueOf(PS ps)
+	public DestinationSimple(PS ps)
 	{
-		return new PSGetterPS(ps);
+		this(ps, null);
+	}
+	
+	public DestinationSimple(PS ps, String desc)
+	{
+		this.ps = ps;
+		this.desc = desc;
 	}
 	
 	// -------------------------------------------- //
@@ -35,7 +38,7 @@ public final class PSGetterPS extends PSGetterAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public PS getPS()
+	public PS getPs()
 	{
 		return this.ps;
 	}

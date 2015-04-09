@@ -1,13 +1,11 @@
 package com.massivecraft.massivecore.event;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.teleport.Destination;
 
-public class EventMassiveCorePlayerPSTeleport extends Event implements Cancellable, Runnable
+public class EventMassiveCorePlayerPSTeleport extends EventMassiveCore
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -21,44 +19,25 @@ public class EventMassiveCorePlayerPSTeleport extends Event implements Cancellab
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private boolean cancelled;
-	@Override public boolean isCancelled() { return this.cancelled; }
-	@Override public void setCancelled(boolean cancelled) { this.cancelled = cancelled; }
-	
-	private final String teleporteeId;
+	protected final String teleporteeId;
 	public String getTeleporteeId() { return this.teleporteeId; }
 	
-	private final PS from;
-	public PS getFrom() { return this.from; }
+	protected final PS origin;
+	public PS getOrigin() { return this.origin; }
 	
-	private PS to;
-	public PS getTo() { return this.to; }
-	public void setTo(PS to) { this.to = to; }
-	
-	private String desc;
-	public String getDesc() { return this.desc; }
-	public void setDesc(String desc) { this.desc = desc; }
+	protected Destination destination;
+	public Destination getDestination() { return this.destination; }
+	public void setDestination(Destination destination) { this.destination = destination; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventMassiveCorePlayerPSTeleport(String teleporteeId, PS from, PS to, String desc)
+	public EventMassiveCorePlayerPSTeleport(String teleporteeId, PS origin, Destination destination)
 	{
 		this.teleporteeId = teleporteeId;
-		this.from = from;
-		this.to = to;
-		this.desc = desc;
-	}
-	
-	// -------------------------------------------- //
-	// RUN
-	// -------------------------------------------- //
-	
-	@Override
-	public void run()
-	{
-		Bukkit.getPluginManager().callEvent(this);
+		this.origin = origin;
+		this.destination = destination;
 	}
 	
 }

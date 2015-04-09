@@ -6,11 +6,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.InventoryUtil;
 
 public class EngineChestGui extends EngineAbstract
@@ -51,23 +51,28 @@ public class EngineChestGui extends EngineAbstract
 		event.setCancelled(true);
 		event.setResult(Result.DENY);
 		
-		// ... and if there is an item ...
-		ItemStack item = event.getCurrentItem();
-		if (InventoryUtil.isNothing(item)) return;
+		// ... warn on bottom inventory ...
+		if (InventoryUtil.isBottomInventory(event))
+		{
+			Mixin.msgOne(event.getWhoClicked(), "<b>Exit the GUI to edit your items.");
+			return;
+		}
 		
-		// ... and this item has an action ...
-		ChestAction action = gui.getAction(item);
+		// ... and if this slot index ...
+		int index = event.getSlot();
+		
+		// ... has an action ...
+		ChestAction action = gui.getAction(index);
 		if (action == null) return;
 		
-		// ... then use that action ...
-		action.onClick(event);
-		
-		// ... play the sound ...
+		// ... then play the sound ...
 		gui.playSound(event.getWhoClicked());
 		
-		// ... and close the GUI.
+		// ... close the GUI ...
 		event.getView().close();
 		
+		// ... and use that action.
+		action.onClick(event);		
 	}
 	
 	@EventHandler(priority = EventPriority.LOW)

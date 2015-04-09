@@ -7,7 +7,7 @@ import org.bukkit.util.Vector;
 
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerPSTeleport;
 import com.massivecraft.massivecore.ps.PS;
-import com.massivecraft.massivecore.teleport.PSGetter;
+import com.massivecraft.massivecore.teleport.Destination;
 import com.massivecraft.massivecore.teleport.ScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -71,11 +71,14 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public void teleport(Object teleporteeObject, PSGetter toGetter, String desc, int delaySeconds) throws TeleporterException
+	public void teleport(Object teleporteeObject, Destination destination, int delaySeconds) throws TeleporterException
 	{
 		String teleporteeId = IdUtil.getId(teleporteeObject);
 		if (!IdUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId, IdUtil.getConsole())));
 		
+		if ( ! destination.hasPs()) throw new TeleporterException(destination.getMessagePsNull(teleporteeId));
+		
+		String desc = destination.getDesc(teleporteeId);
 		if (delaySeconds > 0)
 		{
 			// With delay
@@ -88,22 +91,18 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 				Mixin.msgOne(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			
-			new ScheduledTeleport(teleporteeId, toGetter, desc, delaySeconds).schedule();
+			new ScheduledTeleport(teleporteeId, destination, delaySeconds).schedule();
 		}
 		else
 		{
 			// Without delay AKA "now"/"at once"
 			
-			// Resolve the getter
-			PS to = toGetter.getPS();
-			
 			// Run event
-			EventMassiveCorePlayerPSTeleport event = new EventMassiveCorePlayerPSTeleport(teleporteeId, Mixin.getSenderPs(teleporteeId), to, desc);
+			EventMassiveCorePlayerPSTeleport event = new EventMassiveCorePlayerPSTeleport(teleporteeId, Mixin.getSenderPs(teleporteeId), destination);
 			event.run();
 			if (event.isCancelled()) return;
-			if (event.getTo() == null) return;
-			to = event.getTo();
-			desc = event.getDesc();
+			destination = event.getDestination();
+			desc = destination.getDesc(teleporteeId);
 			
 			if (desc != null)
 			{
@@ -113,11 +112,11 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			Player teleportee = IdUtil.getPlayer(teleporteeId);
 			if (teleportee != null)
 			{
-				teleportPlayer(teleportee, to);
+				teleportPlayer(teleportee, destination.getPs());
 			}
 			else
 			{
-				Mixin.setSenderPs(teleporteeId, to);
+				Mixin.setSenderPs(teleporteeId, destination.getPs());
 			}
 		}
 	}
