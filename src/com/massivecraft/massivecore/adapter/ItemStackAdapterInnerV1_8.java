@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
@@ -12,7 +13,9 @@ import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
+import com.massivecraft.massivecore.util.HeadUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
@@ -28,6 +31,8 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	public static final String UNBREAKABLE = "unbreakable";
 	
 	public static final String ITEM_FLAGS = "flags";
+	
+	public static final String SKULL_OWNER_ID = "skullid";
 	
 	public static final String BANNER_BASE = "banner-base";
 	public static final String BANNER_PATTERNS = "banner";
@@ -149,6 +154,42 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 		else
 		{
 			super.transferMetaSpecific(meta, json, meta2json);
+		}
+	}
+	
+	// -------------------------------------------- //
+	// SPECIFIC META: SKULL
+	// -------------------------------------------- //
+
+	@Override
+	public void transferSkull(SkullMeta meta, JsonObject json, boolean meta2json)
+	{
+		if (meta2json)
+		{
+			if ( ! meta.hasOwner()) return;
+			
+			String name = HeadUtil.getName(meta);
+			if (name != null) json.addProperty(SKULL_OWNER, name);
+			
+			UUID id = HeadUtil.getId(meta);
+			if (id != null) json.addProperty(SKULL_OWNER_ID, id.toString());
+		}
+		else
+		{
+			JsonElement element;
+			
+			String name = null;
+			element = json.get(SKULL_OWNER);
+			if (element != null) name = element.getAsString();
+			
+			UUID id = null;
+			element = json.get(SKULL_OWNER_ID);
+			if (element != null) id = UUID.fromString(element.getAsString());
+			
+			if (name != null || id != null)
+			{
+				HeadUtil.set(meta, name, id);
+			}
 		}
 	}
 	
