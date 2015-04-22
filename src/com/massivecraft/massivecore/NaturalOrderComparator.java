@@ -47,6 +47,11 @@ public class NaturalOrderComparator implements Comparator<Object>
 	@Override
 	public int compare(Object o1, Object o2)
 	{
+		// Null (MassiveCore Modification)
+		if (o1 == null && o2 == null) return 0;
+		if (o2 == null) return 1;
+		if (o1 == null) return -1;
+		
 		String a = o1.toString();
 		String b = o2.toString();
 

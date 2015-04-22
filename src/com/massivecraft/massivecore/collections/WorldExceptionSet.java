@@ -16,6 +16,20 @@ public class WorldExceptionSet
 	public MassiveTreeSet<String, CaseInsensitiveComparator> exceptions = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
 	
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public WorldExceptionSet()
+	{
+		
+	}
+	
+	public WorldExceptionSet(boolean standard)
+	{
+		this.standard = standard;
+	}
+	
+	// -------------------------------------------- //
 	// CONTAINS
 	// -------------------------------------------- //
 	
