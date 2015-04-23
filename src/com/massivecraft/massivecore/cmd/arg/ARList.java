@@ -8,27 +8,27 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 
-public class ARList<T> extends ARAbstract<List<T>>
+public class ARList<E> extends ARAbstract<List<E>>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	protected AR<T> innerArgReader;
-	public AR<T> getInnerArgReader() { return this.innerArgReader; }
+	protected AR<E> elementArgReader;
+	public AR<E> getElementArgReader() { return this.elementArgReader; }
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <T> ARList<T> get(AR<T> innerArgReader)
+	public static <E> ARList<E> get(AR<E> elementArgReader)
 	{
-		return new ARList<T>(innerArgReader);
+		return new ARList<E>(elementArgReader);
 	}
 	
-	public ARList(AR<T> innerArgReader)
+	public ARList(AR<E> elementArgReader)
 	{
-		this.innerArgReader = innerArgReader;
+		this.elementArgReader = elementArgReader;
 	}
 	
 	// -------------------------------------------- //
@@ -38,25 +38,25 @@ public class ARList<T> extends ARAbstract<List<T>>
 	@Override
 	public String getTypeName()
 	{
-		return innerArgReader.getTypeName();
+		return elementArgReader.getTypeName();
 	}
 
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
-	public List<T> read(String arg, CommandSender sender) throws MassiveException
+	public List<E> read(String arg, CommandSender sender) throws MassiveException
 	{
 		// Split into inner args
-		String[] innerArgs = arg.split("\\s+");
+		String[] elementArgs = arg.split("\\s+");
 		
 		// Create Ret
-		List<T> ret = new ArrayList<T>();
+		List<E> ret = new ArrayList<E>();
 		
 		// For Each
-		for (String innerArg : innerArgs)
+		for (String elementArg : elementArgs)
 		{
-			T innerArgResult = this.getInnerArgReader().read(innerArg, sender);
+			E element = this.getElementArgReader().read(elementArg, sender);
 			
-			ret.add(innerArgResult);
+			ret.add(element);
 		}
 		
 		// Return Ret
@@ -66,7 +66,7 @@ public class ARList<T> extends ARAbstract<List<T>>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		return this.getInnerArgReader().getTabList(sender, arg);
+		return this.getElementArgReader().getTabList(sender, arg);
 	}
 
 }

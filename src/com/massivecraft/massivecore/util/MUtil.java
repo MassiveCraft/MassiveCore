@@ -1325,6 +1325,9 @@ public class MUtil
 		// Create Ret
 		List<E> ret = new MassiveList<E>();
 		
+		// Empty
+		if (list.isEmpty()) return ret;
+		
 		// Fill Ret
 		for (int i = 0; i < count; i++)
 		{

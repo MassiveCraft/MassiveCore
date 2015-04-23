@@ -9,14 +9,14 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class ARSet<T> extends ARAbstract<Set<T>>
+public class ARSet<E> extends ARAbstract<Set<E>>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final AR<T> innerArgReader;
-	public AR<T> getInnerArgReader() { return this.innerArgReader; }
+	private final AR<E> elementArgReader;
+	public AR<E> getElementArgReader() { return this.elementArgReader; }
 	
 	private final boolean warnOnDuplicates;
 	public boolean getWarnOnDuplicate() { return warnOnDuplicates; }
@@ -25,14 +25,14 @@ public class ARSet<T> extends ARAbstract<Set<T>>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <T> ARSet<T> get(AR<T> innerArgReader, boolean warnOnDuplicates)
+	public static <E> ARSet<E> get(AR<E> elementArgReader, boolean warnOnDuplicates)
 	{
-		return new ARSet<T>(innerArgReader, warnOnDuplicates);
+		return new ARSet<E>(elementArgReader, warnOnDuplicates);
 	}
 	
-	public ARSet(AR<T> innerArgReader, boolean warnOnDuplicates)
+	public ARSet(AR<E> elementArgReader, boolean warnOnDuplicates)
 	{
-		this.innerArgReader = innerArgReader;
+		this.elementArgReader = elementArgReader;
 		this.warnOnDuplicates = warnOnDuplicates;
 	}
 	
@@ -43,27 +43,27 @@ public class ARSet<T> extends ARAbstract<Set<T>>
 	@Override
 	public String getTypeName()
 	{
-		return innerArgReader.getTypeName();
+		return elementArgReader.getTypeName();
 	}
 
 	// NOTE: Must be used with argConcatFrom and setErrorOnTooManyArgs(false).
 	@Override
-	public Set<T> read(String arg, CommandSender sender) throws MassiveException
+	public Set<E> read(String arg, CommandSender sender) throws MassiveException
 	{
 		// Split into inner args
-		String[] innerArgs = arg.split("\\s+");
+		String[] elementArgs = arg.split("\\s+");
 		
 		// Create Ret
-		Set<T> ret = new LinkedHashSet<T>();
+		Set<E> ret = new LinkedHashSet<E>();
 		
 		boolean duplicates = false;
 		
 		// For Each
-		for (String innerArg : innerArgs)
+		for (String elementArg : elementArgs)
 		{
-			T innerArgResult = this.getInnerArgReader().read(innerArg, sender);
+			E element = this.getElementArgReader().read(elementArg, sender);
 			
-			duplicates = ( ! ret.add(innerArgResult) || duplicates);
+			duplicates = ( ! ret.add(element) || duplicates);
 		}
 		
 		if (warnOnDuplicates && duplicates)
@@ -78,7 +78,7 @@ public class ARSet<T> extends ARAbstract<Set<T>>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		return innerArgReader.getTabList(sender, arg);
+		return elementArgReader.getTabList(sender, arg);
 	}
 
 }
