@@ -183,6 +183,7 @@ public class MassiveCore extends MassivePlugin
 		MassiveCoreEngineDestination.get().activate();
 		PlayerUtil.get().activate();
 		EngineChestGui.get().activate();
+		EngineGank.get().activate();
 		
 		// Collections
 		MultiverseColl.get().init();
