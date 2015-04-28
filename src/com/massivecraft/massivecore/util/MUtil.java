@@ -575,16 +575,28 @@ public class MUtil
 	// Or they may instantly die. For this reason we take inspiration from MCMMO who rolled their own setDamage function.
 	// This method sets the BASE damage modifier and scales all other modifiers proportionally.
 	
-	public static void setDamage(EntityDamageEvent event, double damage)
+	public static void setDamage(EntityDamageEvent event, double newDamage)
 	{
-		// Save Old Damage 
+		// Check New Damage
+		if ( ! Double.isFinite(newDamage)) throw new IllegalStateException("not finite newDamage: " + newDamage);
+		
+		// Get Old Damage 
 		final double oldDamage = event.getDamage(DamageModifier.BASE);
 		
-		// No Change?
-		if (damage == oldDamage) return;
+		// Check Old Damage
+		if ( ! Double.isFinite(oldDamage)) throw new IllegalStateException("not finite oldDamage: " + oldDamage);
 		
-		// So what factor are we essentially applying?
-		final double factor = damage / oldDamage;
+		// No Change?
+		if (newDamage == oldDamage) return;
+		
+		// No Old Damage? (Avoid DBZ)
+		if (oldDamage == 0) return;
+		
+		// Get Factor
+		final double factor = newDamage / oldDamage;
+		
+		// Check Factor
+		if ( ! Double.isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor + " damage: " + newDamage + " oldDamage: " + oldDamage);
 		
 		// Now scale all damage modifiers!
 		for (DamageModifier modifier : DamageModifier.values())
@@ -596,7 +608,7 @@ public class MUtil
 			// We could have used the factor too but then we might suffer floating point degredation.
 			if (modifier == DamageModifier.BASE)
 			{
-				event.setDamage(modifier, damage);
+				event.setDamage(modifier, newDamage);
 				continue;
 			}
 			
@@ -608,6 +620,9 @@ public class MUtil
 	// Same as above but scales directly.
 	public static void scaleDamage(EntityDamageEvent event, double factor)
 	{
+		// Clean Input
+		if ( ! Double.isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor);
+		
 		// No Change?
 		if (factor == 1) return;
 		
