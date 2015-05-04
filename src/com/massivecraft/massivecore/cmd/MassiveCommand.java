@@ -326,6 +326,12 @@ public class MassiveCommand
 	public boolean isUsingSmartQuotesRemoval() { return this.usingSmartQuotesRemoval; }
 	public void setUsingSmartQuotesRemoval(boolean usingSmartQuotesRemoval) { this.usingSmartQuotesRemoval = usingSmartQuotesRemoval; }
 	
+	// FIELD: usingArbitraryArgumentOrder
+	// Can the order of the args which the player types, be arbitrary?
+	protected boolean usingArbitraryArgumentOrder;
+	public boolean isUsingArbitraryArgumentOrder() { return this.usingArbitraryArgumentOrder; }
+	public void setUsingArbitraryArgumentOrder(boolean usingArbitraryArgumentOrder) { this.usingArbitraryArgumentOrder = usingArbitraryArgumentOrder; }
+	
 	// FIELD: requirements
 	// All these requirements must be met for the command to be executable;
 	protected List<Req> requirements;
@@ -483,6 +489,7 @@ public class MassiveCommand
 		
 		this.usingTokenizer = true;
 		this.usingSmartQuotesRemoval = true;
+		this.usingArbitraryArgumentOrder = true;
 		
 		this.desc = null;
 		this.descPermission = null;
@@ -494,6 +501,12 @@ public class MassiveCommand
 	public void execute(CommandSender sender, List<String> args, List<MassiveCommand> commandChain)
 	{
 		args = this.applyConcatFrom(args);
+		
+		if (this.isUsingArbitraryArgumentOrder())
+		{
+			args = this.fixArgOrder(args, sender);
+		}
+
 		this.setArgs(args);
 		this.setCommandChain(commandChain);
 
@@ -587,6 +600,49 @@ public class MassiveCommand
 		HelpCommand.get().execute(this.sender, this.getArgs(), commandChain);
 	}
 	
+	// -------------------------------------------- //
+	// FIX ARG ORDER
+	// -------------------------------------------- //
+
+	public List<String> fixArgOrder(List<String> args, CommandSender sender)
+	{
+		// So if there is too many, or too few args. We can't do much here.
+		if ( ! this.isArgsValid(args)) return args;
+		// We can't do anything with the old arg system.
+		if ( ! this.isUsingNewArgSystem()) return args;
+		
+		String[] ret = new String[this.getArgSettings().size()];
+		
+		args:
+		for (String arg : args)
+		{
+			settings:
+			for (int i = 0; i < this.getArgSettings().size(); i++)
+			{
+				AR<?> reader = this.getArgReader(i);
+				
+				if (ret[i] != null) continue settings; // If that index is already filled.
+				if ( ! reader.isValid(arg, sender)) continue settings; // If this arg isn't valid for that index.
+				
+				ret[i] = arg;
+				continue args; // That arg is now set :)
+			}
+			// We will only end up here if an arg didn't fit any of the arg readers.
+			// In that case we failed.
+			return args;
+		}
+		
+		// Ensure that the required args are filled.
+		for (int i = 0; i < this.getRequiredArgsAmountFor(sender);i++)
+		{
+			if (ret[i] != null) continue;
+			// We end up here if an required arg wasn't filled. In that case we failed.
+			return args;
+		}
+		
+		return Arrays.asList(ret);
+	}
+
 	// -------------------------------------------- //
 	// CALL VALIDATION
 	// -------------------------------------------- //
@@ -988,6 +1044,7 @@ public class MassiveCommand
 	{
 		if (idx < 0) return false;
 		if (idx+1 > this.getArgs().size()) return false;
+		if (this.getArgs().get(idx) == null) return false;
 		return true;
 	}
 	
