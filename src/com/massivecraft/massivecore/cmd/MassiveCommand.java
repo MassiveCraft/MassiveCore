@@ -1083,23 +1083,26 @@ public class MassiveCommand
 	public <T> T readArgAt(int idx) throws MassiveException
 	{
 		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
+		if ( ! this.argIsSet(idx)) throw new IllegalArgumentException("Trying to access arg: " + idx + " but that is not set.");
+		
 		String str = this.argAt(idx);
-		return this.readArgFrom(str, (AR<T>)this.getArgSettings().get(idx).getReader());
+		return this.readArgFrom(str, (AR<T>) this.getArgReader(idx));
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T readArgAt(int idx, T defaultNotSet) throws MassiveException
 	{
 		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
+		if ( ! this.argIsSet(idx)) return defaultNotSet;
+		
 		String str = this.argAt(idx);
-		return this.readArgFrom(str, (AR<T>)this.getArgSettings().get(idx).getReader(), defaultNotSet);
+		return this.readArgFrom(str, (AR<T>)this.getArgReader(idx), defaultNotSet);
 	}
 
 	// Core Logic
 	
 	public <T> T readArgFrom(AR<T> argReader) throws MassiveException
 	{
-		if (argReader == null) throw new IllegalArgumentException("argReader is null");
 		return this.readArgFrom(null, argReader);
 	}
 	
