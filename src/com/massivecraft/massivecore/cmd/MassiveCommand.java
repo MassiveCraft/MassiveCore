@@ -300,11 +300,11 @@ public class MassiveCommand
 	
 	// FIELD: errorOnToManyArgs
 	// Should an error be thrown if "too many" args are sent.
-	protected boolean errorOnToManyArgs;
-	public boolean isGivingErrorOnTooManyArgs() { return this.errorOnToManyArgs; }
-	public void setErrorOnTooManyArgs(boolean val) { this.errorOnToManyArgs = val; }
+	protected boolean givingErrorOnTooManyArgs;
+	public boolean isGivingErrorOnTooManyArgs() { return this.givingErrorOnTooManyArgs; }
+	public void setGivingErrorOnTooManyArgs(boolean val) { this.givingErrorOnTooManyArgs = val; }
 	@Deprecated public boolean getErrorOnToManyArgs() { return this.isGivingErrorOnTooManyArgs(); }
-	@Deprecated public void setErrorOnToManyArgs(boolean val) { this.setErrorOnTooManyArgs(val); }
+	@Deprecated public void setErrorOnToManyArgs(boolean val) { this.setGivingErrorOnTooManyArgs(val); }
 	
 	// FIELD concatFrom 
 	// From which arg should the be concatenated.
@@ -478,7 +478,7 @@ public class MassiveCommand
 		
 		this.requirements = new ArrayList<Req>();
 		
-		this.errorOnToManyArgs = true;
+		this.givingErrorOnTooManyArgs = true;
 		this.usingConcatFrom = false;
 		
 		this.usingTokenizer = true;
