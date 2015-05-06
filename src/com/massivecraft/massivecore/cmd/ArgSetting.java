@@ -52,7 +52,7 @@ public class ArgSetting
 	// description must not be set in the constructor.
 	
 	// With default option and required from console.
-	protected ArgSetting(AR<?> reader, boolean requiredFromConsole, String name, String def)
+	public ArgSetting(AR<?> reader, boolean requiredFromConsole, String name, String def)
 	{
 		this.setReader(reader);
 		this.setRequiredFromConsole(requiredFromConsole);
