@@ -35,7 +35,7 @@ public class HelpCommand extends MassiveCommand
 	public void perform() throws MassiveException
 	{	
 		// Args
-		int pagenumber = (Integer) this.readArg(1); 
+		int pagenumber = this.readArg(1); 
 		
 		// Get parent command
 		if ( ! this.hasParentCommand()) return;

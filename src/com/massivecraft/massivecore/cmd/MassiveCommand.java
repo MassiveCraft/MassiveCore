@@ -1003,12 +1003,12 @@ public class MassiveCommand
 		return this.argAt(nextArg);
 	}
 	
-	public Object readArg() throws MassiveException
+	public <T> T readArg() throws MassiveException
 	{
 		return this.readArgAt(nextArg);
 	}
 
-	public Object readArg(Object defaultNotSet) throws MassiveException
+	public <T> T readArg(T defaultNotSet) throws MassiveException
 	{
 		return this.readArgAt(nextArg, defaultNotSet);
 	}
@@ -1022,19 +1022,20 @@ public class MassiveCommand
 		return this.getArgs().get(idx);
 	}
 	
-	public Object readArgAt(int idx) throws MassiveException
+	@SuppressWarnings("unchecked")
+	public <T> T readArgAt(int idx) throws MassiveException
 	{
 		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
 		String str = this.argAt(idx);
-		return this.readArgFrom(str, this.getArgSettings().get(idx).getReader());
+		return this.readArgFrom(str, (AR<T>)this.getArgSettings().get(idx).getReader());
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object readArgAt(int idx, Object defaultNotSet) throws MassiveException
+	public <T> T readArgAt(int idx, T defaultNotSet) throws MassiveException
 	{
 		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
 		String str = this.argAt(idx);
-		return this.readArgFrom(str, (AR<Object>)this.getArgSettings().get(idx).getReader(), defaultNotSet);
+		return this.readArgFrom(str, (AR<T>)this.getArgSettings().get(idx).getReader(), defaultNotSet);
 	}
 
 	// Core Logic
