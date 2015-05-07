@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.cmd.arg.AR;
+import com.massivecraft.massivecore.cmd.arg.ARInteger;
 
 public class ArgSetting
 {
@@ -99,6 +100,17 @@ public class ArgSetting
 		String def = this.getDefault();
 		def = (def != null ? "=" + def : "");
 		return "[" + this.getName() + def + "]";
+	}
+	
+	// -------------------------------------------- //
+	// COMMONLY USED ARG SETTINGS
+	// -------------------------------------------- //
+
+	public static ArgSetting getPager()
+	{
+		// We can't use a singletone, because people might
+		// want to set a description.
+		return ArgSetting.of(ARInteger.get(), false, "page", "1");
 	}
 	
 }
