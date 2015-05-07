@@ -30,7 +30,7 @@ public class ArgSetting
 	// Is this arg ALWAYS required from the console?
 	// That might the case if the arg is a player. and default is oneself.
 	protected boolean requiredFromConsole = false;
-	public boolean isRequiredFromConsole() { return requiredFromConsole && this.isRequired(); }
+	public boolean isRequiredFromConsole() { return requiredFromConsole; }
 	public ArgSetting setRequiredFromConsole(boolean requiredFromConsole) { this.requiredFromConsole = requiredFromConsole; return this; }
 	
 	// An optional description of this argument.

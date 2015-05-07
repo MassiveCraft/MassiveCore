@@ -633,7 +633,7 @@ public class MassiveCommand
 		}
 		
 		// Ensure that the required args are filled.
-		for (int i = 0; i < this.getRequiredArgsAmountFor(sender);i++)
+		for (int i = 0; i < this.getRequiredArgsAmountFor(sender); i++)
 		{
 			if (ret[i] != null) continue;
 			// We end up here if an required arg wasn't filled. In that case we failed.
@@ -892,7 +892,7 @@ public class MassiveCommand
 	
 	public String getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
 	{
-		return getUseageTemplate(commandChain, addDesc, onlyFirstAlias, null);
+		return getUseageTemplate(commandChain, addDesc, onlyFirstAlias, sender);
 	}
 	
 	public String getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc)
