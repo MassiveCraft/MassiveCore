@@ -8,6 +8,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 {
@@ -69,6 +70,23 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	
 		// Return Ret
 		return ret;
+	}
+	
+	// This is used for arbitrary command order.
+	// There might be no matching sender at this time, but that does not matter.
+	// As long as the format is correct the arg is valid.
+	@Override
+	public boolean isValid(String arg, CommandSender sender)
+	{
+		// Allow names and uuid by format.
+		if (MUtil.isValidPlayerName(arg)) return true;
+		if (MUtil.isValidUUID(arg)) return true;
+		
+		// Check data presence. This handles specials like "@console".
+		if (IdUtil.getIdToData().containsKey(arg)) return true;
+		if (IdUtil.getNameToData().containsKey(arg)) return true;
+		
+		return false;
 	}
 	
 	// -------------------------------------------- //
