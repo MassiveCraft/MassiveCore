@@ -176,7 +176,7 @@ public class ExtractorLogic
 		if (o instanceof String)
 		{
 			String string = (String)o;
-			if (MUtil.isValidUUID(string))
+			if (MUtil.isUuid(string))
 			{
 				String ret = worldNameViaPsMixin(string);
 				if (ret != null) return ret;

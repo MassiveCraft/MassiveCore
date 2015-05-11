@@ -180,21 +180,31 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
-	// IS VALID UUID
+	// UUID
 	// -------------------------------------------- //
 	
-	public static boolean isValidUUID(String string)
+	public static UUID asUuid(String string)
 	{
-		if (string == null) return false;
+		// Null
+		if (string == null) return null;
+		
+		// Avoid Exception
+		if (string.length() != 36) return null;
+		
+		// Try
 		try
 		{
-			UUID.fromString(string);
-			return true;
+			return UUID.fromString(string);
 		}
 		catch (Exception e)
 		{
-			return false;
+			return null;
 		}
+	}
+	
+	public static boolean isUuid(String string)
+	{
+		return asUuid(string) != null;
 	}
 	
 	// -------------------------------------------- //

@@ -70,7 +70,7 @@ public class Fetcher implements Callable<Set<IdAndName>>
 				{
 					names.add(string);
 				}
-				else if (MUtil.isValidUUID(string))
+				else if (MUtil.isUuid(string))
 				{
 					ids.add(UUID.fromString(string));
 				}

@@ -522,7 +522,7 @@ public class IdUtil implements Listener, Runnable
 		{
 			// Recurse as UUID
 			String string = (String)senderObject;
-			UUID uuid = uuidFromString(string);
+			UUID uuid = MUtil.asUuid(string);
 			if (uuid != null) return getSender(uuid);
 			
 			// Registry
@@ -566,7 +566,7 @@ public class IdUtil implements Listener, Runnable
 		{
 			CommandSender sender = (CommandSender)senderObject;
 			String id = sender.getName();
-			return uuidFromString(id);
+			return MUtil.asUuid(id);
 		}
 		
 		// UUID
@@ -577,7 +577,7 @@ public class IdUtil implements Listener, Runnable
 		{
 			// Is UUID
 			String string = (String)senderObject;
-			UUID uuid = uuidFromString(string);
+			UUID uuid = MUtil.asUuid(string);
 			if (uuid != null) return uuid;
 			
 			// Is Name
@@ -590,7 +590,7 @@ public class IdUtil implements Listener, Runnable
 		{
 			String id = data.getId();
 			if (id == null) return null;
-			UUID uuid = uuidFromString(id);
+			UUID uuid = MUtil.asUuid(id);
 			return uuid;	
 		}
 		
@@ -605,7 +605,7 @@ public class IdUtil implements Listener, Runnable
 		if (senderObject == null) return null;
 		
 		// Already Done
-		if (senderObject instanceof String && MUtil.isValidUUID((String)senderObject)) return (String)senderObject;
+		if (senderObject instanceof String && MUtil.isUuid((String)senderObject)) return (String)senderObject;
 		
 		// Console Type
 		if (senderObject instanceof ConsoleCommandSender) return CONSOLE_ID;
@@ -721,7 +721,7 @@ public class IdUtil implements Listener, Runnable
 	public static boolean isPlayerId(String string)
 	{
 		// NOTE: Assuming all custom ids look like "@shite".
-		return MUtil.isValidPlayerName(string) || MUtil.isValidUUID(string);
+		return MUtil.isValidPlayerName(string) || MUtil.isUuid(string);
 	}
 	
 	public static boolean isPlayer(Object senderObject)
@@ -962,22 +962,6 @@ public class IdUtil implements Listener, Runnable
 		}
 		
 		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// UTIL
-	// -------------------------------------------- //
-	
-	public static UUID uuidFromString(String string)
-	{
-		try
-		{ 
-			return UUID.fromString(string);
-		}
-		catch (IllegalArgumentException e)
-		{
-			return null;
-		}
 	}
 	
 }

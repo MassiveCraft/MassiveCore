@@ -82,7 +82,7 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	{
 		// Allow names and uuid by format.
 		if (MUtil.isValidPlayerName(arg)) return true;
-		if (MUtil.isValidUUID(arg)) return true;
+		if (MUtil.isUuid(arg)) return true;
 		
 		// Check data presence. This handles specials like "@console".
 		if (IdUtil.getIdToData().containsKey(arg)) return true;
@@ -98,11 +98,20 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		
 		// Fill Ret
-		Set<String> names = (online ? IdUtil.getOnlineNames() : IdUtil.getAllNames());
-		for (String name : names)
+		Set<String> names;
+		if (online)
 		{
-			if ( ! Mixin.canSee(sender, name)) continue;
-			ret.add(name);
+			names = IdUtil.getOnlineNames();
+			for (String name : names)
+			{
+				if ( ! Mixin.canSee(sender, name)) continue;
+				ret.add(name);
+			}
+		}
+		else
+		{
+			names = IdUtil.getAllNames();
+			ret.addAll(names);
 		}
 		
 		// Return Ret
