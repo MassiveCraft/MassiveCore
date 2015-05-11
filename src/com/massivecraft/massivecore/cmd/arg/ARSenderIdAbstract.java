@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.command.CommandSender;
 
@@ -87,6 +89,24 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 		if (IdUtil.getNameToData().containsKey(arg)) return true;
 		
 		return false;
+	}
+	
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		// Create Ret
+		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		// Fill Ret
+		Set<String> names = (online ? IdUtil.getOnlineNames() : IdUtil.getAllNames());
+		for (String name : names)
+		{
+			if ( ! Mixin.canSee(sender, name)) continue;
+			ret.add(name);
+		}
+		
+		// Return Ret
+		return ret;
 	}
 	
 	// -------------------------------------------- //
