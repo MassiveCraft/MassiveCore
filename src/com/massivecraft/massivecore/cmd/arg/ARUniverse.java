@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.collections.MassiveSet;
@@ -13,20 +14,27 @@ import com.massivecraft.massivecore.util.Txt;
 public class ARUniverse extends ARAbstract<String>
 {
 	// -------------------------------------------- //
-	// INSTANCE & CONSTRUCT
-	// -------------------------------------------- //
-	
-	public ARUniverse(Multiverse multiverse)
-	{
-		this.multiverse = multiverse;
-	}
-	
-	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	protected Multiverse multiverse;
-	public Multiverse getMultiverse() { return this.multiverse; }
+	protected Aspect aspect = null;
+	protected Multiverse multiverse = null;
+	
+	public Multiverse getMultiverse()
+	{
+		if (this.aspect != null) return this.aspect.getMultiverse();
+		return this.multiverse;
+	}
+	
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	public static ARUniverse get(Aspect aspect) { return new ARUniverse(aspect); }
+	public static ARUniverse get(Multiverse multiverse) { return new ARUniverse(multiverse); }
+	
+	public ARUniverse(Aspect aspect) { this.aspect = aspect; }
+	public ARUniverse(Multiverse multiverse) { this.multiverse = multiverse; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -35,6 +43,8 @@ public class ARUniverse extends ARAbstract<String>
 	@Override
 	public String read(String arg, CommandSender sender) throws MassiveException
 	{
+		Multiverse multiverse = this.getMultiverse();
+		
 		if (multiverse.containsUniverse(arg))
 		{
 			return arg;
@@ -48,7 +58,7 @@ public class ARUniverse extends ARAbstract<String>
 			String dot = Txt.parse("<i>.");
 			
 			throw new MassiveException()
-			.addMsg("<b>No universe \"<h>%s<b>\" exists in multiverse <h>%s<b>.", arg, this.multiverse.getId())
+			.addMsg("<b>No universe \"<h>%s<b>\" exists in multiverse <h>%s<b>.", arg, multiverse.getId())
 			.addMsg("<i>Use %s", Txt.implodeCommaAndDot(names, format, comma, and, dot));
 		}
 	}
