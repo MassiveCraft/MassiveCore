@@ -622,7 +622,10 @@ public class MassiveCommand
 				AR<?> reader = this.getArgReader(i);
 				
 				if (ret[i] != null) continue settings; // If that index is already filled.
-				if ( ! reader.isValid(arg, sender)) continue settings; // If this arg isn't valid for that index.
+				
+				// We do in fact want to allow null args.
+				// Those are used by us in some special circumstances.
+				if (arg != null && ! reader.isValid(arg, sender)) continue settings; // If this arg isn't valid for that index.
 				
 				ret[i] = arg;
 				continue args; // That arg is now set :)
