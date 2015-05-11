@@ -334,13 +334,26 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	protected Map<String, Map<SenderColl<?>, Entry<JsonElement, Long>>> idToRemoteEntries = new ConcurrentHashMap<String, Map<SenderColl<?>, Entry<JsonElement, Long>>>();
 	
 	// Intended to be ran asynchronously.
-	public void storeRemoteEntries(String playerId)
+	public void storeRemoteEntries(final String playerId)
 	{
 		// Create remote entries ...
 		Map<SenderColl<?>, Entry<JsonElement, Long>> remoteEntries = createRemoteEntries(playerId);
 		
-		// ... and store them.
+		// ... store them ...
 		this.idToRemoteEntries.put(playerId, remoteEntries);
+		
+		// ... and make sure they are removed after 30 seconds.
+		// Without this we might cause a memory leak.
+		// Players might trigger AsyncPlayerPreLoginEvent but not PlayerLoginEvent.
+		// Using WeakHashMap is not an option since the player object does not exist at AsyncPlayerPreLoginEvent.
+		Bukkit.getScheduler().runTaskLaterAsynchronously(this.getPlugin(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				idToRemoteEntries.remove(playerId);
+			}
+		}, 20*30);
 	}
 	
 	// Intended to be ran synchronously.
