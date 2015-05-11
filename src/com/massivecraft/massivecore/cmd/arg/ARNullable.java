@@ -52,6 +52,7 @@ public class ARNullable<T> extends ARAbstract<T>
 		if (nulls == null) nulls = Collections.emptySet();
 		
 		this.innerArgReader = inner;
+		this.nulls = nulls;
 	}
 	
 	public ARNullable(AR<T> inner, String... nulls)
