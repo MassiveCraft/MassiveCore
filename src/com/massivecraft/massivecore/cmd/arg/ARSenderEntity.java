@@ -18,9 +18,15 @@ public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstrac
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ARSenderEntity(SenderColl<T> coll, boolean online)
+	private ARSenderEntity(SenderColl<T> coll, boolean onlineOnly, boolean playerOnly)
 	{
-		super(coll, online);
+		super(coll, onlineOnly, playerOnly);
+		this.coll = coll;
+	}
+	
+	private ARSenderEntity(SenderColl<T> coll, boolean onlineOnly)
+	{
+		super(coll, onlineOnly);
 		this.coll = coll;
 	}
 	
@@ -34,7 +40,8 @@ public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstrac
 	// GET
 	// -------------------------------------------- //
 	
-	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll, boolean online) { return new ARSenderEntity<T>(coll, online); }
+	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll, boolean onlineOnly, boolean playerOnly) { return new ARSenderEntity<T>(coll, onlineOnly, playerOnly); }
+	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll, boolean onlineOnly) { return new ARSenderEntity<T>(coll, onlineOnly); }
 	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll) { return new ARSenderEntity<T>(coll); }
 	
 	// -------------------------------------------- //

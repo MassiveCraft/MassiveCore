@@ -9,9 +9,14 @@ public class ARSenderId extends ARSenderIdAbstract<String>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ARSenderId(SenderIdSource source, boolean online)
+	private ARSenderId(SenderIdSource source, boolean onlineOnly, boolean playerOnly)
 	{
-		super(source, online);
+		super(source, onlineOnly, playerOnly);
+	}
+	
+	private ARSenderId(SenderIdSource source, boolean onlineOnly)
+	{
+		super(source, onlineOnly);
 	}
 	
 	private ARSenderId(SenderIdSource source)
@@ -30,7 +35,8 @@ public class ARSenderId extends ARSenderIdAbstract<String>
 	// GET
 	// -------------------------------------------- //
 	
-	public static ARSenderId get(SenderIdSource source, boolean online) { return new ARSenderId(source, online); }
+	public static ARSenderId get(SenderIdSource source, boolean onlineOnly, boolean playerOnly) { return new ARSenderId(source, onlineOnly, playerOnly); }
+	public static ARSenderId get(SenderIdSource source, boolean onlineOnly) { return new ARSenderId(source, onlineOnly); }
 	public static ARSenderId get(SenderIdSource source) { return new ARSenderId(source); }
 	
 	// -------------------------------------------- //

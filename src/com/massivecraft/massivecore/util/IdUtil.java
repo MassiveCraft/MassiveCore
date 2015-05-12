@@ -119,12 +119,18 @@ public class IdUtil implements Listener, Runnable
 	private static Set<String> onlineNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	public static Set<String> getOnlineNames() { return Collections.unmodifiableSet(onlineNames); }
 	
+	private static Set<String> onlinePlayerNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
+	public static Set<String> getOnlinePlayerNames() { return Collections.unmodifiableSet(onlinePlayerNames); }
+	
 	
 	private static Set<String> allIds = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	public static Set<String> getAllIds() { return Collections.unmodifiableSet(allIds); }
 	
 	private static Set<String> allNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
 	public static Set<String> getAllNames() { return Collections.unmodifiableSet(allNames); }
+	
+	private static Set<String> allPlayerNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
+	public static Set<String> getAllPlayerNames() { return Collections.unmodifiableSet(allPlayerNames); }
 	
 	// -------------------------------------------- //
 	// REGISTRY
@@ -215,7 +221,9 @@ public class IdUtil implements Listener, Runnable
 		if (name == null) throw new NullPointerException("name");
 		
 		onlineNames.remove(name);
+		onlinePlayerNames.remove(name);
 		allNames.remove(name);
+		allPlayerNames.remove(name);
 		
 		IdData data = nameToData.remove(name);
 		if (data == null) return null;
@@ -243,10 +251,14 @@ public class IdUtil implements Listener, Runnable
 		
 		if (id != null && name != null)
 		{
+			boolean player = MUtil.isValidPlayerName(name);
+			
 			if (online) onlineIds.add(id);
 			allIds.add(id);
 			
+			if (online && player) onlinePlayerNames.add(name);
 			if (online) onlineNames.add(name);
+			if (player) allPlayerNames.add(name);
 			allNames.add(name);
 		}
 	}
@@ -336,9 +348,11 @@ public class IdUtil implements Listener, Runnable
 		
 		onlineIds.clear();
 		onlineNames.clear();
+		onlinePlayerNames.clear();
 		
 		allIds.clear();
 		allNames.clear();
+		allPlayerNames.clear();
 		
 		// Load Datas
 		loadDatas();

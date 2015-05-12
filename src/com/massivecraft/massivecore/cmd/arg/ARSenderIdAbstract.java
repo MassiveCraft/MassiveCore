@@ -1,12 +1,13 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -19,16 +20,23 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	// -------------------------------------------- //
 	
 	protected final SenderIdSource source;
-	protected final boolean online;
+	protected final boolean onlineOnly;
+	protected final boolean playerOnly;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public ARSenderIdAbstract(SenderIdSource source, boolean online)
+	public ARSenderIdAbstract(SenderIdSource source, boolean onlineOnly, boolean playerOnly)
 	{
 		this.source = source;
-		this.online = online;
+		this.onlineOnly = onlineOnly;
+		this.playerOnly = playerOnly;
+	}
+	
+	public ARSenderIdAbstract(SenderIdSource source, boolean online)
+	{
+		this(source, online, false);
 	}
 	
 	public ARSenderIdAbstract(SenderIdSource source)
@@ -49,7 +57,7 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	@Override
 	public String getTypeName()
 	{
-		if (online) return "online player";
+		if (onlineOnly) return "online player";
 		else return "player";
 	}
 	
@@ -94,28 +102,25 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		// Create Ret
-		Set<String> ret = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		
-		// Fill Ret
 		Set<String> names;
-		if (online)
+		if (onlineOnly)
 		{
-			names = IdUtil.getOnlineNames();
+			names = playerOnly ? IdUtil.getOnlinePlayerNames() : IdUtil.getOnlineNames();
+			
+			List<String> ret = new MassiveList<String>();
 			for (String name : names)
 			{
 				if ( ! Mixin.canSee(sender, name)) continue;
 				ret.add(name);
 			}
+			return ret;
 		}
 		else
 		{
-			names = IdUtil.getAllNames();
-			ret.addAll(names);
+			names = playerOnly ? IdUtil.getAllPlayerNames() : IdUtil.getAllNames();
+			
+			return names;
 		}
-		
-		// Return Ret
-		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -137,7 +142,7 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 			if ( ! coll.contains(senderId)) continue;
 			
 			// ... and the online check passes ...
-			if (this.online && !Mixin.isOnline(senderId)) continue;
+			if (this.onlineOnly && !Mixin.isOnline(senderId)) continue;
 			
 			// ... and the result is non null ...
 			T result = this.getResultForSenderId(senderId);

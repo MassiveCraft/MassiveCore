@@ -15,7 +15,7 @@ public class ARSender extends ARSenderIdAbstract<CommandSender>
 	public static ARSender get() { return i; }
 	private ARSender()
 	{
-		super(SenderIdSourceMixinAllSenderIds.get());
+		super(SenderIdSourceMixinAllSenderIds.get(), true, false);
 	}
 	
 	// -------------------------------------------- //

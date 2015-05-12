@@ -1,13 +1,14 @@
 package com.massivecraft.massivecore;
 
+// Inspired by: String#regionMatches(ignoreCase, toffset, other, ooffset, len)
 public class PredictateStartsWithIgnoreCase implements Predictate<String>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final String prefix;
-	public String getPrefix() { return this.prefix; };
+	private final String prefixLower;
+	private final String prefixUpper;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -16,7 +17,9 @@ public class PredictateStartsWithIgnoreCase implements Predictate<String>
 	public static PredictateStartsWithIgnoreCase get(String prefix) { return new PredictateStartsWithIgnoreCase(prefix); }
 	public PredictateStartsWithIgnoreCase(String prefix)
 	{
-		this.prefix = prefix.toLowerCase();
+		if (prefix == null) throw new NullPointerException("prefix");
+		this.prefixLower = prefix.toLowerCase();
+		this.prefixUpper = prefix.toUpperCase();
 	}
 
 	// -------------------------------------------- //
@@ -27,7 +30,15 @@ public class PredictateStartsWithIgnoreCase implements Predictate<String>
 	public boolean apply(String str)
 	{
 		if (str == null) return false;
-		return str.toLowerCase().startsWith(this.getPrefix());
+		int index = this.prefixLower.length();
+		if (str.length() < index) return false;
+		while (index-- > 0)
+		{
+			char c = str.charAt(index);
+			if (c == prefixLower.charAt(index)) continue;
+			if (c != prefixUpper.charAt(index)) return false;
+		}
+		return true;
 	}
 	
 }
