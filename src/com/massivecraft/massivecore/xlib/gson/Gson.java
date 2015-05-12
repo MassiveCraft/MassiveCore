@@ -16,6 +16,21 @@
 
 package com.massivecraft.massivecore.xlib.gson;
 
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.massivecraft.massivecore.xlib.gson.internal.ConstructorConstructor;
 import com.massivecraft.massivecore.xlib.gson.internal.Excluder;
 import com.massivecraft.massivecore.xlib.gson.internal.Primitives;
@@ -37,21 +52,6 @@ import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
 import com.massivecraft.massivecore.xlib.gson.stream.MalformedJsonException;
-
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This is the main class for using Gson. Gson is typically used by first constructing a
@@ -233,13 +233,13 @@ public final class Gson {
     factories.add(SqlDateTypeAdapter.FACTORY);
     factories.add(TypeAdapters.TIMESTAMP_FACTORY);
     factories.add(ArrayTypeAdapter.FACTORY);
-    factories.add(TypeAdapters.ENUM_FACTORY);
     factories.add(TypeAdapters.CLASS_FACTORY);
 
     // type adapters for composite and user-defined types
     factories.add(new CollectionTypeAdapterFactory(constructorConstructor));
     factories.add(new MapTypeAdapterFactory(constructorConstructor, complexMapKeySerialization));
     factories.add(new JsonAdapterAnnotationTypeAdapterFactory(constructorConstructor));
+    factories.add(TypeAdapters.ENUM_FACTORY);
     factories.add(new ReflectiveTypeAdapterFactory(
         constructorConstructor, fieldNamingPolicy, excluder));
 
@@ -411,7 +411,7 @@ public final class Gson {
    *  }</pre>
    *  Note that since you can not override type adapter factories for String and Java primitive
    *  types, our stats factory will not count the number of String or primitives that will be
-   *  read or written. 
+   *  read or written.
    * @param skipPast The type adapter factory that needs to be skipped while searching for
    *   a matching type adapter. In most cases, you should just pass <i>this</i> (the type adapter
    *   factory from where {@link #getDelegateAdapter} method is being invoked).
@@ -421,6 +421,10 @@ public final class Gson {
    */
   public <T> TypeAdapter<T> getDelegateAdapter(TypeAdapterFactory skipPast, TypeToken<T> type) {
     boolean skipPastFound = false;
+    // Skip past if and only if the specified factory is present in the factories.
+    // This is useful because the factories created through JsonAdapter annotations are not
+    // registered in this list.
+    if (!factories.contains(skipPast)) skipPastFound = true;
 
     for (TypeAdapterFactory factory : factories) {
       if (!skipPastFound) {

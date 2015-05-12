@@ -57,10 +57,18 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
   }
 
   public boolean excludeField(Field f, boolean serialize) {
+    return excludeField(f, serialize, excluder);
+  }
+
+  static boolean excludeField(Field f, boolean serialize, Excluder excluder) {
     return !excluder.excludeClass(f.getType(), serialize) && !excluder.excludeField(f, serialize);
   }
 
   private String getFieldName(Field f) {
+    return getFieldName(fieldNamingPolicy, f);
+  }
+
+  static String getFieldName(FieldNamingStrategy fieldNamingPolicy, Field f) {
     SerializedName serializedName = f.getAnnotation(SerializedName.class);
     return serializedName == null ? fieldNamingPolicy.translateName(f) : serializedName.value();
   }
@@ -97,6 +105,11 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
         if (fieldValue != null || !isPrimitive) {
           field.set(value, fieldValue);
         }
+      }
+      public boolean writeField(Object value) throws IOException, IllegalAccessException {
+        if (!serialized) return false;
+        Object fieldValue = field.get(value);
+        return fieldValue != value; // avoid recursion for example for Throwable.cause
       }
     };
   }
@@ -151,7 +164,7 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
       this.serialized = serialized;
       this.deserialized = deserialized;
     }
-
+    abstract boolean writeField(Object value) throws IOException, IllegalAccessException;
     abstract void write(JsonWriter writer, Object value) throws IOException, IllegalAccessException;
     abstract void read(JsonReader reader, Object value) throws IOException, IllegalAccessException;
   }
@@ -202,7 +215,7 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
       out.beginObject();
       try {
         for (BoundField boundField : boundFields.values()) {
-          if (boundField.serialized) {
+          if (boundField.writeField(value)) {
             out.name(boundField.name);
             boundField.write(out, value);
           }
