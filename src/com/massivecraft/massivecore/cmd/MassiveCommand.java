@@ -237,49 +237,49 @@ public class MassiveCommand
 	// All
 	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, String def, boolean concatFromHere)
 	{
-		return this.addArg(ArgSetting.of(reader, requiredFromConsole, name, def), concatFromHere);
+		return this.addArg(new ArgSetting(reader, requiredFromConsole, name, def), concatFromHere);
 	}
 	
 	// Without concat.
 	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, String def)
 	{
-		return this.addArg(reader, requiredFromConsole, name, def, false);
+		return this.addArg(new ArgSetting(reader, requiredFromConsole, name, def), false);
 	}
 	
 	// Without reqFromConsole.
 	public ArgSetting addArg(AR<?> reader, String name, String def, boolean concatFromHere)
 	{
-		return this.addArg(reader, false, name, def, concatFromHere);
+		return this.addArg(new ArgSetting(reader, name, def),  concatFromHere);
 	}
 	
 	// Without default.
 	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, boolean concatFromHere)
 	{
-		return this.addArg(reader, requiredFromConsole, name, null, concatFromHere);
+		return this.addArg(new ArgSetting(reader, requiredFromConsole, name), concatFromHere);
 	}
 	
 	// Without concat & reqFromConsole.
 	public ArgSetting addArg(AR<?> reader, String name, String def)
 	{
-		return this.addArg(reader, false, name, def, false);
+		return this.addArg(new ArgSetting(reader, name, def), false);
 	}
 	
 	// Without concat and default.
 	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name)
 	{
-		return this.addArg(reader, requiredFromConsole, name, null, false);
+		return this.addArg(new ArgSetting(reader, requiredFromConsole, name), false);
 	}
 
 	// Without reqFromConsole and default.
 	public ArgSetting addArg(AR<?> reader, String name, boolean concatFromHere)
 	{
-		return this.addArg(reader, false, name, null, concatFromHere);
+		return this.addArg(new ArgSetting(reader, name), concatFromHere);
 	}
 
 	// Without concat, reqFromConsole and default.
 	public ArgSetting addArg(AR<?> reader, String name)
 	{
-		return this.addArg(reader, false, name, null, false);
+		return this.addArg(new ArgSetting(reader, name), false);
 	}
 
 	// FIELD: requiredArgs

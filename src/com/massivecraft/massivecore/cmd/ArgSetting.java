@@ -52,19 +52,42 @@ public class ArgSetting
 	// To minimize confusion and mixing of arguments for the constructor
 	// description must not be set in the constructor.
 	
-	// With default option and required from console.
+	// All
 	public ArgSetting(AR<?> reader, boolean requiredFromConsole, String name, String def)
 	{
+		// Null checks
+		if (reader == null) throw new IllegalArgumentException("reader mustn't be null");
+		if (name == null) throw new IllegalArgumentException("name mustn't be null");
+		
 		this.setReader(reader);
 		this.setRequiredFromConsole(requiredFromConsole);
 		this.setName(name);
 		this.setDefault(def);
 	}
 	
+	// Without reqFromConsole.
+	public ArgSetting(AR<?> reader, String name, String def)
+	{
+		this(reader, false, name, def);
+	}
+	
+	// Without default.
+	public ArgSetting(AR<?> reader, boolean requiredFromConsole, String name)
+	{
+		this(reader, requiredFromConsole, name, null);
+	}
+
+	// Without reqFromConsole and default.
+	public ArgSetting (AR<?> reader, String name)
+	{
+		this(reader, false, name, null);
+	}
+	
 	// -------------------------------------------- //
 	// STATIC FACTORY
 	// -------------------------------------------- //
 	
+	@Deprecated
 	public static ArgSetting of(AR<?> reader, boolean requiredFromConsole, String name, String def)
 	{
 		// Null checks
@@ -110,7 +133,7 @@ public class ArgSetting
 	{
 		// We can't use a singletone, because people might
 		// want to set a description.
-		return ArgSetting.of(ARInteger.get(), false, "page", "1");
+		return new ArgSetting(ARInteger.get(), "page", "1");
 	}
 	
 }
