@@ -43,7 +43,7 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 		}
 		else
 		{
-			Coll<?> coll = (Coll<?>) this.readArg();
+			Coll<?> coll = this.readArg();
 			this.performColl(coll);
 		}
 	}

@@ -34,8 +34,8 @@ public class CmdMassiveCoreUsysUniverseNew extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		String universe = (String) this.readArg();
-		Multiverse multiverse = (Multiverse) this.readArg();
+		String universe = this.readArg();
+		Multiverse multiverse = this.readArg();
 		
 		if (multiverse.containsUniverse(universe))
 		{

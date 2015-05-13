@@ -177,14 +177,14 @@ public class MassiveCommand
 	
 	// FIELD argSettings
 	// Settings for all args.
-	protected List<ArgSetting> argSettings;
-	public List<ArgSetting> getArgSettings() { return this.argSettings; }
-	public void setArgSettings(List<ArgSetting> argSettings) { this.argSettings = argSettings; }
+	protected List<ArgSetting<?>> argSettings;
+	public List<ArgSetting<?>> getArgSettings() { return this.argSettings; }
+	public void setArgSettings(List<ArgSetting<?>> argSettings) { this.argSettings = argSettings; }
 	
 	// The index is the same as the argument index.
 	// So argAt(x) should be read by getArgReader(x)
 	
-	public ArgSetting getArgSetting(int index)
+	public ArgSetting<?> getArgSetting(int index)
 	{
 		if (this.isUsingConcatFrom() && this.getConcatFromIndex() < index) index = this.getConcatFromIndex();
 		return this.getArgSettings().get(index);
@@ -192,7 +192,7 @@ public class MassiveCommand
 	
 	public AR<?> getArgReader(int index)
 	{
-		ArgSetting setting = this.getArgSetting(index);
+		ArgSetting<?> setting = this.getArgSetting(index);
 		return setting.getReader();
 	}
 	
@@ -205,7 +205,7 @@ public class MassiveCommand
 	}
 	
 	// The actual setting.
-	public ArgSetting addArg(ArgSetting setting, boolean concatFromHere)
+	public <T> ArgSetting<T> addArg(ArgSetting<T> setting, boolean concatFromHere)
 	{
 		// Concat safety.
 		if (this.isUsingConcatFrom())
@@ -229,57 +229,113 @@ public class MassiveCommand
 	}
 	
 	// The actual setting without concat.
-	public ArgSetting addArg(ArgSetting setting)
+	public <T> ArgSetting<T> addArg(ArgSetting<T> setting)
 	{
 		return this.addArg(setting, false);
 	}
 	
 	// All
-	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, String def, boolean concatFromHere)
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, boolean requiredFromConsole, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addArg(new ArgSetting(reader, requiredFromConsole, name, def), concatFromHere);
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, requiredFromConsole, name, defaultDesc), concatFromHere);
 	}
 	
-	// Without concat.
-	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, String def)
+	// WITHOUT 1
+	
+	// Without defaultValue
+	public <T> ArgSetting<T> addArg(AR<T> reader, boolean requiredFromConsole, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addArg(new ArgSetting(reader, requiredFromConsole, name, def), false);
+		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name, defaultDesc), concatFromHere);
 	}
 	
 	// Without reqFromConsole.
-	public ArgSetting addArg(AR<?> reader, String name, String def, boolean concatFromHere)
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addArg(new ArgSetting(reader, name, def),  concatFromHere);
-	}
-	
-	// Without default.
-	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name, boolean concatFromHere)
-	{
-		return this.addArg(new ArgSetting(reader, requiredFromConsole, name), concatFromHere);
-	}
-	
-	// Without concat & reqFromConsole.
-	public ArgSetting addArg(AR<?> reader, String name, String def)
-	{
-		return this.addArg(new ArgSetting(reader, name, def), false);
-	}
-	
-	// Without concat and default.
-	public ArgSetting addArg(AR<?> reader, boolean requiredFromConsole, String name)
-	{
-		return this.addArg(new ArgSetting(reader, requiredFromConsole, name), false);
+		return this.addArg(new ArgSetting<T>(reader, name, defaultDesc),  concatFromHere);
 	}
 
-	// Without reqFromConsole and default.
-	public ArgSetting addArg(AR<?> reader, String name, boolean concatFromHere)
+	// Without defaultDesc.
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, boolean requiredFromConsole, String name, boolean concatFromHere)
 	{
-		return this.addArg(new ArgSetting(reader, name), concatFromHere);
+		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name), concatFromHere);
+	}
+	
+	// Without concat.
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, boolean requiredFromConsole, String name, String defaultDesc)
+	{
+		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name, defaultDesc), false);
+	}
+	
+	// WITHOUT 2
+	
+	// Without defaultValue & reqFromConsole
+	public <T> ArgSetting<T> addArg(AR<T> reader, String name, String defaultDesc, boolean concatFromHere)
+	{
+		return this.addArg(new ArgSetting<T>(reader, name, defaultDesc), concatFromHere);
+	}
+	
+	// Without defaultValue & defaultDesc
+	public <T> ArgSetting<T> addArg(AR<T> reader, boolean requiredFromConsole, String name, boolean concatFromHere)
+	{
+		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name), concatFromHere);
+	}
+	
+	// Without defaultValue & concat.
+	public <T> ArgSetting<T> addArg(AR<T> reader, boolean requiredFromConsole, String name, String defaultDesc)
+	{
+		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name, defaultDesc));
 	}
 
-	// Without concat, reqFromConsole and default.
-	public ArgSetting addArg(AR<?> reader, String name)
+	// Without reqFromConsole & defaultDesc.
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, String name, boolean concatFromHere)
 	{
-		return this.addArg(new ArgSetting(reader, name), false);
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, name), concatFromHere);
+	}
+
+	// Without reqFromConsole & concat.
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, String name, String defaultDesc)
+	{
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, name, defaultDesc));
+	}
+	
+	// Without defaultDesc & concat.
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, boolean requiredFromConsole, String name)
+	{
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, requiredFromConsole, name));
+	}
+	
+	// WITHOUT 3
+	
+	// Without defaultValue, reqFromConsole & defaultDesc.
+	public <T> ArgSetting<T> addArg(AR<T> reader, String name, boolean concatFromHere)
+	{
+		return this.addArg(new ArgSetting<T>(reader, name), concatFromHere);
+	}
+	
+	// Without defaultValue, reqFromConsole & concat .
+	public <T> ArgSetting<T> addArg(AR<T> reader, String name, String defaultDesc)
+	{
+		return this.addArg(new ArgSetting<T>(reader, name, defaultDesc));
+	}
+	
+	// Without defaultValue, defaultDesc & concat .
+	public <T> ArgSetting<T> addArg(AR<T> reader, boolean requiredFromConsole, String name)
+	{
+		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name));
+	}
+	
+	// Without reqFromConsole, defaultDesc & concat .
+	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, String name)
+	{
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, name));
+	}
+	
+	// WITHOUT 4
+
+	// Without defaultValue, reqFromConsole, defaultDesc & concat .
+	public <T> ArgSetting<T> addArg(AR<T> reader, String name)
+	{
+		return this.addArg(new ArgSetting<T>(reader, name));
 	}
 
 	// FIELD: requiredArgs
@@ -441,7 +497,7 @@ public class MassiveCommand
 		if ( ! this.isUsingNewArgSystem()) return this.getRequiredArgs().size();
 		
 		int ret = 0;
-		for (ArgSetting setting : this.getArgSettings())
+		for (ArgSetting<?> setting : this.getArgSettings())
 		{
 			if (setting.isRequiredFor(sender)) ret++;
 		}
@@ -454,7 +510,7 @@ public class MassiveCommand
 		if ( ! this.isUsingNewArgSystem()) return this.getOptionalArgs().size();
 		
 		int ret = 0;
-		for (ArgSetting setting : this.getArgSettings())
+		for (ArgSetting<?> setting : this.getArgSettings())
 		{
 			if (setting.isOptionalFor(sender)) ret++;
 		}
@@ -477,7 +533,7 @@ public class MassiveCommand
 		
 		this.aliases = new ArrayList<String>();
 		
-		this.argSettings = new ArrayList<ArgSetting>();
+		this.argSettings = new ArrayList<ArgSetting<?>>();
 		
 		this.requiredArgs = new ArrayList<String>();
 		this.optionalArgs = new LinkedHashMap<String, String>();
@@ -863,7 +919,7 @@ public class MassiveCommand
 		List<String> ret = new MassiveList<String>();
 		if (this.isUsingNewArgSystem())
 		{
-			for (ArgSetting setting : this.getArgSettings())
+			for (ArgSetting<?> setting : this.getArgSettings())
 			{
 				ret.add(setting.getUseageTemplateDisplayFor(sender));
 			}
@@ -1085,24 +1141,31 @@ public class MassiveCommand
 	@SuppressWarnings("unchecked")
 	public <T> T readArgAt(int idx) throws MassiveException
 	{
+		// Make sure that an ArgSetting is present.
 		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
+		
+		// Get the setting
+		ArgSetting<T> setting = (ArgSetting<T>) this.getArgSetting(idx);
+		// Return the default in the setting.
+		if ( ! this.argIsSet(idx) && setting.isDefaultValueSet()) return setting.getDefaultValue();
+		
+		// The was no arg, or default value in the setting.
 		if ( ! this.argIsSet(idx)) throw new IllegalArgumentException("Trying to access arg: " + idx + " but that is not set.");
 		
-		String str = this.argAt(idx);
-		return this.readArgFrom(str, (AR<T>) this.getArgReader(idx));
+		// Just read the arg normally.
+		String arg = this.argAt(idx);
+		return setting.getReader().read(arg, sender);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T readArgAt(int idx, T defaultNotSet) throws MassiveException
 	{
-		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
+		// Return the default passed.
 		if ( ! this.argIsSet(idx)) return defaultNotSet;
 		
-		String str = this.argAt(idx);
-		return this.readArgFrom(str, (AR<T>)this.getArgReader(idx), defaultNotSet);
+		return readArgAt(idx);
 	}
 
-	// Core Logic
+	// Basic Logic
 	
 	public <T> T readArgFrom(AR<T> argReader) throws MassiveException
 	{

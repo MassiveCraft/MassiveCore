@@ -32,7 +32,7 @@ public class CmdMassiveCoreUsysMultiverseNew extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		String id = (String) this.readArg();
+		String id = this.readArg();
 		
 		if (MultiverseColl.get().containsId(id))
 		{

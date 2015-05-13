@@ -41,7 +41,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		final String dbAlias = (String) this.readArg(ConfServer.dburi);
+		final String dbAlias = this.readArg(ConfServer.dburi);
 		final Db db = MStore.getDb(dbAlias);
 		if (db == null)
 		{

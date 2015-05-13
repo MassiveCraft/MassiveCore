@@ -49,7 +49,7 @@ public class CmdMassiveCoreTest extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		ParticleEffect particleEffect = (ParticleEffect) this.readArg();
+		ParticleEffect particleEffect = this.readArg();
 		
 		Location center = me.getEyeLocation().add(0, 0, 0);
 		

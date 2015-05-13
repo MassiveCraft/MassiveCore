@@ -33,7 +33,7 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Aspect aspect = (Aspect) this.readArg();
+		Aspect aspect = this.readArg();
 		
 		msg(Txt.titleize("Aspect: "+aspect.getId()));
 		msg("<k>using multiverse: <v>%s",aspect.getMultiverse().getId());

@@ -38,7 +38,7 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Multiverse multiverse = (Multiverse) this.readArg();
+		Multiverse multiverse = this.readArg();
 		
 		msg(Txt.titleize("Multiverse: "+multiverse.getId()));
 		

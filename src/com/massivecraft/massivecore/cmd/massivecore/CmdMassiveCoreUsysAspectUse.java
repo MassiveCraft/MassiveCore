@@ -35,8 +35,8 @@ public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Aspect aspect = (Aspect) this.readArg();
-		Multiverse multiverse = (Multiverse) this.readArg();
+		Aspect aspect = this.readArg();
+		Multiverse multiverse = this.readArg();
 		
 		aspect.setMultiverse(multiverse);
 		

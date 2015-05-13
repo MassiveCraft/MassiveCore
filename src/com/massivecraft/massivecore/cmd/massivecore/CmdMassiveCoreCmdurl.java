@@ -44,7 +44,7 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		String urlString = (String) this.readArg();
+		String urlString = this.readArg();
 		
 		final URL url;
 		try

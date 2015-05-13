@@ -35,8 +35,8 @@ public class CmdMassiveCoreUsysWorld extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		String worldName = (String) this.readArg();
-		String universe = (String) this.readArg();
+		String worldName = this.readArg();
+		String universe = this.readArg();
 		Multiverse multiverse = (Multiverse) this.readArg();
 		
 		if (!multiverse.containsUniverse(universe))

@@ -33,13 +33,12 @@ public class CmdMassiveCoreHearsound extends MassiveCommand
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public void perform() throws MassiveException
 	{
 		// Args
-		List<SoundEffect> soundEffects = (List<SoundEffect>) this.readArg();
+		List<SoundEffect> soundEffects = this.readArg();
 		
 		// Apply
 		SoundEffect.runAll(soundEffects, me);

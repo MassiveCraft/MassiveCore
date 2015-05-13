@@ -33,7 +33,7 @@ public class CmdMassiveCoreUsysMultiverseDel extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		Multiverse multiverse = (Multiverse) this.readArg();
+		Multiverse multiverse = this.readArg();
 		
 		String id = multiverse.getId();
 		

@@ -32,7 +32,7 @@ public class CmdMassiveCoreBufferSet extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		String string = (String) this.readArg();
+		String string = this.readArg();
 		
 		MassiveCoreEngineVariable.setBuffer(sender, string);
 		

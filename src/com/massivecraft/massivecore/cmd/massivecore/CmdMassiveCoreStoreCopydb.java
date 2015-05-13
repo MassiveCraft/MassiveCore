@@ -42,7 +42,7 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		final String fromAlias = (String) this.readArg();
+		final String fromAlias = this.readArg();
 		final Db fromDb = MStore.getDb(fromAlias);
 		if (fromDb == null)
 		{
@@ -50,7 +50,7 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 			return;
 		}
 		
-		final String toAlias = (String) this.readArg();
+		final String toAlias = this.readArg();
 		final Db toDb = MStore.getDb(toAlias);
 		if (toDb == null)
 		{

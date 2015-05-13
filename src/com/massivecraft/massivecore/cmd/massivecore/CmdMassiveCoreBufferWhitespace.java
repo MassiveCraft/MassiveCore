@@ -33,7 +33,7 @@ public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		int times = (Integer) this.readArg(1);
+		int times = this.readArg(1);
 		
 		String string = Txt.repeat(" ", times);
 		

@@ -7,8 +7,8 @@ import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -24,7 +24,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addArg(ARInteger.get(), "page", "1").setDesc("the page in the aspect list");
+		this.addArg(ArgSetting.getPager()).setDesc("the page in the aspect list");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_ASPECT_LIST.node));
@@ -38,7 +38,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		int pageHumanBased = (Integer) this.readArg(1);
+		int pageHumanBased = this.readArg();
 		
 		// Create Lines
 		List<String> lines = new ArrayList<String>();
