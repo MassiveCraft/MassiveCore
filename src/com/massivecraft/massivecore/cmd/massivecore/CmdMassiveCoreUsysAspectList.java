@@ -24,7 +24,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addArg(ArgSetting.getPager()).setDesc("the page in the aspect list");
+		this.addArg(ArgSetting.getPage()).setDesc("the page in the aspect list");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_ASPECT_LIST.node));
@@ -38,7 +38,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		int pageHumanBased = this.readArg();
+		int page = this.readArg();
 		
 		// Create Lines
 		List<String> lines = new ArrayList<String>();
@@ -50,7 +50,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 		}
 				
 		// Send them
-		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Aspect List", sender));	
+		this.sendMessage(Txt.getPage(lines, page, "Aspect List", sender));	
 	}
 	
 }

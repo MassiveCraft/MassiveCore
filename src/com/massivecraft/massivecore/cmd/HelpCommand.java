@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.util.Txt;
 
 public class HelpCommand extends MassiveCommand
@@ -21,7 +20,7 @@ public class HelpCommand extends MassiveCommand
 		this.addAliases("?", "h", "help");
 		
 		// Args
-		this.addArg(ARInteger.get(), "page", "1");
+		this.addArg(ArgSetting.getPage());
 		
 		// Other
 		this.setDesc("");
@@ -35,7 +34,7 @@ public class HelpCommand extends MassiveCommand
 	public void perform() throws MassiveException
 	{	
 		// Args
-		int pagenumber = this.readArg(1); 
+		int page = this.readArg(); 
 		
 		// Get parent command
 		if ( ! this.hasParentCommand()) return;
@@ -57,7 +56,7 @@ public class HelpCommand extends MassiveCommand
 		}
 		
 		// Send Lines
-		sendMessage(Txt.getPage(lines, pagenumber, "Help for command \"" + parentCommand.getAliases().get(0) + "\"", sender));
+		sendMessage(Txt.getPage(lines, page, "Help for command \"" + parentCommand.getAliases().get(0) + "\"", sender));
 	}
 	
 }

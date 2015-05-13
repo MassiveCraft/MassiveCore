@@ -20,7 +20,7 @@ public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
 		this.addAliases("w", "whitespace");
 		
 		// Args
-		this.addArg(ARInteger.get(), "times", "1").setDesc("the amount of whitespace to add to your buffer");
+		this.addArg(1, ARInteger.get(), "times").setDesc("the amount of whitespace to add to your buffer");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.BUFFER_WHITESPACE.node));
@@ -33,7 +33,7 @@ public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		int times = this.readArg(1);
+		int times = this.readArg();
 		
 		String string = Txt.repeat(" ", times);
 		

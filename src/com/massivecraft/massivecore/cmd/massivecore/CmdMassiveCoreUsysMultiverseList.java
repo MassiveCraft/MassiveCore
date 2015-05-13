@@ -7,6 +7,7 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.MultiverseColl;
+import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
@@ -24,7 +25,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 		this.addAliases("l", "list");
 		
 		// Args
-		this.addArg(ARInteger.get(), "page", "1").setDesc("the page in the multiverse list");
+		this.addArg(ArgSetting.getPage());
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_LIST.node));
@@ -38,7 +39,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		int pageHumanBased = this.readArg(1);
+		int page = this.readArg();
 		
 		// Create Lines
 		List<String> lines = new ArrayList<String>();
@@ -49,7 +50,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 		}
 				
 		// Send them
-		this.sendMessage(Txt.getPage(lines, pageHumanBased, "Multiverse List", sender));
+		this.sendMessage(Txt.getPage(lines, page, "Multiverse List", sender));
 	}
 	
 }

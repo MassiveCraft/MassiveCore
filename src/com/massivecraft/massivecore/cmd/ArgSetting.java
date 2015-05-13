@@ -189,7 +189,7 @@ public class ArgSetting<T>
 	// COMMONLY USED ARG SETTINGS
 	// -------------------------------------------- //
 
-	public static ArgSetting<Integer> getPager()
+	public static ArgSetting<Integer> getPage()
 	{
 		// We can't use a singletone, because people might
 		// want to set a description.
