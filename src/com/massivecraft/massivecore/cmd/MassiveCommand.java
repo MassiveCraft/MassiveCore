@@ -1144,6 +1144,9 @@ public class MassiveCommand
 		// Make sure that an ArgSetting is present.
 		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
 		
+		// Read the arg here. To ensure counter is incremented.
+		String arg = this.argAt(idx);
+		
 		// Get the setting
 		ArgSetting<T> setting = (ArgSetting<T>) this.getArgSetting(idx);
 		// Return the default in the setting.
@@ -1153,7 +1156,6 @@ public class MassiveCommand
 		if ( ! this.argIsSet(idx)) throw new IllegalArgumentException("Trying to access arg: " + idx + " but that is not set.");
 		
 		// Just read the arg normally.
-		String arg = this.argAt(idx);
 		return setting.getReader().read(arg, sender);
 	}
 
