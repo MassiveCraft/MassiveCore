@@ -251,19 +251,19 @@ public class MassiveCommand
 	// Without reqFromConsole.
 	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addArg(new ArgSetting<T>(reader, name, defaultDesc),  concatFromHere);
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, name, defaultDesc),  concatFromHere);
 	}
 
 	// Without defaultDesc.
 	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, boolean requiredFromConsole, String name, boolean concatFromHere)
 	{
-		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name), concatFromHere);
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, requiredFromConsole, name), concatFromHere);
 	}
 	
 	// Without concat.
 	public <T> ArgSetting<T> addArg(T defaultValue, AR<T> reader, boolean requiredFromConsole, String name, String defaultDesc)
 	{
-		return this.addArg(new ArgSetting<T>(reader, requiredFromConsole, name, defaultDesc), false);
+		return this.addArg(new ArgSetting<T>(defaultValue, reader, requiredFromConsole, name, defaultDesc), false);
 	}
 	
 	// WITHOUT 2
