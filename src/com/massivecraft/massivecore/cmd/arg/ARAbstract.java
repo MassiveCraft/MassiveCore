@@ -1,14 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.bukkit.command.CommandSender;
 
-import com.google.common.collect.Lists;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -95,7 +95,7 @@ public abstract class ARAbstract<T> implements AR<T>
 		// Because spaces and tab completion desn't go well together.
 		// In the future we might be able to do something better,
 		// but MineCraft has its limitations.
-		ret = prepareForSpaces(ret);
+		ret = prepareForSpaces(ret, arg);
 		
 		return ret;
 	}
@@ -104,17 +104,18 @@ public abstract class ARAbstract<T> implements AR<T>
 	// PRIVATE: TAB COMPLETE CALCULATIONS
 	// -------------------------------------------- //
 	
-	public static List<String> prepareForSpaces(List<String> suggestions)
+	public static List<String> prepareForSpaces(List<String> suggestions, String arg)
 	{
-		List<List<String>> suggestionParts = getParts(suggestions);
+		cleanSuggestions(suggestions);
 		
 		// This will get the common prefix for all passed in suggestions.
 		// This will allow us to tab complete somethings with spaces
 		// if we know they all start with the same value,
 		// so we don't have to replace all of it.
-		List<String> prefix = getPrefix(suggestionParts);
+		final String prefix = getPrefix(suggestions);
+		
 		// This is all the suggetions without the common prefix.
-		List<String> ret = withoutPreAndSuffix(suggestionParts, prefix);
+		List<String> ret = withoutPreAndSuffix(suggestions, prefix);
 		// If it isn't empty and there is a prefix...
 		if ( ! ret.isEmpty() && ! prefix.isEmpty())
 		{
@@ -122,36 +123,43 @@ public abstract class ARAbstract<T> implements AR<T>
 			// That prefix is not removed automatically,
 			// due to how tab completion works.
 			final String current = ret.get(0);
-			final String prefixStr = Txt.implode(prefix, " ");
-			String result = prefixStr;
-			if ( ! current.isEmpty()) result += " " + current;
+			String result = prefix;
+			if ( ! current.isEmpty())
+			{
+				if (result.charAt(result.length()-1) != ' ') result += ' ';
+				result += current;
+			}
 			
+			int unwantedPrefixLength =  arg.lastIndexOf(' ');
+			if (unwantedPrefixLength != -1)
+			{
+				unwantedPrefixLength++;
+				result = result.substring(unwantedPrefixLength);
+			}
 			ret.set(0, result);
 		}
+		
+
 		
 		return ret;
 	}
 	
-	// This things splits up the arguments at spaces.
-	private static List<List<String>> getParts(List<String> list)
+	private static void cleanSuggestions(List<String> suggestions)
 	{
-		List<List<String>> ret = Lists.newArrayList();
-		
-		for (String str : list)
+		for (ListIterator<String> it = suggestions.listIterator(); it.hasNext();)
 		{
-			if (str == null) continue;
-			if (str.isEmpty()) continue;
-			ret.add(Arrays.asList(str.split("\\s+")));
+			String suggestion = it.next();
+			if (suggestion == null) it.remove();
+			else if (suggestion.isEmpty()) it.remove();
+			else it.set(suggestion.toLowerCase());
 		}
-		
-		return ret;
 	}
-
-	private static List<String> withoutPreAndSuffix(List<List<String>> suggestionParts, List<String> prefix)
+	
+	private static List<String> withoutPreAndSuffix(List<String> suggestions, String prefix)
 	{
-		List<String> ret = new ArrayList<String>(suggestionParts.size());
+		LinkedHashSet<String> ret = new LinkedHashSet<String>(suggestions.size());
 		boolean includesPrefix = false; // Sometimes a suggestion is equal to the prefix.
-		for (List<String> suggestion : suggestionParts)
+		for (String suggestion : suggestions)
 		{
 			if (suggestion.equals(prefix) && !includesPrefix)
 			{
@@ -162,42 +170,51 @@ public abstract class ARAbstract<T> implements AR<T>
 			// We remove the prefix because we only want that once.
 			// But we can't keep things after the first part either
 			// because of spaces and stuff.
-			if (suggestion.size() <= prefix.size()) continue;
-			ret.add(suggestion.get(prefix.size()));
+			if (suggestion.length() <= prefix.length()) continue;
+			int lastSpace = prefix.indexOf(' ', prefix.length());
+			int lastIndex = lastSpace != -1 ? lastSpace : suggestion.length();
+			ret.add(suggestion.substring(prefix.length(), lastIndex));
 		}
 		
-		return ret;
+		return new ArrayList<String>(ret);
 	}
 	
-	private static List<String> getPrefix(List<List<String>> suggestionParts)
+	private static String getPrefix(List<String> suggestions)
 	{
-		List<String> prefix = null;
+		String prefix = null;
 		
-		for (List<String> suggestion : suggestionParts)
+		for (String suggestion : suggestions)
 		{
 			prefix = getOkay(prefix, suggestion);
 		}
 		
-		return prefix;
+		if (prefix == null) return "";
+		int lastSpace = prefix.lastIndexOf(" ");
+		if (lastSpace == -1) return "";
+		
+		return prefix.substring(0, lastSpace+1);
 	}
 	
-	// This method return a new array only including
-	// the first parts that are equal.
-	private static List<String> getOkay(List<String> original, List<String> compared)
+	// This method return a new string only including
+	// the first characters that are equal.
+	private static String getOkay(String original, String compared)
 	{
 		if (original == null) return compared;
-		
-		final int size = Math.min(original.size(), compared.size());
-		List<String> ret = new ArrayList<String>(size);
+		final int size = Math.min(original.length(), compared.length());
+		StringBuilder ret = new StringBuilder();
 		
 		for (int i = 0; i < size; i++)
 		{
-			if (compared.get(i) == null || original.get(i) == null) break;
-			if ( ! compared.get(i).equals(original.get(i))) break;
-			ret.add(original.get(i));
+			if (Character.toLowerCase(compared.charAt(i)) != Character.toLowerCase(original.charAt(i))) break;
+			ret.append(compared.charAt(i));
 		}
-
-		return ret;
+		
+		if (ret.length() == 0) return "";
+		
+		int lastSpace = ret.lastIndexOf(" ");
+		if (lastSpace == -1) return "";
+		
+		return ret.toString();
 	}
 	
 }
