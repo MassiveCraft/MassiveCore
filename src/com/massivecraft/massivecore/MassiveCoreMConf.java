@@ -24,6 +24,8 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// FIELDS
 	// -------------------------------------------- //
 	
+	public int maxTabCompletions = 100;
+	
 	public List<String> aliasesOuterMassiveCore = MUtil.list("massivecore", "mcore");
 	
 	public List<String> aliasesOuterMassiveCoreUsys = MUtil.list("usys");

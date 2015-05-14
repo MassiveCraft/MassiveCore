@@ -13,4 +13,5 @@ public class Lang
 	public static final String COMMAND_NO_SUCH_SUB = "<b>Couldn't find the command <c>%s";
 	public static final String COMMAND_SUGGEST_SUB = "<i>Maybe you could try %s";
 	public static final String COMMAND_GET_HELP = "<i>Use %s <i>to see commands.";
+	public static final String COMMAND_TOO_MANY_TAB_SUGGESTIONS = "<h>%d <b>tab completions available. Be more specific and try again.";
 }

@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.cmd;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -8,7 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.Lang;
+import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -125,6 +129,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 		if (alias == null) throw new IllegalArgumentException("args must not be null");
 		
 		List<String> args = new MassiveList<String>();
+		
 		// When several spaces are next to each other, empty elements in the array will occur.
 		// To avoid such whitespace we do the following
 		// NOTE: The last arg can be empty, and will be in many cases.	
@@ -137,7 +142,18 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 		}
 		// Here we add the last element.
 		args.add(rawArgs[rawArgs.length-1]);
-		return this.getMassiveCommand().getTabCompletions(args, sender);
+		
+		List<String> ret = this.getMassiveCommand().getTabCompletions(args, sender);
+		
+		int retSize = ret.size();
+		int maxSize = MassiveCoreMConf.get().maxTabCompletions;
+		if (maxSize > 0 && retSize > maxSize)
+		{
+			Mixin.msgOne(sender, Lang.COMMAND_TOO_MANY_TAB_SUGGESTIONS, retSize);
+			return Collections.emptyList();
+		}
+		
+		return ret;
 	}
 	
 }
