@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 
@@ -13,7 +12,7 @@ import com.massivecraft.massivecore.xlib.gson.Gson;
 
 // Self referencing generic.
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
-public abstract class Entity<E extends Entity<E>> implements Comparable<E>
+public abstract class Entity<E extends Entity<E>>
 {
 	// -------------------------------------------- //
 	// COLL & ID
@@ -156,33 +155,7 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 	// -------------------------------------------- //
 	// STANDARDS
 	// -------------------------------------------- //
-	
-	@Override
-	public int compareTo(E that)
-	{
-		if (that == null) throw new NullPointerException("You cannot compare with null");
-		
-		if (this.equals(that)) return 0;
-		
-		String thisId = this.getId();
-		String thatId = that.getId();
-		
-		if (thisId == null) return -1;	
-		if (thatId == null) return +1;
-		
-		int ret = NaturalOrderComparator.get().compare(thisId, thatId);
-		
-		// The id's may be the same if these are objects from different collections
-		// We avoid zero in an ugly way like this.
-		// TODO: Improve by comparing collections and then databases.
-		if (ret == 0)
-		{
-			ret = -1;
-		}
-		
-		return ret;
-	}
-	
+
 	@Override
 	public String toString()
 	{

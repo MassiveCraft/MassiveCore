@@ -11,12 +11,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.HashCodeComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.NaturalOrderComparator;
@@ -906,21 +905,16 @@ public class Coll<E> implements CollInterface<E>
 		this.collDriverObject = db.createCollDriverObject(this);
 		
 		// STORAGE
-		if (entityComparator == null && !Comparable.class.isAssignableFrom(entityClass))
-		{
-			// Avoid "Classname cannot be cast to java.lang.Comparable" error in ConcurrentSkipListMap
-			entityComparator = HashCodeComparator.get();
-		}
-		this.id2entity = new ConcurrentSkipListMap<String, E>(idComparator);
-		this.entity2id = new ConcurrentSkipListMap<E, String>(entityComparator);
+		this.id2entity = entityComparator != null ? new ConcurrentSkipListMap<String, E>(idComparator) : new ConcurrentHashMap<String, E>();
+		this.entity2id = entityComparator != null ? new ConcurrentSkipListMap<E, String>(entityComparator) : new ConcurrentHashMap<E, String>();
 		
 		// IDENTIFIED MODIFICATIONS
-		this.identifiedModifications = new ConcurrentSkipListMap<String, Modification>(idComparator);
+		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
 		
 		// SYNCLOG
-		this.lastMtime = new ConcurrentSkipListMap<String, Long>(idComparator);
-		this.lastRaw = new ConcurrentSkipListMap<String, JsonElement>(idComparator);
-		this.lastDefault = new ConcurrentSkipListSet<String>(idComparator);
+		this.lastMtime = new ConcurrentHashMap<String, Long>();
+		this.lastRaw = new ConcurrentHashMap<String, JsonElement>();
+		this.lastDefault = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 		
 		final Coll<E> me = this;
 		this.tickTask = new Runnable()
