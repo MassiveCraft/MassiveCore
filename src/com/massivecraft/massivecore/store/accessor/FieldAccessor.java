@@ -2,6 +2,8 @@ package com.massivecraft.massivecore.store.accessor;
 
 import java.lang.reflect.Field;
 
+import com.massivecraft.massivecore.util.ReflectionUtil;
+
 public class FieldAccessor
 {
 	// -------------------------------------------- //
@@ -16,7 +18,7 @@ public class FieldAccessor
 	
 	public FieldAccessor(Field field)
 	{
-		field.setAccessible(true);
+		ReflectionUtil.makeAccessible(field);
 		this.field = field;
 	}
 	

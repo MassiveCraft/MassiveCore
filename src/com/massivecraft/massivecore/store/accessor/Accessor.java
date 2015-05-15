@@ -21,7 +21,7 @@ public class Accessor
 	public Class<?> getClazz() { return this.clazz; }
 		
 	private Map<String, FieldAccessor> fieldToAccessor = new LinkedHashMap<String, FieldAccessor>();
-	public Map<String, FieldAccessor> getFieldToAccessor() {	return this.fieldToAccessor; }
+	public Map<String, FieldAccessor> getFieldToAccessor() { return this.fieldToAccessor; }
 	
 	public FieldAccessor getFieldAccessor(String fieldName)
 	{
@@ -50,14 +50,15 @@ public class Accessor
 	{
 		Accessor ret = classToAccessor.get(clazz);
 		if (ret != null) return ret;
-		return new Accessor(clazz);
+		ret = new Accessor(clazz);
+		classToAccessor.put(clazz, ret);
+		return ret;
 	}
 	
 	private Accessor(Class<?> clazz)
 	{
 		this.clazz = clazz;
 		this.populate();
-		classToAccessor.put(clazz, this);
 	}
 	
 	// -------------------------------------------- //
@@ -145,7 +146,6 @@ public class Accessor
 			if (Modifier.isFinal(field.getModifiers())) continue;
 			String fieldName = field.getName();
 			if (ret.containsKey(fieldName)) continue;
-			field.setAccessible(true);
 			ret.put(fieldName, field);
 		}
 		
