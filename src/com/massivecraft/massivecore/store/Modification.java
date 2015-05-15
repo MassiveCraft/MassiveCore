@@ -2,6 +2,10 @@ package com.massivecraft.massivecore.store;
 
 public enum Modification
 {
+	// -------------------------------------------- //
+	// ENUM
+	// -------------------------------------------- //
+	
 	LOCAL_ALTER (true, true),
 	LOCAL_ATTACH (true, true),
 	LOCAL_DETACH (true, true),
@@ -12,12 +16,20 @@ public enum Modification
 	UNKNOWN (false, false),
 	;
 	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	private final boolean modified;
 	public boolean isModified() { return this.modified; }
 	
 	private final boolean local;
 	public boolean isLocal() { return this.local; }
 	public boolean isRemote() { return this.local == false; }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	
 	private Modification(boolean modified, boolean local)
 	{

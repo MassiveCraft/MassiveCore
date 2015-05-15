@@ -197,18 +197,7 @@ public class Coll<E> implements CollInterface<E>
 			return false;
 		}
 	}
-	
-	// This is used in parallel with the isDefault.
-	// Parallel usage is useful since we can then override isDeafult just like before.
-	public static boolean isCustomDataDefault(Object entity)
-	{
-		if (!(entity instanceof Entity)) return true;
-		JsonObject customData = ((Entity<?>)entity).getCustomData();
-		if (customData == null) return true;
-		if (customData.entrySet().size() == 0) return true;
-		return false;
-	}
-	
+
 	// -------------------------------------------- //
 	// COPY AND CREATE
 	// -------------------------------------------- //
@@ -225,7 +214,6 @@ public class Coll<E> implements CollInterface<E>
 			Entity eto = (Entity)oto;
 			
 			eto.load(efrom);
-			eto.setCustomData(efrom.getCustomData());
 		}
 		else if (ofrom instanceof JsonObject)
 		{
@@ -450,7 +438,8 @@ public class Coll<E> implements CollInterface<E>
 	// -------------------------------------------- //
 	// SYNCLOG
 	// -------------------------------------------- //
-
+	
+	// The strings are the ids.
 	protected Map<String, Long> lastMtime;
 	protected Map<String, JsonElement> lastRaw;
 	protected Set<String> lastDefault;
@@ -547,7 +536,7 @@ public class Coll<E> implements CollInterface<E>
 		JsonElement raw = this.getGson().toJsonTree(entity, this.getEntityClass());
 		this.lastRaw.put(id, raw);
 		
-		if (this.isDefault(entity) && isCustomDataDefault(entity))
+		if (this.isDefault(entity))
 		{
 			this.getDb().delete(this, id);
 			this.lastDefault.add(id);
@@ -658,9 +647,9 @@ public class Coll<E> implements CollInterface<E>
 	{
 		// Fix Id
 		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
+		//String id = this.fixId(oid); // Was done twice
 		
-		return this.examineId(id, null);
+		return this.examineId(oid, null);
 	}
 	
 	@Override
@@ -684,6 +673,7 @@ public class Coll<E> implements CollInterface<E>
 		E localEntity = this.id2entity.get(id);
 		if (remoteMtime == null)
 		{
+			// TODO: This is slow
 			remoteMtime = this.getDb().getMtime(this, id);
 		}
 		

@@ -128,6 +128,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// GET ALL ONLINE / OFFLINE
 	// -------------------------------------------- //
 	
+	// TODO: Stop mkaing a new predicate everytime.
 	public Collection<E> getAllOnline()
 	{
 		return this.getAll(new Predictate<E>()

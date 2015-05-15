@@ -4,7 +4,6 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 /**
  * Usage of this class is highly optional. You may persist anything. If you are 
@@ -35,17 +34,6 @@ public abstract class Entity<E extends Entity<E>> implements Comparable<E>
 		
 		return coll.getUniverse();
 	}
-	
-	// -------------------------------------------- //
-	// CUSTOM DATA
-	// -------------------------------------------- //
-	// We offer custom data storage for all entities extending this class.
-	// Do you want to use this in your plugin?
-	// Make sure you don't overwrites some other plugins data!
-	
-	private JsonObject customData = null;
-	public JsonObject getCustomData() { return this.customData; }
-	public void setCustomData(JsonObject customData) { this.customData = customData; }
 	
 	// -------------------------------------------- //
 	// ATTACH AND DETACH
