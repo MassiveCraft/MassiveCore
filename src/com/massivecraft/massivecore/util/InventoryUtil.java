@@ -290,6 +290,11 @@ public class InventoryUtil
 	// CLONE ITEMSTACKS/INVENTORY
 	// -------------------------------------------- //
 	
+	public static ItemStack cloneItemStack(ItemStack itemStack)
+	{
+		return new ItemStack(itemStack);
+	}
+	
 	public static ItemStack[] cloneItemStacks(ItemStack[] itemStacks)
 	{
 		ItemStack[] ret = new ItemStack[itemStacks.length];
@@ -297,7 +302,7 @@ public class InventoryUtil
 		{
 			ItemStack stack = itemStacks[i];
 			if (stack == null) continue;
-			ret[i] = new ItemStack(itemStacks[i]);
+			ret[i] = cloneItemStack(itemStacks[i]);
 		}
 		return ret;
 	}

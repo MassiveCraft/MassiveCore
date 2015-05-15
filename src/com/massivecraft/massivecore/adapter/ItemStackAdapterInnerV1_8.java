@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import com.massivecraft.massivecore.Couple;
 import com.massivecraft.massivecore.util.HeadUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -168,10 +169,12 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 		{
 			if ( ! meta.hasOwner()) return;
 			
-			String name = HeadUtil.getName(meta);
-			if (name != null) json.addProperty(SKULL_OWNER, name);
+			// Resolve to avoid MStore sync bouncing.
+			Couple<String, UUID> resolved = HeadUtil.resolve(meta);
+			String name = resolved.getFirst();
+			UUID id = resolved.getSecond();
 			
-			UUID id = HeadUtil.getId(meta);
+			if (name != null) json.addProperty(SKULL_OWNER, name);
 			if (id != null) json.addProperty(SKULL_OWNER_ID, id.toString());
 		}
 		else
@@ -185,6 +188,11 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 			UUID id = null;
 			element = json.get(SKULL_OWNER_ID);
 			if (element != null) id = UUID.fromString(element.getAsString());
+			
+			// Resolve to avoid MStore sync bouncing.
+			Couple<String, UUID> resolved = HeadUtil.resolve(name, id);
+			name = resolved.getFirst();
+			id = resolved.getSecond();
 			
 			if (name != null || id != null)
 			{

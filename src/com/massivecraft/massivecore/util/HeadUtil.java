@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.inventory.meta.SkullMeta;
 
+import com.massivecraft.massivecore.Couple;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 
 public class HeadUtil
@@ -38,7 +39,7 @@ public class HeadUtil
 	}
 	
 	// -------------------------------------------- //
-	// GAME PROFILE SIMPLE
+	// GAMEPROFILE: SIMPLE
 	// -------------------------------------------- //
 	
 	public static Object getGameProfile(SkullMeta meta)
@@ -52,7 +53,7 @@ public class HeadUtil
 	}
 	
 	// -------------------------------------------- //
-	// GET
+	// GAMEPROFILE: GET
 	// -------------------------------------------- //
 	
 	public static String getGameProfileName(Object gameProfile)
@@ -66,7 +67,7 @@ public class HeadUtil
 	}
 	
 	// -------------------------------------------- //
-	// SET
+	// GAMEPROFILE: SET
 	// -------------------------------------------- //
 	
 	public static void setGameProfileName(Object gameProfile, String name)
@@ -80,7 +81,7 @@ public class HeadUtil
 	}
 	
 	// -------------------------------------------- //
-	// ASDF
+	// SKULLMETA: RAW
 	// -------------------------------------------- //
 	
 	public static String getName(SkullMeta meta)
@@ -106,6 +107,40 @@ public class HeadUtil
 		Object gameProfile = getGameProfile(meta);
 		setGameProfileName(gameProfile, name);
 		setGameProfileId(gameProfile, id);		
+	}
+	
+	// -------------------------------------------- //
+	// RESOLVE
+	// -------------------------------------------- //
+	// We resolve the locally best possible information using IdUtil.
+	
+	public static Couple<String, UUID> resolve(String name, UUID id)
+	{
+		// Create Ret
+		// We default to the input.
+		String retName = name;
+		UUID retId = id;
+		
+		// Fetch IdData
+		// First by name then id. 
+		IdData data = null;
+		if (name != null) data = IdUtil.getNameToData().get(name);
+		if (data == null && id != null) data = IdUtil.getIdToData().get(id.toString());
+		
+		// Use that data if found
+		if (data != null)
+		{
+			retName = data.getName();
+			retId = MUtil.asUuid(data.getId());
+		}
+		
+		// Return Ret
+		return new Couple<String, UUID>(retName, retId);
+	}
+	
+	public static Couple<String, UUID> resolve(SkullMeta meta)
+	{
+		return resolve(getName(meta), getId(meta));
 	}
 	
 }
