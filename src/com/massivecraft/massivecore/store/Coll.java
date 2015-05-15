@@ -25,7 +25,7 @@ import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-public class Coll<E> implements CollInterface<E>
+public class Coll<E> extends CollAbstract<E>
 {
 	// -------------------------------------------- //
 	// GLOBAL REGISTRY
@@ -104,19 +104,13 @@ public class Coll<E> implements CollInterface<E>
 	protected Map<E, String> entity2id;
 	
 	@Override public Map<String, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
-	@Override 
-	public E get(Object oid) 
-	{
-		return this.get(oid, this.isCreative());
-	}
 	@Override
-	public E get(Object oid, boolean creative)
+	public E getFixed(String id, boolean creative)
 	{
-		return this.get(oid, creative, true);
+		return this.getFixed(id, creative, true);
 	}
-	protected E get(Object oid, boolean creative, boolean noteModification)
+	protected E getFixed(String id, boolean creative, boolean noteModification)
 	{
-		String id = this.fixId(oid);
 		if (id == null) return null;
 		E ret = this.id2entity.get(id);
 		if (ret != null) return ret;
@@ -127,9 +121,8 @@ public class Coll<E> implements CollInterface<E>
 	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
 	@Override public Collection<String> getIdsRemote() { return this.getDb().getIds(this); }
 	@Override
-	public boolean containsId(Object oid)
+	public boolean containsIdFixed(String id)
 	{
-		String id = this.fixId(oid);
 		if (id == null) return false;
 		return this.id2entity.containsKey(id);
 	}
@@ -153,14 +146,8 @@ public class Coll<E> implements CollInterface<E>
 		if (oid == null) return null;
 		
 		String ret = null;
-		if (oid instanceof String)
-		{
-			ret = (String)oid;
-		}
-		else if (oid.getClass() == this.entityClass)
-		{
-			ret = this.entity2id.get(oid);
-		}
+		if (oid instanceof String) ret = (String) oid;
+		else if (oid.getClass() == this.getEntityClass()) ret = this.entity2id.get(oid);
 		if (ret == null) return null;
 		
 		return this.isLowercasing() ? ret.toLowerCase() : ret;
@@ -233,24 +220,19 @@ public class Coll<E> implements CollInterface<E>
 	
 	// This simply creates and returns a new instance
 	// It does not detach/attach or anything. Just creates a new instance.
+	// TODO: Would it ever make sense for this to fail?
+	// Should we just throw an exception immediately if it fails?
 	@Override
 	public E createNewInstance()
 	{
 		try
 		{
-			return this.entityClass.newInstance();
+			return this.getEntityClass().newInstance();
 		}
 		catch (Exception e)
 		{
 			return null;
 		}
-	}
-	
-	// Create new instance with automatic id
-	@Override
-	public E create()
-	{
-		return this.create(null);
 	}
 	
 	// Create new instance with the requested id
@@ -272,13 +254,7 @@ public class Coll<E> implements CollInterface<E>
 	// -------------------------------------------- //
 	
 	@Override
-	public String attach(E entity)
-	{
-		return this.attach(entity, null);
-	}
-	
-	@Override
-	public synchronized String attach(E entity, Object oid)
+	public String attach(E entity, Object oid)
 	{
 		return this.attach(entity, oid, true);
 	}
@@ -288,9 +264,10 @@ public class Coll<E> implements CollInterface<E>
 	{
 		// Check entity
 		if (entity == null) return null;
-		String id = this.getId(entity);
-		if (id != null) return id;
+		String previousEntityId = this.getId(entity);
+		if (previousEntityId != null) return previousEntityId;
 		
+		String id;
 		// Check/Fix id
 		if (oid == null)
 		{
@@ -344,24 +321,23 @@ public class Coll<E> implements CollInterface<E>
 			return e;
 		}
 		
-		this.detach(e, id);
+		this.detachFixed(e, id);
 		return e;
 	}
 	
 	@Override
-	public E detachId(Object oid)
+	public E detachIdFixed(String id)
 	{
-		if (oid == null) throw new NullPointerException("oid");
+		if (id == null) throw new NullPointerException("id");
 		
-		String id = this.fixId(oid);
 		E e = this.get(id, false);
 		if (e == null) return null;
 		
-		this.detach(e, id);
+		this.detachFixed(e, id);
 		return e;
 	}
 	
-	private void detach(E entity, String id)
+	private void detachFixed(E entity, String id)
 	{
 		if (entity == null) throw new NullPointerException("entity");
 		if (id == null) throw new NullPointerException("id");
@@ -370,7 +346,7 @@ public class Coll<E> implements CollInterface<E>
 		this.preDetach(entity, id);
 		
 		// Remove @ local
-		this.removeAtLocal(id);
+		this.removeAtLocalFixed(id);
 		
 		// Identify Modification
 		this.identifiedModifications.put(id, Modification.LOCAL_DETACH);
@@ -421,10 +397,9 @@ public class Coll<E> implements CollInterface<E>
 	
 	protected Map<String, Modification> identifiedModifications;
 	
-	protected synchronized void removeIdentifiedModification(Object oid)
+	protected synchronized void removeIdentifiedModificationFixed(String id)
 	{
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
+		if (id == null) throw new NullPointerException("id");
 		this.identifiedModifications.remove(id);
 	}
 	
@@ -437,11 +412,10 @@ public class Coll<E> implements CollInterface<E>
 	protected Map<String, JsonElement> lastRaw;
 	protected Set<String> lastDefault;
 	
-	protected synchronized void clearSynclog(Object oid)
+	protected synchronized void clearSynclogFixed(String id)
 	{
-		if (oid == null) throw new NullPointerException("oid");
+		if (id == null) throw new NullPointerException("id");
 		
-		String id = this.fixId(oid);
 		this.lastMtime.remove(id);
 		this.lastRaw.remove(id);
 		this.lastDefault.remove(id);
@@ -451,21 +425,24 @@ public class Coll<E> implements CollInterface<E>
 	private Map<String, Long> id2out = new TreeMap<String, Long>();
 	private Map<String, Long> id2in = new TreeMap<String, Long>();
 	
+	@Override
 	public Map<String, Long> getSyncMap(boolean in)
 	{
 		return in ? this.id2in : this.id2out;
 	}
 	
-	public long getSyncCount(String id, boolean in)
+	@Override
+	public long getSyncCountFixed(String id, boolean in)
 	{
 		Long count = this.getSyncMap(in).get(id);
 		if (count == null) return 0;
 		return count;
 	}
 	
-	public void addSyncCount(String id, boolean in)
+	@Override
+	public void addSyncCountFixed(String id, boolean in)
 	{
-		long count = this.getSyncCount(id, in);
+		long count = this.getSyncCountFixed(id, in);
 		count++;
 		this.getSyncMap(in).put(id, count);
 	}
@@ -476,14 +453,12 @@ public class Coll<E> implements CollInterface<E>
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public synchronized E removeAtLocal(Object oid)
+	public synchronized E removeAtLocalFixed(String id)
 	{
-		// Fix Id
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
+		if (id == null) throw new NullPointerException("id");
 		
-		this.removeIdentifiedModification(id);
-		this.clearSynclog(id);
+		this.removeIdentifiedModificationFixed(id);
+		this.clearSynclogFixed(id);
 		
 		E entity = this.id2entity.remove(id);
 		if (entity == null) return null;
@@ -501,27 +476,23 @@ public class Coll<E> implements CollInterface<E>
 	}
 	
 	@Override
-	public synchronized void removeAtRemote(Object oid)
+	public synchronized void removeAtRemoteFixed(String id)
 	{
-		// Fix Id
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
+		if (id == null) throw new NullPointerException("id");
 		
-		this.removeIdentifiedModification(id);
-		this.clearSynclog(id);
+		this.removeIdentifiedModificationFixed(id);
+		this.clearSynclogFixed(id);
 		
 		this.getDb().delete(this, id);
 	}
 	
 	@Override
-	public synchronized void saveToRemote(Object oid)
+	public synchronized void saveToRemoteFixed(String id)
 	{
-		// Fix Id
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
+		if (id == null) throw new NullPointerException("id");
 		
-		this.removeIdentifiedModification(id);
-		this.clearSynclog(id);
+		this.removeIdentifiedModificationFixed(id);
+		this.clearSynclogFixed(id);
 		
 		E entity = this.id2entity.get(id);
 		if (entity == null) return;
@@ -544,13 +515,11 @@ public class Coll<E> implements CollInterface<E>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public synchronized void loadFromRemote(Object oid, Entry<JsonElement, Long> remoteEntry)
+	public synchronized void loadFromRemoteFixed(String id, Entry<JsonElement, Long> remoteEntry)
 	{
-		// Fix Id
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
+		if (id == null) throw new NullPointerException("id");
 		
-		this.removeIdentifiedModification(id);
+		this.removeIdentifiedModificationFixed(id);
 		
 		if (remoteEntry == null)
 		{
@@ -636,22 +605,9 @@ public class Coll<E> implements CollInterface<E>
 	// -------------------------------------------- //
 	
 	@Override
-	public Modification examineId(Object oid)
+	public Modification examineIdFixed(String id, Long remoteMtime)
 	{
-		// Fix Id
-		if (oid == null) throw new NullPointerException("oid");
-		//String id = this.fixId(oid); // Was done twice
-		
-		return this.examineId(oid, null);
-	}
-	
-	@Override
-	public Modification examineId(Object oid, Long remoteMtime)
-	{
-		// Fix Id
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
-		
+		if (id == null) throw new NullPointerException("id");
 		// Local Attach and Detach has the top priority.
 		// Otherwise newly attached entities would be removed thinking it was a remote detach.
 		// Otherwise newly detached entities would be loaded thinking it was a remote attach.
@@ -680,13 +636,13 @@ public class Coll<E> implements CollInterface<E>
 			Long lastMtime = this.lastMtime.get(id);
 			if (remoteMtime.equals(lastMtime) == false) return Modification.REMOTE_ALTER;
 			
-			if (this.examineHasLocalAlter(id, localEntity)) return Modification.LOCAL_ALTER;
+			if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;
 		}
 		else if (existsLocal)
 		{
 			if (this.lastDefault.contains(id))
 			{
-				if (this.examineHasLocalAlter(id, localEntity)) return Modification.LOCAL_ALTER;
+				if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;
 			}
 			else
 			{
@@ -701,7 +657,7 @@ public class Coll<E> implements CollInterface<E>
 		return Modification.NONE;
 	}
 	
-	protected boolean examineHasLocalAlter(String id, E entity)
+	protected boolean examineHasLocalAlterFixed(String id, E entity)
 	{
 		JsonElement lastRaw = this.lastRaw.get(id);
 		JsonElement currentRaw = null;
@@ -721,32 +677,17 @@ public class Coll<E> implements CollInterface<E>
 		
 		return !MStore.equal(lastRaw, currentRaw);
 	}
-	
+
 	@Override
-	public Modification syncId(Object oid)
+	public Modification syncIdFixed(String id, Modification modification, Entry<JsonElement, Long> remoteEntry)
 	{
-		return this.syncId(oid, null);
-	}
-	
-	@Override
-	public Modification syncId(Object oid, Modification modification)
-	{
-		return this.syncId(oid, modification, null);
-	}
-	
-	@Override
-	public Modification syncId(Object oid, Modification modification, Entry<JsonElement, Long> remoteEntry)
-	{
-		// Fix Id
-		if (oid == null) throw new NullPointerException("oid");
-		String id = this.fixId(oid);
-		
+		if (id == null) throw new NullPointerException("id");
 		if (modification == null || modification == Modification.UNKNOWN)
 		{
 			Long remoteMtime = null;
 			if (remoteEntry != null) remoteMtime = remoteEntry.getValue();
 			
-			modification = this.examineId(id, remoteMtime);
+			modification = this.examineIdFixed(id, remoteMtime);
 		}
 		
 		// DEBUG
@@ -756,40 +697,40 @@ public class Coll<E> implements CollInterface<E>
 		{
 			case LOCAL_ALTER:
 			case LOCAL_ATTACH:
-				this.saveToRemote(id);
+				this.saveToRemoteFixed(id);
 				if (this.inited())
 				{
-					this.addSyncCount(TOTAL, false);
-					this.addSyncCount(id, false);
+					this.addSyncCountFixed(TOTAL, false);
+					this.addSyncCountFixed(id, false);
 				}
 			break;
 			case LOCAL_DETACH:
-				this.removeAtRemote(id);
+				this.removeAtRemoteFixed(id);
 				if (this.inited())
 				{
-					this.addSyncCount(TOTAL, false);
-					this.addSyncCount(id, false);
+					this.addSyncCountFixed(TOTAL, false);
+					this.addSyncCountFixed(id, false);
 				}
 			break;
 			case REMOTE_ALTER:
 			case REMOTE_ATTACH:
-				this.loadFromRemote(id, remoteEntry);
+				this.loadFromRemoteFixed(id, remoteEntry);
 				if (this.inited())
 				{
-					this.addSyncCount(TOTAL, true);
-					this.addSyncCount(id, true);
+					this.addSyncCountFixed(TOTAL, true);
+					this.addSyncCountFixed(id, true);
 				}
 			break;
 			case REMOTE_DETACH:
-				this.removeAtLocal(id);
+				this.removeAtLocalFixed(id);
 				if (this.inited())
 				{
-					this.addSyncCount(TOTAL, true);
-					this.addSyncCount(id, true);
+					this.addSyncCountFixed(TOTAL, true);
+					this.addSyncCountFixed(id, true);
 				}
 			break;
 			default:
-				this.removeIdentifiedModification(id);
+				this.removeIdentifiedModificationFixed(id);
 			break;
 		}
 		
@@ -813,7 +754,7 @@ public class Coll<E> implements CollInterface<E>
 			Long remoteMtime = id2RemoteMtime.get(id);
 			if (remoteMtime == null) remoteMtime = 0L;
 			
-			Modification modification = this.examineId(id, remoteMtime);
+			Modification modification = this.examineIdFixed(id, remoteMtime);
 			if (modification.isModified())
 			{
 				this.identifiedModifications.put(id, modification);
@@ -832,7 +773,7 @@ public class Coll<E> implements CollInterface<E>
 			{
 				modification = null;
 			}
-			this.syncId(id, modification);
+			this.syncIdFixed(id, modification);
 		}
 	}
 	
@@ -910,10 +851,9 @@ public class Coll<E> implements CollInterface<E>
 		this.lastRaw = new ConcurrentHashMap<String, JsonElement>();
 		this.lastDefault = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 		
-		final Coll<E> me = this;
 		this.tickTask = new Runnable()
 		{
-			@Override public void run() { me.onTick(); }
+			@Override public void run() { Coll.this.onTick(); }
 		};
 	}
 	
@@ -930,7 +870,7 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public void init()
 	{
-		if (this.inited()) return;
+		if (this.inited()) return; // TODO: Would throwing an exception make more sense?
 		
 		this.initLoadAllFromRemote();
 		// this.syncAll();
@@ -941,7 +881,7 @@ public class Coll<E> implements CollInterface<E>
 	@Override
 	public void deinit()
 	{
-		if ( ! this.inited()) return;
+		if ( ! this.inited()) return; // TODO: Would throwing an exception make more sense?
 		
 		// TODO: Save outwards only? We may want to avoid loads at this stage...
 		this.syncAll();
@@ -954,4 +894,5 @@ public class Coll<E> implements CollInterface<E>
 	{
 		return name2instance.containsKey(this.getName());
 	}
+
 }

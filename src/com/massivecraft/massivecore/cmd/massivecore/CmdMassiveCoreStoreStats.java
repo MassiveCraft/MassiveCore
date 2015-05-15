@@ -57,8 +57,8 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 		{
 			String name = entry.getKey();
 			Coll<?> coll = entry.getValue();
-			long in = coll.getSyncCount(Coll.TOTAL, true);
-			long out = coll.getSyncCount(Coll.TOTAL, false);
+			long in = coll.getSyncCountFixed(Coll.TOTAL, true);
+			long out = coll.getSyncCountFixed(Coll.TOTAL, false);
 			
 			msg("<v>%s <a>| <v>%d <a>| <v>%d", name, in, out);
 		}

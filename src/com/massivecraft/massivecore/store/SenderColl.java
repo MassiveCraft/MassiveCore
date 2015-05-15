@@ -148,27 +148,32 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// GET ALL ONLINE / OFFLINE
 	// -------------------------------------------- //
 	
-	// TODO: Stop mkaing a new predicate everytime.
+	public static final Predictate<SenderEntity<?>> PREDICTATE_ONLINE = new Predictate<SenderEntity<?>>()
+	{
+		@Override
+		public boolean apply(SenderEntity<?> entity)
+		{
+			return entity.isOnline();
+		}
+	};
+	
+	public static final Predictate<SenderEntity<?>> PREDICTATE_OFFLINE = new Predictate<SenderEntity<?>>()
+	{
+		@Override
+		public boolean apply(SenderEntity<?> entity)
+		{
+			return entity.isOffline();
+		}
+	};
+	
 	public Collection<E> getAllOnline()
 	{
-		return this.getAll(new Predictate<E>()
-		{
-			public boolean apply(E entity)
-			{
-				return entity.isOnline();
-			}
-		});
+		return this.getAll(PREDICTATE_ONLINE);
 	}
 	
 	public Collection<E> getAllOffline()
 	{
-		return this.getAll(new Predictate<E>()
-		{
-			public boolean apply(E entity)
-			{
-				return entity.isOffline();
-			}
-		});
+		return this.getAll(PREDICTATE_OFFLINE);
 	}
 	
 	// -------------------------------------------- //
