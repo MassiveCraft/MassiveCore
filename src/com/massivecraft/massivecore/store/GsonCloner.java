@@ -7,6 +7,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 public class GsonCloner
 {
@@ -21,9 +22,12 @@ public class GsonCloner
 		// JsonPrimitive
 		if (element.isJsonPrimitive())
 		{
-			// TODO: This is actually not safe since JsonPrimitive is mutable.
-			// However there is no easy way to clone a JsonPrimitive and I thought they were mutable anyways.
-			return element;
+			JsonPrimitive primitive = element.getAsJsonPrimitive();
+			if (primitive.isBoolean()) return new JsonPrimitive(primitive.getAsBoolean());
+			if (primitive.isString()) return new JsonPrimitive(primitive.getAsString());
+			if (primitive.isNumber()) return new JsonPrimitive(primitive.getAsNumber());
+			
+			throw new UnsupportedOperationException("The json primitive: " + primitive + " was not a boolean, number or string");
 		}
 		
 		// JsonObject
