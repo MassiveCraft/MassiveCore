@@ -209,7 +209,7 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
-	// NPC
+	// IS(NT) NPC, SENDER, PLAYER
 	// -------------------------------------------- //
 	
 	public static boolean isNpc(Object object)
@@ -217,6 +217,32 @@ public class MUtil
 		if (!(object instanceof Metadatable)) return false;
 		Metadatable metadatable = (Metadatable)object;
 		return metadatable.hasMetadata("NPC");
+	}
+	public static boolean isntNpc(Object object)
+	{
+		return !isNpc(object);
+	}
+	
+	public static boolean isSender(Object object)
+	{
+		if (!(object instanceof CommandSender)) return false;
+		if (isNpc(object)) return false;
+		return true;
+	}
+	public static boolean isntSender(Object object)
+	{
+		return !isSender(object);
+	}
+	
+	public static boolean isPlayer(Object object)
+	{
+		if (!(object instanceof Player)) return false;
+		if (isNpc(object)) return false;
+		return true;
+	}
+	public static boolean isntPlayer(Object object)
+	{
+		return !isPlayer(object);
 	}
 	
 	// -------------------------------------------- //
@@ -1105,7 +1131,7 @@ public class MUtil
 	public static String kickReason(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return null;
+		if (MUtil.isntPlayer(player)) return null;
 		UUID uuid = player.getUniqueId();
 		
 		return MassiveCoreEngineMain.kickedPlayerReasons.get(uuid);

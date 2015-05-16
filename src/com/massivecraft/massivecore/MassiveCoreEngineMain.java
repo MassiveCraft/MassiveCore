@@ -84,7 +84,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		// Prepare vars
 		EventMassiveCorePlayerToRecipientChat recipientEvent;
 		final Player sender = event.getPlayer();
-		if (MUtil.isNpc(sender)) return;
+		if (MUtil.isntPlayer(sender)) return;
 		
 		String message = event.getMessage();
 		String format = event.getFormat();
@@ -139,7 +139,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	{
 		// So the player is watching ...
 		Player watcher = event.getPlayer();
-		if (MUtil.isNpc(watcher)) return;
+		if (MUtil.isntPlayer(watcher)) return;
 		
 		// Get the lowercased token
 		String tokenlc = event.getLastToken().toLowerCase();
@@ -186,7 +186,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	// This method sets the sender reference to what you decide.
 	public static void setSenderReferences(CommandSender sender, CommandSender reference)
 	{
-		if (MUtil.isNpc(sender)) return;
+		if (MUtil.isntSender(sender)) return;
 		
 		String id = IdUtil.getId(sender);
 		if (id != null)
@@ -265,7 +265,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void after(PlayerTeleportEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new EventMassiveCoreAfterPlayerTeleport(event), 0);
 	}
@@ -274,7 +274,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void after(PlayerRespawnEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new EventMassiveCoreAfterPlayerRespawn(event, player.getLocation()), 0);
 	}
@@ -289,7 +289,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void causedByKick(PlayerKickEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		final UUID uuid = player.getUniqueId();
 		
 		kickedPlayerReasons.put(uuid, event.getReason());
@@ -299,7 +299,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void causedByKick(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		final UUID uuid = player.getUniqueId();
 		
 		// We do the schedule in order for the set to be correct through out the whole MONITOR priority state.
@@ -321,7 +321,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void leaveEventKickCall(PlayerKickEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		new EventMassiveCorePlayerLeave(player, true, "kick", event.getReason()).run();
 	}
@@ -330,7 +330,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void leaveEventQuitCall(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		new EventMassiveCorePlayerLeave(player, false, "quit", null).run();
 	}
@@ -339,7 +339,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void leaveEventQuitClear(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		final UUID uuid = player.getUniqueId();
 		
 		// We do the schedule in order for the set to be correct through out the whole MONITOR priority state.
@@ -445,7 +445,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	{
 		// Get player id ...
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		final String playerId = player.getUniqueId().toString();
 		
 		// ... get remote entries ...
@@ -467,12 +467,14 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void syncOnPlayerLeave(EventMassiveCorePlayerLeave event)
 	{
-		// TODO: This is going to take quite a bit of power :(
-		this.syncAllForPlayer(event.getPlayer());
+		Player player = event.getPlayer();
+		this.syncAllForPlayer(player);
 	}
 	
 	public void syncAllForPlayer(Player player)
 	{
+		if (MUtil.isntPlayer(player)) return;
+		
 		String playerId = player.getUniqueId().toString();
 		for (SenderColl<?> coll : Coll.getSenderInstances())
 		{

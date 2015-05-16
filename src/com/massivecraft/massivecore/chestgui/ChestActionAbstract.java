@@ -1,8 +1,10 @@
 package com.massivecraft.massivecore.chestgui;
 
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class ChestActionAbstract implements ChestAction
 {
@@ -13,9 +15,8 @@ public class ChestActionAbstract implements ChestAction
 	@Override
 	public boolean onClick(InventoryClickEvent event)
 	{
-		HumanEntity human = event.getWhoClicked();
-		if ( ! (human instanceof Player)) return false;
-		Player player = (Player)human;
+		Player player = IdUtil.getAsPlayer(event.getWhoClicked());
+		if (MUtil.isntPlayer(player)) return false;
 		
 		return onClick(event, player);
 	}

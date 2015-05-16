@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class ChestGui
 {
@@ -63,7 +64,7 @@ public class ChestGui
 	
 	public void playSound(HumanEntity human)
 	{
-		if ( ! (human instanceof Player)) return;
+		if (MUtil.isntPlayer(human)) return;
 		Player player = (Player)human;
 		this.playSound(player);
 	}

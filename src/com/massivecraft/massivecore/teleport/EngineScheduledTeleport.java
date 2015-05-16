@@ -94,7 +94,7 @@ public class EngineScheduledTeleport extends EngineAbstract
 	
 	public void cancelTeleport(Player player)
 	{
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		// If there there is a ScheduledTeleport ...
 		ScheduledTeleport scheduledTeleport = teleporteeIdToScheduledTeleport.get(IdUtil.getId(player));
@@ -125,7 +125,7 @@ public class EngineScheduledTeleport extends EngineAbstract
 		Entity entity = event.getEntity();
 		
 		// ... and that entity is a player ...
-		if (!(entity instanceof Player)) return;
+		if (MUtil.isntPlayer(entity)) return;
 		Player player = (Player)entity;
 		
 		// ... cancel teleport!

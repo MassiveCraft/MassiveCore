@@ -48,7 +48,7 @@ public class MassiveCoreEngineVariable extends EngineAbstract
 	public void variable(PlayerCommandPreprocessEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		event.setMessage(variable(player, event.getMessage()));
 	}
@@ -57,7 +57,7 @@ public class MassiveCoreEngineVariable extends EngineAbstract
 	public void variable(AsyncPlayerChatEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		event.setMessage(variable(player, event.getMessage()));
 	}

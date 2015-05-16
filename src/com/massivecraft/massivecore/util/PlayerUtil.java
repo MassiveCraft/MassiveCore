@@ -93,7 +93,7 @@ public class PlayerUtil extends EngineAbstract
 	public void isJoined(PlayerJoinEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		final UUID id = player.getUniqueId();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
@@ -110,7 +110,7 @@ public class PlayerUtil extends EngineAbstract
 	public void isJoined(PlayerQuitEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		final UUID id = player.getUniqueId();
 		joinedPlayerIds.remove(id);
@@ -190,7 +190,7 @@ public class PlayerUtil extends EngineAbstract
 	
 	public static void setLastDamageMillis(Player player, long millis)
 	{
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		if (player == null) return;
 		idToLastDamageMillis.put(player.getUniqueId(), millis);
 	}
@@ -225,8 +225,7 @@ public class PlayerUtil extends EngineAbstract
 	
 	public static long getLastDamageMillis(Player player)
 	{
-		if (player == null) return 0;
-		if (MUtil.isNpc(player)) return 0;
+		if (MUtil.isntPlayer(player)) return 0;
 		Long ret = idToLastDamageMillis.get(player.getUniqueId());
 		if (ret == null) return 0;
 		return ret;
@@ -234,8 +233,7 @@ public class PlayerUtil extends EngineAbstract
 	
 	public static long getNoDamageMillis(Player player)
 	{
-		if (player == null) return 0;
-		if (MUtil.isNpc(player)) return 0;
+		if (MUtil.isntPlayer(player)) return 0;
 		if (player.isDead()) return 0;
 		if (!player.isOnline()) return 0;
 		
@@ -323,7 +321,7 @@ public class PlayerUtil extends EngineAbstract
 		
 		// Get the id ...
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return false;
+		if (MUtil.isntPlayer(player)) return false;
 		final UUID id = player.getUniqueId();
 		
 		// ... get current ...
@@ -370,6 +368,8 @@ public class PlayerUtil extends EngineAbstract
 	
 	public static void update(Player player)
 	{
+		if (MUtil.isntPlayer(player)) return;
+		
 		EventMassiveCorePlayerUpdate event = new EventMassiveCorePlayerUpdate(player);
 		event.run();
 		
@@ -381,6 +381,8 @@ public class PlayerUtil extends EngineAbstract
 	
 	public static void reset(Player player)
 	{
+		if (MUtil.isntPlayer(player)) return;
+		
 		setMaxHealth(player, getMaxHealthDefault(player));
 		setFlyAllowed(player, isFlyAllowedDefault(player));
 		setFlyActive(player, isFlyActiveDefault(player));
@@ -395,7 +397,7 @@ public class PlayerUtil extends EngineAbstract
 	{
 		// If we have a player ...
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		// ... and the player is alive ...
 		if (player.isDead()) return;
@@ -409,6 +411,7 @@ public class PlayerUtil extends EngineAbstract
 	{
 		// If we have a player ...
 		Player player = event.getPlayer();
+		if (MUtil.isntPlayer(player)) return;
 		
 		// ... and the player is alive ...
 		if (player.isDead()) return;
@@ -422,6 +425,7 @@ public class PlayerUtil extends EngineAbstract
 	{
 		// If we have a player ...
 		Player player = event.getPlayer();
+		if (MUtil.isntPlayer(player)) return;
 		
 		// ... and the player is alive ...
 		if (player.isDead()) return;
@@ -435,7 +439,7 @@ public class PlayerUtil extends EngineAbstract
 	{
 		// If we have a player ...
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		// ... and the player is alive ...
 		if (player.isDead()) return;
@@ -449,7 +453,7 @@ public class PlayerUtil extends EngineAbstract
 	{
 		// If we have a player ...
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		// ... and the player is alive ...
 		if (player.isDead()) return;

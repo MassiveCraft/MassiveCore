@@ -27,7 +27,7 @@ public class InventoryUtil
 	
 	public static void update(HumanEntity human)
 	{
-		if (!(human instanceof Player)) return;
+		if (MUtil.isntPlayer(human)) return;
 		Player player = (Player)human;
 		player.updateInventory();
 	}

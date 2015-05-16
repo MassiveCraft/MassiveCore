@@ -119,11 +119,8 @@ public class EngineGank extends EngineAbstract
 		Entity edamager = MUtil.getLiableDamager(event);
 		
 		// ... is a player ...
-		if ( ! (edamager instanceof Player)) return;
+		if (MUtil.isntPlayer(edamager)) return;
 		Player player = (Player)edamager;
-		
-		// ... that is not an NPC ...
-		if (player.hasMetadata("NPC")) return;
 		
 		// ... that is someone else ...
 		if (player.equals(entity)) return;

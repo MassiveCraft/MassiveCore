@@ -387,7 +387,7 @@ public class IdUtil implements Listener, Runnable
 	public void playerLoginLowest(PlayerLoginEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		UUID uuid = player.getUniqueId();
 		String id = uuid.toString();
@@ -404,7 +404,7 @@ public class IdUtil implements Listener, Runnable
 	public void playerJoinLowest(PlayerJoinEvent event)
 	{
 		Player player = event.getPlayer();
-		if (MUtil.isNpc(player)) return;
+		if (MUtil.isntPlayer(player)) return;
 		
 		UUID uuid = player.getUniqueId();
 		String id = uuid.toString();
@@ -421,6 +421,8 @@ public class IdUtil implements Listener, Runnable
 	public void playerLeaveMonitor(EventMassiveCorePlayerLeave event)
 	{
 		Player player = event.getPlayer();
+		if (MUtil.isntPlayer(player)) return;
+		
 		UUID uuid = player.getUniqueId();
 		String id = uuid.toString();
 		String name = player.getName();
