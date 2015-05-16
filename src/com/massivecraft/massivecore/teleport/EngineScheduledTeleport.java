@@ -94,6 +94,8 @@ public class EngineScheduledTeleport extends EngineAbstract
 	
 	public void cancelTeleport(Player player)
 	{
+		if (MUtil.isNpc(player)) return;
+		
 		// If there there is a ScheduledTeleport ...
 		ScheduledTeleport scheduledTeleport = teleporteeIdToScheduledTeleport.get(IdUtil.getId(player));
 		if (scheduledTeleport == null) return;
@@ -112,7 +114,8 @@ public class EngineScheduledTeleport extends EngineAbstract
 		if (MUtil.isSameBlock(event.getFrom(), event.getTo())) return;
 		
 		// ... cancel teleport!
-		this.cancelTeleport(event.getPlayer());
+		Player player = event.getPlayer();
+		this.cancelTeleport(player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

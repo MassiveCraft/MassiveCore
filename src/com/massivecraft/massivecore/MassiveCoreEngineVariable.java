@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class MassiveCoreEngineVariable extends EngineAbstract
@@ -46,13 +47,19 @@ public class MassiveCoreEngineVariable extends EngineAbstract
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void variable(PlayerCommandPreprocessEvent event)
 	{
-		event.setMessage(variable(event.getPlayer(), event.getMessage()));
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
+		event.setMessage(variable(player, event.getMessage()));
 	}
 	
 	@EventHandler(priority = EventPriority.LOW)
 	public void variable(AsyncPlayerChatEvent event)
 	{
-		event.setMessage(variable(event.getPlayer(), event.getMessage()));
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
+		event.setMessage(variable(player, event.getMessage()));
 	}
 	
 	public static String variable(Player player, String message)

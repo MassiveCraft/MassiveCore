@@ -42,7 +42,6 @@ import com.massivecraft.massivecore.collections.MassiveTreeMap;
 import com.massivecraft.massivecore.collections.MassiveTreeMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
-import com.massivecraft.massivecore.event.EventMassiveCoreUuidUpdate;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.mixin.EngineTeleportMixinCause;
 import com.massivecraft.massivecore.ps.PS;
@@ -53,7 +52,6 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
-import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
@@ -150,6 +148,14 @@ public class MassiveCore extends MassivePlugin
 	// -------------------------------------------- //
 	
 	@Override
+	public void onLoad()
+	{
+		super.onLoad();
+		// Attempting to fix a race condition within the class asynchronous class loader.
+		System.out.println("TimeUnit.MILLIS_PER_MINUTE: " + TimeUnit.MILLIS_PER_MINUTE);
+	}
+	
+	@Override
 	public void onEnable()
 	{
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
@@ -162,9 +168,6 @@ public class MassiveCore extends MassivePlugin
 		ExamineThread.get().start();
 		
 		if ( ! preEnable()) return;
-		
-		// TODO: This seems to fix most race conditions within the class asynchronous class loader.
-		System.out.println("TimeUnit.MILLIS_PER_MINUTE: " + TimeUnit.MILLIS_PER_MINUTE);
 		
 		// Load Server Config
 		ConfServer.get().load();
@@ -214,23 +217,6 @@ public class MassiveCore extends MassivePlugin
 		// Delete Files (at once and additionally after all plugins loaded)
 		MassiveCoreTaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, MassiveCoreTaskDeleteFiles.get());
-		
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				IdUtil.loadDatas();
-				
-				log(Txt.parse("<i>Upgrading from player name to player uuid..."));
-				
-				EventMassiveCoreUuidUpdate event = new EventMassiveCoreUuidUpdate();
-				event.run();
-				
-				log(Txt.parse("<g> ... done!"));
-				log(Txt.parse("<i>(database saving will now commence which might lock the server for a while)"));
-			}
-		});
 		
 		this.postEnable();
 	}

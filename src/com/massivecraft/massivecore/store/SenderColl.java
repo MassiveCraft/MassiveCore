@@ -12,6 +12,7 @@ import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.cmd.arg.ARSenderEntity;
 import com.massivecraft.massivecore.cmd.arg.ARSenderId;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {
@@ -47,6 +48,25 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// -------------------------------------------- //
 	// OVERRIDE: Coll
 	// -------------------------------------------- //
+	
+	public static void denyNpc(Object oid)
+	{
+		if (MUtil.isNpc(oid)) throw new IllegalArgumentException("NPCs are not allowed: " + oid);
+	}
+	
+	@Override
+	public E get(Object oid)
+	{
+		denyNpc(oid);
+		return super.get(oid);
+	}
+	
+	@Override
+	public E get(Object oid, boolean creative)
+	{
+		denyNpc(oid);
+		return super.get(oid, creative);
+	}
 	
 	@Override
 	public String fixId(Object oid)

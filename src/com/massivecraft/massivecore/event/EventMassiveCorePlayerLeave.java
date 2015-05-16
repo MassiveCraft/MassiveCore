@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.event;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -66,16 +67,18 @@ public class EventMassiveCorePlayerLeave extends Event implements Runnable
 	@Override
 	public void run()
 	{
+		UUID uuid = this.player.getUniqueId();
+		
 		// Someone may already have issued a player leave event for this disconnect.
 		// We ignore that since we want one leave event called per disconnect only.
-		boolean doit = !player2event.containsKey(this.player.getName());
+		boolean doit = !player2event.containsKey(uuid);
 		
 		//MassiveCore.p.log("EventMassiveCorePlayerLeave", "caller:", caller, "doit:", doit, "player:", player.getDisplayName(), "preDisconnect:", preDisconnect, "message:", message);
 		
 		if (doit)
 		{
 			//MassiveCore.p.log("EventMassiveCorePlayerLeave", caller, player.getDisplayName(), preDisconnect, message);
-			player2event.put(this.player.getName(), this);
+			player2event.put(uuid, this);
 			Bukkit.getPluginManager().callEvent(this);
 		}
 	}
@@ -83,6 +86,6 @@ public class EventMassiveCorePlayerLeave extends Event implements Runnable
 	// -------------------------------------------- //
 	// STORING THE ACTIVE PLAYER EVENT
 	// -------------------------------------------- //
-	public static Map<String,EventMassiveCorePlayerLeave> player2event = new HashMap<String,EventMassiveCorePlayerLeave>();
+	public static Map<UUID, EventMassiveCorePlayerLeave> player2event = new HashMap<UUID, EventMassiveCorePlayerLeave>();
 	
 }

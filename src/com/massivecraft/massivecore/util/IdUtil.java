@@ -2,14 +2,11 @@ package com.massivecraft.massivecore.util;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -30,11 +27,7 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderRegister;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderUnregister;
-import com.massivecraft.massivecore.fetcher.Fetcher;
-import com.massivecraft.massivecore.fetcher.IdAndName;
 import com.massivecraft.massivecore.mixin.Mixin;
-import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
@@ -394,6 +387,8 @@ public class IdUtil implements Listener, Runnable
 	public void playerLoginLowest(PlayerLoginEvent event)
 	{
 		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
 		UUID uuid = player.getUniqueId();
 		String id = uuid.toString();
 		String name = player.getName();
@@ -409,6 +404,8 @@ public class IdUtil implements Listener, Runnable
 	public void playerJoinLowest(PlayerJoinEvent event)
 	{
 		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
 		UUID uuid = player.getUniqueId();
 		String id = uuid.toString();
 		String name = player.getName();
@@ -822,20 +819,6 @@ public class IdUtil implements Listener, Runnable
 			update(id, name, true);
 		}
 		
-		if (Bukkit.getServer().getOnlineMode())
-		{
-			MassiveCore.get().log(Txt.parse("<i>Loading Dbmojangapi datas..."));
-			for (IdData data : getDbmojangapiDatas())
-			{
-				update(data.getId(), data.getName(), data.getMillis());
-			}
-		}
-		else
-		{
-			MassiveCore.get().log(Txt.parse("<i>Skipping Dbmojangapi datas since offline mode..."));
-		}
-		
-		
 		MassiveCore.get().log(Txt.parse("<i>Saving Cachefile..."));
 		saveCachefileDatas();
 	}
@@ -899,80 +882,6 @@ public class IdUtil implements Listener, Runnable
 			IdData data = new IdData(id, name, millis);
 			
 			ret.add(data);
-		}
-		
-		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// DBMOJANGAPI DATAS
-	// -------------------------------------------- //
-	// This data source searches the database for player names and ids (strings).
-	// It then discards the strings already present in IdUtil.
-	// The renaming strings are queried through the Mojang API.
-	
-	public static Set<IdData> getDbmojangapiDatas()
-	{
-		Set<IdData> ret = new LinkedHashSet<IdData>();
-		
-		// Add valid names from DB
-		Set<String> strings = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		for (Coll<?> coll : Coll.getInstances())
-		{
-			if (!(coll instanceof SenderColl<?>)) continue;
-			for (String id : coll.getIds())
-			{
-				// https://github.com/Mojang/AccountsClient/issues/2
-				// Would have been nice but no. Mojang did not have time to implement this feature for us :/
-				//if (MUtil.isValidPlayerName(id) || MUtil.isValidUUID(id))
-				if (MUtil.isValidPlayerName(id))
-				{
-					strings.add(id);					
-				}
-			}
-		}
-		MassiveCore.get().log(Txt.parse("<k>Player Strings Found: <v>%d", strings.size()));
-		
-		// Remove Cached
-		Iterator<String> iter = strings.iterator();
-		int cached = 0;
-		while (iter.hasNext())
-		{
-			String string = iter.next();
-			if (getData(string) != null)
-			{
-				cached++;
-				iter.remove();
-			}
-		}
-		MassiveCore.get().log(Txt.parse("<k>Player Strings Cached: <v>%d", cached));
-		MassiveCore.get().log(Txt.parse("<k>Player Strings Remaining: <v>%d", strings.size()));
-		
-		// Fetch
-		MassiveCore.get().log(Txt.parse("<i>Now fetching the remaining players from Mojang API ..."));
-		Collection<IdAndName> idAndNames = null;
-		try
-		{
-			idAndNames = Fetcher.fetch(strings);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-		MassiveCore.get().log(Txt.parse("<i> ... done!"));
-		long millis = System.currentTimeMillis();
-		
-		// Add
-		for (IdAndName idAndName : idAndNames)
-		{
-			String id = null;
-			UUID uuid = idAndName.getId();
-			if (uuid != null) id = uuid.toString();
-			
-			String name = idAndName.getName();
-			
-			ret.add(new IdData(id, name, millis));
 		}
 		
 		return ret;

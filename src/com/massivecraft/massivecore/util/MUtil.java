@@ -49,6 +49,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.metadata.Metadatable;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -205,6 +206,17 @@ public class MUtil
 	public static boolean isUuid(String string)
 	{
 		return asUuid(string) != null;
+	}
+	
+	// -------------------------------------------- //
+	// NPC
+	// -------------------------------------------- //
+	
+	public static boolean isNpc(Object object)
+	{
+		if (!(object instanceof Metadatable)) return false;
+		Metadatable metadatable = (Metadatable)object;
+		return metadatable.hasMetadata("NPC");
 	}
 	
 	// -------------------------------------------- //
@@ -1092,7 +1104,11 @@ public class MUtil
 	
 	public static String kickReason(PlayerQuitEvent event)
 	{
-		return MassiveCoreEngineMain.kickedPlayerReasons.get(event.getPlayer().getName());
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return null;
+		UUID uuid = player.getUniqueId();
+		
+		return MassiveCoreEngineMain.kickedPlayerReasons.get(uuid);
 	}
 	
 	public static boolean causedByKick(PlayerQuitEvent event)

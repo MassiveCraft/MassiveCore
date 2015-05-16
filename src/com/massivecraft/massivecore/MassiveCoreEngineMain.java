@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.SmokeUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
@@ -82,6 +84,8 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		// Prepare vars
 		EventMassiveCorePlayerToRecipientChat recipientEvent;
 		final Player sender = event.getPlayer();
+		if (MUtil.isNpc(sender)) return;
+		
 		String message = event.getMessage();
 		String format = event.getFormat();
 		
@@ -135,6 +139,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	{
 		// So the player is watching ...
 		Player watcher = event.getPlayer();
+		if (MUtil.isNpc(watcher)) return;
 		
 		// Get the lowercased token
 		String tokenlc = event.getLastToken().toLowerCase();
@@ -181,6 +186,8 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	// This method sets the sender reference to what you decide.
 	public static void setSenderReferences(CommandSender sender, CommandSender reference)
 	{
+		if (MUtil.isNpc(sender)) return;
+		
 		String id = IdUtil.getId(sender);
 		if (id != null)
 		{
@@ -257,39 +264,51 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void after(PlayerTeleportEvent event)
 	{
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new EventMassiveCoreAfterPlayerTeleport(event), 0);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void after(PlayerRespawnEvent event)
 	{
-		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new EventMassiveCoreAfterPlayerRespawn(event, event.getPlayer().getLocation()), 0);
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new EventMassiveCoreAfterPlayerRespawn(event, player.getLocation()), 0);
 	}
 	
 	// -------------------------------------------- //
 	// EVENT TOOL: causedByKick
 	// -------------------------------------------- //
 	
-	public static Map<String,String> kickedPlayerReasons = new HashMap<String,String>();
+	public static Map<UUID, String> kickedPlayerReasons = new HashMap<UUID, String>();
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void causedByKick(PlayerKickEvent event)
 	{
-		final String name = event.getPlayer().getName();
-		kickedPlayerReasons.put(name, event.getReason());
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		final UUID uuid = player.getUniqueId();
+		
+		kickedPlayerReasons.put(uuid, event.getReason());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void causedByKick(PlayerQuitEvent event)
 	{
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		final UUID uuid = player.getUniqueId();
+		
 		// We do the schedule in order for the set to be correct through out the whole MONITOR priority state.
-		final String name = event.getPlayer().getName();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				kickedPlayerReasons.remove(name);
+				kickedPlayerReasons.remove(uuid);
 			}
 		});
 	}
@@ -301,26 +320,36 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void leaveEventKickCall(PlayerKickEvent event)
 	{
-		new EventMassiveCorePlayerLeave(event.getPlayer(), true, "kick", event.getReason()).run();
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
+		new EventMassiveCorePlayerLeave(player, true, "kick", event.getReason()).run();
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void leaveEventQuitCall(PlayerQuitEvent event)
 	{
-		new EventMassiveCorePlayerLeave(event.getPlayer(), false, "quit", null).run();
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		
+		new EventMassiveCorePlayerLeave(player, false, "quit", null).run();
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void leaveEventQuitClear(PlayerQuitEvent event)
 	{
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		final UUID uuid = player.getUniqueId();
+		
 		// We do the schedule in order for the set to be correct through out the whole MONITOR priority state.
-		final String name = event.getPlayer().getName();
+		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				EventMassiveCorePlayerLeave.player2event.remove(name);
+				EventMassiveCorePlayerLeave.player2event.remove(uuid);
 			}
 		});
 	}
@@ -415,7 +444,9 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	public void massiveStoreLoginSync(PlayerLoginEvent event)
 	{
 		// Get player id ...
-		final String playerId = event.getPlayer().getUniqueId().toString();
+		Player player = event.getPlayer();
+		if (MUtil.isNpc(player)) return;
+		final String playerId = player.getUniqueId().toString();
 		
 		// ... get remote entries ...
 		Map<SenderColl<?>, Entry<JsonElement, Long>> remoteEntries = getRemoteEntries(playerId);
