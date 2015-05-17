@@ -231,6 +231,8 @@ public class Coll<E> extends CollAbstract<E>
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
+			
 			return null;
 		}
 	}
