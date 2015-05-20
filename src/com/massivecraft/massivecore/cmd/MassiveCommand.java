@@ -1143,10 +1143,10 @@ public class MassiveCommand
 	{
 		// Make sure that an ArgSetting is present.
 		if ( ! this.hasArgSettingForIndex(idx)) throw new IllegalArgumentException(idx + " is out of range. ArgSettings size: " + this.getArgSettings().size());
-		
-		// Read the arg here. To ensure counter is incremented.
-		String arg = this.argAt(idx);
-		
+
+		// Increment
+		nextArg = idx + 1;
+
 		// Get the setting
 		ArgSetting<T> setting = (ArgSetting<T>) this.getArgSetting(idx);
 		// Return the default in the setting.
@@ -1156,30 +1156,42 @@ public class MassiveCommand
 		if ( ! this.argIsSet(idx)) throw new IllegalArgumentException("Trying to access arg: " + idx + " but that is not set.");
 		
 		// Just read the arg normally.
+		String arg = this.getArgs().get(idx);
 		return setting.getReader().read(arg, sender);
 	}
 
 	public <T> T readArgAt(int idx, T defaultNotSet) throws MassiveException
 	{
 		// Return the default passed.
-		if ( ! this.argIsSet(idx)) return defaultNotSet;
-		
+		if ( ! this.argIsSet(idx))
+		{
+			// Increment
+			nextArg = idx + 1;
+
+			// Use default
+			return defaultNotSet;
+		}
+
+		// Increment is done in this method
 		return readArgAt(idx);
 	}
 
-	// Basic Logic
-	
+	// We don't even need this anymore
+
+	@Deprecated
 	public <T> T readArgFrom(AR<T> argReader) throws MassiveException
 	{
 		return this.readArgFrom(null, argReader);
 	}
-	
+
+	@Deprecated
 	public <T> T readArgFrom(String str, AR<T> argReader) throws MassiveException
 	{
 		if (argReader == null) throw new IllegalArgumentException("argReader is null");
 		return argReader.read(str, this.sender);
 	}
-	
+
+	@Deprecated
 	public <T> T readArgFrom(String str, AR<T> argReader, T defaultNotSet) throws MassiveException
 	{
 		if (str == null) return defaultNotSet;
