@@ -668,7 +668,7 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	{
 		if (world == null) throw new NullPointerException(NAME_FULL_WORLD + SPACE_WASNT_SET);
 		World ret = Bukkit.getWorld(world);
-		if (ret == null) throw new IllegalStateException("the world "+world+" does not exist on "+MassiveCore.getServerId());
+		if (ret == null) throw new IllegalStateException("The world "+world+" does not exist on "+MassiveCore.getServerId()+".");
 		return ret;
 	}
 	
