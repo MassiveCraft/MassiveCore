@@ -50,7 +50,8 @@ import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
-import com.massivecraft.massivecore.store.ExamineThread;
+import com.massivecraft.massivecore.store.ModificationPollerLocal;
+import com.massivecraft.massivecore.store.ModificationPollerRemote;
 import com.massivecraft.massivecore.teleport.EngineScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -173,9 +174,6 @@ public class MassiveCore extends MassivePlugin
 		// TODO: Test and ensure reload compat.
 		// Coll.instances.clear();
 		
-		// Start the examine thread
-		ExamineThread.get().start();
-		
 		if ( ! preEnable()) return;
 		
 		// Load Server Config
@@ -201,6 +199,11 @@ public class MassiveCore extends MassivePlugin
 		MultiverseColl.get().init();
 		AspectColl.get().init();
 		MassiveCoreMConfColl.get().init();
+		
+		// Start the examine threads
+		// Start AFTER initializing the MConf, because they rely on the MConf.
+		ModificationPollerLocal.get().start();
+		ModificationPollerRemote.get().start();
 		
 		// Register commands
 		this.outerCmdMassiveCore = new CmdMassiveCore() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCore; } };
@@ -234,7 +237,9 @@ public class MassiveCore extends MassivePlugin
 	public void onDisable()
 	{
 		super.onDisable();
-		ExamineThread.get().interrupt();
+		ModificationPollerLocal.get().interrupt();
+		ModificationPollerRemote.get().interrupt();
+		
 		MassiveCoreTaskDeleteFiles.get().run();
 		IdUtil.saveCachefileDatas();
 	}

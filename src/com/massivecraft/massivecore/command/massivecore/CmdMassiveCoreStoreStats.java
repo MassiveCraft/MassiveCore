@@ -8,7 +8,6 @@ import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.store.TypeColl;
 import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.ExamineThread;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -51,7 +50,7 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 	public void performTotal()
 	{
 		msg(Txt.titleize("MStore Total Statistics"));
-		msg("<k>Last Examine Duration: <v>%d<i>ms", ExamineThread.get().getLastDurationMillis());
+		//msg("<k>Last Examine Duration: <v>%d<i>ms", ExamineThread.get().getLastDurationMillis());
 		msg("<a>== <k>Coll <a>| <k>Sync Count In <a>| <k>Sync Count Out <a>==");
 		for (Entry<String, Coll<?>> entry : Coll.getMap().entrySet())
 		{

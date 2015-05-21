@@ -57,4 +57,8 @@ public interface Driver
 	
 	// Delete X
 	public void delete(Coll<?> coll, String id);
+	
+	// Database pusher
+	public boolean supportsPusher();
+	public PusherColl getPusher(Coll<?> coll);
 }

@@ -77,4 +77,13 @@ public abstract class DbAbstract implements Db
 	{
 		this.getDriver().delete(coll, id);
 	}
+	
+	public boolean supportsPusher()
+	{
+		return this.getDriver().supportsPusher();
+	}
+	public PusherColl getPusher(Coll<?> coll)
+	{
+		return this.getDriver().getPusher(coll);
+	}
 }

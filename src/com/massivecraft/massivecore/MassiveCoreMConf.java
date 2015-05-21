@@ -95,4 +95,13 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public String variableBuffer = "***buffer***";
 	public boolean usingVariableBuffer = true;
 	
+	// -------------------------------------------- //
+	// MSTORE CONFIGURATON
+	// -------------------------------------------- //
+	
+	public volatile long millisBetweenLocalPoll = 1000;
+	public volatile long millisBetweenLocalPollColl = 100;
+	
+	public volatile long millisBetweenRemotePoll = 1000;
+	public volatile long millisBetweenRemotePollColl = 100;
 }

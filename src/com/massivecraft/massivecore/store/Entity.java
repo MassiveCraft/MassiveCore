@@ -50,7 +50,7 @@ public abstract class Entity<E extends Entity<E>>
 		Coll<E> coll = this.getColl();
 		if (coll == null) return (E)this;
 		
-		return coll.detachEntity(this);
+		return coll.detachEntity((E) this);
 	}
 	
 	public boolean attached()
@@ -105,35 +105,31 @@ public abstract class Entity<E extends Entity<E>>
 	{
 		if ( ! this.isLive()) return;
 		
+		//System.out.println(this.getColl().getName() + ": " +this.getId() + " was modified locally");
+		
 		// UNKNOWN is very unimportant really.
 		// LOCAL_ATTACH is for example much more important and should not be replaced.
-		if ( ! coll.identifiedModifications.containsKey(id))
-		{
-			coll.identifiedModifications.put(id, Modification.UNKNOWN);
-		}
+		this.getColl().putIdentifiedModificationFixed(this.getId(), Modification.UNKNOWN);
 	}
 	
 	public Modification sync()
 	{
-		String id = this.getId();
-		if (id == null) return Modification.UNKNOWN;
-		return this.getColl().syncId(id);
+		if ( ! this.isLive()) return Modification.UNKNOWN;
+		return this.getColl().syncIdFixed(id);
 	}
 	
 	public void saveToRemote()
 	{
-		String id = this.getId();
-		if (id == null) return;
+		if ( ! this.isLive()) return;
 		
-		this.getColl().saveToRemote(id);
+		this.getColl().saveToRemoteFixed(id);
 	}
 	
 	public void loadFromRemote()
 	{
-		String id = this.getId();
-		if (id == null) return;
+		if ( ! this.isLive()) return;
 		
-		this.getColl().loadFromRemote(id, null);
+		this.getColl().loadFromRemoteFixed(id, null);
 	}
 	
 	// -------------------------------------------- //

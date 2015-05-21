@@ -273,6 +273,19 @@ public class DriverMongo extends DriverAbstract
 		dbcoll.remove(new BasicDBObject(ID_FIELD, id), MassiveCoreMConf.get().getMongoDbWriteConcernDelete());
 	}
 
+	@Override
+	public boolean supportsPusher()
+	{
+		return false;
+	}
+	
+	@Override
+	public PusherColl getPusher(Coll<?> coll)
+	{
+		throw new UnsupportedOperationException("MongoDB does not have a pusher change.");
+	}
+	
+	
 	//----------------------------------------------//
 	// UTIL
 	//----------------------------------------------//

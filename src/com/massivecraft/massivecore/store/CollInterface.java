@@ -32,6 +32,9 @@ public interface CollInterface<E> extends Named
 	public Db getDb();
 	public Object getCollDriverObject();
 	
+	public boolean supportsPusher();
+	public PusherColl getPusher();
+	
 	// -------------------------------------------- //
 	// STORAGE
 	// -------------------------------------------- //
@@ -90,6 +93,12 @@ public interface CollInterface<E> extends Named
 	public boolean isLowercasing();
 	public void setLowercasing(boolean lowercasing);
 	
+	public int getLocalPollFrequency();
+	public void setLocalPollFrequency(int frequency);
+	
+	public boolean isWarningOnLocalAlter();
+	public void setWarnOnLocalAlter(boolean warnOnLocalAlter);
+	
 	// A default entity will not be saved.
 	// This is often used together with creative collections to save disc space.
 	public boolean isDefault(E entity);
@@ -116,7 +125,7 @@ public interface CollInterface<E> extends Named
 	public String attach(E entity);
 	public String attach(E entity, Object oid);
 	
-	public E detachEntity(Object entity);
+	public E detachEntity(E entity);
 	public E detachId(Object oid);
 	public E detachIdFixed(String id);
 	
@@ -127,7 +136,7 @@ public interface CollInterface<E> extends Named
 	public void postDetach(E entity, String id);
 	
 	// -------------------------------------------- //
-	// IDENTIFIED CHANGES
+	// IDENTIFIED MODIFICATIONS
 	// -------------------------------------------- //
 	
 	/*
@@ -175,24 +184,41 @@ public interface CollInterface<E> extends Named
 	// oid
 	public Modification examineId(Object oid);
 	public Modification examineId(Object oid, Long remoteMtime);
+	public Modification examineIdLocal(Object oid);
+	public Modification examineIdRemote(Object oid);
+	public Modification examineIdRemote(Object oid, Long remoteMtime);
 	
 	// Fixed id
 	public Modification examineIdFixed(String id);
 	public Modification examineIdFixed(String id, Long remoteMtime);
+	public Modification examineIdLocalFixed(String id);
+	public Modification examineIdRemoteFixed(String id);
+	public Modification examineIdRemoteFixed(String id, Long remoteMtime);
 	
-	// oid
+	// Sync
 	public Modification syncId(Object oid);
-	public Modification syncId(Object oid, Modification modificationState);
-	public Modification syncId(Object oid, Modification modificationState, Entry<JsonElement, Long> remoteEntry);
+	public Modification syncId(Object oid, Modification modification);
+	public Modification syncId(Object oid, Modification modification, Entry<JsonElement, Long> remoteEntry);
 	
-	// fixed id
+	// Sync fixed
 	public Modification syncIdFixed(String id);
-	public Modification syncIdFixed(String id, Modification modificationState);
-	public Modification syncIdFixed(String id, Modification modificationState, Entry<JsonElement, Long> remoteEntry);
+	public Modification syncIdFixed(String id, Modification modification);
+	public Modification syncIdFixed(String id, Modification modification, Entry<JsonElement, Long> remoteEntry);
 	
-	public void syncIdentified(boolean safe);
+	public void syncIdentified();
 	public void syncAll();
-	public void identifyModifications();
+	
+	// Identity
+	public void identifyModifications(boolean sure);
+	public void identifyModificationFixed(String id, Long remoteMtime, boolean sure);
+	
+	public void identifyLocalModifications(boolean sure);
+	public void identifyLocalModificationFixed(String id, boolean sure);
+	
+	public void identifyRemoteModifications(boolean sure);
+	public void identifyRemoteModificationFixed(String id, Long remoteMtime, boolean sure);
+	
+	// Init
 	public void initLoadAllFromRemote();
 	
 	// -------------------------------------------- //

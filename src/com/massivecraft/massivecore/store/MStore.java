@@ -12,6 +12,12 @@ import com.massivecraft.massivecore.xlib.gson.JsonElement;
 public class MStore
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static boolean DEBUG_ENABLED = false;
+	
+	// -------------------------------------------- //
 	// DRIVER REGISTRY
 	// -------------------------------------------- //
 	
@@ -102,6 +108,5 @@ public class MStore
 		if (driver == null) return null;
 		return driver.getDb(uri.toString());
 	}
-	
 	
 }

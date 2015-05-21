@@ -191,8 +191,38 @@ public abstract class CollAbstract<E> implements CollInterface<E>
 	@Override
 	public Modification examineIdFixed(String id)
 	{
-		// Null check done	 later.
+		if (id == null) throw new NullPointerException("id");
 		return this.examineIdFixed(id, null);
+	}
+	
+	// Examine local
+	@Override
+	public Modification examineIdLocal(Object oid)
+	{
+		if (oid == null) throw new NullPointerException("oid");
+		return this.examineIdLocalFixed(this.fixIdOrThrow(oid));
+	}
+	
+	// Examine remote
+	@Override
+	public Modification examineIdRemote(Object oid)
+	{
+		if (oid == null) throw new NullPointerException("oid");
+		return this.examineIdRemoteFixed(this.fixIdOrThrow(oid));
+	}
+	
+	@Override
+	public Modification examineIdRemote(Object oid, Long remoteMtime)
+	{
+		if (oid == null) throw new NullPointerException("oid");
+		return this.examineIdRemoteFixed(this.fixIdOrThrow(oid), remoteMtime);
+	}
+	
+	@Override
+	public Modification examineIdRemoteFixed(String id)
+	{
+		if (id == null) throw new NullPointerException("id");
+		return this.examineIdRemoteFixed(id, null);
 	}
 	
 	// Sync
@@ -204,30 +234,31 @@ public abstract class CollAbstract<E> implements CollInterface<E>
 	}
 	
 	@Override
-	public Modification syncId(Object oid, Modification modificationState)
+	public Modification syncId(Object oid, Modification modification)
 	{
 		if (oid == null) throw new NullPointerException("oid");
-		return this.syncIdFixed(this.fixIdOrThrow(oid), modificationState);
+		return this.syncIdFixed(this.fixIdOrThrow(oid), modification);
 	}
 	
 	@Override
-	public Modification syncId(Object oid, Modification modificationState, Entry<JsonElement, Long> remoteEntry)
+	public Modification syncId(Object oid, Modification modification, Entry<JsonElement, Long> remoteEntry)
 	{
 		if (oid == null) throw new NullPointerException("oid");
-		return this.syncIdFixed(this.fixIdOrThrow(oid), modificationState, remoteEntry);
+		return this.syncIdFixed(this.fixIdOrThrow(oid), modification, remoteEntry);
 	}
-	
+
+	// Sync fixed
 	@Override
 	public Modification syncIdFixed(String id)
 	{
-		// Null check done later.
+		if (id == null) throw new NullPointerException("id");
 		return this.syncIdFixed(id, null);
 	}
 	
 	@Override
 	public Modification syncIdFixed(String id, Modification modification)
 	{
-		// Null check done later.
+		if (id == null) throw new NullPointerException("id");
 		return this.syncIdFixed(id, modification, null);
 	}
 	

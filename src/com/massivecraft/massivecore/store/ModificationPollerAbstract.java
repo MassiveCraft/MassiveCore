@@ -1,0 +1,77 @@
+package com.massivecraft.massivecore.store;
+
+public abstract class ModificationPollerAbstract extends Thread
+{
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public ModificationPollerAbstract()
+	{
+		this.setName("MStore " + this.getClass().getSimpleName());
+	}
+	
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private long iterationCount = 1;
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public void run()
+	{
+		while (true)
+		{
+			try
+			{
+				//System.out.println("Polling locally: " + MassiveCoreMConf.get().millisBetweenLocalPoll);
+				this.identify();
+				iterationCount++;
+				
+				//String message = Txt.parse("<i>LocalModificationThread iteration took <h>%dms<i>.", after-before);
+				//MassiveCore.get().log(message);
+				
+				Thread.sleep(this.getMillisBetweenPoll());
+			}
+			catch (InterruptedException e)
+			{
+				// We've been interrupted. Lets bail.
+				return;
+			}
+			catch (Exception e)
+			{
+				System.out.println("Poller error for" + this.getName());
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	// -------------------------------------------- //
+	// CORE
+	// -------------------------------------------- //
+	
+	public void identify() throws InterruptedException
+	{
+		final long waitEfterColl = this.getMillisBetweenPollColl();
+		for (Coll<?> coll : Coll.getInstances())
+		{
+			if (this.poll(coll, this.iterationCount))
+			{
+				Thread.sleep(waitEfterColl);
+			}
+			
+		}
+	}
+	
+	// -------------------------------------------- //
+	// ABSTRACT
+	// -------------------------------------------- //
+	
+	public abstract long getMillisBetweenPoll();
+	public abstract long getMillisBetweenPollColl();
+	public abstract boolean poll(Coll<?> coll, long iterationCount);
+}

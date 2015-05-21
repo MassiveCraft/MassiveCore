@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.store;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,8 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.massivecraft.massivecore.util.DiscUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -61,7 +62,7 @@ public class DriverFlatfile extends DriverAbstract
 			return false;
 		}
 	}
-
+	
 	@Override
 	public Set<String> getCollnames(Db db)
 	{
@@ -84,7 +85,7 @@ public class DriverFlatfile extends DriverAbstract
 		File fileTo = new File(dir, to);
 		return fileFrom.renameTo(fileTo);
 	}
-
+	
 	@Override
 	public boolean containsId(Coll<?> coll, String id)
 	{
@@ -123,7 +124,7 @@ public class DriverFlatfile extends DriverAbstract
 		
 		// Get Directory
 		File directory = getDirectory(coll);
-		if ( ! directory.isDirectory()) return ret;
+		if ( ! directory.isDirectory()) return ret; // TODO: Throw exception instead?
 		
 		// For each .json file
 		for (File file : directory.listFiles(JsonFileFilter.get()))
@@ -199,7 +200,7 @@ public class DriverFlatfile extends DriverAbstract
 		// Return Ret
 		return ret;
 	}
-
+	
 	@Override
 	public long save(Coll<?> coll, String id, JsonElement data)
 	{
@@ -208,12 +209,31 @@ public class DriverFlatfile extends DriverAbstract
 		if (DiscUtil.writeCatch(file, content) == false) return 0;
 		return file.lastModified();
 	}
-
+	
 	@Override
 	public void delete(Coll<?> coll, String id)
 	{
 		File file = fileFromId(coll, id);
 		file.delete();
+	}
+	
+	@Override
+	public boolean supportsPusher()
+	{
+		return true;
+	}
+	
+	@Override
+	public PusherColl getPusher(Coll<?> coll)
+	{
+		try
+		{
+			return new PusherCollFlatfile(coll);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException("Failed to create a flatfile system pusher.", e);
+		}
 	}
 	
 	// -------------------------------------------- //
@@ -238,5 +258,5 @@ public class DriverFlatfile extends DriverAbstract
 		File idFile = new File(collDir, id + DOTJSON);
 		return idFile;
 	}
-	
+
 }

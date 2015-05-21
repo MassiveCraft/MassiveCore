@@ -9,7 +9,7 @@ public class JsonFileFilter implements FileFilter
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	private final static String DOTJSON = ".json";
+	public final static String DOTJSON = ".json";
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
