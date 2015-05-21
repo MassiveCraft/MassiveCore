@@ -200,7 +200,7 @@ public class MassiveCommand
 	{
 		if (index < 0) return false;
 		if (this.isUsingConcatFrom() && this.getConcatFromIndex() < index) index = this.getConcatFromIndex();
-		if (this.getArgSettings().size() <= index) return false;
+		if (this.getArgSettings().size() < index) return false;
 		return true;
 	}
 	
