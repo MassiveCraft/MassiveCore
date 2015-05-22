@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.teleport;
 
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatHumanSpace;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -14,13 +16,40 @@ public abstract class DestinationAbstract implements Destination
 	protected String desc = null;
 	
 	// -------------------------------------------- //
+	// ABSTRACT
+	// -------------------------------------------- //
+	
+	public PS getPsInner()
+	{
+		return null;
+	}
+	
+	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
+	public PS getPs(Object watcherObject) throws MassiveException
+	{
+		PS ret = this.getPsInner();
+		if (ret == null)
+		{
+			throw new MassiveException().addMessage(this.getMessagePsNull(watcherObject));
+		}
+		return ret;
+	}
+	
+	@Override
 	public boolean hasPs()
 	{
-		return this.getPs() != null;
+		try
+		{
+			return this.getPs(null) != null;
+		}
+		catch (MassiveException e)
+		{
+			return false;
+		}
 	}
 	
 	@Override
@@ -34,7 +63,15 @@ public abstract class DestinationAbstract implements Destination
 	public String getDesc(Object watcherObject)
 	{
 		if (this.desc != null) return this.desc;
-		return PSFormatHumanSpace.get().format(this.getPs());
+		try
+		{
+			PS ps = this.getPs(watcherObject);
+			return PSFormatHumanSpace.get().format(ps);
+		}
+		catch (MassiveException e)
+		{
+			return "null";
+		}
 	}
 	
 	@Override

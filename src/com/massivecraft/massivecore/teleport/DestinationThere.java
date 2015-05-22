@@ -28,7 +28,7 @@ public class DestinationThere extends DestinationPlayer
 	// -------------------------------------------- //
 	
 	@Override
-	public PS getPs()
+	public PS getPsInner()
 	{
 		Player player = this.getPlayer();
 		if (player == null) return null;

@@ -95,7 +95,7 @@ public class MassiveCoreEngineDestination extends EngineAbstract
 	public static final Set<String> ALIASES_THERE = new MassiveSet<String>("there");
 	public static final Set<String> ALIASES_THAT = new MassiveSet<String>("that");
 	public static final Set<String> ALIASES_JUMP = new MassiveSet<String>("jump");
-	public static final Set<String> ALIASES_WORLD = new MassiveSet<String>("w", "world", "worldspawn", "wspawn");
+	public static final Set<String> ALIASES_WORLD = new MassiveSet<String>("w", "world", "spawn", "wspawn", "worldspawn");
 	public static final Set<String> ALIASES_PLAYER = new MassiveSet<String>("p", "player", "here", "me", "self");
 	
 	public Destination destinationArg(String arg, CommandSender sender) throws MassiveException

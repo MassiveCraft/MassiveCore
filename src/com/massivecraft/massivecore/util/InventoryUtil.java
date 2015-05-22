@@ -292,6 +292,7 @@ public class InventoryUtil
 	
 	public static ItemStack cloneItemStack(ItemStack itemStack)
 	{
+		if (itemStack == null) return null;
 		return new ItemStack(itemStack);
 	}
 	

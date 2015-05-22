@@ -33,7 +33,8 @@ public class ARDestination extends ARAbstract<Destination>
 		Destination ret = event.getDestination();
 		if (ret == null) throw new MassiveException().addMsg("<b>Unknown destination \"<h>%s<b>\".", arg);
 		
-		if ( ! ret.hasPs()) throw new MassiveException().addMessage(ret.getMessagePsNull(sender));
+		// Throw exeption if ps is null.
+		ret.getPs(sender);
 		
 		return ret;
 	}

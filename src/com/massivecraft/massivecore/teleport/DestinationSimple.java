@@ -38,7 +38,7 @@ public class DestinationSimple extends DestinationAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public PS getPs()
+	public PS getPsInner()
 	{
 		return this.ps;
 	}

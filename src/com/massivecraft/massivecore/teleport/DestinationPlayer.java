@@ -44,7 +44,7 @@ public class DestinationPlayer extends DestinationAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public PS getPs()
+	public PS getPsInner()
 	{
 		return Mixin.getSenderPs(this.playerId);
 	}

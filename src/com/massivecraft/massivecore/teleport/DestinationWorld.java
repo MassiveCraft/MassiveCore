@@ -55,7 +55,7 @@ public class DestinationWorld extends DestinationAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public PS getPs()
+	public PS getPsInner()
 	{
 		String worldId = this.getWorldId();
 		if (worldId == null) return null;

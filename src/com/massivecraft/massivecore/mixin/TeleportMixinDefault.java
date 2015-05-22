@@ -76,7 +76,15 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 		String teleporteeId = IdUtil.getId(teleporteeObject);
 		if (!IdUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId, IdUtil.getConsole())));
 		
-		if ( ! destination.hasPs()) throw new TeleporterException(destination.getMessagePsNull(teleporteeId));
+		PS ps;
+		try
+		{
+			ps = destination.getPs(teleporteeId);
+		}
+		catch (Exception e)
+		{
+			throw new TeleporterException(e.getMessage());
+		}
 		
 		String desc = destination.getDesc(teleporteeId);
 		if (delaySeconds > 0)
@@ -112,11 +120,11 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			Player teleportee = IdUtil.getPlayer(teleporteeId);
 			if (teleportee != null)
 			{
-				teleportPlayer(teleportee, destination.getPs());
+				teleportPlayer(teleportee, ps);
 			}
 			else
 			{
-				Mixin.setSenderPs(teleporteeId, destination.getPs());
+				Mixin.setSenderPs(teleporteeId, ps);
 			}
 		}
 	}
