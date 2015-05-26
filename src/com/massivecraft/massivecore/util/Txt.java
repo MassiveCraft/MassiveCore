@@ -21,6 +21,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.PredictateStartsWithIgnoreCase;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.mson.Mson;
+
+import static com.massivecraft.massivecore.mson.Mson.mson;
 
 public class Txt
 {
@@ -452,37 +456,201 @@ public class Txt
 			return parse("<a>")+center;
 	}
 	
-	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title)
+	public static Mson getMessageEmpty()
+	{
+		return mson("Sorry, no pages available.").color(ChatColor.YELLOW);
+	}
+	
+	public static Mson getMessageInvalid(int size)
+	{
+		if (size == 0)
+		{
+			return getMessageEmpty();
+		}
+		else if (size == 1)
+		{
+			return mson("Invalid, there is only one page.").color(ChatColor.RED);
+		}
+		else
+		{
+			return Mson.format("Invalid, page must be between 1 and %d.", size).color(ChatColor.RED);
+		}
+	}
+	
+	public static List<String> getPage(List<String> lines, int pageHumanBased, String title)
 	{
 		return getPage(lines, pageHumanBased, title, PAGEHEIGHT_PLAYER);
 	}
 	
-	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title, CommandSender sender)
+	public static List<String> getPage(List<String> lines, int pageHumanBased, String title, CommandSender sender)
 	{
 		return getPage(lines, pageHumanBased, title, (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE);
 	}
 	
-	public static ArrayList<String> getPage(List<String> lines, int pageHumanBased, String title, int pageheight)
+	public static List<String> getPage(List<String> lines, int pageHumanBased, String title, int pageheight)
 	{
 		ArrayList<String> ret = new ArrayList<String>();
 		int pageZeroBased = pageHumanBased - 1;
 		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
 		
-		ret.add(titleize(title+parse("<a>")+" "+pageHumanBased+"/"+pagecount));
+		title = titleize(title + parse("<a>") + " " + pageHumanBased + "/" + pagecount);
+		ret.add(title);
 		
 		if (pagecount == 0)
 		{
-			ret.add(parse("<i>Sorry. No Pages available."));
+			ret.add(getMessageEmpty().toPlain(true));
 			return ret;
 		}
 		else if (pageZeroBased < 0 || pageHumanBased > pagecount)
 		{
-			ret.add(parse("<i>Invalid page. Must be between 1 and "+pagecount));
+			ret.add(getMessageInvalid(pagecount).toPlain(true));
 			return ret;
 		}
+
+		return createPage(lines, pageHumanBased, title, pageheight);
+	}
+	
+	public static Mson titleizeMson(String str, int pagecount, int pageHumanBased, MassiveCommand command, List<String> args)
+	{
+		if (command == null) return mson(titleize(str + parse("<a>") + " " + pageHumanBased + "/" + pagecount));
+		
+		// Math
+		String title = str + " " + "[<<] [<]" + pageHumanBased + "/" + pagecount + "[>] [>>]";
+		String center = ".[ " + title + " ].";
+		int centerlen = center.length();
+		int pivot = titleizeLine.length() / 2;
+		int eatLeft = (centerlen / 2) - titleizeBalance;
+		int eatRight = (centerlen - eatLeft) + titleizeBalance;
+
+		// Mson
+		Mson centerMson = mson(
+			mson(".[ ").color(ChatColor.GOLD),
+			mson(str + " ").color(ChatColor.DARK_GREEN),
+			getFlipSection(pagecount, pageHumanBased, args, command),
+			mson(" ].").color(ChatColor.GOLD)
+		);
+
+		if (eatLeft < pivot)
+		{
+			Mson ret = mson(
+				mson(titleizeLine.substring(0, pivot - eatLeft)).color(ChatColor.GOLD),
+				centerMson,
+				mson(titleizeLine.substring(pivot + eatRight)).color(ChatColor.GOLD)
+			);
+
+			return ret;
+		}
+		else
+		{
+			return centerMson;
+		}
+	}
+	
+	private static Mson getFlipSection(int pagecount, int pageHumanBased, List<String> args, MassiveCommand command)
+	{
+		// Construct Mson
+		Mson start = mson("[<<] ").color(ChatColor.GRAY);
+		Mson backward = mson("[<] ").color(ChatColor.GRAY);
+		Mson forward = mson(" [>]").color(ChatColor.GRAY);
+		Mson end = mson(" [>>]").color(ChatColor.GRAY);
+
+		// Set flip page backward commands
+		if (pageHumanBased > 1)
+		{
+			start = setFlipPageCommand(start, pageHumanBased, 1, args, command);
+			backward = setFlipPageCommand(backward, pageHumanBased, pageHumanBased - 1, args, command);
+		}
+
+		// Set flip page forward commands
+		if (pagecount > pageHumanBased)
+		{
+			forward = setFlipPageCommand(forward, pageHumanBased, pageHumanBased + 1, args, command);
+			end = setFlipPageCommand(end, pageHumanBased, pagecount, args, command);
+		}
+		
+		Mson flipMson = mson(
+			start,
+			backward,
+			mson(pageHumanBased + "/" + pagecount).color(ChatColor.YELLOW),
+			forward,
+			end
+		);
+		
+		return flipMson;
+	}
+	
+	private static Mson setFlipPageCommand(Mson mson, int pageHumanBased, int destinationPage, List<String> args, MassiveCommand command)
+	{
+		String number = String.valueOf(destinationPage);
+		String oldNumber = String.valueOf(pageHumanBased);
+		String tooltip = "<i>Click to <c>%s<i>.";
+		String commandLine;
+
+		mson = mson.color(ChatColor.AQUA);
+
+		if (args != null && args.contains(oldNumber))
+		{
+			List<String> arguments = new ArrayList<String>(args);
+			arguments.set(arguments.indexOf(oldNumber), number);
+
+			commandLine = command.getCommandLine(arguments);
+		}
+		else
+		{
+			commandLine = command.getCommandLine(number);
+		}
+
+		return mson.command(commandLine).tooltip(Txt.parse(tooltip, commandLine));
+	}
+	
+	public static List<Mson> getPageMson(List<Mson> lines, int pageHumanBased, String title, MassiveCommand command, List<String> args)
+	{
+		return getPageMson(lines, pageHumanBased, title, PAGEHEIGHT_PLAYER, command, args);
+	}
+	
+	public static List<Mson> getPageMson(List<Mson> lines, int pageHumanBased, String title, CommandSender sender, MassiveCommand command, List<String> args)
+	{
+		return getPageMson(lines, pageHumanBased, title, (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, command, args);
+	}
+	
+	public static List<Mson> getPageMson(List<Mson> lines, int pageHumanBased, String title, int pageheight, MassiveCommand command, List<String> args)
+	{
+		// reduce pageheight in favor of flipsection
+		pageheight--;
+		
+		ArrayList<Mson> ret = new ArrayList<Mson>();
+		int pageZeroBased = pageHumanBased - 1;
+		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
+		
+		Mson msonTitle = Txt.titleizeMson(title, pagecount, pageHumanBased, command, args);
+		ret.add(msonTitle);
+		
+		if (pagecount == 0)
+		{
+			ret.add(getMessageEmpty());
+			return ret;
+		}
+		else if (pageZeroBased < 0 || pageHumanBased > pagecount)
+		{
+			ret.add(getMessageInvalid(pagecount));
+			return ret;
+		}
+
+		List<Mson> page = createPage(lines, pageHumanBased, msonTitle, pageheight);
+		page.add(getFlipSection(pagecount, pageHumanBased, args, command));
+		
+		return page;
+	}
+	
+	private static <T> List<T> createPage(List<T> lines, int pageHumanBased, T title, int pageheight)
+	{
+		ArrayList<T> ret = new ArrayList<T>();
+		int pageZeroBased = pageHumanBased - 1;
+		
+		ret.add(title);
 		
 		int from = pageZeroBased * pageheight;
-		int to = from+pageheight;
+		int to = from + pageheight;
 		if (to > lines.size())
 		{
 			to = lines.size();

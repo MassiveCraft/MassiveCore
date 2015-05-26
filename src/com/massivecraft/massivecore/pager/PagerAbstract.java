@@ -3,6 +3,8 @@ package com.massivecraft.massivecore.pager;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class PagerAbstract<T> implements Pager<T>
@@ -35,14 +37,11 @@ public abstract class PagerAbstract<T> implements Pager<T>
 		// Return null if the page number is invalid
 		if (!this.isValid(number)) return null;
 		
-		// Create return value
-		List<T> ret = new ArrayList<T>();
-		
 		// Forge list from collection
 		List<T> items = null;
 		if (this.getItems() instanceof List)
 		{
-			items = (List<T>)this.getItems();
+			items = (List<T>) this.getItems();
 		}
 		else
 		{
@@ -60,10 +59,7 @@ public abstract class PagerAbstract<T> implements Pager<T>
 		}
 		
 		// Pick them
-		ret.addAll(items.subList(from, to));
-		
-		// Return return value
-		return ret;
+		return items.subList(from, to);
 	}
 	
 	// -------------------------------------------- //
@@ -72,23 +68,12 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	
 	public String getMessageEmpty()
 	{
-		return Txt.parse("<i>Sorry, no pages available.");
+		return Txt.getMessageEmpty().toPlain(true);
 	}
 	
 	public String getMessageInvalid()
 	{
-		if (this.size() == 0)
-		{
-			return this.getMessageEmpty();
-		}
-		else if (this.size() == 1)
-		{
-			return Txt.parse("<b>Invalid, there is only one page.", this.size());
-		}
-		else
-		{
-			return Txt.parse("<b>Invalid, page must be between 1 and %d.", this.size());
-		}
+		return Txt.getMessageInvalid(this.size()).toPlain(true);
 	}
 	
 	@Override
@@ -96,11 +81,37 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	{
 		List<String> ret = new ArrayList<String>();
 		
-		ret.add(Txt.titleize(title + Txt.parse("<a>") + " " + number + "/" + this.size()));
+		List<Mson> msons = getPageMson(number, title, new Msonifier<T>(){
+
+			@Override
+			public Mson toMson(T item, int index)
+			{
+				return Mson.mson(stringifier.toString(item, index));
+			}
+			
+		}, null, null);
+		
+		for (Mson mson : msons)
+		{
+			ret.add(mson.toPlain(true));
+		}
+		
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// Mson
+	// -------------------------------------------- //
+	
+	public List<Mson> getPageMson(int number, String title, Msonifier<T> msonifier, MassiveCommand command, List<String> args)
+	{	
+		List<Mson> ret = new ArrayList<Mson>();
+		
+		ret.add(Txt.titleizeMson(title, this.size(), number, command, args));
 		
 		if (this.isEmpty())
 		{
-			ret.add(this.getMessageEmpty());
+			ret.add(Txt.getMessageEmpty());
 			return ret;
 		}
 		
@@ -108,26 +119,25 @@ public abstract class PagerAbstract<T> implements Pager<T>
 		
 		if (pageItems == null)
 		{
-			ret.add(this.getMessageInvalid());
+			ret.add(Txt.getMessageInvalid(this.size()));
 			return ret;
 		}
 		
 		int index = (number - 1) * this.getItemsPerPage();
 		for (T pageItem : pageItems)
 		{
-			if (stringifier != null)
+			if (msonifier != null)
 			{
-				ret.add(stringifier.toString(pageItem, index));
+				ret.add(msonifier.toMson(pageItem, index));
 			}
 			else
 			{
-				ret.add(pageItem.toString());
+				ret.add(Mson.mson(pageItem.toString()));
 			}
 			index++;
 		}
 		
 		return ret;
 	}
-	
 	
 }

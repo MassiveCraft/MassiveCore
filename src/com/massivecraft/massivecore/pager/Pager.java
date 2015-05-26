@@ -1,5 +1,8 @@
 package com.massivecraft.massivecore.pager;
 
+import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.mson.Mson;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -29,4 +32,10 @@ public interface Pager<T>
 	public String getMessageInvalid();
 	public List<String> getPageTxt(int number, String title, Stringifier<T> stringifier);
 	
+	// -------------------------------------------- //
+	// MSON
+	// -------------------------------------------- //
+	
+	public List<Mson> getPageMson(int number, String title, Msonifier<T> msonifier, MassiveCommand command, List<String> args);
+
 }
