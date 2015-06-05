@@ -33,8 +33,6 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	
 	public static final String ITEM_FLAGS = "flags";
 	
-	public static final String SKULL_OWNER_ID = "skullid";
-	
 	public static final String BANNER_BASE = "banner-base";
 	public static final String BANNER_PATTERNS = "banner";
 	
@@ -161,35 +159,30 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	// -------------------------------------------- //
 	// SPECIFIC META: SKULL
 	// -------------------------------------------- //
-
+	// When we serialize we store the minimal information possible.
+	// We then deserialize using cached information.
+	// This is done to avoid sync bouncing.
+	// Different servers might serialize different heads differently.
+	
 	@Override
 	public void transferSkull(SkullMeta meta, JsonObject json, boolean meta2json)
 	{
 		if (meta2json)
 		{
 			if ( ! meta.hasOwner()) return;
-			
-			// Resolve to avoid MStore sync bouncing.
-			Couple<String, UUID> resolved = NmsHead.resolve(meta);
-			String name = resolved.getFirst();
-			UUID id = resolved.getSecond();
-			
-			if (name != null) json.addProperty(SKULL_OWNER, name);
-			if (id != null) json.addProperty(SKULL_OWNER_ID, id.toString());
+			String name = meta.getOwner();
+			if (name == null) return;
+			name = name.toLowerCase();
+			json.addProperty(SKULL_OWNER, name);
 		}
 		else
 		{
-			JsonElement element;
+			JsonElement element = json.get(SKULL_OWNER);
+			if (element == null) return;
 			
-			String name = null;
-			element = json.get(SKULL_OWNER);
-			if (element != null) name = element.getAsString();
-			
+			String name = element.getAsString();
 			UUID id = null;
-			element = json.get(SKULL_OWNER_ID);
-			if (element != null) id = UUID.fromString(element.getAsString());
 			
-			// Resolve to avoid MStore sync bouncing.
 			Couple<String, UUID> resolved = NmsHead.resolve(name, id);
 			name = resolved.getFirst();
 			id = resolved.getSecond();
