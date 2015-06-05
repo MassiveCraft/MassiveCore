@@ -1,7 +1,10 @@
 package com.massivecraft.massivecore.mson;
 
-import static org.bukkit.ChatColor.*;
 import static com.massivecraft.massivecore.mson.Mson.mson;
+import static org.bukkit.ChatColor.BLUE;
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.YELLOW;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.util.Txt;
@@ -90,9 +93,10 @@ public class Test
 		// replace string mson
 		mson = mson("1 2 3 4 5 6 1 7 tests").color(BLUE).addChild(" 1+1+1").addChild("herpiderp").root().replaceAll("1", mson("0"));
 		test("replaceAll1", mson);
-
-		mson = mson("hello").addChild("hello").addChild("hello").root().replaceAll("hello", mson("lol"));
+		
+		mson = mson("hellohello").addChild("hello").addChild("hello").root().replaceAll("hello", mson("lol"));
 		test("overload", mson);
+		
 		
 		Mson toReplace = mson("hallo");
 		

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
@@ -32,15 +33,18 @@ public class Mson implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	public static final Pattern PARSE_PREFIX = Pattern.compile("\u00A7");
-
+	
+	public static final LowercaseEnumAdapter<ChatColor> ADAPTER_LOWERCASE_CHAT_COLOR = LowercaseEnumAdapter.get(ChatColor.class);
+	public static final LowercaseEnumAdapter<MsonEventAction> ADAPTER_LOWERCASE_MSON_EVENT_ACTION = LowercaseEnumAdapter.get(MsonEventAction.class);
+	
 	// -------------------------------------------- //
 	// GSON
 	// -------------------------------------------- //
 
 	public static final Gson GSON = new GsonBuilder()
 	.disableHtmlEscaping()
-	.registerTypeAdapter(ChatColor.class, LowercaseEnumAdapter.get(ChatColor.class))
-	.registerTypeAdapter(MsonEventAction.class, LowercaseEnumAdapter.get(MsonEventAction.class))
+	.registerTypeAdapter(ChatColor.class, ADAPTER_LOWERCASE_CHAT_COLOR)
+	.registerTypeAdapter(MsonEventAction.class, ADAPTER_LOWERCASE_MSON_EVENT_ACTION)
 	.create();
 
 	// -------------------------------------------- //
@@ -63,7 +67,7 @@ public class Mson implements Serializable
 	public ChatColor colorInherited() { return parentHas() ? parent().colorEffective() : null; }
 	public Mson color(ChatColor color)
 	{
-		if (color != null && ! color.isColor()) throw new IllegalArgumentException("color must be a color");
+		if (color != null && ! color.isColor()) throw new IllegalArgumentException("Color must be a color.");
 		this.color = color;
 		return this;
 	}
@@ -92,7 +96,7 @@ public class Mson implements Serializable
 	// FIELD: strikethrough
 	protected Boolean strikethrough = null;
 	public Boolean strikethrough() { return this.strikethrough; }
-	public Mson striketrhough(Boolean strikethrough) { this.strikethrough = strikethrough; return this; }
+	public Mson strikethrough(Boolean strikethrough) { this.strikethrough = strikethrough; return this; }
 	public boolean strikethroughEffective() { return strikethrough() != null ? strikethrough() : strikethroughInherited(); }
 	protected boolean strikethroughInherited() { return parentHas() && parent().strikethroughEffective(); }
 
@@ -110,7 +114,7 @@ public class Mson implements Serializable
 	protected MsonEvent clickEventInherited() { return this.parentHas() ? this.parent().clickEventEffective() : null; }
 	public Mson clickEvent(MsonEvent clickEvent)
 	{
-		if (clickEvent != null && ! clickEvent.isClickEvent()) throw new IllegalArgumentException("clickEvent may not be hoverEvent");
+		if (clickEvent != null && ! clickEvent.isClickEvent()) throw new IllegalArgumentException("ClickEvent may not be a HoverEvent.");
 		this.clickEvent = clickEvent;
 		return this;
 	}
@@ -121,7 +125,7 @@ public class Mson implements Serializable
 	protected MsonEvent hoverEventInherited() { return this.parentHas() ? this.parent().hoverEventEffective() : null; }
 	public Mson hoverEvent(MsonEvent hoverEvent)
 	{
-		if (hoverEvent != null && ! hoverEvent.isHoverEvent()) throw new IllegalArgumentException("hoverEvent may not be clickEvent");
+		if (hoverEvent != null && ! hoverEvent.isHoverEvent()) throw new IllegalArgumentException("HoverEvent may not be a ClickEvent.");
 		this.hoverEvent = hoverEvent;
 		return this;
 	}
@@ -208,7 +212,7 @@ public class Mson implements Serializable
 		if (style == ChatColor.BOLD) return this.bold(true);
 		if (style == ChatColor.ITALIC) return this.italic(true);
 		if (style == ChatColor.UNDERLINE) return this.underlined(true);
-		if (style == ChatColor.STRIKETHROUGH) return this.striketrhough(true);
+		if (style == ChatColor.STRIKETHROUGH) return this.strikethrough(true);
 		if (style == ChatColor.MAGIC) return this.obfuscated(true);
 		if (style.isColor()) return this.color(style);
 		
@@ -351,6 +355,11 @@ public class Mson implements Serializable
 		return new Mson();
 	}
 	
+	public static Mson mson(Object part)
+	{
+		return Mson.getMson(part);
+	}
+	
 	public static Mson mson(Object... parts)
 	{
 		return Mson.getMson(parts);
@@ -386,7 +395,7 @@ public class Mson implements Serializable
 		}
 		else
 		{
-			throw new IllegalArgumentException("We only accept Strings, Msons, Collections and Arrays");
+			throw new IllegalArgumentException("We only accept Strings, Msons, Collections and Arrays.");
 		}
 	}
 	
@@ -395,7 +404,7 @@ public class Mson implements Serializable
 		return msons(Arrays.asList(parts));
 	}
 
-	public static List<Mson> msons(Collection<?> parts)
+	public static List<Mson> msons(Iterable<?> parts)
 	{
 		if (parts == null) throw new NullPointerException("parts");
 
@@ -464,7 +473,7 @@ public class Mson implements Serializable
 			.bold(bold)
 			.italic(italic)
 			.underlined(underlined)
-			.striketrhough(strikethrough)
+			.strikethrough(strikethrough)
 			.obfuscated(obfuscated);
 
 			msons.add(mson);
@@ -488,7 +497,7 @@ public class Mson implements Serializable
 
 	public static Mson format(String format, Object... args)
 	{
-		return Mson.mson(String.format(format, args));
+		return Mson.mson().text(String.format(format, args));
 	}
 
 	public Mson copy()
@@ -499,7 +508,7 @@ public class Mson implements Serializable
 		.bold(this.bold)
 		.italic(this.italic)
 		.underlined(this.underlined)
-		.striketrhough(this.strikethrough)
+		.strikethrough(this.strikethrough)
 		.obfuscated(this.obfuscated)
 		.insertionString(this.insertionString)
 		.clickEvent(this.clickEvent)
@@ -528,7 +537,7 @@ public class Mson implements Serializable
 		this.bold(ancestor.bold());
 		this.italic(ancestor.italic());
 		this.underlined(ancestor.underlined());
-		this.striketrhough(ancestor.strikethrough());
+		this.strikethrough(ancestor.strikethrough());
 		this.obfuscated(ancestor.obfuscated());
 		this.hoverEvent(ancestor.hoverEvent());
 		this.clickEvent(ancestor.clickEvent());
@@ -646,10 +655,17 @@ public class Mson implements Serializable
 	}
 
 	// Special replace all
-	public Mson replaceAll(String regex, Mson replacement)
+	
+	// This is old and not the best solution.
+	// Awaiting further decision.
+	
+/*	public Mson replaceAll(String regex, Mson replacement)
 	{
-		return replaceAll(Pattern.compile(regex), replacement);
+		if (regex == null) throw new NullPointerException("regex");
+		if (replacement == null) throw new NullPointerException("replacement");
+		return this.replaceAllOld(Pattern.compile(regex), replacement);
 	}
+	
 	
 	public Mson replaceAll(Pattern pattern, Mson replacement)
 	{
@@ -730,6 +746,103 @@ public class Mson implements Serializable
 		mson.simpleClean();
 		// ... and return recreated mson
 		return mson;
+	}*/
+	
+	public Mson replaceAll(String regex, Mson replacement)
+	{
+		if (regex == null) throw new NullPointerException("regex");
+		if (replacement == null) throw new NullPointerException("replacement");
+		return this.replaceAll(Pattern.compile(regex), replacement);
+	}
+	
+	public Mson replaceAll(Pattern pattern, final Mson replacement)
+	{
+		if (pattern == null) throw new NullPointerException("pattern");
+		if (replacement == null) throw new NullPointerException("replacement");
+		MsonReplacement replacer = new MsonReplacement()
+		{
+			@Override
+			public Object getReplacement(String match)
+			{
+				return replacement;
+			}
+			
+		};
+		return this.replaceAll(pattern, replacer);
+	}
+	
+	public Mson replaceAll(String regex, MsonReplacement replacer)
+	{
+		if (regex == null) throw new NullPointerException("regex");
+		if (replacer == null) throw new NullPointerException("replacer");
+		return this.replaceAll(Pattern.compile(regex), replacer);
+	}
+	
+	public Mson replaceAll(Pattern pattern, MsonReplacement replacer)
+	{
+		if (pattern == null) throw new NullPointerException("pattern");
+		if (replacer == null) throw new NullPointerException("replacer");
+		
+		Mson ret = mson().copyFormatAndBehaviour(this);
+		
+		List<Mson> msons = new ArrayList<Mson>();
+		StringBuffer currentString = new StringBuffer();
+		Matcher matcher = pattern.matcher(text());
+		while (matcher.find())
+		{
+			String match = matcher.group(0);
+			Object replacement = replacer.getReplacement(match);
+			
+			// Add the match
+			if (replacement == null) matcher.appendReplacement(currentString, match);
+			
+			// Add the string
+			else if (replacement instanceof String) matcher.appendReplacement(currentString, replacement.toString());
+			
+			// Add the mson
+			else if (replacement instanceof Mson)
+			{
+				// Fixup current string
+				matcher.appendReplacement(currentString, "");
+				if (addStringBuffer(msons, currentString)) currentString = new StringBuffer();
+				
+				// Add this replacement
+				msons.add((Mson) replacement);
+			}
+			
+			// Not allowed
+			else throw new IllegalArgumentException("We only support null, String and Mson.");
+		}
+		
+		// Add the remaining string pieces
+		matcher.appendTail(currentString);
+		addStringBuffer(msons, currentString);
+		
+		// Recurse on extras.
+		if (this.extraHas())
+		{
+			for (Mson extra : this.extra())
+			{
+				msons.add(extra.replaceAll(pattern, replacer));
+			}
+		}
+		
+		// Set extras
+		for (Mson mson : msons)
+		{
+			mson.parent(ret);
+		}
+		ret.extra(msons);
+		
+		return ret;
+	}
+	
+	private static boolean addStringBuffer(List<Mson> msons, StringBuffer buffer)
+	{
+		if (buffer.length() == 0) return false;
+		Mson mson = mson().text(buffer.toString());
+		msons.add(mson);
+		return true;
 	}
 
 	public Mson replaceAll(Mson replace, Mson replacement)
