@@ -2,8 +2,8 @@ package com.massivecraft.massivecore.mixin;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.nms.NmsPacket;
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.PacketUtil;
 
 public class TitleMixinDefault extends TitleMixinAbstract
 {
@@ -29,13 +29,13 @@ public class TitleMixinDefault extends TitleMixinAbstract
 		if (titleSub == null)	titleSub = "";
 		if (titleMain == null)	titleMain = "";
 		
-		return PacketUtil.sendTitle(player, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
+		return NmsPacket.sendTitle(player, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
 	}
 
 	@Override
 	public boolean isTitlesAvailable()
 	{
-		return PacketUtil.isTitleAvailable();
+		return NmsPacket.get().isAvailable();
 	}
 
 }

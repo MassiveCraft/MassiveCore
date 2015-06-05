@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore.util;
+package com.massivecraft.massivecore.nms;
 
 import java.lang.reflect.Field;
 import java.util.UUID;
@@ -7,9 +7,20 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import com.massivecraft.massivecore.Couple;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
+import com.massivecraft.massivecore.util.IdData;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 
-public class HeadUtil
+public class NmsHead extends NmsAbstract
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static NmsHead i = new NmsHead();
+	public static NmsHead get () { return i; }
+	
 	// -------------------------------------------- //
 	// REFLECTION CACHE
 	// -------------------------------------------- //
@@ -21,23 +32,27 @@ public class HeadUtil
 	public static Field fieldGameProfileDotId;
 	public static Field fieldGameProfileDotName;
 	
-	static
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public int getRequiredVersion()
 	{
-		try
-		{
-			classCraftMetaSkull = PackageType.CRAFTBUKKIT_INVENTORY.getClass("CraftMetaSkull");
-			fieldCraftMetaSkullDotProfile = ReflectionUtil.getField(classCraftMetaSkull, "profile");
-			
-			classGameProfile = Class.forName("com.mojang.authlib.GameProfile");
-			fieldGameProfileDotId = ReflectionUtil.getField(classGameProfile, "id");
-			fieldGameProfileDotName = ReflectionUtil.getField(classGameProfile, "name");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		return 8;
 	}
 	
+	@Override
+	protected void setup() throws Throwable
+	{
+		classCraftMetaSkull = PackageType.CRAFTBUKKIT_INVENTORY.getClass("CraftMetaSkull");
+		fieldCraftMetaSkullDotProfile = ReflectionUtil.getField(classCraftMetaSkull, "profile");
+		
+		classGameProfile = Class.forName("com.mojang.authlib.GameProfile");
+		fieldGameProfileDotId = ReflectionUtil.getField(classGameProfile, "id");
+		fieldGameProfileDotName = ReflectionUtil.getField(classGameProfile, "name");
+	}
+
 	// -------------------------------------------- //
 	// GAMEPROFILE: SIMPLE
 	// -------------------------------------------- //

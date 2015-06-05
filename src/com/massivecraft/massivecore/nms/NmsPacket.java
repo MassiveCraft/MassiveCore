@@ -1,9 +1,8 @@
-package com.massivecraft.massivecore.util;
+package com.massivecraft.massivecore.nms;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
@@ -12,16 +11,19 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 
-public final class PacketUtil
+public final class NmsPacket extends NmsAbstract
 {
+	// -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
+	
+	private static NmsPacket i = new NmsPacket();
+	public static NmsPacket get () { return i; }
+	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
-
-	// Is using
-	private static boolean useTitles = false;
-	private static boolean useRaw = false;
-
+	
 	// The enums used to tell which packet it is.
 	// They correspond to the commands with the same name.
 	private static Class<?> titleEnumClass;
@@ -47,64 +49,51 @@ public final class PacketUtil
 	private static Constructor<?> chatPacketConstructor;
 
 	// -------------------------------------------- //
-	// SETUP
+	// OVERRIDE
 	// -------------------------------------------- //
-
-	static
+	
+	@Override
+	public int getRequiredVersion()
 	{
-		try
+		return 8;
+	}
+	
+	@Override
+	protected void setup() throws Throwable
+	{
+		// The enum used for titles
+		titleEnumClass = getTitleEnumClass();
+
+		// Get the title enum values.
+		for (Object o : titleEnumClass.getEnumConstants())
 		{
-			// The enum used for titles
-			titleEnumClass = getTitleEnumClass();
-
-			// Get the title enum values.
-			for (Object o : titleEnumClass.getEnumConstants())
-			{
-				Enum<?> e = (Enum<?>) o;
-				if (e.name().equalsIgnoreCase("TITLE")) titleMainEnum = e;
-				else if (e.name().equalsIgnoreCase("SUBTITLE")) titleSubEnum = e;
-				else if (e.name().equalsIgnoreCase("TIMES")) titleTimesEnum = e;
-			}
-
-			// Get chatserializer and chat component.
-			iChatBaseComponent = PackageType.MINECRAFT_SERVER.getClass("IChatBaseComponent");
-
-			chatSerializer = getChatSerializer();
-
-			// Get title packet and it's constructor
-			Class<?> titlePacketClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutTitle");
-			titlePacketConstructor = ReflectionUtils.getConstructor(titlePacketClass, titleEnumClass, iChatBaseComponent);
-			titlePacketConstructorTimes = ReflectionUtils.getConstructor(titlePacketClass, titleEnumClass, iChatBaseComponent, Integer.class, Integer.class, Integer.class);
-
-			// Get Chat packet and it's constructor
-			Class<?> chatPacketClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutChat");
-			chatPacketConstructor = ReflectionUtils.getConstructor(chatPacketClass, iChatBaseComponent);
-
-			// Player connection
-			getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
-			playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
-			sendPacket = ReflectionUtils.getMethod(playerConnection.getType(), "sendPacket", PackageType.MINECRAFT_SERVER.getClass("Packet"));
-
-			// Set accessible
-			setAllAccessible();
-
-			// This succeeded, we use titles and the chat.
-			useTitles = true;
-			useRaw = true;
-		}
-		catch (Exception ex)
-		{
-			MassiveCore.get().log(Level.INFO, "If you use 1.7.X or below, disregard this error");
-			MassiveCore.get().log(Level.INFO, "If you use 1.8.X or above, please report at https://github.com/MassiveCraft/MassiveCore/issues");
-			ex.printStackTrace();
-			MassiveCore.get().log(Level.INFO, "If you use 1.7.X or below, disregard this error");
-			MassiveCore.get().log(Level.INFO, "If you use 1.8.X or above, please report at https://github.com/MassiveCraft/MassiveCore/issues");
-
-			// It didn't succeed, we will not use titles.
-			useTitles = false;
-			useRaw = false;
+			Enum<?> e = (Enum<?>) o;
+			if (e.name().equalsIgnoreCase("TITLE")) titleMainEnum = e;
+			else if (e.name().equalsIgnoreCase("SUBTITLE")) titleSubEnum = e;
+			else if (e.name().equalsIgnoreCase("TIMES")) titleTimesEnum = e;
 		}
 
+		// Get chatserializer and chat component.
+		iChatBaseComponent = PackageType.MINECRAFT_SERVER.getClass("IChatBaseComponent");
+
+		chatSerializer = getChatSerializer();
+
+		// Get title packet and it's constructor
+		Class<?> titlePacketClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutTitle");
+		titlePacketConstructor = ReflectionUtils.getConstructor(titlePacketClass, titleEnumClass, iChatBaseComponent);
+		titlePacketConstructorTimes = ReflectionUtils.getConstructor(titlePacketClass, titleEnumClass, iChatBaseComponent, Integer.class, Integer.class, Integer.class);
+
+		// Get Chat packet and it's constructor
+		Class<?> chatPacketClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutChat");
+		chatPacketConstructor = ReflectionUtils.getConstructor(chatPacketClass, iChatBaseComponent);
+
+		// Player connection
+		getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
+		playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
+		sendPacket = ReflectionUtils.getMethod(playerConnection.getType(), "sendPacket", PackageType.MINECRAFT_SERVER.getClass("Packet"));
+
+		// Set accessible
+		setAllAccessible();
 	}
 
 	public static Class<?> getTitleEnumClass() throws ClassNotFoundException
@@ -151,26 +140,12 @@ public final class PacketUtil
 	}
 
 	// -------------------------------------------- //
-	// AVAILABLE
-	// -------------------------------------------- //
-
-	public static boolean isTitleAvailable()
-	{
-		return useTitles;
-	}
-
-	public static boolean isRawAvailable()
-	{
-		return useRaw;
-	}
-
-	// -------------------------------------------- //
 	// SEND TITLES
 	// -------------------------------------------- //
 
 	public static boolean sendTitle(Player player, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
 	{
-		if ( ! useTitles) return false;
+		if ( ! get().isAvailable()) return false;
 
 		try
 		{
@@ -217,7 +192,7 @@ public final class PacketUtil
 
 	public static boolean sendRaw(Player player, String string)
 	{
-		if ( ! useRaw) return false;
+		if ( ! get().isAvailable()) return false;
 
 		try
 		{

@@ -1,18 +1,7 @@
 package com.massivecraft.massivecore.cmd.massivecore;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.VisibilityMode;
-import com.massivecraft.massivecore.cmd.arg.AREnum;
-import com.massivecraft.massivecore.cmd.arg.ARFloat;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
-import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
-import com.massivecraft.massivecore.particleeffect.ParticleEffect;
 
 public class CmdMassiveCoreTest extends MassiveCommand
 {
@@ -25,8 +14,10 @@ public class CmdMassiveCoreTest extends MassiveCommand
 		// Aliases
 		this.addAliases("test");
 		
+		
+		// OLD STUFF
 		// Arg
-		this.addArg(AREnum.get(ParticleEffect.class), "particleEffect").setDesc("the particle effect type to show");
+		/*this.addArg(AREnum.get(ParticleEffect.class), "particleEffect").setDesc("the particle effect type to show");
 		this.addArg(ARFloat.get(), "offsetX").setDesc("the maximum offset on x-axis for this particle");
 		this.addArg(ARFloat.get(), "offsetY").setDesc("the maximum offset on y-axis for this particle");
 		this.addArg(ARFloat.get(), "offsetZ").setDesc("the maximum offset on z-axis for this particle");
@@ -38,7 +29,7 @@ public class CmdMassiveCoreTest extends MassiveCommand
 		this.addRequirements(ReqIsPlayer.get());
 		
 		// VisibilityMode
-		this.setVisibilityMode(VisibilityMode.SECRET);
+		this.setVisibilityMode(VisibilityMode.SECRET);*/
 	}
 	
 	// -------------------------------------------- //
@@ -48,20 +39,23 @@ public class CmdMassiveCoreTest extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
-		// Args
+		
+		sendRaw(mson("This is your ", mson("item").tooltip(me.getItemInHand())));
+		// OLD STUFF
+		/*// Args
 		ParticleEffect particleEffect = this.readArg();
 		
 		Location center = me.getEyeLocation().add(0, 0, 0);
 		
-		float offsetX = (Float) this.readArg();
-		float offsetY = (Float) this.readArg();
-		float offsetZ = (Float) this.readArg();
-		float speed = (Float) this.readArg();
-		int amount = (Integer) this.readArg();
+		float offsetX = this.readArg();
+		float offsetY = this.readArg();
+		float offsetZ = this.readArg();
+		float speed = this.readArg();
+		int amount = this.readArg();
 		
 		Player player = me;
 		
-		particleEffect.display(center, offsetX, offsetY, offsetZ, speed, amount, player);
+		particleEffect.display(center, offsetX, offsetY, offsetZ, speed, amount, player);*/
 	}
 	
 }

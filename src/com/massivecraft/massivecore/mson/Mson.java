@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.adapter.LowercaseEnumAdapter;
@@ -185,6 +186,8 @@ public class Mson implements Serializable
 	public Mson tooltipParse(String tooltip) { this.hoverEvent(MsonEvent.hoverTextParse(text)); return this; }
 	public Mson tooltipParse(String... tooltip) { this.hoverEvent(MsonEvent.hoverTextParse(text)); return this; }
 	public Mson tooltipParse(Collection<String> tooltip) { this.hoverEvent(MsonEvent.hoverTextParse(text)); return this; }
+	
+	public Mson tooltip(ItemStack item) { this.hoverEvent(MsonEvent.item(item)); return this; }
 	
 	// -------------------------------------------- //
 	// CONVENIENCE STYLE

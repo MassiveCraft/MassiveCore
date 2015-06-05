@@ -9,11 +9,12 @@ public enum MsonEventAction
 	SUGGEST_COMMAND(),
 	RUN_COMMAND(),
 	OPEN_URL(),
-	SHOW_TEXT(true)
-
+	SHOW_TEXT(true),
+	SHOW_ITEM(true),
+	
 	// End of list
 	;
-
+	
 	// -------------------------------------------- //
 	// FIELD
 	// -------------------------------------------- //

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
+import org.bukkit.inventory.ItemStack;
+
+import com.massivecraft.massivecore.nms.NmsItem;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -60,7 +63,7 @@ public class MsonEvent implements Serializable
 		return MsonEvent.valueOf(MsonEventAction.RUN_COMMAND, cmd);
 	}
 
-	// hoverEvents
+	// showText
 	public static MsonEvent hoverText(String hoverText)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, hoverText);
@@ -76,7 +79,7 @@ public class MsonEvent implements Serializable
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.implode(hoverTexts, "\n"));
 	}
 	
-	// hoverEventsParsed
+	// showTextParsed
 	public static MsonEvent hoverTextParse(String hoverText)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.parse(hoverText));
@@ -90,6 +93,13 @@ public class MsonEvent implements Serializable
 	public static MsonEvent hoverTextParse(Collection<String> hoverTexts)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.parse(Txt.implode(hoverTexts, "\n")));
+	}
+	
+	// showItem
+	public static MsonEvent item(ItemStack item)
+	{
+		if (item == null) throw new NullPointerException("item");
+		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, NmsItem.itemToString(item));
 	}
 
 	// -------------------------------------------- //

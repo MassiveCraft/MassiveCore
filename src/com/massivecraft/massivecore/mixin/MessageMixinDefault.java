@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.nms.NmsPacket;
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.PacketUtil;
 
 public class MessageMixinDefault extends MessageMixinAbstract
 {
@@ -90,12 +90,12 @@ public class MessageMixinDefault extends MessageMixinAbstract
 		CommandSender sender = IdUtil.getSender(sendeeObject);
 		if (sender == null) return false;
 		
-		if (sender instanceof Player && PacketUtil.isRawAvailable())
+		if (sender instanceof Player && NmsPacket.get().isAvailable())
 		{
 			Player player = (Player) sender;
 			for (Mson mson : msons)
 			{
-				PacketUtil.sendRaw(player, mson.toRaw());
+				NmsPacket.sendRaw(player, mson.toRaw());
 			}
 		}
 		else
