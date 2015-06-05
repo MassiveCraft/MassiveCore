@@ -207,7 +207,7 @@ public class Mson implements Serializable
 		if (style == ChatColor.UNDERLINE) return this.underlined(true);
 		if (style == ChatColor.STRIKETHROUGH) return this.striketrhough(true);
 		if (style == ChatColor.MAGIC) return this.obfuscated(true);
-		if (style.isColor()) return this.color(color);
+		if (style.isColor()) return this.color(style);
 		
 		throw new UnsupportedOperationException(style.name());
 	}
