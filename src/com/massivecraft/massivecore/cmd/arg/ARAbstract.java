@@ -139,8 +139,6 @@ public abstract class ARAbstract<T> implements AR<T>
 			ret.set(0, result);
 		}
 		
-
-		
 		return ret;
 	}
 	
@@ -171,7 +169,7 @@ public abstract class ARAbstract<T> implements AR<T>
 			// But we can't keep things after the first part either
 			// because of spaces and stuff.
 			if (suggestion.length() <= prefix.length()) continue;
-			int lastSpace = prefix.indexOf(' ', prefix.length());
+			int lastSpace = suggestion.indexOf(' ', prefix.length());
 			int lastIndex = lastSpace != -1 ? lastSpace : suggestion.length();
 			ret.add(suggestion.substring(prefix.length(), lastIndex));
 		}

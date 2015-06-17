@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.event.EventMassiveCoreDestination;
+import com.massivecraft.massivecore.event.EventMassiveCoreDestinationTabList;
 import com.massivecraft.massivecore.teleport.Destination;
 
 public class ARDestination extends ARAbstract<Destination>
@@ -42,7 +43,9 @@ public class ARDestination extends ARAbstract<Destination>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		return null;
+		EventMassiveCoreDestinationTabList event = new EventMassiveCoreDestinationTabList(arg, sender);
+		event.run();
+		return event.getSuggestions();
 	}
 	
 }
