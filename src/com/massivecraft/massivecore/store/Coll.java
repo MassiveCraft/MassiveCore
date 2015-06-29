@@ -796,7 +796,7 @@ public class Coll<E> extends CollAbstract<E>
 		{
 			String id = idToEntry.getKey();
 			Entry<JsonElement, Long> remoteEntry = idToEntry.getValue();
-			loadFromRemote(id, remoteEntry);
+			loadFromRemoteFixed(id, remoteEntry);
 		}
 	}
 	

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.util.Txt;
 
 public class ReqIsPlayer extends ReqAbstract
 {
@@ -30,7 +31,7 @@ public class ReqIsPlayer extends ReqAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return Lang.COMMAND_SENDER_MUST_BE_PLAYER;
+		return Txt.parse(Lang.COMMAND_SENDER_MUST_BE_PLAYER);
 	}
 	
 }

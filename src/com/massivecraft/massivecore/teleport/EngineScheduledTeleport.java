@@ -17,6 +17,7 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
 
 public class EngineScheduledTeleport extends EngineAbstract
 {
@@ -45,7 +46,7 @@ public class EngineScheduledTeleport extends EngineAbstract
 		
 		this.teleporteeIdToScheduledTeleport.put(st.getTeleporteeId(), st);
 		
-		st.setDueMillis(System.currentTimeMillis() + st.getDelaySeconds()*1000);
+		st.setDueMillis(System.currentTimeMillis() + st.getDelaySeconds()*TimeUnit.MILLIS_PER_SECOND);
 		
 		return old;
 	}
@@ -111,7 +112,7 @@ public class EngineScheduledTeleport extends EngineAbstract
 	public void cancelTeleport(PlayerMoveEvent event)
 	{
 		// If the player moved from one block to another ...
-		if (MUtil.isSameBlock(event.getFrom(), event.getTo())) return;
+		if (MUtil.isSameBlock(event)) return;
 		
 		// ... cancel teleport!
 		Player player = event.getPlayer();

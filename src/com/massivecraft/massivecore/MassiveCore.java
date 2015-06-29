@@ -23,6 +23,8 @@ import com.massivecraft.massivecore.adapter.MassiveSetAdapter;
 import com.massivecraft.massivecore.adapter.MassiveTreeMapAdapter;
 import com.massivecraft.massivecore.adapter.MassiveTreeSetAdapter;
 import com.massivecraft.massivecore.adapter.ModdedEnumTypeAdapter;
+import com.massivecraft.massivecore.adapter.MsonAdapter;
+import com.massivecraft.massivecore.adapter.MsonEventAdapter;
 import com.massivecraft.massivecore.adapter.PlayerInventoryAdapter;
 import com.massivecraft.massivecore.adapter.UUIDAdapter;
 import com.massivecraft.massivecore.chestgui.EngineChestGui;
@@ -44,6 +46,8 @@ import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.mixin.EngineTeleportMixinCause;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
 import com.massivecraft.massivecore.store.ExamineThread;
@@ -52,6 +56,7 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
+import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
@@ -67,6 +72,7 @@ public class MassiveCore extends MassivePlugin
 	
 	public final static String INSTANCE = "instance";
 	public final static String DEFAULT = "default";
+	public static final String NONE = Txt.parse("<silver>none");
 	
 	public final static Set<String> NOTHING = MUtil.treeset("", "none", "null", "nothing");
 	public final static Set<String> REMOVE = MUtil.treeset("clear", "c", "delete", "del", "d", "erase", "e", "remove", "rem", "r", "reset", "res");
@@ -114,6 +120,9 @@ public class MassiveCore extends MassivePlugin
 		.registerTypeAdapter(MassiveTreeMapDef.class, MassiveTreeMapAdapter.get())
 		.registerTypeAdapter(MassiveTreeSet.class, MassiveTreeSetAdapter.get())
 		.registerTypeAdapter(MassiveTreeSetDef.class, MassiveTreeSetAdapter.get())
+		
+		.registerTypeAdapter(Mson.class, MsonAdapter.get())
+		.registerTypeAdapter(MsonEvent.class, MsonEventAdapter.get())
 		
 		.registerTypeAdapter(BackstringEnumSet.class, BackstringEnumSetAdapter.get())
 		.registerTypeAdapter(Entry.class, EntryAdapter.get())

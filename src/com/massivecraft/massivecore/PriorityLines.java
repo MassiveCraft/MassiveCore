@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.massivecraft.massivecore.Prioritized;
 import com.massivecraft.massivecore.util.MUtil;
 
 public class PriorityLines implements Prioritized, Comparable<PriorityLines>
@@ -19,8 +19,9 @@ public class PriorityLines implements Prioritized, Comparable<PriorityLines>
 	
 	private List<String> lines;
 	public List<String> getLines() { return this.lines; }
-	public void setLines(List<String> lines) { this.lines = lines;  }
+	public void setLines(List<String> lines) { this.lines = lines; }
 	public void setLines(String... lines) { this.setLines(Arrays.asList(lines)); }
+	public void setLines(String line) { this.setLines(Collections.singletonList(line)); }
 
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -61,7 +62,7 @@ public class PriorityLines implements Prioritized, Comparable<PriorityLines>
 	{
 		int ret;
 		
-		ret = Integer.valueOf(this.priority).compareTo(that.priority);
+		ret = Integer.compare(this.priority, that.priority);
 		if (ret != 0) return ret;
 		
 		if (MUtil.equals(this.lines, that.lines)) return 0;
@@ -89,15 +90,10 @@ public class PriorityLines implements Prioritized, Comparable<PriorityLines>
 	public boolean equals(Object obj)
 	{
 		if (this == obj) return true;
-		if (obj == null) return false;
 		if (!(obj instanceof PriorityLines)) return false;
 		PriorityLines other = (PriorityLines) obj;
-		if (lines == null)
-		{
-			if (other.lines != null) return false;
-		}
-		else if (!lines.equals(other.lines)) return false;
 		if (priority != other.priority) return false;
+		if ( ! MUtil.equals(this.lines, other.lines)) return false;
 		return true;
 	}
 

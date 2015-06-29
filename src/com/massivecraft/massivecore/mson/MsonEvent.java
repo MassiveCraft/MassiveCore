@@ -6,11 +6,12 @@ import java.util.Objects;
 
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.nms.NmsItem;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MsonEvent implements Serializable
+public final class MsonEvent implements Serializable
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -22,10 +23,10 @@ public class MsonEvent implements Serializable
 	// FIELDS
 	// -------------------------------------------- //
 
-	protected final MsonEventAction action;
+	private final MsonEventAction action;
 	public MsonEventAction getEventActionType() { return this.action; }
 
-	protected final String value;
+	private final String value;
 	public String getActionText() { return this.value; }
 
 	// -------------------------------------------- //
@@ -57,10 +58,26 @@ public class MsonEvent implements Serializable
 	{
 		return MsonEvent.valueOf(MsonEventAction.SUGGEST_COMMAND , replace);
 	}
-
+	public static MsonEvent replace(MassiveCommand cmd, String... args)
+	{
+		return MsonEvent.replace(cmd.getCommandLine(args));
+	}
+	public static MsonEvent replace(MassiveCommand cmd, Iterable<String> args)
+	{
+		return MsonEvent.replace(cmd.getCommandLine(args));
+	}
+	
 	public static MsonEvent performCmd(String cmd)
 	{
 		return MsonEvent.valueOf(MsonEventAction.RUN_COMMAND, cmd);
+	}
+	public static MsonEvent performCmd(MassiveCommand cmd, String... args)
+	{
+		return MsonEvent.performCmd(cmd.getCommandLine(args));
+	}
+	public static MsonEvent performCmd(MassiveCommand cmd, Iterable<String> args)
+	{
+		return MsonEvent.performCmd(cmd.getCommandLine(args));
 	}
 
 	// showText

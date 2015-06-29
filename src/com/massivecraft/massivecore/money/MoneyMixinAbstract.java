@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.money;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public abstract class MoneyMixinAbstract implements MoneyMixin
 {
@@ -48,7 +47,7 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 	
 	public boolean move(String fromId, String toId, String byId, double amount, String category, String message)
 	{
-		return this.move(fromId, toId, byId, amount, (category == null ? null : Arrays.asList(category)), message);
+		return this.move(fromId, toId, byId, amount, (category == null ? null : Collections.singletonList(category)), message);
 	}
 	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories)
 	{
@@ -56,11 +55,11 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 	}
 	public boolean move(String fromId, String toId, String byId, double amount, String category)
 	{
-		return this.move(fromId, toId, byId, amount, (category == null ? null : Arrays.asList(category)), null);
+		return this.move(fromId, toId, byId, amount, (category == null ? null : Collections.singletonList(category)), null);
 	}
 	public boolean move(String fromId, String toId, String byId, double amount)
 	{
-		return this.move(fromId, toId, byId, amount, new ArrayList<String>(), null);
+		return this.move(fromId, toId, byId, amount, Collections.<String>emptyList(), null);
 	}
 	
 	// -------------------------------------------- //

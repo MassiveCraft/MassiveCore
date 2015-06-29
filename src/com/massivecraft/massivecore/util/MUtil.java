@@ -1500,12 +1500,12 @@ public class MUtil
 	// -------------------------------------------- //
 	public static <T extends Number> T limitNumber(T d, T min, T max)
 	{
-		if (min instanceof Number && d.doubleValue() < min.doubleValue())
+		if (d.doubleValue() < min.doubleValue())
 		{
 			return min;
 		}
 		
-		if (max instanceof Number && d.doubleValue() > max.doubleValue())
+		if (d.doubleValue() > max.doubleValue())
 		{
 			return max;
 		}

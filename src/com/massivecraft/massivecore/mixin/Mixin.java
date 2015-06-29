@@ -141,6 +141,11 @@ public class Mixin
 		return getDisplayNameMixin().getDisplayName(senderObject, watcherObject);
 	}
 	
+	public static Mson getDisplayNameMson(Object senderObject, Object watcherObject)
+	{
+		return getDisplayNameMixin().getDisplayNameMson(senderObject, watcherObject);
+	}
+	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: INVENTORY
 	// -------------------------------------------- //
@@ -163,7 +168,7 @@ public class Mixin
 	{
 		return getSenderPsMixin().getSenderPs(senderObject);
 	}
-
+	
 	public static void setSenderPs(Object senderObject, PS ps)
 	{
 		getSenderPsMixin().setSenderPs(senderObject, ps);
@@ -418,5 +423,5 @@ public class Mixin
 	{
 		return getCommandMixin().dispatchCommand(presentObject, senderObject, commandLine);
 	}
-	
+
 }

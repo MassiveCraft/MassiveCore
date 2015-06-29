@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.mixin;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class DisplayNameMixinDefault extends DisplayNameMixinAbstract

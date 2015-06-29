@@ -59,6 +59,16 @@ public class LowercaseEnumAdapter<T extends Enum<T>> implements JsonDeserializer
 	// UTIL
 	// -------------------------------------------- //
 	
+	public T getEnumValueFrom(JsonElement json)
+	{
+		return getEnumValueFrom(json.toString());
+	}
+	
+	public T getEnumValueFrom(String str)
+	{
+		return getEnumValueFrom(str, clazz);
+	}
+	
 	public static <T> T[] getEnumValues(Class<T> clazz)
 	{
 		if (clazz == null) throw new IllegalArgumentException("passed clazz param is null");
@@ -82,14 +92,13 @@ public class LowercaseEnumAdapter<T extends Enum<T>> implements JsonDeserializer
 		return string.toLowerCase();
 	}
 	
-	public T getEnumValueFrom(JsonElement json)
+	public static<T extends Enum<T>> T getEnumValueFrom(String str, Class<T> clazz)
 	{
-		String jsonString = json.getAsString();
-		jsonString = getComparable(jsonString);
+		str = getComparable(str);
 		
 		for (T value : getEnumValues(clazz))
 		{
-			if (getComparable(value).equals(jsonString)) return value;
+			if (getComparable(value).equals(str)) return value;
 		}
 		
 		return null;

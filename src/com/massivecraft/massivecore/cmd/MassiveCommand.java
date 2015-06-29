@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -970,6 +971,45 @@ public class MassiveCommand
 		return getUseageTemplate(false);
 	}
 	
+	public String getCommandLine(String... args)
+	{
+		return getCommandLine(Arrays.asList(args));
+	}
+	
+	public String getCommandLine(Iterable<String> args)
+	{
+		// Initiate ret
+		StringBuilder ret = new StringBuilder();
+		
+		// First a slash
+		ret.append('/');
+		
+		// Then parent commands
+		for (MassiveCommand parent : this.getCommandChain())
+		{
+			// Append parent
+			ret.append(parent.getAliases().get(0));
+			
+			// Append space
+			ret.append(' ');
+		}
+		// Then ourself
+		ret.append(this.getAliases().get(0));
+		
+		// Then args
+		for (String arg : args)
+		{
+			// First a space
+			ret.append(' ');
+			
+			// Then the arg
+			ret.append(arg);
+		}
+		
+		// Return ret
+		return ret.toString();
+	}
+
  	// -------------------------------------------- //
 	// TAB
 	// -------------------------------------------- //
