@@ -3,6 +3,8 @@ package com.massivecraft.massivecore.cmd.arg;
 import java.util.Collection;
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
 
@@ -18,15 +20,15 @@ public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstrac
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ARSenderEntity(SenderColl<T> coll, boolean onlineOnly, boolean playerOnly)
+	private ARSenderEntity(SenderColl<T> coll, SenderPresence presence, SenderType type)
 	{
-		super(coll, onlineOnly, playerOnly);
+		super(coll, presence, type);
 		this.coll = coll;
 	}
 	
-	private ARSenderEntity(SenderColl<T> coll, boolean onlineOnly)
+	private ARSenderEntity(SenderColl<T> coll, SenderPresence presence)
 	{
-		super(coll, onlineOnly);
+		super(coll, presence);
 		this.coll = coll;
 	}
 	
@@ -40,8 +42,8 @@ public class ARSenderEntity<T extends SenderEntity<T>> extends ARSenderIdAbstrac
 	// GET
 	// -------------------------------------------- //
 	
-	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll, boolean onlineOnly, boolean playerOnly) { return new ARSenderEntity<T>(coll, onlineOnly, playerOnly); }
-	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll, boolean onlineOnly) { return new ARSenderEntity<T>(coll, onlineOnly); }
+	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll, SenderPresence presence, SenderType type) { return new ARSenderEntity<T>(coll, presence, type); }
+	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll, SenderPresence presence) { return new ARSenderEntity<T>(coll, presence); }
 	public static <T extends SenderEntity<T>> ARSenderEntity<T> get(SenderColl<T> coll) { return new ARSenderEntity<T>(coll); }
 	
 	// -------------------------------------------- //

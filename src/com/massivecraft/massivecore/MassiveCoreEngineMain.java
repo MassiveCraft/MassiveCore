@@ -141,17 +141,18 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		Player watcher = event.getPlayer();
 		if (MUtil.isntPlayer(watcher)) return;
 		
-		// Get the lowercased token
-		String tokenlc = event.getLastToken().toLowerCase();
+		// Get the lowercased token predicate
+		Predictate<String> predictate = PredictateStartsWithIgnoreCase.get(event.getLastToken());
 		
 		// Create a case insensitive set to check for already added stuff
 		Set<String> current = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		current.addAll(event.getTabCompletions());
 		
-		// Add names of all online senders that match and isn't added yet. 
-		for (String senderName : IdUtil.getOnlineNames())
+		// Add names of all online senders that match and isn't added yet.
+		// TODO: Should this only be players? Would a player actually want to tab-complete @console?
+		for (String senderName : IdUtil.getNames(SenderPresence.ONLINE, SenderType.ANY))
 		{
-			if (!senderName.toLowerCase().startsWith(tokenlc)) continue;
+			if (!predictate.apply(senderName)) continue;
 			if (current.contains(senderName)) continue;
 			if (!Mixin.canSee(watcher, senderName)) continue;
 			

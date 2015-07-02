@@ -2,6 +2,8 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.massivecore.util.IdUtil;
 
@@ -15,7 +17,7 @@ public class ARSender extends ARSenderIdAbstract<CommandSender>
 	public static ARSender get() { return i; }
 	private ARSender()
 	{
-		super(SenderIdSourceMixinAllSenderIds.get(), true, false);
+		super(SenderIdSourceMixinAllSenderIds.get(), SenderPresence.LOCAL, SenderType.ANY);
 	}
 	
 	// -------------------------------------------- //

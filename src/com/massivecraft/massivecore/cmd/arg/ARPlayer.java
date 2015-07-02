@@ -2,6 +2,8 @@ package com.massivecraft.massivecore.cmd.arg;
 
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.massivecore.util.IdUtil;
 
@@ -15,7 +17,7 @@ public class ARPlayer extends ARSenderIdAbstract<Player>
 	public static ARPlayer get() { return i; }
 	private ARPlayer()
 	{
-		super(SenderIdSourceMixinAllSenderIds.get(), true, true);
+		super(SenderIdSourceMixinAllSenderIds.get(), SenderPresence.LOCAL, SenderType.PLAYER);
 	}
 	
 	// -------------------------------------------- //

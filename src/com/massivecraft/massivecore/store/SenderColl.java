@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.cmd.arg.ARSenderEntity;
 import com.massivecraft.massivecore.cmd.arg.ARSenderId;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -114,7 +116,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 		// You could say the corresponding entities latently exist in the collection because it's creative.
 		if (this.isCreative())
 		{
-			ret.add(IdUtil.getAllIds());
+			ret.add(IdUtil.getIds(SenderPresence.ANY, SenderType.ANY));
 		}
 		
 		return ret;
@@ -129,9 +131,9 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 		return ARSenderEntity.get(this);
 	}
 	
-	public ARSenderEntity<E> getAREntity(boolean online)
+	public ARSenderEntity<E> getAREntity(SenderPresence presence)
 	{
-		return ARSenderEntity.get(this, online);
+		return ARSenderEntity.get(this, presence);
 	}
 	
 	public ARSenderId getARId()
@@ -139,9 +141,9 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 		return ARSenderId.get(this);
 	}
 	
-	public ARSenderId getARId(boolean online)
+	public ARSenderId getARId(SenderPresence presence)
 	{
-		return ARSenderId.get(this, online);
+		return ARSenderId.get(this, presence);
 	}
 	
 	// -------------------------------------------- //

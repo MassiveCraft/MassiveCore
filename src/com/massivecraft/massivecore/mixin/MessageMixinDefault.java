@@ -27,7 +27,7 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	public boolean messageAll(Collection<String> messages)
 	{
 		if (messages == null) return false;
-		for (CommandSender sender : IdUtil.getOnlineSenders())
+		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
 			this.messageOne(sender, messages);
 		}
@@ -39,7 +39,7 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	{
 		if (predictate == null) return false;
 		if (messages == null) return false;
-		for (CommandSender sender : IdUtil.getOnlineSenders())
+		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
 			if (!predictate.apply(sender)) continue;
 			this.messageOne(sender, messages);
@@ -62,7 +62,7 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	public boolean messageRawAll(Collection<Mson> msons)
 	{
 		if (msons == null) return false;
-		for (CommandSender sender : IdUtil.getOnlineSenders())
+		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
 			this.messageRawOne(sender, msons);
 		}
@@ -74,7 +74,7 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	{
 		if (predictate == null) return false;
 		if (msons == null) return false;
-		for (CommandSender sender : IdUtil.getOnlineSenders())
+		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
 			if ( ! predictate.apply(sender)) continue;
 			this.messageRawOne(sender, msons);

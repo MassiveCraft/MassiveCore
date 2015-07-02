@@ -1,14 +1,14 @@
 package com.massivecraft.massivecore.cmd.arg;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 import java.util.Set;
 
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -20,28 +20,32 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	// -------------------------------------------- //
 	
 	protected final SenderIdSource source;
-	protected final boolean onlineOnly;
-	protected final boolean playerOnly;
+	protected final SenderPresence presence;
+	protected final SenderType type;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public ARSenderIdAbstract(SenderIdSource source, boolean onlineOnly, boolean playerOnly)
+	public ARSenderIdAbstract(SenderIdSource source, SenderPresence presence, SenderType type)
 	{
+		if (source == null) throw new NullPointerException("source");
+		if (presence == null) throw new NullPointerException("presence");
+		if (type == null) throw new NullPointerException("type");
+		
 		this.source = source;
-		this.onlineOnly = onlineOnly;
-		this.playerOnly = playerOnly;
+		this.presence = presence;
+		this.type = type;
 	}
 	
-	public ARSenderIdAbstract(SenderIdSource source, boolean online)
+	public ARSenderIdAbstract(SenderIdSource source, SenderPresence presence)
 	{
-		this(source, online, false);
+		this(source, presence, SenderType.ANY);
 	}
 	
 	public ARSenderIdAbstract(SenderIdSource source)
 	{
-		this(source, false);
+		this(source, SenderPresence.ANY);
 	}
 	
 	// -------------------------------------------- //
@@ -57,8 +61,14 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 	@Override
 	public String getTypeName()
 	{
-		if (onlineOnly) return "online player";
-		else return "player";
+		switch (presence)
+		{
+			case LOCAL:
+			case ONLINE: return "online player";
+			case OFFLINE: return "offline player";
+			case ANY: return "player";
+		}
+		throw new UnsupportedOperationException("Unknown SenderPresence: " + presence);
 	}
 	
 	@Override
@@ -93,34 +103,29 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 		if (MUtil.isUuid(arg)) return true;
 		
 		// Check data presence. This handles specials like "@console".
-		if (IdUtil.getIdToData().containsKey(arg)) return true;
-		if (IdUtil.getNameToData().containsKey(arg)) return true;
+		if (IdUtil.getRegistryIdToSender().containsKey(arg)) return true;
 		
 		return false;
 	}
 	
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
-	{
-		Set<String> names;
-		if (onlineOnly)
-		{
-			names = playerOnly ? IdUtil.getOnlinePlayerNames() : IdUtil.getOnlineNames();
-			
-			List<String> ret = new MassiveList<String>();
-			for (String name : names)
-			{
-				if ( ! Mixin.canSee(sender, name)) continue;
-				ret.add(name);
-			}
-			return ret;
-		}
-		else
-		{
-			names = playerOnly ? IdUtil.getAllPlayerNames() : IdUtil.getAllNames();
-			
-			return names;
-		}
+	{	
+		// Step 1: Calculate presence.
+		SenderPresence presence = this.presence;
+		if (presence == SenderPresence.ANY) presence = SenderPresence.ONLINE;
+		
+		// Special step: We don't tab complete offline players.
+		if (presence == SenderPresence.OFFLINE) return Collections.emptySet();
+
+		// Step 2: Calculate type.
+		SenderType type = this.type;
+		
+		// Step 3: Create the ret.
+		Set<String> ret = IdUtil.getNames(presence, type);
+		
+		// Step 4: Return the ret.
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -135,14 +140,13 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 		String senderId = arg.toLowerCase();
 		String betterId = IdUtil.getId(senderId);
 		if (betterId != null) senderId = betterId;
-		
 		for (Collection<String> coll : this.source.getSenderIdCollections())
 		{
 			// If the senderId exists ...
 			if ( ! coll.contains(senderId)) continue;
 			
-			// ... and the online check passes ...
-			if (this.onlineOnly && !Mixin.isOnline(senderId)) continue;
+			// ... and the presence check passes ...
+			if (IdUtil.getMaintainedIds().contains(senderId, presence, type) || IdUtil.getMaintainedNames().contains(senderId, presence, type)) continue;
 			
 			// ... and the result is non null ...
 			T result = this.getResultForSenderId(senderId);

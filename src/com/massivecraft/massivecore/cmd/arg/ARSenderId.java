@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.cmd.arg;
 
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
 
@@ -9,14 +11,14 @@ public class ARSenderId extends ARSenderIdAbstract<String>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private ARSenderId(SenderIdSource source, boolean onlineOnly, boolean playerOnly)
+	private ARSenderId(SenderIdSource source, SenderPresence presence, SenderType type)
 	{
-		super(source, onlineOnly, playerOnly);
+		super(source, presence, type);
 	}
 	
-	private ARSenderId(SenderIdSource source, boolean onlineOnly)
+	private ARSenderId(SenderIdSource source, SenderPresence presence)
 	{
-		super(source, onlineOnly);
+		super(source, presence);
 	}
 	
 	private ARSenderId(SenderIdSource source)
@@ -35,8 +37,8 @@ public class ARSenderId extends ARSenderIdAbstract<String>
 	// GET
 	// -------------------------------------------- //
 	
-	public static ARSenderId get(SenderIdSource source, boolean onlineOnly, boolean playerOnly) { return new ARSenderId(source, onlineOnly, playerOnly); }
-	public static ARSenderId get(SenderIdSource source, boolean onlineOnly) { return new ARSenderId(source, onlineOnly); }
+	public static ARSenderId get(SenderIdSource source, SenderPresence presence, SenderType type) { return new ARSenderId(source, presence, type); }
+	public static ARSenderId get(SenderIdSource source, SenderPresence presence) { return new ARSenderId(source, presence); }
 	public static ARSenderId get(SenderIdSource source) { return new ARSenderId(source); }
 	
 	// -------------------------------------------- //

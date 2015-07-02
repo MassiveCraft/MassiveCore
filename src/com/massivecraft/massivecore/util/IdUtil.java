@@ -5,12 +5,12 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -24,6 +24,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderRegister;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderUnregister;
@@ -105,25 +107,20 @@ public class IdUtil implements Listener, Runnable
 	// MAINTAINED SETS
 	// -------------------------------------------- //
 	// Used for chat tab completion, argument readers, etc.
+
+	private static SenderMap maintainedIds = new SenderMap();
+	public static SenderMap getMaintainedIds() { return maintainedIds; }
+	public static Set<String> getIds(SenderPresence presence, SenderType type)
+	{
+		return maintainedIds.getValues(presence, type);
+	}
 	
-	private static Set<String> onlineIds = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	public static Set<String> getOnlineIds() { return Collections.unmodifiableSet(onlineIds); }
-	
-	private static Set<String> onlineNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	public static Set<String> getOnlineNames() { return Collections.unmodifiableSet(onlineNames); }
-	
-	private static Set<String> onlinePlayerNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	public static Set<String> getOnlinePlayerNames() { return Collections.unmodifiableSet(onlinePlayerNames); }
-	
-	
-	private static Set<String> allIds = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	public static Set<String> getAllIds() { return Collections.unmodifiableSet(allIds); }
-	
-	private static Set<String> allNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	public static Set<String> getAllNames() { return Collections.unmodifiableSet(allNames); }
-	
-	private static Set<String> allPlayerNames = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
-	public static Set<String> getAllPlayerNames() { return Collections.unmodifiableSet(allPlayerNames); }
+	private static SenderMap maintainedNames = new SenderMap();
+	public static SenderMap getMaintainedNames() { return maintainedNames; }
+	public static Set<String> getNames(SenderPresence presence, SenderType type)
+	{
+		return maintainedNames.getValues(presence, type);
+	}
 	
 	// -------------------------------------------- //
 	// REGISTRY
@@ -132,7 +129,10 @@ public class IdUtil implements Listener, Runnable
 	// It's assumed that the getName() returns the name which is also the id.
 	
 	private static Map<String, CommandSender> registryIdToSender = new ConcurrentHashMap<String, CommandSender>();
+	public static Map<String, CommandSender> getRegistryIdToSender() { return Collections.unmodifiableMap(registryIdToSender); }
+	
 	private static Map<CommandSender, String> registrySenderToId = new ConcurrentHashMap<CommandSender, String>();
+	public static Map<CommandSender, String> getRegistrySenderToId() { return Collections.unmodifiableMap(registrySenderToId); }
 	
 	public static void register(CommandSender sender)
 	{
@@ -145,7 +145,7 @@ public class IdUtil implements Listener, Runnable
 		registrySenderToId.put(sender, id);
 		
 		// Update data before the event is ran so that data is available.
-		update(id, name, true);
+		update(id, name, SenderPresence.LOCAL);
 		
 		EventMassiveCoreSenderRegister event = new EventMassiveCoreSenderRegister(sender, data);
 		event.run();
@@ -163,7 +163,7 @@ public class IdUtil implements Listener, Runnable
 		if (removed == null) return;
 		
 		// Update data before the event is ran so that data is available.
-		update(id, name, false);
+		update(id, name, SenderPresence.OFFLINE);
 		
 		EventMassiveCoreSenderUnregister event = new EventMassiveCoreSenderUnregister(sender, data);
 		event.run();
@@ -174,7 +174,7 @@ public class IdUtil implements Listener, Runnable
 	// -------------------------------------------- //
 	// Used for retrieving the full set of senders currently present on this server.
 	
-	public static Set<CommandSender> getOnlineSenders()
+	public static Set<CommandSender> getLocalSenders()
 	{
 		Set<CommandSender> ret = new LinkedHashSet<CommandSender>();
 		
@@ -199,8 +199,7 @@ public class IdUtil implements Listener, Runnable
 	{
 		if (id == null) throw new NullPointerException("id");
 		
-		onlineIds.remove(id);
-		allIds.remove(id);
+		maintainedIds.removeValueCompletely(id);
 		
 		IdData data = idToData.remove(id);
 		if (data == null) return null;
@@ -213,10 +212,7 @@ public class IdUtil implements Listener, Runnable
 	{
 		if (name == null) throw new NullPointerException("name");
 		
-		onlineNames.remove(name);
-		onlinePlayerNames.remove(name);
-		allNames.remove(name);
-		allPlayerNames.remove(name);
+		maintainedNames.removeValueCompletely(name);
 		
 		IdData data = nameToData.remove(name);
 		if (data == null) return null;
@@ -224,9 +220,11 @@ public class IdUtil implements Listener, Runnable
 		return data.getId();
 	}
 	
-	private static void addData(IdData data, boolean online)
+	private static void addData(IdData data, SenderPresence presence)
 	{
 		if (data == null) throw new NullPointerException("data");
+		if (presence == null) throw new NullPointerException("presence");
+		
 		String id = data.getId();
 		String name = data.getName();
 		
@@ -244,18 +242,12 @@ public class IdUtil implements Listener, Runnable
 		
 		if (id != null && name != null)
 		{
-			boolean player = MUtil.isValidPlayerName(name);
-			
-			if (online) onlineIds.add(id);
-			allIds.add(id);
-			
-			if (online && player) onlinePlayerNames.add(name);
-			if (online) onlineNames.add(name);
-			if (player) allPlayerNames.add(name);
-			allNames.add(name);
+			List<SenderPresence> presences = SenderMap.getPresences(presence);
+			maintainedIds.addValue(id, presences);
+			maintainedNames.addValue(name, presences);
 		}
 	}
-	
+
 	public static void update(String id, String name)
 	{
 		update(id, name, null);
@@ -265,13 +257,13 @@ public class IdUtil implements Listener, Runnable
 	{
 		update(id, name, millis, null);
 	}
-	
-	public static void update(final String id, final String name, Boolean online)
+
+	public static void update(final String id, final String name, SenderPresence presence)
 	{
-		update(id, name, System.currentTimeMillis(), online);
+		update(id, name, System.currentTimeMillis(), presence);
 	}
 	
-	public static void update(final String id, final String name, final long millis, Boolean online)
+	public static void update(final String id, final String name, final long millis, SenderPresence presence)
 	{
 		// First Null Check
 		if (id == null && name == null) throw new NullPointerException("Either id or name must be set. They can't both be null.");
@@ -292,35 +284,47 @@ public class IdUtil implements Listener, Runnable
 		// The previousMillis is now null or the lowest of the two.
 		if (previousMillis != null && previousMillis > millis) return;
 		
-		// Online Fix
-		if (online == null)
+		// Presence Fix
+		if (presence == null)
 		{
 			if (id != null)
 			{
-				online = onlineIds.contains(id);
+				presence = maintainedIds.getPresence(id);
 			}
 			else if (name != null)
 			{
-				online = onlineNames.contains(name);
+				presence = maintainedNames.getPresence(name);
 			}
 		}
 		
 		// Removal of previous data
-		// TODO: This is not optimal but will do for now. It only "uproots" one step.
-		String otherId = null;
-		String otherName = null;
-		
-		if (id != null) otherName = removeId(id);
-		if (name != null) otherId = removeName(name);
-		
-		if (otherId != null && !otherId.equals(id)) removeId(otherId);
-		if (otherName != null && !otherName.equals(name)) removeName(otherName);
+		removeIdAndNameRecurse(id, name);
 		
 		// Adding new data
 		IdData data = new IdData(id, name, millis);
-		addData(data, online);
+		addData(data, presence);
 	}
 	
+	private static void removeIdAndNameRecurse(String id, String name)
+	{
+		String otherId = null;
+		String otherName = null;
+		
+		// Remove first
+		if (id != null) otherName = removeId(id);
+		if (name != null) otherId = removeName(name);
+		
+		// If equal, then null. We shouldn't perform the same operation twice.
+		if (otherId != null && otherId.equals(id)) otherId = null;
+		if (otherName != null && otherName.equals(name)) otherName = null;
+		
+		// If any isn't null. Repeat
+		if (otherId != null || otherName != null)
+		{
+			removeIdAndNameRecurse(otherId, otherName);
+		}
+	}
+
 	// -------------------------------------------- //
 	// SETUP
 	// -------------------------------------------- //
@@ -339,13 +343,9 @@ public class IdUtil implements Listener, Runnable
 		idToData.clear();
 		nameToData.clear();
 		
-		onlineIds.clear();
-		onlineNames.clear();
-		onlinePlayerNames.clear();
-		
-		allIds.clear();
-		allNames.clear();
-		allPlayerNames.clear();
+		maintainedIds.clear();
+		maintainedNames.clear();
+
 		
 		// Load Datas
 		loadDatas();
@@ -394,9 +394,11 @@ public class IdUtil implements Listener, Runnable
 		String name = player.getName();
 		
 		// Declaring Existence? Sure, whatever you were before!
+		// It can definitely not be local at this point.
+		// But online or offline is fine.
 		boolean online = Mixin.isOnline(player);
 		
-		update(id, name, online);
+		update(id, name, SenderPresence.fromOnline(online));
 	}
 	
 	// Can't be cancelled
@@ -410,10 +412,8 @@ public class IdUtil implements Listener, Runnable
 		String id = uuid.toString();
 		String name = player.getName();
 		
-		// Joining? Sure, the player is online!
-		boolean online = true;
-		
-		update(id, name, online);
+		// Joining? The player must be local at this point.
+		update(id, name, SenderPresence.LOCAL);
 	}
 	
 	// Can't be cancelled
@@ -428,9 +428,21 @@ public class IdUtil implements Listener, Runnable
 		String name = player.getName();
 		
 		// Leaving? Is it an actuall leave?
-		boolean online = !Mixin.isActualLeave(event);
+		SenderPresence presence;
+		if (Mixin.isActualLeave(event))
+		{
+			// They actually left.
+			// They are offline.
+			presence = SenderPresence.OFFLINE;
+		}
+		else
+		{
+			// They didn't actually leave.
+			// They are online, but not local.
+			presence = SenderPresence.ONLINE;
+		}
 		
-		update(id, name, online);
+		update(id, name, presence);
 	}
 	
 	// -------------------------------------------- //
@@ -462,10 +474,16 @@ public class IdUtil implements Listener, Runnable
 		
 		// Player
 		// CommandSender
-		// UUID
-		if (senderObject instanceof CommandSender || senderObject instanceof UUID)
+		if (senderObject instanceof CommandSender)
 		{
-			String id = getId(senderObject);
+			String id = getIdFromSender((CommandSender) senderObject);
+			return getIdToData().get(id);
+		}
+		
+		// UUID
+		if (senderObject instanceof UUID)
+		{
+			String id = getIdFromUuid((UUID) senderObject);
 			return getIdToData().get(id);
 		}
 		
@@ -620,8 +638,8 @@ public class IdUtil implements Listener, Runnable
 		// Already Done
 		if (senderObject instanceof String && MUtil.isUuid((String)senderObject)) return (String)senderObject;
 		
-		// Console Type
-		if (senderObject instanceof ConsoleCommandSender) return CONSOLE_ID;
+		// Console
+		// Handled at "Command Sender"
 		
 		// Console Id/Name
 		if (CONSOLE_ID.equals(senderObject)) return CONSOLE_ID;
@@ -634,13 +652,13 @@ public class IdUtil implements Listener, Runnable
 		}
 		
 		// Player
-		if (senderObject instanceof Player) return ((Player)senderObject).getUniqueId().toString();
+		// Handled at "Command Sender"
 		
-		// CommandSender
-		if (senderObject instanceof CommandSender) return ((CommandSender)senderObject).getName().toLowerCase();
+		// Command Sender
+		if (senderObject instanceof CommandSender) return getIdFromSender((CommandSender) senderObject);
 		
 		// UUID
-		if (senderObject instanceof UUID) return ((UUID)senderObject).toString();
+		if (senderObject instanceof UUID) return getIdFromUuid((UUID) senderObject);
 		
 		// String
 		// Handled at "Data"
@@ -655,6 +673,18 @@ public class IdUtil implements Listener, Runnable
 		// Return Null
 		return null;
 	}
+	
+	public static String getIdFromSender(CommandSender sender)
+	{
+		if (sender instanceof Player) return ((Player) sender).getUniqueId().toString();
+		if (sender instanceof ConsoleCommandSender) return CONSOLE_ID;
+		return sender.getName().toLowerCase();
+	}
+	
+	public static String getIdFromUuid(UUID uuid)
+	{
+		return uuid.toString();
+	}
 
 	public static String getName(Object senderObject)
 	{
@@ -664,8 +694,8 @@ public class IdUtil implements Listener, Runnable
 		// Already Done
 		// Handled at "Data" (not applicable - names can look differently)
 		
-		// Console Type
-		if (senderObject instanceof ConsoleCommandSender) return CONSOLE_ID;
+		// Console
+		// Handled at "Command Sender"
 		
 		// Console Id/Name
 		if (CONSOLE_ID.equals(senderObject)) return CONSOLE_ID;
@@ -678,10 +708,10 @@ public class IdUtil implements Listener, Runnable
 		}
 		
 		// Player
-		// Handled at "CommandSender"
-		
+		// Handled at "Command Sender"
+
 		// CommandSender
-		if (senderObject instanceof CommandSender) return ((CommandSender)senderObject).getName();
+		if (senderObject instanceof CommandSender) return getNameFromSender((CommandSender)senderObject);
 		
 		// UUID
 		// Handled at "Data".
@@ -705,10 +735,15 @@ public class IdUtil implements Listener, Runnable
 		return null;
 	}
 	
+	public static String getNameFromSender(CommandSender sender)
+	{
+		if (sender instanceof ConsoleCommandSender) return CONSOLE_ID;
+		return sender.getName();
+	}
+	
 	public static boolean isOnline(Object senderObject)
 	{
 		// Fix the id ...
-		if (senderObject == null) return false;
 		String id = getId(senderObject);
 		if (id == null) return false;
 		
@@ -717,7 +752,7 @@ public class IdUtil implements Listener, Runnable
 		if (CONSOLE_ID.equals(id)) return true;
 		
 		// ... return by (case insensitive) set contains.
-		return getOnlineIds().contains(id);
+		return IdUtil.getIds(SenderPresence.ONLINE, SenderType.ANY).contains(id);
 	}
 	
 	public static Long getMillis(Object senderObject)
@@ -733,7 +768,7 @@ public class IdUtil implements Listener, Runnable
 	
 	public static boolean isPlayerId(String string)
 	{
-		// NOTE: Assuming all custom ids look like "@shite".
+		// NOTE: Assuming all custom ids isn't a valid player name or id.
 		return MUtil.isValidPlayerName(string) || MUtil.isUuid(string);
 	}
 	
@@ -805,20 +840,20 @@ public class IdUtil implements Listener, Runnable
 		MassiveCore.get().log(Txt.parse("<i>Loading Cachefile datas..."));
 		for (IdData data : getCachefileDatas())
 		{
-			update(data.getId(), data.getName(), data.getMillis(), false);
+			update(data.getId(), data.getName(), data.getMillis(), SenderPresence.OFFLINE);
 		}
 		
 		MassiveCore.get().log(Txt.parse("<i>Loading Onlineplayer datas..."));
-		for (IdData data : getOnlineplayerDatas())
+		for (IdData data : getLocalPlayerDatas())
 		{
-			update(data.getId(), data.getName(), data.getMillis(), true);
+			update(data.getId(), data.getName(), data.getMillis(), SenderPresence.LOCAL);
 		}
 		
 		MassiveCore.get().log(Txt.parse("<i>Loading Registry datas..."));
 		for (String id : registryIdToSender.keySet())
 		{
 			String name = id;
-			update(id, name, true);
+			update(id, name, SenderPresence.LOCAL);
 		}
 		
 		MassiveCore.get().log(Txt.parse("<i>Saving Cachefile..."));
@@ -867,7 +902,7 @@ public class IdUtil implements Listener, Runnable
 	// -------------------------------------------- //
 	// This data source is simply based on the players currently online
 	
-	public static Set<IdData> getOnlineplayerDatas()
+	public static Set<IdData> getLocalPlayerDatas()
 	{
 		Set<IdData> ret = new LinkedHashSet<IdData>();
 		
