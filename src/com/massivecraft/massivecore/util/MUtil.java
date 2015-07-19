@@ -626,13 +626,13 @@ public class MUtil
 	public static void setDamage(EntityDamageEvent event, double newDamage)
 	{
 		// Check New Damage
-		if ( ! Double.isFinite(newDamage)) throw new IllegalStateException("not finite newDamage: " + newDamage);
+		if ( ! isFinite(newDamage)) throw new IllegalStateException("not finite newDamage: " + newDamage);
 		
 		// Get Old Damage 
 		final double oldDamage = event.getDamage(DamageModifier.BASE);
 		
 		// Check Old Damage
-		if ( ! Double.isFinite(oldDamage)) throw new IllegalStateException("not finite oldDamage: " + oldDamage);
+		if ( ! isFinite(oldDamage)) throw new IllegalStateException("not finite oldDamage: " + oldDamage);
 		
 		// No Change?
 		if (newDamage == oldDamage) return;
@@ -644,7 +644,7 @@ public class MUtil
 		final double factor = newDamage / oldDamage;
 		
 		// Check Factor
-		if ( ! Double.isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor + " damage: " + newDamage + " oldDamage: " + oldDamage);
+		if ( ! isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor + " damage: " + newDamage + " oldDamage: " + oldDamage);
 		
 		// Now scale all damage modifiers!
 		for (DamageModifier modifier : DamageModifier.values())
@@ -669,7 +669,7 @@ public class MUtil
 	public static void scaleDamage(EntityDamageEvent event, double factor)
 	{
 		// Clean Input
-		if ( ! Double.isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor);
+		if ( ! isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor);
 		
 		// No Change?
 		if (factor == 1) return;
@@ -682,6 +682,12 @@ public class MUtil
 			// Apply Factor
 			event.setDamage(modifier, factor * event.getDamage(modifier));
 		}
+	}
+	
+	// isFinite check recreation to be compatible with java 1.7/1.6
+	public static boolean isFinite(double d)
+	{
+		 return Math.abs(d) <= Double.MAX_VALUE;
 	}
 	
 	// -------------------------------------------- //
