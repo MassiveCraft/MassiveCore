@@ -146,7 +146,7 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 			if ( ! coll.contains(senderId)) continue;
 			
 			// ... and the presence check passes ...
-			if (IdUtil.getMaintainedIds().contains(senderId, presence, type) || IdUtil.getMaintainedNames().contains(senderId, presence, type)) continue;
+			if ( ! IdUtil.getMaintainedIds().contains(senderId, presence, type)) continue;
 			
 			// ... and the result is non null ...
 			T result = this.getResultForSenderId(senderId);
