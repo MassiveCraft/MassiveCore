@@ -40,6 +40,10 @@ public class Mixin
 	public static SenderPsMixin getSenderPsMixin() { return senderPsMixin; }
 	public static void setSenderPsMixin(SenderPsMixin val) { senderPsMixin = val; }
 	
+	private static HealthMixin healthMixin = HealthMixinDefault.get();
+	public static HealthMixin getHealthMixin() { return healthMixin; }
+	public static void setHealthMixin(HealthMixin val) { healthMixin = val; }
+	
 	private static PlayedMixin playedMixin = PlayedMixinDefault.get();
 	public static PlayedMixin getPlayedMixin() { return playedMixin; }
 	public static void setPlayedMixin(PlayedMixin val) { playedMixin = val; }
@@ -172,6 +176,44 @@ public class Mixin
 	public static void setSenderPs(Object senderObject, PS ps)
 	{
 		getSenderPsMixin().setSenderPs(senderObject, ps);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC EXPOSE: HEALTH
+	// -------------------------------------------- //
+	
+	// Health
+	public static Double getHealth(Object senderObject)
+	{
+		return getHealthMixin().getHealth(senderObject);
+	}
+	public static boolean setHealth(Object senderObject, double health)
+	{
+		return getHealthMixin().setHealth(senderObject, health);
+	}
+	
+	// Max Health
+	public static Double getMaxHealth(Object senderObject)
+	{
+		return getHealthMixin().getMaxHealth(senderObject);
+	}
+	public static boolean setMaxHealth(Object senderObject, double maxHealth)
+	{
+		return getHealthMixin().setMaxHealth(senderObject, maxHealth);
+	}
+	
+	// Convenience
+	public static boolean damage(Object senderObject, double damage)
+	{
+		return getHealthMixin().damage(senderObject, damage);
+	}
+	public static boolean heal(Object senderObject, double heal)
+	{
+		return getHealthMixin().heal(senderObject, heal);
+	}
+	public static boolean kill(Object senderObject)
+	{
+		return getHealthMixin().kill(senderObject);
 	}
 	
 	// -------------------------------------------- //
