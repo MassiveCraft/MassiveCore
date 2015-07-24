@@ -88,6 +88,12 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 			coll.deinit();
 		}
 		
+		for (Engine engine : Engine.ENGINES)
+		{
+			if (engine.getPlugin() != this) continue;
+			engine.deactivate();
+		}
+		
 		log("Disabled");
 	}
 	
