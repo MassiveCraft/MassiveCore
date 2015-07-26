@@ -215,25 +215,25 @@ public class Mson implements Serializable
 	// CONVENIENCE MSON EVENT
 	// -------------------------------------------- //
 
-	public Mson link(String link) { this.clickEvent(MsonEvent.openUrl(link)); return this; }
+	public Mson link(String link) { return this.clickEvent(MsonEvent.openUrl(link)); }
 	
-	public Mson suggest(String replace) { this.clickEvent(MsonEvent.replace(replace)); return this; }
-	public Mson suggest(MassiveCommand command, String... args) { this.clickEvent(MsonEvent.replace(command, args)); return this; }
-	public Mson suggest(MassiveCommand command, Iterable<String> args) { this.clickEvent(MsonEvent.replace(command, args)); return this; }
+	public Mson suggest(String replace) { return this.clickEvent(MsonEvent.replace(replace)); }
+	public Mson suggest(MassiveCommand command, String... args) { return this.clickEvent(MsonEvent.replace(command, args)); }
+	public Mson suggest(MassiveCommand command, Iterable<String> args) { return this.clickEvent(MsonEvent.replace(command, args)); }
 	
-	public Mson command(String command) { this.clickEvent(MsonEvent.performCmd(command)); return this; }
-	public Mson command(MassiveCommand command, String... args) { this.clickEvent(MsonEvent.performCmd(command, args)); return this; }
-	public Mson command(MassiveCommand command, Iterable<String> args) { this.clickEvent(MsonEvent.performCmd(command, args)); return this; }
+	public Mson command(String command) { return this.clickEvent(MsonEvent.performCmd(command)); }
+	public Mson command(MassiveCommand command, String... args) { return this.clickEvent(MsonEvent.performCmd(command, args)); }
+	public Mson command(MassiveCommand command, Iterable<String> args) { return this.clickEvent(MsonEvent.performCmd(command, args)); }
 	
-	public Mson tooltip(String tooltip) { this.hoverEvent(MsonEvent.hoverText(tooltip)); return this; }
-	public Mson tooltip(String... tooltip) { this.hoverEvent(MsonEvent.hoverText(tooltip)); return this; }
-	public Mson tooltip(Collection<String> tooltip) { this.hoverEvent(MsonEvent.hoverText(tooltip)); return this; }
+	public Mson tooltip(String tooltip) { return this.hoverEvent(MsonEvent.hoverText(tooltip)); }
+	public Mson tooltip(String... tooltip) { return this.hoverEvent(MsonEvent.hoverText(tooltip)); }
+	public Mson tooltip(Collection<String> tooltip) { return this.hoverEvent(MsonEvent.hoverText(tooltip)); }
 	
-	public Mson tooltipParse(String tooltip) { this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); return this; }
-	public Mson tooltipParse(String... tooltip) { this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); return this; }
-	public Mson tooltipParse(Collection<String> tooltip) { this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); return this; }
+	public Mson tooltipParse(String tooltip) { return this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); }
+	public Mson tooltipParse(String... tooltip) { return this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); }
+	public Mson tooltipParse(Collection<String> tooltip) { return this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); }
 	
-	public Mson tooltip(ItemStack item) { this.hoverEvent(MsonEvent.item(item)); return this; }
+	public Mson tooltip(ItemStack item) { return this.hoverEvent(MsonEvent.item(item)); }
 	
 	// -------------------------------------------- //
 	// CONVENIENCE STYLE
@@ -287,7 +287,7 @@ public class Mson implements Serializable
 			ret = ret.extra(extra);
 		}
 		
-		return this;
+		return ret;
 	}
 	
 	// -------------------------------------------- //
