@@ -582,16 +582,19 @@ public class Txt
 	// FILTER
 	// -------------------------------------------- //
 	
-	public static <T> List<T> getFiltered(Collection<T> elements, Predictate<T> predictate)
+	public static <T> List<T> getFiltered(Iterable<T> elements, Predictate<T> predictate)
 	{
+		// Create Ret
 		List<T> ret = new ArrayList<T>();
 		
+		// Fill Ret
 		for (T element : elements)
 		{
 			if ( ! predictate.apply(element)) continue;
 			ret.add(element);
 		}
 		
+		// Return Ret
 		return ret;
 	}
 	
@@ -600,7 +603,7 @@ public class Txt
 		return getFiltered(Arrays.asList(elements), predictate);
 	}
 	
-	public static List<String> getStartsWithIgnoreCase(Collection<String> elements, String prefix)
+	public static List<String> getStartsWithIgnoreCase(Iterable<String> elements, String prefix)
 	{
 		return getFiltered(elements, PredictateStartsWithIgnoreCase.get(prefix));
 	}

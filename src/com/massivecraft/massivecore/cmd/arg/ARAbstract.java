@@ -85,16 +85,25 @@ public abstract class ARAbstract<T> implements AR<T>
 	@Override
 	public List<String> getTabListFiltered(CommandSender sender, String arg)
 	{
-		// Filter them to start with what the user typed in.
+		// Get the raw tab list.
 		Collection<String> raw = this.getTabList(sender, arg);
+		
+		// Handle null case.
 		if (raw == null || raw.isEmpty()) return Collections.emptyList();
 		
+		// Only keep the suggestions that starts with what the user already typed in.
+		// This is the first basic step of tab completion.
+		// "Ca" can complete into "Cayorion".
+		// "Ma" can complete into "Madus"
+		// "Ca" can not complete into "Madus" because it does not start with ignore case.
 		List<String> ret = Txt.getStartsWithIgnoreCase(raw, arg);
 		
+		// Initial simple cleanup of suggestions.
+		cleanSuggestions(ret);
+		
 		// Here we do a lot of things related to spaces.
-		// Because spaces and tab completion desn't go well together.
-		// In the future we might be able to do something better,
-		// but MineCraft has its limitations.
+		// Because spaces and tab completion doesn't go well together.
+		// In the future we might be able to do something better, but Minecraft has its limitations.
 		ret = prepareForSpaces(ret, arg);
 		
 		return ret;
@@ -104,17 +113,30 @@ public abstract class ARAbstract<T> implements AR<T>
 	// PRIVATE: TAB COMPLETE CALCULATIONS
 	// -------------------------------------------- //
 	
+	// This method performs an initial cleanup of suggestions.
+	// Currently we just throw away nulls and empty strings.
+	private static void cleanSuggestions(List<String> suggestions)
+	{
+		ListIterator<String> iter = suggestions.listIterator();
+		while (iter.hasNext())
+		{
+			String suggestion = iter.next();
+			if (suggestion == null || suggestion.isEmpty())
+			{
+				iter.remove();
+			}
+		}
+	}
+	
 	public static List<String> prepareForSpaces(List<String> suggestions, String arg)
 	{
-		cleanSuggestions(suggestions);
-		
 		// This will get the common prefix for all passed in suggestions.
-		// This will allow us to tab complete somethings with spaces
+		// This will allow us to tab complete some things with spaces
 		// if we know they all start with the same value,
 		// so we don't have to replace all of it.
 		final String prefix = getPrefix(suggestions);
 		
-		// This is all the suggetions without the common prefix.
+		// This is all the suggestions without the common prefix.
 		List<String> ret = withoutPreAndSuffix(suggestions, prefix);
 		// If it isn't empty and there is a prefix...
 		if ( ! ret.isEmpty() && ! prefix.isEmpty())
@@ -130,7 +152,7 @@ public abstract class ARAbstract<T> implements AR<T>
 				result += current;
 			}
 			
-			int unwantedPrefixLength =  arg.lastIndexOf(' ');
+			int unwantedPrefixLength = arg.lastIndexOf(' ');
 			if (unwantedPrefixLength != -1)
 			{
 				unwantedPrefixLength++;
@@ -142,15 +164,41 @@ public abstract class ARAbstract<T> implements AR<T>
 		return ret;
 	}
 	
-	private static void cleanSuggestions(List<String> suggestions)
+	private static String getPrefix(List<String> suggestions)
 	{
-		for (ListIterator<String> it = suggestions.listIterator(); it.hasNext();)
+		String prefix = null;
+		
+		for (String suggestion : suggestions)
 		{
-			String suggestion = it.next();
-			if (suggestion == null) it.remove();
-			else if (suggestion.isEmpty()) it.remove();
-			else it.set(suggestion.toLowerCase());
+			prefix = getOkay(prefix, suggestion);
 		}
+		
+		if (prefix == null) return "";
+		int lastSpace = prefix.lastIndexOf(" ");
+		if (lastSpace == -1) return "";
+		
+		return prefix.substring(0, lastSpace + 1);
+	}
+	
+	// This method return a new string only including the first characters that are equal.
+	private static String getOkay(String original, String compared)
+	{
+		if (original == null) return compared;
+		final int size = Math.min(original.length(), compared.length());
+		StringBuilder ret = new StringBuilder();
+		
+		for (int i = 0; i < size; i++)
+		{
+			if (Character.toLowerCase(compared.charAt(i)) != Character.toLowerCase(original.charAt(i))) break;
+			ret.append(compared.charAt(i));
+		}
+		
+		if (ret.length() == 0) return "";
+		
+		int lastSpace = ret.lastIndexOf(" ");
+		if (lastSpace == -1) return "";
+		
+		return ret.toString();
 	}
 	
 	private static List<String> withoutPreAndSuffix(List<String> suggestions, String prefix)
@@ -175,44 +223,6 @@ public abstract class ARAbstract<T> implements AR<T>
 		}
 		
 		return new ArrayList<String>(ret);
-	}
-	
-	private static String getPrefix(List<String> suggestions)
-	{
-		String prefix = null;
-		
-		for (String suggestion : suggestions)
-		{
-			prefix = getOkay(prefix, suggestion);
-		}
-		
-		if (prefix == null) return "";
-		int lastSpace = prefix.lastIndexOf(" ");
-		if (lastSpace == -1) return "";
-		
-		return prefix.substring(0, lastSpace+1);
-	}
-	
-	// This method return a new string only including
-	// the first characters that are equal.
-	private static String getOkay(String original, String compared)
-	{
-		if (original == null) return compared;
-		final int size = Math.min(original.length(), compared.length());
-		StringBuilder ret = new StringBuilder();
-		
-		for (int i = 0; i < size; i++)
-		{
-			if (Character.toLowerCase(compared.charAt(i)) != Character.toLowerCase(original.charAt(i))) break;
-			ret.append(compared.charAt(i));
-		}
-		
-		if (ret.length() == 0) return "";
-		
-		int lastSpace = ret.lastIndexOf(" ");
-		if (lastSpace == -1) return "";
-		
-		return ret.toString();
 	}
 	
 }
