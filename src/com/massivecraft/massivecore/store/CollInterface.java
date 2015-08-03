@@ -16,6 +16,7 @@ public interface CollInterface<E>
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
+	
 	public String getName();
 	public String getBasename();
 	public String getUniverse();
@@ -24,6 +25,7 @@ public interface CollInterface<E>
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM
 	// -------------------------------------------- //
+	
 	public Plugin getPlugin();
 	
 	public Db getDb();
@@ -32,6 +34,10 @@ public interface CollInterface<E>
 	// -------------------------------------------- //
 	// STORAGE
 	// -------------------------------------------- //
+	
+	public String fixId(Object oid);
+	public String fixIdOrThrow(Object oid) throws IllegalArgumentException;
+	
 	public Map<String, E> getId2entity();
 	public E get(Object oid);
 	public E get(Object oid, boolean creative);
@@ -45,14 +51,19 @@ public interface CollInterface<E>
 	public Map<E, String> getEntity2id();
 	public String getId(Object entity);
 	public boolean containsEntity(Object entity);
+	
 	public Collection<E> getAll();
 	public List<E> getAll(Predictate<? super E> where);
 	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby);
 	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
 	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
-	
-	public String fixId(Object oid);
-	public String fixIdOrThrow(Object oid) throws IllegalArgumentException;
+	public List<E> getAll(Predictate<? super E> where, Integer limit);
+	public List<E> getAll(Predictate<? super E> where, Integer limit, Integer offset);
+	public List<E> getAll(Comparator<? super E> orderby);
+	public List<E> getAll(Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Integer limit);
+	public List<E> getAll(Integer limit, Integer offset);
 	
 	// -------------------------------------------- //
 	// BEHAVIOR

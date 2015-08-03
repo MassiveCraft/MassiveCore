@@ -30,12 +30,10 @@ public class ComparatorEntityId implements Comparator<Entity<?>>
 		String id2 = e2.getId();
 		
 		int ret = NaturalOrderComparator.get().compare(id1, id2);
+		if (ret != 0) return ret;
 		
-		// Only return 0 if they are the same.
-		// We avoid that with this ugly solution.
-		if (ret == 0) ret = -1;
-		
-		return ret;
+		// We should only return 0 if the items actually are equal.
+		return e2.hashCode() - e1.hashCode();
 	}
 	
 }

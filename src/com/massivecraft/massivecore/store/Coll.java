@@ -103,6 +103,19 @@ public class Coll<E> extends CollAbstract<E>
 	protected Map<String, E> id2entity;
 	protected Map<E, String> entity2id;
 	
+	@Override
+	public String fixId(Object oid)
+	{
+		if (oid == null) return null;
+		
+		String ret = null;
+		if (oid instanceof String) ret = (String) oid;
+		else if (oid.getClass() == this.getEntityClass()) ret = this.entity2id.get(oid);
+		if (ret == null) return null;
+		
+		return this.isLowercasing() ? ret.toLowerCase() : ret;
+	}
+	
 	@Override public Map<String, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
 	@Override
 	public E getFixed(String id, boolean creative)
@@ -134,23 +147,6 @@ public class Coll<E> extends CollAbstract<E>
 	@Override public Collection<E> getAll()
 	{
 		return Collections.unmodifiableCollection(this.entity2id.keySet());
-	}
-	@Override public List<E> getAll(Predictate<? super E> where) { return MStoreUtil.uglySQL(this.getAll(), where, null, null, null); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, null, null); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, null); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, offset); }
-	
-	@Override
-	public String fixId(Object oid)
-	{
-		if (oid == null) return null;
-		
-		String ret = null;
-		if (oid instanceof String) ret = (String) oid;
-		else if (oid.getClass() == this.getEntityClass()) ret = this.entity2id.get(oid);
-		if (ret == null) return null;
-		
-		return this.isLowercasing() ? ret.toLowerCase() : ret;
 	}
 	
 	// -------------------------------------------- //
@@ -816,7 +812,8 @@ public class Coll<E> extends CollAbstract<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
+	@SuppressWarnings("unchecked")
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -842,8 +839,8 @@ public class Coll<E> extends CollAbstract<E>
 		this.collDriverObject = db.createCollDriverObject(this);
 		
 		// STORAGE
-		this.id2entity = entityComparator != null ? new ConcurrentSkipListMap<String, E>(idComparator) : new ConcurrentHashMap<String, E>();
-		this.entity2id = entityComparator != null ? new ConcurrentSkipListMap<E, String>(entityComparator) : new ConcurrentHashMap<E, String>();
+		this.id2entity = new ConcurrentSkipListMap<String, E>(NaturalOrderComparator.get());
+		this.entity2id = Entity.class.isAssignableFrom(entityClass) ? new ConcurrentSkipListMap<E, String>((Comparator<? super E>) ComparatorEntityId.get()) : new ConcurrentHashMap<E, String>();
 		
 		// IDENTIFIED MODIFICATIONS
 		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
@@ -857,11 +854,6 @@ public class Coll<E> extends CollAbstract<E>
 		{
 			@Override public void run() { Coll.this.onTick(); }
 		};
-	}
-	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
-	{
-		this(name, entityClass, db, plugin, creative, lowercasing, null, null);
 	}
 	
 	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)

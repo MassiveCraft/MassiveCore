@@ -2,7 +2,6 @@ package com.massivecraft.massivecore.store;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -21,11 +20,6 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
-	public SenderColl(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, Comparator<? super String> idComparator, Comparator<? super E> entityComparator)
-	{
-		super(name, entityClass, db, plugin, creative, lowercasing, idComparator, entityComparator);
-	}
 	
 	public SenderColl(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
 	{	
