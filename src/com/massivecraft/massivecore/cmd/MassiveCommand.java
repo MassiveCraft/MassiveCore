@@ -1231,11 +1231,16 @@ public class MassiveCommand
 		// Return the default in the setting.
 		if ( ! this.argIsSet(idx) && setting.isDefaultValueSet()) return setting.getDefaultValue();
 		
-		// The was no arg, or default value in the setting.
-		if ( ! this.argIsSet(idx)) throw new IllegalArgumentException("Trying to access arg: " + idx + " but that is not set.");
+		// OLD: Throw error if there was no arg, or default value in the setting.
+		// OLD: if ( ! this.argIsSet(idx)) throw new IllegalArgumentException("Trying to access arg: " + idx + " but that is not set.");
+		// NOTE: This security actually blocks some functionality. Certain AR handle null argument values and specify their own default from within.
+		// NOTE: An example is the MassiveQuest ARMNode which defaults to the used node of the player but must error when the player has no used node: "You must use a quest to skip the optional argument.".
 		
-		// Just read the arg normally.
-		String arg = this.getArgs().get(idx);
+		// Get the arg.
+		String arg = null;
+		if (this.argIsSet(idx)) arg = this.getArgs().get(idx);
+		
+		// Read and return the arg.
 		return setting.getReader().read(arg, sender);
 	}
 
