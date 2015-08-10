@@ -146,7 +146,12 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 			if ( ! coll.contains(senderId)) continue;
 			
 			// ... and the presence check passes ...
-			if ( ! IdUtil.getMaintainedIds().contains(senderId, presence, type)) continue;
+			// NOTE: Certain SenderColls will on purpose contain other things than players.
+			// NOTE: For that reason we only check sender presence and type if a certain one is required.
+			if (this.presence != SenderPresence.ANY || this.type != SenderType.ANY)
+			{
+				if ( ! IdUtil.getMaintainedIds().contains(senderId, this.presence, this.type)) continue;
+			}
 			
 			// ... and the result is non null ...
 			T result = this.getResultForSenderId(senderId);
