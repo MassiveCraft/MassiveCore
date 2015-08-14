@@ -44,11 +44,31 @@ public class Mson implements Serializable
 	// GSON
 	// -------------------------------------------- //
 
-	public static final Gson GSON = new GsonBuilder()
-	.disableHtmlEscaping()
-	.registerTypeAdapter(ChatColor.class, ADAPTER_LOWERCASE_CHAT_COLOR)
-	.registerTypeAdapter(MsonEventAction.class, ADAPTER_LOWERCASE_MSON_EVENT_ACTION)
-	.create();
+	public static final Gson GSON;
+	
+	static 
+	{
+		GsonBuilder builder = new GsonBuilder();
+		builder.disableHtmlEscaping();
+		
+		builder.registerTypeAdapter(MsonEventAction.class, ADAPTER_LOWERCASE_MSON_EVENT_ACTION);
+		builder.registerTypeAdapter(ChatColor.class, ADAPTER_LOWERCASE_CHAT_COLOR);
+		
+		// For some unknown reason, the different chat colors
+		// have their own instance of java.lang.Class.
+		// For them to be serialized properly with gson,
+		// we must specify the adapter for ALL of these classes.
+		
+		// However the adapter should be created with the base class
+		// because the base class returns true on Class#isEnum
+		// and returns a non-null value on Class#getEnumConstants.
+		for (ChatColor color : ChatColor.values())
+		{
+			builder.registerTypeAdapter(color.getClass(), ADAPTER_LOWERCASE_CHAT_COLOR);
+		}
+		
+		GSON = builder.create();
+	}
 
 	// -------------------------------------------- //
 	// FIELDS
