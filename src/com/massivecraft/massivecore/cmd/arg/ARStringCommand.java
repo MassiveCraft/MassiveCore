@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
@@ -44,10 +43,10 @@ public class ARStringCommand extends ARAbstract<String>
 	{
 		// Require base command (something at all).
 		if (arg.isEmpty()) throw new MassiveException().addMsg("<b>You must at the very least supply a base command.");
-		List<String> args = argAsArgs(arg);
+		String[] args = argAsArgs(arg);
 		
 		// Smart management of first slash ...
-		String alias = args.get(0);
+		String alias = args[0];
 		
 		// ... if there is such a command just return ...
 		Command command = getCommand(alias);
@@ -64,20 +63,20 @@ public class ARStringCommand extends ARAbstract<String>
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		// Split the arg into a list of args #inception-the-movie!
-		List<String> args = argAsArgs(arg);
+		String[] args = argAsArgs(arg);
 		
 		// Tab completion of base commands
-		if (args.size() <= 1) return getKnownCommands().keySet();
+		if (args.length <= 1) return getKnownCommands().keySet();
 		
 		// Get command alias and subargs
-		String alias = args.get(0);
+		String alias = args[0];
 		
 		// Attempt using the tab completion of that command.
 		Command command = getCommandSmart(alias);
 		if (command == null) return Collections.emptySet();
-		List<String> subcompletions = command.tabComplete(sender, alias, args.subList(1, args.size()).toArray(new String[0]));
+		List<String> subcompletions = command.tabComplete(sender, alias, Arrays.copyOfRange(args, 1, args.length));
 		
-		String prefix = Txt.implode(args.subList(0, args.size() - 1), " ") + " ";
+		String prefix = Txt.implode(Arrays.copyOfRange(args, 0, args.length-1), " ") + " ";
 		List<String> ret = new MassiveList<String>();
 		
 		for (String subcompletion : subcompletions)
@@ -89,14 +88,19 @@ public class ARStringCommand extends ARAbstract<String>
 		return ret;
 	}
 	
+	@Override
+	public boolean allowSpaceAfterTab()
+	{
+		return false;
+	}
+	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static List<String> argAsArgs(String arg)
+	public static String[] argAsArgs(String arg)
 	{
-		String[] args = StringUtils.split(arg, ' ');
-		return new MassiveList<String>(Arrays.asList(args));
+		return arg.split(" ", -1);
 	}
 	
 	public static Map<String, Command> getKnownCommands()
