@@ -18,7 +18,6 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.NaturalOrderComparator;
-import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
