@@ -44,4 +44,13 @@ public abstract class EventMassiveCore extends Event implements Runnable, Cancel
 		super(isAsync);
 	}
 	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public boolean isSynchronous()
+	{
+		return !this.isAsynchronous();
+	}
+	
 }
