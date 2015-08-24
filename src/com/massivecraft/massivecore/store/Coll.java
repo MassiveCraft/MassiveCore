@@ -812,7 +812,7 @@ public class Coll<E> extends CollAbstract<E>
 	// -------------------------------------------- //
 	
 	@SuppressWarnings("unchecked")
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, boolean sorted)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -838,8 +838,8 @@ public class Coll<E> extends CollAbstract<E>
 		this.collDriverObject = db.createCollDriverObject(this);
 		
 		// STORAGE
-		this.id2entity = new ConcurrentSkipListMap<String, E>(NaturalOrderComparator.get());
-		this.entity2id = Entity.class.isAssignableFrom(entityClass) ? new ConcurrentSkipListMap<E, String>((Comparator<? super E>) ComparatorEntityId.get()) : new ConcurrentHashMap<E, String>();
+		this.id2entity = (sorted) ? new ConcurrentSkipListMap<String, E>(NaturalOrderComparator.get()) : new ConcurrentHashMap<String, E>();
+		this.entity2id = (Entity.class.isAssignableFrom(entityClass) && sorted) ? new ConcurrentSkipListMap<E, String>((Comparator<? super E>) ComparatorEntityId.get()) : new ConcurrentHashMap<E, String>();
 		
 		// IDENTIFIED MODIFICATIONS
 		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
@@ -857,7 +857,7 @@ public class Coll<E> extends CollAbstract<E>
 	
 	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
 	{
-		this(name, entityClass, db, plugin, false, false);
+		this(name, entityClass, db, plugin, false, false, false);
 	}
 	
 	@Override
