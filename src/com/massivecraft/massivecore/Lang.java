@@ -7,6 +7,7 @@ public class Lang
 	
 	public static final String COMMAND_SENDER_MUST_BE_PLAYER = "<b>This command can only be used by ingame players.";
 	public static final String COMMAND_SENDER_MUSNT_BE_PLAYER = "<b>This command can not be used by ingame players.";
+	public static final String COMMAND_TITLES_MUST_BE_AVAILABLE = "<b>This command requires the Minecraft 1.8 titles.";
 	public static final String COMMAND_TOO_FEW_ARGS = "<b>Not enough command input. <i>You should use it like this:";
 	public static final String COMMAND_TOO_MANY_ARGS = "<b>Too much command input %s<b>.";
 	public static final String COMMAND_TOO_MANY_ARGS2 = "<i>You should use the command like this:";
