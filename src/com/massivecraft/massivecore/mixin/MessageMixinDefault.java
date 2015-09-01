@@ -102,7 +102,7 @@ public class MessageMixinDefault extends MessageMixinAbstract
 		{
 			for (Mson mson : msons)
 			{
-				sender.sendMessage(mson.toPlain());
+				sender.sendMessage(mson.toPlain(true));
 			}
 		}
 

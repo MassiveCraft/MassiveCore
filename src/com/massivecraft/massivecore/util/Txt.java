@@ -16,6 +16,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.PredictateStartsWithIgnoreCase;
@@ -410,6 +412,24 @@ public class Txt
 	public static String getMaterialName(Material material)
 	{
 		return getNicedEnum(material);
+	}
+	
+	public static String getItemName(ItemStack itemStack)
+	{
+		if (InventoryUtil.isNothing(itemStack)) return Txt.parse("<silver><em>Nothing");
+		
+		ChatColor color = (itemStack.getEnchantments().size() > 0) ? ChatColor.AQUA : ChatColor.RESET;
+		
+		if (itemStack.hasItemMeta())
+		{
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			if (itemMeta.hasDisplayName())
+			{
+				return color + itemMeta.getDisplayName();
+			}
+		}
+		
+		return color + Txt.getMaterialName(itemStack.getType());
 	}
 	
 	// -------------------------------------------- //

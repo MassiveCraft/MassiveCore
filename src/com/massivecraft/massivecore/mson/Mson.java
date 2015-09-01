@@ -861,26 +861,29 @@ public class Mson implements Serializable
 		return raw;
 	}
 	
-	public String toPlain()
+	public String toPlain(boolean styled)
 	{
 		StringBuilder ret = new StringBuilder();
-		this.toPlain0(ret);
+		this.toPlain0(ret, styled);
 		return ret.toString();
 	}
 
-	private void toPlain0(StringBuilder builder)
+	private void toPlain0(StringBuilder builder, boolean styled)
 	{
 		if ( ! this.getText().isEmpty())
 		{
 			// Color must be put in BEFORE formatting.
 			// http://minecraft.gamepedia.com/Formatting_codes#Formatting_codes
-
-			if (this.getEffectiveColor() != null) builder.append(this.getEffectiveColor());
-			if (this.isEffectiveBold()) builder.append(ChatColor.BOLD);
-			if (this.isEffectiveItalic()) builder.append(ChatColor.ITALIC);
-			if (this.isEffectiveUnderlined()) builder.append(ChatColor.UNDERLINE);
-			if (this.isEffectiveStrikethrough()) builder.append(ChatColor.STRIKETHROUGH);
-			if (this.isEffectiveObfuscated()) builder.append(ChatColor.MAGIC);
+			if (styled)
+			{
+				if (this.getEffectiveColor() != null) builder.append(this.getEffectiveColor());
+				if (this.isEffectiveBold()) builder.append(ChatColor.BOLD);
+				if (this.isEffectiveItalic()) builder.append(ChatColor.ITALIC);
+				if (this.isEffectiveUnderlined()) builder.append(ChatColor.UNDERLINE);
+				if (this.isEffectiveStrikethrough()) builder.append(ChatColor.STRIKETHROUGH);
+				if (this.isEffectiveObfuscated()) builder.append(ChatColor.MAGIC);
+			}
+			
 			builder.append(this.getText());
 		}
 
@@ -888,11 +891,16 @@ public class Mson implements Serializable
 		{
 			for (Mson part : this.getExtra())
 			{
-				builder.append(ChatColor.RESET);
-				part.toPlain0(builder);
+				if (styled)
+				{
+					builder.append(ChatColor.RESET);
+				}
+				
+				part.toPlain0(builder, styled);
 			}
 		}
 	}
+	
 	
 	@Override
 	public String toString()
