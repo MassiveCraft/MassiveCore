@@ -77,7 +77,7 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	}
 	
 	@Override
-	public List<String> getPageTxt(int number, String title, Stringifier<T> stringifier)
+	public List<String> getPageTxt(int number, String title, final Stringifier<T> stringifier)
 	{
 		List<String> ret = new ArrayList<String>();
 		
