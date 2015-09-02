@@ -515,7 +515,7 @@ public class Txt
 		if (command == null) return mson(titleize(str + parse("<a>") + " " + pageHumanBased + "/" + pagecount));
 		
 		// Math
-		String title = str + " " + "[<<] [<]" + pageHumanBased + "/" + pagecount + "[>] [>>]";
+		String title = str + " " + "[<]" + pageHumanBased + "/" + pagecount + "[>]";
 		String center = ".[ " + title + " ].";
 		int centerlen = center.length();
 		int pivot = titleizeLine.length() / 2;
@@ -549,31 +549,31 @@ public class Txt
 	private static Mson getFlipSection(int pagecount, int pageHumanBased, List<String> args, MassiveCommand command)
 	{
 		// Construct Mson
-		Mson start = mson("[<<] ").color(ChatColor.GRAY);
+		Mson start = mson(String.valueOf(pageHumanBased)).color(ChatColor.GOLD);
 		Mson backward = mson("[<] ").color(ChatColor.GRAY);
 		Mson forward = mson(" [>]").color(ChatColor.GRAY);
-		Mson end = mson(" [>>]").color(ChatColor.GRAY);
+		Mson end = mson(String.valueOf(pagecount)).color(ChatColor.GOLD);
 
 		// Set flip page backward commands
 		if (pageHumanBased > 1)
 		{
 			start = setFlipPageCommand(start, pageHumanBased, 1, args, command);
-			backward = setFlipPageCommand(backward, pageHumanBased, pageHumanBased - 1, args, command);
+			backward = setFlipPageCommand(backward, pageHumanBased, pageHumanBased - 1, args, command).color(ChatColor.AQUA);
 		}
 
 		// Set flip page forward commands
 		if (pagecount > pageHumanBased)
 		{
-			forward = setFlipPageCommand(forward, pageHumanBased, pageHumanBased + 1, args, command);
+			forward = setFlipPageCommand(forward, pageHumanBased, pageHumanBased + 1, args, command).color(ChatColor.AQUA);
 			end = setFlipPageCommand(end, pageHumanBased, pagecount, args, command);
 		}
 		
 		Mson flipMson = mson(
-			start,
 			backward,
-			mson(pageHumanBased + "/" + pagecount).color(ChatColor.YELLOW),
-			forward,
-			end
+			start,
+			mson("/").color(ChatColor.GOLD),
+			end,
+			forward
 		);
 		
 		return flipMson;
@@ -585,8 +585,6 @@ public class Txt
 		String oldNumber = String.valueOf(pageHumanBased);
 		String tooltip = "<i>Click to <c>%s<i>.";
 		String commandLine;
-
-		mson = mson.color(ChatColor.AQUA);
 
 		if (args != null && args.contains(oldNumber))
 		{
