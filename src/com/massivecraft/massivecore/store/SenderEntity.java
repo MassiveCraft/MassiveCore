@@ -126,6 +126,11 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return Mixin.getDisplayName(this.getId(), watcherObject);
 	}
 	
+	public Mson getDisplayNameMson(Object watcherObject)
+	{
+		return Mixin.getDisplayNameMson(this.getId(), watcherObject);
+	}
+	
 	// CONVENIENCE SEND MESSAGE
 	
 	public boolean sendMessage(String message)
