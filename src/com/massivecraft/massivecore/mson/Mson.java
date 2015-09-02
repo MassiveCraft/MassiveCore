@@ -721,7 +721,7 @@ public class Mson implements Serializable
 		MsonReplacement replacer = new MsonReplacement()
 		{
 			@Override
-			public Mson getReplacement(String match)
+			public Mson getReplacement(String match, Mson parent)
 			{
 				return replacement;
 			}
@@ -746,11 +746,11 @@ public class Mson implements Serializable
 		
 		List<Mson> msons = new ArrayList<Mson>();
 		StringBuffer currentString = new StringBuffer();
-		Matcher matcher = pattern.matcher(getText());
+		Matcher matcher = pattern.matcher(this.getText());
 		while (matcher.find())
 		{
 			String match = matcher.group(0);
-			Mson replacement = replacer.getReplacement(match);
+			Mson replacement = replacer.getReplacement(match, this);
 			
 			// Add the match
 			if (replacement == null) matcher.appendReplacement(currentString, match);
