@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 
@@ -56,17 +57,17 @@ public abstract class CollAbstract<E> implements CollInterface<E>
 		return this.containsIdFixed(this.fixId(oid));
 	}
 	
-	@Override public List<E> getAll(Predictate<? super E> where) { return MStoreUtil.uglySQL(this.getAll(), where, null, null, null); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, null, null); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, null); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, orderby, limit, offset); }
-	@Override public List<E> getAll(Predictate<? super E> where, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), where, null, limit, null); }
-	@Override public List<E> getAll(Predictate<? super E> where, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), where, null, limit, offset); }
-	@Override public List<E> getAll(Comparator<? super E> orderby) { return MStoreUtil.uglySQL(this.getAll(), null, orderby, null, null); }
-	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit) { return MStoreUtil.uglySQL(this.getAll(), null, orderby, limit, null); }
-	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), null, orderby, limit, offset); }
-	@Override public List<E> getAll(Integer limit) { return MStoreUtil.uglySQL(this.getAll(), null, null, limit, null); }
-	@Override public List<E> getAll(Integer limit, Integer offset) { return MStoreUtil.uglySQL(this.getAll(), null, null, limit, offset); }
+	@Override public List<E> getAll(Predictate<? super E> where) { return MUtil.transform(this.getAll(), where); }
+	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby) { return MUtil.transform(this.getAll(), where, orderby); }
+	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(), where, orderby, limit); }
+	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset) { return MUtil.transform(this.getAll(), where, orderby, limit, offset); }
+	@Override public List<E> getAll(Predictate<? super E> where, Integer limit) { return MUtil.transform(this.getAll(), where, limit); }
+	@Override public List<E> getAll(Predictate<? super E> where, Integer limit, Integer offset) { return MUtil.transform(this.getAll(), where, limit, offset); }
+	@Override public List<E> getAll(Comparator<? super E> orderby) { return MUtil.transform(this.getAll(), orderby); }
+	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(), orderby, limit); }
+	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset) { return MUtil.transform(this.getAll(), orderby, limit, offset); }
+	@Override public List<E> getAll(Integer limit) { return MUtil.transform(this.getAll(), limit); }
+	@Override public List<E> getAll(Integer limit, Integer offset) { return MUtil.transform(this.getAll(), limit, offset); }
 	
 	// -------------------------------------------- //
 	// BEHAVIOR

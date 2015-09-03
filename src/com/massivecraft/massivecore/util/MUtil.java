@@ -59,6 +59,7 @@ import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreEngineMain;
 import com.massivecraft.massivecore.MassiveCoreEngineWorldNameSet;
+import com.massivecraft.massivecore.Predictate;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
@@ -1246,6 +1247,85 @@ public class MUtil
 	{
 		return MassiveCoreEngineWorldNameSet.get().getWorldNames();
 	}
+	
+	// -------------------------------------------- //
+	// TRANSFORM
+	// -------------------------------------------- //
+	
+	public static <T> List<T> transform(Collection<T> items, Predictate<? super T> where, Comparator<? super T> orderby, Integer limit, Integer offset)
+	{
+		List<T> ret = new ArrayList<T>(items.size());
+		
+		// WHERE
+		if (where == null)
+		{
+			ret.addAll(items);
+		}
+		else
+		{
+			for (T item : items)
+			{
+				if (where.apply(item))
+				{
+					ret.add(item);
+				}
+			}
+		}
+		
+		// ORDERBY
+		if (orderby != null)
+		{
+			Collections.sort(ret, orderby);
+		}
+		
+		// LIMIT AND OFFSET
+		// Parse args
+		int fromIndex = 0;
+		if (offset != null)
+		{
+			fromIndex = offset;
+		}
+		
+		int toIndex = ret.size()-1;
+		if (limit != null)
+		{
+			toIndex = offset+limit;
+		}
+		
+		// Clean args
+		if (fromIndex <= 0)
+		{
+			fromIndex = 0;
+		}
+		else if (fromIndex > ret.size()-1)
+		{
+			fromIndex = ret.size()-1;
+		}
+		
+		if (toIndex < fromIndex)
+		{
+			toIndex = fromIndex;
+		}
+		else if (toIndex > ret.size()-1)
+		{
+			toIndex = ret.size()-1;
+		}
+		
+		// No limit?
+		if (fromIndex == 0 && toIndex == ret.size()-1) return ret;
+		
+		return new ArrayList<T>(ret.subList(fromIndex, toIndex));
+	}
+	public static <T> List<T> transform(Collection<T> items, Predictate<? super T> where) { return transform(items, where, null, null, null); }
+	public static <T> List<T> transform(Collection<T> items, Predictate<? super T> where, Comparator<? super T> orderby) { return transform(items, where, orderby, null, null); }
+	public static <T> List<T> transform(Collection<T> items, Predictate<? super T> where, Comparator<? super T> orderby, Integer limit) { return transform(items, where, orderby, limit, null); }
+	public static <T> List<T> transform(Collection<T> items, Predictate<? super T> where, Integer limit) { return transform(items, where, null, limit, null); }
+	public static <T> List<T> transform(Collection<T> items, Predictate<? super T> where, Integer limit, Integer offset) { return transform(items, where, null, limit, offset); }
+	public static <T> List<T> transform(Collection<T> items, Comparator<? super T> orderby) { return transform(items, null, orderby, null, null); }
+	public static <T> List<T> transform(Collection<T> items, Comparator<? super T> orderby, Integer limit) { return transform(items, null, orderby, limit, null); }
+	public static <T> List<T> transform(Collection<T> items, Comparator<? super T> orderby, Integer limit, Integer offset) { return transform(items, null, orderby, limit, offset); }
+	public static <T> List<T> transform(Collection<T> items, Integer limit) { return transform(items, null, null, limit, null); }
+	public static <T> List<T> transform(Collection<T> items, Integer limit, Integer offset) { return transform(items, null, null, limit, offset); }
 	
 	// -------------------------------------------- //
 	// SIMPLE CONSTRUCTORS
