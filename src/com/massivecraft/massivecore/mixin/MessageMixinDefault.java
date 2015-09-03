@@ -20,93 +20,99 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	public static MessageMixinDefault get() { return i; }
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// MESSAGE
 	// -------------------------------------------- //
 	
+	// All
+	// NOTE: Targets messageOne
 	@Override
-	public boolean messageAll(Collection<String> messages)
+	public boolean messageAll(Collection<?> messages)
 	{
+		// Check Messages
 		if (messages == null) return false;
+		if (messages.isEmpty()) return false;
+		
+		// Here
 		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
 			this.messageOne(sender, messages);
 		}
+		
+		// Return
 		return true;
 	}
 	
+	// Predicate
+	// NOTE: Targets messageOne
 	@Override
-	public boolean messagePredictate(Predictate<CommandSender> predictate, Collection<String> messages)
+	public boolean messagePredictate(Predictate<CommandSender> predictate, Collection<?> messages)
 	{
+		// Check Predicate
 		if (predictate == null) return false;
+		
+		// Check Messages
 		if (messages == null) return false;
+		if (messages.isEmpty()) return false;
+		
+		// Here
 		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
 			if (!predictate.apply(sender)) continue;
 			this.messageOne(sender, messages);
 		}
+		
+		// Return
 		return true;
 	}
 	
+	// One
+	// NOTE: The core implementation
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean messageOne(Object sendeeObject, Collection<String> messages)
+	public boolean messageOne(Object sendeeObject, Collection<?> messages)
 	{
+		// Check Sendee
 		CommandSender sendee = IdUtil.getSender(sendeeObject);
 		if (sendee == null) return false;
+		
+		// Check Messages
 		if (messages == null) return false;
-		sendee.sendMessage(messages.toArray(new String[0]));
-		return true;
-	}
-	
-	// Raw message aka. JsonString
-	@Override
-	public boolean messageRawAll(Collection<Mson> msons)
-	{
-		if (msons == null) return false;
-		for (CommandSender sender : IdUtil.getLocalSenders())
-		{
-			this.messageRawOne(sender, msons);
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean messageRawPredictate(Predictate<CommandSender> predictate, Collection<Mson> msons)
-	{
-		if (predictate == null) return false;
-		if (msons == null) return false;
-		for (CommandSender sender : IdUtil.getLocalSenders())
-		{
-			if ( ! predictate.apply(sender)) continue;
-			this.messageRawOne(sender, msons);
-		}
-		return true;
-	}
-
-	@Override
-	public boolean messageRawOne(Object sendeeObject, Collection<Mson> msons)
-	{
-		if (msons == null) return false;
+		if (messages.isEmpty()) return false;
 		
-		CommandSender sender = IdUtil.getSender(sendeeObject);
-		if (sender == null) return false;
-		
-		if (sender instanceof Player && NmsPacket.get().isAvailable())
+		// Type Switch
+		Object first = messages.iterator().next();
+		if (first instanceof String)
 		{
-			Player player = (Player) sender;
-			for (Mson mson : msons)
+			// String
+			Collection<String> strings = (Collection<String>) messages;
+			sendee.sendMessage(strings.toArray(new String[0]));
+			return true;
+		}
+		else if (first instanceof Mson)
+		{
+			// Mson
+			Collection<Mson> msons = (Collection<Mson>) messages;
+			if (sendee instanceof Player && NmsPacket.get().isAvailable())
 			{
-				NmsPacket.sendRaw(player, mson.toRaw());
+				Player player = (Player) sendee;
+				for (Mson mson : msons)
+				{
+					NmsPacket.sendRaw(player, mson.toRaw());
+				}
 			}
+			else
+			{
+				for (Mson mson : msons)
+				{
+					sendee.sendMessage(mson.toPlain(true));
+				}
+			}
+			return true;
 		}
 		else
 		{
-			for (Mson mson : msons)
-			{
-				sender.sendMessage(mson.toPlain(true));
-			}
+			throw new IllegalArgumentException("The messages must be either String or Mson.");
 		}
-
-		return true;
 	}
 
 }

@@ -820,25 +820,25 @@ public class Mson implements Serializable
 	}
 
 	// -------------------------------------------- //
-	// SEND
+	// MESSAGE
 	// -------------------------------------------- //
 
 	// All
-	public boolean sendAll()
+	public boolean messageAll()
 	{
-		return Mixin.messageRawAll(this);
+		return Mixin.messageAll(this);
 	}
 
 	// Predictate
-	public boolean sendPredictate(Predictate<CommandSender> predictate)
+	public boolean messagePredictate(Predictate<CommandSender> predictate)
 	{
-		return Mixin.messageRawPredictate(predictate, this);
+		return Mixin.messagePredictate(predictate, this);
 	}
 
 	// One
-	public boolean sendOne(Object senderObject)
+	public boolean messageOne(Object senderObject)
 	{
-		return Mixin.messageRawOne(senderObject, this);
+		return Mixin.messageOne(senderObject, this);
 	}
 	
 	// -------------------------------------------- //

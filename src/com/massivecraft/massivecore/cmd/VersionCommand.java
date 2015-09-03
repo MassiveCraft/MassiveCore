@@ -82,12 +82,12 @@ public class VersionCommand extends MassiveCommand
 	
 	public void sendTitle()
 	{
-		sendMessage(Txt.titleize("Plugin Version & Information"));
+		message(Txt.titleize("Plugin Version & Information"));
 	}
 	
 	public void sendEntry(String key, String value)
 	{
-		sendMessage(Txt.parse("<pink>%s: <aqua>%s", Txt.upperCaseFirst(key), value == null ? NOT_SPECIFIED : value));
+		message(Txt.parse("<pink>%s: <aqua>%s", Txt.upperCaseFirst(key), value == null ? NOT_SPECIFIED : value));
 	}
 
 }

@@ -36,6 +36,7 @@ public interface Pager<T>
 	// MSON
 	// -------------------------------------------- //
 	
-	public List<Mson> getPageMson(int number, String title, Msonifier<T> msonifier, MassiveCommand command, List<String> args);
+	public List<Mson> getPageMson(int number, String title, MassiveCommand command, List<String> args, Msonifier<T> msonifier);
+	public List<Mson> getPageMson(int number, String title, MassiveCommand command, Msonifier<T> msonifier);
 
 }

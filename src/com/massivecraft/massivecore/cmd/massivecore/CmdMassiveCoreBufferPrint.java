@@ -35,7 +35,7 @@ public class CmdMassiveCoreBufferPrint extends MassiveCommand
 		}
 		
 		msg("<i>Printing your buffer on the line below:");
-		sendMessage(buffer);
+		message(buffer);
 	}
 	
 }

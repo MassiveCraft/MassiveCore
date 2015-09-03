@@ -56,7 +56,7 @@ public class HelpCommand extends MassiveCommand
 		}
 		
 		// Send Lines
-		sendMessage(Txt.getPage(lines, page, "Help for command \"" + parentCommand.getAliases().get(0) + "\"", sender));
+		message(Txt.getPage(lines, page, "Help for command \"" + parentCommand.getAliases().get(0) + "\"", sender));
 	}
 	
 }

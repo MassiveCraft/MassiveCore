@@ -1099,24 +1099,7 @@ public class MassiveCommand
 	// MESSAGE SENDING HELPERS
 	// -------------------------------------------- //
 	
-	// CONVENIENCE SEND MESSAGE
-	
-	public boolean sendMessage(String message)
-	{
-		return Mixin.messageOne(this.sender, message);
-	}
-	
-	public boolean sendMessage(String... messages)
-	{
-		return Mixin.messageOne(this.sender, messages);
-	}
-	
-	public boolean sendMessage(Collection<String> messages)
-	{
-		return Mixin.messageOne(this.sender, messages);
-	}
-	
-	// CONVENIENCE MSG
+	// MSG
 	
 	public boolean msg(String msg)
 	{
@@ -1133,21 +1116,21 @@ public class MassiveCommand
 		return Mixin.msgOne(this.sender, msgs);
 	}
 	
-	// CONVENIENCE RAW
+	// MESSAGE
 	
-	public boolean sendRaw(Mson mson)
+	public boolean message(Object message)
 	{
-		return Mixin.messageRawOne(this.sender, mson);
+		return Mixin.messageOne(this.sender, message);
 	}
 	
-	public boolean sendRaw(Mson... mson)
+	public boolean message(Object... messages)
 	{
-		return Mixin.messageRawOne(this.sender, mson);
+		return Mixin.messageOne(this.sender, messages);
 	}
 	
-	public boolean sendRaw(Collection<Mson> mson)
+	public boolean message(Collection<?> messages)
 	{
-		return Mixin.messageRawOne(this.sender, mson);
+		return Mixin.messageOne(this.sender, messages);
 	}
 	
 	// CONVENIENCE MSON

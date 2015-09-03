@@ -13,11 +13,13 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	// CORE
 	// -------------------------------------------- //
 	
+	@Override
 	public int size()
 	{
 		return (int) Math.ceil((double) this.getItems().size() / this.getItemsPerPage());
 	}
 	
+	@Override
 	public boolean isValid(int number)
 	{
 		if (this.isEmpty()) return false;
@@ -26,6 +28,7 @@ public abstract class PagerAbstract<T> implements Pager<T>
 		return true;
 	}
 	
+	@Override
 	public boolean isEmpty()
 	{
 		return this.getItems().isEmpty();
@@ -66,11 +69,13 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	// TXT
 	// -------------------------------------------- //
 	
+	@Override
 	public String getMessageEmpty()
 	{
 		return Txt.getMessageEmpty().toPlain(true);
 	}
 	
+	@Override
 	public String getMessageInvalid()
 	{
 		return Txt.getMessageInvalid(this.size()).toPlain(true);
@@ -81,7 +86,7 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	{
 		List<String> ret = new ArrayList<String>();
 		
-		List<Mson> msons = getPageMson(number, title, new Msonifier<T>(){
+		List<Mson> msons = getPageMson(number, title, null, null, new Msonifier<T>(){
 
 			@Override
 			public Mson toMson(T item, int index)
@@ -89,7 +94,7 @@ public abstract class PagerAbstract<T> implements Pager<T>
 				return Mson.mson(stringifier.toString(item, index));
 			}
 			
-		}, null, null);
+		});
 		
 		for (Mson mson : msons)
 		{
@@ -103,7 +108,8 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	// Mson
 	// -------------------------------------------- //
 	
-	public List<Mson> getPageMson(int number, String title, Msonifier<T> msonifier, MassiveCommand command, List<String> args)
+	@Override
+	public List<Mson> getPageMson(int number, String title, MassiveCommand command, List<String> args, Msonifier<T> msonifier)
 	{	
 		List<Mson> ret = new ArrayList<Mson>();
 		
@@ -138,6 +144,12 @@ public abstract class PagerAbstract<T> implements Pager<T>
 		}
 		
 		return ret;
+	}
+	
+	@Override
+	public List<Mson> getPageMson(int number, String title, MassiveCommand command, Msonifier<T> msonifier)
+	{
+		return this.getPageMson(number, title, command, command.getArgs(), msonifier);
 	}
 	
 }

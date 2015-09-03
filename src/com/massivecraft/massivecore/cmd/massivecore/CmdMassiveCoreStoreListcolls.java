@@ -78,7 +78,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 				message += Txt.parse(" <i>(%d documents)", coll.getIds().size());
 			}
 			
-			sendMessage(message);
+			message(message);
 		}
 	}
 	

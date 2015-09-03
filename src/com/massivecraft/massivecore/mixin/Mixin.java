@@ -234,130 +234,100 @@ public class Mixin
 	// STATIC EXPOSE: MESSAGE
 	// -------------------------------------------- //
 	
-	// All
-	public static boolean messageAll(String message)
-	{
-		return getMessageMixin().messageAll(message);
-	}
-	public static boolean messageAll(String... messages)
-	{
-		return getMessageMixin().messageAll(messages);
-	}
-	public static boolean messageAll(Collection<String> messages)
-	{
-		return getMessageMixin().messageAll(messages);
-	}
-	
-	// Predictate
-	public static boolean messagePredictate(Predictate<CommandSender> predictate, String message)
-	{
-		return getMessageMixin().messagePredictate(predictate, message);
-	}
-	public static boolean messagePredictate(Predictate<CommandSender> predictate, String... messages)
-	{
-		return getMessageMixin().messagePredictate(predictate, messages);
-	}
-	public static boolean messagePredictate(Predictate<CommandSender> predictate, Collection<String> messages)
-	{
-		return getMessageMixin().messagePredictate(predictate, messages);
-	}
-	
-	// One
-	public static boolean messageOne(Object senderObject, String message)
-	{
-		return getMessageMixin().messageOne(senderObject, message);
-	}
-	public static boolean messageOne(Object senderObject, String... messages)
-	{
-		return getMessageMixin().messageOne(senderObject, messages);
-	}
-	public static boolean messageOne(Object senderObject, Collection<String> messages)
-	{
-		return getMessageMixin().messageOne(senderObject, messages);
-	}
-	
-	// All
+	// MSG: All
 	public static boolean msgAll(String msg)
 	{
 		return getMessageMixin().msgAll(msg);
 	}
+	
 	public static boolean msgAll(String msg, Object... args)
 	{
 		return getMessageMixin().msgAll(msg, args);
 	}
+	
 	public static boolean msgAll(Collection<String> msgs)
 	{
 		return getMessageMixin().msgAll(msgs);
 	}
-	
-	// Predictate
+
+	// MSG: Predicate
 	public static boolean msgPredictate(Predictate<CommandSender> predictate, String msg)
 	{
 		return getMessageMixin().msgPredictate(predictate, msg);
 	}
+	
 	public static boolean msgPredictate(Predictate<CommandSender> predictate, String msg, Object... args)
 	{
 		return getMessageMixin().msgPredictate(predictate, msg, args);
 	}
+	
 	public static boolean msgPredictate(Predictate<CommandSender> predictate, Collection<String> msgs)
 	{
 		return getMessageMixin().msgPredictate(predictate, msgs);
 	}
-	
-	// One
-	public static boolean msgOne(Object senderObject, String msg)
+
+	// MSG: One
+	public static boolean msgOne(Object sendeeObject, String msg)
 	{
-		return getMessageMixin().msgOne(senderObject, msg);
-	}
-	public static boolean msgOne(Object senderObject, String msg, Object... args)
-	{
-		return getMessageMixin().msgOne(senderObject, msg, args);
-	}
-	public static boolean msgOne(Object senderObject, Collection<String> msgs)
-	{
-		return getMessageMixin().msgOne(senderObject, msgs);
+		return getMessageMixin().msgOne(sendeeObject, msg);
 	}
 	
-	// RAW All
-	public static boolean messageRawAll(Mson mson)
+	public static boolean msgOne(Object sendeeObject, String msg, Object... args)
 	{
-		return getMessageMixin().messageRawAll(mson);
-	}
-	public static boolean messageRawAll(Mson... msons)
-	{
-		return getMessageMixin().messageRawAll(msons);
-	}
-	public static boolean messageRawAll(Collection<Mson> msons)
-	{
-		return getMessageMixin().messageRawAll(msons);
+		return getMessageMixin().msgOne(sendeeObject, msg, args);
 	}
 	
-	// RAW Predictate
-	public static boolean messageRawPredictate(Predictate<CommandSender> predictate, Mson mson)
+	public static boolean msgOne(Object sendeeObject, Collection<String> msgs)
 	{
-		return getMessageMixin().messageRawPredictate(predictate, mson);
+		return getMessageMixin().msgOne(sendeeObject, msgs);
 	}
-	public static boolean messageRawPredictate(Predictate<CommandSender> predictate, Mson... msons)
+
+	// MESSAGE: All
+	public static boolean messageAll(Object message)
 	{
-		return getMessageMixin().messageRawPredictate(predictate, msons);
-	}
-	public static boolean messageRawPredictate(Predictate<CommandSender> predictate, Collection<Mson> msons)
-	{
-		return getMessageMixin().messageRawPredictate(predictate, msons);
+		return getMessageMixin().messageAll(message);
 	}
 	
-	// RAW One
-	public static boolean messageRawOne(Object senderObject, Mson mson)
+	public static boolean messageAll(Object... messages)
 	{
-		return getMessageMixin().messageRawOne(senderObject, mson);
+		return getMessageMixin().messageAll(messages);
 	}
-	public static boolean messageRawOne(Object senderObject, Mson... msons)
+	
+	public static boolean messageAll(Collection<?> messages)
 	{
-		return getMessageMixin().messageRawOne(senderObject, msons);
+		return getMessageMixin().messageAll(messages);
 	}
-	public static boolean messageRawOne(Object senderObject, Collection<Mson> msons)
+
+	// MESSAGE: Predicate
+	public static boolean messagePredictate(Predictate<CommandSender> predictate, Object message)
 	{
-		return getMessageMixin().messageRawOne(senderObject, msons);
+		return getMessageMixin().messagePredictate(predictate, message);
+	}
+	
+	public static boolean messagePredictate(Predictate<CommandSender> predictate, Object... messages)
+	{
+		return getMessageMixin().messagePredictate(predictate, messages);
+	}
+	
+	public static boolean messagePredictate(Predictate<CommandSender> predictate, Collection<?> messages)
+	{
+		return getMessageMixin().messagePredictate(predictate, messages);
+	}
+
+	// MESSAGE: One
+	public static boolean messageOne(Object sendeeObject, Object message)
+	{
+		return getMessageMixin().messageOne(sendeeObject, message);
+	}
+	
+	public static boolean messageOne(Object sendeeObject, Object... messages)
+	{
+		return getMessageMixin().messageOne(sendeeObject, messages);
+	}
+	
+	public static boolean messageOne(Object sendeeObject, Collection<?> messages)
+	{
+		return getMessageMixin().messageOne(sendeeObject, messages);
 	}
 	
 	// -------------------------------------------- //

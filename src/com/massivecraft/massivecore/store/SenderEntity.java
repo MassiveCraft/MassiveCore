@@ -59,7 +59,7 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 	}
 	
 	// -------------------------------------------- //
-	// SENDER UTIL METHOD MIRRORING
+	// TYPE
 	// -------------------------------------------- //
 	
 	// IS
@@ -86,8 +86,11 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return IdUtil.getAsConsole(this.getSender());
 	}
 	
+	// -------------------------------------------- //
 	// ONLINE / OFFLINE
-	
+	// -------------------------------------------- //
+	// TODO: Update with new presence enumeration?
+
 	public boolean isOnline()
 	{
 		return Mixin.isOnline(this.getId());
@@ -113,8 +116,11 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return Mixin.hasPlayedBefore(this.getId());
 	}
 	
+	// -------------------------------------------- //
 	// DISPLAY NAME
+	// -------------------------------------------- //
 	
+	// TODO: Remove this one shortly.
 	@Deprecated
 	public String getDisplayName()
 	{
@@ -131,24 +137,11 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return Mixin.getDisplayNameMson(this.getId(), watcherObject);
 	}
 	
-	// CONVENIENCE SEND MESSAGE
+	// -------------------------------------------- //
+	// MSG / MESSAGE
+	// -------------------------------------------- //
 	
-	public boolean sendMessage(String message)
-	{
-		return Mixin.messageOne(this.getId(), message);
-	}
-	
-	public boolean sendMessage(String... messages)
-	{
-		return Mixin.messageOne(this.getId(), messages);
-	}
-	
-	public boolean sendMessage(Collection<String> messages)
-	{
-		return Mixin.messageOne(this.getId(), messages);
-	}
-	
-	// CONVENIENCE MSG
+	// MSG
 	
 	public boolean msg(String msg)
 	{
@@ -165,24 +158,26 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return Mixin.msgOne(this.getId(), msgs);
 	}
 	
-	// CONVENIENCE SEND RAW
+	// MESSAGE
 	
-	public boolean sendRaw(Mson mson)
+	public boolean message(Object message)
 	{
-		return Mixin.messageRawOne(this.getId(), mson);
+		return Mixin.messageOne(this.getId(), message);
 	}
 	
-	public boolean sendRaw(Mson... msons)
+	public boolean message(Object... messages)
 	{
-		return Mixin.messageRawOne(this.getId(), msons);
+		return Mixin.messageOne(this.getId(), messages);
 	}
 	
-	public boolean sendRaw(Collection<Mson> msons)
+	public boolean message(Collection<?> messages)
 	{
-		return Mixin.messageRawOne(this.getId(), msons);
+		return Mixin.messageOne(this.getId(), messages);
 	}
 	
-	// CONVENIENCE GAME-MODE
+	// -------------------------------------------- //
+	// GAME-MODE
+	// -------------------------------------------- //
 	
 	public GameMode getGameMode(GameMode def)
 	{

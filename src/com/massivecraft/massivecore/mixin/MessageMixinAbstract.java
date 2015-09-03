@@ -7,58 +7,14 @@ import java.util.Collections;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.Predictate;
-import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class MessageMixinAbstract implements MessageMixin
 {
 	// -------------------------------------------- //
-	// MESSAGE
+	// MSG STRING
 	// -------------------------------------------- //
-	
-	// All
-	@Override
-	public boolean messageAll(String message)
-	{
-		return this.messageAll(Collections.singleton(message));
-	}
-	
-	@Override
-	public boolean messageAll(String... messages)
-	{
-		return this.messageAll(Arrays.asList(messages));
-	}
-	
-	// Predictate
-	@Override
-	public boolean messagePredictate(Predictate<CommandSender> predictate, String message)
-	{
-		return this.messagePredictate(predictate, Collections.singleton(message));
-	}
-	
-	@Override
-	public boolean messagePredictate(Predictate<CommandSender> predictate, String... messages)
-	{
-		return this.messagePredictate(predictate, Arrays.asList(messages));
-	}
-	
-	// One
-	@Override
-	public boolean messageOne(Object sendeeObject, String message)
-	{
-		return this.messageOne(sendeeObject, Collections.singleton(message));
-	}
-	
-	@Override
-	public boolean messageOne(Object sendeeObject, String... messages)
-	{
-		return this.messageOne(sendeeObject, Arrays.asList(messages));
-	}
-
-	// -------------------------------------------- //
-	// PARSE MSG
-	// -------------------------------------------- //
-	// They are all in abstract!
+	// All implemented in abstract!
 	
 	// All
 	@Override
@@ -116,48 +72,48 @@ public abstract class MessageMixinAbstract implements MessageMixin
 	{
 		return this.messageOne(sendeeObject, Txt.parse(msgs));
 	}
-
+	
 	// -------------------------------------------- //
-	// RAW MESSAGE
+	// MESSAGE
 	// -------------------------------------------- //
 	
 	// All
 	@Override
-	public boolean messageRawAll(Mson mson)
+	public boolean messageAll(Object message)
 	{
-		return this.messageRawAll(Arrays.asList(mson));
+		return this.messageAll(Collections.singleton(message));
 	}
 	
 	@Override
-	public boolean messageRawAll(Mson... msons)
+	public boolean messageAll(Object... messages)
 	{
-		return this.messageRawAll(Arrays.asList(msons));
+		return this.messageAll(Arrays.asList(messages));
 	}
 	
-	// Predictate
+	// Predicate
 	@Override
-	public boolean messageRawPredictate(Predictate<CommandSender> predictate, Mson mson)
+	public boolean messagePredictate(Predictate<CommandSender> predictate, Object message)
 	{
-		return this.messageRawPredictate(predictate, Arrays.asList(mson));
+		return this.messagePredictate(predictate, Collections.singleton(message));
 	}
 	
 	@Override
-	public boolean messageRawPredictate(Predictate<CommandSender> predictate, Mson... msons)
+	public boolean messagePredictate(Predictate<CommandSender> predictate, Object... messages)
 	{
-		return this.messageRawPredictate(predictate, Arrays.asList(msons));
+		return this.messagePredictate(predictate, Arrays.asList(messages));
 	}
 	
 	// One
 	@Override
-	public boolean messageRawOne(Object sendeeObject, Mson mson)
+	public boolean messageOne(Object sendeeObject, Object message)
 	{
-		return this.messageRawOne(sendeeObject, Arrays.asList(mson));
+		return this.messageOne(sendeeObject, Collections.singleton(message));
 	}
 	
 	@Override
-	public boolean messageRawOne(Object sendeeObject, Mson... msons)
+	public boolean messageOne(Object sendeeObject, Object... messages)
 	{
-		return this.messageRawOne(sendeeObject, Arrays.asList(msons));
+		return this.messageOne(sendeeObject, Arrays.asList(messages));
 	}
 	
 }

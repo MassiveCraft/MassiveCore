@@ -39,7 +39,7 @@ public class DeprecatedCommand extends MassiveCommand
 	public void perform()
 	{	
 		msg("<i>Use this new command instead:");
-		sendMessage(target.getUseageTemplate(true));
+		message(target.getUseageTemplate(true));
 	}
 	
 }
