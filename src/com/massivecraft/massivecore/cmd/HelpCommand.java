@@ -1,9 +1,10 @@
 package com.massivecraft.massivecore.cmd;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
 public class HelpCommand extends MassiveCommand
@@ -41,18 +42,16 @@ public class HelpCommand extends MassiveCommand
 		MassiveCommand parentCommand = this.getParentCommand();
 		
 		// Create Lines
-		ArrayList<String> lines = new ArrayList<String>();
+		List<Mson> lines = new ArrayList<Mson>();
 		for (String helpline : parentCommand.getHelp())
 		{
-			lines.add(Txt.parse("<a>#<i> " + helpline));
+			lines.add(Mson.parse("<a>#<i> " + helpline));
 		}
 		
 		for (MassiveCommand subCommand : parentCommand.getSubCommands())
 		{
-			if (subCommand.isVisibleTo(sender))
-			{
-				lines.add(subCommand.getUseageTemplate(this.getCommandChain(), true, true, sender));
-			}
+			if ( ! subCommand.isVisibleTo(sender)) continue;
+			lines.add(subCommand.getUseageTemplate(this.getCommandChain(), true, true, sender));
 		}
 		
 		// Send Lines

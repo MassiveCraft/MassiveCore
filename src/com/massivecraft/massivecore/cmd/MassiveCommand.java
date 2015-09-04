@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -131,8 +132,7 @@ public class MassiveCommand
 	
 	public void addSubCommand(MassiveCommand subCommand, int index)
 	{
-		subCommand.commandChain.addAll(this.commandChain);
-		subCommand.commandChain.add(this);
+		subCommand.addToCommandChain(this);
 		this.subCommands.add(index, subCommand);
 	}
 	
@@ -465,6 +465,19 @@ public class MassiveCommand
 	public List<MassiveCommand> getCommandChain() { return this.commandChain; }
 	public void setCommandChain(List<MassiveCommand> commandChain) { this.commandChain = commandChain; }
 	
+	// Adds command to tree structure
+	public void addToCommandChain(MassiveCommand command)
+	{
+		this.commandChain.add(0, command);
+		
+		List<MassiveCommand> cmds = this.getSubCommands();
+		
+		for (MassiveCommand cmd : cmds)
+		{
+			cmd.addToCommandChain(command);
+		}
+	}
+	
 	public MassiveCommand getParentCommand()
 	{
 		List<MassiveCommand> commandChain = this.getCommandChain();
@@ -772,15 +785,15 @@ public class MassiveCommand
 					// Try Levenshtein
 					List<String> matches = this.getSimilarSubcommandAliases(arg, this.getMaxLevenshteinDistanceForArg(arg));
 					
-					Mixin.msgOne(sender, Lang.COMMAND_NO_SUCH_SUB, this.getUseageTemplate() + " " + arg);
+					Mixin.messageOne(sender, Lang.COMMAND_NO_SUCH_SUB.replaceAll(Lang.COMMAND_REPLACEMENT, this.getUseageTemplate(false).suggest(this, arg)));
 					if ( ! matches.isEmpty())
 					{
 						String suggest = Txt.parse(Txt.implodeCommaAnd(matches, "<i>, <c>", " <i>or <c>"));
-						Mixin.msgOne(sender, Lang.COMMAND_SUGGEST_SUB, this.getUseageTemplate() + " " + suggest);
+						Mixin.messageOne(sender, Lang.COMMAND_SUGGEST_SUB.replaceAll(Lang.COMMAND_REPLACEMENT, this.getUseageTemplate(false).suggest(this, suggest)));
 					}
 					else
 					{
-						Mixin.msgOne(sender, Lang.COMMAND_GET_HELP, this.getUseageTemplate());
+						Mixin.messageOne(sender, Lang.COMMAND_GET_HELP.replaceAll(Lang.COMMAND_REPLACEMENT, this.getUseageTemplate(false).suggest(this)));
 					}
 					
 				}
@@ -852,72 +865,80 @@ public class MassiveCommand
 	// HELP AND USAGE INFORMATION
 	// -------------------------------------------- //
 	
-	public String getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc, boolean onlyFirstAlias, CommandSender sender)
+	public static final Mson USAGE_TEMPLATE_CORE = Mson.mson("/").color(ChatColor.AQUA);
+	
+	public Mson getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc, boolean onlyFirstAlias, CommandSender sender)
 	{
-		StringBuilder ret = new StringBuilder();
+		// Create Ret
+		Mson ret = USAGE_TEMPLATE_CORE;
+		List<Mson> extra = new ArrayList<Mson>();
 		
+		ret = ret.tooltip(Txt.parse("<i>Click to <c>%s<i>", this.getCommandLine()));
+		
+		// Get commandchain
 		List<MassiveCommand> commands = new ArrayList<MassiveCommand>(commandChain);
 		commands.add(this);
 		
-		String commandGoodColor = Txt.parse("<c>");
-		String commandBadColor = Txt.parse("<bad>");
-		
-		ret.append(commandGoodColor);
-		ret.append('/');
-		
+		// Add commands
 		boolean first = true;
-		Iterator<MassiveCommand> iter = commands.iterator();
-		while(iter.hasNext())
+		for (MassiveCommand command : commands)
 		{
-			MassiveCommand mc = iter.next();
-			if (sender != null && !mc.isRequirementsMet(sender, false))
-			{
-				ret.append(commandBadColor);
-			}
-			else
-			{
-				ret.append(commandGoodColor);
-			}
+			Mson mson = null;
 			
 			if (first && onlyFirstAlias)
 			{
-				ret.append(mc.getAliases().get(0));
+				mson = mson(command.getAliases().get(0));
 			}
 			else
 			{
-				ret.append(Txt.implode(mc.getAliases(), ","));
+				mson = mson(Txt.implode(command.getAliases(), ","));
 			}
 			
-			if (iter.hasNext())
+			if (sender != null && ! command.isRequirementsMet(sender, false))
 			{
-				ret.append(' ');
+				mson = mson.color(ChatColor.RED);
+			}
+			else
+			{
+				mson = mson.color(ChatColor.AQUA);
 			}
 			
+			if ( ! first) extra.add(Mson.SPACE);
+			extra.add(mson); 
 			first = false;
 		}
-		
-		List<String> args = this.getArgUseagesFor(sender);
-		
-		if (args.size() > 0)
+
+		// Check if last command is parentCommand and make command suggestable/clickable
+		if (commands.get(commands.size() - 1).isParentCommand())
 		{
-			ret.append(Txt.parse("<p>"));
-			ret.append(' ');
-			ret.append(Txt.implode(args, " "));
+			ret = ret.command(this);
+		}
+		else
+		{
+			ret = ret.suggest(this);
 		}
 		
+		// Add args
+		for (Mson arg : this.getArgUseagesFor(sender))
+		{
+			extra.add(Mson.SPACE);
+			extra.add(arg.color(ChatColor.DARK_AQUA));
+		}
+		
+		// Add desc
 		if (addDesc)
 		{
-			ret.append(' ');
-			ret.append(Txt.parse("<i>"));
-			ret.append(this.getDesc());
+			extra.add(Mson.SPACE);
+			extra.add(mson(this.getDesc()).color(ChatColor.YELLOW));
 		}
 		
-		return ret.toString();
+		// Return Ret
+		return ret.extra(extra);
 	}
 	
-	protected List<String> getArgUseagesFor(CommandSender sender)
+	protected List<Mson> getArgUseagesFor(CommandSender sender)
 	{
-		List<String> ret = new MassiveList<String>();
+		List<Mson> ret = new MassiveList<Mson>();
 		if (this.isUsingNewArgSystem())
 		{
 			for (ArgSetting<?> setting : this.getArgSettings())
@@ -929,7 +950,7 @@ public class MassiveCommand
 		{
 			for (String requiredArg : this.getRequiredArgs())
 			{
-				ret.add("<" + requiredArg + ">");
+				ret.add(mson("<" + requiredArg + ">"));
 			}
 			
 			for (Entry<String, String> optionalArg : this.getOptionalArgs().entrySet())
@@ -943,29 +964,29 @@ public class MassiveCommand
 				{
 					val = "=" + val;
 				}
-				ret.add("[" + optionalArg.getKey() + val + "]");
+				ret.add(mson("[" + optionalArg.getKey() + val + "]"));
 			}
 		}
 		
 		return ret;
 	}
 	
-	public String getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
+	public Mson getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc, boolean onlyFirstAlias)
 	{
 		return getUseageTemplate(commandChain, addDesc, onlyFirstAlias, sender);
 	}
 	
-	public String getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc)
+	public Mson getUseageTemplate(List<MassiveCommand> commandChain, boolean addDesc)
 	{
 		return getUseageTemplate(commandChain, addDesc, false);
 	}
 	
-	public String getUseageTemplate(boolean addDesc)
+	public Mson getUseageTemplate(boolean addDesc)
 	{
 		return getUseageTemplate(this.getCommandChain(), addDesc);
 	}
 	
-	public String getUseageTemplate()
+	public Mson getUseageTemplate()
 	{
 		return getUseageTemplate(false);
 	}
@@ -1015,7 +1036,7 @@ public class MassiveCommand
 	
 	public List<String> getTabCompletions(List<String> args, CommandSender sender)
 	{
-		if (args == null) throw new IllegalArgumentException("args was mull");
+		if (args == null) throw new NullPointerException("args");
 		if (sender == null) throw new IllegalArgumentException("sender was null");
 		if (args.isEmpty()) throw new IllegalArgumentException("args was empty");
 		

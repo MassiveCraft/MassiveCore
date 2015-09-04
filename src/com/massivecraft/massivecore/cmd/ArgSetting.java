@@ -1,10 +1,13 @@
 package com.massivecraft.massivecore.cmd;
 
+import static com.massivecraft.massivecore.mson.Mson.mson;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.cmd.arg.AR;
 import com.massivecraft.massivecore.cmd.arg.ARInteger;
+import com.massivecraft.massivecore.mson.Mson;
 
 public class ArgSetting<T>
 {
@@ -176,13 +179,22 @@ public class ArgSetting<T>
 		return ! this.isRequiredFor(sender);
 	}
 	
-	public String getUseageTemplateDisplayFor(CommandSender sender)
+	public Mson getUseageTemplateDisplayFor(CommandSender sender)
 	{
-		if (this.isRequiredFor(sender)) return "<" + this.getName() + ">";
+		Mson ret;
 		
-		String def = this.getDefaultDesc();
-		def = (def != null ? "=" + def : "");
-		return "[" + this.getName() + def + "]";
+		if (this.isRequiredFor(sender))
+		{
+			ret = mson("<" + this.getName() + ">");
+		}
+		else
+		{
+			String def = this.getDefaultDesc();
+			def = (def != null ? "=" + def : "");
+			ret = mson("[" + this.getName() + def + "]");
+		}
+
+		return ret;
 	}
 	
 	// -------------------------------------------- //
