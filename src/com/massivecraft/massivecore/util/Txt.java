@@ -515,12 +515,12 @@ public class Txt
 	
 	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title)
 	{
-		return getPage(lines, pageHumanBased, title, PAGEHEIGHT_PLAYER, null, null);
+		return getPage(lines, pageHumanBased, title, null, null, null);
 	}
 	
 	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, CommandSender sender)
 	{
-		return getPage(lines, pageHumanBased, title, (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, null, null);
+		return getPage(lines, pageHumanBased, title, sender, null, null);
 	}
 	
 	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, MassiveCommand command)
@@ -530,7 +530,12 @@ public class Txt
 	
 	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, MassiveCommand command, List<String> args)
 	{
-		return getPage(lines, pageHumanBased, title, (command.sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, command, args);
+		return getPage(lines, pageHumanBased, title, command.sender, command, args);
+	}
+	
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, CommandSender sender, MassiveCommand command, List<String> args)
+	{
+		return getPage(lines, pageHumanBased, title, (sender == null || sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, command, args);
 	}
 	
 	@SuppressWarnings("unchecked")
