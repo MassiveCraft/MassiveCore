@@ -25,18 +25,17 @@ public interface Pager<T>
 	public List<T> get(int number);
 	
 	// -------------------------------------------- //
-	// TXT
-	// -------------------------------------------- //
-	
-	public String getMessageEmpty();
-	public String getMessageInvalid();
-	public List<String> getPageTxt(int number, String title, Stringifier<T> stringifier);
-	
-	// -------------------------------------------- //
 	// MSON
 	// -------------------------------------------- //
 	
-	public List<Mson> getPageMson(int number, String title, MassiveCommand command, List<String> args, Msonifier<T> msonifier);
-	public List<Mson> getPageMson(int number, String title, MassiveCommand command, Msonifier<T> msonifier);
+	public List<Mson> getPage(int number, String title, MassiveCommand command, List<String> args, Msonifier<T> msonifier);
+	public List<Mson> getPage(int number, String title, MassiveCommand command, Msonifier<T> msonifier);
+	
+	// -------------------------------------------- //
+	// STRING
+	// -------------------------------------------- //
+	
+	public List<Mson> getPage(int number, String title, MassiveCommand command, List<String> args, Stringifier<T> stringifier);
+	public List<Mson> getPage(int number, String title, MassiveCommand command, Stringifier<T> stringifier);
 
 }

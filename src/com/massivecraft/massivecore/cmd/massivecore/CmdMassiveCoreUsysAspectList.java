@@ -50,7 +50,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 		}
 				
 		// Send them
-		this.message(Txt.getPage(lines, page, "Aspect List", sender));	
+		this.message(Txt.getPage(lines, page, "Aspect List", this));
 	}
 	
 }

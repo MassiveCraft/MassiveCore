@@ -49,7 +49,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 		}
 				
 		// Send them
-		this.message(Txt.getPage(lines, page, "Multiverse List", sender));
+		this.message(Txt.getPage(lines, page, "Multiverse List", this));
 	}
 	
 }

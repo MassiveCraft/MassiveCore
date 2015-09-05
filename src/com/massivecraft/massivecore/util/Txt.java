@@ -477,39 +477,6 @@ public class Txt
 		}
 	}
 	
-	public static List<String> getPage(List<String> lines, int pageHumanBased, String title)
-	{
-		return getPage(lines, pageHumanBased, title, PAGEHEIGHT_PLAYER);
-	}
-	
-	public static List<String> getPage(List<String> lines, int pageHumanBased, String title, CommandSender sender)
-	{
-		return getPage(lines, pageHumanBased, title, (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE);
-	}
-	
-	public static List<String> getPage(List<String> lines, int pageHumanBased, String title, int pageheight)
-	{
-		ArrayList<String> ret = new ArrayList<String>();
-		int pageZeroBased = pageHumanBased - 1;
-		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
-		
-		title = titleize(title + parse("<a>") + " " + pageHumanBased + "/" + pagecount);
-		ret.add(title);
-		
-		if (pagecount == 0)
-		{
-			ret.add(getMessageEmpty().toPlain(true));
-			return ret;
-		}
-		else if (pageZeroBased < 0 || pageHumanBased > pagecount)
-		{
-			ret.add(getMessageInvalid(pagecount).toPlain(true));
-			return ret;
-		}
-
-		return createPage(lines, pageHumanBased, title, pageheight);
-	}
-	
 	public static Mson titleizeMson(String str, int pagecount, int pageHumanBased, MassiveCommand command, List<String> args)
 	{
 		if (command == null) return mson(titleize(str + parse("<a>") + " " + pageHumanBased + "/" + pagecount));
@@ -544,6 +511,90 @@ public class Txt
 		{
 			return centerMson;
 		}
+	}
+	
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title)
+	{
+		return getPage(lines, pageHumanBased, title, PAGEHEIGHT_PLAYER, null, null);
+	}
+	
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, CommandSender sender)
+	{
+		return getPage(lines, pageHumanBased, title, (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, null, null);
+	}
+	
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, MassiveCommand command)
+	{
+		return getPage(lines, pageHumanBased, title, command, command.getArgs());
+	}
+	
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, MassiveCommand command, List<String> args)
+	{
+		return getPage(lines, pageHumanBased, title, (command.sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, command, args);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, int pageheight, MassiveCommand command, List<String> args)
+	{
+		// Check if command is present
+		boolean flipPage = command != null;
+		
+		// If command is present, reduce pageheight in favor of flipsection
+		if (flipPage) pageheight--;
+		
+		// Create ret
+		ArrayList<Mson> ret = new ArrayList<Mson>();
+		int pageZeroBased = pageHumanBased - 1;
+		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
+		
+		// Add title
+		Mson msonTitle = Txt.titleizeMson(title, pagecount, pageHumanBased, command, args);
+		ret.add(msonTitle);
+		
+		// Check empty and invalid
+		if (pagecount == 0)
+		{
+			ret.add(getMessageEmpty());
+			return ret;
+		}
+		else if (pageZeroBased < 0 || pageHumanBased > pagecount)
+		{
+			ret.add(getMessageInvalid(pagecount));
+			return ret;
+		}
+		
+		// Get lines
+		int from = pageZeroBased * pageheight;
+		int to = from + pageheight;
+		if (to > lines.size())
+		{
+			to = lines.size();
+		}
+		
+		// Check object type and add lines
+		Object first = lines.get(0);
+		
+		if (first instanceof String)
+		{
+			for (String line : (List<String>) lines.subList(from, to))
+			{
+				ret.add(Mson.fromParsedMessage(line));
+			}
+		}
+		else if (first instanceof Mson)
+		{
+			ret.addAll((List<Mson>) lines.subList(from, to));
+		}
+		else
+		{
+			throw new IllegalArgumentException("The lines must be either String or Mson.");
+		}
+		
+		// Add flipsection if command is present
+		if (flipPage) ret.add(getFlipSection(pagecount, pageHumanBased, args, command));
+		
+		// Return ret
+		return ret;
 	}
 	
 	private static Mson getFlipSection(int pagecount, int pageHumanBased, List<String> args, MassiveCommand command)
@@ -599,64 +650,6 @@ public class Txt
 		}
 
 		return mson.command(commandLine).tooltip(Txt.parse(tooltip, commandLine));
-	}
-	
-	public static List<Mson> getPageMson(List<Mson> lines, int pageHumanBased, String title, MassiveCommand command, List<String> args)
-	{
-		return getPageMson(lines, pageHumanBased, title, PAGEHEIGHT_PLAYER, command, args);
-	}
-	
-	public static List<Mson> getPageMson(List<Mson> lines, int pageHumanBased, String title, CommandSender sender, MassiveCommand command, List<String> args)
-	{
-		return getPageMson(lines, pageHumanBased, title, (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, command, args);
-	}
-	
-	public static List<Mson> getPageMson(List<Mson> lines, int pageHumanBased, String title, int pageheight, MassiveCommand command, List<String> args)
-	{
-		// reduce pageheight in favor of flipsection
-		pageheight--;
-		
-		ArrayList<Mson> ret = new ArrayList<Mson>();
-		int pageZeroBased = pageHumanBased - 1;
-		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
-		
-		Mson msonTitle = Txt.titleizeMson(title, pagecount, pageHumanBased, command, args);
-		ret.add(msonTitle);
-		
-		if (pagecount == 0)
-		{
-			ret.add(getMessageEmpty());
-			return ret;
-		}
-		else if (pageZeroBased < 0 || pageHumanBased > pagecount)
-		{
-			ret.add(getMessageInvalid(pagecount));
-			return ret;
-		}
-
-		List<Mson> page = createPage(lines, pageHumanBased, msonTitle, pageheight);
-		page.add(getFlipSection(pagecount, pageHumanBased, args, command));
-		
-		return page;
-	}
-	
-	private static <T> List<T> createPage(List<T> lines, int pageHumanBased, T title, int pageheight)
-	{
-		ArrayList<T> ret = new ArrayList<T>();
-		int pageZeroBased = pageHumanBased - 1;
-		
-		ret.add(title);
-		
-		int from = pageZeroBased * pageheight;
-		int to = from + pageheight;
-		if (to > lines.size())
-		{
-			to = lines.size();
-		}
-		
-		ret.addAll(lines.subList(from, to));
-		
-		return ret;
 	}
 	
 	// -------------------------------------------- //

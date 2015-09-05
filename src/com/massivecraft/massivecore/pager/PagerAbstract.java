@@ -66,90 +66,73 @@ public abstract class PagerAbstract<T> implements Pager<T>
 	}
 	
 	// -------------------------------------------- //
-	// TXT
+	// MSON
 	// -------------------------------------------- //
 	
 	@Override
-	public String getMessageEmpty()
+	public List<Mson> getPage(int number, String title, MassiveCommand command, List<String> args, Msonifier<T> msonifier)
 	{
-		return Txt.getMessageEmpty().toPlain(true);
-	}
-	
-	@Override
-	public String getMessageInvalid()
-	{
-		return Txt.getMessageInvalid(this.size()).toPlain(true);
-	}
-	
-	@Override
-	public List<String> getPageTxt(int number, String title, final Stringifier<T> stringifier)
-	{
-		List<String> ret = new ArrayList<String>();
-		
-		List<Mson> msons = getPageMson(number, title, null, null, new Msonifier<T>(){
-
-			@Override
-			public Mson toMson(T item, int index)
-			{
-				return Mson.mson(stringifier.toString(item, index));
-			}
-			
-		});
-		
-		for (Mson mson : msons)
-		{
-			ret.add(mson.toPlain(true));
-		}
-		
-		return ret;
-	}
-	
-	// -------------------------------------------- //
-	// Mson
-	// -------------------------------------------- //
-	
-	@Override
-	public List<Mson> getPageMson(int number, String title, MassiveCommand command, List<String> args, Msonifier<T> msonifier)
-	{	
+		// Create ret
 		List<Mson> ret = new ArrayList<Mson>();
 		
+		// Add title
 		ret.add(Txt.titleizeMson(title, this.size(), number, command, args));
 		
+		// Check empty
 		if (this.isEmpty())
 		{
 			ret.add(Txt.getMessageEmpty());
 			return ret;
 		}
 		
+		// Get items
 		List<T> pageItems = this.get(number);
 		
+		// Check invalid
 		if (pageItems == null)
 		{
 			ret.add(Txt.getMessageInvalid(this.size()));
 			return ret;
 		}
 		
+		// Add items
 		int index = (number - 1) * this.getItemsPerPage();
 		for (T pageItem : pageItems)
 		{
-			if (msonifier != null)
-			{
-				ret.add(msonifier.toMson(pageItem, index));
-			}
-			else
-			{
-				ret.add(Mson.mson(pageItem.toString()));
-			}
+			ret.add(msonifier.toMson(pageItem, index));
 			index++;
 		}
 		
+		// Return ret
 		return ret;
 	}
 	
 	@Override
-	public List<Mson> getPageMson(int number, String title, MassiveCommand command, Msonifier<T> msonifier)
+	public List<Mson> getPage(int number, String title, MassiveCommand command, Msonifier<T> msonifier)
 	{
-		return this.getPageMson(number, title, command, command.getArgs(), msonifier);
+		return this.getPage(number, title, command, command.getArgs(), msonifier);
+	}
+	
+	// -------------------------------------------- //
+	// STRING
+	// -------------------------------------------- //
+	
+	@Override
+	public List<Mson> getPage(int number, String title, MassiveCommand command, List<String> args, Stringifier<T> stringifier)
+	{
+		return this.getPage(number, title, command, args, new Msonifier<T>(){
+			@Override
+			public Mson toMson(T item, int index)
+			{
+				return Mson.fromParsedMessage(stringifier.toString(item, index));
+			}
+		});
+	}
+	
+	@Override
+	public List<Mson> getPage(int number, String title, MassiveCommand command, Stringifier<T> stringifier)
+	{
+		return this.getPage(number, title, command, command.getArgs(), stringifier);
 	}
 	
 }
