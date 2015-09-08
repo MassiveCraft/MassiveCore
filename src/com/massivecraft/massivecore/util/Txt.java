@@ -541,18 +541,12 @@ public class Txt
 	@SuppressWarnings("unchecked")
 	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, int pageheight, MassiveCommand command, List<String> args)
 	{
-		// Check if command is present
-		boolean flipPage = command != null;
-		
-		// If command is present, reduce pageheight in favor of flipsection
-		if (flipPage) pageheight--;
-		
-		// Create ret
-		ArrayList<Mson> ret = new ArrayList<Mson>();
+		// Create Ret
+		List<Mson> ret = new ArrayList<Mson>();
 		int pageZeroBased = pageHumanBased - 1;
 		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
 		
-		// Add title
+		// Add Title
 		Mson msonTitle = Txt.titleizeMson(title, pagecount, pageHumanBased, command, args);
 		ret.add(msonTitle);
 		
@@ -568,7 +562,7 @@ public class Txt
 			return ret;
 		}
 		
-		// Get lines
+		// Get Lines
 		int from = pageZeroBased * pageheight;
 		int to = from + pageheight;
 		if (to > lines.size())
@@ -595,10 +589,7 @@ public class Txt
 			throw new IllegalArgumentException("The lines must be either String or Mson.");
 		}
 		
-		// Add flipsection if command is present
-		if (flipPage) ret.add(getFlipSection(pagecount, pageHumanBased, args, command));
-		
-		// Return ret
+		// Return Ret
 		return ret;
 	}
 	
