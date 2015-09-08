@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.cmd.massivecore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassiveCorePerm;
@@ -10,6 +7,8 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.ArgSetting;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.pager.Pager;
+import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdMassiveCoreUsysAspectList extends MassiveCommand
@@ -40,17 +39,18 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 		// Args
 		int page = this.readArg();
 		
-		// Create Lines
-		List<String> lines = new ArrayList<String>();
-		
-		for (Aspect aspect : AspectColl.get().getAllRegistered())
+		// Pager Create
+		Pager<Aspect> pager = new Pager<Aspect>(this, "Aspect List", page, AspectColl.get().getAllRegistered(), new Stringifier<Aspect>()
 		{
-			String line = Txt.parse("<h>"+aspect.getId()+" <white>--> <h>"+aspect.getMultiverse().getId());
-			lines.add(line);
-		}
-				
-		// Send them
-		this.message(Txt.getPage(lines, page, "Aspect List", this));
+			@Override
+			public String toString(Aspect aspect, int index)
+			{
+				return Txt.parse("<h>"+aspect.getId()+" <white>--> <h>"+aspect.getMultiverse().getId());
+			}
+		}); 
+		
+		// Pager Message
+		pager.message();
 	}
 	
 }
