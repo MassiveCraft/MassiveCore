@@ -1161,22 +1161,22 @@ public class MassiveCommand
 	
 	// CONVENIENCE MSON
 	
-	public Mson mson()
+	public static Mson mson()
 	{
 		return Mson.mson();
 	}
 	
-	public Mson mson(Object... parts)
+	public static Mson mson(Object... parts)
 	{
 		return Mson.mson(parts);
 	}
 	
-	public List<Mson> msons(Object... parts)
+	public static List<Mson> msons(Object... parts)
 	{
 		return Mson.msons(parts);
 	}
 	
-	public List<Mson> msons(Collection<?> parts)
+	public static List<Mson> msons(Collection<?> parts)
 	{
 		return Mson.msons(parts);
 	}
