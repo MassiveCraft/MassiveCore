@@ -30,7 +30,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 public class Mson implements Serializable
 {
 	// -------------------------------------------- //
-	// CONSTANTS
+	// CONSTANTS: TECHY
 	// -------------------------------------------- //
 
 	private static final long serialVersionUID = 1L;
@@ -40,7 +40,12 @@ public class Mson implements Serializable
 	public static final LowercaseEnumAdapter<ChatColor> ADAPTER_LOWERCASE_CHAT_COLOR = LowercaseEnumAdapter.get(ChatColor.class);
 	public static final LowercaseEnumAdapter<MsonEventAction> ADAPTER_LOWERCASE_MSON_EVENT_ACTION = LowercaseEnumAdapter.get(MsonEventAction.class);
 	
-	public static final transient Mson SPACE = mson(" ");
+	// -------------------------------------------- //
+	// CONSTANTS: REUSABLE MSONS
+	// -------------------------------------------- //
+	
+	public static final Mson SPACE = mson(" ");
+	public static final Mson EMPTY = mson("");
 	
 	// -------------------------------------------- //
 	// GSON
@@ -317,8 +322,6 @@ public class Mson implements Serializable
 	// -------------------------------------------- //
 	
 	// Empty
-	private static final Mson EMPTY = mson("");
-	
 	public static Mson mson()
 	{
 		return EMPTY;
