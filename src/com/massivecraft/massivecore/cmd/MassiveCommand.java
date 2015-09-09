@@ -132,6 +132,11 @@ public class MassiveCommand
 	
 	public void addSubCommand(MassiveCommand subCommand, int index)
 	{
+		if (this.subCommands.isEmpty() && ! (subCommand instanceof HelpCommand))
+		{
+			this.subCommands.add(0, HelpCommand.get());
+			index++;
+		}
 		subCommand.addToCommandChain(this);
 		this.subCommands.add(index, subCommand);
 	}
