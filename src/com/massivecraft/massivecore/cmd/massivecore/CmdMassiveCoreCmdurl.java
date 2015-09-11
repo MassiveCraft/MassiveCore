@@ -67,7 +67,7 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 			{
 				try
 				{
-					final List<String> lines = WebUtil.getUrlLines(url, 5000);
+					final List<String> lines = WebUtil.getLines(url);
 					sync(new Runnable()
 					{
 						@Override
