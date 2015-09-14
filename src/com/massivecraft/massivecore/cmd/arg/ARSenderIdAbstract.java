@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -121,10 +123,20 @@ public abstract class ARSenderIdAbstract<T> extends ARAbstract<T>
 		// Step 2: Calculate type.
 		SenderType type = this.type;
 		
-		// Step 3: Create the ret.
-		Set<String> ret = IdUtil.getNames(presence, type);
+		// Step 3: Get Ids
+		Set<String> ids = IdUtil.getIds(presence, type);
 		
-		// Step 4: Return the ret.
+		// Step 4: Create Ret with visible names
+		Set<String> ret = new MassiveSet<String>(ids.size());
+		for (String id : ids)
+		{
+			if ( ! Mixin.canSee(sender, id)) continue;
+			String name = IdUtil.getName(id);
+			if (name == null) continue;
+			ret.add(name);
+		}
+		
+		// Step 5: Return the ret.
 		return ret;
 	}
 	

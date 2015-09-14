@@ -116,6 +116,21 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		return Mixin.hasPlayedBefore(this.getId());
 	}
 	
+	public boolean isVisible(Object watcherObject)
+	{
+		return Mixin.canSee(watcherObject, this);
+	}
+	
+	public boolean isOnline(Object watcherObject)
+	{
+		return this.isOnline() && this.isVisible(watcherObject);
+	}
+	
+	public boolean isOffline(Object watcherObject)
+	{
+		return ! this.isOnline(watcherObject);
+	}
+	
 	// -------------------------------------------- //
 	// DISPLAY NAME
 	// -------------------------------------------- //
