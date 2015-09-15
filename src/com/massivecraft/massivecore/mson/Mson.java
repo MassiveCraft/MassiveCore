@@ -239,6 +239,28 @@ public class Mson implements Serializable
 	public Mson parent(Mson parent) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	
 	// -------------------------------------------- //
+	// ADD
+	// -------------------------------------------- //
+	
+	public Mson add(Object part)
+	{
+		return this.add(new Object[]{part});
+	}
+	
+	public Mson add(Object... parts)
+	{
+		return this.add(Arrays.asList(parts));
+	}
+	
+	public Mson add(Iterable<?> parts)
+	{
+		List<Mson> extra = new ArrayList<Mson>(this.getExtra());
+		List<Mson> msons = msons(parts);
+		extra.addAll(msons);
+		return this.extra(extra);
+	}
+	
+	// -------------------------------------------- //
 	// CONVENIENCE MSON EVENT
 	// -------------------------------------------- //
 

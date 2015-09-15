@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerRespawn;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerTeleport;
 import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
@@ -184,8 +185,10 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	// Note: For now we update both names and ids.
 	// That way collections in plugins that haven't yet undergone update will still work.
 	
+	public static Map<String, PlayerLoginEvent> idToPlayerLoginEvent = new MassiveMap<String, PlayerLoginEvent>();
+	
 	// This method sets the sender reference to what you decide.
-	public static void setSenderReferences(CommandSender sender, CommandSender reference)
+	public static void setSenderReferences(CommandSender sender, CommandSender reference, PlayerLoginEvent event)
 	{
 		if (MUtil.isntSender(sender)) return;
 		
@@ -193,6 +196,14 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		if (id != null)
 		{
 			SenderColl.setSenderReferences(id, reference);
+			if (event == null)
+			{
+				idToPlayerLoginEvent.remove(id);
+			}
+			else
+			{
+				idToPlayerLoginEvent.put(id, event);
+			}
 		}
 		
 		String name = IdUtil.getName(sender);
@@ -203,22 +214,22 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	}
 	
 	// This method sets the sender reference based on it's online state.
-	public static void setSenderReferences(Player player)
+	public static void setSenderReferences(Player player, PlayerLoginEvent event)
 	{
 		Player reference = player;
 		if ( ! player.isOnline()) reference = null;
-		setSenderReferences(player, reference);
+		setSenderReferences(player, reference, event);
 	}
 	
 	// Same as above but next tick.
-	public static void setSenderReferencesSoon(final Player player)
+	public static void setSenderReferencesSoon(final Player player, final PlayerLoginEvent event)
 	{
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				setSenderReferences(player);
+				setSenderReferences(player, event);
 			}
 		});
 	}
@@ -229,11 +240,11 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		final Player player = event.getPlayer();
 		
 		// We set the reference at LOWEST so that it's present during this PlayerLoginEvent event.
-		setSenderReferences(player, player);
+		setSenderReferences(player, player, event);
 		
 		// And the next tick we update the reference based on it's online state.
 		// Not all players succeed in logging in. They may for example be banned.
-		setSenderReferencesSoon(player);
+		setSenderReferencesSoon(player, null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -241,21 +252,21 @@ public class MassiveCoreEngineMain extends EngineAbstract
 	{
 		// PlayerQuitEvents are /probably/ trustworthy.
 		// We check ourselves the next tick just to be on the safe side.
-		setSenderReferencesSoon(event.getPlayer());
+		setSenderReferencesSoon(event.getPlayer(), null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void setSenderReferencesRegisterMonitor(EventMassiveCoreSenderRegister event)
 	{
 		// This one we can however trust.
-		setSenderReferences(event.getSender(), event.getSender());
+		setSenderReferences(event.getSender(), event.getSender(), null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void setSenderReferencesUnregisterMonitor(EventMassiveCoreSenderUnregister event)
 	{
 		// This one we can however trust.
-		setSenderReferences(event.getSender(), null);
+		setSenderReferences(event.getSender(), null, null);
 	}
 	
 	// -------------------------------------------- //

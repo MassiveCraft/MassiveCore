@@ -7,4 +7,5 @@ public interface PlayedMixin
 	public Long getFirstPlayed(Object senderObject);
 	public Long getLastPlayed(Object senderObject);
 	public boolean hasPlayedBefore(Object senderObject);
+	public String getIp(Object senderObject);
 }

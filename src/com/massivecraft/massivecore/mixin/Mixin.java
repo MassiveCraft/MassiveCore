@@ -198,6 +198,10 @@ public class Mixin
 	{
 		return getPlayedMixin().hasPlayedBefore(senderObject);
 	}
+	public static String getIp(Object senderObject)
+	{
+		return getPlayedMixin().getIp(senderObject);
+	}
 	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: VISIBILITY

@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.util;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -174,11 +176,11 @@ public class MUtil
 	// -------------------------------------------- //
 	
 	// The regex for a valid minecraft player name.
-	public final static Pattern playerNamePattern = Pattern.compile("^[a-zA-Z0-9_]{2,16}$");
+	public final static Pattern PATTERN_PLAYER_NAME = Pattern.compile("^[a-zA-Z0-9_]{2,16}$");
 	
 	public static boolean isValidPlayerName(String string)
 	{
-		return playerNamePattern.matcher(string).matches();
+		return PATTERN_PLAYER_NAME.matcher(string).matches();
 	}
 	
 	// -------------------------------------------- //
@@ -207,6 +209,63 @@ public class MUtil
 	public static boolean isUuid(String string)
 	{
 		return asUuid(string) != null;
+	}
+	
+	// -------------------------------------------- //
+	// IP
+	// -------------------------------------------- //
+	
+	public static String getIp(CommandSender sender)
+	{
+		if (!(sender instanceof Player)) return null;
+		Player player = (Player)sender;
+		
+		InetSocketAddress address = player.getAddress();
+		if (address != null) return getIp(address);
+		
+		String id = IdUtil.getId(player);
+		PlayerLoginEvent event = MassiveCoreEngineMain.idToPlayerLoginEvent.get(id);
+		if (event != null) return getIp(event);
+		
+		return null;
+	}
+	
+	public static String getIp(InetSocketAddress address)
+	{
+		if (address == null) return null;
+		
+		String ret = address.toString();
+		String[] parts = ret.split("/");
+        
+        ret = parts[1];
+        parts = ret.split(":");
+        
+        ret = parts[0];
+		return ret;
+	}
+	
+	public static String getIp(PlayerLoginEvent event)
+	{
+		InetAddress address = event.getAddress();
+		return getIp(address);
+	}
+	
+	public static String getIp(InetAddress address)
+	{
+		if (address == null) return null;
+		
+		String ret = address.toString();
+		String[] parts = ret.split("/");
+        
+        ret = parts[1];
+		return ret;
+	}
+	
+	public static Pattern PATTERN_IPV4 = Pattern.compile("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+	public static boolean isIp(String string)
+	{
+		if (string == null) return false;
+		return PATTERN_IPV4.matcher(string).matches();
 	}
 	
 	// -------------------------------------------- //
@@ -689,28 +748,6 @@ public class MUtil
 	public static boolean isFinite(double d)
 	{
 		 return Math.abs(d) <= Double.MAX_VALUE;
-	}
-	
-	// -------------------------------------------- //
-	// GET IP
-	// -------------------------------------------- //
-	
-	public static String getIp(CommandSender sender)
-	{
-		if (!(sender instanceof Player)) return null;
-		Player player = (Player)sender;
-		
-		InetSocketAddress address = player.getAddress();
-		if (address == null) return null;
-		
-		String ret = address.toString();
-		String[] parts = ret.split("/");
-        
-        ret = parts[1];
-        parts = ret.split(":");
-        
-        ret = parts[0];
-		return ret;
 	}
 	
 	// -------------------------------------------- //
