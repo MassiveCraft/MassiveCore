@@ -59,7 +59,10 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 	{
 		final BasicCommandSender ME = this;
 		
-		// register later
+		// Register Now
+		registerImmediately();
+		
+		// Register Later
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
 		{
 			@Override
@@ -68,9 +71,6 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 				ME.registerImmediately();
 			}
 		});
-		
-		// and register now
-		registerImmediately();
 	}
 	
 	public void registerImmediately()
