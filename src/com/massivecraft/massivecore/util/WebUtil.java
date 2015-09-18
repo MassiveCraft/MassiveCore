@@ -72,10 +72,12 @@ public class WebUtil
 	protected static void touch(final URL url)
 	{
 		HttpURLConnection uc = null;
+		InputStream is = null;
 		try
 		{
 			uc = openHttpUrlConnection(url);
 			uc.connect();
+			is = uc.getInputStream();
 		}
 		catch (IOException e)
 		{
@@ -83,6 +85,7 @@ public class WebUtil
 		}
 		finally
 		{
+			try { is.close(); } catch (Exception ignored) {}
 			try { uc.disconnect(); } catch (Exception ignored) {}
 		}
 	}
