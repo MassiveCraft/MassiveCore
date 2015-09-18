@@ -53,18 +53,32 @@ public interface CollInterface<E>
 	public boolean containsEntity(Object entity);
 	
 	public Collection<E> getAll();
-	public List<E> getAll(Predictate<? super E> where);
-	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby);
-	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
-	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
-	public List<E> getAll(Predictate<? super E> where, Integer limit);
-	public List<E> getAll(Predictate<? super E> where, Integer limit, Integer offset);
-	public List<E> getAll(Comparator<? super E> orderby);
-	public List<E> getAll(Comparator<? super E> orderby, Integer limit);
-	public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset);
-	public List<E> getAll(Integer limit);
-	public List<E> getAll(Integer limit, Integer offset);
 	
+	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby);
+	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Integer limit, Integer offset);
+	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Integer limit);
+	public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where);
+	public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby);
+	public List<E> getAll(Iterable<?> oids, Integer limit, Integer offset);
+	public List<E> getAll(Iterable<?> oids, Integer limit);
+	public List<E> getAll(Iterable<?> oids);
+	
+	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby);
+	public List<E> getAll(Predictate<? super E> where, Integer limit, Integer offset);
+	public List<E> getAll(Predictate<? super E> where, Integer limit);
+	public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Predictate<? super E> where);
+	public List<E> getAll(Comparator<? super E> orderby);
+	public List<E> getAll(Integer limit, Integer offset);
+	public List<E> getAll(Integer limit);
+		
 	// -------------------------------------------- //
 	// BEHAVIOR
 	// -------------------------------------------- //

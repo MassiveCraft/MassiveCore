@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.store;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -57,17 +58,46 @@ public abstract class CollAbstract<E> implements CollInterface<E>
 		return this.containsIdFixed(this.fixId(oid));
 	}
 	
-	@Override public List<E> getAll(Predictate<? super E> where) { return MUtil.transform(this.getAll(), where); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby) { return MUtil.transform(this.getAll(), where, orderby); }
-	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(), where, orderby, limit); }
+	@Override public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset) { return MUtil.transform(this.getAll(oids), where, orderby, limit, offset); }
+	@Override public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(oids), where, orderby, limit); }
+	@Override public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby) { return MUtil.transform(this.getAll(oids), where, orderby); }
+	@Override public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Integer limit, Integer offset) { return MUtil.transform(this.getAll(oids), where, limit, offset); }
+	@Override public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Integer limit) { return MUtil.transform(this.getAll(oids), where, limit); }
+	@Override public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby, Integer limit, Integer offset) { return MUtil.transform(this.getAll(oids), limit, offset); }
+	@Override public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(oids), limit); }
+	@Override public List<E> getAll(Iterable<?> oids, Predictate<? super E> where) { return MUtil.transform(this.getAll(oids), where); }
+	@Override public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby) { return MUtil.transform(this.getAll(oids), orderby); }
+	@Override public List<E> getAll(Iterable<?> oids, Integer limit, Integer offset) { return MUtil.transform(this.getAll(oids), limit, offset); }
+	@Override public List<E> getAll(Iterable<?> oids, Integer limit) { return MUtil.transform(this.getAll(oids), limit); }
+	
+	@Override public List<E> getAll(Iterable<?> oids)
+	{
+		// Return Create
+		List<E> ret = new ArrayList<E>();
+		
+		// Return Fill
+		for (Object oid : oids)
+		{
+			E e = this.get(oid);
+			if (e == null) continue;
+			ret.add(e);
+		}
+		
+		// Return Return
+		return ret;
+	}
+	
 	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset) { return MUtil.transform(this.getAll(), where, orderby, limit, offset); }
-	@Override public List<E> getAll(Predictate<? super E> where, Integer limit) { return MUtil.transform(this.getAll(), where, limit); }
+	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(), where, orderby, limit); }
+	@Override public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby) { return MUtil.transform(this.getAll(), where, orderby); }
 	@Override public List<E> getAll(Predictate<? super E> where, Integer limit, Integer offset) { return MUtil.transform(this.getAll(), where, limit, offset); }
+	@Override public List<E> getAll(Predictate<? super E> where, Integer limit) { return MUtil.transform(this.getAll(), where, limit); }
+	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset) { return MUtil.transform(this.getAll(), limit, offset); }
+	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(), limit); }
+	@Override public List<E> getAll(Predictate<? super E> where) { return MUtil.transform(this.getAll(), where); }
 	@Override public List<E> getAll(Comparator<? super E> orderby) { return MUtil.transform(this.getAll(), orderby); }
-	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit) { return MUtil.transform(this.getAll(), orderby, limit); }
-	@Override public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset) { return MUtil.transform(this.getAll(), orderby, limit, offset); }
-	@Override public List<E> getAll(Integer limit) { return MUtil.transform(this.getAll(), limit); }
 	@Override public List<E> getAll(Integer limit, Integer offset) { return MUtil.transform(this.getAll(), limit, offset); }
+	@Override public List<E> getAll(Integer limit) { return MUtil.transform(this.getAll(), limit); }
 	
 	// -------------------------------------------- //
 	// BEHAVIOR
