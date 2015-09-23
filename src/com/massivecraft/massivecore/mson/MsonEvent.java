@@ -24,10 +24,10 @@ public final class MsonEvent implements Serializable
 	// -------------------------------------------- //
 
 	private final MsonEventAction action;
-	public MsonEventAction getEventActionType() { return this.action; }
+	public MsonEventAction getAction() { return this.action; }
 
 	private final String value;
-	public String getActionText() { return this.value; }
+	public String getValue() { return this.value; }
 
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -40,74 +40,85 @@ public final class MsonEvent implements Serializable
 	}
 
 	// -------------------------------------------- //
+	// TOOLTIP
+	// -------------------------------------------- //
+	
+	public String createTooltip()
+	{
+		String prefix = this.getAction().getTooltipPrefix();
+		if (prefix == null) return null;
+		return prefix + this.getValue();
+	}
+	
+	// -------------------------------------------- //
 	// FACTORY
 	// -------------------------------------------- //
 
-	public static MsonEvent valueOf(MsonEventAction type, String action)
+	public static MsonEvent valueOf(MsonEventAction action, String value)
 	{
-		return new MsonEvent(type, action);
+		return new MsonEvent(action, value);
 	}
 
 	// clickEvents
-	public static MsonEvent openUrl(String url)
+	public static MsonEvent link(String url)
 	{
 		return MsonEvent.valueOf(MsonEventAction.OPEN_URL, url);
 	}
 
-	public static MsonEvent replace(String replace)
+	public static MsonEvent suggest(String replace)
 	{
-		return MsonEvent.valueOf(MsonEventAction.SUGGEST_COMMAND , replace);
+		return MsonEvent.valueOf(MsonEventAction.SUGGEST_COMMAND, replace);
 	}
-	public static MsonEvent replace(MassiveCommand cmd, String... args)
+	public static MsonEvent suggest(MassiveCommand cmd, String... args)
 	{
-		return MsonEvent.replace(cmd.getCommandLine(args));
+		return MsonEvent.suggest(cmd.getCommandLine(args));
 	}
-	public static MsonEvent replace(MassiveCommand cmd, Iterable<String> args)
+	public static MsonEvent suggest(MassiveCommand cmd, Iterable<String> args)
 	{
-		return MsonEvent.replace(cmd.getCommandLine(args));
+		return MsonEvent.suggest(cmd.getCommandLine(args));
 	}
 	
-	public static MsonEvent performCmd(String cmd)
+	public static MsonEvent command(String cmd)
 	{
 		return MsonEvent.valueOf(MsonEventAction.RUN_COMMAND, cmd);
 	}
-	public static MsonEvent performCmd(MassiveCommand cmd, String... args)
+	public static MsonEvent command(MassiveCommand cmd, String... args)
 	{
-		return MsonEvent.performCmd(cmd.getCommandLine(args));
+		return MsonEvent.command(cmd.getCommandLine(args));
 	}
-	public static MsonEvent performCmd(MassiveCommand cmd, Iterable<String> args)
+	public static MsonEvent command(MassiveCommand cmd, Iterable<String> args)
 	{
-		return MsonEvent.performCmd(cmd.getCommandLine(args));
+		return MsonEvent.command(cmd.getCommandLine(args));
 	}
 
 	// showText
-	public static MsonEvent hoverText(String hoverText)
+	public static MsonEvent tooltip(String hoverText)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, hoverText);
 	}
 
-	public static MsonEvent hoverText(String... hoverTexts)
+	public static MsonEvent tooltip(String... hoverTexts)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.implode(hoverTexts, "\n"));
 	}
 
-	public static MsonEvent hoverText(Collection<String> hoverTexts)
+	public static MsonEvent tooltip(Collection<String> hoverTexts)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.implode(hoverTexts, "\n"));
 	}
 	
 	// showTextParsed
-	public static MsonEvent hoverTextParse(String hoverText)
+	public static MsonEvent tooltipParse(String hoverText)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.parse(hoverText));
 	}
 
-	public static MsonEvent hoverTextParse(String... hoverTexts)
+	public static MsonEvent tooltipParse(String... hoverTexts)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.parse(Txt.implode(hoverTexts, "\n")));
 	}
 
-	public static MsonEvent hoverTextParse(Collection<String> hoverTexts)
+	public static MsonEvent tooltipParse(Collection<String> hoverTexts)
 	{
 		return MsonEvent.valueOf(MsonEventAction.SHOW_TEXT, Txt.parse(Txt.implode(hoverTexts, "\n")));
 	}
@@ -123,8 +134,7 @@ public final class MsonEvent implements Serializable
 	// CONVENIENCE
 	// -------------------------------------------- //
 
-	public boolean isHoverEvent() { return this.getEventActionType().isHoverAction(); }
-	public boolean isClickEvent() { return this.getEventActionType().isClickAction(); }
+	public MsonEventType getType() { return this.getAction().getType(); }
 
 	// -------------------------------------------- //
 	// EQUALS AND HASHCODE

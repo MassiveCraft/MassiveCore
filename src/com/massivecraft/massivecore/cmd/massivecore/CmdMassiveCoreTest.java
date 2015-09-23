@@ -40,7 +40,7 @@ public class CmdMassiveCoreTest extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		
-		message(mson("This is your ", mson("item").tooltip(me.getItemInHand())));
+		message(mson("This is your ", mson("item").item(me.getItemInHand())));
 		// OLD STUFF
 		/*// Args
 		ParticleEffect particleEffect = this.readArg();

@@ -1,45 +1,39 @@
 package com.massivecraft.massivecore.mson;
 
+import com.massivecraft.massivecore.util.Txt;
+
 public enum MsonEventAction
 {
 	// -------------------------------------------- //
 	// ENUM
 	// -------------------------------------------- //
 
-	SUGGEST_COMMAND(),
-	RUN_COMMAND(),
-	OPEN_URL(),
-	SHOW_TEXT(true),
-	SHOW_ITEM(true),
+	SUGGEST_COMMAND,
+	RUN_COMMAND,
+	OPEN_URL,
+	SHOW_TEXT,
+	SHOW_ITEM
 	
 	// End of list
 	;
 	
 	// -------------------------------------------- //
-	// FIELD
+	// PROPERTIES
 	// -------------------------------------------- //
 
-	private boolean isHoverAction;
-	public boolean isHoverAction() { return this.isHoverAction; }
-
-	// NOTE: This behaviour might change.
-	// So to check if something is a click action this method should be called.
-	// Doing !action.isHoverAction();
-	// Shouldn't be done outside of this class.
-	public boolean isClickAction() { return ! this.isHoverAction(); }
-
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-
-	private MsonEventAction(boolean isHoveraction)
+	public MsonEventType getType()
 	{
-		this.isHoverAction = isHoveraction;
+		if (this == SHOW_TEXT) return MsonEventType.HOVER;
+		if (this == SHOW_ITEM) return MsonEventType.HOVER;
+		return MsonEventType.CLICK;
 	}
-
-	private MsonEventAction()
+	
+	public String getTooltipPrefix()
 	{
-		this(false);
+		if (this == SUGGEST_COMMAND) return Txt.parse("<h>Suggest: <c>");
+		if (this == RUN_COMMAND) return Txt.parse("<h>Command: <c>");
+		if (this == OPEN_URL) return Txt.parse("<h>Link: <c>");
+		return null;
 	}
 
 }

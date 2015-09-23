@@ -125,15 +125,11 @@ public class Mson implements Serializable
 	protected boolean isInheritedObfuscated() { return hasParent() && getParent().isEffectiveObfuscated(); }
 
 	// FIELD: The Events which happen when you click, hover over or shift-click the message
-	private final MsonEvent clickEvent;
-	public MsonEvent getClickEvent() { return this.clickEvent; }
-	public MsonEvent getEffectiveClickEvent() { return clickEvent != null ? clickEvent : getInheritedClickEvent(); }
-	protected MsonEvent getInheritedClickEvent() { return this.hasParent() ? this.getParent().getEffectiveClickEvent() : null; }
-
-	private final MsonEvent hoverEvent;
-	public MsonEvent getHoverEvent() { return this.hoverEvent; }
-	public MsonEvent getEffectiveHoverEvent() { return hoverEvent != null ? hoverEvent : getInheritedHoverEvent(); }
-	protected MsonEvent getInheritedHoverEvent() { return this.hasParent() ? this.getParent().getEffectiveHoverEvent() : null; }
+	protected final MsonEvent clickEvent;
+	protected final MsonEvent hoverEvent;
+	public MsonEvent getEvent(MsonEventType type) { return type.get(this); }
+	public MsonEvent getEffectiveEvent(MsonEventType type) { return type.get(this) != null ? type.get(this) : getInheritedEvent(type); }
+	protected MsonEvent getInheritedEvent(MsonEventType type) { return this.hasParent() ? this.getParent().getEffectiveEvent(type) : null; }
 
 	private final String insertionString;
 	public String getInsertionString() { return this.insertionString; }
@@ -196,8 +192,8 @@ public class Mson implements Serializable
 		if (this.isUnderlined() != null) return false;
 		if (this.isStrikethrough() != null) return false;
 		if (this.isObfuscated() != null) return false;
-		if (this.getClickEvent() != null) return false;
-		if (this.getHoverEvent() != null) return false;
+		if (this.getEvent(MsonEventType.CLICK) != null) return false;
+		if (this.getEvent(MsonEventType.HOVER) != null) return false;
 		if (this.getInsertionString() != null) return false;
 		if (this.hasExtra()) return false;
 		return true;
@@ -205,8 +201,8 @@ public class Mson implements Serializable
 	
 	public boolean hasSpecialBehaviour()
 	{
-		if (this.getClickEvent() != null) return true;
-		if (this.getHoverEvent() != null) return true;
+		if (this.getEvent(MsonEventType.CLICK) != null) return true;
+		if (this.getEvent(MsonEventType.HOVER) != null) return true;
 		if (this.getInsertionString() != null) return true;
 		
 		if (this.hasExtra())
@@ -231,8 +227,19 @@ public class Mson implements Serializable
 	public Mson underlined(Boolean underlined) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	public Mson strikethrough(Boolean strikethrough) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	public Mson obfuscated(Boolean obfuscated) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson clickEvent(MsonEvent clickEvent) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson hoverEvent(MsonEvent hoverEvent) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
+	
+	public Mson event(Boolean tooltip, MsonEvent event)
+	{
+		MsonEventType type = event.getType();
+		Mson ret = type.set(this, event);
+		String created = event.createTooltip();
+		if (created == null) tooltip = false;
+		if (tooltip == null) tooltip = (this.getTooltip() == null && this.getItem() == null);
+		if (tooltip) ret = ret.tooltip(created);
+		return ret;
+	}
+	public Mson event(MsonEvent event) { return this.event(null, event); }
+	
 	public Mson insertionString(String insertionString) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	public Mson extra(List<Mson> extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	public Mson extra(Mson[] extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, ImmutableList.copyOf(extra), parent); }
@@ -264,25 +271,45 @@ public class Mson implements Serializable
 	// CONVENIENCE MSON EVENT
 	// -------------------------------------------- //
 
-	public Mson link(String link) { return this.clickEvent(MsonEvent.openUrl(link)); }
+	public Mson link(String link) { return this.event(MsonEvent.link(link)); }
 	
-	public Mson suggest(String replace) { return this.clickEvent(MsonEvent.replace(replace)); }
-	public Mson suggest(MassiveCommand command, String... args) { return this.clickEvent(MsonEvent.replace(command, args)); }
-	public Mson suggest(MassiveCommand command, Iterable<String> args) { return this.clickEvent(MsonEvent.replace(command, args)); }
+	public Mson suggest(String suggest) { return this.event(MsonEvent.suggest(suggest)); }
+	public Mson suggest(MassiveCommand command, String... args) { return this.event(MsonEvent.suggest(command, args)); }
+	public Mson suggest(MassiveCommand command, Iterable<String> args) { return this.event(MsonEvent.suggest(command, args)); }
 	
-	public Mson command(String command) { return this.clickEvent(MsonEvent.performCmd(command)); }
-	public Mson command(MassiveCommand command, String... args) { return this.clickEvent(MsonEvent.performCmd(command, args)); }
-	public Mson command(MassiveCommand command, Iterable<String> args) { return this.clickEvent(MsonEvent.performCmd(command, args)); }
+	public Mson command(String command) { return this.event(MsonEvent.command(command)); }
+	public Mson command(MassiveCommand command, String... args) { return this.event(MsonEvent.command(command, args)); }
+	public Mson command(MassiveCommand command, Iterable<String> args) { return this.event(MsonEvent.command(command, args)); }
 	
-	public Mson tooltip(String tooltip) { return this.hoverEvent(MsonEvent.hoverText(tooltip)); }
-	public Mson tooltip(String... tooltip) { return this.hoverEvent(MsonEvent.hoverText(tooltip)); }
-	public Mson tooltip(Collection<String> tooltip) { return this.hoverEvent(MsonEvent.hoverText(tooltip)); }
+	public Mson tooltip(String tooltip) { return this.event(MsonEvent.tooltip(tooltip)); }
+	public Mson tooltip(String... tooltip) { return this.event(MsonEvent.tooltip(tooltip)); }
+	public Mson tooltip(Collection<String> tooltip) { return this.event(MsonEvent.tooltip(tooltip)); }
+	public Mson tooltipParse(String tooltip) { return this.event(MsonEvent.tooltipParse(tooltip)); }
+	public Mson tooltipParse(String... tooltip) { return this.event(MsonEvent.tooltipParse(tooltip)); }
+	public Mson tooltipParse(Collection<String> tooltip) { return this.event(MsonEvent.tooltipParse(tooltip)); }
 	
-	public Mson tooltipParse(String tooltip) { return this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); }
-	public Mson tooltipParse(String... tooltip) { return this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); }
-	public Mson tooltipParse(Collection<String> tooltip) { return this.hoverEvent(MsonEvent.hoverTextParse(tooltip)); }
+	public Mson item(ItemStack item) { return this.event(MsonEvent.item(item)); }
 	
-	public Mson tooltip(ItemStack item) { return this.hoverEvent(MsonEvent.item(item)); }
+	public String getLink() { return this.getEventValue(MsonEventAction.OPEN_URL); }
+	public String getSuggest() { return this.getEventValue(MsonEventAction.SUGGEST_COMMAND); }
+	public String getCommand() { return this.getEventValue(MsonEventAction.RUN_COMMAND); }
+	public String getTooltip() { return this.getEventValue(MsonEventAction.SHOW_TEXT); }
+	public String getItem() { return this.getEventValue(MsonEventAction.SHOW_ITEM); }
+	
+	protected String getEventValue(MsonEventAction targetAction)
+	{
+		MsonEventType type = targetAction.getType();
+		
+		MsonEvent event = this.getEvent(type);
+		if (event == null) return null;
+		
+		MsonEventAction action = event.getAction();
+		if (action == null) return null;
+		
+		if (action != targetAction) return null;
+		
+		return event.getValue();
+	}
 	
 	// -------------------------------------------- //
 	// CONVENIENCE STYLE
@@ -377,13 +404,22 @@ public class Mson implements Serializable
 		this.strikethrough = strikethrough;
 		this.obfuscated = obfuscated;
 		
-		// Click event
-		if ( clickEvent != null && ! clickEvent.isClickEvent()) throw new IllegalArgumentException(clickEvent.getEventActionType().name() + " is not a clickEventType");
+		// Set Events
 		this.clickEvent = clickEvent;
-		
-		// Hover event
-		if ( hoverEvent != null && ! hoverEvent.isHoverEvent()) throw new IllegalArgumentException(hoverEvent.getEventActionType().name() + " is not a hoverEventType");
 		this.hoverEvent = hoverEvent;
+		
+		// Validate Events
+		MsonEventType type;
+		MsonEvent event;
+		
+		type = MsonEventType.CLICK;
+		event = this.getEvent(type);
+		if (event != null && event.getType() != type) throw new IllegalArgumentException(event.getAction().name() + " is not of type " + type);
+		
+		type = MsonEventType.HOVER;
+		event = this.getEvent(type);
+		if (event != null && event.getType() != type) throw new IllegalArgumentException(event.getAction().name() + " is not of type " + type);
+				
 		
 		// Insertionstring
 		this.insertionString = insertionString;
