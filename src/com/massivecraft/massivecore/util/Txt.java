@@ -630,7 +630,6 @@ public class Txt
 	{
 		String number = String.valueOf(destinationPage);
 		String oldNumber = String.valueOf(pageHumanBased);
-		String tooltip = "<i>Click to <c>%s<i>.";
 		String commandLine;
 
 		if (args != null && args.contains(oldNumber))
@@ -645,7 +644,7 @@ public class Txt
 			commandLine = command.getCommandLine(number);
 		}
 
-		return mson.command(commandLine).tooltip(Txt.parse(tooltip, commandLine));
+		return mson.command(commandLine);
 	}
 	
 	// -------------------------------------------- //

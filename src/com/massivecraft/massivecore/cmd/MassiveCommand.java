@@ -878,8 +878,6 @@ public class MassiveCommand
 		Mson ret = USAGE_TEMPLATE_CORE;
 		List<Mson> extra = new ArrayList<Mson>();
 		
-		ret = ret.tooltip(Txt.parse("<i>Click to <c>%s<i>", this.getCommandLine()));
-		
 		// Get commandchain
 		List<MassiveCommand> commands = new ArrayList<MassiveCommand>(commandChain);
 		commands.add(this);
