@@ -228,9 +228,9 @@ public class Mson implements Serializable
 	public Mson strikethrough(Boolean strikethrough) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	public Mson obfuscated(Boolean obfuscated) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	
-	public Mson event(Boolean tooltip, MsonEvent event)
+	public Mson event(Boolean tooltip, MsonEventType type, MsonEvent event)
 	{
-		MsonEventType type = event.getType();
+		if (type == null) type = event.getType();
 		Mson ret = type.set(this, event);
 		String created = event.createTooltip();
 		if (created == null) tooltip = false;
@@ -238,7 +238,18 @@ public class Mson implements Serializable
 		if (tooltip) ret = ret.tooltip(created);
 		return ret;
 	}
-	public Mson event(MsonEvent event) { return this.event(null, event); }
+	public Mson event(Boolean tooltip, MsonEvent event)
+	{
+		return this.event(tooltip, null, event);
+	}
+	public Mson event(MsonEventType type, MsonEvent event)
+	{
+		return this.event(null, type, event);
+	}
+	public Mson event(MsonEvent event)
+	{
+		return this.event(null, null, event);
+	}
 	
 	public Mson insertionString(String insertionString) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	public Mson extra(List<Mson> extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
