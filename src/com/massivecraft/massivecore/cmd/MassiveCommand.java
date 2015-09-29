@@ -1022,6 +1022,9 @@ public class MassiveCommand
 		// Then args
 		for (String arg : args)
 		{
+			// Check if null
+			if (arg == null) continue;
+				
 			// First a space
 			ret.append(' ');
 			
