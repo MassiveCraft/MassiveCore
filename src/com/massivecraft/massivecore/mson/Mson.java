@@ -272,7 +272,7 @@ public class Mson implements Serializable
 	
 	public Mson add(Iterable<?> parts)
 	{
-		List<Mson> extra = new ArrayList<Mson>(this.getExtra());
+		List<Mson> extra = new MassiveList<Mson>(this.getExtra());
 		List<Mson> msons = msons(parts);
 		extra.addAll(msons);
 		return this.extra(extra);
