@@ -148,7 +148,7 @@ public class EngineScheduledTeleport extends EngineAbstract
 	public void cancelTeleport(EventMassiveCorePlayerLeave event)
 	{
 		// If a player quits ...
-		if (Mixin.isActualLeave(event)) return;
+		if ( ! Mixin.isActualLeave(event)) return;
 		
 		// ... cancel teleport!
 		Player player = event.getPlayer();
