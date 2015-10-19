@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -140,6 +141,17 @@ public class EngineScheduledTeleport extends EngineAbstract
 		Player player = event.getEntity();
 		
 		// ... cancel teleport!
+		this.cancelTeleport(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void cancelTeleport(EventMassiveCorePlayerLeave event)
+	{
+		// If a player quits ...
+		if (Mixin.isActualLeave(event)) return;
+		
+		// ... cancel teleport!
+		Player player = event.getPlayer();
 		this.cancelTeleport(player);
 	}
 	
