@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Lang;
-import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.arg.AR;
 import com.massivecraft.massivecore.cmd.req.Req;
@@ -70,12 +69,6 @@ public class MassiveCommand
 				iter.remove();
 			}
 		}
-	}
-	
-	@Deprecated
-	public void register()
-	{
-		this.register(MassiveCore.get());
 	}
 	
 	public Plugin register(Plugin plugin)
@@ -344,29 +337,11 @@ public class MassiveCommand
 		return this.addArg(new ArgSetting<T>(reader, name));
 	}
 
-	// FIELD: requiredArgs
-	// These args must always be sent
-	@Deprecated protected List<String> requiredArgs;
-	@Deprecated public List<String> getRequiredArgs() { return this.requiredArgs; }
-	@Deprecated public void setRequiredArgs(List<String> requiredArgs) { this.requiredArgs = requiredArgs; }
-	
-	@Deprecated public void addRequiredArg(String arg) { this.requiredArgs.add(arg); }
-	
-	// FIELD: optionalArgs
-	// These args are optional
-	@Deprecated protected Map<String, String> optionalArgs;
-	@Deprecated public Map<String, String> getOptionalArgs() { return this.optionalArgs; }
-	@Deprecated public void setOptionalArgs(Map<String, String> optionalArgs) { this.optionalArgs = optionalArgs; }
-	
-	@Deprecated public void addOptionalArg(String arg, String def) { this.optionalArgs.put(arg, def); }
-	
 	// FIELD: errorOnToManyArgs
 	// Should an error be thrown if "too many" args are sent.
 	protected boolean givingErrorOnTooManyArgs;
 	public boolean isGivingErrorOnTooManyArgs() { return this.givingErrorOnTooManyArgs; }
 	public void setGivingErrorOnTooManyArgs(boolean val) { this.givingErrorOnTooManyArgs = val; }
-	@Deprecated public boolean getErrorOnToManyArgs() { return this.isGivingErrorOnTooManyArgs(); }
-	@Deprecated public void setErrorOnToManyArgs(boolean val) { this.setGivingErrorOnTooManyArgs(val); }
 	
 	// FIELD concatFrom 
 	// From which arg should the be concatenated.
@@ -503,19 +478,13 @@ public class MassiveCommand
 	public boolean senderIsConsole;
 	
 	// -------------------------------------------- //
-	// BACKWARDS COMPAT
+	// ARG AMOUNTS
 	// -------------------------------------------- //
-	
-	public boolean isUsingNewArgSystem()
-	{
-		return ! this.getArgSettings().isEmpty();
-	}
 	
 	public int getRequiredArgsAmountFor(CommandSender sender)
 	{
-		if ( ! this.isUsingNewArgSystem()) return this.getRequiredArgs().size();
-		
 		int ret = 0;
+		
 		for (ArgSetting<?> setting : this.getArgSettings())
 		{
 			if (setting.isRequiredFor(sender)) ret++;
@@ -526,9 +495,8 @@ public class MassiveCommand
 	
 	public int getOptionalArgsAmountFor(CommandSender sender)
 	{
-		if ( ! this.isUsingNewArgSystem()) return this.getOptionalArgs().size();
-		
 		int ret = 0;
+		
 		for (ArgSetting<?> setting : this.getArgSettings())
 		{
 			if (setting.isOptionalFor(sender)) ret++;
@@ -553,9 +521,6 @@ public class MassiveCommand
 		this.aliases = new ArrayList<String>();
 		
 		this.argSettings = new ArrayList<ArgSetting<?>>();
-		
-		this.requiredArgs = new ArrayList<String>();
-		this.optionalArgs = new LinkedHashMap<String, String>();
 		
 		this.requirements = new ArrayList<Req>();
 		
@@ -683,8 +648,6 @@ public class MassiveCommand
 	{
 		// So if there is too many, or too few args. We can't do much here.
 		if ( ! this.isArgsValid(args)) return args;
-		// We can't do anything with the old arg system.
-		if ( ! this.isUsingNewArgSystem()) return args;
 		
 		String[] ret = new String[this.getArgSettings().size()];
 		
@@ -867,8 +830,9 @@ public class MassiveCommand
 	}
 	
 	// -------------------------------------------- //
-	// HELP AND USAGE INFORMATION
+	// USAGE TEMPLATE
 	// -------------------------------------------- //
+	// TODO: Misspelled "Useage"
 	
 	public static final Mson USAGE_TEMPLATE_CORE = Mson.mson("/").color(ChatColor.AQUA);
 	
@@ -942,33 +906,10 @@ public class MassiveCommand
 	protected List<Mson> getArgUseagesFor(CommandSender sender)
 	{
 		List<Mson> ret = new MassiveList<Mson>();
-		if (this.isUsingNewArgSystem())
+		
+		for (ArgSetting<?> setting : this.getArgSettings())
 		{
-			for (ArgSetting<?> setting : this.getArgSettings())
-			{
-				ret.add(setting.getUseageTemplateDisplayFor(sender));
-			}
-		}
-		else
-		{
-			for (String requiredArg : this.getRequiredArgs())
-			{
-				ret.add(mson("<" + requiredArg + ">"));
-			}
-			
-			for (Entry<String, String> optionalArg : this.getOptionalArgs().entrySet())
-			{
-				String val = optionalArg.getValue();
-				if (val == null)
-				{
-					val = "";
-				}
-				else
-				{
-					val = "=" + val;
-				}
-				ret.add(mson("[" + optionalArg.getKey() + val + "]"));
-			}
+			ret.add(setting.getUseageTemplateDisplayFor(sender));
 		}
 		
 		return ret;
@@ -993,6 +934,10 @@ public class MassiveCommand
 	{
 		return getUseageTemplate(false);
 	}
+	
+ 	// -------------------------------------------- //
+	// GET COMMAND LINE
+	// -------------------------------------------- //
 	
 	public String getCommandLine(String... args)
 	{
@@ -1049,10 +994,6 @@ public class MassiveCommand
 		if (this.isParentCommand())
 		{
 			return this.getTabCompletionsSub(args, sender);
-		}
-		else if ( ! this.isUsingNewArgSystem())
-		{
-			return Collections.emptyList();
 		}
 		else
 		{
@@ -1270,7 +1211,8 @@ public class MassiveCommand
 		return readArgAt(idx);
 	}
 
-	// We don't even need this anymore
+	// TODO: Some of these are still used by external plugins.
+	// TODO: Fix those plugins.
 
 	@Deprecated
 	public <T> T readArgFrom(AR<T> argReader) throws MassiveException
@@ -1290,79 +1232,6 @@ public class MassiveCommand
 	{
 		if (str == null) return defaultNotSet;
 		return this.readArgFrom(str, argReader);
-	}
-	
-	// -------------------------------------------- //
-	// OLD ARGUMENT READERS
-	// -------------------------------------------- //
-
-	// arg
-	
-	@Deprecated
-	public String arg(int idx)
-	{
-		return this.argAt(idx);
-	}
-	
-	@Deprecated
-	public <T> T arg(int idx, AR<T> argReader) throws MassiveException
-	{
-		String str = this.arg(idx);
-		return this.arg(str, argReader);
-	}
-	
-	@Deprecated
-	public <T> T arg(int idx, AR<T> argReader, T defaultNotSet) throws MassiveException
-	{
-		String str = this.arg(idx);
-		return this.arg(str, argReader, defaultNotSet);
-	}
-	
-	// argConcatFrom
-	
-	@Deprecated
-	public String argConcatFrom(int idx)
-	{
-		if ( ! this.argIsSet(idx)) return null;
-		int from = idx;
-		int to = this.getArgs().size();
-		if (to <= from) return "";
-		return Txt.implode(this.getArgs().subList(from, to), " ");
-	}
-	
-	@Deprecated
-	public <T> T argConcatFrom(int idx, AR<T> argReader) throws MassiveException
-	{
-		String str = this.argConcatFrom(idx);
-		return this.arg(str, argReader);
-	}
-	
-	@Deprecated
-	public <T> T argConcatFrom(int idx, AR<T> argReader, T defaultNotSet) throws MassiveException
-	{
-		String str = this.argConcatFrom(idx);
-		return this.arg(str, argReader, defaultNotSet);
-	}
-	
-	// Core & Other
-	
-	@Deprecated
-	public <T> T arg(AR<T> argReader) throws MassiveException
-	{
-		return this.arg(null, argReader);
-	}
-	
-	@Deprecated
-	public <T> T arg(String str, AR<T> argReader) throws MassiveException
-	{
-		return argReader.read(str, this.sender);
-	}
-	
-	@Deprecated
-	public <T> T arg(String str, AR<T> argReader, T defaultNotSet) throws MassiveException
-	{
-		if (str == null) return defaultNotSet;
-		return this.arg(str, argReader);
 	}
 	
 }
