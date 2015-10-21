@@ -80,7 +80,7 @@ public class Coll<E> extends CollAbstract<E>
 	{
 		if (this.getPlugin() instanceof MassivePlugin)
 		{
-			return ((MassivePlugin)this.getPlugin()).gson;
+			return ((MassivePlugin)this.getPlugin()).getGson();
 		}
 		else
 		{

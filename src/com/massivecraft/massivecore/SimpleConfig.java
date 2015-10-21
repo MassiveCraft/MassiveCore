@@ -44,7 +44,7 @@ public class SimpleConfig
 	{
 		if (this.plugin instanceof MassivePlugin)
 		{
-			return ((MassivePlugin)this.plugin).gson;
+			return ((MassivePlugin)this.plugin).getGson();
 		}
 		return MassiveCore.gson;
 	}

@@ -24,6 +24,8 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// FIELDS
 	// -------------------------------------------- //
 	
+	public boolean checkVersionSynchronization = true;
+	
 	public int maxTabCompletions = 100;
 	
 	public List<String> aliasesOuterMassiveCore = MUtil.list("massivecore", "mcore");

@@ -20,8 +20,18 @@ import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
 public abstract class MassivePlugin extends JavaPlugin implements Listener
 {
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
 	// Gson
-	public Gson gson;
+	protected Gson gson = null;
+	public Gson getGson() { return this.gson; }
+	public void setGson(Gson gson) { this.gson = gson; }
+	
+	protected boolean versionSynchronized = false;
+	public boolean isVersionSynchronized() { return this.versionSynchronized; }
+	public void setVersionSynchronized(boolean versionSynchronized) { this.versionSynchronized = versionSynchronized; }
 	
 	// -------------------------------------------- //
 	// ENABLE
@@ -38,7 +48,8 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 		log("=== ENABLE START ===");
 		
 		// Create Gson
-		this.gson = this.getGsonBuilder().create();
+		Gson gson = this.getGsonBuilder().create();
+		this.setGson(gson);
 		
 		// Listener
 		Bukkit.getPluginManager().registerEvents(this, this);
@@ -60,13 +71,52 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 	
 	public void postEnable()
 	{
-		log(Txt.parse("=== ENABLE <g>COMPLETE <i>(Took <h>"+(System.currentTimeMillis()-timeEnableStart)+"ms<i>) ==="));
+		long ms = System.currentTimeMillis()-timeEnableStart;
+		
+		this.checkVersionSynchronization();
+		
+		log(Txt.parse("=== ENABLE <g>COMPLETE <i>(Took <h>" + ms + "ms<i>) ==="));
+	}
+	
+	public void checkVersionSynchronization()
+	{
+		// If this plugin is version synchronized ...
+		if ( ! this.isVersionSynchronized()) return;
+		
+		// ... and checking is enabled ...
+		if ( ! MassiveCoreMConf.get().checkVersionSynchronization) return;
+		
+		// ... get the version numbers ...
+		String thisVersion = this.getDescription().getVersion();
+		String massiveVersion = MassiveCore.get().getDescription().getVersion();
+		
+		// ... and if the version numbers are different ...
+		if (thisVersion.equals(massiveVersion)) return;
+		
+		// ... log a warning message ...
+		String thisName = this.getDescription().getName();
+		String massiveName = MassiveCore.get().getDescription().getName();
+		
+		log(Txt.parse("<b>WARNING: You are using <pink>" + thisName + " <aqua>" + thisVersion + " <b>and <pink>" + massiveName + " <aqua>" + massiveVersion + "<b>!"));
+		log(Txt.parse("<b>WARNING: They must be the exact same version to work properly!"));
+		log(Txt.parse("<b>WARNING: Remember to always update all plugins at the same time!"));
+		log(Txt.parse("<b>WARNING: You should stop your server and properly update."));
+		
+		// ... and pause for 10 seconds.
+		try
+		{
+			Thread.sleep(10000L);
+		}
+		catch (InterruptedException ignored)
+		{
+			
+		}
 	}
 	
 	@Override
 	public void onEnable()
 	{
-		if (!this.preEnable()) return;
+		if ( ! this.preEnable()) return;
 		
 		this.postEnable();
 	}
