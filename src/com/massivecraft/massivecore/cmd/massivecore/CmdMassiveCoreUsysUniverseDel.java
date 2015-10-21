@@ -18,7 +18,7 @@ public class CmdMassiveCoreUsysUniverseDel extends MassiveCommand
 	public CmdMassiveCoreUsysUniverseDel()
 	{
 		// Aliases
-		this.addAliases("d", "del");
+		this.addAliases("del");
 		
 		// Parameters
 		this.addParameter(TypeString.get(), "universe").setDesc("the universe to delete");

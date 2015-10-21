@@ -16,7 +16,7 @@ public class CmdMassiveCoreUsysMultiverseNew extends MassiveCommand
 	public CmdMassiveCoreUsysMultiverseNew()
 	{
 		// Aliases
-		this.addAliases("n", "new");
+		this.addAliases("new");
 		
 		// Parameters
 		this.addParameter(TypeString.get(), "multiverse").setDesc("name of multiverse to create");

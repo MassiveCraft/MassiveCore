@@ -18,7 +18,7 @@ public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 	public CmdMassiveCoreUsysAspectUse()
 	{
 		// Aliases
-		this.addAliases("u", "use");
+		this.addAliases("use");
 		
 		// Parameters
 		this.addParameter(TypeAspect.get(), "aspect").setDesc("the aspect to modify");

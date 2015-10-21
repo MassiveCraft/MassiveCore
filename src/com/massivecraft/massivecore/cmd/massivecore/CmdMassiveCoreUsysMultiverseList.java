@@ -20,7 +20,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 	public CmdMassiveCoreUsysMultiverseList()
 	{
 		// Aliases
-		this.addAliases("l", "list");
+		this.addAliases("list");
 		
 		// Parameters
 		this.addParameter(Parameter.getPage());

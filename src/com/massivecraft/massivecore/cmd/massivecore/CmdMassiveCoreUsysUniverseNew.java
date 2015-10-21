@@ -17,7 +17,7 @@ public class CmdMassiveCoreUsysUniverseNew extends MassiveCommand
 	public CmdMassiveCoreUsysUniverseNew()
 	{
 		// Aliases
-		this.addAliases("n", "new");
+		this.addAliases("new");
 		
 		// Parameters
 		this.addParameter(TypeString.get(), "universe").setDesc("name of universe to create");

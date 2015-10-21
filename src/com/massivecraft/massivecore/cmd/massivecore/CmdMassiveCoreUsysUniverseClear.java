@@ -18,7 +18,7 @@ public class CmdMassiveCoreUsysUniverseClear extends MassiveCommand
 	public CmdMassiveCoreUsysUniverseClear()
 	{
 		// Aliases
-		this.addAliases("c", "clear");
+		this.addAliases("clear");
 		
 		// Parameters
 		this.addParameter(TypeString.get(), "universe").setDesc("the universe to clear");

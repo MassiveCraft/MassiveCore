@@ -20,7 +20,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 	public CmdMassiveCoreUsysAspectList()
 	{
 		// Aliases
-		this.addAliases("l", "list");
+		this.addAliases("list");
 		
 		// Parameters
 		this.addParameter(Parameter.getPage()).setDesc("the page in the aspect list");

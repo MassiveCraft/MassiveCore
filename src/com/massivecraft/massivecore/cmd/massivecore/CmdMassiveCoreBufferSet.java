@@ -16,7 +16,7 @@ public class CmdMassiveCoreBufferSet extends MassiveCommand
 	public CmdMassiveCoreBufferSet()
 	{
 		// Aliases
-		this.addAliases("s", "set");
+		this.addAliases("set");
 		
 		// Parameters
 		this.addParameter(TypeString.get(), "text", true).setDesc("the text to set your buffer to");

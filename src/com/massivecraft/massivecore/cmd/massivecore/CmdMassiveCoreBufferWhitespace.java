@@ -17,7 +17,7 @@ public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
 	public CmdMassiveCoreBufferWhitespace()
 	{
 		// Aliases
-		this.addAliases("w", "whitespace");
+		this.addAliases("whitespace");
 		
 		// Parameters
 		this.addParameter(1, TypeInteger.get(), "times").setDesc("the amount of whitespace to add to your buffer");

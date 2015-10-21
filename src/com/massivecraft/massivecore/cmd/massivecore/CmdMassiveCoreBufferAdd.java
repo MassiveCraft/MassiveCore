@@ -16,7 +16,7 @@ public class CmdMassiveCoreBufferAdd extends MassiveCommand
 	public CmdMassiveCoreBufferAdd()
 	{
 		// Aliases
-		this.addAliases("a", "add");
+		this.addAliases("add");
 		
 		// Parameters
 		this.addParameter(TypeString.get(), "text", true).setDesc("the text to add to your buffer");

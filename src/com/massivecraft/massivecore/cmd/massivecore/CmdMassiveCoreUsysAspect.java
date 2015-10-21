@@ -26,7 +26,7 @@ public class CmdMassiveCoreUsysAspect extends MassiveCommand
 		this.addChild(this.cmdMassiveCoreUsysAspectUse);
 		
 		// Aliases
-		this.addAliases("a", "aspect");
+		this.addAliases("aspect");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_ASPECT.node));

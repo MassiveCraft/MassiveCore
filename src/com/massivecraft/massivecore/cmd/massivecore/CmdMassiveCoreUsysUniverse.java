@@ -26,7 +26,7 @@ public class CmdMassiveCoreUsysUniverse extends MassiveCommand
 		this.addChild(this.cmdMassiveCoreUsysUniverseClear);
 		
 		// Aliases
-		this.addAliases("u", "universe");
+		this.addAliases("universe");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_UNIVERSE.node));

@@ -17,7 +17,7 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 	public CmdMassiveCoreUsysAspectShow()
 	{
 		// Aliases
-		this.addAliases("s", "show");
+		this.addAliases("show");
 		
 		// Parameters
 		this.addParameter(TypeAspect.get(), "aspect").setDesc("the aspect to show info about");

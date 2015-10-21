@@ -17,7 +17,7 @@ public class CmdMassiveCoreUsysMultiverseDel extends MassiveCommand
 	public CmdMassiveCoreUsysMultiverseDel()
 	{
 		// Aliases
-		this.addAliases("d", "del");
+		this.addAliases("del");
 		
 		// Parameters
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse to delete");

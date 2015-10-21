@@ -22,7 +22,7 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 	public CmdMassiveCoreUsysMultiverseShow()
 	{
 		// Aliases
-		this.addAliases("s", "show");
+		this.addAliases("show");
 		
 		// Parameters
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse to show info about");
