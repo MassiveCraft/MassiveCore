@@ -7,11 +7,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
-import com.massivecraft.massivecore.cmd.arg.ARSenderEntity;
-import com.massivecraft.massivecore.cmd.arg.ARSenderId;
+import com.massivecraft.massivecore.cmd.type.TypeSenderEntity;
+import com.massivecraft.massivecore.cmd.type.TypeSenderId;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 
@@ -120,31 +120,31 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// ARGUMENT READERS
 	// -------------------------------------------- //
 	
-	public ARSenderEntity<E> getAREntity()
+	public TypeSenderEntity<E> getTypeEntity()
 	{
-		return ARSenderEntity.get(this);
+		return TypeSenderEntity.get(this);
 	}
 	
-	public ARSenderEntity<E> getAREntity(SenderPresence presence)
+	public TypeSenderEntity<E> getTypeEntity(SenderPresence presence)
 	{
-		return ARSenderEntity.get(this, presence);
+		return TypeSenderEntity.get(this, presence);
 	}
 	
-	public ARSenderId getARId()
+	public TypeSenderId getTypeId()
 	{
-		return ARSenderId.get(this);
+		return TypeSenderId.get(this);
 	}
 	
-	public ARSenderId getARId(SenderPresence presence)
+	public TypeSenderId getTypeId(SenderPresence presence)
 	{
-		return ARSenderId.get(this, presence);
+		return TypeSenderId.get(this, presence);
 	}
 	
 	// -------------------------------------------- //
 	// GET ALL ONLINE / OFFLINE
 	// -------------------------------------------- //
 	
-	public static final Predictate<SenderEntity<?>> PREDICTATE_ONLINE = new Predictate<SenderEntity<?>>()
+	public static final Predicate<SenderEntity<?>> PREDICATE_ONLINE = new Predicate<SenderEntity<?>>()
 	{
 		@Override
 		public boolean apply(SenderEntity<?> entity)
@@ -153,7 +153,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 		}
 	};
 	
-	public static final Predictate<SenderEntity<?>> PREDICTATE_OFFLINE = new Predictate<SenderEntity<?>>()
+	public static final Predicate<SenderEntity<?>> PREDICATE_OFFLINE = new Predicate<SenderEntity<?>>()
 	{
 		@Override
 		public boolean apply(SenderEntity<?> entity)
@@ -164,12 +164,12 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	
 	public Collection<E> getAllOnline()
 	{
-		return this.getAll(PREDICTATE_ONLINE);
+		return this.getAll(PREDICATE_ONLINE);
 	}
 	
 	public Collection<E> getAllOffline()
 	{
-		return this.getAll(PREDICTATE_OFFLINE);
+		return this.getAll(PREDICATE_OFFLINE);
 	}
 	
 	// -------------------------------------------- //

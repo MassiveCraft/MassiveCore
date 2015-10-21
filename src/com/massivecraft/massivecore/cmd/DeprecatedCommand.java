@@ -1,7 +1,7 @@
 package com.massivecraft.massivecore.cmd;
 
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.VisibilityMode;
+import com.massivecraft.massivecore.cmd.Visibility;
 
 
 public class DeprecatedCommand extends MassiveCommand
@@ -24,11 +24,11 @@ public class DeprecatedCommand extends MassiveCommand
 		// Aliases
 		this.setAliases(aliases);
 		
-		// Args
-		this.setGivingErrorOnTooManyArgs(false);
+		// Parameters
+		this.setOverflowSensitive(false);
 		
 		// Visibility
-		this.setVisibilityMode(VisibilityMode.INVISIBLE);
+		this.setVisibility(Visibility.INVISIBLE);
 	}
 	
 	// -------------------------------------------- //
@@ -39,7 +39,7 @@ public class DeprecatedCommand extends MassiveCommand
 	public void perform()
 	{	
 		msg("<i>Use this new command instead:");
-		message(target.getUseageTemplate(true));
+		message(target.getTemplate(true));
 	}
 	
 }

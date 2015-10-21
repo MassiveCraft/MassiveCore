@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARColl;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeColl;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.ExamineThread;
 import com.massivecraft.massivecore.util.MUtil;
@@ -23,8 +23,8 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 		// Aliases
 		this.addAliases("stats");
 		
-		// Args
-		this.addArg(ARColl.get(), "coll", Coll.TOTAL).setDesc("the coll to show info about");
+		// Parameters
+		this.addParameter(TypeColl.get(), "coll", Coll.TOTAL).setDesc("the coll to show info about");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.STORE_STATS.node));

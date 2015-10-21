@@ -4,8 +4,8 @@ import com.massivecraft.massivecore.MassiveCoreEngineVariable;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 
 public class CmdMassiveCoreBufferAdd extends MassiveCommand
 {
@@ -18,8 +18,8 @@ public class CmdMassiveCoreBufferAdd extends MassiveCommand
 		// Aliases
 		this.addAliases("a", "add");
 		
-		// Args
-		this.addArg(ARString.get(), "text", true).setDesc("the text to add to your buffer");
+		// Parameters
+		this.addParameter(TypeString.get(), "text", true).setDesc("the text to add to your buffer");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.BUFFER_ADD.node));

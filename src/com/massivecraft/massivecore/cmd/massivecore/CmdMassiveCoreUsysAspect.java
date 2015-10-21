@@ -20,10 +20,10 @@ public class CmdMassiveCoreUsysAspect extends MassiveCommand
 	
 	public CmdMassiveCoreUsysAspect()
 	{
-		// SubCommands
-		this.addSubCommand(this.cmdMassiveCoreUsysAspectList);
-		this.addSubCommand(this.cmdMassiveCoreUsysAspectShow);
-		this.addSubCommand(this.cmdMassiveCoreUsysAspectUse);
+		// Children
+		this.addChild(this.cmdMassiveCoreUsysAspectList);
+		this.addChild(this.cmdMassiveCoreUsysAspectShow);
+		this.addChild(this.cmdMassiveCoreUsysAspectUse);
 		
 		// Aliases
 		this.addAliases("a", "aspect");

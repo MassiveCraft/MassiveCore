@@ -21,11 +21,11 @@ public class CmdMassiveCoreUsysMultiverse extends MassiveCommand
 	
 	public CmdMassiveCoreUsysMultiverse()
 	{
-		// SubCommands
-		this.addSubCommand(this.cmdMassiveCoreUsysMultiverseList);
-		this.addSubCommand(this.cmdMassiveCoreUsysMultiverseShow);
-		this.addSubCommand(this.cmdMassiveCoreUsysMultiverseNew);
-		this.addSubCommand(this.cmdMassiveCoreUsysMultiverseDel);
+		// Children
+		this.addChild(this.cmdMassiveCoreUsysMultiverseList);
+		this.addChild(this.cmdMassiveCoreUsysMultiverseShow);
+		this.addChild(this.cmdMassiveCoreUsysMultiverseNew);
+		this.addChild(this.cmdMassiveCoreUsysMultiverseDel);
 		
 		// Aliases
 		this.addAliases("m", "multiverse");

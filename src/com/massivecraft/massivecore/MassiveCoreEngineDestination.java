@@ -11,9 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.cmd.arg.ARPS;
-import com.massivecraft.massivecore.cmd.arg.ARSenderId;
-import com.massivecraft.massivecore.cmd.arg.ARWorldId;
+import com.massivecraft.massivecore.cmd.type.TypePS;
+import com.massivecraft.massivecore.cmd.type.TypeSenderId;
+import com.massivecraft.massivecore.cmd.type.TypeWorldId;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.event.EventMassiveCoreDestination;
 import com.massivecraft.massivecore.ps.PS;
@@ -56,7 +56,7 @@ public class MassiveCoreEngineDestination extends EngineAbstract
 	{
 		try
 		{
-			PS ps = ARPS.get().read(event.getArg(), event.getSender());
+			PS ps = TypePS.get().read(event.getArg(), event.getSender());
 			Destination destination = new DestinationSimple(ps);
 			event.setDestination(destination);
 		}
@@ -144,7 +144,7 @@ public class MassiveCoreEngineDestination extends EngineAbstract
 			String worldId;
 			if (rest != null)
 			{
-				worldId = ARWorldId.get().read(rest, sender);
+				worldId = TypeWorldId.get().read(rest, sender);
 			}
 			else
 			{
@@ -158,7 +158,7 @@ public class MassiveCoreEngineDestination extends EngineAbstract
 		// World Implicit
 		try
 		{
-			String worldId = ARWorldId.get().read(arg, sender);
+			String worldId = TypeWorldId.get().read(arg, sender);
 			return new DestinationWorld(worldId);
 		}
 		catch (Exception e)
@@ -172,7 +172,7 @@ public class MassiveCoreEngineDestination extends EngineAbstract
 			String playerId;
 			if (rest != null)
 			{
-				playerId = ARSenderId.get().read(rest, sender);
+				playerId = TypeSenderId.get().read(rest, sender);
 			}
 			else
 			{
@@ -185,7 +185,7 @@ public class MassiveCoreEngineDestination extends EngineAbstract
 		// Player Implicit
 		try
 		{
-			String playerId = ARSenderId.get().read(arg, sender);
+			String playerId = TypeSenderId.get().read(arg, sender);
 			return new DestinationPlayer(playerId);
 		}
 		catch (Exception e)

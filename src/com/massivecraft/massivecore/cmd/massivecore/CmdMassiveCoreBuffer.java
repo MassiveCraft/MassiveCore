@@ -22,12 +22,12 @@ public class CmdMassiveCoreBuffer extends MassiveCommand
 	
 	public CmdMassiveCoreBuffer()
 	{
-		// SubCommands
-		this.addSubCommand(this.cmdMassiveCoreBufferPrint);
-		this.addSubCommand(this.cmdMassiveCoreBufferClear);
-		this.addSubCommand(this.cmdMassiveCoreBufferSet);
-		this.addSubCommand(this.cmdMassiveCoreBufferAdd);
-		this.addSubCommand(this.cmdMassiveCoreBufferWhitespace);
+		// Children
+		this.addChild(this.cmdMassiveCoreBufferPrint);
+		this.addChild(this.cmdMassiveCoreBufferClear);
+		this.addChild(this.cmdMassiveCoreBufferSet);
+		this.addChild(this.cmdMassiveCoreBufferAdd);
+		this.addChild(this.cmdMassiveCoreBufferWhitespace);
 		
 		// Aliases
 		this.addAliases("buffer");

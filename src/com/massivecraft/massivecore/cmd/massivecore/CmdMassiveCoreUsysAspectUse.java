@@ -5,9 +5,9 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARAspect;
-import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeAspect;
+import com.massivecraft.massivecore.cmd.type.TypeMultiverse;
 
 public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 {
@@ -20,9 +20,9 @@ public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 		// Aliases
 		this.addAliases("u", "use");
 		
-		// Args
-		this.addArg(ARAspect.get(), "aspect").setDesc("the aspect to modify");
-		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse which the aspect should use");
+		// Parameters
+		this.addParameter(TypeAspect.get(), "aspect").setDesc("the aspect to modify");
+		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse which the aspect should use");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_ASPECT_USE.node));

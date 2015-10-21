@@ -21,11 +21,11 @@ public class CmdMassiveCoreUsys extends MassiveCommand
 	
 	public CmdMassiveCoreUsys()
 	{
-		// SubCommands
-		this.addSubCommand(this.cmdMassiveCoreUsysMultiverse);
-		this.addSubCommand(this.cmdMassiveCoreUsysUniverse);
-		this.addSubCommand(this.cmdMassiveCoreUsysWorld);
-		this.addSubCommand(this.cmdMassiveCoreUsysAspect);
+		// Children
+		this.addChild(this.cmdMassiveCoreUsysMultiverse);
+		this.addChild(this.cmdMassiveCoreUsysUniverse);
+		this.addChild(this.cmdMassiveCoreUsysWorld);
+		this.addChild(this.cmdMassiveCoreUsysAspect);
 		
 		// Aliases
 		this.addAliases("usys");

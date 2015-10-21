@@ -34,7 +34,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 		super(
 			name,
 			massiveCommand.getDesc(),
-			massiveCommand.getUseageTemplate().toPlain(true),
+			massiveCommand.getTemplate().toPlain(true),
 			Collections.<String>emptyList() // We don't use aliases
 		);
 		this.massiveCommand = massiveCommand;
@@ -65,7 +65,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 	public List<String> createArgList(String[] args)
 	{
 		List<String> ret;
-		if (this.getMassiveCommand().isUsingTokenizer())
+		if (this.getMassiveCommand().isTokenizing())
 		{
 			ret = Txt.tokenizeArguments(Txt.implode(args, " "));
 		}
@@ -74,7 +74,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 			ret = MUtil.list(args);
 		}
 		
-		if (this.getMassiveCommand().isUsingSmartQuotesRemoval())
+		if (this.getMassiveCommand().isUnsmart())
 		{
 			List<String> oldArgList = ret;
 			ret = new ArrayList<String>(oldArgList.size());

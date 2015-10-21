@@ -143,7 +143,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		if (MUtil.isntPlayer(watcher)) return;
 		
 		// Get the lowercased token predicate
-		Predictate<String> predictate = PredictateStartsWithIgnoreCase.get(event.getLastToken());
+		Predicate<String> predicate = PredicateStartsWithIgnoreCase.get(event.getLastToken());
 		
 		// Create a case insensitive set to check for already added stuff
 		Set<String> current = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
@@ -153,7 +153,7 @@ public class MassiveCoreEngineMain extends EngineAbstract
 		// TODO: Should this only be players? Would a player actually want to tab-complete @console?
 		for (String senderName : IdUtil.getNames(SenderPresence.ONLINE, SenderType.ANY))
 		{
-			if (!predictate.apply(senderName)) continue;
+			if (!predicate.apply(senderName)) continue;
 			if (current.contains(senderName)) continue;
 			if (!Mixin.canSee(watcher, senderName)) continue;
 			

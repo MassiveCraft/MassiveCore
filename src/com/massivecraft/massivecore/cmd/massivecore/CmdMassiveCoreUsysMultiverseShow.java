@@ -9,8 +9,8 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeMultiverse;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
@@ -24,8 +24,8 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 		// Aliases
 		this.addAliases("s", "show");
 		
-		// Args
-		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse to show info about");
+		// Parameters
+		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse to show info about");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_SHOW.node));

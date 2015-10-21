@@ -4,8 +4,8 @@ import com.massivecraft.massivecore.MassiveCoreEngineVariable;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARInteger;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeInteger;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
@@ -19,8 +19,8 @@ public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
 		// Aliases
 		this.addAliases("w", "whitespace");
 		
-		// Args
-		this.addArg(1, ARInteger.get(), "times").setDesc("the amount of whitespace to add to your buffer");
+		// Parameters
+		this.addParameter(1, TypeInteger.get(), "times").setDesc("the amount of whitespace to add to your buffer");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.BUFFER_WHITESPACE.node));

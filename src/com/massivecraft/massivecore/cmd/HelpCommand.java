@@ -23,8 +23,8 @@ public class HelpCommand extends MassiveCommand
 		// Aliases
 		this.addAliases("?", "h", "help");
 		
-		// Args
-		this.addArg(ArgSetting.getPage());
+		// Parameters
+		this.addParameter(Parameter.getPage());
 		
 		// Other
 		this.setDesc("");
@@ -41,34 +41,34 @@ public class HelpCommand extends MassiveCommand
 		int page = this.readArg(); 
 		
 		// Get parent command
-		if ( ! this.hasParentCommand()) return;
-		MassiveCommand parentCommand = this.getParentCommand();
+		if ( ! this.hasParent()) return;
+		MassiveCommand parent = this.getParent();
 		
 		// Create Lines
 		List<Mson> lines = new ArrayList<Mson>();
-		for (String helpline : parentCommand.getHelp())
+		for (String helpline : parent.getHelp())
 		{
 			lines.add(Mson.parse("<a>#<i> " + helpline));
 		}
 		
-		for (MassiveCommand subCommand : parentCommand.getSubCommands())
+		for (MassiveCommand child : parent.getChildren())
 		{
-			if ( ! subCommand.isVisibleTo(sender)) continue;
-			lines.add(subCommand.getUseageTemplate(this.getCommandChain(), true, true, sender));
+			if ( ! child.isVisibleTo(sender)) continue;
+			lines.add(child.getTemplate(this.getChain(), true, true, sender));
 		}
 		
 		// Send Lines
-		message(Txt.getPage(lines, page, "Help for command \"" + parentCommand.getAliases().get(0) + "\"", this));
+		message(Txt.getPage(lines, page, "Help for command \"" + parent.getAliases().get(0) + "\"", this));
 	}
 	
 	@Override
 	public boolean isVisibleTo(CommandSender sender)
 	{
 		boolean visible = super.isVisibleTo(sender);
-		if ( ! (this.hasParentCommand() && visible)) return visible;
+		if ( ! (this.hasParent() && visible)) return visible;
 		
 		int pageHeight = (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE;
-		int size = this.getParentCommand().getSubCommands().size();
+		int size = this.getParent().getChildren().size();
 		
 		if (size <= pageHeight)
 		{

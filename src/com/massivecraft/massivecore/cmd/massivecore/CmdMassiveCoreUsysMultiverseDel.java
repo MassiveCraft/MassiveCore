@@ -5,8 +5,8 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeMultiverse;
 
 public class CmdMassiveCoreUsysMultiverseDel extends MassiveCommand
 {
@@ -19,8 +19,8 @@ public class CmdMassiveCoreUsysMultiverseDel extends MassiveCommand
 		// Aliases
 		this.addAliases("d", "del");
 		
-		// Args
-		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse to delete");
+		// Parameters
+		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse to delete");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_DEL.node));

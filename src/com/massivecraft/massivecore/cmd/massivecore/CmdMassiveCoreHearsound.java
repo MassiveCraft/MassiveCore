@@ -6,10 +6,10 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.SoundEffect;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARList;
-import com.massivecraft.massivecore.cmd.arg.ARSoundEffect;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
+import com.massivecraft.massivecore.cmd.type.TypeList;
+import com.massivecraft.massivecore.cmd.type.TypeSoundEffect;
 
 public class CmdMassiveCoreHearsound extends MassiveCommand
 {
@@ -22,8 +22,8 @@ public class CmdMassiveCoreHearsound extends MassiveCommand
 		// Aliases
 		this.addAliases("hearsound", "hearsounds");
 		
-		// Args
-		this.addArg(ARList.get(ARSoundEffect.get()), "sound(s)", true).setDesc("the sounds to hear");
+		// Parameters
+		this.addParameter(TypeList.get(TypeSoundEffect.get()), "sound(s)", true).setDesc("the sounds to hear");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.HEARSOUND.node));

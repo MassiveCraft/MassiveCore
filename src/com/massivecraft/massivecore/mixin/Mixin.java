@@ -12,7 +12,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.ps.PS;
@@ -255,19 +255,19 @@ public class Mixin
 	}
 
 	// MSG: Predicate
-	public static boolean msgPredictate(Predictate<CommandSender> predictate, String msg)
+	public static boolean msgPredicate(Predicate<CommandSender> predicate, String msg)
 	{
-		return getMessageMixin().msgPredictate(predictate, msg);
+		return getMessageMixin().msgPredicate(predicate, msg);
 	}
 	
-	public static boolean msgPredictate(Predictate<CommandSender> predictate, String msg, Object... args)
+	public static boolean msgPredicate(Predicate<CommandSender> predicate, String msg, Object... args)
 	{
-		return getMessageMixin().msgPredictate(predictate, msg, args);
+		return getMessageMixin().msgPredicate(predicate, msg, args);
 	}
 	
-	public static boolean msgPredictate(Predictate<CommandSender> predictate, Collection<String> msgs)
+	public static boolean msgPredicate(Predicate<CommandSender> predicate, Collection<String> msgs)
 	{
-		return getMessageMixin().msgPredictate(predictate, msgs);
+		return getMessageMixin().msgPredicate(predicate, msgs);
 	}
 
 	// MSG: One
@@ -303,19 +303,19 @@ public class Mixin
 	}
 
 	// MESSAGE: Predicate
-	public static boolean messagePredictate(Predictate<CommandSender> predictate, Object message)
+	public static boolean messagePredicate(Predicate<CommandSender> predicate, Object message)
 	{
-		return getMessageMixin().messagePredictate(predictate, message);
+		return getMessageMixin().messagePredicate(predicate, message);
 	}
 	
-	public static boolean messagePredictate(Predictate<CommandSender> predictate, Object... messages)
+	public static boolean messagePredicate(Predicate<CommandSender> predicate, Object... messages)
 	{
-		return getMessageMixin().messagePredictate(predictate, messages);
+		return getMessageMixin().messagePredicate(predicate, messages);
 	}
 	
-	public static boolean messagePredictate(Predictate<CommandSender> predictate, Collection<?> messages)
+	public static boolean messagePredicate(Predicate<CommandSender> predicate, Collection<?> messages)
 	{
-		return getMessageMixin().messagePredictate(predictate, messages);
+		return getMessageMixin().messagePredicate(predicate, messages);
 	}
 
 	// MESSAGE: One

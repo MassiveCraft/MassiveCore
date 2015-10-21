@@ -19,8 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.massivecraft.massivecore.Predictate;
-import com.massivecraft.massivecore.PredictateStartsWithIgnoreCase;
+import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.mson.Mson;
 
@@ -756,7 +756,7 @@ public class Txt
 	// FILTER
 	// -------------------------------------------- //
 	
-	public static <T> List<T> getFiltered(Iterable<T> elements, Predictate<T> predictate)
+	public static <T> List<T> getFiltered(Iterable<T> elements, Predicate<T> predicate)
 	{
 		// Create Ret
 		List<T> ret = new ArrayList<T>();
@@ -764,7 +764,7 @@ public class Txt
 		// Fill Ret
 		for (T element : elements)
 		{
-			if ( ! predictate.apply(element)) continue;
+			if ( ! predicate.apply(element)) continue;
 			ret.add(element);
 		}
 		
@@ -772,14 +772,14 @@ public class Txt
 		return ret;
 	}
 	
-	public static <T> List<T> getFiltered(T[] elements, Predictate<T> predictate)
+	public static <T> List<T> getFiltered(T[] elements, Predicate<T> predicate)
 	{
-		return getFiltered(Arrays.asList(elements), predictate);
+		return getFiltered(Arrays.asList(elements), predicate);
 	}
 	
 	public static List<String> getStartsWithIgnoreCase(Iterable<String> elements, String prefix)
 	{
-		return getFiltered(elements, PredictateStartsWithIgnoreCase.get(prefix));
+		return getFiltered(elements, PredicateStartsWithIgnoreCase.get(prefix));
 	}
 	
 	public static List<String> getStartsWithIgnoreCase(String[] elements, String prefix)

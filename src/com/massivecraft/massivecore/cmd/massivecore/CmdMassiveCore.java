@@ -27,15 +27,15 @@ public class CmdMassiveCore extends MassiveCommand
 	
 	public CmdMassiveCore()
 	{
-		// SubCommands
-		this.addSubCommand(this.cmdMassiveCoreUsys);
-		this.addSubCommand(this.cmdMassiveCoreMStore);
-		this.addSubCommand(this.cmdMassiveCoreId);
-		this.addSubCommand(this.cmdMassiveCoreTest);
-		this.addSubCommand(this.cmdMassiveCoreHearsound);
-		this.addSubCommand(this.cmdMassiveCoreBuffer);
-		this.addSubCommand(this.cmdMassiveCoreCmdurl);
-		this.addSubCommand(this.cmdMassiveCoreVersion);
+		// Children
+		this.addChild(this.cmdMassiveCoreUsys);
+		this.addChild(this.cmdMassiveCoreMStore);
+		this.addChild(this.cmdMassiveCoreId);
+		this.addChild(this.cmdMassiveCoreTest);
+		this.addChild(this.cmdMassiveCoreHearsound);
+		this.addChild(this.cmdMassiveCoreBuffer);
+		this.addChild(this.cmdMassiveCoreCmdurl);
+		this.addChild(this.cmdMassiveCoreVersion);
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.BASECOMMAND.node));

@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.ImmutableList;
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.adapter.LowercaseEnumAdapter;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -903,10 +903,10 @@ public class Mson implements Serializable
 		return Mixin.messageAll(this);
 	}
 
-	// Predictate
-	public boolean messagePredictate(Predictate<CommandSender> predictate)
+	// Predicate
+	public boolean messagePredicate(Predicate<CommandSender> predicate)
 	{
-		return Mixin.messagePredictate(predictate, this);
+		return Mixin.messagePredicate(predicate, this);
 	}
 
 	// One

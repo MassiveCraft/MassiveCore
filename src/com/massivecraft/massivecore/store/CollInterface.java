@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 public interface CollInterface<E>
@@ -54,27 +54,27 @@ public interface CollInterface<E>
 	
 	public Collection<E> getAll();
 	
-	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
-	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
-	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Comparator<? super E> orderby);
-	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Integer limit, Integer offset);
-	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where, Integer limit);
+	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Comparator<? super E> orderby);
+	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Integer limit, Integer offset);
+	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Integer limit);
 	public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby, Integer limit, Integer offset);
 	public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby, Integer limit);
-	public List<E> getAll(Iterable<?> oids, Predictate<? super E> where);
+	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where);
 	public List<E> getAll(Iterable<?> oids, Comparator<? super E> orderby);
 	public List<E> getAll(Iterable<?> oids, Integer limit, Integer offset);
 	public List<E> getAll(Iterable<?> oids, Integer limit);
 	public List<E> getAll(Iterable<?> oids);
 	
-	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
-	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby, Integer limit);
-	public List<E> getAll(Predictate<? super E> where, Comparator<? super E> orderby);
-	public List<E> getAll(Predictate<? super E> where, Integer limit, Integer offset);
-	public List<E> getAll(Predictate<? super E> where, Integer limit);
+	public List<E> getAll(Predicate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
+	public List<E> getAll(Predicate<? super E> where, Comparator<? super E> orderby, Integer limit);
+	public List<E> getAll(Predicate<? super E> where, Comparator<? super E> orderby);
+	public List<E> getAll(Predicate<? super E> where, Integer limit, Integer offset);
+	public List<E> getAll(Predicate<? super E> where, Integer limit);
 	public List<E> getAll(Comparator<? super E> orderby, Integer limit, Integer offset);
 	public List<E> getAll(Comparator<? super E> orderby, Integer limit);
-	public List<E> getAll(Predictate<? super E> where);
+	public List<E> getAll(Predicate<? super E> where);
 	public List<E> getAll(Comparator<? super E> orderby);
 	public List<E> getAll(Integer limit, Integer offset);
 	public List<E> getAll(Integer limit);

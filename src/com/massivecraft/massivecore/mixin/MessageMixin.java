@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 
 public interface MessageMixin
 {
@@ -19,9 +19,9 @@ public interface MessageMixin
 	public boolean msgAll(Collection<String> msgs);
 	
 	// Predicate
-	public boolean msgPredictate(Predictate<CommandSender> predictate, String msg);
-	public boolean msgPredictate(Predictate<CommandSender> predictate, String msg, Object... args);
-	public boolean msgPredictate(Predictate<CommandSender> predictate, Collection<String> msgs);
+	public boolean msgPredicate(Predicate<CommandSender> predicate, String msg);
+	public boolean msgPredicate(Predicate<CommandSender> predicate, String msg, Object... args);
+	public boolean msgPredicate(Predicate<CommandSender> predicate, Collection<String> msgs);
 	
 	// One
 	public boolean msgOne(Object sendeeObject, String msg);
@@ -38,9 +38,9 @@ public interface MessageMixin
 	public boolean messageAll(Collection<?> messages);
 	
 	// Predicate
-	public boolean messagePredictate(Predictate<CommandSender> predictate, Object message);
-	public boolean messagePredictate(Predictate<CommandSender> predictate, Object... messages);
-	public boolean messagePredictate(Predictate<CommandSender> predictate, Collection<?> messages);
+	public boolean messagePredicate(Predicate<CommandSender> predicate, Object message);
+	public boolean messagePredicate(Predicate<CommandSender> predicate, Object... messages);
+	public boolean messagePredicate(Predicate<CommandSender> predicate, Collection<?> messages);
 	
 	// One
 	public boolean messageOne(Object sendeeObject, Object message);

@@ -8,8 +8,8 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.MStore;
@@ -26,8 +26,8 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 		// Aliases
 		this.addAliases("listcolls");
 		
-		// Args
-		this.addArg(ARString.get(), "db", ConfServer.dburi).setDesc("the database to list colls from");
+		// Parameters
+		this.addParameter(TypeString.get(), "db", ConfServer.dburi).setDesc("the database to list colls from");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.STORE_LISTCOLLS.node));

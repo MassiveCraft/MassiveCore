@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.nms.NmsPacket;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -45,10 +45,10 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	// Predicate
 	// NOTE: Targets messageOne
 	@Override
-	public boolean messagePredictate(Predictate<CommandSender> predictate, Collection<?> messages)
+	public boolean messagePredicate(Predicate<CommandSender> predicate, Collection<?> messages)
 	{
 		// Check Predicate
-		if (predictate == null) return false;
+		if (predicate == null) return false;
 		
 		// Check Messages
 		if (messages == null) return false;
@@ -57,7 +57,7 @@ public class MessageMixinDefault extends MessageMixinAbstract
 		// Here
 		for (CommandSender sender : IdUtil.getLocalSenders())
 		{
-			if (!predictate.apply(sender)) continue;
+			if (!predicate.apply(sender)) continue;
 			this.messageOne(sender, messages);
 		}
 		

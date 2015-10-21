@@ -4,8 +4,8 @@ import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARAspect;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeAspect;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
@@ -19,8 +19,8 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 		// Aliases
 		this.addAliases("s", "show");
 		
-		// Args
-		this.addArg(ARAspect.get(), "aspect").setDesc("the aspect to show info about");
+		// Parameters
+		this.addParameter(TypeAspect.get(), "aspect").setDesc("the aspect to show info about");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_ASPECT_SHOW.node));

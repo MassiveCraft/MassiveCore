@@ -20,10 +20,10 @@ public class CmdMassiveCoreUsysUniverse extends MassiveCommand
 	
 	public CmdMassiveCoreUsysUniverse()
 	{
-		// SubCommands
-		this.addSubCommand(this.cmdMassiveCoreUsysUniverseNew);
-		this.addSubCommand(this.cmdMassiveCoreUsysUniverseDel);
-		this.addSubCommand(this.cmdMassiveCoreUsysUniverseClear);
+		// Children
+		this.addChild(this.cmdMassiveCoreUsysUniverseNew);
+		this.addChild(this.cmdMassiveCoreUsysUniverseDel);
+		this.addChild(this.cmdMassiveCoreUsysUniverseClear);
 		
 		// Aliases
 		this.addAliases("u", "universe");

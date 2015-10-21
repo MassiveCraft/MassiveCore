@@ -5,9 +5,9 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeMultiverse;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 
 public class CmdMassiveCoreUsysUniverseClear extends MassiveCommand
 {
@@ -20,9 +20,9 @@ public class CmdMassiveCoreUsysUniverseClear extends MassiveCommand
 		// Aliases
 		this.addAliases("c", "clear");
 		
-		// Args
-		this.addArg(ARString.get(), "universe").setDesc("the universe to clear");
-		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to clear");
+		// Parameters
+		this.addParameter(TypeString.get(), "universe").setDesc("the universe to clear");
+		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to clear");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_UNIVERSE_CLEAR.node));

@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class MessageMixinAbstract implements MessageMixin
@@ -35,23 +35,23 @@ public abstract class MessageMixinAbstract implements MessageMixin
 		return this.messageAll(Txt.parse(msgs));
 	}
 	
-	// Predictate
+	// Predicate
 	@Override
-	public boolean msgPredictate(Predictate<CommandSender> predictate, String msg)
+	public boolean msgPredicate(Predicate<CommandSender> predicate, String msg)
 	{
-		return this.messagePredictate(predictate, Txt.parse(msg));
+		return this.messagePredicate(predicate, Txt.parse(msg));
 	}
 	
 	@Override
-	public boolean msgPredictate(Predictate<CommandSender> predictate, String msg, Object... args)
+	public boolean msgPredicate(Predicate<CommandSender> predicate, String msg, Object... args)
 	{
-		return this.messagePredictate(predictate, Txt.parse(msg, args));
+		return this.messagePredicate(predicate, Txt.parse(msg, args));
 	}
 	
 	@Override
-	public boolean msgPredictate(Predictate<CommandSender> predictate, Collection<String> msgs)
+	public boolean msgPredicate(Predicate<CommandSender> predicate, Collection<String> msgs)
 	{
-		return this.messagePredictate(predictate, Txt.parse(msgs));
+		return this.messagePredicate(predicate, Txt.parse(msgs));
 	}
 	
 	// One
@@ -92,15 +92,15 @@ public abstract class MessageMixinAbstract implements MessageMixin
 	
 	// Predicate
 	@Override
-	public boolean messagePredictate(Predictate<CommandSender> predictate, Object message)
+	public boolean messagePredicate(Predicate<CommandSender> predicate, Object message)
 	{
-		return this.messagePredictate(predictate, Collections.singleton(message));
+		return this.messagePredicate(predicate, Collections.singleton(message));
 	}
 	
 	@Override
-	public boolean messagePredictate(Predictate<CommandSender> predictate, Object... messages)
+	public boolean messagePredicate(Predicate<CommandSender> predicate, Object... messages)
 	{
-		return this.messagePredictate(predictate, Arrays.asList(messages));
+		return this.messagePredicate(predicate, Arrays.asList(messages));
 	}
 	
 	// One

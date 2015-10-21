@@ -8,8 +8,8 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.MStore;
@@ -26,9 +26,9 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 		// Aliases
 		this.addAliases("copydb");
 		
-		// Args
-		this.addArg(ARString.get(), "from").setDesc("the database to copy from");
-		this.addArg(ARString.get(), "to").setDesc("the database to copy to");
+		// Parameters
+		this.addParameter(TypeString.get(), "from").setDesc("the database to copy from");
+		this.addParameter(TypeString.get(), "to").setDesc("the database to copy to");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.STORE_COPYDB.node));

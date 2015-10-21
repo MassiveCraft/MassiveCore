@@ -4,9 +4,9 @@ import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
-import com.massivecraft.massivecore.cmd.arg.ARMultiverse;
-import com.massivecraft.massivecore.cmd.arg.ARString;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
+import com.massivecraft.massivecore.cmd.type.TypeMultiverse;
+import com.massivecraft.massivecore.cmd.type.TypeString;
 
 public class CmdMassiveCoreUsysWorld extends MassiveCommand
 {
@@ -19,10 +19,10 @@ public class CmdMassiveCoreUsysWorld extends MassiveCommand
 		// Aliases
 		this.addAliases("w", "world");
 		
-		// Args
-		this.addArg(ARString.get(), "world").setDesc("the world to move");
-		this.addArg(ARString.get(), "universe").setDesc("the universe to move the world ro");
-		this.addArg(ARMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to move the world to");
+		// Parameters
+		this.addParameter(TypeString.get(), "world").setDesc("the world to move");
+		this.addParameter(TypeString.get(), "universe").setDesc("the universe to move the world ro");
+		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to move the world to");
 		
 		// Requirements
 		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.USYS_WORLD.node));

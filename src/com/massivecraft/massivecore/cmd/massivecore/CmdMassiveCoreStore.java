@@ -20,12 +20,12 @@ public class CmdMassiveCoreStore extends MassiveCommand
 	
 	public CmdMassiveCoreStore()
 	{
-		// SubCommands
-		this.addSubCommand(this.cmdMassiveCoreStoreStats);
-		this.addSubCommand(this.cmdMassiveCoreStoreListcolls);
-		this.addSubCommand(this.cmdMassiveCoreStoreCopydb);
+		// Children
+		this.addChild(this.cmdMassiveCoreStoreStats);
+		this.addChild(this.cmdMassiveCoreStoreListcolls);
+		this.addChild(this.cmdMassiveCoreStoreCopydb);
 		
-		// Args
+		// Parameters
 		this.addAliases("store");
 		
 		// Requirements

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.massivecraft.massivecore.cmd.arg.ARUniverse;
+import com.massivecraft.massivecore.cmd.type.TypeUniverse;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 
@@ -170,9 +170,9 @@ public class Multiverse extends Entity<Multiverse>
 	// ARG READERS
 	// -------------------------------------------- //
 	
-	public ARUniverse argReaderUniverse()
+	public TypeUniverse typeUniverse()
 	{
-		return new ARUniverse(this);
+		return new TypeUniverse(this);
 	}
 	
 }
