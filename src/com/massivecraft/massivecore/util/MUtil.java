@@ -1371,13 +1371,17 @@ public class MUtil
 	@SafeVarargs
 	public static <T> List<T> list(T... items)
 	{
-		return new MassiveList<T>(Arrays.asList(items));
+		List<T> ret = new MassiveList<T>(items.length);
+		Collections.addAll(ret, items);
+		return ret;
 	}
 	
 	@SafeVarargs
 	public static <T> Set<T> set(T... items)
 	{
-		return new MassiveSet<T>(Arrays.asList(items));
+		Set<T> ret = new MassiveSet<T>(items.length);
+		Collections.addAll(ret, items);
+		return ret;
 	}
 	
 	public static Set<String> treeset(String... items)
