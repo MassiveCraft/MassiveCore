@@ -21,7 +21,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.PredicateStartsWithIgnoreCase;
-import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mson.Mson;
 
 import static com.massivecraft.massivecore.mson.Mson.mson;
@@ -38,7 +39,8 @@ public class Txt
 	public static final Map<String, String> parseReplacements;
 	public static final Pattern parsePattern;
 	
-	public static final Pattern REGEX_WHITESPACE = Pattern.compile("\\s+");
+	public static final Pattern PATTERN_WHITESPACE = Pattern.compile("\\s+");
+	public static final Pattern PATTERN_NEWLINE = Pattern.compile("\\r?\\n");
 	
 	public static final long millisPerSecond = 1000;
 	public static final long millisPerMinute = 60 * millisPerSecond;
@@ -196,7 +198,7 @@ public class Txt
 	
 	public static ArrayList<String> wrap(final String string)
 	{
-		return new ArrayList<String>(Arrays.asList(string.split("\\r?\\n")));
+		return new ArrayList<String>(Arrays.asList(PATTERN_NEWLINE.split(string)));
 	}
 	
 	public static ArrayList<String> wrap(final Collection<String> strings)
@@ -408,9 +410,9 @@ public class Txt
 		return implode(parts, " ");
 	}
 	
-	public static String getNicedEnum(Object enumObject)
+	public static <T extends Enum<T>> String getNicedEnum(T enumObject)
 	{
-		return getNicedEnumString(enumObject.toString());
+		return getNicedEnumString(enumObject.name());
 	}
 	
 	public static String getMaterialName(Material material)
@@ -429,11 +431,24 @@ public class Txt
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			if (itemMeta.hasDisplayName())
 			{
-				return color + itemMeta.getDisplayName();
+				return color.toString() + ChatColor.ITALIC.toString() + itemMeta.getDisplayName();
 			}
 		}
 		
 		return color + Txt.getMaterialName(itemStack.getType());
+	}
+	
+	public static Mson createItemMson(ItemStack item)
+	{
+		String name = Txt.getItemName(item);
+		String colors = Txt.getStartColors(name);
+		name = colors + "[" + ChatColor.stripColor(name) + "]";
+		
+		Mson ret = Mson.fromParsedMessage(name);
+		
+		if (InventoryUtil.isSomething(item)) ret = ret.item(item);
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -686,6 +701,15 @@ public class Txt
 	}
 	
 	// -------------------------------------------- //
+	// FORMATTING CANDY
+	// -------------------------------------------- //
+	
+	public static String parenthesize(String string)
+	{
+		return Txt.parse("<silver>(%s<silver>)", string);
+	}
+	
+	// -------------------------------------------- //
 	// "SMART" QUOTES
 	// -------------------------------------------- //
 	// The quite stupid "Smart quotes" design idea means replacing normal characters with mutated UTF-8 alternatives.
@@ -845,4 +869,45 @@ public class Txt
 		
 		return ret;
 	}
+	
+	// -------------------------------------------- //
+	// PREPONDFIX
+	// -------------------------------------------- //
+	// This weird algorithm takes:
+	// - A prefix
+	// - A centerpiece single string or a list of strings.
+	// - A suffix
+	// If the centerpiece is a single String it just concatenates prefix + centerpiece + suffix.
+	// If the centerpiece is multiple Strings it concatenates prefix + suffix and then appends the centerpice at the end.
+	// This algorithm is used in the editor system.
+	
+	public static List<String> prepondfix(String prefix, List<String> strings, String suffix)
+	{
+		// Create
+		List<String> ret = new MassiveList<String>();
+		
+		// Fill
+		List<String> parts = new MassiveList<String>();
+		if (prefix != null) parts.add(prefix);
+		if (strings.size() == 1) parts.add(strings.get(0));
+		if (suffix != null) parts.add(suffix);
+		
+		ret.add(Txt.implode(parts, " "));
+		
+		if (strings.size() != 1)
+		{
+			ret.addAll(strings);
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	public static String prepondfix(String prefix, String string, String suffix)
+	{
+		List<String> strings = Arrays.asList(PATTERN_NEWLINE.split(string));
+		List<String> ret = prepondfix(prefix, strings, suffix);
+		return implode(ret, "\n");
+	}
+	
 }

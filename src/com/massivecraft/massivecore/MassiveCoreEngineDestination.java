@@ -11,10 +11,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.cmd.type.TypePS;
-import com.massivecraft.massivecore.cmd.type.TypeSenderId;
-import com.massivecraft.massivecore.cmd.type.TypeWorldId;
 import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.type.TypePS;
+import com.massivecraft.massivecore.command.type.TypeWorldId;
+import com.massivecraft.massivecore.command.type.sender.TypeSenderId;
 import com.massivecraft.massivecore.event.EventMassiveCoreDestination;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.teleport.Destination;

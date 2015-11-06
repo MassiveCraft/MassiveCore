@@ -8,10 +8,11 @@ import java.util.Map.Entry;
 
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
-public interface CollInterface<E>
+public interface CollInterface<E> extends Named
 {
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?

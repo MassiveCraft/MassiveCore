@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.nms.NmsItem;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;

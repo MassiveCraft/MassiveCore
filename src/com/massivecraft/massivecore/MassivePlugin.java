@@ -10,7 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.massivecraft.massivecore.cmd.MassiveCommand;
+import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.integration.IntegrationGlue;
 import com.massivecraft.massivecore.integration.Integration;
 import com.massivecraft.massivecore.store.Coll;

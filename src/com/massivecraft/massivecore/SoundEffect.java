@@ -7,9 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.cmd.type.TypeFloat;
-import com.massivecraft.massivecore.cmd.type.TypeSound;
-
 public final class SoundEffect implements Cloneable, Serializable
 {
 	private static final transient long serialVersionUID = 1L;
@@ -59,29 +56,6 @@ public final class SoundEffect implements Cloneable, Serializable
 	public static SoundEffect valueOf(Sound sound, float volume, float pitch)
 	{
 		return new SoundEffect(sound, volume, pitch);
-	}
-	
-	public static SoundEffect valueOf(String soundString) throws Exception
-	{
-		if (soundString == null) throw new NullPointerException("soundString was null");
-		soundString = soundString.trim();
-		
-		String[] parts = soundString.split("[^a-zA-Z0-9_.]+");
-		Sound sound = TypeSound.get().read(parts[0]);
-		
-		float volume = 1.0f;
-		if (parts.length >= 2)
-		{
-			volume = TypeFloat.get().read(parts[1]);
-		}
-		
-		float pitch = 1.0f;
-		if (parts.length >= 3)
-		{
-			pitch = TypeFloat.get().read(parts[2]);
-		}
-		
-		return SoundEffect.valueOf(sound, volume, pitch);
 	}
 	
 	// -------------------------------------------- //

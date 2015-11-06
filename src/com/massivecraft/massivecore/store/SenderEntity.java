@@ -8,11 +8,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
+public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> implements Named
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -38,7 +39,7 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E>
 		this.senderInitiated = true;
 	}
 
-	public String getName()
+	@Override public String getName()
 	{
 		return IdUtil.getName(this.getId());
 	}
