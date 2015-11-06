@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.bukkit.WorldType;
 
+import com.massivecraft.massivecore.collections.MassiveSet;
+
 public class TypeWorldType extends TypeEnum<WorldType>
 {
 	// -------------------------------------------- //
@@ -24,7 +26,7 @@ public class TypeWorldType extends TypeEnum<WorldType>
 	@Override
 	public Set<String> getNamesInner(WorldType value)
 	{
-		Set<String> ret = super.getNamesInner(value);
+		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
 		
 		if (value == WorldType.NORMAL)
 		{

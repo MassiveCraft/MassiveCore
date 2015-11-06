@@ -15,7 +15,6 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.CommandEditSimple;
 import com.massivecraft.massivecore.command.editor.EditSettings;
@@ -122,7 +121,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	public Set<String> getVisualsInner(T value, CommandSender sender)
 	{
-		return new MassiveSet<String>(this.getVisualInner(value, sender));
+		return Collections.singleton(this.getVisualInner(value, sender));
 	}
 	public Set<String> getVisualsInner(T value)
 	{
@@ -131,7 +130,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	public Set<String> getVisuals(T value, CommandSender sender)
 	{
-		if (value == null) return new MassiveSet<String>(NULL);
+		if (value == null) return Collections.singleton(NULL);
 		return this.getVisualsInner(value, sender);
 	}
 	public Set<String> getVisuals(T value)
@@ -162,12 +161,12 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	public Set<String> getNamesInner(T value)
 	{
-		return new MassiveSet<String>(this.getNameInner(value));
+		return Collections.singleton(this.getNameInner(value));
 	}
 	
 	public Set<String> getNames(T value)
 	{
-		if (value == null) return new MassiveSet<String>();
+		if (value == null) return Collections.emptySet();
 		return this.getNamesInner(value);
 	}
 	
@@ -198,12 +197,12 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	public Set<String> getIdsInner(T value)
 	{
-		return new MassiveSet<String>(this.getIdInner(value));
+		return Collections.singleton(this.getIdInner(value));
 	}
 	
 	public Set<String> getIds(T value)
 	{
-		if (value == null) return new MassiveSet<String>();
+		if (value == null) return Collections.emptySet();
 		return this.getIdsInner(value);
 	}
 	
