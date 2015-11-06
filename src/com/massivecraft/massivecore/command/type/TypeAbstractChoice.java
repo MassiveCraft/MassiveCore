@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +17,7 @@ import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.command.type.collection.AllAble;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements AllAble<T>
@@ -41,6 +43,19 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public String getHelp() { return this.help; }
 	public TypeAbstractChoice<T> setHelp(String help) { this.help = help; return this; }
 	
+	protected boolean canSeeOverridden = calcCanSeeOverriden();
+	public boolean isCanSeeOverridden() { return this.canSeeOverridden; }
+	public void setCanSeeOverridden(boolean canSeeOverridden) { this.canSeeOverridden = canSeeOverridden; }
+	public boolean calcCanSeeOverriden()
+	{
+		return ! TypeAbstractChoice.class.equals(ReflectionUtil.getSuperclassDeclaringMethod(this.getClass(), true, "canSee"));
+	}
+	
+	// TODO: cache stuff... the options?
+	protected boolean cachable = false;
+	public boolean isCachable() { return this.cachable; }
+	public void setCachable(boolean cachable) { this.cachable = cachable; }
+	
 	// -------------------------------------------- //
 	// OVERRIDE: TYPE
 	// -------------------------------------------- //
@@ -51,13 +66,22 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		// NPE Evade
 		if (arg == null) return null;
 		
+		// Exact
+		T exact = this.getExactMatch(arg);
+		if (exact != null) return exact;
+		
 		// Get All
 		Collection<T> all = this.getAll(sender);
 		
 		// Get Options
+		// NOTE: These keys are prepared.
+		// TODO: Optimization should be possible here.
+		// TODO: If the "all" never changes AKA are cached... we can cache the options as well.
+		// TODO: If they are different for visibility but do not change... we can
 		Map<String, T> options = this.getOptions(all);
 		
 		// Get Matches
+		// NOTE: I can probably not optimize this method further?
 		List<T> matches = this.getMatches(options, arg, false);
 		
 		// Exact
@@ -159,6 +183,9 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	@Override
 	public Collection<T> getAll(CommandSender sender)
 	{
+		// No Can See Override?
+		if ( ! this.isCanSeeOverridden()) return this.getAll();
+		
 		// Create
 		Set<T> ret = new MassiveSet<T>();
 		
@@ -192,23 +219,21 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	@SuppressWarnings("unchecked")
 	public List<T> getMatches(Map<String, T> options, String arg, boolean levenshtein)
 	{
-		// Exact
-		T exact = this.getExactMatch(arg);
-		if (exact != null) return new MassiveList<T>(exact);
-		
 		// Create
 		List<T> ret = new MassiveList<T>();
 		
 		// Prepare
 		arg = this.prepareKey(arg);
 		
+		// Exact
+		T exact = options.get(arg);
+		if (exact != null) return new MassiveList<T>(exact);
+		
 		// Fill
 		for (Entry<String, T> entry : options.entrySet())
 		{
 			String key = entry.getKey();
 			T value = entry.getValue();
-			
-			if (arg.equals(key)) return new MassiveList<T>(value);
 			
 			if (levenshtein)
 			{
@@ -292,12 +317,14 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	}
 	
 	// The purpose of this method is to strip down a string to a comparable string key.
+	protected static Pattern PATTERN_KEY_UNWANTED = Pattern.compile("[_\\-\\s]+");
 	public String prepareKey(String string)
 	{
 		if (string == null) return null;
 		string = string.trim();
 		string = string.toLowerCase();
-		string = string.replaceAll("[_\\-\\s]+", "");
+		// SLOW: string = string.replaceAll("[_\\-\\s]+", "");
+		string = PATTERN_KEY_UNWANTED.matcher(string).replaceAll("");
 		return string;
 	}
 

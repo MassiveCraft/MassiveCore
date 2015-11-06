@@ -233,7 +233,7 @@ public class Txt
 	{
 		if (string == null) return null;
 		if (string.length() == 0) return string;
-		return string.substring(0, 1).toUpperCase()+string.substring(1);
+		return string.substring(0, 1).toUpperCase() + string.substring(1);
 	}
 	
 	public static String repeat(String string, int times)
@@ -400,10 +400,11 @@ public class Txt
 	// Material name tools
 	// -------------------------------------------- //
 	
+	protected static Pattern PATTERN_ENUM_SPLIT = Pattern.compile("[\\s_]+");
 	public static String getNicedEnumString(String str)
 	{
 		List<String> parts = new ArrayList<String>();  
-		for (String part : str.toLowerCase().split("[\\s_]+"))
+		for (String part : PATTERN_ENUM_SPLIT.split(str.toLowerCase()))
 		{
 			parts.add(upperCaseFirst(part));
 		}

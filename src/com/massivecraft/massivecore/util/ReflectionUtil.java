@@ -1,9 +1,12 @@
 package com.massivecraft.massivecore.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.massivecraft.massivecore.Predicate;
 
 public class ReflectionUtil
 {
@@ -174,6 +177,50 @@ public class ReflectionUtil
 		return transferFields(clazz, from, to, null);
 	}
 	
-
+	// -------------------------------------------- //
+	// SUPERCLASSES
+	// -------------------------------------------- //
+	
+	public static List<Class<?>> getSuperclasses(Class<?> clazz, boolean includeSelf)
+	{
+		// Create
+		List<Class<?>> ret = new ArrayList<Class<?>>();
+		
+		// Fill
+		if ( ! includeSelf) clazz = clazz.getSuperclass();
+		while (clazz != null)
+		{
+			ret.add(clazz);
+			clazz = clazz.getSuperclass();
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	public static Class<?> getSuperclassPredicate(Class<?> clazz, boolean includeSelf, Predicate<Class<?>> predicate)
+	{
+		for (Class<?> superClazz : getSuperclasses(clazz, includeSelf))
+		{
+			if (predicate.apply(superClazz)) return superClazz;
+		}
+		return null;
+	}
+	
+	public static Class<?> getSuperclassDeclaringMethod(Class<?> clazz, boolean includeSelf, final String methodName)
+	{
+		return getSuperclassPredicate(clazz, includeSelf, new Predicate<Class<?>>()
+		{
+			@Override
+			public boolean apply(Class<?> clazz)
+			{
+				for (Method method : clazz.getDeclaredMethods())
+				{
+					if (method.getName().equals(methodName)) return true;
+				}
+				return false;
+			}
+		});
+	}
 	
 }
