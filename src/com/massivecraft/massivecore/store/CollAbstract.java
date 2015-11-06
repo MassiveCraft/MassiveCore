@@ -10,7 +10,7 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 
-public abstract class CollAbstract<E> implements CollInterface<E>
+public abstract class CollAbstract<E extends Entity<E>> implements CollInterface<E>
 {
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?

@@ -21,6 +21,10 @@ import java.util.Set;
 
 import com.massivecraft.massivecore.MassiveCore;
 
+/*
+ * This pusher looks for changes in a flatfile database system.
+ * Hopefully it is quicker than the poller.
+ */
 public class PusherCollFlatfile extends Thread implements PusherColl
 {
 	// -------------------------------------------- //

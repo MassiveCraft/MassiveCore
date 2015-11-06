@@ -17,13 +17,12 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.NaturalOrderComparator;
-import com.massivecraft.massivecore.store.accessor.Accessor;
+import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-public class Coll<E> extends CollAbstract<E>
+public class Coll<E extends Entity<E>> extends CollAbstract<E>
 {
 	// -------------------------------------------- //
 	// GLOBAL REGISTRY
@@ -189,9 +188,9 @@ public class Coll<E> extends CollAbstract<E>
 	@Override public boolean isLowercasing() { return this.lowercasing; }
 	@Override public void setLowercasing(boolean lowercasing) { this.lowercasing = lowercasing; }
 	
-	protected int localPollFrequency = 5;
-	@Override public int getLocalPollFrequency() { return this.localPollFrequency; }
-	@Override public void setLocalPollFrequency(int frequency) { this.localPollFrequency = frequency; }
+	protected int localPollInfrequency = MStore.DEFAULT_LOCAL_POLL_INFREQUENCY;
+	@Override public int getLocalPollInfrequency() { return this.localPollInfrequency; }
+	@Override public void setLocalPollInfrequency(int infrequence) { this.localPollInfrequency = infrequence; }
 	
 	// We often try to call Entity#changed to inform that an entity has been changed locally.
 	// And on some Colls we expect it to always be done.
@@ -205,14 +204,7 @@ public class Coll<E> extends CollAbstract<E>
 	// If it is default it should not be saved.
 	@Override public boolean isDefault(E entity)
 	{
-		if (entity instanceof Entity)
-		{
-			return ((Entity<?>)entity).isDefault();
-		}
-		else
-		{
-			return false;
-		}
+		return entity.isDefault();
 	}
 
 	// -------------------------------------------- //
@@ -220,34 +212,14 @@ public class Coll<E> extends CollAbstract<E>
 	// -------------------------------------------- //
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void copy(Object ofrom, Object oto)
+	public void copy(E ofrom, E oto)
 	{
 		if (ofrom == null) throw new NullPointerException("ofrom");
 		if (oto == null) throw new NullPointerException("oto");
-			
-		if (ofrom instanceof Entity)
-		{
-			Entity efrom = (Entity)ofrom;
-			Entity eto = (Entity)oto;
-			
-			eto.load(efrom);
-		}
-		else if (ofrom instanceof JsonObject)
-		{
-			JsonObject jfrom = (JsonObject)ofrom;
-			JsonObject jto = (JsonObject)oto;
-			// Clear To
-			jto.entrySet().clear();
-			// Copy
-			for (Entry<String, JsonElement> entry : jfrom.entrySet())
-			{
-				jto.add(entry.getKey(), entry.getValue());
-			} 
-		}
-		else
-		{
-			Accessor.get(this.getEntityClass()).copy(ofrom, oto);
-		}
+		
+		Entity efrom = (Entity)ofrom;
+		Entity eto = (Entity)oto;
+		eto.load(efrom);
 	}
 	
 	// This simply creates and returns a new instance
@@ -291,7 +263,6 @@ public class Coll<E> extends CollAbstract<E>
 		return this.attach(entity, oid, true);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected synchronized String attach(E entity, Object oid, boolean noteModification)
 	{
 		// Check entity
@@ -316,25 +287,18 @@ public class Coll<E> extends CollAbstract<E>
 		this.preAttach(entity, id);
 		
 		// Add entity reference info
-		if (entity instanceof Entity)
-		{
-			((Entity)entity).setColl(this);
-			((Entity)entity).setId(id);
-		}
+		entity.setColl(this);
+		entity.setId(id);
 		
 		// Attach
 		this.id2entity.put(id, entity);
 		this.entity2id.put(entity, id);
-		
-		EntityMeta meta = new EntityMeta();
 		
 		// Identify Modification
 		if (noteModification)
 		{
 			this.identifiedModifications.put(id, Modification.LOCAL_ATTACH);
 		}
-		
-		this.metaData.put(id, meta);
 		
 		// POST
 		this.postAttach(entity, id);
@@ -392,37 +356,25 @@ public class Coll<E> extends CollAbstract<E>
 	@Override
 	public void preAttach(E entity, String id)
 	{
-		if (entity instanceof Entity)
-		{
-			((Entity<?>)entity).preAttach(id);
-		}
+		entity.preAttach(id);
 	}
 	
 	@Override
 	public void postAttach(E entity, String id)
 	{
-		if (entity instanceof Entity)
-		{
-			((Entity<?>)entity).postAttach(id);
-		}
+		entity.postAttach(id);
 	}
 	
 	@Override
 	public void preDetach(E entity, String id)
 	{
-		if (entity instanceof Entity)
-		{
-			((Entity<?>)entity).preDetach(id);
-		}
+		entity.preDetach(id);
 	}
 	
 	@Override
 	public void postDetach(E entity, String id)
 	{
-		if (entity instanceof Entity)
-		{
-			((Entity<?>)entity).postDetach(id);
-		}
+		entity.postDetach(id);
 	}
 	
 	// -------------------------------------------- //
@@ -449,28 +401,6 @@ public class Coll<E> extends CollAbstract<E>
 	// -------------------------------------------- //
 	// SYNCLOG
 	// -------------------------------------------- //
-	
-	// The strings are the ids.
-	protected Map<String, EntityMeta> metaData;
-	
-	protected EntityMeta getMetaFixed(String id)
-	{
-		if (id == null) throw new NullPointerException("id");
-		EntityMeta meta = this.metaData.get(id);
-		if (meta == null)
-		{
-			meta = new EntityMeta();
-			this.metaData.put(id, meta);
-		}
-		return meta;
-	}
-	
-	protected EntityMeta setMetaFixed(String id, EntityMeta meta)
-	{
-		if (id == null) throw new NullPointerException("id");
-		if (meta == null) return this.metaData.remove(id);
-		else return this.metaData.put(id, meta);
-	}
 
 	// Log database synchronization for display in the "/massivecore mstore stats" command.
 	private Map<String, Long> id2out = new TreeMap<String, Long>();
@@ -502,26 +432,22 @@ public class Coll<E> extends CollAbstract<E>
 	// SYNC LOWLEVEL IO ACTIONS
 	// -------------------------------------------- //
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public synchronized E removeAtLocalFixed(String id)
 	{
 		if (id == null) throw new NullPointerException("id");
 		
 		this.removeIdentifiedModificationFixed(id);
-		this.setMetaFixed(id, null);
 		
 		E entity = this.id2entity.remove(id);
 		if (entity == null) return null;
+		entity.clearSyncLogFields();
 		
 		this.entity2id.remove(entity);
 		
 		// Remove entity reference info
-		if (entity instanceof Entity)
-		{
-			((Entity)entity).setColl(null);
-			((Entity)entity).setId(null);
-		}
+		entity.setColl(null);
+		entity.setId(null);
 		
 		return entity;
 	}
@@ -532,9 +458,9 @@ public class Coll<E> extends CollAbstract<E>
 		if (id == null) throw new NullPointerException("id");
 		
 		this.removeIdentifiedModificationFixed(id);
-		this.setMetaFixed(id, null);
 		
 		this.getDb().delete(this, id);
+		Mixin.syncModification(this, id);
 	}
 	
 	@Override
@@ -543,20 +469,18 @@ public class Coll<E> extends CollAbstract<E>
 		if (id == null) throw new NullPointerException("id");
 		
 		this.removeIdentifiedModificationFixed(id);
-		this.setMetaFixed(id, null);
 		
 		E entity = this.id2entity.get(id);
 		if (entity == null) return;
-		
-		EntityMeta meta = this.getMetaFixed(id);
+		entity.clearSyncLogFields();
 		
 		JsonElement raw = this.getGson().toJsonTree(entity, this.getEntityClass());
-		meta.setLastRaw(raw);
+		entity.setLastRaw(raw);
 		
 		if (this.isDefault(entity))
 		{
 			this.getDb().delete(this, id);
-			meta.setDefault(true);
+			entity.setLastDefault(true);
 		}
 		else
 		{
@@ -564,8 +488,9 @@ public class Coll<E> extends CollAbstract<E>
 			// TODO: This fail should not happen often. We could handle it better though.
 			// Perhaps we should log it, or simply try again.
 			if (mtime == 0) return;
-			meta.setMtime(mtime);
+			entity.setLastMtime(mtime);
 		}
+		Mixin.syncModification(entity);
 	}
 	
 	@Override
@@ -612,11 +537,9 @@ public class Coll<E> extends CollAbstract<E>
 			this.attach(entity, id, false);
 		}
 		
-		EntityMeta meta = this.getMetaFixed(id);
-		
-		meta.setLastRaw(raw);
-		meta.setMtime(mtime);
-		meta.setDefault(false);
+		entity.setLastRaw(raw);
+		entity.setLastMtime(mtime);
+		entity.setLastDefault(false);
 	}
 	
 	public boolean remoteEntryIsOk(String id, Entry<JsonElement, Long> remoteEntry)
@@ -667,7 +590,6 @@ public class Coll<E> extends CollAbstract<E>
 		if (id == null) throw new NullPointerException("id");
 		// Meta might be non-existing. But then we create it here.
 		// If it is examined then it will be attached anyways.
-		EntityMeta meta = this.getMetaFixed(id);
 		Modification current = this.identifiedModifications.get(id);
 		// DEBUG
 		// if (Bukkit.isPrimaryThread())
@@ -692,7 +614,7 @@ public class Coll<E> extends CollAbstract<E>
 		// If we have it both locally and remotely.
 		if (existsLocal && existsRemote)
 		{
-			long lastMtime = meta.getMtime();
+			long lastMtime = localEntity.getLastMtime();
 			
 			// If mtime is not equal remote takes priority, and we assume it is altered.
 			if ( ! remoteMtime.equals(lastMtime)) return Modification.REMOTE_ALTER;
@@ -704,7 +626,7 @@ public class Coll<E> extends CollAbstract<E>
 		else if (existsLocal)
 		{
 			// ...and it was default and thus not saved to the db...
-			if (meta.isDefault())
+			if (localEntity.getLastDefault())
 			{
 				// ...and also actually altered.
 				// Then it is a local alter.
@@ -756,7 +678,6 @@ public class Coll<E> extends CollAbstract<E>
 		// Because they are performed by calling a method on this coll.
 		// Meta might be non-existing. But then we create it here.
 		// If it is examined then it will be attached anyways.
-		EntityMeta meta = this.getMetaFixed(id);
 		Modification current = this.identifiedModifications.get(id);
 		if (current != null && current.hasTopPriority()) return current;
 		
@@ -773,14 +694,12 @@ public class Coll<E> extends CollAbstract<E>
 		// So we don't have this anywhere?
 		if ( ! existsLocal && ! existsRemote) return Modification.UNKNOWN;
 		
-		Long lastMtime = meta.getMtime();
-		
 		// If time is different
 		// then it is remotely altered
-		if (existsLocal && existsRemote && ! lastMtime.equals(remoteMtime)) return Modification.REMOTE_ALTER;
+		if (existsLocal && existsRemote && ! remoteMtime.equals(localEntity.getLastMtime())) return Modification.REMOTE_ALTER;
 		
 		// If it doesn't exist remotely, and it wasn't because it was default. It was detached remotely.
-		if (!existsRemote && ! meta.isDefault()) return Modification.REMOTE_DETACH;
+		if (!existsRemote && existsLocal && ! localEntity.getLastDefault()) return Modification.REMOTE_DETACH;
 		
 		// If it doesn't exist locally, it was attached remotely.
 		if (!existsLocal) return Modification.REMOTE_ATTACH;
@@ -792,7 +711,7 @@ public class Coll<E> extends CollAbstract<E>
 	
 	protected boolean examineHasLocalAlterFixed(String id, E entity)
 	{
-		JsonElement lastRaw = this.getMetaFixed(id).getLastRaw();
+		JsonElement lastRaw = entity.getLastRaw();
 		JsonElement currentRaw = null;
 		
 		try
@@ -1026,7 +945,6 @@ public class Coll<E> extends CollAbstract<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	@SuppressWarnings("unchecked")
 	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, boolean sorted)
 	{
 		// Setup the name and the parsed parts
@@ -1057,7 +975,6 @@ public class Coll<E> extends CollAbstract<E>
 		this.entity2id = (Entity.class.isAssignableFrom(entityClass) && sorted) ? new ConcurrentSkipListMap<E, String>((Comparator<? super E>) ComparatorEntityId.get()) : new ConcurrentHashMap<E, String>();
 		
 		// ENTITY DATA
-		this.metaData = new ConcurrentHashMap<String, EntityMeta>();
 		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
 		
 		this.tickTask = new Runnable()

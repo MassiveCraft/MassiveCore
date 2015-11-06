@@ -99,9 +99,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// MSTORE CONFIGURATON
 	// -------------------------------------------- //
 	
-	public volatile long millisBetweenLocalPoll = 1000;
-	public volatile long millisBetweenLocalPollColl = 100;
-	
-	public volatile long millisBetweenRemotePoll = 1000;
-	public volatile long millisBetweenRemotePollColl = 100;
+	public volatile long millisBetweenLocalPoll = 5_000;
+	public volatile long millisBetweenRemotePollWithoutPusher = 5_000;
+	public volatile long millisBetweenRemotePollWithPusher = 30_000;
 }

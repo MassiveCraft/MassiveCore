@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.store;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 /**
  * Usage of this class is highly optional. You may persist anything. If you are 
@@ -12,10 +13,10 @@ import com.massivecraft.massivecore.xlib.gson.Gson;
 
 // Self referencing generic.
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
-public abstract class Entity<E extends Entity<E>>
+public class Entity<E extends Entity<E>>
 {
 	// -------------------------------------------- //
-	// COLL & ID
+	// FIELDS
 	// -------------------------------------------- //
 	
 	protected transient Coll<E> coll;
@@ -32,6 +33,25 @@ public abstract class Entity<E extends Entity<E>>
 		if (coll == null) return null;
 		
 		return coll.getUniverse();
+	}
+	
+	private volatile transient JsonElement lastRaw = null;
+	public JsonElement getLastRaw() { return this.lastRaw; }
+	public void setLastRaw(JsonElement lastRaw) { this.lastRaw = lastRaw; }
+	
+	private volatile transient long lastMtime = 0;
+	public long getLastMtime() { return this.lastMtime; }
+	public void setLastMtime(long lastMtime) { this.lastMtime = lastMtime; }
+	
+	private volatile transient boolean lastDefault = false;
+	public boolean getLastDefault() { return this.lastDefault; }
+	public void setLastDefault(boolean lastDefault) { this.lastDefault = lastDefault; }
+	
+	public void clearSyncLogFields()
+	{
+		this.lastRaw = null;
+		this.lastMtime = 0;
+		this.lastDefault = false;
 	}
 	
 	// -------------------------------------------- //

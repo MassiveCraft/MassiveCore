@@ -216,7 +216,6 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	// MATCHES
 	// -------------------------------------------- //
 	
-	@SuppressWarnings("unchecked")
 	public List<T> getMatches(Map<String, T> options, String arg, boolean levenshtein)
 	{
 		// Create

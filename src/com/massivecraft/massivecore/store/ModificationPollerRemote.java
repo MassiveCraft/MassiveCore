@@ -2,6 +2,9 @@ package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
 
+/*
+ * This class polls for remote changes in colls.
+ */
 public class ModificationPollerRemote extends ModificationPollerAbstract
 {
 	// -------------------------------------------- //
@@ -23,13 +26,16 @@ public class ModificationPollerRemote extends ModificationPollerAbstract
 	@Override
 	public long getMillisBetweenPoll()
 	{
-		return MassiveCoreMConf.get().millisBetweenRemotePoll;
-	}
+		// We will use the default DB for this check
+		if (MStore.getDb().supportsPusher())
+		{
+			return MassiveCoreMConf.get().millisBetweenRemotePollWithPusher;
+		}
+		else
+		{
+			return MassiveCoreMConf.get().millisBetweenRemotePollWithoutPusher;
+		}
 
-	@Override
-	public long getMillisBetweenPollColl()
-	{
-		return MassiveCoreMConf.get().millisBetweenRemotePollColl;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
+import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
@@ -38,6 +39,7 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 	// OVERRIDE
 	// -------------------------------------------- //
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void perform() throws MassiveException
 	{
@@ -71,8 +73,8 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 		for (String collname : fromDb.getCollnames())
 		{
 			countCollCurrent++;
-			final Coll<?> fromColl = new Coll<Object>(collname, Object.class, fromDb, MassiveCore.get());
-			final Coll<?> toColl = new Coll<Object>(collname, Object.class, toDb, MassiveCore.get());
+			final Coll fromColl = new Coll(collname, Entity.class, fromDb, MassiveCore.get());
+			final Coll toColl = new Coll(collname, Entity.class, toDb, MassiveCore.get());
 			
 			Collection<String> ids = fromDb.getIds(fromColl);
 			msg("<i>Now copying collection <h>%d/%d %s <i>with <h>%d <i>documents.", countCollCurrent, countCollTotal, collname, ids.size());

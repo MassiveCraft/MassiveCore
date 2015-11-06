@@ -16,6 +16,8 @@ import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.teleport.Destination;
 
 public class Mixin
@@ -71,6 +73,10 @@ public class Mixin
 	private static CommandMixin commandMixin = CommandMixinDefault.get();
 	public static CommandMixin getCommandMixin() { return commandMixin; }
 	public static void setCommandMixin(CommandMixin val) { commandMixin = val; }
+	
+	private static ModificationMixin modificationMixin = ModificationMixinDefault.get();
+	public static ModificationMixin getModificationMixin() { return modificationMixin; }
+	public static void setModificationMixin(ModificationMixin val) { modificationMixin = val; }
 	
 	// -------------------------------------------- //
 	// STATIC EXPOSE: WORLD
@@ -396,6 +402,20 @@ public class Mixin
 	public static boolean dispatchCommand(Object presentObject, Object senderObject, String commandLine)
 	{
 		return getCommandMixin().dispatchCommand(presentObject, senderObject, commandLine);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC EXPOSE: MODIFCATION
+	// -------------------------------------------- //
+	
+	public static void syncModification(Entity<?> entity)
+	{
+		getModificationMixin().syncModification(entity);
+	}
+	
+	public static void syncModification(Coll<?> coll, String id)
+	{
+		getModificationMixin().syncModification(coll, id);
 	}
 
 }

@@ -2,6 +2,9 @@ package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
 
+/*
+ * This class polls for local changes in all colls.
+ */
 public class ModificationPollerLocal extends ModificationPollerAbstract
 {
 	// -------------------------------------------- //
@@ -22,19 +25,15 @@ public class ModificationPollerLocal extends ModificationPollerAbstract
 	@Override
 	public long getMillisBetweenPoll()
 	{
-		return MassiveCoreMConf.get().millisBetweenLocalPoll;
-	}
-
-	@Override
-	public long getMillisBetweenPollColl()
-	{
-		return MassiveCoreMConf.get().millisBetweenLocalPollColl;
+		// The user specifies how often a default coll should be polled.
+		// Some colls might be polled more or less frequently.
+		return MassiveCoreMConf.get().millisBetweenLocalPoll / MStore.DEFAULT_LOCAL_POLL_INFREQUENCY;
 	}
 
 	@Override
 	public boolean poll(Coll<?> coll, long iterationCount)
 	{
-		if (iterationCount % coll.getLocalPollFrequency() == 0)
+		if (iterationCount % coll.getLocalPollInfrequency() == 0)
 		{
 			coll.identifyLocalModifications(false);
 			return true;

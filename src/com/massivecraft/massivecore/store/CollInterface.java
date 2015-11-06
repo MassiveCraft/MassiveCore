@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
-public interface CollInterface<E> extends Named
+public interface CollInterface<E extends Entity<E>> extends Named
 {
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
@@ -93,8 +93,8 @@ public interface CollInterface<E> extends Named
 	public boolean isLowercasing();
 	public void setLowercasing(boolean lowercasing);
 	
-	public int getLocalPollFrequency();
-	public void setLocalPollFrequency(int frequency);
+	public int getLocalPollInfrequency();
+	public void setLocalPollInfrequency(int frequency);
 	
 	public boolean isWarningOnLocalAlter();
 	public void setWarnOnLocalAlter(boolean warnOnLocalAlter);
@@ -107,7 +107,7 @@ public interface CollInterface<E> extends Named
 	// COPY AND CREATE
 	// -------------------------------------------- //
 	
-	public void copy(Object fromo, Object too);
+	public void copy(E fromo, E too);
 	
 	// This simply creates and returns a new instance
 	// It does not detach/attach or anything. Just creates a new instance.

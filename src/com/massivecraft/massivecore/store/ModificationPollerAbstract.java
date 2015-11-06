@@ -56,14 +56,9 @@ public abstract class ModificationPollerAbstract extends Thread
 	
 	public void identify() throws InterruptedException
 	{
-		final long waitEfterColl = this.getMillisBetweenPollColl();
 		for (Coll<?> coll : Coll.getInstances())
 		{
-			if (this.poll(coll, this.iterationCount))
-			{
-				Thread.sleep(waitEfterColl);
-			}
-			
+			this.poll(coll, this.iterationCount);
 		}
 	}
 	
@@ -72,6 +67,5 @@ public abstract class ModificationPollerAbstract extends Thread
 	// -------------------------------------------- //
 	
 	public abstract long getMillisBetweenPoll();
-	public abstract long getMillisBetweenPollColl();
 	public abstract boolean poll(Coll<?> coll, long iterationCount);
 }
