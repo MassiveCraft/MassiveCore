@@ -98,6 +98,18 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	// OVERRIDE: TYPE
 	// -------------------------------------------- //
 	
+	protected static final String MESSAGE_MATCH_NOTHING = Txt.parse("<b>No %s matches \"<h>%s<b>\".");
+	protected static final String MESSAGE_MATCH_AMBIGUOUS = Txt.parse("<b>%d %ss matches \"<h>%s<b>\".");
+	protected static final String MESSAGE_AVAILABLE_EMPTY = Txt.parse("<i>Note: There is no %s available.");
+	
+	protected static final String MESSAGE_COLON_AMBIGUOUS = Txt.parse("<aqua>Ambigous<silver>: ");
+	protected static final String MESSAGE_COLON_ALL = Txt.parse("<aqua>All<silver>: ");
+	protected static final String MESSAGE_COLON_SIMILAR = Txt.parse("<aqua>Similar<silver>: ");
+	
+	protected static final String MESSAGE_SUGGESTIONS_EMPTY = Txt.parse("<i>No suggestions found.");
+	protected static final String MESSAGE_SUGGESTIONS_MUCH = Txt.parse("<i>Over %d suggestions found (hiding output).");
+	
+	
 	@Override
 	public T read(String arg, CommandSender sender) throws MassiveException
 	{
@@ -131,15 +143,18 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		boolean suggestLevenshtein = false;
 		
 		// Nothing Found
+		String message;
 		if (matches.isEmpty())
 		{
-			exception.addMsg("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
+			message = String.format(MESSAGE_MATCH_NOTHING, this.getTypeName(), arg);
+			exception.addMessage(message);
 			suggestLevenshtein = true;
 		}
 		// Ambiguous
 		else
 		{
-			exception.addMsg("<b>%d %ss matches \"<h>%s<b>\".", matches.size(), this.getTypeName(), arg);
+			message = String.format(MESSAGE_MATCH_AMBIGUOUS, matches.size(), this.getTypeName(), arg);
+			exception.addMessage(message);
 			suggestAmbiguous = true;
 		}
 		
@@ -153,12 +168,12 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		}
 		else if (suggestNone)
 		{
-			exception.addMsg("<i>Note: There is no %s available.", this.getTypeName());
+			message = String.format(MESSAGE_AVAILABLE_EMPTY, this.getTypeName());
+			exception.addMessage(message);
 		}
 		else
 		{
 			Collection<T> suggestions = null;
-			String msg = null;
 			String format = SUGGEST_FORMAT;
 			String comma = SUGGEST_COMMMA;
 			String and = SUGGEST_AND;
@@ -167,26 +182,27 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 			if (suggestAmbiguous)
 			{
 				suggestions = matches;
-				msg = "<aqua>Ambigous<silver>: %s";
+				message = MESSAGE_COLON_AMBIGUOUS;
 			}
 			else if (suggestAll)
 			{
 				suggestions = all;
-				msg = "<aqua>All<silver>: %s";
+				message = MESSAGE_COLON_ALL;
 			}
 			else if (suggestLevenshtein)
 			{
-				suggestions = this.getMatches(options, arg, true);;
-				msg = "<aqua>Similar<silver>: %s";
+				suggestions = this.getMatches(options, arg, true);
+				message = MESSAGE_COLON_SIMILAR;
 			}
 			
 			if (suggestions.isEmpty())
 			{
-				exception.addMsg("<i>No suggestions found.");
+				exception.addMessage(MESSAGE_SUGGESTIONS_EMPTY);
 			}
 			else if (suggestions.size() > this.getListCountMax())
 			{
-				exception.addMsg("<i>Over %d suggestions found (hiding output).", this.getListCountMax());
+				message = String.format(MESSAGE_SUGGESTIONS_MUCH, this.getListCountMax());
+				exception.addMessage(message);
 			}
 			else
 			{
@@ -195,13 +211,13 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 				{
 					visuals.add(this.getVisual(value, sender));
 				}
-				exception.addMsg(msg, Txt.implodeCommaAndDot(visuals, format, comma, and, dot));
+				exception.addMessage(message + Txt.implodeCommaAndDot(visuals, format, comma, and, dot));
 			}
 		}
 		
 		// Help
 		String help = this.getHelp();
-		if (help != null) exception.addMsg(help);
+		if (help != null) exception.addMessage(help);
 		
 		throw exception;
 	}

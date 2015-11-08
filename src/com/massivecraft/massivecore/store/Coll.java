@@ -383,7 +383,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	
 	protected Map<String, Modification> identifiedModifications;
 	
-	protected synchronized void putIdentifiedModificationFixed(String id, Modification modification)
+	public synchronized void putIdentifiedModificationFixed(String id, Modification modification)
 	{
 		if (id == null) throw new NullPointerException("id");
 		if (modification == null) throw new NullPointerException("modification");
