@@ -28,5 +28,11 @@ public class TypePermission extends TypeAbstractChoice<Permission>
 	{
 		return Bukkit.getPluginManager().getPermissions();
 	}
+	
+	@Override
+	public Permission getExactMatch(String arg)
+	{
+		return Bukkit.getPluginManager().getPermission(arg);
+	}
 
 }

@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.command.type.primitive;
 
-import java.util.Collection;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -57,6 +56,10 @@ public class TypeBoolean extends TypeAbstractChoice<Boolean>
 	{
 		this.stringTrue = t;
 		this.stringFalse = f;
+		this.setAll(
+			Boolean.TRUE,
+			Boolean.FALSE
+		);
 	}
 	
 	// -------------------------------------------- //
@@ -101,15 +104,6 @@ public class TypeBoolean extends TypeAbstractChoice<Boolean>
 	public String getIdInner(Boolean value)
 	{
 		return value.toString();
-	}
-	
-	@Override
-	public Collection<Boolean> getAll()
-	{
-		return new MassiveSet<Boolean>(
-			Boolean.TRUE,
-			Boolean.FALSE
-		);
 	}
 
 }

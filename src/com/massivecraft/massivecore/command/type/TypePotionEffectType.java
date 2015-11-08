@@ -1,7 +1,5 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Arrays;
-import java.util.Collection;
 import org.bukkit.potion.PotionEffectType;
 
 public class TypePotionEffectType extends TypeAbstractChoice<PotionEffectType>
@@ -12,6 +10,10 @@ public class TypePotionEffectType extends TypeAbstractChoice<PotionEffectType>
 	
 	private static TypePotionEffectType i = new TypePotionEffectType();
 	public static TypePotionEffectType get() { return i; }
+	public TypePotionEffectType()
+	{
+		this.setAll(PotionEffectType.values());
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -28,12 +30,6 @@ public class TypePotionEffectType extends TypeAbstractChoice<PotionEffectType>
 	public String getIdInner(PotionEffectType value)
 	{
 		return String.valueOf(value.getId());
-	}
-
-	@Override
-	public Collection<PotionEffectType> getAll()
-	{
-		return Arrays.asList(PotionEffectType.values());
 	}
 	
 }

@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.command.type;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -51,10 +53,46 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		return ! TypeAbstractChoice.class.equals(ReflectionUtil.getSuperclassDeclaringMethod(this.getClass(), true, "canSee"));
 	}
 	
-	// TODO: cache stuff... the options?
-	protected boolean cachable = false;
-	public boolean isCachable() { return this.cachable; }
-	public void setCachable(boolean cachable) { this.cachable = cachable; }
+	// -------------------------------------------- //
+	// FIELDS: CACHE
+	// -------------------------------------------- //
+	
+	// All: You should either setAll or override getAll.
+	protected Collection<T> all = null;
+	public Collection<T> getAll() { return all; }
+	public void setAll(Collection<T> all)
+	{
+		if (all != null) all = Collections.unmodifiableCollection(new MassiveList<T>(all));
+		this.all = all;
+		
+		if (all == null)
+		{
+			this.options = null;
+			this.tabs = null;
+		}
+		else if ( ! this.isCanSeeOverridden())
+		{
+			// The "all" cache is set and canSee is not overriden.
+			// This means we can cache options and tabs.
+			this.options = this.createOptions(all);
+			this.tabs = this.createTabs((CommandSender)null);
+		}
+	}
+	@SafeVarargs
+	public final void setAll(T... all)
+	{
+		this.setAll(Arrays.asList(all));
+	}
+	
+	// Options
+	protected Map<String, T> options = null;
+	public Map<String, T> getOptions() { return options; }
+	public void setOptions(Map<String, T> options) { this.options = options; }
+	
+	// Tabs
+	protected Collection<String> tabs = null;
+	public Collection<String> getTabs() { return this.tabs; }
+	public void setTabs(Collection<String> tabs) { this.tabs = tabs; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: TYPE
@@ -74,14 +112,10 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		Collection<T> all = this.getAll(sender);
 		
 		// Get Options
-		// NOTE: These keys are prepared.
-		// TODO: Optimization should be possible here.
-		// TODO: If the "all" never changes AKA are cached... we can cache the options as well.
-		// TODO: If they are different for visibility but do not change... we can
-		Map<String, T> options = this.getOptions(all);
+		Map<String, T> options = this.getOptions();
+		if (options == null) options = this.createOptions(all);
 		
 		// Get Matches
-		// NOTE: I can probably not optimize this method further?
 		List<T> matches = this.getMatches(options, arg, false);
 		
 		// Exact
@@ -173,10 +207,6 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	}
 	
 	// -------------------------------------------- //
-	// ABSTRACT
-	// -------------------------------------------- //
-	
-	// -------------------------------------------- //
 	// OVERRIDE: ALL ABLE
 	// -------------------------------------------- //
 	
@@ -200,8 +230,6 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		return ret;
 	}
 	
-	public abstract Collection<T> getAll();
-	
 	public boolean canList(CommandSender sender)
 	{
 		return true;
@@ -222,11 +250,11 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		List<T> ret = new MassiveList<T>();
 		
 		// Prepare
-		arg = this.prepareKey(arg);
+		arg = this.prepareOptionKey(arg);
 		
 		// Exact
 		T exact = options.get(arg);
-		if (exact != null) return new MassiveList<T>(exact);
+		if (exact != null) return Collections.singletonList(exact);
 		
 		// Fill
 		for (Entry<String, T> entry : options.entrySet())
@@ -275,7 +303,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	// OPTIONS
 	// -------------------------------------------- //
 	
-	public Map<String, T> getOptions(Iterable<T> all)
+	public Map<String, T> createOptions(Iterable<T> all)
 	{
 		// Create
 		Map<String, T> ret = new MassiveMap<String, T>();
@@ -283,7 +311,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		// Fill
 		for (T value : all)
 		{
-			for (String key : this.getKeys(value))
+			for (String key : this.createOptionKeys(value))
 			{
 				ret.put(key, value);
 			}
@@ -294,21 +322,25 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	}
 	
 	// This method creates keys for a certain value.
-	// They are not comparable.
-	public List<String> getKeys(T value)
+	// They ARE comparable.
+	public List<String> createOptionKeys(T value)
 	{
 		// Create
 		List<String> ret = new MassiveList<String>();
 		
 		// Fill
+		String string;
+		
 		for (String name : this.getNames(value))
 		{
-			ret.add(this.prepareKey(name));
+			string = this.prepareOptionKey(name);
+			if (string != null) ret.add(string);
 		}
 		
 		for (String id : this.getIds(value))
 		{
-			ret.add(this.prepareKey(id));
+			string = this.prepareOptionKey(id);
+			if (string != null) ret.add(string);
 		}
 		
 		// Return
@@ -317,7 +349,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	
 	// The purpose of this method is to strip down a string to a comparable string key.
 	protected static Pattern PATTERN_KEY_UNWANTED = Pattern.compile("[_\\-\\s]+");
-	public String prepareKey(String string)
+	public String prepareOptionKey(String string)
 	{
 		if (string == null) return null;
 		string = string.trim();
@@ -334,35 +366,50 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
+		Collection<String> ret = this.getTabs();
+		if (ret == null) ret = this.createTabs(sender);
+		return ret;
+	}
+	
+	public Set<String> createTabs(CommandSender sender)
+	{
 		// Create
 		Set<String> ret = new MassiveSet<String>();
 		
 		// Fill
 		for (T value : this.getAll(sender))
 		{
-			ret.addAll(this.getTabs(value));
+			ret.addAll(this.createTabs(value));
 		}
 		
 		// Return
 		return ret;
 	}
 	
-	public Set<String> getTabs(T value)
+	public Set<String> createTabs(T value)
 	{
 		// Create
 		Set<String> ret = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
 		
 		// Fill
-		for (String name : this.getNames(value))
-		{
-			ret.add(this.prepareTab(name, true));
-			ret.add(this.prepareTab(name, false));
-		}
+		String string;
 		
 		for (String id : this.getIds(value))
 		{
-			ret.add(this.prepareTab(id, true));
-			ret.add(this.prepareTab(id, false));
+			string = this.prepareTab(id, true);
+			if (string != null) ret.add(string);
+			
+			string = this.prepareTab(id, false);
+			if (string != null) ret.add(string);
+		}
+		
+		for (String name : this.getNames(value))
+		{
+			string = this.prepareTab(name, true);
+			if (string != null) ret.add(string);
+			
+			string = this.prepareTab(name, false);
+			if (string != null) ret.add(string);
 		}
 		
 		// Return

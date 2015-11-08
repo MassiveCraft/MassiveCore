@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.bukkit.World.Environment;
 
+import com.massivecraft.massivecore.collections.MassiveSet;
+
 public class TypeEnvironment extends TypeEnum<Environment>
 {
 	// -------------------------------------------- //
@@ -24,7 +26,7 @@ public class TypeEnvironment extends TypeEnum<Environment>
 	@Override
 	public Set<String> getNamesInner(Environment value)
 	{
-		Set<String> ret = super.getNamesInner(value);
+		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
 		
 		if (value == Environment.NORMAL)
 		{

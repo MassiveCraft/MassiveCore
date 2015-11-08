@@ -24,4 +24,10 @@ public class TypeColl extends TypeAbstractChoice<Coll<?>>
 		return Coll.getMap().values();
 	}
 	
+	@Override
+	public Coll<?> getExactMatch(String arg)
+	{
+		return Coll.getMap().get(arg);
+	}
+	
 }

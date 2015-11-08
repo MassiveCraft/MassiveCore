@@ -201,7 +201,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			size = jsonSize.getAsInt();
 			
 			// This is a "Custom" Inventory (content only).
-			ret = Mixin.createInventory(null, size, null);
+			ret = Mixin.createInventory(null, size, "");
 		}
 		
 		// Now process content

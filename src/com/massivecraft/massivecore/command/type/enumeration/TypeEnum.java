@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import com.massivecraft.massivecore.command.type.TypeAbstractChoice;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -23,6 +20,8 @@ public class TypeEnum<T extends Enum<T>> extends TypeAbstractChoice<T>
 	{
 		if ( ! clazz.isEnum()) throw new IllegalArgumentException("clazz must be enum");
 		this.clazz = clazz;
+		
+		this.setAll(getEnumValues(this.getClazz()));
 	}
 	
 	// -------------------------------------------- //
@@ -44,13 +43,7 @@ public class TypeEnum<T extends Enum<T>> extends TypeAbstractChoice<T>
 	@Override
 	public String getIdInner(T value)
 	{
-		return String.valueOf(value.ordinal());
-	}
-
-	@Override
-	public Collection<T> getAll()
-	{
-		return Arrays.asList(getEnumValues(this.getClazz()));
+		return value.name();
 	}
 	
 	// -------------------------------------------- //
