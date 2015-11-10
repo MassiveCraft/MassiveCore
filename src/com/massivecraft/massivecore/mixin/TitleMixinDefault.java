@@ -28,6 +28,9 @@ public class TitleMixinDefault extends TitleMixinAbstract
 		// If we don't send any message (empty is ok) we might end up displaying old messages.
 		if (titleSub == null)	titleSub = "";
 		if (titleMain == null)	titleMain = "";
+
+		titleSub = NmsPacket.toJson(titleSub);
+		titleMain = NmsPacket.toJson(titleMain);
 		
 		return NmsPacket.sendTitle(player, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
 	}

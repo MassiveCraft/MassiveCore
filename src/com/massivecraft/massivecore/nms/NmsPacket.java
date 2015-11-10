@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 
@@ -45,8 +46,9 @@ public final class NmsPacket extends NmsAbstract
 	private static Constructor<?> titlePacketConstructor;
 	private static Constructor<?> titlePacketConstructorTimes;
 
-	// The chat packet and its constructor
+	// The chat packet and its constructors
 	private static Constructor<?> chatPacketConstructor;
+	private static Constructor<?> chatPacketActionbarConstructor;
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -86,6 +88,7 @@ public final class NmsPacket extends NmsAbstract
 		// Get Chat packet and it's constructor
 		Class<?> chatPacketClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutChat");
 		chatPacketConstructor = ReflectionUtils.getConstructor(chatPacketClass, iChatBaseComponent);
+		chatPacketActionbarConstructor = ReflectionUtils.getConstructor(chatPacketClass, iChatBaseComponent, Byte.TYPE);
 
 		// Player connection
 		getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
@@ -155,8 +158,6 @@ public final class NmsPacket extends NmsAbstract
 
 			if (titleMain != null)
 			{
-				titleMain = toJson(titleMain);
-
 				// Title
 				Object titleMainChat = toChatBaseComponent(titleMain);
 				Object titleMainPacket = titlePacketConstructor.newInstance(titleMainEnum, titleMainChat);
@@ -166,7 +167,6 @@ public final class NmsPacket extends NmsAbstract
 
 			if (titleSub != null)
 			{
-				titleSub = toJson(titleSub);
 				// SubTitle
 				Object titleSubChat = toChatBaseComponent(titleSub);
 				Object titleSubPacket = titlePacketConstructor.newInstance(titleSubEnum, titleSubChat);
@@ -176,7 +176,7 @@ public final class NmsPacket extends NmsAbstract
 		}
 		catch (Exception ex)
 		{
-			MassiveCore.get().log("<b>Sending title failed!");
+			MassiveCore.get().log(Txt.parse("<b>Sending title failed!"));
 			ex.printStackTrace();
 			// So we failed, didn't work.
 			return false;
@@ -203,7 +203,33 @@ public final class NmsPacket extends NmsAbstract
 		}
 		catch (Exception ex)
 		{
-			MassiveCore.get().log("<b>Sending raw chat failed!");
+			MassiveCore.get().log(Txt.parse("<b>Sending raw chat failed!"));
+			ex.printStackTrace();
+			// So we failed and it didn't work.
+			return false;
+		}
+
+		return true;
+	}
+
+	// -------------------------------------------- //
+	// SEND ACTIONBAR
+	// -------------------------------------------- //
+
+	public static boolean sendActionbar(Player player, String string)
+	{
+		if ( ! get().isAvailable()) return false;
+
+		try
+		{
+			Object actionbar = toChatBaseComponent(string);
+			Object chatPacket = chatPacketActionbarConstructor.newInstance(actionbar, (byte) 2);
+
+			sendPacket(player, chatPacket);
+		}
+		catch(Exception ex)
+		{
+			MassiveCore.get().log(Txt.parse("<b>Sending actionbar failed!"));
 			ex.printStackTrace();
 			// So we failed and it didn't work.
 			return false;

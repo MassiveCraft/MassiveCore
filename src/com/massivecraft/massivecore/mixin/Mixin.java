@@ -57,6 +57,10 @@ public class Mixin
 	private static MessageMixin messageMixin = MessageMixinDefault.get();
 	public static MessageMixin getMessageMixin() { return messageMixin; }
 	public static void setMessageMixin(MessageMixin val) { messageMixin = val; }
+
+	private static ActionbarMixin actionbarMixin = ActionbarMixinDefault.get();
+	public static ActionbarMixin getActionbarMixin() { return actionbarMixin; }
+	public static void setActionbarMixin(ActionbarMixin val) { actionbarMixin = val; }
 	
 	private static TitleMixin titleMixin = TitleMixinDefault.get();
 	public static TitleMixin getTitleMixin() { return titleMixin; }
@@ -338,6 +342,34 @@ public class Mixin
 	public static boolean messageOne(Object sendeeObject, Collection<?> messages)
 	{
 		return getMessageMixin().messageOne(sendeeObject, messages);
+	}
+
+	// -------------------------------------------- //
+	// STATIC EXPOSE: ACTIONBAR
+	// -------------------------------------------- //
+
+	// Default
+	public static boolean sendActionbarMessage(Object sendeeObject, String message)
+	{
+		return getActionbarMixin().sendActionbarMessage(sendeeObject, message);
+	}
+
+	// Parsed
+	public static boolean sendActionbarMsg(Object sendeeObject, String message)
+	{
+		return getActionbarMixin().sendActionbarMsg(sendeeObject, message);
+	}
+
+	// Mson
+	public static boolean sendActionbarMson(Object sendeeObject, Mson mson)
+	{
+		return getActionbarMixin().sendActionbarMson(sendeeObject, mson);
+	}
+
+	// Available
+	public static boolean isActionbarAvailable()
+	{
+		return getActionbarMixin().isActionbarAvailable();
 	}
 	
 	// -------------------------------------------- //
