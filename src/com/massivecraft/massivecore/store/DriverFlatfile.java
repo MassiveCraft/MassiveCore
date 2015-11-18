@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.store;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -220,7 +221,14 @@ public class DriverFlatfile extends DriverAbstract
 	@Override
 	public boolean supportsPusher()
 	{
-		return true;
+		try
+		{
+			return ! ( FileSystems.getDefault().newWatchService().getClass().getName().equals("sun.nio.fs.PollingWatchService"));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 	
 	@Override
