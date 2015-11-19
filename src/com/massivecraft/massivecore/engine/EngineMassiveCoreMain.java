@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore;
+package com.massivecraft.massivecore.engine;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +27,13 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveCoreMConf;
+import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.PredicateStartsWithIgnoreCase;
+import com.massivecraft.massivecore.SenderPresence;
+import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerRespawn;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerTeleport;
@@ -43,14 +50,14 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.SmokeUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
-public class MassiveCoreEngineMain extends EngineAbstract
+public class EngineMassiveCoreMain extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveCoreEngineMain i = new MassiveCoreEngineMain();
-	public static MassiveCoreEngineMain get() { return i; }
+	private static EngineMassiveCoreMain i = new EngineMassiveCoreMain();
+	public static EngineMassiveCoreMain get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore;
+package com.massivecraft.massivecore.engine;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -12,18 +12,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.MassiveCoreBukkitCommand;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 
-public class MassiveCoreEngineCommandRegistration extends EngineAbstract
+public class EngineMassiveCoreCommandRegistration extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveCoreEngineCommandRegistration i = new MassiveCoreEngineCommandRegistration();
-	public static MassiveCoreEngineCommandRegistration get() { return i; }
+	private static EngineMassiveCoreCommandRegistration i = new EngineMassiveCoreCommandRegistration();
+	public static EngineMassiveCoreCommandRegistration get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore;
+package com.massivecraft.massivecore.engine;
 
 import java.util.Collections;
 import java.util.Set;
@@ -12,14 +12,17 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.Plugin;
 
-public class MassiveCoreEngineWorldNameSet extends EngineAbstract
+import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.MassiveCore;
+
+public class EngineMassiveCoreWorldNameSet extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveCoreEngineWorldNameSet i = new MassiveCoreEngineWorldNameSet();
-	public static MassiveCoreEngineWorldNameSet get() { return i; }
+	private static EngineMassiveCoreWorldNameSet i = new EngineMassiveCoreWorldNameSet();
+	public static EngineMassiveCoreWorldNameSet get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

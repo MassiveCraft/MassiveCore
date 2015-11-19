@@ -59,12 +59,12 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.MassiveCoreEngineMain;
-import com.massivecraft.massivecore.MassiveCoreEngineWorldNameSet;
 import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.util.extractor.Extractor;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayer;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayerName;
@@ -224,7 +224,7 @@ public class MUtil
 		if (address != null) return getIp(address);
 		
 		String id = IdUtil.getId(player);
-		PlayerLoginEvent event = MassiveCoreEngineMain.idToPlayerLoginEvent.get(id);
+		PlayerLoginEvent event = EngineMassiveCoreMain.idToPlayerLoginEvent.get(id);
 		if (event != null) return getIp(event);
 		
 		return null;
@@ -1178,7 +1178,7 @@ public class MUtil
 		if (MUtil.isntPlayer(player)) return null;
 		UUID uuid = player.getUniqueId();
 		
-		return MassiveCoreEngineMain.kickedPlayerReasons.get(uuid);
+		return EngineMassiveCoreMain.kickedPlayerReasons.get(uuid);
 	}
 	
 	public static boolean causedByKick(PlayerQuitEvent event)
@@ -1282,7 +1282,7 @@ public class MUtil
 	
 	public static Set<String> getLoadedWorldNames()
 	{
-		return MassiveCoreEngineWorldNameSet.get().getWorldNames();
+		return EngineMassiveCoreWorldNameSet.get().getWorldNames();
 	}
 	
 	// -------------------------------------------- //

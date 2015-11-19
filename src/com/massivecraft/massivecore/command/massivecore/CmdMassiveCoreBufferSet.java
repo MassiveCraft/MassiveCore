@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCoreEngineVariable;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 
 public class CmdMassiveCoreBufferSet extends MassiveCommand
 {
@@ -34,7 +34,7 @@ public class CmdMassiveCoreBufferSet extends MassiveCommand
 	{
 		String string = this.readArg();
 		
-		MassiveCoreEngineVariable.setBuffer(sender, string);
+		EngineMassiveCoreVariable.setBuffer(sender, string);
 		
 		msg("<i>Buffer was Set");
 	}

@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCoreEngineVariable;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
@@ -37,9 +37,9 @@ public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
 		
 		String string = Txt.repeat(" ", times);
 		
-		String buffer = MassiveCoreEngineVariable.getBuffer(sender);
+		String buffer = EngineMassiveCoreVariable.getBuffer(sender);
 		buffer += string;
-		MassiveCoreEngineVariable.setBuffer(sender, buffer);
+		EngineMassiveCoreVariable.setBuffer(sender, buffer);
 		
 		msg("<i>Buffer Whitespace");
 	}

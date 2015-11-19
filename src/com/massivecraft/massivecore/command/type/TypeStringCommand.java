@@ -11,9 +11,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 
-import com.massivecraft.massivecore.MassiveCoreEngineCommandRegistration;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandRegistration;
 import com.massivecraft.massivecore.util.Txt;
 
 // We operate without the leading slash as much as possible.
@@ -111,8 +111,8 @@ public class TypeStringCommand extends TypeAbstract<String>
 	
 	public static Map<String, Command> getKnownCommands()
 	{
-		SimpleCommandMap simpleCommandMap = MassiveCoreEngineCommandRegistration.getSimpleCommandMap();
-		Map<String, Command> knownCommands = MassiveCoreEngineCommandRegistration.getSimpleCommandMapDotKnownCommands(simpleCommandMap);
+		SimpleCommandMap simpleCommandMap = EngineMassiveCoreCommandRegistration.getSimpleCommandMap();
+		Map<String, Command> knownCommands = EngineMassiveCoreCommandRegistration.getSimpleCommandMapDotKnownCommands(simpleCommandMap);
 		return knownCommands;
 	}
 	

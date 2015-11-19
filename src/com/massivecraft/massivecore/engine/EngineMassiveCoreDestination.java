@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore;
+package com.massivecraft.massivecore.engine;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.TypePS;
 import com.massivecraft.massivecore.command.type.TypeWorldId;
@@ -28,14 +31,14 @@ import com.massivecraft.massivecore.teleport.DestinationUtil;
 import com.massivecraft.massivecore.teleport.DestinationWorld;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class MassiveCoreEngineDestination extends EngineAbstract
+public class EngineMassiveCoreDestination extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveCoreEngineDestination i = new MassiveCoreEngineDestination();
-	public static MassiveCoreEngineDestination get() { return i; }
+	private static EngineMassiveCoreDestination i = new EngineMassiveCoreDestination();
+	public static EngineMassiveCoreDestination get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

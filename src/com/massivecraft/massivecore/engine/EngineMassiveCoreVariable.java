@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore;
+package com.massivecraft.massivecore.engine;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,18 +17,22 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveCoreMConf;
+import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MassiveCoreEngineVariable extends EngineAbstract
+public class EngineMassiveCoreVariable extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveCoreEngineVariable i = new MassiveCoreEngineVariable();
-	public static MassiveCoreEngineVariable get() { return i; }
+	private static EngineMassiveCoreVariable i = new EngineMassiveCoreVariable();
+	public static EngineMassiveCoreVariable get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

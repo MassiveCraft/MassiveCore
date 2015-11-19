@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCoreEngineVariable;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 
 public class CmdMassiveCoreBufferPrint extends MassiveCommand
 {
@@ -27,7 +27,7 @@ public class CmdMassiveCoreBufferPrint extends MassiveCommand
 	@Override
 	public void perform()
 	{
-		String buffer = MassiveCoreEngineVariable.getBuffer(sender);
+		String buffer = EngineMassiveCoreVariable.getBuffer(sender);
 		if (buffer == null || buffer.length() == 0)
 		{
 			msg("<i>Nothing to print. Your buffer is empty.");

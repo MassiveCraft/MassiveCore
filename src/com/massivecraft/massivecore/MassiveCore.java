@@ -44,6 +44,12 @@ import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreBuffer;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreCmdurl;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreStore;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreUsys;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandRegistration;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreDestination;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
+import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerUpdate;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.mixin.EngineTeleportMixinCause;
 import com.massivecraft.massivecore.mson.Mson;
@@ -184,13 +190,14 @@ public class MassiveCore extends MassivePlugin
 		
 		// Engine
 		EngineCollTick.get().activate();
-		MassiveCoreEngineMain.get().activate();
-		MassiveCoreEngineVariable.get().activate();
+		EngineMassiveCoreMain.get().activate();
+		EngineMassiveCoreVariable.get().activate();
 		EngineScheduledTeleport.get().activate();
 		EngineTeleportMixinCause.get().activate();
-		MassiveCoreEngineWorldNameSet.get().activate();
-		MassiveCoreEngineCommandRegistration.get().activate();
-		MassiveCoreEngineDestination.get().activate();
+		EngineMassiveCoreWorldNameSet.get().activate();
+		EngineMassiveCoreCommandRegistration.get().activate();
+		EngineMassiveCoreDestination.get().activate();
+		EngineMassiveCorePlayerUpdate.get().activate();
 		PlayerUtil.get().activate();
 		EngineChestGui.get().activate();
 		EngineGank.get().activate();

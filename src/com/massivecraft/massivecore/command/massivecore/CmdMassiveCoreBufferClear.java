@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCoreEngineVariable;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 
 public class CmdMassiveCoreBufferClear extends MassiveCommand
 {
@@ -27,7 +27,7 @@ public class CmdMassiveCoreBufferClear extends MassiveCommand
 	@Override
 	public void perform()
 	{
-		MassiveCoreEngineVariable.setBuffer(sender, "");
+		EngineMassiveCoreVariable.setBuffer(sender, "");
 		
 		msg("<i>Buffer Clear");
 	}
