@@ -2,10 +2,10 @@ package com.massivecraft.massivecore.store;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public abstract class DbAbstract implements Db
 {	
@@ -58,17 +58,17 @@ public abstract class DbAbstract implements Db
 		return this.getDriver().getId2mtime(coll);
 	}
 	
-	public Entry<JsonElement, Long> load(Coll<?> coll, String id)
+	public Entry<JsonObject, Long> load(Coll<?> coll, String id)
 	{
 		return this.getDriver().load(coll, id);
 	}
 	
-	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll)
+	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll)
 	{
 		return this.getDriver().loadAll(coll);
 	}
 	
-	public long save(Coll<?> coll, String id, JsonElement data)
+	public long save(Coll<?> coll, String id, JsonObject data)
 	{
 		return this.getDriver().save(coll, id, data);
 	}

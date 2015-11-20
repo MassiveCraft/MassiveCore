@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.massivecraft.massivecore.util.DiscUtil;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonParser;
 
 public class DriverFlatfile extends DriverAbstract
@@ -141,21 +141,21 @@ public class DriverFlatfile extends DriverAbstract
 	}
 	
 	@Override
-	public Entry<JsonElement, Long> load(Coll<?> coll, String id)
+	public Entry<JsonObject, Long> load(Coll<?> coll, String id)
 	{
 		File file = fileFromId(coll, id);
 		return loadFile(file);
 	}
 	
-	public Entry<JsonElement, Long> loadFile(File file)
+	public Entry<JsonObject, Long> loadFile(File file)
 	{
 		long mtime = file.lastModified();
-		JsonElement raw = loadFileJson(file);
+		JsonObject raw = loadFileJson(file);
 		
-		return new SimpleEntry<JsonElement, Long>(raw, mtime);
+		return new SimpleEntry<JsonObject, Long>(raw, mtime);
 	}
 	
-	public JsonElement loadFileJson(File file)
+	public JsonObject loadFileJson(File file)
 	{
 		String content = DiscUtil.readCatch(file);
 		if (content == null) return null;
@@ -163,14 +163,14 @@ public class DriverFlatfile extends DriverAbstract
 		content = content.trim();
 		if (content.length() == 0) return null;
 		
-		return new JsonParser().parse(content);
+		return new JsonParser().parse(content).getAsJsonObject();
 	}
 	
 	@Override
-	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll)
+	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll)
 	{
 		// Create Ret
-		Map<String, Entry<JsonElement, Long>> ret = null;
+		Map<String, Entry<JsonObject, Long>> ret = null;
 		
 		// Get Directory
 		File directory = getDirectory(coll);
@@ -180,7 +180,7 @@ public class DriverFlatfile extends DriverAbstract
 		File[] files = directory.listFiles(JsonFileFilter.get());
 		
 		// Create Ret
-		ret = new LinkedHashMap<String, Entry<JsonElement, Long>>(files.length);
+		ret = new LinkedHashMap<String, Entry<JsonObject, Long>>(files.length);
 		
 		// For Each Found
 		for (File file : files)
@@ -189,7 +189,7 @@ public class DriverFlatfile extends DriverAbstract
 			String id = idFromFile(file);
 			
 			// Get Entry
-			Entry<JsonElement, Long> entry = loadFile(file);
+			Entry<JsonObject, Long> entry = loadFile(file);
 			// NOTE: The entry can be a failed one with null and 0.
 			// NOTE: We add it anyways since it's an informative failure.
 			// NOTE: This is supported by our defined specification.
@@ -203,7 +203,7 @@ public class DriverFlatfile extends DriverAbstract
 	}
 	
 	@Override
-	public long save(Coll<?> coll, String id, JsonElement data)
+	public long save(Coll<?> coll, String id, JsonObject data)
 	{
 		File file = fileFromId(coll, id);
 		String content = coll.getGson().toJson(data);

@@ -14,7 +14,7 @@ import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.MStore;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 {
@@ -88,7 +88,7 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 			
 			for (String id : ids)
 			{
-				Entry<JsonElement, Long> data = fromDb.load(fromColl, id);
+				Entry<JsonObject, Long> data = fromDb.load(fromColl, id);
 				toDb.save(toColl, id, data.getKey());
 			}
 		}

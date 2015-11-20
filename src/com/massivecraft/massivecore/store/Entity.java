@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.store;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 /**
  * Usage of this class is highly optional. You may persist anything. If you are 
@@ -35,9 +35,9 @@ public class Entity<E extends Entity<E>>
 		return coll.getUniverse();
 	}
 	
-	private volatile transient JsonElement lastRaw = null;
-	public JsonElement getLastRaw() { return this.lastRaw; }
-	public void setLastRaw(JsonElement lastRaw) { this.lastRaw = lastRaw; }
+	private volatile transient JsonObject lastRaw = null;
+	public JsonObject getLastRaw() { return this.lastRaw; }
+	public void setLastRaw(JsonObject lastRaw) { this.lastRaw = lastRaw; }
 	
 	private volatile transient long lastMtime = 0;
 	public long getLastMtime() { return this.lastMtime; }

@@ -19,9 +19,9 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -48,7 +48,7 @@ import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.SmokeUtil;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public class EngineMassiveCoreMain extends EngineAbstract
 {
@@ -379,13 +379,13 @@ public class EngineMassiveCoreMain extends EngineAbstract
 	// This section handles the automatic sync of a players corresponding massive store entries on login.
 	// If possible the database IO is made during the AsyncPlayerPreLoginEvent to offloat the main server thread.
 	
-	protected Map<String, Map<SenderColl<?>, Entry<JsonElement, Long>>> idToRemoteEntries = new ConcurrentHashMap<String, Map<SenderColl<?>, Entry<JsonElement, Long>>>();
+	protected Map<String, Map<SenderColl<?>, Entry<JsonObject, Long>>> idToRemoteEntries = new ConcurrentHashMap<>();
 	
 	// Intended to be ran asynchronously.
 	public void storeRemoteEntries(final String playerId)
 	{
 		// Create remote entries ...
-		Map<SenderColl<?>, Entry<JsonElement, Long>> remoteEntries = createRemoteEntries(playerId);
+		Map<SenderColl<?>, Entry<JsonObject, Long>> remoteEntries = createRemoteEntries(playerId);
 		
 		// ... store them ...
 		this.idToRemoteEntries.put(playerId, remoteEntries);
@@ -407,10 +407,10 @@ public class EngineMassiveCoreMain extends EngineAbstract
 	// Intended to be ran synchronously.
 	// It will use remoteEntries from AsyncPlayerPreLoginEvent if possible.
 	// If no such remoteEntries are available it will create them and thus lock the main server thread a bit.
-	public Map<SenderColl<?>, Entry<JsonElement, Long>> getRemoteEntries(String playerId)
+	public Map<SenderColl<?>, Entry<JsonObject, Long>> getRemoteEntries(String playerId)
 	{
 		// If there are stored remote entries we used those ...
-		Map<SenderColl<?>, Entry<JsonElement, Long>> ret = idToRemoteEntries.remove(playerId);	
+		Map<SenderColl<?>, Entry<JsonObject, Long>> ret = idToRemoteEntries.remove(playerId);	
 		if (ret != null) return ret;
 		
 		// ... otherwise we create brand new ones.
@@ -418,15 +418,15 @@ public class EngineMassiveCoreMain extends EngineAbstract
 	}
 	
 	// Used by the two methods above.
-	public Map<SenderColl<?>, Entry<JsonElement, Long>> createRemoteEntries(String playerId)
+	public Map<SenderColl<?>, Entry<JsonObject, Long>> createRemoteEntries(String playerId)
 	{
 		// Create Ret
-		Map<SenderColl<?>, Entry<JsonElement, Long>> ret = new HashMap<SenderColl<?>, Entry<JsonElement, Long>>();
+		Map<SenderColl<?>, Entry<JsonObject, Long>> ret = new HashMap<SenderColl<?>, Entry<JsonObject, Long>>();
 		
 		// Fill Ret
 		for (final SenderColl<?> coll : Coll.getSenderInstances())
 		{
-			Entry<JsonElement, Long> remoteEntry = coll.getDb().load(coll, playerId);
+			Entry<JsonObject, Long> remoteEntry = coll.getDb().load(coll, playerId);
 			ret.put(coll, remoteEntry);
 		}
 		
@@ -468,13 +468,13 @@ public class EngineMassiveCoreMain extends EngineAbstract
 		final String playerId = player.getUniqueId().toString();
 		
 		// ... get remote entries ...
-		Map<SenderColl<?>, Entry<JsonElement, Long>> remoteEntries = getRemoteEntries(playerId);
+		Map<SenderColl<?>, Entry<JsonObject, Long>> remoteEntries = getRemoteEntries(playerId);
 		
 		// ... and sync each of them.
-		for (Entry<SenderColl<?>, Entry<JsonElement, Long>> entry : remoteEntries.entrySet())
+		for (Entry<SenderColl<?>, Entry<JsonObject, Long>> entry : remoteEntries.entrySet())
 		{
 			SenderColl<?> coll = entry.getKey();
-			Entry<JsonElement, Long> remoteEntry = entry.getValue();
+			Entry<JsonObject, Long> remoteEntry = entry.getValue();
 			coll.syncId(playerId, null, remoteEntry);
 		}
 	}

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 
 public abstract class CollAbstract<E extends Entity<E>> implements CollInterface<E>
@@ -131,7 +131,25 @@ public abstract class CollAbstract<E extends Entity<E>> implements CollInterface
 		if (oid == null) throw new NullPointerException("oid");
 		return this.detachIdFixed(this.fixIdOrThrow(oid));
 	}
+	
+	// -------------------------------------------- //
+	// IDENTIFIED MODIFICATIONS
+	// -------------------------------------------- //
 
+	@Override
+	public void putIdentifiedModification(Object oid, Modification modification)
+	{
+		if (oid == null) throw new NullPointerException("oid");
+		this.putIdentifiedModificationFixed(this.fixIdOrThrow(oid), modification);
+	}
+	
+	@Override
+	public void removeIdentifiedModification(Object oid)
+	{
+		if (oid == null) throw new NullPointerException("oid");
+		this.removeIdentifiedModificationFixed(this.fixIdOrThrow(oid));
+	}
+	
 	// -------------------------------------------- //
 	// SYNC LOG
 	// -------------------------------------------- //
@@ -163,7 +181,7 @@ public abstract class CollAbstract<E extends Entity<E>> implements CollInterface
 	}
 	
 	@Override
-	public void loadFromRemote(Object oid, Entry<JsonElement, Long> remoteEntry)
+	public void loadFromRemote(Object oid, Entry<JsonObject, Long> remoteEntry)
 	{
 		if (oid == null) throw new NullPointerException("oid");
 		this.loadFromRemoteFixed(this.fixIdOrThrow(oid), remoteEntry);
@@ -241,7 +259,7 @@ public abstract class CollAbstract<E extends Entity<E>> implements CollInterface
 	}
 	
 	@Override
-	public Modification syncId(Object oid, Modification modification, Entry<JsonElement, Long> remoteEntry)
+	public Modification syncId(Object oid, Modification modification, Entry<JsonObject, Long> remoteEntry)
 	{
 		if (oid == null) throw new NullPointerException("oid");
 		return this.syncIdFixed(this.fixIdOrThrow(oid), modification, remoteEntry);

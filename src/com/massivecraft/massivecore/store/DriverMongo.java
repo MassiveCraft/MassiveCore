@@ -1,17 +1,17 @@
 package com.massivecraft.massivecore.store;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.massivecore.xlib.mongodb.DB;
 import com.massivecraft.massivecore.xlib.mongodb.DBCollection;
@@ -171,16 +171,16 @@ public class DriverMongo extends DriverAbstract
 	}
 
 	@Override
-	public Entry<JsonElement, Long> load(Coll<?> coll, String id)
+	public Entry<JsonObject, Long> load(Coll<?> coll, String id)
 	{
 		DBCollection dbcoll = fixColl(coll);
 		BasicDBObject raw = (BasicDBObject)dbcoll.findOne(new BasicDBObject(ID_FIELD, id));
 		return loadRaw(raw);
 	}
 	
-	public Entry<JsonElement, Long> loadRaw(BasicDBObject raw)
+	public Entry<JsonObject, Long> loadRaw(BasicDBObject raw)
 	{
-		if (raw == null) return new SimpleEntry<JsonElement, Long>(null, 0L);
+		if (raw == null) return new SimpleEntry<JsonObject, Long>(null, 0L);
 		
 		// Throw away the id field
 		raw.removeField(ID_FIELD);
@@ -196,16 +196,16 @@ public class DriverMongo extends DriverAbstract
 		}
 		
 		// Convert MongoDB --> GSON
-		JsonElement element = GsonMongoConverter.mongo2GsonObject(raw);
+		JsonObject element = GsonMongoConverter.mongo2GsonObject(raw);
 		
-		return new SimpleEntry<JsonElement, Long>(element, mtime);
+		return new SimpleEntry<JsonObject, Long>(element, mtime);
 	}
 	
 	@Override
-	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll)
+	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll)
 	{
 		// Declare Ret
-		Map<String, Entry<JsonElement, Long>> ret = null;
+		Map<String, Entry<JsonObject, Long>> ret = null;
 		
 		// Fix Coll
 		DBCollection dbcoll = fixColl(coll);
@@ -216,7 +216,7 @@ public class DriverMongo extends DriverAbstract
 		try
 		{
 			// Create Ret
-			ret = new LinkedHashMap<String, Entry<JsonElement, Long>>(cursor.count());
+			ret = new LinkedHashMap<String, Entry<JsonObject, Long>>(cursor.count());
 			
 			// For Each Found
 			while (cursor.hasNext())
@@ -229,7 +229,7 @@ public class DriverMongo extends DriverAbstract
 				String id = rawId.toString();
 				
 				// Get Entry
-				Entry<JsonElement, Long> entry = loadRaw(raw);
+				Entry<JsonObject, Long> entry = loadRaw(raw);
 				// NOTE: The entry can be a failed one with null and 0.
 				// NOTE: We add it anyways since it's an informative failure.
 				// NOTE: This is supported by our defined specification.
@@ -249,7 +249,7 @@ public class DriverMongo extends DriverAbstract
 	}
 
 	@Override
-	public long save(Coll<?> coll, String id, JsonElement data)
+	public long save(Coll<?> coll, String id, JsonObject data)
 	{		
 		DBCollection dbcoll = fixColl(coll);
 		

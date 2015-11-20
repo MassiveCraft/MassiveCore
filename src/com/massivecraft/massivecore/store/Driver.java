@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public interface Driver
 {
@@ -42,18 +42,18 @@ public interface Driver
 	// Load the raw data for X. The second part of the entry is the remote mtime at the load.
 	// return == null will never happen.
 	// return.getKey() == null || return.getValue() == 0 means something failed.
-	public Entry<JsonElement, Long> load(Coll<?> coll, String id);
+	public Entry<JsonObject, Long> load(Coll<?> coll, String id);
 	
 	// Load all database content at once
 	// NOTE: This method is assumed to be based on the one above.
-	// NOTE: Values where JsonElement == null and Long == 0 may occur.
-	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll);
+	// NOTE: Values where JsonObject == null and Long == 0 may occur.
+	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll);
 	
 	// Save raw data as X
 	// Return value is the new mtime (we caused the change).
 	// return == null will never happen.
 	// return == 0 means something failed. Usually failures are not catched, though. System.currentTimeMillis() is returned most of the time.
-	public long save(Coll<?> coll, String id, JsonElement data);
+	public long save(Coll<?> coll, String id, JsonObject data);
 	
 	// Delete X
 	public void delete(Coll<?> coll, String id);

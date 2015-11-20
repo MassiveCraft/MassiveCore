@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.Predicate;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public interface CollInterface<E extends Entity<E>> extends Named
 {
@@ -35,6 +35,8 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	public boolean supportsPusher();
 	public PusherColl getPusher();
 	
+	public String getDebugName();
+	
 	// -------------------------------------------- //
 	// STORAGE
 	// -------------------------------------------- //
@@ -52,8 +54,6 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	public boolean containsId(Object oid);
 	public boolean containsIdFixed(String id);
 	
-	public Map<E, String> getEntity2id();
-	public String getId(Object entity);
 	public boolean containsEntity(Object entity);
 	
 	public Collection<E> getAll();
@@ -138,13 +138,12 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	// -------------------------------------------- //
 	// IDENTIFIED MODIFICATIONS
 	// -------------------------------------------- //
+
+	public void putIdentifiedModification(Object oid, Modification modification);
+	public void putIdentifiedModificationFixed(String id, Modification modification);
 	
-	/*
-	public Set<L> localAttachIds();
-	public Set<L> localDetachIds();
-	public Set<L> changedIds();
-	public void clearIdentifiedChanges(Object oid);
-	*/
+	public void removeIdentifiedModification(Object oid);
+	public void removeIdentifiedModificationFixed(String id);
 	
 	// -------------------------------------------- //
 	// SYNC LOG
@@ -169,13 +168,13 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	public E removeAtLocal(Object oid);
 	public void removeAtRemote(Object oid);
 	public void saveToRemote(Object oid);
-	public void loadFromRemote(Object oid, Entry<JsonElement, Long> remoteEntry);
+	public void loadFromRemote(Object oid, Entry<JsonObject, Long> remoteEntry);
 	
 	// Fixed id
 	public E removeAtLocalFixed(String id);
 	public void removeAtRemoteFixed(String id);
 	public void saveToRemoteFixed(String id);
-	public void loadFromRemoteFixed(String id, Entry<JsonElement, Long> remoteEntry);
+	public void loadFromRemoteFixed(String id, Entry<JsonObject, Long> remoteEntry);
 	
 	// -------------------------------------------- //
 	// SYNC EXAMINE AND DO
@@ -198,12 +197,12 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	// Sync
 	public Modification syncId(Object oid);
 	public Modification syncId(Object oid, Modification modification);
-	public Modification syncId(Object oid, Modification modification, Entry<JsonElement, Long> remoteEntry);
+	public Modification syncId(Object oid, Modification modification, Entry<JsonObject, Long> remoteEntry);
 	
 	// Sync fixed
 	public Modification syncIdFixed(String id);
 	public Modification syncIdFixed(String id, Modification modification);
-	public Modification syncIdFixed(String id, Modification modification, Entry<JsonElement, Long> remoteEntry);
+	public Modification syncIdFixed(String id, Modification modification, Entry<JsonObject, Long> remoteEntry);
 	
 	public void syncIdentified();
 	public void syncAll();

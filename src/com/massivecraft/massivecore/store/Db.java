@@ -2,10 +2,10 @@ package com.massivecraft.massivecore.store;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public interface Db
 {
@@ -36,9 +36,9 @@ public interface Db
 	public long getMtime(Coll<?> coll, String id);
 	public Collection<String> getIds(Coll<?> coll);
 	public Map<String, Long> getId2mtime(Coll<?> coll);
-	public Entry<JsonElement, Long> load(Coll<?> coll, String id);
-	public Map<String, Entry<JsonElement, Long>> loadAll(Coll<?> coll);
-	public long save(Coll<?> coll, String id, JsonElement data);
+	public Entry<JsonObject, Long> load(Coll<?> coll, String id);
+	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll);
+	public long save(Coll<?> coll, String id, JsonObject data);
 	public void delete(Coll<?> coll, String id);
 	public boolean supportsPusher();
 	public PusherColl getPusher(Coll<?> coll);
