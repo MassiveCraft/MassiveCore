@@ -199,7 +199,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// And on some Colls we expect it to always be done.
 	// However we cannot be sure, but if we expect to always do it
 	// then we tell the collection to notify us if we failed to call Entity#changed.
-	protected boolean warnOnLocalAlter = false;
+	protected boolean warnOnLocalAlter = true;
 	@Override public boolean isWarningOnLocalAlter() { return this.warnOnLocalAlter; }
 	@Override public void setWarnOnLocalAlter(boolean warnOnLocalAlter) { this.warnOnLocalAlter = warnOnLocalAlter; }
 	
