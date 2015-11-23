@@ -269,8 +269,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		// Check entity
 		if (entity == null) return null;
-		String previousEntityId = entity.getId();
-		if (previousEntityId != null) return previousEntityId;
+		if (entity.attached()) return entity.getId();
 		
 		String id;
 		// Check/Fix id
