@@ -74,7 +74,6 @@ public class PusherCollFlatfile extends Thread implements PusherColl
 			catch (InterruptedException e)
 			{
 				// We've been interrupted. Lets bail.
-				MassiveCore.get().log("Stopping Pusher for " + this.coll.getDebugName());
 				return;
 			}
 			catch (Exception e)
