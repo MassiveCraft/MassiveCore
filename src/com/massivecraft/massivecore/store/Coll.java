@@ -883,9 +883,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		if (this.isWarningOnLocalAlter() && modification == Modification.LOCAL_ALTER)
 		{
-			MassiveCore.get().log(
-				"A local alter was spotted in " + this.getDebugName() + " on " + id
-				);
+			MassiveCore.get().log("A local alter was spotted in " + this.getDebugName() + " on " + id);
 			E entity = this.get(id);
 			JsonObject lastRaw = entity.getLastRaw();
 			JsonObject currentRaw = this.getGson().toJsonTree(entity, this.getEntityClass()).getAsJsonObject();
@@ -915,7 +913,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 				continue;
 			}
 			JsonElement lastValue = entry.getValue();
-			if (MStore.equal(currentValue, lastValue)) return;
+			if (MStore.equal(currentValue, lastValue)) continue;
 			changes.add(String.format("Changed %s: %s -> %s", name, lastValue, currentValue));
 		}
 		
