@@ -1,16 +1,11 @@
 package com.massivecraft.massivecore.command.type.sender;
 
-import java.util.Collection;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
-import com.massivecraft.massivecore.command.type.collection.AllAble;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
 
-public class TypeSenderEntity<T extends SenderEntity<T>> extends TypeSenderIdAbstract<T> implements AllAble<T>
+public class TypeSenderEntity<T extends SenderEntity<T>> extends TypeSenderIdAbstract<T>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -57,12 +52,6 @@ public class TypeSenderEntity<T extends SenderEntity<T>> extends TypeSenderIdAbs
 	{
 		// Null check is done in SenderColl & IdUtil :)
 		return this.coll.get(senderId);
-	}
-
-	@Override
-	public Collection<T> getAll(CommandSender sender)
-	{
-		return coll.getAll();
 	}
 
 }
