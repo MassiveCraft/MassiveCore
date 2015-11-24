@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.massivecraft.massivecore.util.MUtil;
+
 /**
  * The EventMassiveCorePlayerLeave is a non-cancellable event.
  * It is run at the MONITOR of either PlayerKickEvent or PlayerQuitEvent.
@@ -67,7 +69,8 @@ public class EventMassiveCorePlayerLeave extends Event implements Runnable
 	@Override
 	public void run()
 	{
-		UUID uuid = this.player.getUniqueId();
+		if (MUtil.isntPlayer(player)) return;
+		final UUID uuid = this.player.getUniqueId();
 		
 		// Someone may already have issued a player leave event for this disconnect.
 		// We ignore that since we want one leave event called per disconnect only.

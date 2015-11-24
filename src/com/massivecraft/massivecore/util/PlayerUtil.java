@@ -2,11 +2,7 @@ package com.massivecraft.massivecore.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentSkipListSet;
-
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +15,6 @@ import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -48,12 +43,6 @@ public class PlayerUtil extends EngineAbstract
 		idToDamageEvent.clear();
 		idToArmSwingEvent.clear();
 		
-		joinedPlayerIds.clear();
-		for (Player player : MUtil.getOnlinePlayers())
-		{
-			joinedPlayerIds.add(player.getUniqueId());
-		}
-		
 		idToLastMoveMillis.clear();
 	}
 	
@@ -75,47 +64,6 @@ public class PlayerUtil extends EngineAbstract
 		idToDeathEvent.clear();
 		idToDamageEvent.clear();
 		idToArmSwingEvent.clear();
-	}
-	
-	// -------------------------------------------- //
-	// IS JOINED
-	// -------------------------------------------- //
-	
-	private static Set<UUID> joinedPlayerIds = new ConcurrentSkipListSet<UUID>();
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void isJoined(PlayerJoinEvent event)
-	{
-		Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
-		
-		final UUID id = player.getUniqueId();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				joinedPlayerIds.add(id);
-			}
-		});
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void isJoined(PlayerQuitEvent event)
-	{
-		Player player = event.getPlayer();
-		if (MUtil.isntPlayer(player)) return;
-		
-		final UUID id = player.getUniqueId();
-		joinedPlayerIds.remove(id);
-	}
-	
-	public static boolean isJoined(Player player)
-	{
-		if (player == null) throw new NullPointerException("player was null");
-		final UUID id = player.getUniqueId();
-		return joinedPlayerIds.contains(id);
-		
 	}
 	
 	// -------------------------------------------- //

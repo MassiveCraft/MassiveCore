@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.teleport;
 
+import com.massivecraft.massivecore.engine.EngineMassiveCoreScheduledTeleport;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mixin.TeleporterException;
 
@@ -41,17 +42,17 @@ public class ScheduledTeleport implements Runnable
 		
 	public boolean isScheduled()
 	{
-		return EngineScheduledTeleport.get().isScheduled(this);
+		return EngineMassiveCoreScheduledTeleport.get().isScheduled(this);
 	}
 	
 	public ScheduledTeleport schedule()
 	{
-		return EngineScheduledTeleport.get().schedule(this);
+		return EngineMassiveCoreScheduledTeleport.get().schedule(this);
 	}
 	
 	public boolean unschedule()
 	{
-		return EngineScheduledTeleport.get().unschedule(this);
+		return EngineMassiveCoreScheduledTeleport.get().unschedule(this);
 	}
 	
 	// -------------------------------------------- //

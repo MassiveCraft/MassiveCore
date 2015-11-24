@@ -1,17 +1,19 @@
-package com.massivecraft.massivecore;
+package com.massivecraft.massivecore.engine;
 
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
 
-public class EngineCollTick extends EngineAbstract
+public class EngineMassiveCoreCollTick extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	protected static EngineCollTick i = new EngineCollTick();
-	public static EngineCollTick get() { return i; }
+	protected static EngineMassiveCoreCollTick i = new EngineMassiveCoreCollTick();
+	public static EngineMassiveCoreCollTick get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE: ENGINE

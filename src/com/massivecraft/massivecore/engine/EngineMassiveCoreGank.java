@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore;
+package com.massivecraft.massivecore.engine;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,15 +17,15 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class EngineGank extends EngineAbstract
+public class EngineMassiveCoreGank extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineGank i = new EngineGank();
-	public static EngineGank get() { return i; }
-	public EngineGank() {}
+	private static EngineMassiveCoreGank i = new EngineMassiveCoreGank();
+	public static EngineMassiveCoreGank get() { return i; }
+	public EngineMassiveCoreGank() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

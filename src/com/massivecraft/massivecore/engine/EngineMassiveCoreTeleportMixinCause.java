@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore.mixin;
+package com.massivecraft.massivecore.engine;
 
 import java.util.Collections;
 import java.util.Set;
@@ -13,15 +13,15 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.MassiveCore;
 
-public class EngineTeleportMixinCause extends EngineAbstract
+public class EngineMassiveCoreTeleportMixinCause extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineTeleportMixinCause i = new EngineTeleportMixinCause();
-	public static EngineTeleportMixinCause get() { return i; }
-	public EngineTeleportMixinCause() {}
+	private static EngineMassiveCoreTeleportMixinCause i = new EngineMassiveCoreTeleportMixinCause();
+	public static EngineMassiveCoreTeleportMixinCause get() { return i; }
+	public EngineMassiveCoreTeleportMixinCause() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

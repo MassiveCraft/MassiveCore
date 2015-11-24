@@ -63,6 +63,7 @@ import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.util.extractor.Extractor;
@@ -224,7 +225,7 @@ public class MUtil
 		if (address != null) return getIp(address);
 		
 		String id = IdUtil.getId(player);
-		PlayerLoginEvent event = EngineMassiveCoreMain.idToPlayerLoginEvent.get(id);
+		PlayerLoginEvent event = EngineMassiveCoreDatabase.idToPlayerLoginEvent.get(id);
 		if (event != null) return getIp(event);
 		
 		return null;

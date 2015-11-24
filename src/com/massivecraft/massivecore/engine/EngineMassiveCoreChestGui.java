@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore.chestgui;
+package com.massivecraft.massivecore.engine;
 
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -10,17 +10,19 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.chestgui.ChestAction;
+import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.InventoryUtil;
 
-public class EngineChestGui extends EngineAbstract
+public class EngineMassiveCoreChestGui extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineChestGui i = new EngineChestGui();
-	public static EngineChestGui get() { return i; }
+	private static EngineMassiveCoreChestGui i = new EngineMassiveCoreChestGui();
+	public static EngineMassiveCoreChestGui get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

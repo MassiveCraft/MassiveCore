@@ -4,6 +4,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.permissions.Permissible;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreTeleportMixinCause;
 import com.massivecraft.massivecore.teleport.Destination;
 
 public abstract class TeleportMixinAbstract implements TeleportMixin
@@ -24,7 +25,7 @@ public abstract class TeleportMixinAbstract implements TeleportMixin
 	@Override
 	public boolean isCausedByMixin(PlayerTeleportEvent event)
 	{
-		return EngineTeleportMixinCause.get().isCausedByTeleportMixin(event);
+		return EngineMassiveCoreTeleportMixinCause.get().isCausedByTeleportMixin(event);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore.teleport;
+package com.massivecraft.massivecore.engine;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,18 +16,19 @@ import com.massivecraft.massivecore.EngineAbstract;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.teleport.ScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 
-public class EngineScheduledTeleport extends EngineAbstract
+public class EngineMassiveCoreScheduledTeleport extends EngineAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EngineScheduledTeleport i = new EngineScheduledTeleport();
-	public static EngineScheduledTeleport get() { return i; }
+	private static EngineMassiveCoreScheduledTeleport i = new EngineMassiveCoreScheduledTeleport();
+	public static EngineMassiveCoreScheduledTeleport get() { return i; }
 	
 	// -------------------------------------------- //
 	// SCHEDULED TELEPORT INDEX
