@@ -4,11 +4,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -113,46 +116,56 @@ public class EngineMassiveCoreScheduledTeleport extends EngineAbstract
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void cancelTeleport(PlayerMoveEvent event)
 	{
-		// If the player moved from one block to another ...
 		if (MUtil.isSameBlock(event)) return;
 		
-		// ... cancel teleport!
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
 		this.cancelTeleport(player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void cancelTeleport(EntityDamageEvent event)
 	{
-		// If an entity takes damage ...
-		Entity entity = event.getEntity();
-		
-		// ... and that entity is a player ...
+		final Entity entity = event.getEntity();
 		if (MUtil.isntPlayer(entity)) return;
-		Player player = (Player)entity;
+		final Player player = (Player)entity;
 		
-		// ... cancel teleport!
 		this.cancelTeleport(player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void cancelTeleport(PlayerDeathEvent event)
 	{
-		// If a player dies ...
-		Player player = event.getEntity();
+		final Player player = event.getEntity();
 		
-		// ... cancel teleport!
 		this.cancelTeleport(player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void cancelTeleport(EventMassiveCorePlayerLeave event)
 	{
-		// If a player quits ...
 		if ( ! Mixin.isActualLeave(event)) return;
+		final Player player = event.getPlayer();
 		
-		// ... cancel teleport!
-		Player player = event.getPlayer();
+		this.cancelTeleport(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void cancelTeleport(InventoryOpenEvent event)
+	{
+		final HumanEntity human = event.getPlayer();
+		if (MUtil.isntPlayer(human)) return;
+		final Player player = (Player)human;
+		
+		this.cancelTeleport(player);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void cancelTeleport(InventoryClickEvent event)
+	{
+		final HumanEntity human = event.getWhoClicked();
+		if (MUtil.isntPlayer(human)) return;
+		final Player player = (Player)human;
+		
 		this.cancelTeleport(player);
 	}
 	
