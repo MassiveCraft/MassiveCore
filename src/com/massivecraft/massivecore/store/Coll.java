@@ -578,11 +578,11 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// -------------------------------------------- //
 	
 	@Override
-	public Modification examineIdFixed(String id, Long remoteMtime)
+	public Modification examineIdFixed(String id, Long remoteMtime, boolean local, boolean remote)
 	{
 		if (id == null) throw new NullPointerException("id");
-		// Meta might be non-existing. But then we create it here.
-		// If it is examined then it will be attached anyways.
+		if (!local && !remote) throw new IllegalArgumentException("Must be either remote or local.");
+		
 		Modification current = this.identifiedModifications.get(id);
 		// DEBUG
 		// if (Bukkit.isPrimaryThread())
@@ -592,114 +592,60 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		if (current != null && current.hasTopPriority()) return current;
 		
 		E localEntity = this.id2entity.get(id);
-		if (remoteMtime == null)
+		if (remoteMtime == null && remote)
 		{
 			// TODO: This is slow
 			remoteMtime = this.getDb().getMtime(this, id);
 		}
 		
 		boolean existsLocal = (localEntity != null);
-		boolean existsRemote = (remoteMtime != 0);
+		boolean existsRemote = remote ? (remoteMtime != 0) : true;
 		
 		// So we don't have this anywhere?
 		if ( ! existsLocal && ! existsRemote) return Modification.UNKNOWN;
 		
-		// If we have it both locally and remotely.
+		// If we have it both locally and remotely...
 		if (existsLocal && existsRemote)
 		{
 			long lastMtime = localEntity.getLastMtime();
 			
-			// If mtime is not equal remote takes priority, and we assume it is altered.
-			if ( ! remoteMtime.equals(lastMtime)) return Modification.REMOTE_ALTER;
-			
-			// Else we check for a local alter.
-			if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;
+			// ...and we are looking for remote changes...
+			if (remote)
+			{
+				// ...and it was modified remotely.
+				if ( ! remoteMtime.equals(lastMtime)) return Modification.REMOTE_ALTER;	
+			}
+			// ...and we are looking for local changes
+			if (local)
+			{
+				// ...and it was modified locally.
+				if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;	
+			}
 		}
-		// If we just have it locally...
+		// Otherwise, if we only have it locally...
 		else if (existsLocal)
 		{
-			// ...and it was default and thus not saved to the db...
-			if (localEntity.getLastDefault())
+			// ...and we look for local changes, and it was default...
+			if (local && localEntity.getLastDefault())
 			{
-				// ...and also actually altered.
-				// Then it is a local alter.
+				// ...then perhaps it was locally modified
 				if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;
 			}
-			// ...otherwise it was detached remotely.
-			else
+			// ...if we look for remote changes, and it wasn't default
+			else if (remote && !localEntity.getLastDefault())
 			{
+				//...then it was remotely detached.
 				return Modification.REMOTE_DETACH;
 			}
 		}
-		// If we just have it remotely. It was attached there.
-		else if (existsRemote)
+		// If we just have it remotely and look for remote changes. It was attached there.
+		else if (remote && existsRemote)
 		{
 			return Modification.REMOTE_ATTACH;
 		}
 		
 		// No modification was made.
 		return Modification.NONE;
-	}
-	
-	@Override
-	public Modification examineIdLocalFixed(final String id)
-	{
-		if (id == null) throw new NullPointerException("id");
-		
-		// A local entity should have a meta.
-		Modification current = this.identifiedModifications.get(id);
-		if (current != null && current.hasTopPriority()) return current;
-		
-		E localEntity = this.id2entity.get(id);
-		
-		// If not existing, then wtf.
-		if (localEntity == null) return Modification.UNKNOWN;
-		
-		// Altered locally.
-		if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;
-		
-		// Not altered locally.
-		return Modification.NONE;
-	}
-	
-	@Override
-	public Modification examineIdRemoteFixed(final String id, Long remoteMtime)
-	{
-		if (id == null) throw new NullPointerException("id");
-		
-		// We will always know beforehand, when local attach and detach is done.
-		// Because they are performed by calling a method on this coll.
-		// Meta might be non-existing. But then we create it here.
-		// If it is examined then it will be attached anyways.
-		Modification current = this.identifiedModifications.get(id);
-		if (current != null && current.hasTopPriority()) return current;
-		
-		if (remoteMtime == null)
-		{
-			// TODO: This is slow
-			remoteMtime = this.getDb().getMtime(this, id);
-		}
-		E localEntity = this.id2entity.get(id);
-		
-		boolean existsLocal = (localEntity != null);
-		boolean existsRemote = (remoteMtime != 0);
-		
-		// So we don't have this anywhere?
-		if ( ! existsLocal && ! existsRemote) return Modification.UNKNOWN;
-		
-		// If time is different
-		// then it is remotely altered
-		if (existsLocal && existsRemote && ! remoteMtime.equals(localEntity.getLastMtime())) return Modification.REMOTE_ALTER;
-		
-		// If it doesn't exist remotely, and it wasn't because it was default. It was detached remotely.
-		if (!existsRemote && existsLocal && ! localEntity.getLastDefault()) return Modification.REMOTE_DETACH;
-		
-		// If it doesn't exist locally, it was attached remotely.
-		if (!existsLocal) return Modification.REMOTE_ATTACH;
-		
-		// No modification spotted.
-		return Modification.NONE;
-		
 	}
 	
 	protected boolean examineHasLocalAlterFixed(String id, E entity)
@@ -732,7 +678,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			Long remoteMtime = null;
 			if (remoteEntry != null) remoteMtime = remoteEntry.getValue();
 			
-			Modification actualModification = this.examineIdFixed(id, remoteMtime);
+			Modification actualModification = this.examineIdFixed(id, remoteMtime, true, true);
 			if (MassiveCoreMConf.get().warnOnLocalAlter && modification == Modification.UNKNOWN_LOG && actualModification.isModified())
 			{
 				E entity = this.id2entity.get(id);
@@ -836,7 +782,6 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override
 	public void identifyModifications(Modification veto)
 	{
-		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " polling for all changes");
 		
 		// Get remote id2mtime snapshot
 		Map<String, Long> id2RemoteMtime = this.getDb().getId2mtime(this);
@@ -863,14 +808,13 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		if (id == null) throw new NullPointerException("id");
 		
-		Modification modification = this.examineIdFixed(id, remoteMtime);
+		Modification modification = this.examineIdFixed(id, remoteMtime, true, true);
 		this.storeModificationIdentification(id, modification, veto);
 	}
 	
 	@Override
 	public void identifyLocalModifications(Modification veto)
 	{
-		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " polling for local changes");
 		for (String id : id2entity.keySet())
 		{
 			this.identifyLocalModificationFixed(id, veto);
@@ -882,14 +826,13 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		if (id == null) throw new NullPointerException("id");
 		
-		Modification modification = this.examineIdLocalFixed(id);
+		Modification modification = this.examineIdFixed(id, null, true, false);
 		this.storeModificationIdentification(id, modification, veto);
 	}
 	
 	@Override
 	public void identifyRemoteModifications(Modification veto)
 	{
-		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " polling for remote changes");
 		// Get remote id2mtime snapshot
 		Map<String, Long> id2RemoteMtime = this.getDb().getId2mtime(this);
 		
@@ -917,7 +860,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		if (id == null) throw new NullPointerException("id");
 		
-		Modification modification = this.examineIdRemoteFixed(id, remoteMtime);
+		Modification modification = this.examineIdFixed(id, remoteMtime, false, true);
 		this.storeModificationIdentification(id, modification, veto);
 	}
 	

@@ -193,54 +193,10 @@ public abstract class CollAbstract<E extends Entity<E>> implements CollInterface
 	
 	// Examine
 	@Override
-	public Modification examineId(Object oid)
+	public Modification examineId(Object oid, Long remoteMtime, boolean local, boolean remote)
 	{
 		if (oid == null) throw new NullPointerException("oid");
-		return this.examineIdFixed(this.fixIdOrThrow(oid));
-	}
-	
-	@Override
-	public Modification examineId(Object oid, Long remoteMtime)
-	{
-		if (oid == null) throw new NullPointerException("oid");
-		return this.examineIdFixed(this.fixIdOrThrow(oid), remoteMtime);
-	}
-	
-	@Override
-	public Modification examineIdFixed(String id)
-	{
-		if (id == null) throw new NullPointerException("id");
-		return this.examineIdFixed(id, null);
-	}
-	
-	// Examine local
-	@Override
-	public Modification examineIdLocal(Object oid)
-	{
-		if (oid == null) throw new NullPointerException("oid");
-		return this.examineIdLocalFixed(this.fixIdOrThrow(oid));
-	}
-	
-	// Examine remote
-	@Override
-	public Modification examineIdRemote(Object oid)
-	{
-		if (oid == null) throw new NullPointerException("oid");
-		return this.examineIdRemoteFixed(this.fixIdOrThrow(oid));
-	}
-	
-	@Override
-	public Modification examineIdRemote(Object oid, Long remoteMtime)
-	{
-		if (oid == null) throw new NullPointerException("oid");
-		return this.examineIdRemoteFixed(this.fixIdOrThrow(oid), remoteMtime);
-	}
-	
-	@Override
-	public Modification examineIdRemoteFixed(String id)
-	{
-		if (id == null) throw new NullPointerException("id");
-		return this.examineIdRemoteFixed(id, null);
+		return this.examineIdFixed(this.fixIdOrThrow(oid), remoteMtime, local, remote);
 	}
 	
 	// Sync

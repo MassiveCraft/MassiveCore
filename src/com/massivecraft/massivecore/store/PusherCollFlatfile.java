@@ -107,7 +107,7 @@ public class PusherCollFlatfile extends Thread implements PusherColl
 		
 		// Most registered modifications here will actually be something done locally.
 		// So most of the time we should just ignore this.
-		Modification mod = this.coll.examineIdFixed(id, mtime);
+		Modification mod = this.coll.examineIdFixed(id, mtime, true, true);
 		
 		//System.out.println("old: " + coll.getMetaCreative(id).getMtime() + "new: " + mtime);
 		//System.out.println(String.format("Coll %s found %s on %s", this.coll.getBasename(), mod, id));

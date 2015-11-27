@@ -178,18 +178,10 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	// -------------------------------------------- //
 	
 	// oid
-	public Modification examineId(Object oid);
-	public Modification examineId(Object oid, Long remoteMtime);
-	public Modification examineIdLocal(Object oid);
-	public Modification examineIdRemote(Object oid);
-	public Modification examineIdRemote(Object oid, Long remoteMtime);
+	public Modification examineId(Object oid, Long remoteMtime, boolean local, boolean remote);
 	
 	// Fixed id
-	public Modification examineIdFixed(String id);
-	public Modification examineIdFixed(String id, Long remoteMtime);
-	public Modification examineIdLocalFixed(String id);
-	public Modification examineIdRemoteFixed(String id);
-	public Modification examineIdRemoteFixed(String id, Long remoteMtime);
+	public Modification examineIdFixed(String id, Long remoteMtime, boolean local, boolean remote);
 	
 	// Sync
 	public Modification syncId(Object oid);

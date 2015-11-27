@@ -17,7 +17,7 @@ public class MStore
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static boolean DEBUG_ENABLED = false;
+	public static final boolean DEBUG_ENABLED = false;
 	public static final int DEFAULT_LOCAL_POLL_INFREQUENCY = 10;
 	
 	// -------------------------------------------- //
