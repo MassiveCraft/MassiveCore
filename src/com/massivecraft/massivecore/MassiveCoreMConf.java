@@ -102,4 +102,6 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public volatile long millisBetweenLocalPoll = 5_000;
 	public volatile long millisBetweenRemotePollWithoutPusher = 5_000;
 	public volatile long millisBetweenRemotePollWithPusher = 30_000;
+	
+	public boolean warnOnLocalAlter = false;
 }

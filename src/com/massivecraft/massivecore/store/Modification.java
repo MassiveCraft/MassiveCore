@@ -7,14 +7,15 @@ public enum Modification
 	// ENUM
 	// -------------------------------------------- //
 	
-	LOCAL_ALTER (true, 3),
-	LOCAL_ATTACH (true, 7),
-	LOCAL_DETACH (true, 8),
-	REMOTE_ALTER (true, 4),
-	REMOTE_ATTACH (true, 5),
-	REMOTE_DETACH (true, 6),
+	LOCAL_ALTER (true, 4),
+	LOCAL_ATTACH (true, 8),
+	LOCAL_DETACH (true, 9),
+	REMOTE_ALTER (true, 5),
+	REMOTE_ATTACH (true, 6),
+	REMOTE_DETACH (true, 7),
 	NONE (false, 1),
-	UNKNOWN (false, 2),
+	UNKNOWN (false, 3),
+	UNKNOWN_LOG(false, 2),
 	;
 	
 	// -------------------------------------------- //
@@ -74,5 +75,14 @@ public enum Modification
 	public boolean hasTopPriority()
 	{
 		return this.getPriority() >= TOP_PRIORITY;
+	}
+	
+	// -------------------------------------------- //
+	// UNKNOWN
+	// -------------------------------------------- //
+	
+	public boolean isUnknown()
+	{
+		return this == Modification.UNKNOWN || this == Modification.UNKNOWN_LOG;
 	}
 }

@@ -35,7 +35,7 @@ public class ModificationPollerLocal extends ModificationPollerAbstract
 	{
 		if (iterationCount % coll.getLocalPollInfrequency() == 0)
 		{
-			coll.identifyLocalModifications(false);
+			coll.identifyLocalModifications(Modification.UNKNOWN_LOG);
 			return true;
 		}
 		return false;

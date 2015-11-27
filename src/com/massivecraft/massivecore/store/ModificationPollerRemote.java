@@ -42,7 +42,7 @@ public class ModificationPollerRemote extends ModificationPollerAbstract
 	public boolean poll(Coll<?> coll, long iterationCount)
 	{
 		//TODO: This could probably be true.
-		coll.identifyRemoteModifications(false);
+		coll.identifyRemoteModifications(Modification.UNKNOWN);
 		return true;
 	}
 

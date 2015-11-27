@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -194,14 +195,6 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	protected int localPollInfrequency = MStore.DEFAULT_LOCAL_POLL_INFREQUENCY;
 	@Override public int getLocalPollInfrequency() { return this.localPollInfrequency; }
 	@Override public void setLocalPollInfrequency(int infrequence) { this.localPollInfrequency = infrequence; }
-	
-	// We often try to call Entity#changed to inform that an entity has been changed locally.
-	// And on some Colls we expect it to always be done.
-	// However we cannot be sure, but if we expect to always do it
-	// then we tell the collection to notify us if we failed to call Entity#changed.
-	protected boolean warnOnLocalAlter = true;
-	@Override public boolean isWarningOnLocalAlter() { return this.warnOnLocalAlter; }
-	@Override public void setWarnOnLocalAlter(boolean warnOnLocalAlter) { this.warnOnLocalAlter = warnOnLocalAlter; }
 	
 	// Should that instance be saved or not?
 	// If it is default it should not be saved.
@@ -734,12 +727,21 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	public Modification syncIdFixed(String id, Modification modification, Entry<JsonObject, Long> remoteEntry)
 	{
 		if (id == null) throw new NullPointerException("id");
-		if (modification == null || modification == Modification.UNKNOWN)
+		if (modification == null || modification.isUnknown())
 		{
 			Long remoteMtime = null;
 			if (remoteEntry != null) remoteMtime = remoteEntry.getValue();
 			
-			modification = this.examineIdFixed(id, remoteMtime);
+			Modification actualModification = this.examineIdFixed(id, remoteMtime);
+			if (MassiveCoreMConf.get().warnOnLocalAlter && modification == Modification.UNKNOWN_LOG && actualModification.isModified())
+			{
+				E entity = this.id2entity.get(id);
+				if (entity != null)
+				{
+					this.logModification(entity);	
+				}
+			}
+			modification = actualModification;
 		}
 		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " syncronising " + modification + " on " + id);
 		
@@ -791,8 +793,48 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return modification;
 	}
 	
+	protected void logModification(E entity)
+	{
+		JsonObject lastRaw = entity.getLastRaw();
+		JsonObject currentRaw = this.getGson().toJsonTree(entity).getAsJsonObject();
+		
+		List<String> changes = new MassiveList<>();
+		
+		// Check removal and modification.
+		for (Entry<String, JsonElement> entry : lastRaw.entrySet())
+		{
+			String name = entry.getKey();
+			JsonElement currentValue = currentRaw.get(name);
+			if (currentValue == null)
+			{
+				changes.add(Txt.parse("<b>%s", name));
+				continue;
+			}
+			JsonElement lastValue = entry.getValue();
+			if (MStore.equal(currentValue, lastValue)) continue;
+			changes.add(Txt.parse("<i>%s", name));
+		}
+		
+		// Check for addition
+		for (Entry<String, JsonElement> entry : currentRaw.entrySet())
+		{
+			String name = entry.getKey();
+			if (lastRaw.has(name)) continue;
+			changes.add(Txt.parse("<g>%s", name));
+		}
+		
+		// Log
+		if (changes.isEmpty()) return;
+		changes.add(0, Txt.parse("<pink>%s", this.getDebugName()));
+		changes.add(1, Txt.parse("<aqua>%s", entity.getId()));
+		String change = Txt.implode(changes, Txt.parse("<silver> | "));
+		String message = Txt.parse("<b>[Unreported Modification] %s", change);
+		
+		MassiveCore.get().log(message);
+	}
+	
 	@Override
-	public void identifyModifications(boolean sure)
+	public void identifyModifications(Modification veto)
 	{
 		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " polling for all changes");
 		
@@ -812,40 +854,40 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		// Check for modifications
 		for (Entry<String, Long> entry : id2RemoteMtime.entrySet())
 		{
-			this.identifyModificationFixed(entry.getKey(), entry.getValue(), sure);
+			this.identifyModificationFixed(entry.getKey(), entry.getValue(), veto);
 		}
 	}
 	
 	@Override
-	public void identifyModificationFixed(String id, Long remoteMtime, boolean sure)
+	public void identifyModificationFixed(String id, Long remoteMtime, Modification veto)
 	{
 		if (id == null) throw new NullPointerException("id");
 		
 		Modification modification = this.examineIdFixed(id, remoteMtime);
-		this.storeModificationIdentification(id, modification, sure);
+		this.storeModificationIdentification(id, modification, veto);
 	}
 	
 	@Override
-	public void identifyLocalModifications(boolean sure)
+	public void identifyLocalModifications(Modification veto)
 	{
 		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " polling for local changes");
 		for (String id : id2entity.keySet())
 		{
-			this.identifyLocalModificationFixed(id, sure);
+			this.identifyLocalModificationFixed(id, veto);
 		}
 	}
 	
 	@Override
-	public void identifyLocalModificationFixed(String id, boolean sure)
+	public void identifyLocalModificationFixed(String id, Modification veto)
 	{
 		if (id == null) throw new NullPointerException("id");
 		
 		Modification modification = this.examineIdLocalFixed(id);
-		this.storeModificationIdentification(id, modification, sure);
+		this.storeModificationIdentification(id, modification, veto);
 	}
 	
 	@Override
-	public void identifyRemoteModifications(boolean sure)
+	public void identifyRemoteModifications(Modification veto)
 	{
 		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " polling for remote changes");
 		// Get remote id2mtime snapshot
@@ -866,69 +908,26 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		// Check for modifications
 		for (Entry<String, Long> entry : id2RemoteMtime.entrySet())
 		{
-			this.identifyRemoteModificationFixed(entry.getKey(), entry.getValue(), sure);
+			this.identifyRemoteModificationFixed(entry.getKey(), entry.getValue(), veto);
 		}
 	}
 	
 	@Override
-	public void identifyRemoteModificationFixed(String id, Long remoteMtime, boolean sure)
+	public void identifyRemoteModificationFixed(String id, Long remoteMtime, Modification veto)
 	{
 		if (id == null) throw new NullPointerException("id");
 		
 		Modification modification = this.examineIdRemoteFixed(id, remoteMtime);
-		this.storeModificationIdentification(id, modification, sure);
+		this.storeModificationIdentification(id, modification, veto);
 	}
 	
-	protected void storeModificationIdentification(String id, Modification modification, boolean sure)
+	protected void storeModificationIdentification(String id, Modification modification, Modification veto)
 	{
-		if (this.isWarningOnLocalAlter() && modification == Modification.LOCAL_ALTER)
-		{
-			MassiveCore.get().log("A local alter was spotted in " + this.getDebugName() + " on " + id);
-			E entity = this.get(id);
-			JsonObject lastRaw = entity.getLastRaw();
-			JsonObject currentRaw = this.getGson().toJsonTree(entity, this.getEntityClass()).getAsJsonObject();
-			this.logModification(lastRaw, currentRaw);
-		}
-		
 		if (modification.isModified())
 		{
 			if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " identified " + modification + " on " + id);
-			if (!sure && ! modification.isSafe()) modification = Modification.UNKNOWN;
+			if (veto != null && ! modification.isSafe()) modification = veto;
 			this.putIdentifiedModificationFixed(id, modification);
-		}
-	}
-	
-	protected void logModification(JsonObject lastRaw, JsonObject currentRaw)
-	{
-		List<String> changes = new MassiveList<>();
-		
-		// Check removal and modification.
-		for (Entry<String, JsonElement> entry : lastRaw.entrySet())
-		{
-			String name = entry.getKey();
-			JsonElement currentValue = currentRaw.get(name);
-			if (currentValue == null)
-			{
-				changes.add(String.format("Removed %s", name));
-				continue;
-			}
-			JsonElement lastValue = entry.getValue();
-			if (MStore.equal(currentValue, lastValue)) continue;
-			changes.add(String.format("Changed %s: %s -> %s", name, lastValue, currentValue));
-		}
-		
-		// Check for addition
-		for (Entry<String, JsonElement> entry : currentRaw.entrySet())
-		{
-			String name = entry.getKey();
-			if (lastRaw.has(name)) continue;
-			changes.add(String.format("Added %s: %s", name, entry.getValue()));
-		}
-		
-		// Log
-		for (String change : changes)
-		{
-			MassiveCore.get().log(change);
 		}
 	}
 	
@@ -946,7 +945,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override
 	public void syncAll()
 	{
-		this.identifyModifications(true);
+		this.identifyModifications(null);
 		this.syncIdentified();
 	}
 	

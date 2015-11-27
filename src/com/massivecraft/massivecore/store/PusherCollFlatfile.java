@@ -125,6 +125,7 @@ public class PusherCollFlatfile extends Thread implements PusherColl
 			// It was modified locally.
 			case NONE:
 			case UNKNOWN:
+			case UNKNOWN_LOG:
 				return;
 				
 			// It was modified remotely.

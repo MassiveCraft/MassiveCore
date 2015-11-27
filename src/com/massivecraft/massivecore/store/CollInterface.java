@@ -96,9 +96,6 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	public int getLocalPollInfrequency();
 	public void setLocalPollInfrequency(int frequency);
 	
-	public boolean isWarningOnLocalAlter();
-	public void setWarnOnLocalAlter(boolean warnOnLocalAlter);
-	
 	// A default entity will not be saved.
 	// This is often used together with creative collections to save disc space.
 	public boolean isDefault(E entity);
@@ -208,14 +205,14 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	public void syncAll();
 	
 	// Identity
-	public void identifyModifications(boolean sure);
-	public void identifyModificationFixed(String id, Long remoteMtime, boolean sure);
+	public void identifyModifications(Modification veto);
+	public void identifyModificationFixed(String id, Long remoteMtime, Modification veto);
 	
-	public void identifyLocalModifications(boolean sure);
-	public void identifyLocalModificationFixed(String id, boolean sure);
+	public void identifyLocalModifications(Modification veto);
+	public void identifyLocalModificationFixed(String id, Modification veto);
 	
-	public void identifyRemoteModifications(boolean sure);
-	public void identifyRemoteModificationFixed(String id, Long remoteMtime, boolean sure);
+	public void identifyRemoteModifications(Modification veto);
+	public void identifyRemoteModificationFixed(String id, Long remoteMtime, Modification veto);
 	
 	// Init
 	public void initLoadAllFromRemote();
