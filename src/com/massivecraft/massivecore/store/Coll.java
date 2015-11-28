@@ -528,6 +528,10 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			
 			// Then attach!
 			this.attach(entity, id, false);
+			
+			// On creation it might be modified by addition or removal of new/old fields.
+			// So we must do a check for that.
+			entity.changed();
 		}
 		
 		entity.setLastRaw(raw);
@@ -782,7 +786,6 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override
 	public void identifyModifications(Modification veto)
 	{
-		
 		// Get remote id2mtime snapshot
 		Map<String, Long> id2RemoteMtime = this.getDb().getId2mtime(this);
 		
@@ -960,7 +963,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override
 	public void init()
 	{
-		if (this.inited()) return; // TODO: Would throwing an exception make more sense?
+		if (this.inited()) throw new IllegalStateException("Already initialised.");
 		
 		if (this.supportsPusher())
 		{
@@ -968,7 +971,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		}
 		
 		this.initLoadAllFromRemote();
-		// this.syncAll();
+		this.syncIdentified();
 		
 		name2instance.put(this.getName(), this);
 	}
@@ -976,7 +979,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override
 	public void deinit()
 	{
-		if ( ! this.inited()) return; // TODO: Would throwing an exception make more sense?
+		if ( ! this.inited()) throw new IllegalStateException("Not initialised.");
 		
 		if (this.supportsPusher())
 		{
