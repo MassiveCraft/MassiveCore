@@ -2,7 +2,6 @@ package com.massivecraft.massivecore.util;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -305,7 +304,19 @@ public class SignUtil
 	{
 		if (sign == null) throw new NullPointerException("sign");
 		
-		return new ArrayList<String>(Arrays.asList(sign.getLines()));
+		// Create
+		List<String> ret = new ArrayList<String>();
+		
+		// Fill
+		for (String line : sign.getLines())
+		{
+			if (line == null) continue;
+			if (line.trim().isEmpty()) continue;
+			ret.add(line);
+		}
+		
+		// Return
+		return ret;
 	}
 	
 }
