@@ -979,7 +979,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin, boolean creative, boolean lowercasing, boolean sorted)
+	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -995,9 +995,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		}
 		
 		// WHAT DO WE HANDLE?
-		this.entityClass = entityClass;		
-		this.creative = creative;
-		this.lowercasing = lowercasing;
+		this.entityClass = entityClass;
 		
 		// SUPPORTING SYSTEM
 		this.plugin = plugin;
@@ -1005,7 +1003,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		this.collDriverObject = db.createCollDriverObject(this);
 		
 		// STORAGE
-		this.id2entity = (sorted) ? new ConcurrentSkipListMap<String, E>(NaturalOrderComparator.get()) : new ConcurrentHashMap<String, E>();
+		this.id2entity = new ConcurrentHashMap<String, E>();
 		
 		// ENTITY DATA
 		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
@@ -1014,11 +1012,6 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		{
 			@Override public void run() { Coll.this.onTick(); }
 		};
-	}
-	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
-	{
-		this(name, entityClass, db, plugin, false, false, false);
 	}
 	
 	@Override
