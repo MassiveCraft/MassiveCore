@@ -146,11 +146,6 @@ public abstract class Property<O, V> implements Named
 		return this.getValueType().createEditCommand(settings, this);
 	}
 	
-	public String getDisplayName()
-	{
-		return ChatColor.AQUA.toString() + this.getName();
-	}
-	
 	public String getInheritedVisual(O object, O source, V value, CommandSender sender)
 	{
 		String string = this.getValueType().getVisual(value, sender);
@@ -179,6 +174,36 @@ public abstract class Property<O, V> implements Named
 		O source = inherited.getKey();
 		V value = inherited.getValue();
 		return this.getInheritedVisual(object, source, value, sender);
+	}
+	
+	// -------------------------------------------- //
+	// VISUAL
+	// -------------------------------------------- //
+	
+	public String getDisplayName()
+	{
+		return ChatColor.AQUA.toString() + this.getName();
+	}
+	
+	public List<String> getShowLines(O object, CommandSender sender)
+	{
+		String ret = Txt.parse("<aqua>%s<silver>: <pink>%s", this.getDisplayName(), this.getInheritedVisual(object, sender));
+		return new MassiveList<String>(Txt.PATTERN_NEWLINE.split(ret));
+	}
+	
+	public static <O> List<String> getShowLines(O object, CommandSender sender, Collection<? extends Property<O, ?>> properties)
+	{
+		// Create
+		List<String> ret = new MassiveList<String>();
+		
+		// Fill
+		for (Property<O, ?> property : properties)
+		{
+			ret.addAll(property.getShowLines(object, sender));
+		}
+				
+		// Return
+		return ret;
 	}
 	
 }
