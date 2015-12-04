@@ -94,7 +94,7 @@ public class TimeDiffUtil
 			TimeUnit unit = TimeUnit.get(unitString);
 			if (unit == null)
 			{
-				throw new Exception("\""+unit+"\" is not a valid time unit.");
+				throw new Exception("\""+unitString+"\" is not a valid time unit.");
 			}
 			
 			// Add to the return map

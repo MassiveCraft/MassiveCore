@@ -49,6 +49,4 @@ public class TypeMillisDiff extends TypeAbstractException<Long>
 		return Collections.emptySet();
 	}
 
-	
-
 }

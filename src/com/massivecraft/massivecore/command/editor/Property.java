@@ -149,7 +149,7 @@ public abstract class Property<O, V> implements Named
 	public String getInheritedVisual(O object, O source, V value, CommandSender sender)
 	{
 		String string = this.getValueType().getVisual(value, sender);
-		if (string == null)
+		/*if (string == null)
 		{
 			System.out.println("value type " + this.getValueType());
 			System.out.println("value type name" + this.getValueType().getTypeName());
@@ -157,7 +157,7 @@ public abstract class Property<O, V> implements Named
 			System.out.println("source " + source);
 			System.out.println("value " + value);
 			System.out.println("sender " + sender);
-		}
+		}*/
 		
 		String suffix = null;
 		if (source != null && ! source.equals(object))
