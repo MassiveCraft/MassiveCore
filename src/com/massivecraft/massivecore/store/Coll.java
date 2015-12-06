@@ -688,7 +688,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 				E entity = this.id2entity.get(id);
 				if (entity != null)
 				{
-					this.logModification(entity);	
+					this.logModification(entity, actualModification);	
 				}
 			}
 			modification = actualModification;
@@ -743,9 +743,22 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return modification;
 	}
 	
-	protected void logModification(E entity)
+	protected void logModification(E entity, Modification modification)
 	{
 		JsonObject lastRaw = entity.getLastRaw();
+		
+		if (lastRaw == null)
+		{
+			List<String> messages = new MassiveList<>();
+			messages.add(Txt.parse("<pink>%s", this.getDebugName()));
+			messages.add(Txt.parse("<aqua>%s", entity.getId()));
+			messages.add(Txt.parse("<blue>%s", modification));
+			String message = Txt.implode(messages, Txt.parse("<silver> | "));
+			message = Txt.parse("<b>[lastRaw null] %s", message);
+			MassiveCore.get().log(message);
+			return;
+		}
+		
 		JsonObject currentRaw = this.getGson().toJsonTree(entity).getAsJsonObject();
 		
 		List<String> changes = new MassiveList<>();
