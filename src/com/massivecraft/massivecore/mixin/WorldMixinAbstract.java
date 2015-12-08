@@ -14,12 +14,17 @@ public abstract class WorldMixinAbstract implements WorldMixin
 	@Override
 	public List<String> getVisibleWorldIds(Permissible permissible)
 	{
+		// Create
 		List<String> ret = new ArrayList<String>();
+		
+		// Fill
 		for (String worldId : this.getWorldIds())
 		{
-			if (!this.canSeeWorld(permissible, worldId)) continue;
+			if ( ! this.canSeeWorld(permissible, worldId)) continue;
 			ret.add(worldId);
 		}
+		
+		// Return
 		return ret;
 	}
 	
@@ -34,7 +39,7 @@ public abstract class WorldMixinAbstract implements WorldMixin
 	@Override
 	public String getWorldDisplayName(String worldId)
 	{
-		return this.getWorldColor(worldId).toString()+this.getWorldAliasOrId(worldId);
+		return this.getWorldColor(worldId).toString() + this.getWorldAliasOrId(worldId);
 	}
 
 }

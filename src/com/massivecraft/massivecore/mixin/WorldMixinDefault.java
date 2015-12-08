@@ -36,11 +36,16 @@ public class WorldMixinDefault extends WorldMixinAbstract
 	@Override
 	public List<String> getWorldIds()
 	{
+		// Create
 		List<String> ret = new ArrayList<String>();
+		
+		// Fill
 		for (World world : Bukkit.getWorlds())
 		{
 			ret.add(world.getName());
 		}
+		
+		// Return
 		return ret;
 	}
 	
