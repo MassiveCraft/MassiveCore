@@ -1,0 +1,51 @@
+package com.massivecraft.massivecore.collections;
+
+import com.massivecraft.massivecore.CaseInsensitiveComparator;
+
+public class ExceptionSet<T>
+{
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	public boolean standard = true;
+	
+	public MassiveTreeSet<String, CaseInsensitiveComparator> exceptions = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public ExceptionSet()
+	{
+		
+	}
+
+	public ExceptionSet(boolean standard)
+	{
+		this.standard = standard;
+	}
+	
+	// -------------------------------------------- //
+	// CONTAINS
+	// -------------------------------------------- //
+	
+	public boolean contains(String item)
+	{
+		if (this.exceptions.contains(item)) return ! this.standard;
+		return this.standard;
+	}
+
+	public boolean contains(T item)
+	{
+		if (item == null) return ! this.standard;
+		
+		return this.contains(convert(item));
+	}
+	
+	public String convert(T item)
+	{
+		return item.toString();
+	}
+	
+}

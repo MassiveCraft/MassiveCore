@@ -4,19 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
-import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.ps.PS;
 
-public class WorldExceptionSet
+public class WorldExceptionSet extends ExceptionSet<World>
 {
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	public boolean standard = true;
-	
-	public MassiveTreeSet<String, CaseInsensitiveComparator> exceptions = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
-	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -28,27 +19,22 @@ public class WorldExceptionSet
 	
 	public WorldExceptionSet(boolean standard)
 	{
-		this.standard = standard;
+		super(standard);
 	}
 	
 	// -------------------------------------------- //
 	// CONTAINS
 	// -------------------------------------------- //
 	
-	public boolean contains(String world)
+	@Override
+	public String convert(World world)
 	{
-		if (this.exceptions.contains(world)) return !this.standard;
-		return this.standard;
+		return world.getName();
 	}
 	
 	public boolean contains(PS ps)
 	{
 		return this.contains(ps.getWorld());
-	}
-	
-	public boolean contains(World world)
-	{
-		return this.contains(world.getName());
 	}
 	
 	public boolean contains(Location loc)
