@@ -531,7 +531,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			
 			// On creation it might be modified by addition or removal of new/old fields.
 			// So we must do a check for that.
-			entity.changed();
+			this.putIdentifiedModificationFixed(id, Modification.UNKNOWN);
 		}
 		
 		entity.setLastRaw(raw);
@@ -984,7 +984,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		}
 		
 		this.initLoadAllFromRemote();
-		this.syncIdentified();
+		//this.syncIdentified();
 		
 		name2instance.put(this.getName(), this);
 	}
