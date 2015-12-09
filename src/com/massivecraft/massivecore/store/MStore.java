@@ -9,16 +9,15 @@ import java.util.UUID;
 import com.massivecraft.massivecore.ConfServer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
-// This class also serves the purpose of containing
-// database related constants.
 public class MStore
 {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
+	// This class also serves the purpose of containing database related constants.
 	
 	public static final boolean DEBUG_ENABLED = false;
-	public static final int DEFAULT_LOCAL_POLL_INFREQUENCY = 10;
+	public static final int LOCAL_POLL_INFREQUENCY_DEFAULT = 10;
 	
 	// -------------------------------------------- //
 	// DRIVER REGISTRY

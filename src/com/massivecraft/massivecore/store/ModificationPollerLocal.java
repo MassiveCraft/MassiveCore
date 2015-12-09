@@ -27,7 +27,7 @@ public class ModificationPollerLocal extends ModificationPollerAbstract
 	{
 		// The user specifies how often a default coll should be polled.
 		// Some colls might be polled more or less frequently.
-		return MassiveCoreMConf.get().millisBetweenLocalPoll / MStore.DEFAULT_LOCAL_POLL_INFREQUENCY;
+		return MassiveCoreMConf.get().millisBetweenLocalPoll / MStore.LOCAL_POLL_INFREQUENCY_DEFAULT;
 	}
 
 	@Override
