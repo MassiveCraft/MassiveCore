@@ -43,9 +43,9 @@ public class TypePS extends TypeAbstract<PS>
 		// 34 13 79 (standard one)
 		// pitch14.5
 		// worldEllador,yaw14,
-		// x15,y18,z8003
-		// x15 y32 z99 wEllador
-		// x:15 y:32 z:99 w:Ellador
+		// lx15,ly18,lz8003
+		// lx15 ly32 lz99 wEllador
+		// lx:15 ly:32 lz:99 w:Ellador
 		
 		// We get the sender ps
 		PS senderPs = new PSBuilder().build();
@@ -136,21 +136,21 @@ public class TypePS extends TypeAbstract<PS>
 				something = true;
 			}
 			
-			value = getValue(part, PS.NAME_SERIALIZED_LOCATIONX, PS.NAME_FULL_LOCATIONX, "x");
+			value = getValue(part, PS.NAME_SERIALIZED_LOCATIONX, PS.NAME_FULL_LOCATIONX);
 			if (value != null)
 			{
 				ret.locationX(TypeDouble.get().read(value, sender));
 				something = true;
 			}
 			
-			value = getValue(part, PS.NAME_SERIALIZED_LOCATIONY, PS.NAME_FULL_LOCATIONY, "y");
+			value = getValue(part, PS.NAME_SERIALIZED_LOCATIONY, PS.NAME_FULL_LOCATIONY);
 			if (value != null)
 			{
 				ret.locationY(TypeDouble.get().read(value, sender));
 				something = true;
 			}
 			
-			value = getValue(part, PS.NAME_SERIALIZED_LOCATIONZ, PS.NAME_FULL_LOCATIONZ, "z");
+			value = getValue(part, PS.NAME_SERIALIZED_LOCATIONZ, PS.NAME_FULL_LOCATIONZ);
 			if (value != null)
 			{
 				ret.locationZ(TypeDouble.get().read(value, sender));
