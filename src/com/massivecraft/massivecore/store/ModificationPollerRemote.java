@@ -39,11 +39,9 @@ public class ModificationPollerRemote extends ModificationPollerAbstract
 	}
 
 	@Override
-	public boolean poll(Coll<?> coll, long iterationCount)
+	public void poll(Coll<?> coll, long iterationCount)
 	{
-		//TODO: This could probably be true.
 		coll.identifyRemoteModifications(Modification.UNKNOWN);
-		return true;
 	}
 
 }

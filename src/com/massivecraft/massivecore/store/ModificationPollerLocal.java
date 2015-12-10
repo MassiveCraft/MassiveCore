@@ -25,20 +25,13 @@ public class ModificationPollerLocal extends ModificationPollerAbstract
 	@Override
 	public long getMillisBetweenPoll()
 	{
-		// The user specifies how often a default coll should be polled.
-		// Some colls might be polled more or less frequently.
-		return MassiveCoreMConf.get().millisBetweenLocalPoll / MStore.LOCAL_POLL_INFREQUENCY_DEFAULT;
+		return MassiveCoreMConf.get().millisBetweenLocalPoll;
 	}
 
 	@Override
-	public boolean poll(Coll<?> coll, long iterationCount)
+	public void poll(Coll<?> coll, long iterationCount)
 	{
-		if (iterationCount % coll.getLocalPollInfrequency() == 0)
-		{
 			coll.identifyLocalModifications(Modification.UNKNOWN_LOG);
-			return true;
-		}
-		return false;
 	}
 
 }

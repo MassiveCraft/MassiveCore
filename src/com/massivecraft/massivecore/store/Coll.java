@@ -192,10 +192,6 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override public boolean isLowercasing() { return this.lowercasing; }
 	@Override public void setLowercasing(boolean lowercasing) { this.lowercasing = lowercasing; }
 	
-	protected int localPollInfrequency = MStore.LOCAL_POLL_INFREQUENCY_DEFAULT;
-	@Override public int getLocalPollInfrequency() { return this.localPollInfrequency; }
-	@Override public void setLocalPollInfrequency(int infrequence) { this.localPollInfrequency = infrequence; }
-	
 	// Should that instance be saved or not?
 	// If it is default it should not be saved.
 	@Override

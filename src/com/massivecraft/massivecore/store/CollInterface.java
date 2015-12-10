@@ -93,9 +93,6 @@ public interface CollInterface<E extends Entity<E>> extends Named
 	public boolean isLowercasing();
 	public void setLowercasing(boolean lowercasing);
 	
-	public int getLocalPollInfrequency();
-	public void setLocalPollInfrequency(int frequency);
-	
 	// A default entity will not be saved.
 	// This is often used together with creative collections to save disc space.
 	public boolean isDefault(E entity);

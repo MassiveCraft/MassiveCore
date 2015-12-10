@@ -9,6 +9,7 @@ import org.bukkit.permissions.Permissible;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
 
 public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
@@ -99,9 +100,9 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// MSTORE CONFIGURATON
 	// -------------------------------------------- //
 	
-	public volatile long millisBetweenLocalPoll = 5_000;
-	public volatile long millisBetweenRemotePollWithoutPusher = 5_000;
-	public volatile long millisBetweenRemotePollWithPusher = 30_000;
+	public volatile long millisBetweenLocalPoll = TimeUnit.MILLIS_PER_MINUTE * 5;
+	public volatile long millisBetweenRemotePollWithoutPusher = TimeUnit.MILLIS_PER_SECOND * 10;
+	public volatile long millisBetweenRemotePollWithPusher = TimeUnit.MILLIS_PER_MINUTE * 1;
 	
 	public boolean warnOnLocalAlter = false;
 }

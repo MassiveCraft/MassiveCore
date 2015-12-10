@@ -17,7 +17,6 @@ public class MStore
 	// This class also serves the purpose of containing database related constants.
 	
 	public static final boolean DEBUG_ENABLED = false;
-	public static final int LOCAL_POLL_INFREQUENCY_DEFAULT = 10;
 	
 	// -------------------------------------------- //
 	// DRIVER REGISTRY
