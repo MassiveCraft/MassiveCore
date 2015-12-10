@@ -31,7 +31,7 @@ public class ModificationPollerLocal extends ModificationPollerAbstract
 	@Override
 	public void poll(Coll<?> coll, long iterationCount)
 	{
-			coll.identifyLocalModifications(Modification.UNKNOWN_LOG);
+		coll.identifyLocalModifications(Modification.UNKNOWN_LOG);
 	}
 
 }

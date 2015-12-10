@@ -68,4 +68,5 @@ public abstract class ModificationPollerAbstract extends Thread
 	
 	public abstract long getMillisBetweenPoll();
 	public abstract void poll(Coll<?> coll, long iterationCount);
+	
 }
