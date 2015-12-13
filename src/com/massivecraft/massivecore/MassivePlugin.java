@@ -37,10 +37,12 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 	// ENABLE
 	// -------------------------------------------- //
 	
-	private long timeEnableStart;
+	private long enableTime;
+	public long getEnableTime() { return this.enableTime; }
+	
 	public boolean preEnable()
 	{
-		timeEnableStart = System.currentTimeMillis();
+		enableTime = System.currentTimeMillis();
 		
 		this.logPrefixColored = Txt.parse("<teal>[<aqua>%s %s<teal>] <i>", this.getDescription().getName(), this.getDescription().getVersion());
 		this.logPrefixPlain = ChatColor.stripColor(this.logPrefixColored);
@@ -71,7 +73,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 	
 	public void postEnable()
 	{
-		long ms = System.currentTimeMillis()-timeEnableStart;
+		long ms = System.currentTimeMillis() - enableTime;
 		
 		this.checkVersionSynchronization();
 		
