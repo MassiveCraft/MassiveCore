@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 
@@ -47,9 +48,17 @@ public class TypePS extends TypeAbstract<PS>
 		// lx15 ly32 lz99 wEllador
 		// lx:15 ly:32 lz:99 w:Ellador
 		
-		// We get the sender ps
-		PS senderPs = new PSBuilder().build();
-		if (sender instanceof Entity) senderPs = PS.valueOf((Entity)sender);
+		// We get the sender ps (note only pitch, yaw, and world is implicit)
+		PS defaultPs = PS.NULL;
+		if (sender instanceof Entity)
+		{
+			Location loc = ((Entity) sender).getLocation();
+			defaultPs = new PSBuilder()
+			.world(PS.calcWorldName(loc.getWorld()))
+			.pitch(loc.getPitch())
+			.yaw(loc.getYaw())
+			.build();
+		}
 		
 		// We remove all commas optionally followed by spaces
 		String argInner = arg.replaceAll("\\:\\s*", "");
@@ -66,7 +75,7 @@ public class TypePS extends TypeAbstract<PS>
 				double locationX = TypeDouble.get().read(parts.get(1), sender);
 				double locationY = TypeDouble.get().read(parts.get(2), sender);
 				double locationZ = TypeDouble.get().read(parts.get(3), sender);
-				return new PSBuilder(senderPs).world(world).locationX(locationX).locationY(locationY).locationZ(locationZ).build();
+				return new PSBuilder(defaultPs).world(world).locationX(locationX).locationY(locationY).locationZ(locationZ).build();
 			}
 			catch (Exception e)
 			{
@@ -79,7 +88,7 @@ public class TypePS extends TypeAbstract<PS>
 				double locationY = TypeDouble.get().read(parts.get(1), sender);
 				double locationZ = TypeDouble.get().read(parts.get(2), sender);
 				String world = TypeWorldId.get().read(parts.get(3), sender);
-				return new PSBuilder(senderPs).world(world).locationX(locationX).locationY(locationY).locationZ(locationZ).build();
+				return new PSBuilder(defaultPs).world(world).locationX(locationX).locationY(locationY).locationZ(locationZ).build();
 			}
 			catch (Exception e)
 			{
@@ -93,7 +102,7 @@ public class TypePS extends TypeAbstract<PS>
 				double locationX = TypeDouble.get().read(parts.get(0), sender);
 				double locationY = TypeDouble.get().read(parts.get(1), sender);
 				double locationZ = TypeDouble.get().read(parts.get(2), sender);
-				return new PSBuilder(senderPs).locationX(locationX).locationY(locationY).locationZ(locationZ).build();
+				return new PSBuilder(defaultPs).locationX(locationX).locationY(locationY).locationZ(locationZ).build();
 			}
 			catch (Exception e)
 			{
@@ -102,7 +111,7 @@ public class TypePS extends TypeAbstract<PS>
 		}
 		
 		// Then we split each entry using known prefixes and append the ps builder.
-		PSBuilder ret = new PSBuilder(senderPs);
+		PSBuilder ret = new PSBuilder(defaultPs);
 		boolean something = false;
 		for (String part : parts)
 		{
