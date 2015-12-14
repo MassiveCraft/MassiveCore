@@ -29,6 +29,12 @@ public class TypeSenderEntity<T extends SenderEntity<T>> extends TypeSenderIdAbs
 		this.coll = coll;
 	}
 	
+	private TypeSenderEntity(SenderColl<T> coll, SenderType type)
+	{
+		super(coll, type);
+		this.coll = coll;
+	}
+	
 	private TypeSenderEntity(SenderColl<T> coll)
 	{
 		super(coll);
@@ -41,6 +47,7 @@ public class TypeSenderEntity<T extends SenderEntity<T>> extends TypeSenderIdAbs
 	
 	public static <T extends SenderEntity<T>> TypeSenderEntity<T> get(SenderColl<T> coll, SenderPresence presence, SenderType type) { return new TypeSenderEntity<T>(coll, presence, type); }
 	public static <T extends SenderEntity<T>> TypeSenderEntity<T> get(SenderColl<T> coll, SenderPresence presence) { return new TypeSenderEntity<T>(coll, presence); }
+	public static <T extends SenderEntity<T>> TypeSenderEntity<T> get(SenderColl<T> coll, SenderType type) { return new TypeSenderEntity<T>(coll, type); }
 	public static <T extends SenderEntity<T>> TypeSenderEntity<T> get(SenderColl<T> coll) { return new TypeSenderEntity<T>(coll); }
 	
 	// -------------------------------------------- //

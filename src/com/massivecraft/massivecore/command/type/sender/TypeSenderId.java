@@ -21,6 +21,13 @@ public class TypeSenderId extends TypeSenderIdAbstract<String>
 		super(source, presence);
 	}
 	
+	
+	private TypeSenderId(SenderIdSource source, SenderType type)
+	{
+		super(source, type);
+	}
+	
+	
 	private TypeSenderId(SenderIdSource source)
 	{
 		super(source);
@@ -39,6 +46,7 @@ public class TypeSenderId extends TypeSenderIdAbstract<String>
 	
 	public static TypeSenderId get(SenderIdSource source, SenderPresence presence, SenderType type) { return new TypeSenderId(source, presence, type); }
 	public static TypeSenderId get(SenderIdSource source, SenderPresence presence) { return new TypeSenderId(source, presence); }
+	public static TypeSenderId get(SenderIdSource source, SenderType type) { return new TypeSenderId(source, type); }
 	public static TypeSenderId get(SenderIdSource source) { return new TypeSenderId(source); }
 	
 	// -------------------------------------------- //

@@ -15,6 +15,7 @@ import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 {
@@ -44,6 +45,11 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 	public TypeSenderIdAbstract(SenderIdSource source, SenderPresence presence)
 	{
 		this(source, presence, SenderType.ANY);
+	}
+	
+	public TypeSenderIdAbstract(SenderIdSource source, SenderType type)
+	{
+		this(source, SenderPresence.ANY, type);
 	}
 	
 	public TypeSenderIdAbstract(SenderIdSource source)
@@ -109,7 +115,7 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		if (ret == null)
 		{
 			// No alternatives found
-			throw new MassiveException().addMsg("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
+			throw new MassiveException().addMessage(this.getErrorMessageForArg(arg));
 		}
 	
 		// Return Ret
@@ -165,6 +171,11 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
+	
+	public String getErrorMessageForArg(String arg)
+	{
+		return Txt.parse("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
+	}
 	
 	public String getSenderIdFor(String arg)
 	{

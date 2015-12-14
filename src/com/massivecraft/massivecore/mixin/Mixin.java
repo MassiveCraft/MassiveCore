@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -41,6 +42,10 @@ public class Mixin
 	private static SenderPsMixin senderPsMixin = SenderPsMixinDefault.get();
 	public static SenderPsMixin getSenderPsMixin() { return senderPsMixin; }
 	public static void setSenderPsMixin(SenderPsMixin val) { senderPsMixin = val; }
+
+	private static GamemodeMixin gamemodeMixin = GamemodeMixinDefault.get();
+	public static GamemodeMixin getGamemodeMixin() { return gamemodeMixin; }
+	public static void setGamemodeMixin(GamemodeMixin val) { gamemodeMixin = val; }
 	
 	private static PlayedMixin playedMixin = PlayedMixinDefault.get();
 	public static PlayedMixin getPlayedMixin() { return playedMixin; }
@@ -182,6 +187,20 @@ public class Mixin
 	public static void setSenderPs(Object senderObject, PS ps)
 	{
 		getSenderPsMixin().setSenderPs(senderObject, ps);
+	}
+	
+	// -------------------------------------------- //
+	// STATIC EXPOSE: GAMEMODE
+	// -------------------------------------------- //
+	
+	public static GameMode getGamemode(Object playerObject)
+	{
+		return getGamemodeMixin().getGamemode(playerObject);
+	}
+	
+	public static void setGamemode(Object playerObject, GameMode gm)
+	{
+		getGamemodeMixin().setGamemode(playerObject, gm);
 	}
 	
 	// -------------------------------------------- //
