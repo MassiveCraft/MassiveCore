@@ -236,9 +236,13 @@ public class Mixin
 	// STATIC EXPOSE: VISIBILITY
 	// -------------------------------------------- //
 	
-	public static boolean canSee(Object watcherObject, Object watcheeObject)
+	public static boolean isVisible(Object watcheeObject)
 	{
-		return getVisibilityMixin().canSee(watcherObject, watcheeObject);
+		return getVisibilityMixin().isVisible(watcheeObject);
+	}
+	public static boolean isVisible(Object watcheeObject, Object watcherObject)
+	{
+		return getVisibilityMixin().isVisible(watcheeObject, watcherObject);
 	}
 	
 	// -------------------------------------------- //

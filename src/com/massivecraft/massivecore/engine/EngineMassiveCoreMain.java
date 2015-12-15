@@ -145,9 +145,9 @@ public class EngineMassiveCoreMain extends EngineAbstract
 		// TODO: Should this only be players? Would a player actually want to tab-complete @console?
 		for (String senderName : IdUtil.getNames(SenderPresence.ONLINE, SenderType.ANY))
 		{
-			if (!predicate.apply(senderName)) continue;
+			if ( ! predicate.apply(senderName)) continue;
 			if (current.contains(senderName)) continue;
-			if (!Mixin.canSee(watcher, senderName)) continue;
+			if ( ! Mixin.isVisible(senderName, watcher)) continue;
 			
 			event.getTabCompletions().add(senderName);
 		}

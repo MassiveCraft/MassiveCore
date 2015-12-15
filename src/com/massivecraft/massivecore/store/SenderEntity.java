@@ -122,9 +122,14 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 		return Mixin.getIp(this.getId());
 	}
 	
+	public boolean isVisible()
+	{
+		return Mixin.isVisible(this);
+	}
+	
 	public boolean isVisible(Object watcherObject)
 	{
-		return Mixin.canSee(watcherObject, this);
+		return Mixin.isVisible(this, watcherObject);
 	}
 	
 	public boolean isOnline(Object watcherObject)

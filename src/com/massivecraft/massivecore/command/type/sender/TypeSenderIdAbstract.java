@@ -158,7 +158,7 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		Set<String> ret = new MassiveSet<String>(ids.size());
 		for (String id : ids)
 		{
-			if ( ! Mixin.canSee(sender, id)) continue;
+			if ( ! Mixin.isVisible(id, sender)) continue;
 			String name = IdUtil.getName(id);
 			if (name == null) continue;
 			ret.add(name);

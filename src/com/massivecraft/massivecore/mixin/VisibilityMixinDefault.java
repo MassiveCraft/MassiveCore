@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.mixin;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class VisibilityMixinDefault extends VisibilityMixinAbstract
 {
@@ -18,13 +19,35 @@ public class VisibilityMixinDefault extends VisibilityMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean canSee(Object watcherObject, Object watcheeObject)
+	public boolean isVisible(Object watcheeObject)
 	{
-		Player pwatcher = IdUtil.getPlayer(watcherObject);
-		Player pwatchee = IdUtil.getPlayer(watcheeObject);
+		// The Bukkit API is not about general visibility.
+		// It only handles player to player visibility.
+		// With this in mind we loop to do some sort of approximation.
+		// If there is any other player who can not see then we are not visible.
+		// This is for the sake of security. Rather hide than display secret information.
 		
-		if (pwatcher == null) return true;
+		Player pwatchee = IdUtil.getPlayer(watcheeObject);
 		if (pwatchee == null) return true;
+		
+		for (Player pwatcher : MUtil.getOnlinePlayers())
+		{
+			if (pwatchee.equals(pwatcher)) continue;
+			if (pwatcher.canSee(pwatchee)) continue;
+			return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public boolean isVisible(Object watcheeObject, Object watcherObject)
+	{
+		Player pwatchee = IdUtil.getPlayer(watcheeObject);
+		Player pwatcher = IdUtil.getPlayer(watcherObject);
+				
+		if (pwatchee == null) return true;
+		if (pwatcher == null) return true;
 		
 		return pwatcher.canSee(pwatchee);
 	}
