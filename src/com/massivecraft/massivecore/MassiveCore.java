@@ -143,6 +143,14 @@ public class MassiveCore extends MassivePlugin
 	}
 	
 	public static String getServerId() { return ConfServer.serverid; }
+	public static String getTaskServerId() { return MassiveCoreMConf.get().taskServerId; }
+	public static boolean isTaskServer()
+	{
+		String taskServerId = getTaskServerId();
+		if (taskServerId == null) return true;
+		if (getServerId().equals(taskServerId)) return true;
+		return false;
+	}
 	
 	// -------------------------------------------- //
 	// FIELDS

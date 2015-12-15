@@ -25,6 +25,8 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// FIELDS
 	// -------------------------------------------- //
 	
+	public String taskServerId = null;
+	
 	public boolean checkVersionSynchronization = true;
 	
 	public int maxTabCompletions = 100;
