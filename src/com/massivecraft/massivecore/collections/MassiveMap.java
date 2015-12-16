@@ -78,5 +78,21 @@ public class MassiveMap<K, V> extends LinkedHashMap<K, V>
 		
 		return ret;
 	}
+	
+	// -------------------------------------------- //
+	// METHODS
+	// -------------------------------------------- //
+	
+	public V set(K key, V value)
+	{
+		if (value == null)
+		{
+			return this.remove(key);
+		}
+		else
+		{
+			return this.put(key, value);
+		}
+	}
 
 }
