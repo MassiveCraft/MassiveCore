@@ -66,15 +66,11 @@ public class EngineMassiveCorePlayerUpdate extends EngineAbstract
 		EventMassiveCorePlayerUpdate.run(player, current);
 	}
 	
-	// We reset to default values as early as we can on join.
-	// This is for the sake of security.
-	// Old insane values left in the player dat files will be reset.
-	// If they were wanted they will have to be redeclared by the responsible plugin again.
 	// NOTE: Can't be cancelled
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void update(PlayerJoinEvent event)
 	{
-		update(event.getPlayer(), false);
+		update(event.getPlayer(), true);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
