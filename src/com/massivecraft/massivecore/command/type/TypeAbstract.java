@@ -64,12 +64,12 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public <I extends Type<X>, X extends Object> List<I> getInnerTypes() { return (List<I>) this.innerTypes; }
 	@SuppressWarnings("unchecked")
 	public <I> Type<I> getInnerType(int index) { return (Type<I>) this.getInnerTypes().get(index); }
-	public <I> Type<I> getInnerType() { return this.getInnerType(0); };
+	public <I> Type<I> getInnerType() { return this.getInnerType(0); }
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setInnerTypes(Collection<Type<?>> innerTypes) { this.innerTypes = new MassiveList(innerTypes); }
 	public void setInnerTypes(Type<?>... innerTypes) { this.setInnerTypes(Arrays.asList(innerTypes)); };
-	public void setInnerType(Type<?> innerType) { this.setInnerTypes(innerType); };
+	public void setInnerType(Type<?> innerType) { this.setInnerTypes(innerType); }
 	
 	// -------------------------------------------- //
 	// WRITE VISUAL COLOR
