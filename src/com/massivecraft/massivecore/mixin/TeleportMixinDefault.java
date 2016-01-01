@@ -91,7 +91,7 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 		if (delaySeconds > 0)
 		{
 			// With delay
-			if (desc != null)
+			if (desc != null && ! desc.isEmpty())
 			{
 				Mixin.msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
 			}
@@ -113,7 +113,7 @@ public class TeleportMixinDefault extends TeleportMixinAbstract
 			destination = event.getDestination();
 			desc = destination.getDesc(teleporteeId);
 			
-			if (desc != null)
+			if (desc != null && ! desc.isEmpty())
 			{
 				Mixin.msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+"<i>.");
 			}
