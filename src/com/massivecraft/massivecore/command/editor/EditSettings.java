@@ -99,16 +99,24 @@ public class EditSettings<O>
 	// No nice constructors for TreeSet :(
 	public static final Set<String> ALIASES_USED = MUtil.treeset("used", "selected", "chosen");
 	
-	public O getUsedOrCommandException(CommandSender sender, String arg) throws MassiveException
+	public O getUsedOrCommandException(String arg, CommandSender sender) throws MassiveException
 	{
-		if (arg == null || ALIASES_USED.contains(arg))
+		if (arg == null)
 		{
 			O ret = this.getUsed(sender);
 			if (ret != null) return ret;
+			String noun = this.getObjectType().getTypeName();
+			String aan = Txt.aan(noun);
+			throw new MassiveException().addMsg("<b>You must select %s %s for use to skip the optional argument.", aan, noun);
 		}
-		String noun = this.getObjectType().getTypeName();
-		String aan = Txt.aan(noun);
-		throw new MassiveException().addMsg("<b>You must select %s %s for use to skip the optional argument.", aan, noun);
+		if (ALIASES_USED.contains(arg))
+		{
+			O ret = this.getUsed(sender);
+			if (ret == null) throw new MassiveException().addMsg("<b>You have no selected %s.", this.getObjectType().getTypeName() );
+			return ret;
+		}
+		
+		return null;
 	}
 	
 }
