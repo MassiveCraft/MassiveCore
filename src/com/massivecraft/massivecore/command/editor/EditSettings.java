@@ -1,11 +1,14 @@
 package com.massivecraft.massivecore.command.editor;
 
+import java.util.Set;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.sender.TypeSender;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class EditSettings<O>
@@ -93,10 +96,16 @@ public class EditSettings<O>
 	// TYPE READ UTILITY
 	// -------------------------------------------- //
 	
-	public O getUsedOrCommandException(CommandSender sender) throws MassiveException
+	// No nice constructors for TreeSet :(
+	public static final Set<String> ALIASES_USED = MUtil.treeset("used", "selected", "chosen");
+	
+	public O getUsedOrCommandException(CommandSender sender, String arg) throws MassiveException
 	{
-		O ret = this.getUsed(sender);
-		if (ret != null) return ret;
+		if (arg == null || ALIASES_USED.contains(arg))
+		{
+			O ret = this.getUsed(sender);
+			if (ret != null) return ret;
+		}
 		String noun = this.getObjectType().getTypeName();
 		String aan = Txt.aan(noun);
 		throw new MassiveException().addMsg("<b>You must select %s %s for use to skip the optional argument.", aan, noun);
