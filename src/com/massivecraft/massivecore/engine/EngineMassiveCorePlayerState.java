@@ -84,7 +84,8 @@ public class EngineMassiveCorePlayerState extends EngineAbstract
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void logasyncMonitor(AsyncPlayerPreLoginEvent event)
 	{
-		if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
+		// If the player was denied entrance they are now offline.
+		if (event.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
 		
 		final UUID id = event.getUniqueId();
 		
@@ -108,7 +109,8 @@ public class EngineMassiveCorePlayerState extends EngineAbstract
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void logsyncMonitor(PlayerLoginEvent event)
 	{
-		if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) return;
+		// If the player was denied entrance they are now offline.
+		if (event.getResult() == PlayerLoginEvent.Result.ALLOWED) return;
 		
 		final Player player = event.getPlayer();
 		if (MUtil.isntPlayer(player)) return;
