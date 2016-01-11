@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.collections;
 
+import java.util.Arrays;
+
 import com.massivecraft.massivecore.CaseInsensitiveComparator;
 
 public class ExceptionSet<T>
@@ -24,6 +26,12 @@ public class ExceptionSet<T>
 	public ExceptionSet(boolean standard)
 	{
 		this.standard = standard;
+	}
+	
+	public ExceptionSet(boolean standard, String... exceptions)
+	{
+		this.standard = standard;
+		this.exceptions.addAll(Arrays.asList(exceptions));
 	}
 	
 	// -------------------------------------------- //
