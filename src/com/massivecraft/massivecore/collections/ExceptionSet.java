@@ -11,6 +11,7 @@ public class ExceptionSet<T>
 	// -------------------------------------------- //
 	
 	public boolean standard = true;
+	public boolean isStandard() { return this.standard; }
 	
 	public MassiveTreeSet<String, CaseInsensitiveComparator> exceptions = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
 	
@@ -38,10 +39,15 @@ public class ExceptionSet<T>
 	// CONTAINS
 	// -------------------------------------------- //
 	
-	public boolean contains(String item)
+	public boolean containsString(String item)
 	{
 		if (this.exceptions.contains(item)) return ! this.standard;
 		return this.standard;
+	}
+	
+	public boolean contains(String item)
+	{
+		return this.containsString(item);
 	}
 
 	public boolean contains(T item)
