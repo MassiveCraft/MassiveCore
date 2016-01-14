@@ -43,7 +43,7 @@ public abstract class CommandEditCollectionAbstract<O, V extends Collection<?>> 
 		// Alter
 		try
 		{
-			after = this.alter(after);
+			this.alter(after);
 		}
 		catch (MassiveException e)
 		{
@@ -69,7 +69,7 @@ public abstract class CommandEditCollectionAbstract<O, V extends Collection<?>> 
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract List<Object> alter(List<Object> list) throws MassiveException;
+	public abstract void alter(List<Object> list) throws MassiveException;
 	
 	// -------------------------------------------- //
 	// UTIL

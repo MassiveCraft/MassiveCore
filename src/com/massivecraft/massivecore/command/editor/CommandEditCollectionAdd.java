@@ -25,16 +25,13 @@ public class CommandEditCollectionAdd<O, V extends Collection<?>> extends Comman
 	// -------------------------------------------- //
 	
 	@Override
-	public List<Object> alter(List<Object> list) throws MassiveException
+	public void alter(List<Object> list) throws MassiveException
 	{
 		// Args
 		Object element = this.readArg();
 		
 		// Alter
 		list.add(element);
-		
-		// Return
-		return list;
 	}	
 	
 }

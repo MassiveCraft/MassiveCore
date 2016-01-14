@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore.command.editor;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.Type;
 
 import java.util.Map;
 
@@ -11,10 +10,10 @@ public class CommandEditMapPut<O, V extends Map<?,?>> extends CommandEditMapAbst
 	// CONSTRUCT
 	// -------------------------------------------- //
 
-	public CommandEditMapPut(EditSettings<O> settings, Property<O, V> property, Type<?> mapValueType)
+	public CommandEditMapPut(EditSettings<O> settings, Property<O, V> property)
 	{
 		// Super	
-		super(settings, property, mapValueType);
+		super(settings, property);
 		
 		// Parameters
 		this.addParameter(this.getMapKeyType(), this.getMapKeyType().getTypeName());
@@ -26,7 +25,7 @@ public class CommandEditMapPut<O, V extends Map<?,?>> extends CommandEditMapAbst
 	// -------------------------------------------- //
 	
 	@Override
-	public Map<Object, Object> alter(Map<Object, Object> map) throws MassiveException
+	public void alter(Map<Object, Object> map) throws MassiveException
 	{
 		// Args
 		Object key = this.readArg();
@@ -34,9 +33,6 @@ public class CommandEditMapPut<O, V extends Map<?,?>> extends CommandEditMapAbst
 		
 		// Alter
 		map.put(key, value);
-
-		// Return
-		return map;
 	}	
 	
 }

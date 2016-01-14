@@ -18,27 +18,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public abstract class TypeMapAbstract<C extends Map<K, V>, K, V> extends TypeAbstract<C>
-{
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-
-	private Type<V> mapValueType = null;
-	public void setMapValueType(Type<V> mapValueType) { this.mapValueType = mapValueType; }
-	public Type<V> getMapValueType() { return mapValueType; }
-
-	public void setMapKeyType(Type<K> mapKeyType) { this.setInnerType(mapKeyType); }
-	public Type<K> getMapKeyType() { return this.getInnerType(); }
-
+{	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 
 	public TypeMapAbstract(Type<K> mapKeyType, Type<V> mapValueType)
 	{
-		this.setMapKeyType(mapKeyType);
-		this.setMapValueType(mapValueType);
+		this.setInnerTypes(mapKeyType, mapValueType);
 	}
+	
+	// -------------------------------------------- //
+	// INNER TYPES
+	// -------------------------------------------- //
+
+	public Type<K> getMapKeyType() { return this.getInnerType(0); }
+	public Type<V> getMapValueType() { return this.getInnerType(1); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -209,7 +204,7 @@ public abstract class TypeMapAbstract<C extends Map<K, V>, K, V> extends TypeAbs
 	@Override
 	public <O> CommandEditAbstract<O, C> createEditCommand(EditSettings<O> settings, Property<O, C> property)
 	{
-		return new CommandEditMap<O, C>(settings, property, this.getMapValueType());
+		return new CommandEditMap<O, C>(settings, property);
 	}
 	
 }

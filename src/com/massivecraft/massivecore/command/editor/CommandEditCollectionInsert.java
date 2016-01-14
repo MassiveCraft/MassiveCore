@@ -27,7 +27,7 @@ public class CommandEditCollectionInsert<O, V extends Collection<?>> extends Com
 	// -------------------------------------------- //
 	
 	@Override
-	public List<Object> alter(List<Object> list) throws MassiveException
+	public void alter(List<Object> list) throws MassiveException
 	{
 		// Args
 		int index = this.readArg();
@@ -35,9 +35,6 @@ public class CommandEditCollectionInsert<O, V extends Collection<?>> extends Com
 		
 		// Alter
 		list.add(index, element);
-	
-		// Return
-		return list;		
 	}
 	
 }

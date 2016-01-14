@@ -22,13 +22,10 @@ public class CommandEditCollectionClear<O, V extends Collection<?>> extends Comm
 	// -------------------------------------------- //
 	
 	@Override
-	public List<Object> alter(List<Object> list) throws MassiveException
+	public void alter(List<Object> list) throws MassiveException
 	{
 		// Apply
 		list.clear();
-		
-		// Return
-		return list;
 	}
 	
 }

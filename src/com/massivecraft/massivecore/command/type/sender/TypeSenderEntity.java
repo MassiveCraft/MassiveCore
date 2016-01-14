@@ -12,6 +12,7 @@ public class TypeSenderEntity<T extends SenderEntity<T>> extends TypeSenderIdAbs
 	// -------------------------------------------- //
 	
 	protected final SenderColl<T> coll;
+	public SenderColl<T> getColl() { return this.coll; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

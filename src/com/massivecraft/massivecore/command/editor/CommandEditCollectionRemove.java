@@ -26,16 +26,13 @@ public class CommandEditCollectionRemove<O, V extends Collection<?>> extends Com
 	// -------------------------------------------- //
 	
 	@Override
-	public List<Object> alter(List<Object> list) throws MassiveException
+	public void alter(List<Object> list) throws MassiveException
 	{
 		// Args
 		int index = this.readArg();
 		
 		// Alter
 		list.remove(index);
-	
-		// Return
-		return list;
 	}
 	
 }

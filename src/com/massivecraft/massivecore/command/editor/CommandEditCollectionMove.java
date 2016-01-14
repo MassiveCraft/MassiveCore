@@ -27,7 +27,7 @@ public class CommandEditCollectionMove<O, V extends Collection<?>> extends Comma
 	// -------------------------------------------- //
 	
 	@Override
-	public List<Object> alter(List<Object> list) throws MassiveException
+	public void alter(List<Object> list) throws MassiveException
 	{
 		// Args
 		int indexFrom = this.readArg();
@@ -36,9 +36,6 @@ public class CommandEditCollectionMove<O, V extends Collection<?>> extends Comma
 		// Alter
 		Object element = list.remove(indexFrom);
 		list.add(indexTo, element);
-	
-		// Return
-		return list;
 	}
 	
 }

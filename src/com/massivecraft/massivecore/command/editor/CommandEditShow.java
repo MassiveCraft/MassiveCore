@@ -1,7 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.Collection;
-
 import com.massivecraft.massivecore.MassiveException;
 
 public class CommandEditShow<O, V> extends CommandEditAbstract<O, V>

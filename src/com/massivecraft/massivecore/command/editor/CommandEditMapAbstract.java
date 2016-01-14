@@ -12,11 +12,10 @@ public abstract class CommandEditMapAbstract<O, V extends Map<?, ?>> extends Com
 	// CONSTRUCT
 	// -------------------------------------------- //
 
-	public CommandEditMapAbstract(EditSettings<O> settings, Property<O, V> property, Type<?> mapValueType)
+	public CommandEditMapAbstract(EditSettings<O> settings, Property<O, V> property)
 	{
 		// Super
 		super(settings, property, true);
-		this.setMapValueType(mapValueType);
 
 		// Aliases
 		String alias = this.createCommandAlias();
@@ -28,14 +27,7 @@ public abstract class CommandEditMapAbstract<O, V extends Map<?, ?>> extends Com
 		// Requirements
 		this.addRequirements(RequirementEditorPropertyCreated.get(true));
 	}
-
-	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-
-	Type<?> mapValueType = null;
-	public void setMapValueType(Type<?> mapValueType) { this.mapValueType = mapValueType; }
-
+	
 	// -------------------------------------------- //
 	// SHORTCUTS > PROPERTY > TYPE
 	// -------------------------------------------- //
@@ -43,13 +35,12 @@ public abstract class CommandEditMapAbstract<O, V extends Map<?, ?>> extends Com
 	// Only to be used with map type properties.
 	public Type<Object> getMapKeyType()
 	{
-		return this.getProperty().getValueType().getInnerType();
+		return this.getProperty().getValueType().getInnerType(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Type<Object> getMapValueType()
 	{
-		return (Type<Object>) mapValueType;
+		return this.getProperty().getValueType().getInnerType(1);
 	}
 	
 	// -------------------------------------------- //
@@ -66,7 +57,7 @@ public abstract class CommandEditMapAbstract<O, V extends Map<?, ?>> extends Com
 		// Alter
 		try
 		{
-			after = this.alter(after);
+			this.alter(after);
 		}
 		catch (MassiveException e)
 		{
@@ -85,7 +76,7 @@ public abstract class CommandEditMapAbstract<O, V extends Map<?, ?>> extends Com
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract Map<Object, Object> alter(Map<Object, Object> map) throws MassiveException;
+	public abstract void alter(Map<Object, Object> map) throws MassiveException;
 
 	// -------------------------------------------- //
 	// UTIL

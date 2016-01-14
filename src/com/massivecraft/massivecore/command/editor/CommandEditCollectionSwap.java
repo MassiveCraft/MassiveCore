@@ -27,7 +27,7 @@ public class CommandEditCollectionSwap<O, V extends Collection<?>> extends Comma
 	// -------------------------------------------- //
 	
 	@Override
-	public List<Object> alter(List<Object> list) throws MassiveException
+	public void alter(List<Object> list) throws MassiveException
 	{
 		// Args
 		int indexOne = this.readArg();
@@ -38,9 +38,6 @@ public class CommandEditCollectionSwap<O, V extends Collection<?>> extends Comma
 		Object two = list.get(indexTwo);
 		list.set(indexOne, two);
 		list.set(indexTwo, one);
-	
-		// Return
-		return list;
 	}
 	
 }
