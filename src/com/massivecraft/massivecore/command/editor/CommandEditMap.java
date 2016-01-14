@@ -15,8 +15,12 @@ public class CommandEditMap<O, V extends Map<?, ?>> extends CommandEditAbstract<
 		
 		// Children
 		this.addChild(new CommandEditShow<O, V>(settings, property));
-		this.addChild(new CommandEditCreate<O, V>(settings, property));
-		this.addChild(new CommandEditDelete<O, V>(settings, property));
+		
+		if (property.isNullable())
+		{
+			this.addChild(new CommandEditCreate<O, V>(settings, property));
+			this.addChild(new CommandEditDelete<O, V>(settings, property));
+		}
 		
 		this.addChild(new CommandEditMapPut<O, V>(settings, property));
 		this.addChild(new CommandEditMapRemove<O, V>(settings, property));

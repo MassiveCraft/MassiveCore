@@ -43,6 +43,10 @@ public abstract class Property<O, V> implements Named
 	public boolean isEditable() { return this.editable; }
 	public void setEditable(boolean editable) { this.editable = editable; }
 	
+	protected boolean nullable = true;
+	public boolean isNullable() { return this.nullable; }
+	public void setNullable(boolean nullable) { this.nullable = nullable; }
+	
 	// -------------------------------------------- //
 	// NAME
 	// -------------------------------------------- //

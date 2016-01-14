@@ -249,4 +249,10 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		msg("%s<silver> for %s<silver>: %s", descProperty, descObject, descValue);
 	}
 	
+	public void requireNullable() throws MassiveException
+	{
+		if (this.getProperty().isNullable()) return;
+		throw new MassiveException().addMsg("<h>%s<b> can not be null.", this.getPropertyName());
+	}
+	
 }

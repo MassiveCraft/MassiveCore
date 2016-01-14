@@ -39,6 +39,9 @@ public class CommandEditSimple<O, V> extends CommandEditAbstract<O, V>
 		// Arguments
 		V after = this.readArg();
 		
+		// Validate
+		if (after == null) this.requireNullable();
+		
 		// Apply
 		this.attemptSet(after);
 	}

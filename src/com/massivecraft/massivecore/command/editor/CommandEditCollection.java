@@ -15,8 +15,12 @@ public class CommandEditCollection<O, V extends Collection<?>> extends CommandEd
 		
 		// Children
 		this.addChild(new CommandEditShow<O, V>(settings, property));
-		this.addChild(new CommandEditCreate<O, V>(settings, property));
-		this.addChild(new CommandEditDelete<O, V>(settings, property));
+		
+		if (property.isNullable())
+		{
+			this.addChild(new CommandEditCreate<O, V>(settings, property));
+			this.addChild(new CommandEditDelete<O, V>(settings, property));
+		}
 		
 		this.addChild(new CommandEditCollectionAdd<O, V>(settings, property));
 		this.addChild(new CommandEditCollectionInsert<O, V>(settings, property));
