@@ -11,6 +11,7 @@ import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorUse;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
+import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermUtil;
 
@@ -94,6 +95,12 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		Entry<O, V> inherited = this.getInheritedEntry();
 		O source = inherited.getKey();
 		V before = inherited.getValue();
+		
+		// Event
+		EventMassiveCoreEditorEdit<O, V> event = new EventMassiveCoreEditorEdit<O, V>(this, source, before, after);
+		event.run();
+		if (event.isCancelled()) return;
+		after = event.getAfter();
 		
 		// Setup
 		String descProperty = this.getProperty().getDisplayName();
