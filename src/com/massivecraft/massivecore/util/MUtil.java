@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.massivecraft.massivecore.PredicateStartsWithIgnoreCase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -39,6 +40,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -87,7 +89,7 @@ public class MUtil
 	{
 		methodGetOnlinePlayers = getMethodGetOnlinePlayers();
 	}
-	
+
 	// -------------------------------------------- //
 	// GET ONLINE PLAYERS
 	// -------------------------------------------- //
@@ -673,7 +675,18 @@ public class MUtil
 		}
 		throw new IllegalArgumentException("The dye color " + dyeColor + " is not yet supported!");
 	}
-	
+
+	// -------------------------------------------- //
+	// FAKE EVENT
+	// -------------------------------------------- //
+
+	public static final PredicateStartsWithIgnoreCase STARTING_WITH_FAKE = PredicateStartsWithIgnoreCase.get("fake");
+
+	public static boolean isFakeEvent(Event event)
+	{
+		return STARTING_WITH_FAKE.apply(event.getClass().getSimpleName());
+	}
+
 	// -------------------------------------------- //
 	// ENTITY DAMAGE EVENT
 	// -------------------------------------------- //
