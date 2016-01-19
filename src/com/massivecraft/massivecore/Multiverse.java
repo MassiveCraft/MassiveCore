@@ -70,12 +70,14 @@ public class Multiverse extends Entity<Multiverse>
 		{
 			ret = new HashSet<String>();
 			this.uw.put(universe, ret);
+			this.changed();
 		}
 		return ret;
 	}
 	
 	public Set<String> delUniverse(String universe)
 	{
+		this.changed();
 		return this.uw.remove(universe);
 	}
 	
@@ -113,6 +115,7 @@ public class Multiverse extends Entity<Multiverse>
 		Set<String> worlds = this.uw.get(universe);
 		if (worlds == null) return false;
 		worlds.clear();
+		this.changed();
 		return true;
 	}
 	
@@ -120,10 +123,11 @@ public class Multiverse extends Entity<Multiverse>
 	{
 		if (this.getUniverseForWorldName(worldName).equals(universe)) return false;
 		this.removeWorld(worldName);
-		if (!universe.equals(MassiveCore.DEFAULT))
+		if ( ! universe.equals(MassiveCore.DEFAULT))
 		{
 			this.newUniverse(universe).add(worldName);
 		}
+		this.changed();
 		return true;
 	}
 	
@@ -161,7 +165,11 @@ public class Multiverse extends Entity<Multiverse>
 	{
 		for (Set<String> worldNames : this.uw.values())
 		{
-			if (worldNames.remove(worldName)) return true;
+			if (worldNames.remove(worldName))
+			{
+				this.changed();
+				return true;
+			}
 		}
 		return false;
 	}
