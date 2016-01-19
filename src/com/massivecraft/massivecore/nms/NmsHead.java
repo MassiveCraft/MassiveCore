@@ -22,7 +22,7 @@ public class NmsHead extends NmsAbstract
 	public static NmsHead get () { return i; }
 	
 	// -------------------------------------------- //
-	// REFLECTION CACHE
+	// FIELDS
 	// -------------------------------------------- //
 	
 	public static Class<?> classCraftMetaSkull;
@@ -73,12 +73,12 @@ public class NmsHead extends NmsAbstract
 	
 	public static String getGameProfileName(Object gameProfile)
 	{
-		return (String) ReflectionUtil.getField(fieldGameProfileDotName, gameProfile);
+		return ReflectionUtil.getField(fieldGameProfileDotName, gameProfile);
 	}
 	
 	public static UUID getGameProfileId(Object gameProfile)
 	{
-		return (UUID) ReflectionUtil.getField(fieldGameProfileDotId, gameProfile);
+		return ReflectionUtil.getField(fieldGameProfileDotId, gameProfile);
 	}
 	
 	// -------------------------------------------- //

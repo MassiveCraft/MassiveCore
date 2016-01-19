@@ -1,8 +1,11 @@
 package com.massivecraft.massivecore.util;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,60 +36,127 @@ public class ReflectionUtil
 	// MAKE ACCESSIBLE
 	// -------------------------------------------- //
 	
-	public static boolean makeAccessible(Field field)
+	public static void makeAccessible(Field field)
 	{
 		try
 		{
-			// Mark the field as accessible using reflection.
+			// Mark as accessible using reflection.
 			field.setAccessible(true);
 			
 			// Remove the final modifier from the field.
 			// http://stackoverflow.com/questions/2474017/using-reflection-to-change-static-final-file-separatorchar-for-unit-testing
 			FIELD_DOT_MODIFIERS.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-			
-			return true;
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			return false;
+			rethrow(e);
 		}
 	}
 	
-	// -------------------------------------------- //
-	// FIELD GET
-	// -------------------------------------------- //
-	
-	public static Field getField(Class<?> clazz, String fieldName)
+	public static void makeAccessible(Method method)
 	{
 		try
 		{
-			Field field = clazz.getDeclaredField(fieldName);
-			makeAccessible(field);
-			return field;
+			// Mark as accessible using reflection.
+			method.setAccessible(true);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			return null;
+			rethrow(e);
 		}
 	}
 	
-	public static Object getField(Field field, Object object)
+	public static void makeAccessible(Constructor<?> constructor)
 	{
 		try
 		{
-			return field.get(object);
+			// Mark as accessible using reflection.
+			constructor.setAccessible(true);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			return null;
+			rethrow(e);
 		}
 	}
 	
 	// -------------------------------------------- //
-	// FIELD SET
+	// METHOD
+	// -------------------------------------------- //
+	
+	public static Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes)
+	{
+		try
+		{
+			Method ret = clazz.getMethod(name, parameterTypes);
+			makeAccessible(ret);
+			return ret;
+		}
+		catch (Exception e)
+		{
+			rethrow(e);
+		}
+		throw new RuntimeException();
+	}
+	public static Method getMethod(Class<?> clazz, String name)
+	{
+		return getMethod(clazz, name, new Class<?>[0]);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T invokeMethod(Method method, Object target, Object... arguments)
+	{
+		try
+		{
+			return (T) method.invoke(target, arguments);
+		}
+		catch (Exception e)
+		{
+			rethrow(e);
+		}
+		throw new RuntimeException();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T invokeMethod(Method method, Object target)
+	{
+		return (T) invokeMethod(method, target, new Object[0]);
+	}
+	
+	// -------------------------------------------- //
+	// FIELD > GET
+	// -------------------------------------------- //
+	
+	public static Field getField(Class<?> clazz, String name)
+	{
+		try
+		{
+			Field ret = clazz.getDeclaredField(name);
+			makeAccessible(ret);
+			return ret;
+		}
+		catch (Exception e)
+		{
+			rethrow(e);
+		}
+		throw new RuntimeException();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T getField(Field field, Object object)
+	{
+		try
+		{
+			return (T) field.get(object);
+		}
+		catch (Exception e)
+		{
+			rethrow(e);
+		}
+		throw new RuntimeException();
+	}
+	
+	// -------------------------------------------- //
+	// FIELD > SET
 	// -------------------------------------------- //
 	
 	public static void setField(Field field, Object object, Object value)
@@ -97,63 +167,38 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			rethrow(e);
 		}
 	}
 	
 	// -------------------------------------------- //
-	// FIELD SIMPLE: GET & SET & TRANSFER
+	// FIELD > SIMPLE
 	// -------------------------------------------- //
 	
-	public static Object getField(Class<?> clazz, String fieldName, Object object)
+	public static <T> T getField(Class<?> clazz, String name, Object object)
 	{
-		try
-		{
-			Field field = clazz.getDeclaredField(fieldName);
-			makeAccessible(field);
-			return field.get(object);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
+		Field field = getField(clazz, name);
+		return getField(field, object);
 	}
 	
-	public static boolean setField(Class<?> clazz, String fieldName, Object object, Object value)
+	public static void setField(Class<?> clazz, String name, Object object, Object value)
 	{
-		try
-		{
-			Field field = clazz.getDeclaredField(fieldName);
-			makeAccessible(field);
-			field.set(object, value);
-			return true;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
+		Field field = getField(clazz, name);
+		setField(field, object, value);
 	}
 	
-	public static boolean transferField(Class<?> clazz, Object from, Object to, String fieldName)
+	// -------------------------------------------- //
+	// FIELD > TRANSFER
+	// -------------------------------------------- //
+	
+	public static void transferField(Class<?> clazz, Object from, Object to, String name)
 	{
-		try
-		{
-			Field field = clazz.getDeclaredField(fieldName);
-			makeAccessible(field);
-			Object value = field.get(from);
-			field.set(to, value);
-			return true;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
+		Field field = getField(clazz, name);
+		Object value = getField(field, from);
+		setField(field, to, value);
 	}
 	
-	public static boolean transferFields(Class<?> clazz, Object from, Object to, List<String> fieldNames)
+	public static void transferFields(Class<?> clazz, Object from, Object to, List<String> fieldNames)
 	{
 		if (fieldNames == null)
 		{
@@ -166,15 +211,13 @@ public class ReflectionUtil
 		
 		for (String fieldName : fieldNames)
 		{
-			if ( ! transferField(clazz, from, to, fieldName)) return false;
+			transferField(clazz, from, to, fieldName);
 		}
-		
-		return true;
 	}
 	
-	public static boolean transferFields(Class<?> clazz, Object from, Object to)
+	public static void transferFields(Class<?> clazz, Object from, Object to)
 	{
-		return transferFields(clazz, from, to, null);
+		transferFields(clazz, from, to, null);
 	}
 	
 	// -------------------------------------------- //
@@ -221,6 +264,36 @@ public class ReflectionUtil
 				return false;
 			}
 		});
+	}
+	
+	// -------------------------------------------- //
+	// RETHROW
+	// -------------------------------------------- //
+	// This method is used to convert throwables into nicer runtime versions.
+	
+	public static void rethrow(Throwable e)
+	{
+		// Error
+		if (e instanceof Error) throw (Error)e;
+		
+		// Not Found
+		if (e instanceof ClassNotFoundException) throw new IllegalStateException("Class not Found: " + e.getMessage());
+		if (e instanceof NoSuchMethodException) throw new IllegalStateException("Method not Found: " + e.getMessage());
+		if (e instanceof NoSuchFieldException) throw new IllegalStateException("Field not Found: " + e.getMessage());
+		
+		// Security
+		if (e instanceof SecurityException) throw new IllegalStateException("Security was Violated: " + e.getMessage());
+		
+		// Derp
+		if (e instanceof IllegalAccessException) throw new IllegalStateException("Access was Illegal: " + e.getMessage());
+		if (e instanceof IllegalArgumentException) throw new IllegalStateException("Inappropriate Arguments: " + e.getMessage());
+		if (e instanceof InvocationTargetException) rethrow(((InvocationTargetException)e).getCause());
+		
+		// Runtime
+		if (e instanceof RuntimeException) throw (RuntimeException)e;
+		
+		// Other
+		throw new UndeclaredThrowableException(e);
 	}
 	
 }
