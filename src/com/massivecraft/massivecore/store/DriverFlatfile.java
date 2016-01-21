@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.store;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.WatchService;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -218,17 +219,26 @@ public class DriverFlatfile extends DriverAbstract
 		file.delete();
 	}
 	
-	@Override
-	public boolean supportsPusher()
+	private boolean supportsPusher = this.supportsPusherCalc();
+	private boolean supportsPusherCalc()
 	{
 		try
 		{
-			return ! ( FileSystems.getDefault().newWatchService().getClass().getName().equals("sun.nio.fs.PollingWatchService"));
+			WatchService watchService = FileSystems.getDefault().newWatchService();
+			boolean ret = ! watchService.getClass().getName().equals("sun.nio.fs.PollingWatchService");
+			watchService.close();
+			return ret;
 		}
 		catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public boolean supportsPusher()
+	{
+		return this.supportsPusher;
 	}
 	
 	@Override
