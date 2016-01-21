@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
 	}
 	
@@ -62,7 +61,7 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
 	}
 	
@@ -75,7 +74,7 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
 	}
 	
@@ -93,13 +92,14 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
-		throw new RuntimeException();
 	}
+	
+	private static final Class<?>[] EMPTY_ARRAY_OF_CLASS = {};
 	public static Method getMethod(Class<?> clazz, String name)
 	{
-		return getMethod(clazz, name, new Class<?>[0]);
+		return getMethod(clazz, name, EMPTY_ARRAY_OF_CLASS);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -111,15 +111,15 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
-		throw new RuntimeException();
 	}
 	
+	private static final Object[] EMPTY_ARRAY_OF_OBJECT = {};
 	@SuppressWarnings("unchecked")
 	public static <T> T invokeMethod(Method method, Object target)
 	{
-		return (T) invokeMethod(method, target, new Object[0]);
+		return (T) invokeMethod(method, target, EMPTY_ARRAY_OF_OBJECT);
 	}
 	
 	// -------------------------------------------- //
@@ -136,9 +136,8 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
-		throw new RuntimeException();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -150,9 +149,8 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
-		throw new RuntimeException();
 	}
 	
 	// -------------------------------------------- //
@@ -167,7 +165,7 @@ public class ReflectionUtil
 		}
 		catch (Exception e)
 		{
-			rethrow(e);
+			throw asRuntimeException(e);
 		}
 	}
 	
@@ -267,33 +265,19 @@ public class ReflectionUtil
 	}
 	
 	// -------------------------------------------- //
-	// RETHROW
+	// AS RUNTIME EXCEPTION
 	// -------------------------------------------- //
-	// This method is used to convert throwables into nicer runtime versions.
 	
-	public static void rethrow(Throwable e)
+	public static RuntimeException asRuntimeException(Throwable e)
 	{
-		// Error
-		if (e instanceof Error) throw (Error)e;
-		
-		// Not Found
-		if (e instanceof ClassNotFoundException) throw new IllegalStateException("Class not Found: " + e.getMessage());
-		if (e instanceof NoSuchMethodException) throw new IllegalStateException("Method not Found: " + e.getMessage());
-		if (e instanceof NoSuchFieldException) throw new IllegalStateException("Field not Found: " + e.getMessage());
-		
-		// Security
-		if (e instanceof SecurityException) throw new IllegalStateException("Security was Violated: " + e.getMessage());
-		
-		// Derp
-		if (e instanceof IllegalAccessException) throw new IllegalStateException("Access was Illegal: " + e.getMessage());
-		if (e instanceof IllegalArgumentException) throw new IllegalStateException("Inappropriate Arguments: " + e.getMessage());
-		if (e instanceof InvocationTargetException) rethrow(((InvocationTargetException)e).getCause());
-		
 		// Runtime
-		if (e instanceof RuntimeException) throw (RuntimeException)e;
+		if (e instanceof RuntimeException) return (RuntimeException) e;
 		
-		// Other
-		throw new UndeclaredThrowableException(e);
+		// Invocation
+		if (e instanceof InvocationTargetException) return asRuntimeException(((InvocationTargetException)e).getCause());
+		
+		// Rest
+		return new IllegalStateException(e.getClass().getSimpleName() + ": " + e.getMessage());
 	}
 	
 }
