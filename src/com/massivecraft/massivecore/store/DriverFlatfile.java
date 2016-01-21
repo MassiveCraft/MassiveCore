@@ -222,17 +222,32 @@ public class DriverFlatfile extends DriverAbstract
 	private boolean supportsPusher = this.supportsPusherCalc();
 	private boolean supportsPusherCalc()
 	{
+		boolean ret = false;
+		WatchService watchService = null;
 		try
 		{
-			WatchService watchService = FileSystems.getDefault().newWatchService();
-			boolean ret = ! watchService.getClass().getName().equals("sun.nio.fs.PollingWatchService");
-			watchService.close();
-			return ret;
+			watchService = FileSystems.getDefault().newWatchService();
+			ret = ! watchService.getClass().getName().equals("sun.nio.fs.PollingWatchService");
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
+		finally
+		{
+			try
+			{
+				if (watchService != null)
+				{
+					watchService.close();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return ret;
 	}
 	
 	@Override
