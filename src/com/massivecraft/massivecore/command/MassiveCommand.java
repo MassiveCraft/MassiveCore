@@ -350,6 +350,18 @@ public class MassiveCommand
 		return parameter.getType();
 	}
 	
+	public void setParameter(int index, Parameter<?> parameter)
+	{
+		if (this.isConcatenating() && this.getConcatenationIndex() < index) index = this.getConcatenationIndex();
+		this.getParameters().set(index, parameter);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setParameterType(int index, Type<?> type)
+	{
+		this.getParameter(index).setType((Type)type);
+	}
+	
 	public boolean hasParameterForIndex(int index)
 	{
 		if (index < 0) return false;
