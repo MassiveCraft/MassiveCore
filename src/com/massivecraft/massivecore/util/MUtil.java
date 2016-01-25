@@ -1363,17 +1363,40 @@ public class MUtil
 	// TRANSFORM
 	// -------------------------------------------- //
 	
-	public static <T> List<T> transform(Collection<T> items, Predicate<? super T> where, Comparator<? super T> orderby, Integer limit, Integer offset)
+	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where, Comparator<? super T> orderby, Integer limit, Integer offset)
 	{
-		List<T> ret = new ArrayList<T>(items.size());
+		// Collection
+		Collection<T> collection = null;
+		if (items instanceof Collection<?>) collection = (Collection<T>)items;
 		
 		// WHERE
+		List<T> ret;
 		if (where == null)
 		{
-			ret.addAll(items);
+			if (collection != null)
+			{
+				ret = new ArrayList<T>(collection);
+			}
+			else
+			{
+				ret = new ArrayList<T>();
+				for (T item : items)
+				{
+					ret.add(item);
+				}
+			}
 		}
 		else
 		{
+			if (collection != null)
+			{
+				ret = new ArrayList<T>(collection.size());
+			}
+			else
+			{
+				ret = new ArrayList<T>();
+			}
+			
 			for (T item : items)
 			{
 				if (where.apply(item))
@@ -1427,16 +1450,16 @@ public class MUtil
 		
 		return new ArrayList<T>(ret.subList(fromIndex, toIndex));
 	}
-	public static <T> List<T> transform(Collection<T> items, Predicate<? super T> where) { return transform(items, where, null, null, null); }
-	public static <T> List<T> transform(Collection<T> items, Predicate<? super T> where, Comparator<? super T> orderby) { return transform(items, where, orderby, null, null); }
-	public static <T> List<T> transform(Collection<T> items, Predicate<? super T> where, Comparator<? super T> orderby, Integer limit) { return transform(items, where, orderby, limit, null); }
-	public static <T> List<T> transform(Collection<T> items, Predicate<? super T> where, Integer limit) { return transform(items, where, null, limit, null); }
-	public static <T> List<T> transform(Collection<T> items, Predicate<? super T> where, Integer limit, Integer offset) { return transform(items, where, null, limit, offset); }
-	public static <T> List<T> transform(Collection<T> items, Comparator<? super T> orderby) { return transform(items, null, orderby, null, null); }
-	public static <T> List<T> transform(Collection<T> items, Comparator<? super T> orderby, Integer limit) { return transform(items, null, orderby, limit, null); }
-	public static <T> List<T> transform(Collection<T> items, Comparator<? super T> orderby, Integer limit, Integer offset) { return transform(items, null, orderby, limit, offset); }
-	public static <T> List<T> transform(Collection<T> items, Integer limit) { return transform(items, null, null, limit, null); }
-	public static <T> List<T> transform(Collection<T> items, Integer limit, Integer offset) { return transform(items, null, null, limit, offset); }
+	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where) { return transform(items, where, null, null, null); }
+	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where, Comparator<? super T> orderby) { return transform(items, where, orderby, null, null); }
+	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where, Comparator<? super T> orderby, Integer limit) { return transform(items, where, orderby, limit, null); }
+	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where, Integer limit) { return transform(items, where, null, limit, null); }
+	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where, Integer limit, Integer offset) { return transform(items, where, null, limit, offset); }
+	public static <T> List<T> transform(Iterable<T> items, Comparator<? super T> orderby) { return transform(items, null, orderby, null, null); }
+	public static <T> List<T> transform(Iterable<T> items, Comparator<? super T> orderby, Integer limit) { return transform(items, null, orderby, limit, null); }
+	public static <T> List<T> transform(Iterable<T> items, Comparator<? super T> orderby, Integer limit, Integer offset) { return transform(items, null, orderby, limit, offset); }
+	public static <T> List<T> transform(Iterable<T> items, Integer limit) { return transform(items, null, null, limit, null); }
+	public static <T> List<T> transform(Iterable<T> items, Integer limit, Integer offset) { return transform(items, null, null, limit, offset); }
 	
 	// -------------------------------------------- //
 	// SIMPLE CONSTRUCTORS
