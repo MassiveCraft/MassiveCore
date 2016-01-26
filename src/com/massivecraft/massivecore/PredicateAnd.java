@@ -8,17 +8,23 @@ import com.google.common.collect.ImmutableList;
 public class PredicateAnd<T> implements Predicate<T>
 {
 	// -------------------------------------------- //
-	// INSTANCE & CONSTRUCT
+	// INSTANCE
 	// -------------------------------------------- //
+	
 	@SafeVarargs
 	public static <T> PredicateAnd<T> get(Predicate<? super T>... predicates) { return new PredicateAnd<T>(predicates); }
+	public static <T> PredicateAnd<T> get(Collection<Predicate<? super T>> predicates) { return new PredicateAnd<T>(predicates); }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
 	@SafeVarargs
 	public PredicateAnd(Predicate<? super T>... predicates)
 	{
 		this(ImmutableList.copyOf(predicates));
 	}
 	
-	public static <T> PredicateAnd<T> get(Collection<Predicate<? super T>> predicates) { return new PredicateAnd<T>(predicates); }
 	public PredicateAnd(Collection<Predicate<? super T>> predicates)
 	{
 		this.predicates = ImmutableList.copyOf(predicates);
@@ -40,7 +46,7 @@ public class PredicateAnd<T> implements Predicate<T>
 	{
 		for (Predicate<? super T> predicate : this.getPredicates())
 		{
-			if (!predicate.apply(type)) return false;
+			if ( ! predicate.apply(type)) return false;
 		}
 		return true;
 	}
