@@ -61,7 +61,7 @@ public abstract class TypeMapAbstract<C extends Map<K, V>, K, V> extends TypeAbs
 			V entryValue = entry.getValue();
 			String visualValue = this.getMapValueType().getVisual(entryValue, sender);
 
-			String part = Txt.parse("<key>%s: <value>%s", visualKey, visualValue);
+			String part = Txt.parse("<silver># <key>%s<silver>: <value>%s", visualKey, visualValue);
 			parts.add(part);
 		}
 		
