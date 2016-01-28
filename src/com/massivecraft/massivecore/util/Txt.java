@@ -408,7 +408,7 @@ public class Txt
 		{
 			parts.add(upperCaseFirst(part));
 		}
-		return implode(parts, " ");
+		return implode(parts, "");
 	}
 	
 	public static <T extends Enum<T>> String getNicedEnum(T enumObject)

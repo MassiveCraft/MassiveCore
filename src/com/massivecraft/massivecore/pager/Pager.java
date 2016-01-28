@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.pager;
 
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mson.Mson;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -265,6 +267,18 @@ public class Pager<T>
 		
 		// Message
 		Mixin.messageOne(this.getSender(), messages);
+	}
+	
+	public void messageAsync()
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(MassiveCore.get(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				message();				
+			}
+		});
 	}
 	
 }
