@@ -169,6 +169,21 @@ public class Entity<E extends Entity<E>>
 	}
 	
 	// -------------------------------------------- //
+	// CONVENIENCE: DATABASE
+	// -------------------------------------------- //
+	
+	public boolean convertGet(Boolean wrapper)
+	{
+		return wrapper != null ? wrapper.booleanValue() : false;
+	}
+	
+	public Boolean convertSet(boolean primitive)
+	{
+		this.changed();
+		return primitive ? Boolean.TRUE : null;
+	}
+	
+	// -------------------------------------------- //
 	// STANDARDS
 	// -------------------------------------------- //
 

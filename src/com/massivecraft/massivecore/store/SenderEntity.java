@@ -12,6 +12,7 @@ import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.PermUtil;
 
 public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> implements Named
 {
@@ -57,6 +58,18 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	public SenderColl<E> getColl()
 	{
 		return (SenderColl<E>) super.getColl();
+	}
+	
+	// -------------------------------------------- //
+	// CONVENIENCE: DATABASE
+	// -------------------------------------------- //
+	
+	public boolean convertGet(Boolean wrapper, String permission)
+	{
+		// Permission requirement
+		if ( ! PermUtil.has(this.getSender(), permission)) return false;
+		
+		return super.convertGet(wrapper);
 	}
 	
 	// -------------------------------------------- //
