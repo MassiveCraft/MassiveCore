@@ -66,10 +66,14 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	
 	public boolean convertGet(Boolean wrapper, String permission)
 	{
-		// Permission requirement
-		if ( ! PermUtil.has(this.getSender(), permission)) return false;
+		// Create
+		boolean ret = super.convertGet(wrapper);
 		
-		return super.convertGet(wrapper);
+		// Permission Requirement
+		if (ret && ! PermUtil.has(this.getSender(), permission)) return false;
+		
+		// Return
+		return ret;
 	}
 	
 	// -------------------------------------------- //
