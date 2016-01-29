@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mson.Mson;
@@ -64,6 +65,19 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	// CONVENIENCE: DATABASE
 	// -------------------------------------------- //
 	
+	public <T> T convertGet(T value, T defaultValue, String permission)
+	{
+		// Create
+		T ret = super.convertGet(value, defaultValue);
+		
+		// Permission Requirement
+		if ( ! Objects.equal(value, defaultValue) && ! PermUtil.has(this.getSender(), permission)) return defaultValue;
+		
+		// Return
+		return ret;
+	}
+	
+	// Boolean specific
 	public boolean convertGet(Boolean wrapper, String permission)
 	{
 		// Create

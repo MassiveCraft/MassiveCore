@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.store;
 
+import java.util.Objects;
+
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -171,7 +173,19 @@ public class Entity<E extends Entity<E>>
 	// -------------------------------------------- //
 	// CONVENIENCE: DATABASE
 	// -------------------------------------------- //
+
+	public <T> T convertGet(T value, T defaultValue)
+	{
+		return value != null ? value : defaultValue;
+	}
 	
+	public <T> T convertSet(T value, T defaultValue)
+	{
+		this.changed();
+		return Objects.equals(value, defaultValue) ? null : value;
+	}
+	
+	// Boolean specific
 	public boolean convertGet(Boolean wrapper)
 	{
 		return wrapper != null ? wrapper.booleanValue() : false;
