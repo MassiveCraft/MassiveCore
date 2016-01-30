@@ -432,10 +432,28 @@ public class MUtil
 		
 		return ret;
 	}
-	
-	public static String getStackTraceString(List<StackTraceElement> stackTrace, boolean color, String glue)
+	public static List<String> getStackTraceStrings(int skip, boolean color)
 	{
-		return Txt.implode(getStackTraceStrings(stackTrace, color), glue);
+		skip++;
+		return getStackTraceStrings(getStackTrace(skip), color);
+	}
+	public static List<String> getStackTraceStrings(boolean color)
+	{
+		return getStackTraceStrings(0, color);
+	}
+	
+	public static String getStackTraceString(List<StackTraceElement> stackTrace, boolean color)
+	{
+		return Txt.implode(getStackTraceStrings(stackTrace, color), "\n");
+	}
+	public static String getStackTraceString(int skip, boolean color)
+	{
+		skip++;
+		return getStackTraceString(getStackTrace(skip), color);
+	}
+	public static String getStackTraceString(boolean color)
+	{
+		return getStackTraceString(0, color);
 	}
 	
 	// -------------------------------------------- //
