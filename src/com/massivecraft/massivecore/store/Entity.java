@@ -174,6 +174,7 @@ public class Entity<E extends Entity<E>>
 	// CONVENIENCE: DATABASE
 	// -------------------------------------------- //
 
+	// GENERIC
 	public <T> T convertGet(T value, T defaultValue)
 	{
 		return value != null ? value : defaultValue;
@@ -185,16 +186,15 @@ public class Entity<E extends Entity<E>>
 		return Objects.equals(value, defaultValue) ? null : value;
 	}
 	
-	// Boolean specific
-	public boolean convertGet(Boolean wrapper)
+	// BOOLEAN
+	public boolean convertGet(Boolean value)
 	{
-		return wrapper != null ? wrapper.booleanValue() : false;
+		return convertGet(value, false);
 	}
 	
-	public Boolean convertSet(boolean primitive)
+	public Boolean convertSet(Boolean value)
 	{
-		this.changed();
-		return primitive ? Boolean.TRUE : null;
+		return convertSet(value, false);
 	}
 	
 	// -------------------------------------------- //
