@@ -11,7 +11,7 @@ public class CommandEditUsed<O> extends CommandEditSimple<CommandSender, O>
 	public CommandEditUsed(EditSettings<O> settings)
 	{
 		// Super
-		super(settings.createUsedSettings(), settings.getUsedProperty());
+		super(settings.getUsedSettings(), settings.getUsedProperty());
 		
 		// Aliases
 		this.setAliases("used", "selected");

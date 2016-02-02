@@ -26,6 +26,28 @@ public class EditSettings<O>
 	public Property<CommandSender, O> getUsedProperty() { return this.usedProperty; }
 	public void setUsedProperty(Property<CommandSender, O> usedProperty) { this.usedProperty = usedProperty; }
 	
+	// The Internal EditSettings<CommandSender> for setting the used.
+	protected EditSettings<CommandSender> usedSettings = null;
+	public EditSettings<CommandSender> getUsedSettings()
+	{
+		if (this.usedSettings == null)
+		{
+			this.usedSettings = this.createUsedSettings();			
+		}
+		return this.usedSettings;
+	}
+	protected EditSettings<CommandSender> createUsedSettings()
+	{
+		final EditSettings<O> main = this;
+		return new EditSettings<CommandSender>(TypeSender.get(), new PropertyThis<CommandSender>(TypeSender.get())) {
+			@Override
+			public Permission getPropertyPermission(Property<CommandSender,?> property)
+			{
+				return main.getUsedPermission();
+			}
+		};
+	}
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -39,20 +61,6 @@ public class EditSettings<O>
 	public EditSettings(Type<O> objectType)
 	{
 		this(objectType, null);
-	}
-	
-	public EditSettings<CommandSender> createUsedSettings()
-	{
-		final EditSettings<O> main = this;
-		return new EditSettings<CommandSender>(TypeSender.get(), new PropertyThis<CommandSender>(TypeSender.get())) {
-			
-			@Override
-			public Permission getPropertyPermission(Property<CommandSender,?> property)
-			{
-				return main.getUsedPermission();
-			};
-			
-		};
 	}
 	
 	// -------------------------------------------- //
