@@ -65,6 +65,7 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	// CONVENIENCE: DATABASE
 	// -------------------------------------------- //
 	
+	// GENERIC
 	public <T> T convertGet(T value, T defaultValue, String permission)
 	{
 		// Create
@@ -77,17 +78,10 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 		return ret;
 	}
 	
-	// Boolean specific
-	public boolean convertGet(Boolean wrapper, String permission)
+	// BOOLEAN
+	public boolean convertGet(Boolean value, String permission)
 	{
-		// Create
-		boolean ret = super.convertGet(wrapper);
-		
-		// Permission Requirement
-		if (ret && ! PermUtil.has(this.getSender(), permission)) return false;
-		
-		// Return
-		return ret;
+		return this.convertGet(value, false, permission);
 	}
 	
 	// -------------------------------------------- //
