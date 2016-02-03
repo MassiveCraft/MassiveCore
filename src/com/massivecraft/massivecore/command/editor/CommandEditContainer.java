@@ -20,19 +20,22 @@ public class CommandEditContainer<O, V> extends CommandEditAbstract<O, V>
 			this.addChild(new CommandEditDelete<O, V>(settings, property));
 		}
 		
-		this.addChild(new CommandEditContainerAdd<O, V>(settings, property));
-		this.addChild(new CommandEditContainerInsert<O, V>(settings, property));
-		this.addChild(new CommandEditContainerSet<O, V>(settings, property));
-		this.addChild(new CommandEditContainerRemove<O, V>(settings, property));
-		this.addChild(new CommandEditContainerRemoveIndex<O, V>(settings, property));
-		
-		if ( ! property.getValueType().isContainerSorted() && property.getValueType().getContainerComparator() == null)
+		if (property.isEditable())
 		{
-			this.addChild(new CommandEditContainerMove<O, V>(settings, property));
-			this.addChild(new CommandEditContainerSwap<O, V>(settings, property));
-		}
+			this.addChild(new CommandEditContainerAdd<O, V>(settings, property));
+			this.addChild(new CommandEditContainerInsert<O, V>(settings, property));
+			this.addChild(new CommandEditContainerSet<O, V>(settings, property));
+			this.addChild(new CommandEditContainerRemove<O, V>(settings, property));
+			this.addChild(new CommandEditContainerRemoveIndex<O, V>(settings, property));
 		
-		this.addChild(new CommandEditContainerClear<O, V>(settings, property));
+			if ( ! property.getValueType().isContainerSorted() && property.getValueType().getContainerComparator() == null)
+			{
+				this.addChild(new CommandEditContainerMove<O, V>(settings, property));
+				this.addChild(new CommandEditContainerSwap<O, V>(settings, property));
+			}
+		
+			this.addChild(new CommandEditContainerClear<O, V>(settings, property));
+		}
 	}
 	
 }

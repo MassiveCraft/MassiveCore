@@ -24,7 +24,10 @@ public class CommandEditItemStacks<O> extends CommandEditAbstract<O, List<ItemSt
 			this.addChild(new CommandEditDelete<O, List<ItemStack>>(settings, property));
 		}
 		
-		this.addChild(new CommandEditItemStacksOpen<O>(settings, property));
+		if (property.isEditable())
+		{
+			this.addChild(new CommandEditItemStacksOpen<O>(settings, property));	
+		}
 	}
 	
 }

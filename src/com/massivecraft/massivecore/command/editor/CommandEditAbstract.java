@@ -45,7 +45,8 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		this.setAliases(this.getProperty().getNames());
 		
 		// Desc
-		this.setDesc("edit " + this.getProperty().getName());
+		String descAction = property.isEditable() ? "edit " : "show ";
+		this.setDesc(descAction + this.getProperty().getName());
 		
 		// Requirements
 		this.addRequirements(RequirementEditorUse.get());
@@ -66,7 +67,21 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	{
 		if (this.isParent())
 		{
-			super.perform();			
+			// If there is only one visible child, and it is a show command ....
+			// Note: We use the visible children because HelpCommand is always present, but often invisible.
+			List<MassiveCommand> children = this.getVisibleChildren(this.sender);
+			if (children.size() == 1 && children.get(0) instanceof CommandEditShow)
+			{
+				// ... skip directly to it.
+				CommandEditShow<?, ?> cmd = (CommandEditShow<?, ?>) children.get(0);
+				List<MassiveCommand> chain = this.getChain();
+				chain.add(this);
+				cmd.execute(this.sender, this.args, chain);
+			}
+			else
+			{
+				super.perform();
+			}
 		}
 		else
 		{

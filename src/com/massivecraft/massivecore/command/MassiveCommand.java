@@ -162,6 +162,16 @@ public class MassiveCommand
 		return this.getChildren().size() > 0;
 	}
 	
+	public List<MassiveCommand> getVisibleChildren(CommandSender watcher)
+	{
+		List<MassiveCommand> ret = new MassiveList<>();
+		for (MassiveCommand child : this.getChildren())
+		{
+			if (child.isVisibleTo(watcher)) ret.add(child);
+		}
+		return ret;
+	}
+	
 	// -------------------------------------------- //
 	// CHILDREN > GET
 	// -------------------------------------------- //

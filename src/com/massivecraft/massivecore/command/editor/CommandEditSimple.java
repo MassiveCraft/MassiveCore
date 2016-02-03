@@ -16,7 +16,10 @@ public class CommandEditSimple<O, V> extends CommandEditAbstract<O, V>
 		super(settings, property, null);
 		
 		// Parameters
-		this.addParameter(TypeNullable.get(this.getProperty().getValueType()), "set", "show", true);
+		if (property.isEditable())
+		{
+			this.addParameter(TypeNullable.get(this.getProperty().getValueType()), "set", "show", true);	
+		}
 	}
 	
 	// -------------------------------------------- //
