@@ -15,11 +15,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.ImmutableList;
-import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.adapter.LowercaseEnumAdapter;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;

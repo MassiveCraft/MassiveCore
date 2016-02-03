@@ -13,9 +13,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Entity;

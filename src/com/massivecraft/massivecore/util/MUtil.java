@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import com.massivecraft.massivecore.PredicateStartsWithIgnoreCase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -59,16 +58,17 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
+import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.nms.NmsEntity;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.extractor.Extractor;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayer;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayerName;
@@ -1501,7 +1501,7 @@ public class MUtil
 	
 	public static Set<String> treeset(String... items)
 	{
-		return new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get(), Arrays.asList(items));
+		return new MassiveTreeSet<String, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get(), Arrays.asList(items));
 	}
 	
 	@SuppressWarnings("unchecked")

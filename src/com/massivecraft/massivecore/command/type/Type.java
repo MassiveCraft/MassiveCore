@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.type;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -25,9 +25,9 @@ public interface Type<T>
 	// INNER
 	// -------------------------------------------- //
 	
-	public <I extends Type<X>, X extends Object> List<I> getInnerTypes();
-	public <I> Type<I> getInnerType(int index);
-	public <I> Type<I> getInnerType();
+	public <I extends Type<? extends Object>> List<I> getInnerTypes();
+	public <I extends Type<? extends Object>> I getInnerType(int index);
+	public <I extends Type<? extends Object>> I getInnerType();
 	
 	public void setInnerTypes(Collection<Type<?>> innerTypes);
 	public void setInnerTypes(Type<?>... innerTypes);
@@ -105,6 +105,42 @@ public interface Type<T>
 	// That would however not make sense with all Types.
 	// Default is true;
 	public boolean allowSpaceAfterTab();
+	
+	// -------------------------------------------- //
+	// CONTAINER
+	// -------------------------------------------- //
+	// The "Container" is an imaginary super type for "Collection" and "Map".
+	// The Element class E is the entry for a map.
+	
+	public boolean isContainer();
+	public boolean isContainerMap();
+	public boolean isContainerCollection();
+	
+	public boolean isContainerIndexed();
+	public boolean isContainerOrdered();
+	public boolean isContainerSorted();
+	
+	public <E> Comparator<E> getContainerComparator();
+	public void setContainerComparator(Comparator<?> container);
+	
+	public <E> List<E> getContainerElementsOrdered(Iterable<E> elements);
+	public <E> List<E> getContainerElementsOrdered(T container);
+	
+	public boolean isContainerEmpty(T container);
+	public void clearContainer(T container);
+	
+	public <E> Collection<E> getContainerElements(T container);
+	public <E> void setContainerElements(T container, Iterable<E> elements);
+	
+	public <E> boolean addContainerElement(T container, E element);
+	public <E> void addContainerElements(T container, Iterable<E> elements);
+	
+	// -------------------------------------------- //
+	// EQUALS
+	// -------------------------------------------- //
+	
+	public boolean equals(T type1, T type2, boolean strict);
+	public boolean equalsInner(T type1, T type2, boolean strict);
 	
 	// -------------------------------------------- //
 	// EDITOR

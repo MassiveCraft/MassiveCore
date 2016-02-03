@@ -12,7 +12,6 @@ import com.massivecraft.massivecore.command.requirement.RequirementEditorUse;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
-import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermUtil;
 
 public class CommandEditAbstract<O, V> extends MassiveCommand
@@ -109,7 +108,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		
 		// NoChange
 		// We check, inform and cancel on equality.
-		if (MUtil.equals(before, after))
+		if (this.getValueType().equals(before, after, true))
 		{
 			msg("%s<silver> for %s<silver> already: %s", descProperty, descObject, descValue);
 			return;

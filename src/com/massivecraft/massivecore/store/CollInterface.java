@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Named;
-import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public interface CollInterface<E extends Entity<E>> extends Named

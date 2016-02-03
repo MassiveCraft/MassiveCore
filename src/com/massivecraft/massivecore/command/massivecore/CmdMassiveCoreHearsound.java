@@ -8,8 +8,8 @@ import com.massivecraft.massivecore.SoundEffect;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
-import com.massivecraft.massivecore.command.type.collection.TypeList;
 import com.massivecraft.massivecore.command.type.combined.TypeSoundEffect;
+import com.massivecraft.massivecore.command.type.container.TypeList;
 
 public class CmdMassiveCoreHearsound extends MassiveCommand
 {

@@ -17,24 +17,17 @@ import com.massivecraft.massivecore.util.Txt;
 public abstract class TypeCombined<T> extends TypeAbstract<T>
 {
 	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	protected List<Type<?>> types;
-	public List<Type<?>> getTypes() { return this.types; }
-	
-	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public TypeCombined(Collection<Type<?>> types)
+	public TypeCombined(Collection<Type<?>> innerTypes)
 	{
-		this.types = new MassiveList<Type<?>>(types); 
+		this.setInnerTypes(innerTypes);
 	}
 	
-	public TypeCombined(Type<?>... types)
+	public TypeCombined(Type<?>... innerTypes)
 	{
-		this(Arrays.asList(types));
+		this.setInnerTypes(innerTypes);
 	}
 	
 	// -------------------------------------------- //
@@ -52,10 +45,10 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		
 		// Fill
 		List<?> parts = this.split(value);
-		if (parts.size() > this.getTypes().size()) throw new RuntimeException("Too many parts!");
+		if (parts.size() > this.getInnerTypes().size()) throw new RuntimeException("Too many parts!");
 		for (int i = 0; i < parts.size(); i++)
 		{
-			Type<?> type = this.getTypes().get(i);
+			Type<?> type = this.getInnerTypes().get(i);
 			Object part = parts.get(i);
 			SimpleEntry<Type<?>, Object> entry = new SimpleEntry<Type<?>, Object>(type, part);
 			ret.add(entry);
@@ -76,7 +69,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		List<String> parts = new MassiveList<String>();
 		
 		// Fill
-		for (Type<?> type : this.getTypes())
+		for (Type<?> type : this.getInnerTypes())
 		{
 			parts.add(type.getTypeName());
 		}
@@ -157,7 +150,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		// Fill
 		List<String> argParts = Arrays.asList(arg.split("[, ]+"));
 		
-		if (argParts.size() > this.getTypes().size())
+		if (argParts.size() > this.getInnerTypes().size())
 		{
 			throw new MassiveException().addMsg("<b>Too many parts!");
 		}
@@ -165,7 +158,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		for (int i = 0; i < argParts.size(); i++)
 		{
 			String argPart = argParts.get(i);
-			Type<?> type = this.getTypes().get(i);
+			Type<?> type = this.getInnerTypes().get(i);
 			
 			Object part = type.read(argPart, sender);
 			

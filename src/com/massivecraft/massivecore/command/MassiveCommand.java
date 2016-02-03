@@ -19,7 +19,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.command.requirement.Requirement;
@@ -27,6 +26,7 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.PermUtil;
 import com.massivecraft.massivecore.util.Txt;
 

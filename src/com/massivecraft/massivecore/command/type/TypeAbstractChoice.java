@@ -12,13 +12,13 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.CaseInsensitiveComparator;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
-import com.massivecraft.massivecore.command.type.collection.AllAble;
+import com.massivecraft.massivecore.command.type.container.AllAble;
+import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -405,7 +405,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public Set<String> createTabs(T value)
 	{
 		// Create
-		Set<String> ret = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
+		Set<String> ret = new MassiveTreeSet<String, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get());
 		
 		// Fill
 		String string;

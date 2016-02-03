@@ -16,8 +16,8 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassivePlugin;
-import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -33,7 +33,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	public final static String TOTAL = "*total*"; 
 	
 	// All instances registered here are considered inited.
-	private static Map<String, Coll<?>> name2instance = new ConcurrentSkipListMap<String, Coll<?>>(NaturalOrderComparator.get());
+	private static Map<String, Coll<?>> name2instance = new ConcurrentSkipListMap<String, Coll<?>>(ComparatorNaturalOrder.get());
 	
 	private static Map<String, Coll<?>> umap = Collections.unmodifiableMap(name2instance);
 	private static Set<String> unames = Collections.unmodifiableSet(name2instance.keySet());

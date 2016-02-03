@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 

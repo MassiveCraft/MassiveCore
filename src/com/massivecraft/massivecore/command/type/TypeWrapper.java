@@ -13,10 +13,10 @@ public class TypeWrapper<T> extends TypeAbstract<T>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public TypeWrapper(Type<T> inner)
+	public TypeWrapper(Type<T> innerType)
 	{
-		if (inner == null) throw new NullPointerException("inner");
-		this.setInnerType(inner);
+		if (innerType == null) throw new NullPointerException("inner");
+		this.setInnerType(innerType);
 	}
 
 	// -------------------------------------------- //
@@ -32,19 +32,22 @@ public class TypeWrapper<T> extends TypeAbstract<T>
 	@Override
 	public String getVisualInner(T value, CommandSender sender)
 	{
-		return this.getInnerType().getVisualInner(value, sender);
+		Type<T> innerType = this.getInnerType();
+		return innerType.getVisualInner(value, sender);
 	}
 
 	@Override
 	public String getNameInner(T value)
 	{
-		return this.getInnerType().getNameInner(value);
+		Type<T> innerType = this.getInnerType();
+		return innerType.getNameInner(value);
 	}
 
 	@Override
 	public String getIdInner(T value)
 	{
-		return this.getInnerType().getIdInner(value);
+		Type<T> innerType = this.getInnerType();
+		return innerType.getIdInner(value);
 	}
 
 	@Override

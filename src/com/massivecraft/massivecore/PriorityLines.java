@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.massivecraft.massivecore.comparator.ComparatorHashCode;
 import com.massivecraft.massivecore.util.MUtil;
 
 public class PriorityLines implements Prioritized, Comparable<PriorityLines>
@@ -66,7 +67,7 @@ public class PriorityLines implements Prioritized, Comparable<PriorityLines>
 		if (ret != 0) return ret;
 		
 		if (MUtil.equals(this.lines, that.lines)) return 0;
-		ret = HashCodeComparator.get().compare(this.lines, that.lines);
+		ret = ComparatorHashCode.get().compare(this.lines, that.lines);
 		if (ret != 0) return ret;
 		
 		return ret;

@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.store;
 
 import java.util.Comparator;
 
-import com.massivecraft.massivecore.NaturalOrderComparator;
+import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 
 public class ComparatorEntityId implements Comparator<Entity<?>>
 {
@@ -29,7 +29,7 @@ public class ComparatorEntityId implements Comparator<Entity<?>>
 		String id1 = e1.getId();
 		String id2 = e2.getId();
 		
-		int ret = NaturalOrderComparator.get().compare(id1, id2);
+		int ret = ComparatorNaturalOrder.get().compare(id1, id2);
 		if (ret != 0) return ret;
 		
 		// We should only return 0 if the items actually are equal.

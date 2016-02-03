@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.collection.AllAble;
+import com.massivecraft.massivecore.command.type.container.AllAble;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeAbstractSelect<T> extends TypeAbstract<T> implements AllAble<T>

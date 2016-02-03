@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.predicate.Predicate;
 
 public interface MessageMixin
 {

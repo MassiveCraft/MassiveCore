@@ -7,11 +7,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.command.type.sender.TypeSenderEntity;
 import com.massivecraft.massivecore.command.type.sender.TypeSenderId;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 

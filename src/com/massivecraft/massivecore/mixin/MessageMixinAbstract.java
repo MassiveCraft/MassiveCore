@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.Predicate;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class MessageMixinAbstract implements MessageMixin

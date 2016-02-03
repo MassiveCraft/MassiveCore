@@ -19,11 +19,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.massivecraft.massivecore.Predicate;
-import com.massivecraft.massivecore.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 
 import static com.massivecraft.massivecore.mson.Mson.mson;
 

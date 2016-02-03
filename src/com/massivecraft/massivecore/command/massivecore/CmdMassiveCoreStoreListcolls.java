@@ -6,10 +6,10 @@ import java.util.TreeSet;
 import com.massivecraft.massivecore.ConfServer;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.NaturalOrderComparator;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
+import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.MStore;
@@ -50,7 +50,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 		}
 		
 		// Prepare
-		Set<String> collnames = new TreeSet<String>(NaturalOrderComparator.get());
+		Set<String> collnames = new TreeSet<String>(ComparatorNaturalOrder.get());
 		collnames.addAll(db.getCollnames());
 		
 		// Do it!

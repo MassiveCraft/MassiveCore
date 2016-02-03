@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.collections;
 
 import java.util.Arrays;
 
-import com.massivecraft.massivecore.CaseInsensitiveComparator;
+import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 
 public class ExceptionSet<T>
 {
@@ -13,7 +13,7 @@ public class ExceptionSet<T>
 	public boolean standard = true;
 	public boolean isStandard() { return this.standard; }
 	
-	public MassiveTreeSet<String, CaseInsensitiveComparator> exceptions = new MassiveTreeSet<String, CaseInsensitiveComparator>(CaseInsensitiveComparator.get());
+	public MassiveTreeSet<String, ComparatorCaseInsensitive> exceptions = new MassiveTreeSet<String, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get());
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

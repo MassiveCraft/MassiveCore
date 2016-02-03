@@ -5,9 +5,9 @@ import java.util.Collection;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.Predicate;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.nms.NmsPacket;
+import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class MessageMixinDefault extends MessageMixinAbstract
