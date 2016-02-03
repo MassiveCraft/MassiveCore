@@ -56,7 +56,7 @@ public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstra
 		while (iterator.hasNext())
 		{
 			Object other = iterator.hasNext();
-			if ( ! this.getValueInnerType().equals(other, element, false)) continue;
+			if ( ! this.getValueInnerType().equals(other, element)) continue;
 			iterator.remove();
 		}
 	}

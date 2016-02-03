@@ -107,10 +107,8 @@ public interface Type<T>
 	public boolean allowSpaceAfterTab();
 	
 	// -------------------------------------------- //
-	// CONTAINER
+	// CONTAINER > IS
 	// -------------------------------------------- //
-	// The "Container" is an imaginary super type for "Collection" and "Map".
-	// The Element class E is the entry for a map.
 	
 	public boolean isContainer();
 	public boolean isContainerMap();
@@ -120,27 +118,22 @@ public interface Type<T>
 	public boolean isContainerOrdered();
 	public boolean isContainerSorted();
 	
+	// -------------------------------------------- //
+	// CONTAINER > COMPARATOR
+	// -------------------------------------------- //
+	
 	public <E> Comparator<E> getContainerComparator();
 	public void setContainerComparator(Comparator<?> container);
 	
 	public <E> List<E> getContainerElementsOrdered(Iterable<E> elements);
 	public <E> List<E> getContainerElementsOrdered(T container);
 	
-	public boolean isContainerEmpty(T container);
-	public void clearContainer(T container);
-	
-	public <E> Collection<E> getContainerElements(T container);
-	public <E> void setContainerElements(T container, Iterable<E> elements);
-	
-	public <E> boolean addContainerElement(T container, E element);
-	public <E> void addContainerElements(T container, Iterable<E> elements);
-	
 	// -------------------------------------------- //
 	// EQUALS
 	// -------------------------------------------- //
 	
-	public boolean equals(T type1, T type2, boolean strict);
-	public boolean equalsInner(T type1, T type2, boolean strict);
+	public boolean equals(T type1, T type2);
+	public boolean equalsInner(T type1, T type2);
 	
 	// -------------------------------------------- //
 	// EDITOR

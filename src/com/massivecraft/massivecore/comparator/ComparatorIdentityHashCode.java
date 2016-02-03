@@ -1,15 +1,13 @@
 package com.massivecraft.massivecore.comparator;
 
-import java.util.Objects;
-
-public class ComparatorHashCode extends ComparatorAbstract<Object>
+public class ComparatorIdentityHashCode extends ComparatorAbstract<Object>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static transient ComparatorHashCode i = new ComparatorHashCode();
-	public static ComparatorHashCode get() { return i; }
+	private static transient ComparatorIdentityHashCode i = new ComparatorIdentityHashCode();
+	public static ComparatorIdentityHashCode get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -20,7 +18,7 @@ public class ComparatorHashCode extends ComparatorAbstract<Object>
 	{
 		int ret;
 		
-		ret = Integer.compare(Objects.hashCode(object1), Objects.hashCode(object2));
+		ret = Integer.compare(System.identityHashCode(object1), System.identityHashCode(object2));
 		if (ret != 0) return ret;
 		
 		return ret; 

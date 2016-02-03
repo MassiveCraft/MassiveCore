@@ -74,20 +74,17 @@ public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 	}
 	
 	@Override
-	public boolean equalsInner(Entry<K, V> type1, Entry<K, V> type2, boolean strict)
+	public boolean equalsInner(Entry<K, V> type1, Entry<K, V> type2)
 	{
 		// Compare Keys
 		K key1 = type1.getKey();
 		K key2 = type2.getKey();
-		if ( ! this.getKeyType().equals(key1, key2, strict)) return false;
-		
-		// Strict
-		if ( ! strict) return true;
+		if ( ! this.getKeyType().equals(key1, key2)) return false;
 		
 		// Compare Values
 		V value1 = type1.getValue();
 		V value2 = type2.getValue();
-		if ( ! this.getValueType().equals(value1, value2, strict)) return false;
+		if ( ! this.getValueType().equals(value1, value2)) return false;
 		
 		// Done
 		return true;

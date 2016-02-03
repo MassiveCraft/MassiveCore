@@ -21,13 +21,15 @@ public class ComparatorLenient<T> extends ComparatorAbstractWrapper<T, T>
 	@Override
 	public int compare(T type1, T type2)
 	{
-		int ret = this.getComparator().compare(type1, type2);
+		int ret;
+		
+		ret = this.getComparator().compare(type1, type2);
 		if (ret != 0) return ret;
 		
-		int hash1 = type1.hashCode();
-		int hash2 = type2.hashCode();
-			
-		ret = Integer.compare(hash1, hash2);
+		ret = ComparatorHashCode.get().compare(type1, type2);
+		if (ret != 0) return ret;
+		
+		ret = ComparatorIdentityHashCode.get().compare(type1, type2);
 		if (ret != 0) return ret;
 		
 		return 1;

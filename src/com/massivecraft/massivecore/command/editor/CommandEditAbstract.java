@@ -108,7 +108,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		
 		// NoChange
 		// We check, inform and cancel on equality.
-		if (this.getValueType().equals(before, after, true))
+		if (this.getValueType().equals(before, after))
 		{
 			msg("%s<silver> for %s<silver> already: %s", descProperty, descObject, descValue);
 			return;

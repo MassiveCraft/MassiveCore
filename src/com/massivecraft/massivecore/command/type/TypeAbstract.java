@@ -5,16 +5,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.Map.Entry;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -28,7 +22,7 @@ import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.comparator.ComparatorHashCode;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.SenderEntity;
-import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeAbstract<T> implements Type<T>
@@ -402,72 +396,42 @@ public abstract class TypeAbstract<T> implements Type<T>
 	}
 	
 	// -------------------------------------------- //
-	// CONTAINER
+	// CONTAINER > IS
 	// -------------------------------------------- //
 	
-	public boolean isContainer()
-	{
-		return this.isContainerCollection() || this.isContainerMap();
-	}
+	private Boolean container = null;
+	public boolean isContainer() { this.calcContainer(); return this.container; }
 	
 	private Boolean containerMap = null;
-	public boolean isContainerMap()
-	{
-		if (this.containerMap == null) this.containerMap = this.calcContainerMap();
-		return this.containerMap;
-	}
-	protected boolean calcContainerMap()
-	{
-		T instance = this.createNewInstance();
-		if (instance instanceof Map<?, ?>) return true;
-		return false;
-	}
+	public boolean isContainerMap() { this.calcContainer(); return this.containerMap; }
 	
 	private Boolean containerCollection = null;
-	public boolean isContainerCollection()
+	public boolean isContainerCollection() { this.calcContainer(); return this.containerCollection; }
+	
+	private Boolean containerIndexed = null;
+	public boolean isContainerIndexed() { this.calcContainer(); return this.containerIndexed; }
+	
+	private Boolean containerOrdered = null;
+	public boolean isContainerOrdered() { this.calcContainer(); return this.containerOrdered; }
+	
+	private Boolean containerSorted = null;
+	public boolean isContainerSorted() { this.calcContainer(); return this.containerSorted; }
+	
+	private void calcContainer()
 	{
-		if (this.containerCollection == null) this.containerCollection = this.calcContainerCollection();
-		return this.containerCollection;
-	}
-	protected boolean calcContainerCollection()
-	{
+		if (this.container != null) return;
 		T instance = this.createNewInstance();
-		if (instance instanceof Collection<?>) return true;
-		return false;
+		this.container = ContainerUtil.isContainer(instance);
+		this.containerMap = ContainerUtil.isMap(instance);
+		this.containerCollection = ContainerUtil.isCollection(instance);
+		this.containerIndexed = ContainerUtil.isIndexed(instance);
+		this.containerOrdered = ContainerUtil.isOrdered(instance);
+		this.containerSorted = ContainerUtil.isSorted(instance);
 	}
 	
-	public boolean isContainerIndexed()
-	{
-		return this.isContainerOrdered() || this.isContainerSorted();
-	}
-	
-	private Boolean collectionOrdered = null;
-	public boolean isContainerOrdered()
-	{
-		if (this.collectionOrdered == null) this.collectionOrdered = this.calcContainerOrdered();
-		return this.collectionOrdered;
-	}
-	protected boolean calcContainerOrdered()
-	{
-		T instance = this.createNewInstance();
-		if (instance instanceof List<?>) return true;
-		if (instance instanceof LinkedHashMap<?, ?>) return true;
-		return false;
-	}
-	
-	private Boolean collectionSorted = null;
-	public boolean isContainerSorted()
-	{
-		if (this.collectionSorted == null) this.collectionSorted = this.calcContainerSorted();
-		return this.collectionSorted;
-	}
-	protected boolean calcContainerSorted()
-	{
-		T instance = this.createNewInstance();
-		if (instance instanceof SortedSet<?>) return true;
-		if (instance instanceof SortedMap<?, ?>) return true;
-		return false;
-	}
+	// -------------------------------------------- //
+	// CONTAINER > COMPARATOR
+	// -------------------------------------------- //
 	
 	private Comparator<Object> elementComparator = null;
 	@SuppressWarnings("unchecked")
@@ -507,87 +471,22 @@ public abstract class TypeAbstract<T> implements Type<T>
 	@Override
 	public <E> List<E> getContainerElementsOrdered(T container)
 	{
-		Collection<E> elements = this.getContainerElements(container);
+		Collection<E> elements = ContainerUtil.getElements(container);
 		return this.getContainerElementsOrdered(elements);
-	}
-	
-	public boolean isContainerEmpty(T container)
-	{
-		return this.getContainerElements(container).isEmpty();
-	}
-	
-	@Override
-	public void clearContainer(T container)
-	{
-		this.getContainerElements(container).clear();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <E> Collection<E> getContainerElements(T container)
-	{
-		if (container instanceof Collection<?>)
-		{
-			Collection<E> collection = (Collection<E>)container;
-			return collection;
-		}
-		
-		if (container instanceof Map<?, ?>)
-		{
-			Map<?, ?> map = (Map<?, ?>)container;
-			return (Collection<E>) map.entrySet();
-		}
-		
-		throw new UnsupportedOperationException("not implemented");
-	}
-	
-	public <E> void setContainerElements(T container, Iterable<E> elements)
-	{
-		this.clearContainer(container);
-		this.addContainerElements(container, elements);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <E> boolean addContainerElement(T container, E element)
-	{
-		if (container instanceof Collection<?>)
-		{
-			Collection<E> collection = (Collection<E>)container;
-			return collection.add(element);
-		}
-		
-		if (container instanceof Map<?, ?>)
-		{
-			Map<Object, Object> map = (Map<Object, Object>)container;
-			Entry<Object, Object> entry = (Entry<Object, Object>)element;
-			Object key = entry.getKey();
-			Object after = entry.getValue();
-			Object before = map.put(key, after);
-			return ! MUtil.equals(after, before);
-		}
-		
-		throw new UnsupportedOperationException("not implemented");
-	}
-	
-	public <E> void addContainerElements(T container, Iterable<E> elements)
-	{
-		for (E element : elements)
-		{
-			this.addContainerElement(container, element);
-		}
 	}
 	
 	// -------------------------------------------- //
 	// EQUALS
 	// -------------------------------------------- //
 	
-	public boolean equals(T type1, T type2, boolean strict)
+	public boolean equals(T type1, T type2)
 	{
 		if (type1 == null) return type2 == null;
 		if (type2 == null) return type1 == null;
-		return this.equalsInner(type1, type2, strict);
+		return this.equalsInner(type1, type2);
 	}
 	
-	public boolean equalsInner(T type1, T type2, boolean strict)
+	public boolean equalsInner(T type1, T type2)
 	{
 		return type1.equals(type2);
 	}

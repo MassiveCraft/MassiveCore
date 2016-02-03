@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore.comparator;
 
 import com.massivecraft.massivecore.Prioritized;
-import com.massivecraft.massivecore.store.ComparatorEntityId;
 import com.massivecraft.massivecore.store.Entity;
 
 public class ComparatorPriority extends ComparatorAbstract<Prioritized>

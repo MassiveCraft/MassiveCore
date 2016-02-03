@@ -1,8 +1,8 @@
-package com.massivecraft.massivecore.store;
+package com.massivecraft.massivecore.comparator;
 
 import java.util.Comparator;
 
-import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
+import com.massivecraft.massivecore.store.Entity;
 
 public class ComparatorEntityId implements Comparator<Entity<?>>
 {

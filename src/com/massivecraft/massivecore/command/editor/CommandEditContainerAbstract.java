@@ -7,6 +7,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeNullable;
+import com.massivecraft.massivecore.util.ContainerUtil;
 
 public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbstract<O, V>
 {
@@ -59,11 +60,11 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		
 		// After
 		V after = this.getValueType().createNewInstance();
-		this.getValueType().addContainerElements(after, elements);
+		ContainerUtil.addElements(after, elements);
 		
 		// Order
 		elements = this.getValueType().getContainerElementsOrdered(after);
-		this.getValueType().setContainerElements(after, elements);
+		ContainerUtil.setElements(after, elements);
 		
 		// Apply
 		this.attemptSet(after);

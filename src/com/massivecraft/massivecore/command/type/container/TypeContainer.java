@@ -14,6 +14,7 @@ import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeAbstract;
+import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
@@ -50,7 +51,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	public String getVisualInner(C container, CommandSender sender)
 	{
 		// Empty
-		if (this.isContainerEmpty(container)) return EMPTY;
+		if (ContainerUtil.isEmpty(container)) return EMPTY;
 		
 		// Create
 		List<String> parts = new MassiveList<String>();
@@ -78,7 +79,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	public String getNameInner(C container)
 	{
 		// Empty
-		if (this.isContainerEmpty(container)) return "";
+		if (ContainerUtil.isEmpty(container)) return "";
 		
 		// Create
 		List<String> parts = new MassiveList<String>();
@@ -104,7 +105,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	public String getIdInner(C container)
 	{
 		// Empty
-		if (this.isContainerEmpty(container)) return "";
+		if (ContainerUtil.isEmpty(container)) return "";
 		
 		// Create
 		List<String> parts = new MassiveList<String>();
@@ -139,7 +140,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 			AllAble<E> allAble = (AllAble<E>)this.getInnerType();
 			if (arg.equalsIgnoreCase("all"))
 			{
-				this.addContainerElements(ret, allAble.getAll(sender));
+				ContainerUtil.addElements(ret, allAble.getAll(sender));
 				return ret;
 			}
 		}
@@ -150,7 +151,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		{
 			Type<E> innerType = this.getInnerType();
 			E element = innerType.read(elementArg, sender);
-			this.addContainerElement(ret, element);
+			ContainerUtil.addElement(ret, element);
 		}
 		
 		// Return
@@ -188,7 +189,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean equalsInner(C container1, C container2, boolean strict)
+	public boolean equalsInner(C container1, C container2)
 	{
 		List<E> ordered1 = this.getContainerElementsOrdered(container1);
 		List<E> ordered2 = this.getContainerElementsOrdered(container2);
@@ -201,7 +202,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 			E element1 = ordered1.get(index);
 			E element2 = ordered2.get(index);
 			
-			if ( ! innerType.equals(element1, element2, strict)) return false;
+			if ( ! innerType.equals(element1, element2)) return false;
 		}
 		
 		return true;
