@@ -7,12 +7,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorUse;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
 import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CommandEditAbstract<O, V> extends MassiveCommand
 {
@@ -128,14 +130,13 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 			msg("%s<silver> for %s<silver> already: %s", descProperty, descObject, descValue);
 			return;
 		}
-
-		// Startup
-		// We inform what property and object the edit is taking place on.
-		msg("%s<silver> for %s<silver> edited:", descProperty, descObject);
+		
+		// Create messages
+		List<String> messages = new MassiveList<>();
 
 		// Before
 		// We inform what the value was before.
-		msg("<k>Before: %s", descValue);
+		messages.add(Txt.parse("<k>Before: %s", descValue));
 
 		// Apply
 		// We set the new property value.
@@ -144,7 +145,15 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		// After
 		// We inform what the value is after.
 		descValue = this.getInheritedVisual();
-		msg("<k>After: %s", descValue);
+		messages.add(Txt.parse("<k>After: %s", descValue));
+		
+		// Startup
+		// We inform what property and object the edit is taking place on.
+		// The visual might change after modification, so this should be added after we have made the change.
+		descObject = this.getObjectVisual();
+		messages.add(0, Txt.parse("%s<silver> for %s<silver> edited:", descProperty, descObject));
+		
+		message(messages);
 	}
 	
 	// -------------------------------------------- //
