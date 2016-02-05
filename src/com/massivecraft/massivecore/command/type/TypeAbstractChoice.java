@@ -410,21 +410,21 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		// Fill
 		String string;
 		
-		for (String id : this.getIds(value))
-		{
-			string = this.prepareTab(id, true);
-			if (string != null) ret.add(string);
-			
-			string = this.prepareTab(id, false);
-			if (string != null) ret.add(string);
-		}
-		
 		for (String name : this.getNames(value))
 		{
 			string = this.prepareTab(name, true);
 			if (string != null) ret.add(string);
 			
 			string = this.prepareTab(name, false);
+			if (string != null) ret.add(string);
+		}
+		
+		for (String id : this.getIds(value))
+		{
+			string = this.prepareTab(id, true);
+			if (string != null) ret.add(string);
+			
+			string = this.prepareTab(id, false);
 			if (string != null) ret.add(string);
 		}
 		
