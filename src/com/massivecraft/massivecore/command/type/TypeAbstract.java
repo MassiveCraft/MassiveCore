@@ -31,7 +31,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static final String NULL = Txt.parse("<silver><em>NULL");
+	public static final String NULL = Txt.parse("<silver><em>NONE");
 	public static final String EMPTY = Txt.parse("<silver><em>EMPTY");
 	public static final String UNKNOWN = Txt.parse("<b>???");
 	
