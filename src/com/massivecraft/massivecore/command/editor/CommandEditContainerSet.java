@@ -16,9 +16,6 @@ public class CommandEditContainerSet<O, V> extends CommandEditContainerAbstract<
 		// Super	
 		super(settings, property);
 		
-		// Aliases
-		this.setAliases("set");
-		
 		// Parameters
 		this.addParameter(TypeInteger.get(), "index");
 		this.addParametersElement(true);

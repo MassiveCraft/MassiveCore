@@ -2,11 +2,12 @@ package com.massivecraft.massivecore.util;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.Map.Entry;
 
 /**
  * The ContainerUtil provides an imaginary super class to Collection and Map.
@@ -51,12 +52,12 @@ public class ContainerUtil
 	
 	public static boolean isOrdered(Object container)
 	{
-		return container instanceof List<?> || container instanceof LinkedHashMap<?, ?>;
+		return container instanceof List || container instanceof LinkedHashMap || container instanceof LinkedHashSet;
 	}
 	
 	public static boolean isSorted(Object container)
 	{
-		return container instanceof SortedSet<?> || container instanceof SortedMap<?, ?>;
+		return container instanceof SortedSet || container instanceof SortedMap;
 	}
 	
 	// -------------------------------------------- //
@@ -64,14 +65,14 @@ public class ContainerUtil
 	// -------------------------------------------- //
 	
 	@SuppressWarnings("unchecked")
-	public static <C extends Collection<? extends Object>> C asCollection(Object container)
+	public static <C extends Collection<?>> C asCollection(Object container)
 	{
 		if ( ! isCollection(container)) return null;
 		return (C)container;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <M extends Map<? extends Object, ? extends Object>> M asMap(Object container)
+	public static <M extends Map<?, ?>> M asMap(Object container)
 	{
 		if ( ! isMap(container)) return null;
 		return (M)container;
@@ -83,6 +84,8 @@ public class ContainerUtil
 	
 	public static boolean isEmpty(Object container)
 	{
+		if (container == null) throw new NullPointerException("container");
+		
 		Collection<Object> collection = asCollection(container);
 		if (collection != null)
 		{
@@ -95,11 +98,13 @@ public class ContainerUtil
 			return map.isEmpty();
 		}
 		
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException(container.getClass().getName() + " is not a container.");
 	}
 	
 	public static int size(Object container)
 	{
+		if (container == null) throw new NullPointerException("container");
+		
 		Collection<Object> collection = asCollection(container);
 		if (collection != null)
 		{
@@ -112,7 +117,7 @@ public class ContainerUtil
 			return map.size();
 		}
 		
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException(container.getClass().getName() + " is not a container.");
 	}
 	
 	// -------------------------------------------- //
@@ -122,6 +127,8 @@ public class ContainerUtil
 	@SuppressWarnings("unchecked")
 	public static <E> Collection<E> getElements(Object container)
 	{
+		if (container == null) throw new NullPointerException("container");
+		
 		Collection<E> collection = asCollection(container);
 		if (collection != null)
 		{
@@ -134,7 +141,7 @@ public class ContainerUtil
 			return (Collection<E>) map.entrySet();
 		}
 		
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException(container.getClass().getName() + " is not a container.");
 	}
 	
 	// -------------------------------------------- //
@@ -143,6 +150,8 @@ public class ContainerUtil
 	
 	public static void clear(Object container)
 	{
+		if (container == null) throw new NullPointerException("container");
+		
 		Collection<Object> collection = asCollection(container);
 		if (collection != null)
 		{
@@ -157,7 +166,7 @@ public class ContainerUtil
 			return;
 		}
 		
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException(container.getClass().getName() + " is not a container.");
 	}
 	
 	public static void setElements(Object container, Iterable<? extends Object> elements)
@@ -169,6 +178,8 @@ public class ContainerUtil
 	@SuppressWarnings("unchecked")
 	public static boolean addElement(Object container, Object element)
 	{
+		if (container == null) throw new NullPointerException("container");
+		
 		Collection<Object> collection = asCollection(container);
 		if (collection != null)
 		{
@@ -185,11 +196,14 @@ public class ContainerUtil
 			return ! MUtil.equals(after, before);
 		}
 		
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException(container.getClass().getName() + " is not a container.");
 	}
 	
 	public static void addElements(Object container, Iterable<? extends Object> elements)
 	{
+		if (container == null) throw new NullPointerException("container");
+		if (elements == null) throw new NullPointerException("elements");
+		
 		for (Object element : elements)
 		{
 			addElement(container, element);

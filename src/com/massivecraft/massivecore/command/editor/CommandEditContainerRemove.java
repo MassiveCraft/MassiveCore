@@ -18,9 +18,6 @@ public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstra
 		// Super	
 		super(settings, property);
 		
-		// Aliases
-		this.setAliases("remove");
-		
 		// Parameters
 		this.addParametersElement(false);
 	}
@@ -52,12 +49,11 @@ public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstra
 		Object element = this.readElement();
 		
 		// Alter
-		Iterator<Object> iterator = elements.iterator();
-		while (iterator.hasNext())
+		for (Iterator<?> it = elements.iterator(); it.hasNext();)
 		{
-			Object other = iterator.hasNext();
+			Object other = it.next();
 			if ( ! this.getValueInnerType().equals(other, element)) continue;
-			iterator.remove();
+			it.remove();
 		}
 	}
 	
@@ -76,15 +72,14 @@ public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstra
 		if (key == null && value == null) throw new MassiveException().addMsg("<b>Please supply key and/or value.");
 		
 		// Alter
-		Iterator<Object> iterator = elements.iterator();
-		while (iterator.hasNext())
+		for (Iterator<?> it = elements.iterator(); it.hasNext();)
 		{
-			Entry<Object, Object> other = (Entry<Object, Object>) iterator.next();
+			Entry<Object, Object> other = (Entry<Object, Object>) it.next();
 			
 			if (key != null && ! MUtil.equals(key, other.getKey())) continue;
 			if (value != null && ! MUtil.equals(value, other.getValue())) continue;
 			
-			iterator.remove();
+			it.remove();
 		}
 	}
 	

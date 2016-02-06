@@ -1,15 +1,21 @@
 package com.massivecraft.massivecore.command.type.combined;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 
-import java.util.AbstractMap.SimpleEntry;
-
-import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.type.Type;
 
 public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	private static final Entry<?, ?> ENTRY_EMPTY = new SimpleImmutableEntry<>(null, null);
+	@SuppressWarnings("unchecked") public static <K, V> Entry<K, V> getEntryEmpty() { return (Entry<K, V>) ENTRY_EMPTY; }
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -41,36 +47,17 @@ public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 	@Override
 	public Entry<K, V> combine(List<Object> parts)
 	{
-		// Create
-		K key = null;
-		V value = null;
-
-		// Fill
-		for (int i = 0 ; i < parts.size() ; i++)
-		{
-			Object part = parts.get(i);
-			
-			if (i == 0)
-			{
-				key = (K)part;
-			}
-			else if (i == 1)
-			{
-				value = (V)part;
-			}
-		}
+		if (parts.isEmpty()) return getEntryEmpty();
+		if (parts.size() == 1) return new SimpleImmutableEntry<>((K)parts.get(0), null);
+		if (parts.size() == 2) return new SimpleImmutableEntry<>((K)parts.get(0), (V) parts.get(1));
 		
-		// Return
-		return new SimpleEntry<K, V>(key, value);
+		throw new RuntimeException(parts.size() + " parts");
 	}
 
 	@Override
 	public List<Object> split(Entry<K, V> entry)
 	{
-		return new MassiveList<Object>(
-			entry.getKey(),
-			entry.getValue()
-		);
+		return Arrays.asList(entry.getKey(), entry.getValue());
 	}
 	
 	@Override

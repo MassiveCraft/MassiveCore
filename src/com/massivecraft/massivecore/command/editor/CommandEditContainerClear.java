@@ -14,9 +14,6 @@ public class CommandEditContainerClear<O, V> extends CommandEditContainerAbstrac
 	{
 		// Super	
 		super(settings, property);
-		
-		// Aliases
-		this.setAliases("clear");
 	}
 	
 	// -------------------------------------------- //

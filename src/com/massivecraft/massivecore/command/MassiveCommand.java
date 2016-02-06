@@ -545,11 +545,26 @@ public class MassiveCommand
 	
 	// WITHOUT 4
 
-	// Without defaultValue, reqFromConsole, defaultDesc & concat .
+	// Without defaultValue, reqFromConsole, defaultDesc & concat.
 	public <T> Parameter<T> addParameter(Type<T> type, String name)
 	{
 		return this.addParameter(new Parameter<T>(type, name));
 	}
+	
+	// Without defaultValue, name, reqFromConsole & defaultDesc.
+	public <T> Parameter<T> addParameter(Type<T> type, boolean concatFromHere)
+	{
+		return this.addParameter(new Parameter<T>(type), concatFromHere);
+	}
+	
+	// Without 5
+	
+	// Without defaultValue, name, reqFromConsole, defaultDesc & concat.
+	public <T> Parameter<T> addParameter(Type<T> type)
+	{
+		return this.addParameter(new Parameter<T>(type));
+	}
+	
 	
 	// -------------------------------------------- //
 	// PREPROCESS

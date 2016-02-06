@@ -40,7 +40,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	
 	public String getCollectionTypeName()
 	{
-		return "Container";
+		return super.getTypeName();
 	}
 	
 	// -------------------------------------------- //
@@ -111,8 +111,8 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		List<String> parts = new MassiveList<String>();
 		
 		// Fill
-		List<E> elements = this.getContainerElementsOrdered(container);
 		Type<E> innerType = this.getInnerType();
+		List<E> elements = this.getContainerElementsOrdered(container);
 		for (E element : elements)
 		{
 			String part = innerType.getIdInner(element);
@@ -146,10 +146,9 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		}
 		
 		// Fill
-		String[] elementArgs = Txt.PATTERN_WHITESPACE.split(arg);
-		for (String elementArg : elementArgs)
+		Type<E> innerType = this.getInnerType();
+		for (String elementArg : Txt.PATTERN_WHITESPACE.split(arg))
 		{
-			Type<E> innerType = this.getInnerType();
 			E element = innerType.read(elementArg, sender);
 			ContainerUtil.addElement(ret, element);
 		}

@@ -16,9 +16,6 @@ public class CommandEditContainerRemoveIndex<O, V> extends CommandEditContainerA
 		// Super	
 		super(settings, property);
 		
-		// Aliases
-		this.setAliases("removeIndex");
-		
 		// Parameters
 		this.addParameter(TypeInteger.get(), "index");
 	}

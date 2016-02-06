@@ -16,9 +16,6 @@ public class CommandEditContainerMove<O, V> extends CommandEditContainerAbstract
 		// Super	
 		super(settings, property);
 
-		// Aliases
-		this.setAliases("move");
-		
 		// Parameters
 		this.addParameter(TypeInteger.get(), "indexFrom");
 		this.addParameter(TypeInteger.get(), "indexTo");

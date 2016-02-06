@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.command.editor;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.massivecraft.massivecore.MassiveException;
@@ -15,9 +16,6 @@ public class CommandEditContainerSwap<O, V> extends CommandEditContainerAbstract
 	{
 		// Super	
 		super(settings, property);
-		
-		// Aliases
-		this.setAliases("swap");
 		
 		// Parameters
 		this.addParameter(TypeInteger.get(), "indexOne");
@@ -36,10 +34,7 @@ public class CommandEditContainerSwap<O, V> extends CommandEditContainerAbstract
 		int indexTwo = this.readArg();
 		
 		// Alter
-		Object elementOne = elements.get(indexOne);
-		Object elementTwo = elements.get(indexTwo);
-		elements.set(indexOne, elementTwo);
-		elements.set(indexTwo, elementOne);
+		Collections.swap(elements, indexOne, indexTwo);
 	}
 	
 }

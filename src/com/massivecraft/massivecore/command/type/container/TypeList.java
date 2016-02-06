@@ -26,12 +26,6 @@ public class TypeList<E> extends TypeContainer<List<E>, E>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getCollectionTypeName()
-	{
-		return "List";
-	}
-	
-	@Override
 	public List<E> createNewInstance()
 	{
 		return new MassiveList<E>();

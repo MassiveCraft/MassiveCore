@@ -25,9 +25,9 @@ public interface Type<T>
 	// INNER
 	// -------------------------------------------- //
 	
-	public <I extends Type<? extends Object>> List<I> getInnerTypes();
-	public <I extends Type<? extends Object>> I getInnerType(int index);
-	public <I extends Type<? extends Object>> I getInnerType();
+	public <I extends Type<?>> List<I> getInnerTypes();
+	public <I extends Type<?>> I getInnerType(int index);
+	public <I extends Type<?>> I getInnerType();
 	
 	public void setInnerTypes(Collection<Type<?>> innerTypes);
 	public void setInnerTypes(Type<?>... innerTypes);

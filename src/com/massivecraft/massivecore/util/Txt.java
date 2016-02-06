@@ -235,6 +235,12 @@ public class Txt
 		if (string.length() == 0) return string;
 		return string.substring(0, 1).toUpperCase() + string.substring(1);
 	}
+	public static String lowerCaseFirst(String string)
+	{
+		if (string == null) return null;
+		if (string.length() == 0) return string;
+		return string.substring(0, 1).toLowerCase() + string.substring(1);
+	}
 	
 	public static String repeat(String string, int times)
 	{

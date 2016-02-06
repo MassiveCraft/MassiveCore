@@ -24,12 +24,6 @@ public class TypeSet<E> extends TypeContainer<Set<E>, E>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String getCollectionTypeName()
-	{
-		return "Set";
-	}
 
 	@Override
 	public Set<E> createNewInstance()

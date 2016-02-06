@@ -16,7 +16,7 @@ public class CommandEditContainerAdd<O, V> extends CommandEditContainerAbstract<
 		super(settings, property);
 		
 		// Aliases
-		this.setAliases("add", "put");
+		this.addAliases("put");
 		
 		// Parameters
 		this.addParametersElement(true);

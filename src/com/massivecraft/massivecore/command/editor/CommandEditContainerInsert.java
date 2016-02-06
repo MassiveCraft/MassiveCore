@@ -16,9 +16,6 @@ public class CommandEditContainerInsert<O, V> extends CommandEditContainerAbstra
 		// Super	
 		super(settings, property);
 		
-		// Aliases
-		this.setAliases("insert");
-		
 		// Parameters
 		this.addParameter(TypeInteger.get(), "index");
 		this.addParametersElement(true);

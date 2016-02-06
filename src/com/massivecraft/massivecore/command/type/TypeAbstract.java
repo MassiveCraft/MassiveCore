@@ -60,13 +60,13 @@ public abstract class TypeAbstract<T> implements Type<T>
 	// INNER
 	// -------------------------------------------- //
 	
-	protected List<Type<Object>> innerTypes = new MassiveList<Type<Object>>();
+	protected List<Type<?>> innerTypes = new MassiveList<>();
 	
 	@SuppressWarnings("unchecked")
-	public <I extends Type<? extends Object>> List<I> getInnerTypes() { return (List<I>) this.innerTypes; }
+	public <I extends Type<?>> List<I> getInnerTypes() { return (List<I>) this.innerTypes; }
 	@SuppressWarnings("unchecked")
-	public <I extends Type<? extends Object>> I getInnerType(int index) { return (I) this.getInnerTypes().get(index); }
-	public <I extends Type<? extends Object>> I getInnerType() { return this.getInnerType(0); }
+	public <I extends Type<?>> I getInnerType(int index) { return (I) this.getInnerTypes().get(index); }
+	public <I extends Type<?>> I getInnerType() { return this.getInnerType(0); }
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setInnerTypes(Collection<Type<?>> innerTypes) { this.innerTypes = new MassiveList(innerTypes); }

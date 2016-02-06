@@ -34,13 +34,7 @@ public class TypeMap<K, V> extends TypeContainer<Map<K, V>, Entry<K, V>>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String getCollectionTypeName()
-	{
-		return "Map";
-	}
-	
+
 	@Override
 	public Map<K, V> createNewInstance()
 	{

@@ -1,13 +1,14 @@
 package com.massivecraft.massivecore.command.editor;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeNullable;
 import com.massivecraft.massivecore.util.ContainerUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbstract<O, V>
 {
@@ -38,8 +39,6 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	@Override
 	public void perform() throws MassiveException
 	{
-		// Type
-		
 		// Create
 		V container = this.getProperty().getRaw(this.getObject());
 		List<Object> elements = this.getValueType().getContainerElementsOrdered(container);
@@ -59,15 +58,24 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		}
 		
 		// After
+		elements = this.getValueType().getContainerElementsOrdered(elements);
 		V after = this.getValueType().createNewInstance();
 		ContainerUtil.addElements(after, elements);
 		
-		// Order
-		elements = this.getValueType().getContainerElementsOrdered(after);
-		ContainerUtil.setElements(after, elements);
-		
 		// Apply
 		this.attemptSet(after);
+	}
+	
+	@Override
+	public String createCommandAlias()
+	{
+		// Split at uppercase letters
+		String name = this.getClass().getSimpleName();
+		name = name.substring("CommandEditContainer".length());
+		final String[] words = name.split("(?=[A-Z])");
+		String alias = Txt.implode(words, "");
+		alias = Txt.lowerCaseFirst(alias);
+		return alias;
 	}
 	
 	// -------------------------------------------- //
@@ -77,53 +85,39 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	public abstract void alter(List<Object> elements) throws MassiveException;
 	
 	// -------------------------------------------- //
-	// MAP
+	// PARAMETER
 	// -------------------------------------------- //
 	
 	public boolean isCollection()
 	{
 		Type<V> type = this.getValueType();
-		if (type.isContainerCollection())
-		{
-			return true;
-		}
-		else if (type.isContainerMap())
-		{
-			return false;
-		}
-		else
-		{
-			throw new RuntimeException("Neither Collection nor Map.");
-		}
+		if (type.isContainerCollection()) return true;
+		if (type.isContainerMap()) return false;
+		throw new RuntimeException("Neither Collection nor Map.");
 	}
 	
 	public void addParametersElement(boolean strict)
 	{
-		Type<V> type = this.getValueType();
-		Type<Object> innerType = type.getInnerType();
+		Type<Object> innerType = this.getValueInnerType();
 		
-		if (type.isContainerCollection())
+		if (this.isCollection())
 		{
-			this.addParameter(innerType, innerType.getTypeName(), true);
+			this.addParameter(innerType, true);
 		}
-		else if (type.isContainerMap())
+		else
 		{
 			Type<Object> keyType = innerType.getInnerType(0);
 			Type<Object> valueType = innerType.getInnerType(1);
 			if (strict)
 			{
-				this.addParameter(keyType, keyType.getTypeName());
-				this.addParameter(valueType, valueType.getTypeName());
+				this.addParameter(keyType);
+				this.addParameter(valueType);
 			}
 			else
 			{
 				this.addParameter(null, TypeNullable.get(keyType, "any", "all"), keyType.getTypeName(), "any");
 				this.addParameter(null, TypeNullable.get(valueType, "any", "all"), valueType.getTypeName(), "any");
 			}
-		}
-		else
-		{
-			throw new RuntimeException("Neither Collection nor Map.");
 		}
 	}
 	
@@ -137,7 +131,7 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		{
 			Object key = this.readArg();
 			Object value = this.readArg();
-			return new SimpleEntry<Object, Object>(key, value);
+			return new SimpleImmutableEntry<Object, Object>(key, value);
 		}
 	}
 
