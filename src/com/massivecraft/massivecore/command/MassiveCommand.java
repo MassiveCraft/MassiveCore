@@ -659,22 +659,24 @@ public class MassiveCommand
 	
 	public List<Requirement> getRequirements() { return this.requirements; }
 	public void setRequirements(List<Requirement> requirements) { this.requirements = requirements; }
-	
 	public void addRequirements(Requirement... requirements) { this.requirements.addAll(Arrays.asList(requirements)); }
 	
-	public boolean isRequirementsMet(CommandSender sender, boolean informSenderIfNot)
+	public boolean isRequirementsMet(CommandSender sender, boolean verboose)
+	{
+		String error = this.getRequirementsError(sender, verboose);
+		if (error != null && verboose) Mixin.messageOne(sender, error);
+		return error == null;
+	}
+	
+	public String getRequirementsError(CommandSender sender, boolean verboose)
 	{
 		for (Requirement requirement : this.getRequirements())
 		{
 			if (requirement.apply(sender, this)) continue;
-			
-			if (informSenderIfNot)
-			{
-				Mixin.messageOne(sender, requirement.createErrorMessage(sender, this));
-			}
-			return false;
+			if ( ! verboose) return "";
+			return requirement.createErrorMessage(sender, this);
 		}
-		return true;
+		return null;
 	}
 	
 	// -------------------------------------------- //
