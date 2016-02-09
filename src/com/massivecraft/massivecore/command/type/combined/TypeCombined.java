@@ -2,8 +2,10 @@ package com.massivecraft.massivecore.command.type.combined;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.AbstractMap.SimpleEntry;
 
 import org.bukkit.command.CommandSender;
@@ -17,17 +19,39 @@ import com.massivecraft.massivecore.util.Txt;
 public abstract class TypeCombined<T> extends TypeAbstract<T>
 {
 	// -------------------------------------------- //
-	// INSTANCE & CONSTRUCT
+	// FIELDS
 	// -------------------------------------------- //
 	
-	public TypeCombined(Collection<Type<?>> innerTypes)
+	private Pattern separatorsPattern = null;
+	public Pattern getSeparatorsPattern() { return this.separatorsPattern; }
+	private void buildSeparatorsPattern()
 	{
-		this.setInnerTypes(innerTypes);
+		StringBuilder regex = new StringBuilder();
+		regex.append("[");
+		for (char c : this.separators.toCharArray())
+		{
+			regex.append(Pattern.quote(String.valueOf(c)));
+		}
+		regex.append("]+");
+		separatorsPattern = Pattern.compile(regex.toString());
 	}
+	
+	private String separators = null;
+	public String getSeparators() { return this.separators; }
+	public void setSeparators(String separators)
+	{
+		this.separators = separators;
+		this.buildSeparatorsPattern();
+	}
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	
 	public TypeCombined(Type<?>... innerTypes)
 	{
 		this.setInnerTypes(innerTypes);
+		this.setSeparators(" ");
 	}
 	
 	// -------------------------------------------- //
@@ -37,6 +61,10 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public abstract T combine(List<Object> parts);
 	
 	public abstract List<Object> split(T value);
+	
+	// -------------------------------------------- //
+	// METHODS
+	// -------------------------------------------- //
 	
 	public List<Entry<Type<?>, Object>> splitEntries(T value)
 	{
@@ -59,7 +87,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	}
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// META
 	// -------------------------------------------- //
 	
 	@Override
@@ -77,6 +105,10 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		// Return
 		return Txt.implode(parts, " ");
 	}
+	
+	// -------------------------------------------- //
+	// WRITE VISUAL
+	// -------------------------------------------- //
 	
 	@Override
 	public String getVisualInner(T value, CommandSender sender)
@@ -97,6 +129,10 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		return Txt.implode(parts, " ");
 	}
 
+	// -------------------------------------------- //
+	// WRITE NAME
+	// -------------------------------------------- //
+	
 	@Override
 	public String getNameInner(T value)
 	{
@@ -116,6 +152,10 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		return Txt.implode(parts, " ");
 	}
 
+	// -------------------------------------------- //
+	// WRITE ID
+	// -------------------------------------------- //
+	
 	@Override
 	public String getIdInner(T value)
 	{
@@ -135,6 +175,10 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		return Txt.implode(parts, " ");
 	}
 
+	// -------------------------------------------- //
+	// READ
+	// -------------------------------------------- //
+	
 	@Override
 	public T read(String arg, CommandSender sender) throws MassiveException
 	{
@@ -148,20 +192,15 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		List<Object> ret = new MassiveList<Object>();
 		
 		// Fill
-		List<String> argParts = Arrays.asList(arg.split("[, ]+"));
+		List<String> innerArgs = this.getArgs(arg);
 		
-		if (argParts.size() > this.getInnerTypes().size())
-		{
-			throw new MassiveException().addMsg("<b>Too many parts!");
-		}
+		if (innerArgs.size() > this.getInnerTypes().size()) throw new MassiveException().addMsg("<b>Too many arguments!");
 		
-		for (int i = 0; i < argParts.size(); i++)
+		for (int i = 0; i < innerArgs.size(); i++)
 		{
-			String argPart = argParts.get(i);
-			Type<?> type = this.getInnerTypes().get(i);
-			
-			Object part = type.read(argPart, sender);
-			
+			String innerArg = innerArgs.get(i);
+			Type<?> innerType = this.getInnerTypes().get(i);
+			Object part = innerType.read(innerArg, sender);
 			ret.add(part);
 		}
 		
@@ -169,19 +208,59 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		return ret;
 	}
 	
-	//TODO: How to do this?
+	// -------------------------------------------- //
+	// TAB LIST
+	// -------------------------------------------- //
+	
+	// TODO: Madus is the master of tab completion.
+	// TODO: Please help me make this work for other separators than spaces.
+	
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		return null; // ???
+		Type<?> innerType = this.getLastType(arg);
+		if (innerType == null) return Collections.emptyList();
+		String innerArg = this.getLastArg(arg);
+		return innerType.getTabList(sender, innerArg);
 	}
 	
-	//TODO: How to do this?
+	@Override
+	public List<String> getTabListFiltered(CommandSender sender, String arg)
+	{
+		Type<?> innerType = this.getLastType(arg);
+		if (innerType == null) return Collections.emptyList();
+		String innerArg = this.getLastArg(arg);
+		return innerType.getTabListFiltered(sender, innerArg);
+	}
+	
 	@Override
 	public boolean allowSpaceAfterTab()
 	{
-		// ???
-		return false;
+		return true;
+	}
+	
+	// -------------------------------------------- //
+	// ARGS
+	// -------------------------------------------- //
+	
+	public List<String> getArgs(String string)
+	{
+		return Arrays.asList(this.getSeparatorsPattern().split(string, -1));
+	}
+	
+	public String getLastArg(String string)
+	{
+		List<String> args = this.getArgs(string);
+		if (args.isEmpty()) return null;
+		return args.get(args.size() - 1);
+	}
+	
+	public Type<?> getLastType(String string)
+	{
+		List<String> args = this.getArgs(string);
+		if (args.isEmpty()) return null;
+		if (args.size() > this.getInnerTypes().size()) return null;
+		return this.getInnerType(args.size() - 1);
 	}
 
 }
