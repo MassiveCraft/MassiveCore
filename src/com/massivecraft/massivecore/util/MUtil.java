@@ -39,7 +39,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
-import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -68,7 +67,6 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.nms.NmsEntity;
 import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.extractor.Extractor;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayer;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayerName;
@@ -752,17 +750,6 @@ public class MUtil
 			case 0xF: return ChatColor.BLACK;
 		}
 		throw new IllegalArgumentException("The dye color " + dyeColor + " is not yet supported!");
-	}
-
-	// -------------------------------------------- //
-	// FAKE EVENT
-	// -------------------------------------------- //
-
-	public static final PredicateStartsWithIgnoreCase STARTING_WITH_FAKE = PredicateStartsWithIgnoreCase.get("fake");
-
-	public static boolean isFakeEvent(Event event)
-	{
-		return STARTING_WITH_FAKE.apply(event.getClass().getSimpleName());
 	}
 
 	// -------------------------------------------- //

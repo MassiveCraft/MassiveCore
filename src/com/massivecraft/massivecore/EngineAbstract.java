@@ -1,8 +1,13 @@
 package com.massivecraft.massivecore;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.block.BlockMultiPlaceEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitTask;
+
+import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 
 public abstract class EngineAbstract implements Engine
 {
@@ -73,6 +78,25 @@ public abstract class EngineAbstract implements Engine
 	public boolean isSync()
 	{
 		return true;
+	}
+	
+	// -------------------------------------------- //
+	// FAKE
+	// -------------------------------------------- //
+	
+	public static final PredicateStartsWithIgnoreCase STARTING_WITH_FAKE = PredicateStartsWithIgnoreCase.get("fake");
+	
+	public static boolean isFake(Event event)
+	{
+		final Class<?> clazz = event.getClass();
+		if (event instanceof BlockPlaceEvent)
+		{
+			return ! BlockPlaceEvent.class.equals(clazz) && ! BlockMultiPlaceEvent.class.equals(clazz);
+		}
+		else
+		{
+			return STARTING_WITH_FAKE.apply(clazz.getSimpleName());
+		}
 	}
 	
 }
