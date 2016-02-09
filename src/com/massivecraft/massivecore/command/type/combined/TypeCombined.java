@@ -51,7 +51,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public TypeCombined(Type<?>... innerTypes)
 	{
 		this.setInnerTypes(innerTypes);
-		this.setSeparators(" ");
+		this.setSeparators(", ");
 	}
 	
 	// -------------------------------------------- //
