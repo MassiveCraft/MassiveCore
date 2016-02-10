@@ -212,25 +212,20 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	// TAB LIST
 	// -------------------------------------------- //
 	
-	// TODO: Madus is the master of tab completion.
-	// TODO: Please help me make this work for other separators than spaces.
-	
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
 		Type<?> innerType = this.getLastType(arg);
 		if (innerType == null) return Collections.emptyList();
 		String innerArg = this.getLastArg(arg);
-		return innerType.getTabList(sender, innerArg);
-	}
-	
-	@Override
-	public List<String> getTabListFiltered(CommandSender sender, String arg)
-	{
-		Type<?> innerType = this.getLastType(arg);
-		if (innerType == null) return Collections.emptyList();
-		String innerArg = this.getLastArg(arg);
-		return innerType.getTabListFiltered(sender, innerArg);
+		String prefix = arg.substring(0, arg.length() - innerArg.length());
+		List<String> strings = innerType.getTabListFiltered(sender, innerArg);
+		List<String> ret = new MassiveList<String>();
+		for (String string : strings)
+		{
+			ret.add(prefix + string);
+		}
+		return ret;
 	}
 	
 	@Override
