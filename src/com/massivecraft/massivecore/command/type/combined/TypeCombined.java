@@ -34,36 +34,36 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		this.buildSeparatorsPattern();
 	}
 	
-	private String separatorTypeName = " ";
-	public String getSeparatorTypeName() { return this.separatorTypeName; }
-	public void setSeparatorTypeName(String separatorTypeName) { this.separatorTypeName = separatorTypeName; }
+	private String typeNameSeparator = " ";
+	public String getTypeNameSeparator() { return this.typeNameSeparator; }
+	public void setTypeNameSeparator(String typeNameSeparator) { this.typeNameSeparator = typeNameSeparator; }
 	
 	// Visual
-	private boolean includeNullVisual = true;
-	public boolean doesIncludeNullVisual() { return this.includeNullVisual; }
-	public void setIncludeNullVisual(boolean includeNullVisual) { this.includeNullVisual = includeNullVisual; }
+	private boolean visualNullIncluded = true;
+	public boolean isVisualNullIncluded() { return this.visualNullIncluded; }
+	public void setVisualNullIncluded(boolean visualNullIncluded) { this.visualNullIncluded = visualNullIncluded; }
 	
-	private String separatorVisual = " ";
-	public String getSeparatorVisual() { return this.separatorVisual; }
-	public void setSeparatorVisual(String separatorVisual) { this.separatorVisual = separatorVisual; }
+	private String visualSeparator = " ";
+	public String getVisualSeparator() { return this.visualSeparator; }
+	public void setVisualSeparator(String visualSeparator) { this.visualSeparator = visualSeparator; }
 	
 	// Name
-	private boolean includeNullName = true;
-	public boolean doesIncludeNullName() { return this.includeNullName; }
-	public void setIncludeNullName(boolean includeNullName) { this.includeNullName = includeNullName; }
+	private boolean nameNullIncluded = true;
+	public boolean isNameNullIncluded() { return this.nameNullIncluded; }
+	public void setNameNullIncluded(boolean nameNullIncluded) { this.nameNullIncluded = nameNullIncluded; }
 	
-	private String separatorName = " ";
-	public String getSeparatorName() { return this.separatorName; }
-	public void setSeparatorName(String separatorName) { this.separatorName = separatorName; }
+	private String nameSeparator = " ";
+	public String getNameSeparator() { return this.nameSeparator; }
+	public void setNameSeparator(String nameSeparator) { this.nameSeparator = nameSeparator; }
 	
 	// Id
-	private boolean includeNullId = true;
-	public boolean doesIncludeNullId() { return this.includeNullId; }
-	public void setIncludeNullId(boolean includeNullId) { this.includeNullId = includeNullId; }
+	private boolean idNullIncluded = true;
+	public boolean isIdNullIncluded() { return this.idNullIncluded; }
+	public void setIdNullIncluded(boolean idNullIncluded) { this.idNullIncluded = idNullIncluded; }
 	
-	private String separatorId = " ";
-	public String getSeparatorId() { return this.separatorId; }
-	public void setSeparatorId(String separatorId) { this.separatorId = separatorId; }
+	private String idSeparator = " ";
+	public String getIdSeparator() { return this.idSeparator; }
+	public void setIdSeparator(String idSeparator) { this.idSeparator = idSeparator; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -124,7 +124,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		}
 		
 		// Return
-		return Txt.implode(parts, this.getSeparatorTypeName());
+		return Txt.implode(parts, this.getTypeNameSeparator());
 	}
 	
 	// -------------------------------------------- //
@@ -143,12 +143,12 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 			@SuppressWarnings("unchecked")
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getVisual(entry.getValue(), sender);
-			if ( ! this.doesIncludeNullVisual() && part == null) continue;
+			if ( ! this.isVisualNullIncluded() && part == null) continue;
 			parts.add(part);
 		}
 		
 		// Return
-		return Txt.implode(parts, this.getSeparatorVisual());
+		return Txt.implode(parts, this.getVisualSeparator());
 	}
 
 	// -------------------------------------------- //
@@ -167,12 +167,12 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 			@SuppressWarnings("unchecked")
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getName(entry.getValue());
-			if ( ! this.doesIncludeNullName() && part == null) continue;
+			if ( ! this.isNameNullIncluded() && part == null) continue;
 			parts.add(part);
 		}
 		
 		// Return
-		return Txt.implode(parts, this.getSeparatorName());
+		return Txt.implode(parts, this.getNameSeparator());
 	}
 
 	// -------------------------------------------- //
@@ -191,12 +191,12 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 			@SuppressWarnings("unchecked")
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getId(entry.getValue());
-			if ( ! this.doesIncludeNullId() && part == null) continue;
+			if ( ! this.isIdNullIncluded() && part == null) continue;
 			parts.add(part);
 		}
 		
 		// Return
-		return Txt.implode(parts, this.getSeparatorId());
+		return Txt.implode(parts, this.getIdSeparator());
 	}
 
 	// -------------------------------------------- //
