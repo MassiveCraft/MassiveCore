@@ -24,17 +24,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	
 	private Pattern separatorsPattern = null;
 	public Pattern getSeparatorsPattern() { return this.separatorsPattern; }
-	private void buildSeparatorsPattern()
-	{
-		StringBuilder regex = new StringBuilder();
-		regex.append("[");
-		for (char c : this.separators.toCharArray())
-		{
-			regex.append(Pattern.quote(String.valueOf(c)));
-		}
-		regex.append("]+");
-		separatorsPattern = Pattern.compile(regex.toString());
-	}
+	private void buildSeparatorsPattern() { this.separatorsPattern = buildSeparatorsPattern(this.separators); }
 	
 	private String separators = null;
 	public String getSeparators() { return this.separators; }
@@ -43,6 +33,37 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		this.separators = separators;
 		this.buildSeparatorsPattern();
 	}
+	
+	private String separatorTypeName = " ";
+	public String getSeparatorTypeName() { return this.separatorTypeName; }
+	public void setSeparatorTypeName(String separatorTypeName) { this.separatorTypeName = separatorTypeName; }
+	
+	// Visual
+	private boolean includeNullVisual = true;
+	public boolean doesIncludeNullVisual() { return this.includeNullVisual; }
+	public void setIncludeNullVisual(boolean includeNullVisual) { this.includeNullVisual = includeNullVisual; }
+	
+	private String separatorVisual = " ";
+	public String getSeparatorVisual() { return this.separatorVisual; }
+	public void setSeparatorVisual(String separatorVisual) { this.separatorVisual = separatorVisual; }
+	
+	// Name
+	private boolean includeNullName = true;
+	public boolean doesIncludeNullName() { return this.includeNullName; }
+	public void setIncludeNullName(boolean includeNullName) { this.includeNullName = includeNullName; }
+	
+	private String separatorName = " ";
+	public String getSeparatorName() { return this.separatorName; }
+	public void setSeparatorName(String separatorName) { this.separatorName = separatorName; }
+	
+	// Id
+	private boolean includeNullId = true;
+	public boolean doesIncludeNullId() { return this.includeNullId; }
+	public void setIncludeNullId(boolean includeNullId) { this.includeNullId = includeNullId; }
+	
+	private String separatorId = " ";
+	public String getSeparatorId() { return this.separatorId; }
+	public void setSeparatorId(String separatorId) { this.separatorId = separatorId; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -103,7 +124,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		}
 		
 		// Return
-		return Txt.implode(parts, " ");
+		return Txt.implode(parts, this.getSeparatorTypeName());
 	}
 	
 	// -------------------------------------------- //
@@ -122,11 +143,12 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 			@SuppressWarnings("unchecked")
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getVisual(entry.getValue(), sender);
+			if ( ! this.doesIncludeNullVisual() && part == null) continue;
 			parts.add(part);
 		}
 		
 		// Return
-		return Txt.implode(parts, " ");
+		return Txt.implode(parts, this.getSeparatorVisual());
 	}
 
 	// -------------------------------------------- //
@@ -145,11 +167,12 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 			@SuppressWarnings("unchecked")
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getName(entry.getValue());
+			if ( ! this.doesIncludeNullName() && part == null) continue;
 			parts.add(part);
 		}
 		
 		// Return
-		return Txt.implode(parts, " ");
+		return Txt.implode(parts, this.getSeparatorName());
 	}
 
 	// -------------------------------------------- //
@@ -168,11 +191,12 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 			@SuppressWarnings("unchecked")
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getId(entry.getValue());
+			if ( ! this.doesIncludeNullId() && part == null) continue;
 			parts.add(part);
 		}
 		
 		// Return
-		return Txt.implode(parts, " ");
+		return Txt.implode(parts, this.getSeparatorId());
 	}
 
 	// -------------------------------------------- //
@@ -256,6 +280,22 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		if (args.isEmpty()) return null;
 		if (args.size() > this.getInnerTypes().size()) return null;
 		return this.getInnerType(args.size() - 1);
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public static Pattern buildSeparatorsPattern(String separators)
+	{
+		StringBuilder regex = new StringBuilder();
+		regex.append("[");
+		for (char c : separators.toCharArray())
+		{
+			regex.append(Pattern.quote(String.valueOf(c)));
+		}
+		regex.append("]+");
+		return Pattern.compile(regex.toString());
 	}
 
 }

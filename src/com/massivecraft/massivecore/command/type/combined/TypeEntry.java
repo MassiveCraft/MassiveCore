@@ -24,6 +24,7 @@ public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 	public TypeEntry(Type<K> keyType, Type<V> valueType)
 	{
 		super(keyType, valueType);
+		this.setSeparatorTypeName(" and ");
 	}
 	
 	// -------------------------------------------- //
@@ -36,13 +37,7 @@ public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public String getTypeName()
-	{
-		return this.getKeyType().getTypeName() + " and " + this.getValueType().getTypeName();
-	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Entry<K, V> combine(List<Object> parts)
