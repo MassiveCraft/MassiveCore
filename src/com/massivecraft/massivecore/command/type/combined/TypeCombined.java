@@ -17,13 +17,21 @@ import com.massivecraft.massivecore.command.type.TypeAbstract;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeCombined<T> extends TypeAbstract<T>
-{
+{	
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final String SEPARATORS_DEFAULT = ", ";
+	public static final String SEPARATORS_LENIENT = " .,:-#";
+	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
 	private Pattern separatorsPattern = null;
 	public Pattern getSeparatorsPattern() { return this.separatorsPattern; }
+	public void setSeparatorsPattern(Pattern separatorsPattern) { this.separatorsPattern = separatorsPattern; }
 	private void buildSeparatorsPattern() { this.separatorsPattern = buildSeparatorsPattern(this.separators); }
 	
 	private String separators = null;
@@ -72,7 +80,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public TypeCombined(Type<?>... innerTypes)
 	{
 		this.setInnerTypes(innerTypes);
-		this.setSeparators(", ");
+		this.setSeparators(SEPARATORS_DEFAULT);
 	}
 	
 	// -------------------------------------------- //
@@ -218,7 +226,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		// Fill
 		List<String> innerArgs = this.getArgs(arg);
 		
-		if (innerArgs.size() > this.getInnerTypes().size()) throw new MassiveException().addMsg("<b>Too many arguments!");
+		if (innerArgs.size() > this.getInnerTypes().size()) throw new MassiveException().addMsg("<b>Too many arguments.");
 		
 		for (int i = 0; i < innerArgs.size(); i++)
 		{
