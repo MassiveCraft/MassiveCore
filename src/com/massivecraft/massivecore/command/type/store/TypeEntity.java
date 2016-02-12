@@ -12,6 +12,11 @@ public class TypeEntity<T extends Entity<T>> extends TypeAbstractChoice<T>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
+	public static <T extends Entity<T>> TypeEntity<T> get(Coll<T> coll)
+	{
+		return new TypeEntity<>(coll);
+	}
+	
 	public TypeEntity(Coll<T> coll)
 	{
 		this.coll = coll;
@@ -27,6 +32,14 @@ public class TypeEntity<T extends Entity<T>> extends TypeAbstractChoice<T>
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public String getName()
+	{
+		String name = this.getColl().getClass().getSimpleName();
+		name = name.substring(0, name.length() - "Coll".length());
+		return name;
+	}
 	
 	@Override
 	public T getExactMatch(String arg)

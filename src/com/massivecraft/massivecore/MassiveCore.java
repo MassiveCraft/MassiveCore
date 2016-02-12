@@ -228,8 +228,11 @@ public class MassiveCore extends MassivePlugin
 			PlayerUtil.get(),
 			
 			// Integration
-			IntegrationVault.get(),
-			
+			IntegrationVault.get()
+		);
+		
+		// Some commands rely on the MConf being present.
+		this.activate(
 			// Command
 			CmdMassiveCore.get(),
 			CmdMassiveCoreUsys.get(),

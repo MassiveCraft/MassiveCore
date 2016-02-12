@@ -41,6 +41,7 @@ public class Txt
 	
 	public static final Pattern PATTERN_WHITESPACE = Pattern.compile("\\s+");
 	public static final Pattern PATTERN_NEWLINE = Pattern.compile("\\r?\\n");
+	public static final Pattern PATTERN_UPPERCASE = Pattern.compile("(?=[A-Z])");
 	
 	public static final long millisPerSecond = 1000;
 	public static final long millisPerMinute = 60 * millisPerSecond;

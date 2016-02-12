@@ -63,7 +63,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 		name = name.substring(prefixLength);
 		
 		// We split at uppercase letters, because most class names are camel-case.
-		final String[] words = name.split("(?=[A-Z])");
+		final String[] words = Txt.PATTERN_UPPERCASE.split(name);
 		return Txt.implode(words, " ").toLowerCase();
 	}
 	

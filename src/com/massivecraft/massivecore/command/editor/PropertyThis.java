@@ -10,7 +10,7 @@ public class PropertyThis<O> extends Property<O, O>
 	
 	public PropertyThis(Type<O> objectType)
 	{
-		super(objectType, objectType, "this");
+		super(objectType, objectType, objectType.getName());
 	}
 	
 	// -------------------------------------------- //

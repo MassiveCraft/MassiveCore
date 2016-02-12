@@ -19,7 +19,7 @@ public class MassiveCommandHelp extends MassiveCommand
 	
 	protected static MassiveCommandHelp i = new MassiveCommandHelp();
 	public static MassiveCommandHelp get() { return i; }
-	private MassiveCommandHelp()
+	public MassiveCommandHelp()
 	{
 		// Aliases
 		this.addAliases("?", "h", "help");
@@ -71,19 +71,12 @@ public class MassiveCommandHelp extends MassiveCommand
 		int visibleSiblingCount = 0;
 		for (MassiveCommand sibling : this.getParent().getChildren())
 		{
-			if (sibling == this) continue;
+			if (sibling instanceof MassiveCommandHelp) continue;
 			if (sibling.isVisibleTo(sender)) visibleSiblingCount++;
 		}
 		
 		int pageHeight = (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE;
-		if (visibleSiblingCount <= pageHeight)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		return visibleSiblingCount > pageHeight;
 	}
 	
 }

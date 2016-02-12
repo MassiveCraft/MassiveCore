@@ -334,7 +334,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	{
 		if (this.children.isEmpty() && ! (child instanceof MassiveCommandHelp))
 		{
-			this.children.add(0, MassiveCommandHelp.get());
+			this.children.add(0, new MassiveCommandHelp());
 			index++;
 		}
 		child.addToChain(this);
@@ -783,8 +783,8 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	public List<String> getArgs() { return this.args; }
 	public void setArgs(List<String> args) { this.args = args; }
 
-	public List<MassiveCommand> getChain() { return this.chain; }
-	public void setChain(List<MassiveCommand> chain) { this.chain = chain; }
+	public List<MassiveCommand> getChain() { return new MassiveList<>(this.chain); }
+	public void setChain(List<MassiveCommand> chain) { this.chain = new MassiveList<>(chain); }
 	
 	// Adds command to tree structure
 	public void addToChain(MassiveCommand command)
@@ -842,8 +842,9 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 				{
 					MassiveCommand child = matches.entrySet().iterator().next().getValue();
 					args.remove(0);
-					chain.add(this);
-					child.execute(sender, args, chain);
+					List<MassiveCommand> childChain = new MassiveList<>(chain);
+					childChain.add(this);
+					child.execute(sender, args, childChain);
 				}
 				// Crap!
 				else
@@ -934,7 +935,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	public void perform() throws MassiveException
 	{
 		// Per default we just act as the help command!
-		List<MassiveCommand> chain = new ArrayList<MassiveCommand>(this.getChain());
+		List<MassiveCommand> chain = this.getChain();
 		chain.add(this);
 		
 		MassiveCommandHelp.get().execute(this.sender, this.getArgs(), chain);

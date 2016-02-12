@@ -94,7 +94,6 @@ public class EditSettings<O>
 	// TYPE READ UTILITY
 	// -------------------------------------------- //
 	
-	// No nice constructors for TreeSet :(
 	public static final Set<String> ALIASES_USED = MUtil.treeset("used", "selected", "chosen");
 	
 	public O getUsedOrCommandException(String arg, CommandSender sender) throws MassiveException

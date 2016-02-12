@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.permissions.Permissible;
 
+import com.massivecraft.massivecore.command.editor.EditorField;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermUtil;
@@ -112,6 +113,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public volatile long millisBetweenRemotePollWithoutPusher = TimeUnit.MILLIS_PER_SECOND * 10;
 	public volatile long millisBetweenRemotePollWithPusher = TimeUnit.MILLIS_PER_MINUTE * 1;
 	
+	@EditorField(singletonName = "iOn")
 	public boolean warnOnLocalAlter = false;
 
 }
