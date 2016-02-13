@@ -13,14 +13,14 @@ public class TypeMap<K, V> extends TypeContainer<Map<K, V>, Entry<K, V>>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <K, V> TypeMap<K, V> get(Type<K> keyType, Type<V> valueType)
+	public static <K, V> TypeMap<K, V> get(TypeEntry<K, V> entryType)
 	{
-		return new TypeMap<K, V>(keyType, valueType);
+		return new TypeMap<K, V>(entryType);
 	}
 	
-	public TypeMap(Type<K> keyType, Type<V> valueType)
+	public TypeMap(TypeEntry<K, V> entryType)
 	{
-		super(TypeEntry.get(keyType, valueType));
+		super(entryType);
 	}
 	
 	// -------------------------------------------- //
