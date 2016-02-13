@@ -38,6 +38,8 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public static final ChatColor COLOR_DEFAULT = ChatColor.YELLOW;
 	public static final ChatColor COLOR_NUMBER = ChatColor.LIGHT_PURPLE;
 	
+	public static final int TAB_LIST_UUID_THRESHOLD = 5;
+	
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //

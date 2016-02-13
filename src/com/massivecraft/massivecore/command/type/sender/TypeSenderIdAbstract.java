@@ -155,10 +155,14 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		Set<String> ids = IdUtil.getIds(presence, type);
 		
 		// Step 4: Create Ret with visible names
-		Set<String> ret = new MassiveSet<String>(ids.size());
+		boolean addIds = (arg.length() >= TAB_LIST_UUID_THRESHOLD);
+		int size = ids.size();
+		if (addIds) size *= 2;
+		Set<String> ret = new MassiveSet<String>(size);
 		for (String id : ids)
 		{
 			if ( ! Mixin.isVisible(id, sender)) continue;
+			if (addIds) ret.add(id);
 			String name = IdUtil.getName(id);
 			if (name == null) continue;
 			ret.add(name);
