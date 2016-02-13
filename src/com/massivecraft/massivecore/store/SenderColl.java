@@ -42,22 +42,17 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// OVERRIDE: Coll
 	// -------------------------------------------- //
 	
-	public static void denyNpc(Object oid)
-	{
-		if (MUtil.isNpc(oid)) throw new IllegalArgumentException("NPCs are not allowed: " + oid);
-	}
-	
 	@Override
 	public E get(Object oid)
 	{
-		denyNpc(oid);
+		if (MUtil.isNpc(oid)) return null;
 		return super.get(oid);
 	}
 	
 	@Override
 	public E get(Object oid, boolean creative)
 	{
-		denyNpc(oid);
+		if (MUtil.isNpc(oid)) return null;
 		return super.get(oid, creative);
 	}
 	
