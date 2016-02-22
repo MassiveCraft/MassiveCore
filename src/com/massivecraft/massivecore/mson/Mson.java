@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.mutable.MutableInt;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
@@ -521,7 +523,7 @@ public class Mson implements Serializable
 	{
 		if (parts == null) throw new NullPointerException("parts");
 
-		List<Mson> msons = new MassiveList<Mson>();
+		List<Mson> msons = new MassiveList<>();
 
 		for (Object part : parts)
 		{
@@ -534,7 +536,17 @@ public class Mson implements Serializable
 	// -------------------------------------------- //
 	// PARSE & FORMAT
 	// -------------------------------------------- //
-
+	
+	public static Mson fromParsedMessages(Collection<String> messages)
+	{
+		List<Mson> extra = new MassiveList<>(messages.size());
+		for (String message : messages)
+		{
+			extra.add(fromParsedMessage(message));
+		}
+		return mson(extra);
+	}
+	
 	public static Mson fromParsedMessage(String message)
 	{
 		if (message == null) throw new NullPointerException("message");
@@ -551,7 +563,7 @@ public class Mson implements Serializable
 		// We don't want that empty element.
 		parts = Arrays.copyOfRange(parts, 1, parts.length);
 
-		List<Mson> msons = new ArrayList<Mson>();
+		List<Mson> msons = new MassiveList<>();
 
 		ChatColor latestColor = null;
 		Boolean bold = null;
@@ -603,6 +615,7 @@ public class Mson implements Serializable
 
 	// Parse redirects, convert to Mson directly
 	public static Mson parse(String string) { return Mson.fromParsedMessage(Txt.parse(string)); }
+	public static Mson parse(Collection<String> strings) { return Mson.fromParsedMessages(Txt.parse(strings)); }
 	public static Mson parse(String format, Object... args) { return Mson.fromParsedMessage(Txt.parse(format, args)); }
 
 	public static Mson format(String format, Object... args)
@@ -754,29 +767,15 @@ public class Mson implements Serializable
 		if (regex == null) throw new NullPointerException("regex");
 		if (replacement == null) throw new NullPointerException("replacement");
 
-		return replaceAll(Pattern.compile(regex), replacement);
+		return replaceAll(regex, mson(replacement));
 	}
 	
 	public Mson replaceAll(Pattern pattern, String replacement)
 	{
 		if (pattern == null) throw new NullPointerException("pattern");
 		if (replacement == null) throw new NullPointerException("replacement");
-		
-		Mson ret = this.text(pattern.matcher(this.getText()).replaceAll(replacement));
-		
-		if (this.hasExtra())
-		{
-			Mson[] extra = new Mson[this.getExtra().size()];
-			int i = 0;
-			for (Mson part : this.getExtra())
-			{
-				extra[i] = part.replaceAll(pattern, replacement);
-				i++;
-			}
-			ret = ret.extra(extra);
-		}
 
-		return ret;
+		return replaceAll(pattern, mson(replacement));
 	}
 
 	// Special replace all
@@ -785,21 +784,39 @@ public class Mson implements Serializable
 	{
 		if (regex == null) throw new NullPointerException("regex");
 		if (replacement == null) throw new NullPointerException("replacement");
-		return this.replaceAll(Pattern.compile(regex), replacement);
+		return this.replaceAll(regex, new Mson[]{replacement});
 	}
 	
 	public Mson replaceAll(Pattern pattern, final Mson replacement)
 	{
 		if (pattern == null) throw new NullPointerException("pattern");
 		if (replacement == null) throw new NullPointerException("replacement");
+
+		return this.replaceAll(pattern, new Mson[]{replacement});
+	}
+	
+	public Mson replaceAll(String regex, Mson... replacements)
+	{
+		if (regex == null) throw new NullPointerException("regex");
+		if (replacements == null) throw new NullPointerException("replacements");
+		return this.replaceAll(Pattern.compile(regex), replacements);
+	}
+	
+	public Mson replaceAll(Pattern pattern, final Mson... replacements)
+	{
+		if (pattern == null) throw new NullPointerException("pattern");
+		if (replacements == null) throw new NullPointerException("replacements");
+		
+		final MutableInt i = new MutableInt(0);
 		MsonReplacement replacer = new MsonReplacement()
 		{
 			@Override
 			public Mson getReplacement(String match, Mson parent)
 			{
-				return replacement;
+				int idx = i.intValue();
+				i.setValue(idx+1);
+				return replacements[idx % replacements.length];
 			}
-			
 		};
 		return this.replaceAll(pattern, replacer);
 	}
@@ -892,7 +909,136 @@ public class Mson implements Serializable
 
 		return ret;
 	}
+	
+	// -------------------------------------------- //
+	// IMPLODE
+	// -------------------------------------------- //
+	
+	// Implode simple
+	public static Mson implode(final Object[] list, final Mson glue, final Mson format)
+	{	
+		List<Mson> parts = new MassiveList<>();
+		for (int i = 0; i < list.length; i++)
+		{
+			Object item = list[i];
+			Mson part = (item == null ? mson("NULL") : Mson.mson(item));
+			
+			if (i != 0)
+			{
+				parts.add(glue);
+			}
+			if (format != null)
+			{
+				part = format.replaceAll("%s", part);
+			}
+			parts.add(part);
+		}
+		return Mson.mson(parts);
+	}
 
+	public static Mson implode(final Object[] list, final Mson glue)
+	{
+		return implode(list, glue, null);
+	}
+	public static Mson implode(final Collection<? extends Object> coll, final Mson glue, final Mson format)
+	{
+		return implode(coll.toArray(new Object[0]), glue, format);
+	}
+	public static Mson implode(final Collection<? extends Object> coll, final Mson glue)
+	{
+		return implode(coll, glue, null);
+	}
+	
+	// Implode comma and dot
+	public static Mson implodeCommaAndDot(Collection<? extends Object> objects, Mson format, Mson comma, Mson and, Mson dot)
+	{
+		if (objects.size() == 0) return mson();
+		if (objects.size() == 1)
+		{
+			return implode(objects, comma, format);
+		}
+		
+		List<Object> ourObjects = new MassiveList<>(objects);
+		
+		Mson ultimateItem = mson(ourObjects.remove(ourObjects.size()-1));
+		Mson penultimateItem = mson(ourObjects.remove(ourObjects.size()-1));
+		if (format != null)
+		{
+			ultimateItem = format.replaceAll("%s", ultimateItem);
+			penultimateItem = format.replaceAll("%s", penultimateItem);
+		}
+		Mson merge = mson(penultimateItem, and, ultimateItem);
+		ourObjects.add(merge);
+		
+		return implode(ourObjects, comma, format).add(mson(dot));
+	}
+	
+	public static Mson implodeCommaAndDot(final Collection<? extends Object> objects, Mson comma, Mson and, Mson dot)
+	{
+		return implodeCommaAndDot(objects, null, comma, and, dot);
+	}
+	public static Mson implodeCommaAnd(final Collection<? extends Object> objects, Mson comma, Mson and)
+	{
+		return implodeCommaAndDot(objects, comma, and, mson());
+	}
+	public static Mson implodeCommaAndDot(final Collection<? extends Object> objects, ChatColor color)
+	{
+		return implodeCommaAndDot(objects, mson(", ").color(color), mson(" and ").color(color), mson(".").color(color));
+	}
+	public static Mson implodeCommaAnd(final Collection<? extends Object> objects, ChatColor color)
+	{
+		return implodeCommaAndDot(objects, mson(", ").color(color), mson(" and ").color(color), mson());
+	}
+	public static Mson implodeCommaAndDot(final Collection<? extends Object> objects)
+	{
+		return implodeCommaAndDot(objects, null);
+	}
+	public static Mson implodeCommaAnd(final Collection<? extends Object> objects)
+	{
+		return implodeCommaAnd(objects, null);
+	}
+	
+	// -------------------------------------------- //
+	// PREPONDFIX
+	// -------------------------------------------- //
+	// This weird algorithm takes:
+	// - A prefix
+	// - A centerpiece single string or a list of strings.
+	// - A suffix
+	// If the centerpiece is a single String it just concatenates prefix + centerpiece + suffix.
+	// If the centerpiece is multiple Strings it concatenates prefix + suffix and then appends the centerpice at the end.
+	// This algorithm is used in the editor system.
+	
+	public static List<Mson> prepondfix(Mson prefix, List<Mson> msons, Mson suffix)
+	{
+		// Create
+		List<Mson> ret = new MassiveList<>();
+		
+		// Fill
+		List<Mson> parts = new MassiveList<>();
+		if (prefix != null) parts.add(prefix);
+		if (msons.size() == 1) parts.add(msons.get(0));
+		if (suffix != null) parts.add(suffix);
+		
+		ret.add(implode(parts, SPACE));
+		
+		if (msons.size() != 1)
+		{
+			ret.addAll(msons);
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	public static Mson prepondfix(Mson prefix, Mson mson, Mson suffix)
+	{
+		// HELP! How do I do this?
+		//List<Mson> strings = Arrays.asList(PATTERN_NEWLINE.split(string));
+		List<Mson> ret = prepondfix(prefix, Collections.singletonList(mson), suffix);
+		return implode(ret, mson("\n"));
+	}
+	
 	// -------------------------------------------- //
 	// MESSAGE
 	// -------------------------------------------- //

@@ -9,6 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -20,6 +21,7 @@ import com.massivecraft.massivecore.command.editor.CommandEditSimple;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.comparator.ComparatorHashCode;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.ContainerUtil;
@@ -34,6 +36,10 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public static final String NULL = Txt.parse("<silver><em>NONE");
 	public static final String EMPTY = Txt.parse("<silver><em>EMPTY");
 	public static final String UNKNOWN = Txt.parse("<b>???");
+	
+	public static final Mson MSON_NULL = Mson.fromParsedMessage(NULL);
+	public static final Mson MSON_EMPTY = Mson.fromParsedMessage(EMPTY);
+	public static final Mson MSON_UNKNOWN = Mson.fromParsedMessage(UNKNOWN);
 	
 	public static final ChatColor COLOR_DEFAULT = ChatColor.YELLOW;
 	public static final ChatColor COLOR_NUMBER = ChatColor.LIGHT_PURPLE;
@@ -94,6 +100,32 @@ public abstract class TypeAbstract<T> implements Type<T>
 	}
 	
 	// -------------------------------------------- //
+	// WRITE VISUAL MSON
+	// -------------------------------------------- //
+	// A visual mson.
+	
+	public Mson getVisualMsonInner(T value, CommandSender sender)
+	{
+		return Mson.fromParsedMessage(this.getVisualInner(value, sender)).tooltip("LUL, TEST");
+	}
+	
+	public Mson getVisualMsonInner(T value)
+	{
+		return this.getVisualMson(value, null);
+	}
+	
+	public Mson getVisualMson(T value, CommandSender sender)
+	{
+		if (value == null) return MSON_NULL;
+		return this.getVisualMsonInner(value, sender);
+	}
+	public Mson getVisualMson(T value)
+	{
+		if (value == null) return MSON_NULL;
+		return this.getVisualMsonInner(value);
+	}
+	
+	// -------------------------------------------- //
 	// WRITE VISUAL
 	// -------------------------------------------- //
 	
@@ -122,26 +154,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	{
 		return this.getVisual(value, null);
 	}
-	
-	public Set<String> getVisualsInner(T value, CommandSender sender)
-	{
-		return Collections.singleton(this.getVisualInner(value, sender));
-	}
-	public Set<String> getVisualsInner(T value)
-	{
-		return this.getVisualsInner(value, null);
-	}
-	
-	public Set<String> getVisuals(T value, CommandSender sender)
-	{
-		if (value == null) return Collections.singleton(NULL);
-		return this.getVisualsInner(value, sender);
-	}
-	public Set<String> getVisuals(T value)
-	{
-		return this.getVisuals(value, null);
-	}
-	
+
 	// -------------------------------------------- //
 	// WRITE NAME
 	// -------------------------------------------- //

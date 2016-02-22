@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -19,6 +19,7 @@ import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.command.type.container.AllAble;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -28,10 +29,10 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public final static String SUGGEST_FORMAT = Txt.parse("<h>%s");
-	public final static String SUGGEST_COMMMA = Txt.parse(" <silver>| ");
-	public final static String SUGGEST_AND = Txt.parse(" <silver>| ");
-	public final static String SUGGEST_DOT = Txt.parse("");
+	public final static Mson SUGGEST_FORMAT = Mson.parse("<h>%s");
+	public final static Mson SUGGEST_COMMMA = Mson.parse(" <silver>| ");
+	public final static Mson SUGGEST_AND = Mson.parse(" <silver>| ");
+	public final static Mson SUGGEST_DOT = Mson.parse("");
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -174,10 +175,10 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		else
 		{
 			Collection<T> suggestions = null;
-			String format = SUGGEST_FORMAT;
-			String comma = SUGGEST_COMMMA;
-			String and = SUGGEST_AND;
-			String dot = SUGGEST_DOT;
+			Mson format = SUGGEST_FORMAT;
+			Mson comma = SUGGEST_COMMMA;
+			Mson and = SUGGEST_AND;
+			Mson dot = SUGGEST_DOT;
 			
 			if (suggestAmbiguous)
 			{
@@ -206,12 +207,12 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 			}
 			else
 			{
-				List<String> visuals = new MassiveList<String>();
+				List<Mson> visuals = new MassiveList<>();
 				for (T value : suggestions)
 				{
-					visuals.add(this.getVisual(value, sender));
+					visuals.add(this.getVisualMson(value, sender));
 				}
-				exception.addMessage(message + Txt.implodeCommaAndDot(visuals, format, comma, and, dot));
+				exception.addMessage(Mson.mson(message, Mson.implodeCommaAndDot(visuals, format, comma, and, dot)));
 			}
 		}
 		

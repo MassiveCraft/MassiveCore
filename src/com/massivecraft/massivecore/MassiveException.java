@@ -2,10 +2,8 @@ package com.massivecraft.massivecore;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.mson.Mson;
 
 
 public class MassiveException extends Exception
@@ -20,32 +18,31 @@ public class MassiveException extends Exception
 	// MESSAGES
 	// -------------------------------------------- //
 	
-	protected List<String> messages = new MassiveList<String>();
+	protected Mson messages = Mson.mson();
 	public boolean hasMessages() { return ! this.messages.isEmpty(); }
-	public List<String> getMessages() { return this.messages; }
+	public Mson getMessages() { return this.messages; }
 	
 	@Override
 	public String getMessage()
 	{
-		return Txt.implode(this.getMessages(), "\n");
+		return this.messages.toPlain(true);
 	}
 	
-	public MassiveException setMessage(String message) { this.messages = new MassiveList<String>(message); return this; }
-	public MassiveException setMsg(String msg) { return this.setMessage(Txt.parse(msg)); }
-	public MassiveException setMsg(String msg, Object... args) { return this.setMessage(Txt.parse(msg, args)); }
+	// Set single
+	public MassiveException setMessage(Object part) { this.messages = Mson.mson(part); return this; }
+	public MassiveException setMsg(String msg) { this.messages = Mson.parse(msg); return this; }
+	public MassiveException setMsg(String msg, Object... objects) { this.messages = Mson.parse(msg, objects); return this; }
 	
-	public MassiveException addMessage(String message) { this.getMessages().add(message); return this; }
-	public MassiveException addMsg(String msg) { return this.addMessage(Txt.parse(msg)); }
-	public MassiveException addMsg(String msg, Object... args) { return this.addMessage(Txt.parse(msg, args)); }
+	// Add single
+	public MassiveException addMessage(Object part) { this.messages = this.messages.add(Mson.mson("\n", part)); return this; }
+	public MassiveException addMsg(String msg) { return this.addMessage(Mson.parse(msg)); }
+	public MassiveException addMsg(String msg, Object... args) { return this.addMessage(Mson.parse(msg, args)); }
 	
-	public MassiveException setMessages(Collection<String> messages) { this.messages = new MassiveList<String>(messages); return this; }
-	public MassiveException setMessages(String... messages) { return this.setMessages(Arrays.asList(messages)); }
-	public MassiveException setMsgs(Collection<String> msgs) { return this.setMessages(Txt.parse(msgs)); }
+	// Set several
+	public MassiveException setMsgs(Collection<String> msgs) { this.messages = Mson.parse(msgs); return this; }
 	public MassiveException setMsgs(String... msgs) { return this.setMsgs(Arrays.asList(msgs)); }
 	
-	public MassiveException addMessages(Collection<String> messages) { this.getMessages().addAll(messages); return this; }
-	public MassiveException addMessages(String... messages) { return this.addMessages(Arrays.asList(messages)); }
-	public MassiveException addMsgs(Collection<String> messages) { this.getMessages().addAll(messages); return this; }
+	public MassiveException addMsgs(Collection<String> msgs) { return this.addMessage(Mson.parse(msgs)); }
 	public MassiveException addMsgs(String... msgs) { return this.addMsgs(Arrays.asList(msgs)); }
 	
 }

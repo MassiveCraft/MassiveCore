@@ -1,9 +1,10 @@
 package com.massivecraft.massivecore.mixin;
 
+import org.bukkit.entity.Player;
+
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.nms.NmsPacket;
 import com.massivecraft.massivecore.util.IdUtil;
-import org.bukkit.entity.Player;
 
 public class ActionbarMixinDefault extends ActionbarMixinAbstract
 {

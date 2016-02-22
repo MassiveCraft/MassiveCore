@@ -1,9 +1,5 @@
 package com.massivecraft.massivecore.command;
 
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.Visibility;
-
-
 public class DeprecatedCommand extends MassiveCommand
 {
 	// -------------------------------------------- //

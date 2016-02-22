@@ -12,6 +12,7 @@ import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
+import com.massivecraft.massivecore.mson.Mson;
 
 // The "inner" controls all ways the type behaves and "seems".
 // The "outer" type is how the type interfaces in source code. For example what is read.
@@ -22,10 +23,15 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	// -------------------------------------------- //
 	
 	public static final String PREFIX = UNKNOWN + " ";
+	public static final String MSON_PREFIX = UNKNOWN + " ";
 	
 	public static String prefix(String string)
 	{
 		return PREFIX + string;
+	}
+	public static Mson prefix(Mson mson)
+	{
+		return Mson.mson(MSON_PREFIX, mson);
 	}
 	
 	public static Set<String> prefix(Set<String> strings)
@@ -106,6 +112,42 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	}
 	
 	// -------------------------------------------- //
+	// WRITE VISUAL MSON
+	// -------------------------------------------- //
+	
+	@Override
+	public Mson getVisualMsonInner(O outer, CommandSender sender)
+	{
+		I inner = outerToInner(outer);
+		if (outer != null && inner == null) return prefix(OUTER.getVisualMsonInner(outer, sender));
+		return INNER.getVisualMsonInner(inner, sender);
+	}
+	
+	@Override
+	public Mson getVisualMsonInner(O outer)
+	{
+		I inner = outerToInner(outer);
+		if (outer != null && inner == null) return prefix(OUTER.getVisualMsonInner(outer));
+		return INNER.getVisualMsonInner(inner);
+	}
+	
+	@Override
+	public Mson getVisualMson(O outer, CommandSender sender)
+	{
+		I inner = outerToInner(outer);
+		if (outer != null && inner == null) return prefix(OUTER.getVisualMson(outer, sender));
+		return INNER.getVisualMson(inner, sender);
+	}
+	
+	@Override
+	public Mson getVisualMson(O outer)
+	{
+		I inner = outerToInner(outer);
+		if (outer != null && inner == null) return prefix(OUTER.getVisualMson(outer));
+		return INNER.getVisualMson(inner);
+	}
+	
+	// -------------------------------------------- //
 	// WRITE VISUAL
 	// -------------------------------------------- //
 	
@@ -139,38 +181,6 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) return prefix(OUTER.getVisual(outer));
 		return INNER.getVisual(inner);
-	}
-	
-	@Override
-	public Set<String> getVisualsInner(O outer, CommandSender sender)
-	{
-		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualsInner(outer, sender));
-		return INNER.getVisualsInner(inner, sender);
-	}
-	
-	@Override
-	public Set<String> getVisualsInner(O outer)
-	{
-		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualsInner(outer));
-		return INNER.getVisualsInner(inner);
-	}
-	
-	@Override
-	public Set<String> getVisuals(O outer, CommandSender sender)
-	{
-		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisuals(outer, sender));
-		return INNER.getVisuals(inner, sender);
-	}
-	
-	@Override
-	public Set<String> getVisuals(O outer)
-	{
-		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisuals(outer));
-		return INNER.getVisuals(inner);
 	}
 	
 	// -------------------------------------------- //

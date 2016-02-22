@@ -1,18 +1,18 @@
 package com.massivecraft.massivecore.command.editor;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.Collection;
-
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.type.Type;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -150,9 +150,9 @@ public abstract class Property<O, V> implements Named
 		return this.getValueType().createEditCommand(settings, this);
 	}
 	
-	public String getInheritedVisual(O object, O source, V value, CommandSender sender)
+	public Mson getInheritedVisual(O object, O source, V value, CommandSender sender)
 	{
-		String string = this.getValueType().getVisual(value, sender);
+		Mson mson = this.getValueType().getVisualMson(value, sender);
 		/*if (string == null)
 		{
 			System.out.println("value type " + this.getValueType());
@@ -163,16 +163,16 @@ public abstract class Property<O, V> implements Named
 			System.out.println("sender " + sender);
 		}*/
 		
-		String suffix = null;
+		Mson suffix = null;
 		if (source != null && ! source.equals(object))
 		{
-			suffix = Txt.parse("<silver>[%s<silver>]", this.getObjectType().getVisual(source));
+			suffix = Mson.parse("<silver>[%s<silver>]").replaceAll("%s", this.getObjectType().getVisualMson(source));
 		}
 		
-		return Txt.prepondfix(null, string, suffix);
+		return Mson.prepondfix(null, mson, suffix);
 	}
 	
-	public String getInheritedVisual(O object, CommandSender sender)
+	public Mson getInheritedVisual(O object, CommandSender sender)
 	{
 		Entry<O, V> inherited = this.getInheritedEntry(object);
 		O source = inherited.getKey();
@@ -183,6 +183,11 @@ public abstract class Property<O, V> implements Named
 	// -------------------------------------------- //
 	// VISUAL
 	// -------------------------------------------- //
+	
+	public Mson getDisplayNameMson()
+	{
+		return Mson.mson(this.getName()).color(ChatColor.AQUA);
+	}
 	
 	public String getDisplayName()
 	{

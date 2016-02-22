@@ -1,6 +1,9 @@
 package com.massivecraft.massivecore.command.editor;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
+
+import org.bukkit.ChatColor;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -9,6 +12,7 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeNullable;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -85,9 +89,14 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	// -------------------------------------------- //
 	
 	@Override
-	public String attemptSetNochangeMessage()
+	public Mson attemptSetNochangeMessage()
 	{
-		return Txt.parse("%s<silver> for %s<silver> was not changed.", this.getProperty().getDisplayName(), this.getObjectVisual());
+		return mson(
+			this.getProperty().getDisplayNameMson(),
+			" for ",
+			this.getObjectVisual(),
+			" not changed."	
+			).color(ChatColor.GRAY);
 	}
 	
 	@SuppressWarnings("unchecked")

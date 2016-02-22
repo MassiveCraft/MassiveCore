@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -11,6 +12,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
+import com.massivecraft.massivecore.mson.Mson;
 
 public interface Type<T>
 {
@@ -42,6 +44,16 @@ public interface Type<T>
 	public void setVisualColor(ChatColor color);
 	
 	// -------------------------------------------- //
+	// WRITE VISUAL MSON
+	// -------------------------------------------- //
+	// A visual mson.
+	
+	public Mson getVisualMsonInner(T value, CommandSender sender);
+	public Mson getVisualMsonInner(T value);
+	public Mson getVisualMson(T value, CommandSender sender);
+	public Mson getVisualMson(T value);
+	
+	// -------------------------------------------- //
 	// WRITE VISUAL
 	// -------------------------------------------- //
 	// A visual and colorful representation. Possibly with added detail such as simple ASCII art.
@@ -50,12 +62,7 @@ public interface Type<T>
 	public String getVisualInner(T value);
 	public String getVisual(T value, CommandSender sender);
 	public String getVisual(T value);
-	
-	public Set<String> getVisualsInner(T value, CommandSender sender);
-	public Set<String> getVisualsInner(T value);
-	public Set<String> getVisuals(T value, CommandSender sender);
-	public Set<String> getVisuals(T value);
-	
+
 	// -------------------------------------------- //
 	// WRITE NAME
 	// -------------------------------------------- //
