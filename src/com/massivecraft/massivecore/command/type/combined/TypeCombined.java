@@ -139,6 +139,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	// WRITE VISUAL
 	// -------------------------------------------- //
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public String getVisualInner(T value, CommandSender sender)
 	{
@@ -146,9 +147,10 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		List<String> parts = new MassiveList<String>();
 		
 		// Fill
-		for (Entry<Type<?>, Object> entry : this.splitEntries(value))
+		List<Entry<Type<?>, Object>> entries = this.splitEntries(value);
+		for (int i = 0; i < entries.size(); i++)
 		{
-			@SuppressWarnings("unchecked")
+			Entry<Type<?>, Object> entry = entries.get(this.getIndexTech(i));
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getVisual(entry.getValue(), sender);
 			if ( ! this.isVisualNullIncluded() && part == null) continue;
@@ -231,7 +233,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		for (int i = 0; i < innerArgs.size(); i++)
 		{
 			String innerArg = innerArgs.get(i);
-			Type<?> innerType = this.getInnerTypes().get(i);
+			Type<?> innerType = this.getInnerTypes().get(getIndexUser(i));
 			Object part = innerType.read(innerArg, sender);
 			ret.add(part);
 		}
@@ -287,7 +289,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		List<String> args = this.getArgs(string);
 		if (args.isEmpty()) return null;
 		if (args.size() > this.getInnerTypes().size()) return null;
-		return this.getInnerType(args.size() - 1);
+		return this.getInnerType(getIndexTech(args.size() - 1));
 	}
 	
 	// -------------------------------------------- //

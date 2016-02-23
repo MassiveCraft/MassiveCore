@@ -5,13 +5,14 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import com.massivecraft.massivecore.collections.MassiveSet;
-
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
 
 /**
  * The ContainerUtil provides an imaginary super class to Collection and Map.
@@ -37,12 +38,22 @@ public class ContainerUtil
 	
 	public static boolean isCollection(Object container)
 	{
-		return container instanceof Collection<?>;
+		return container instanceof Collection;
 	}
 	
 	public static boolean isMap(Object container)
 	{
-		return container instanceof Map<?, ?>;
+		return container instanceof Map;
+	}
+	
+	public static boolean isList(Object container)
+	{
+		return container instanceof List;
+	}
+	
+	public static boolean isSet(Object container)
+	{
+		return container instanceof Set;
 	}
 	
 	// -------------------------------------------- //
@@ -80,6 +91,20 @@ public class ContainerUtil
 	{
 		if ( ! isMap(container)) return null;
 		return (M)container;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <S extends Set<?>> S asSet(Object container)
+	{
+		if ( ! isSet(container)) return null;
+		return (S)container;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <L extends List<?>> L asList(Object container)
+	{
+		if ( ! isList(container)) return null;
+		return (L)container;
 	}
 	
 	// -------------------------------------------- //
@@ -232,6 +257,42 @@ public class ContainerUtil
 		Set<E> ret = new MassiveSet<E>(elements);
 		ret.removeAll(ContainerUtil.getElements(after));
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// COPY
+	// -------------------------------------------- //
+
+	// For this method we must make a distinction between list and set.
+	@SuppressWarnings("unchecked")
+	public static <V> V getCopy(V container)
+	{
+		List<Object> list = asList(container);
+		if (list != null)
+		{
+			return (V) new MassiveList<>(list);
+		}
+		
+		Set<Object> set = asSet(container);
+		if (set != null)
+		{
+			return (V) new MassiveSet<>(set);
+		}
+		
+		Collection<Object> collection = asCollection(container);
+		if (collection != null)
+		{
+			// Use list as fallback, when neither list nor set.
+			return (V) new MassiveList<>(collection);
+		}
+		
+		Map<Object, Object> map = asMap(container);
+		if (map != null)
+		{
+			return (V) new MassiveMap<>(map);
+		}
+		
+		return null;
 	}
 	
 }

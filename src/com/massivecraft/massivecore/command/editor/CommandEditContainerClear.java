@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.util.ContainerUtil;
 
 public class CommandEditContainerClear<O, V> extends CommandEditContainerAbstract<O, V>
 {	
@@ -21,10 +20,10 @@ public class CommandEditContainerClear<O, V> extends CommandEditContainerAbstrac
 	// -------------------------------------------- //
 	
 	@Override
-	public void alter(List<Object> elements) throws MassiveException
+	public void alter(V container) throws MassiveException
 	{
 		// Apply
-		elements.clear();
+		ContainerUtil.clear(container);
 	}
 	
 }

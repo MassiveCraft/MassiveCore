@@ -46,13 +46,18 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	public void perform() throws MassiveException
 	{
 		// Create
-		V container = this.getProperty().getRaw(this.getObject());
-		List<Object> elements = this.getValueType().getContainerElementsOrdered(container);
+		V before = this.getProperty().getRaw(this.getObject());
+		
+		// We must use a container of the correct type.
+		// Otherwise the elements list for maps,
+		// could have two entries with the same key.
+		// That obviously caused issues.
+		V container = ContainerUtil.getCopy(before);
 		
 		// Alter
 		try
 		{
-			this.alter(elements);
+			this.alter(container);
 		}
 		catch (MassiveException e)
 		{
@@ -64,8 +69,8 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		}
 		
 		// After
-		elements = this.getValueType().getContainerElementsOrdered(elements);
 		V after = this.getValueType().createNewInstance();
+		List<Object> elements = this.getValueType().getContainerElementsOrdered(container);
 		ContainerUtil.addElements(after, elements);
 		
 		// Apply
@@ -135,8 +140,21 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	// -------------------------------------------- //
 	// ABSTRACT
 	// -------------------------------------------- //
+	// Not actually abstract, but one of these must be implemented;
 	
-	public abstract void alter(List<Object> elements) throws MassiveException;
+	public void alter(V container) throws MassiveException
+	{
+		List<Object> elements = toElements(container);
+		
+		this.alterElements(elements);
+		
+		ContainerUtil.setElements(container, elements);
+	}
+	
+	public void alterElements(List<Object> elements) throws MassiveException
+	{
+		throw new MassiveException().addMsg("<b>Not yet implemented.");
+	}
 	
 	// -------------------------------------------- //
 	// PARAMETER
@@ -160,17 +178,17 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		}
 		else
 		{
-			Type<Object> keyType = innerType.getInnerType(0);
-			Type<Object> valueType = innerType.getInnerType(1);
+			Type<Object> keyType = innerType.getInnerType(innerType.getIndexUser(0));
+			Type<Object> valueType = innerType.getInnerType(innerType.getIndexUser(1));
 			if (strict)
 			{
 				this.addParameter(keyType);
-				this.addParameter(valueType);
+				this.addParameter(valueType, true);
 			}
 			else
 			{
 				this.addParameter(null, TypeNullable.get(keyType, "any", "all"), keyType.getTypeName(), "any");
-				this.addParameter(null, TypeNullable.get(valueType, "any", "all"), valueType.getTypeName(), "any");
+				this.addParameter(null, TypeNullable.get(valueType, "any", "all"), valueType.getTypeName(), "any", true);
 			}
 		}
 	}
@@ -183,10 +201,18 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		}
 		else
 		{
-			Object key = this.readArg();
-			Object value = this.readArg();
+			Object key = this.readArgAt(this.getValueInnerType().getIndexTech(0));
+			Object value = this.readArgAt(this.getValueInnerType().getIndexTech(1));
 			return new SimpleImmutableEntry<Object, Object>(key, value);
 		}
 	}
+	
+	// -------------------------------------------- //
+	// ELEMENTS UTIL
+	// -------------------------------------------- //
 
+	public List<Object> toElements(V container)
+	{
+		return this.getValueType().getContainerElementsOrdered(container);
+	}
 }

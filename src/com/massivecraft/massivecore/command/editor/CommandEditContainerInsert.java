@@ -26,7 +26,7 @@ public class CommandEditContainerInsert<O, V> extends CommandEditContainerAbstra
 	// -------------------------------------------- //
 	
 	@Override
-	public void alter(List<Object> elements) throws MassiveException
+	public void alterElements(List<Object> elements) throws MassiveException
 	{
 		// Args
 		int index = this.readArg();

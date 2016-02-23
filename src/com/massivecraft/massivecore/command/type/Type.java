@@ -35,6 +35,11 @@ public interface Type<T>
 	public void setInnerTypes(Type<?>... innerTypes);
 	public void setInnerType(Type<?> innerType);
 	
+	public void setUserOrder(List<Integer> userOrder);
+	public void setUserOrder(Integer... userOrder);
+	public int getIndexUser(int indexTechy);
+	public int getIndexTech(int indexUser);
+	
 	// -------------------------------------------- //
 	// WRITE VISUAL COLOR
 	// -------------------------------------------- //

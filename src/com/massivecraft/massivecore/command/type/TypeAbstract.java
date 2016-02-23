@@ -81,6 +81,22 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public void setInnerTypes(Type<?>... innerTypes) { this.setInnerTypes(Arrays.asList(innerTypes)); };
 	public void setInnerType(Type<?> innerType) { this.setInnerTypes(innerType); }
 	
+	private List<Integer> userOrder = null;
+	@Override public void setUserOrder(List<Integer> userOrder) { this.userOrder = userOrder; }
+	@Override public void setUserOrder(Integer... userOrder) { this.setUserOrder(Arrays.asList(userOrder)); }
+	@Override
+	public int getIndexUser(int indexTechy)
+	{
+		if (this.userOrder == null) return indexTechy;
+		return userOrder.get(indexTechy);
+	}
+	@Override
+	public int getIndexTech(int indexUser)
+	{
+		if (this.userOrder == null) return indexUser;
+		return userOrder.indexOf(indexUser);
+	}
+	
 	// -------------------------------------------- //
 	// WRITE VISUAL COLOR
 	// -------------------------------------------- //
