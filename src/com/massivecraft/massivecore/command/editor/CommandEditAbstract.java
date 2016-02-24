@@ -118,18 +118,27 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		if (event.isCancelled()) return;
 		after = event.getAfter();
 		
-		// Setup
-		String descProperty = this.getProperty().getDisplayName();
-		String descObject = this.getObjectVisual();
-		String descValue = this.getInheritedVisual(source, before);
-		
 		// NoChange
 		// We check, inform and cancel on equality.
 		if (this.getValueType().equals(before, after))
 		{
-			msg("%s<silver> for %s<silver> already: %s", descProperty, descObject, descValue);
+			message(this.attemptSetNochangeMessage());
 			return;
 		}
+		this.attemptSetPerform(after);
+	}
+	
+	protected String attemptSetNochangeMessage()
+	{
+		
+		return Txt.parse("%s<silver> for %s<silver> already: %s", this.getProperty().getDisplayName(), this.getObjectVisual(), this.getInheritedVisual());
+	}
+	
+	protected void attemptSetPerform(V after)
+	{
+		String descProperty = this.getProperty().getDisplayName();
+		String descObject = this.getObjectVisual();
+		String descValue = this.getInheritedVisual();
 		
 		// Create messages
 		List<String> messages = new MassiveList<>();

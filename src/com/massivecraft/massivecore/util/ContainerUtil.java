@@ -5,7 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
+
+import com.massivecraft.massivecore.collections.MassiveSet;
+
 import java.util.SortedMap;
 import java.util.SortedSet;
 
@@ -208,6 +212,26 @@ public class ContainerUtil
 		{
 			addElement(container, element);
 		}
+	}
+	
+	// -------------------------------------------- //
+	// ADDITIONS & DELETIONS
+	// -------------------------------------------- //
+	
+	public static <E> Collection<E> getAdditions(Object before, Object after)
+	{
+		Collection<E> elements = ContainerUtil.getElements(after);
+		Set<E> ret = new MassiveSet<E>(elements);
+		ret.removeAll(ContainerUtil.getElements(before));
+		return ret;
+	}
+	
+	public static <E> Collection<E> getDeletions(Object before, Object after)
+	{
+		Collection<E> elements = ContainerUtil.getElements(before);
+		Set<E> ret = new MassiveSet<E>(elements);
+		ret.removeAll(ContainerUtil.getElements(after));
+		return ret;
 	}
 	
 }

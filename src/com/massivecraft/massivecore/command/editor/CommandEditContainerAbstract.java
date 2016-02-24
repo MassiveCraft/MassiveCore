@@ -1,9 +1,11 @@
 package com.massivecraft.massivecore.command.editor;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Collection;
 import java.util.List;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeNullable;
@@ -76,6 +78,49 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		String alias = Txt.implode(words, "");
 		alias = Txt.lowerCaseFirst(alias);
 		return alias;
+	}
+	
+	// -------------------------------------------- //
+	// ATTEMPT SET
+	// -------------------------------------------- //
+	
+	@Override
+	public String attemptSetNochangeMessage()
+	{
+		return Txt.parse("%s<silver> for %s<silver> was not changed.", this.getProperty().getDisplayName(), this.getObjectVisual());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void attemptSetPerform(V after)
+	{
+		V before = this.getInheritedValue();
+		String descProperty = this.getProperty().getDisplayName();
+		
+		// Apply
+		// We set the new property value.
+		this.getProperty().setValue(this.getObject(), after);
+		
+		// Create messages
+		List<String> messages = new MassiveList<>();
+		
+		messages.add(Txt.parse("%s<silver> for %s<silver> edited:", descProperty, this.getObjectVisual()));
+		
+		// Note: The result of getAdditions is not actually V, but the implementation doesn't care.
+		Collection<Object> additions = ContainerUtil.getAdditions(before, after);
+		if ( ! additions.isEmpty())
+		{
+			messages.add(Txt.parse("<k>Additions: %s", this.getValueType().getVisual((V) additions)));
+		}
+		
+		// Note: The result of getDeletions is not actually V, but the implementation doesn't care.
+		Collection<Object> deletions = ContainerUtil.getDeletions(before, after);
+		if ( ! deletions.isEmpty())
+		{
+			messages.add(Txt.parse("<k>Deletions: %s", this.getValueType().getVisual((V) deletions)));
+		}
+		
+		message(messages);
 	}
 	
 	// -------------------------------------------- //
