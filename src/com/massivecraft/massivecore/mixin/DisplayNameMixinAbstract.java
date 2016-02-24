@@ -6,6 +6,8 @@ public abstract class DisplayNameMixinAbstract implements DisplayNameMixin
 {
 	public Mson getDisplayNameMson(Object senderObject, Object watcherObject)
 	{
-		return Mson.fromParsedMessage(this.getDisplayName(senderObject, watcherObject));
+		String displayName = this.getDisplayName(senderObject, watcherObject);
+		if (displayName == null) return null;
+		return Mson.fromParsedMessage(displayName);
 	}
 }
