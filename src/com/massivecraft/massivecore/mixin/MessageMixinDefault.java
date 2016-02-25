@@ -111,7 +111,8 @@ public class MessageMixinDefault extends MessageMixinAbstract
 		}
 		else
 		{
-			throw new IllegalArgumentException("The messages must be either String or Mson.");
+			String desc = first == null ? "null" : first.getClass().getSimpleName();
+			throw new IllegalArgumentException(desc + " is neither String nor Mson.");
 		}
 	}
 
