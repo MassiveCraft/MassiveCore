@@ -8,12 +8,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
 
-public class EngineMassiveCoreTeleportMixinCause extends EngineAbstract
+public class EngineMassiveCoreTeleportMixinCause extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -21,18 +19,7 @@ public class EngineMassiveCoreTeleportMixinCause extends EngineAbstract
 	
 	private static EngineMassiveCoreTeleportMixinCause i = new EngineMassiveCoreTeleportMixinCause();
 	public static EngineMassiveCoreTeleportMixinCause get() { return i; }
-	public EngineMassiveCoreTeleportMixinCause() {}
 	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
-
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //

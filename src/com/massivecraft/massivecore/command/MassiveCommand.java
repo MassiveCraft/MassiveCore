@@ -14,11 +14,14 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.Active;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.command.requirement.Requirement;
@@ -30,7 +33,7 @@ import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.PermUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MassiveCommand
+public class MassiveCommand implements Active, PluginIdentifiableCommand
 {
 	// -------------------------------------------- //
 	// REGISTER
@@ -49,15 +52,15 @@ public class MassiveCommand
 	// When registering again we use the fresh and current aliases.
 	
 	// STATIC
-	private static final transient Map<MassiveCommand, Plugin> registry = new LinkedHashMap<MassiveCommand, Plugin>();
-	public static Map<MassiveCommand, Plugin> getRegistry() { return registry; }
+	private static final transient Map<MassiveCommand, MassivePlugin> registry = new LinkedHashMap<MassiveCommand, MassivePlugin>();
+	public static Map<MassiveCommand, MassivePlugin> getRegistry() { return registry; }
 	public static Set<MassiveCommand> getRegisteredCommands() { return registry.keySet(); }
 	public static void unregister(Plugin plugin)
 	{
-		Iterator<Entry<MassiveCommand, Plugin>> iter = registry.entrySet().iterator();
+		Iterator<Entry<MassiveCommand, MassivePlugin>> iter = registry.entrySet().iterator();
 		while (iter.hasNext())
 		{
-			Entry<MassiveCommand, Plugin> entry = iter.next();
+			Entry<MassiveCommand, MassivePlugin> entry = iter.next();
 			if (plugin.equals(entry.getValue()))
 			{
 				iter.remove();
@@ -65,11 +68,48 @@ public class MassiveCommand
 		}
 	}
 	
-	// INSTANCE
-	public Plugin register(Plugin plugin) { return registry.put(this, plugin); }
-	public void unregister() { registry.remove(this); }
-	public boolean isRegistered() { return registry.containsKey(this); }
-	public Plugin getRegisteredPlugin() { return registry.get(this); }
+	// -------------------------------------------- //
+	// ACTIVE
+	// -------------------------------------------- //
+	
+	@Override
+	public boolean isActive()
+	{
+		return registry.containsKey(this);
+	}
+	
+	@Override
+	public void setActive(boolean active)
+	{
+		// NOTE: Not Implemented
+	}
+	
+	public MassivePlugin setActivePlugin(MassivePlugin activePlugin)
+	{
+		if (activePlugin == null)
+		{
+			return registry.remove(this);
+		}
+		else
+		{
+			return registry.put(this, activePlugin);
+		}
+	}
+	
+	public MassivePlugin getActivePlugin()
+	{
+		return registry.get(this);
+	}
+	
+	// -------------------------------------------- //
+	// PLUGIN IDENTIFIABLE COMMAND
+	// -------------------------------------------- //
+	
+	@Override
+	public Plugin getPlugin()
+	{
+		return this.getActivePlugin();
+	}
 	
 	// -------------------------------------------- //
 	// FIELDS

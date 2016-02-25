@@ -6,16 +6,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.chestgui.ChestAction;
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.InventoryUtil;
 
-public class EngineMassiveCoreChestGui extends EngineAbstract
+public class EngineMassiveCoreChestGui extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -23,16 +20,6 @@ public class EngineMassiveCoreChestGui extends EngineAbstract
 	
 	private static EngineMassiveCoreChestGui i = new EngineMassiveCoreChestGui();
 	public static EngineMassiveCoreChestGui get() { return i; }
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
 	
 	// -------------------------------------------- //
 	// LISTENER

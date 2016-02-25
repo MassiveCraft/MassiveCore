@@ -7,14 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class EngineMassiveCorePlayerLeave extends EngineAbstract
+public class EngineMassiveCorePlayerLeave extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -23,20 +21,11 @@ public class EngineMassiveCorePlayerLeave extends EngineAbstract
 	private static EngineMassiveCorePlayerLeave i = new EngineMassiveCorePlayerLeave();
 	public static EngineMassiveCorePlayerLeave get() { return i; }
 	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
 	@Override
-	public Plugin getPlugin()
+	public void setActiveInner(boolean active)
 	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		super.activate();
+		if ( ! active) return;
+		
 		EventMassiveCorePlayerLeave.player2event.clear();
 	}
 	

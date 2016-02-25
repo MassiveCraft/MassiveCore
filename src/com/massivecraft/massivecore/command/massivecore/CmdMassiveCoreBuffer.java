@@ -1,11 +1,21 @@
 package com.massivecraft.massivecore.command.massivecore;
 
+import java.util.List;
+
+import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdMassiveCoreBuffer extends MassiveCommand
 {
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static CmdMassiveCoreBuffer i = new CmdMassiveCoreBuffer() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreBuffer; } };
+	public static CmdMassiveCoreBuffer get() { return i; }
+	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //

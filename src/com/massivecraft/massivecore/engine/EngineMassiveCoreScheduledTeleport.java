@@ -13,10 +13,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.teleport.ScheduledTeleport;
@@ -24,7 +21,7 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 
-public class EngineMassiveCoreScheduledTeleport extends EngineAbstract
+public class EngineMassiveCoreScheduledTeleport extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -32,6 +29,10 @@ public class EngineMassiveCoreScheduledTeleport extends EngineAbstract
 	
 	private static EngineMassiveCoreScheduledTeleport i = new EngineMassiveCoreScheduledTeleport();
 	public static EngineMassiveCoreScheduledTeleport get() { return i; }
+	public EngineMassiveCoreScheduledTeleport()
+	{
+		this.setPeriod(1L);
+	}
 	
 	// -------------------------------------------- //
 	// SCHEDULED TELEPORT INDEX
@@ -68,18 +69,6 @@ public class EngineMassiveCoreScheduledTeleport extends EngineAbstract
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public Long getPeriod()
-	{
-		return 1L;
-	}
 	
 	@Override
 	public void run()

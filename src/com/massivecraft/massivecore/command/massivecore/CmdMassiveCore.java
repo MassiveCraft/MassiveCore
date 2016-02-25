@@ -1,6 +1,9 @@
 package com.massivecraft.massivecore.command.massivecore;
 
+import java.util.List;
+
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.VersionCommand;
@@ -8,6 +11,13 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdMassiveCore extends MassiveCommand
 {
+	// -------------------------------------------- //
+	// INSTANCE
+	// -------------------------------------------- //
+	
+	private static CmdMassiveCore i = new CmdMassiveCore();
+	public static CmdMassiveCore get() { return i; }
+	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
@@ -39,6 +49,16 @@ public class CmdMassiveCore extends MassiveCommand
 		
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BASECOMMAND.node));
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MassiveCoreMConf.get().aliasesOuterMassiveCore;
 	}
 
 }

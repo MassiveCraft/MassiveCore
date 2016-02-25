@@ -11,8 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.integration.IntegrationGlue;
-import com.massivecraft.massivecore.integration.Integration;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -49,6 +47,9 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 		
 		log("=== ENABLE START ===");
 		
+		// Version Synchronization
+		this.checkVersionSynchronization();
+		
 		// Create Gson
 		Gson gson = this.getGsonBuilder().create();
 		this.setGson(gson);
@@ -74,9 +75,6 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 	public void postEnable()
 	{
 		long ms = System.currentTimeMillis() - enableTime;
-		
-		this.checkVersionSynchronization();
-		
 		log(Txt.parse("=== ENABLE <g>COMPLETE <i>(Took <h>" + ms + "ms<i>) ==="));
 	}
 	
@@ -120,7 +118,14 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 	{
 		if ( ! this.preEnable()) return;
 		
+		this.onEnableInner();
+		
 		this.postEnable();
+	}
+	
+	public void onEnableInner()
+	{
+		
 	}
 	
 	// -------------------------------------------- //
@@ -137,7 +142,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 		for (Coll<?> coll : Coll.getInstances())
 		{
 			if (coll.getPlugin() != this) continue;
-			coll.deinit();
+			coll.setActive(false);
 		}
 		
 		log("Disabled");
@@ -158,15 +163,16 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener
 	
 	public void suicide()
 	{
-		log(Txt.parse("<b>Now I suicide!"));
+		this.log(Txt.parse("<b>Now I suicide!"));
 		Bukkit.getPluginManager().disablePlugin(this);
 	}
 	
-	public void integrate(Integration... features)
+	public void activate(Active... actives)
 	{
-		for (Integration f : features)
+		for (Active active : actives)
 		{
-			new IntegrationGlue(this, f);
+			active.setActivePlugin(this);
+			active.setActive(true);
 		}
 	}
 	

@@ -12,15 +12,13 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.PlayerState;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class EngineMassiveCorePlayerState extends EngineAbstract
+public class EngineMassiveCorePlayerState extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -34,15 +32,9 @@ public class EngineMassiveCorePlayerState extends EngineAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public Plugin getPlugin()
+	public void setActiveInner(boolean active)
 	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		super.activate();
+		if ( ! active) return;
 		
 		idToState.clear();
 		for (Player player : MUtil.getOnlinePlayers())

@@ -18,9 +18,7 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.SenderPresence;
@@ -36,7 +34,7 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.SmokeUtil;
 
-public class EngineMassiveCoreMain extends EngineAbstract
+public class EngineMassiveCoreMain extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -44,22 +42,6 @@ public class EngineMassiveCoreMain extends EngineAbstract
 	
 	private static EngineMassiveCoreMain i = new EngineMassiveCoreMain();
 	public static EngineMassiveCoreMain get() { return i; }
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		super.activate();
-	}
 	
 	// -------------------------------------------- //
 	// RECIPIENT CHAT

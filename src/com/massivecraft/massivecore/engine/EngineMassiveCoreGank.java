@@ -10,14 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class EngineMassiveCoreGank extends EngineAbstract
+public class EngineMassiveCoreGank extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -25,17 +22,6 @@ public class EngineMassiveCoreGank extends EngineAbstract
 	
 	private static EngineMassiveCoreGank i = new EngineMassiveCoreGank();
 	public static EngineMassiveCoreGank get() { return i; }
-	public EngineMassiveCoreGank() {}
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
 	
 	// -------------------------------------------- //
 	// PROTECTED

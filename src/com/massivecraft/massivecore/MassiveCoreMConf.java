@@ -32,13 +32,9 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public int maxTabCompletions = 100;
 	
 	public List<String> aliasesOuterMassiveCore = MUtil.list("massivecore", "mcore");
-	
 	public List<String> aliasesOuterMassiveCoreUsys = MUtil.list("usys");
-	
 	public List<String> aliasesOuterMassiveCoreStore = MUtil.list("massivestore", "mstore");
-	
 	public List<String> aliasesOuterMassiveCoreBuffer = MUtil.list("buffer");
-	
 	public List<String> aliasesOuterMassiveCoreCmdurl = MUtil.list("cmdurl");
 	
 	public boolean usingRecipientChatEvent = true;

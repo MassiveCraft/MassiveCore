@@ -47,7 +47,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 	@Override
 	public Plugin getPlugin()
 	{
-		return this.getMassiveCommand().getRegisteredPlugin();
+		return this.getMassiveCommand().getPlugin();
 	}
 	
 	// -------------------------------------------- //

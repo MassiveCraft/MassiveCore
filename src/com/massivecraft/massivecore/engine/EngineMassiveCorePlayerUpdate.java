@@ -12,10 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerRespawn;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerTeleport;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerUpdate;
@@ -25,7 +22,7 @@ import com.massivecraft.massivecore.util.MUtil;
  * This event triggers the EventMassiveCorePlayerUpdate on every block change.
  * It also runs it in reset mode rather than update mode upon world change.
  */
-public class EngineMassiveCorePlayerUpdate extends EngineAbstract
+public class EngineMassiveCorePlayerUpdate extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -33,16 +30,6 @@ public class EngineMassiveCorePlayerUpdate extends EngineAbstract
 	
 	private static EngineMassiveCorePlayerUpdate i = new EngineMassiveCorePlayerUpdate();
 	public static EngineMassiveCorePlayerUpdate get() { return i; }
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
 	
 	// -------------------------------------------- //
 	// UPDATE

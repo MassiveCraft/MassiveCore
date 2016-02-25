@@ -14,9 +14,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
@@ -28,7 +26,7 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-public class EngineMassiveCoreDatabase extends EngineAbstract
+public class EngineMassiveCoreDatabase extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -36,22 +34,6 @@ public class EngineMassiveCoreDatabase extends EngineAbstract
 	
 	private static EngineMassiveCoreDatabase i = new EngineMassiveCoreDatabase();
 	public static EngineMassiveCoreDatabase get() { return i; }
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		super.activate();
-	}
 	
 	// -------------------------------------------- //
 	// PLAYER AND SENDER REFERENCES

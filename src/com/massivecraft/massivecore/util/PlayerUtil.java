@@ -16,12 +16,9 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.plugin.Plugin;
+import com.massivecraft.massivecore.Engine;
 
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
-
-public class PlayerUtil extends EngineAbstract
+public class PlayerUtil extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -29,33 +26,25 @@ public class PlayerUtil extends EngineAbstract
 	
 	private static PlayerUtil i = new PlayerUtil();
 	public static PlayerUtil get() { return i; }
+	public PlayerUtil()
+	{
+		this.setPeriod(1L);
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public void activate()
+	public void setActiveInner(boolean active)
 	{
-		super.activate();
+		if ( ! active) return;
 		
 		idToDeathEvent.clear();
 		idToDamageEvent.clear();
 		idToArmSwingEvent.clear();
 		
 		idToLastMoveMillis.clear();
-	}
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public Long getPeriod()
-	{
-		return 1L;
 	}
 	
 	@Override

@@ -10,12 +10,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
-import org.bukkit.plugin.Plugin;
+import com.massivecraft.massivecore.Engine;
 
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
-
-public class EngineMassiveCoreWorldNameSet extends EngineAbstract
+public class EngineMassiveCoreWorldNameSet extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -29,15 +26,9 @@ public class EngineMassiveCoreWorldNameSet extends EngineAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public Plugin getPlugin()
+	public void setActiveInner(boolean active)
 	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public void activate()
-	{
-		super.activate();
+		if ( ! active) return;
 		
 		this.worldNamesInner.clear();
 		for (World world : Bukkit.getWorlds())

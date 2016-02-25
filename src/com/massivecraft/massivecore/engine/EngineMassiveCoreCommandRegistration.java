@@ -12,13 +12,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.MassiveCoreBukkitCommand;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 
-public class EngineMassiveCoreCommandRegistration extends EngineAbstract
+public class EngineMassiveCoreCommandRegistration extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -26,22 +25,9 @@ public class EngineMassiveCoreCommandRegistration extends EngineAbstract
 	
 	private static EngineMassiveCoreCommandRegistration i = new EngineMassiveCoreCommandRegistration();
 	public static EngineMassiveCoreCommandRegistration get() { return i; }
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
+	public EngineMassiveCoreCommandRegistration()
 	{
-		return MassiveCore.get();
-	}
-	
-	@Override
-	public Long getPeriod()
-	{
-		// Every second
-		return 1 * 20L;
+		this.setPeriod(20L); // Every second
 	}
 	
 	// -------------------------------------------- //

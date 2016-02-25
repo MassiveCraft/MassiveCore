@@ -32,9 +32,12 @@ public class MassiveCoreMConfColl extends Coll<MassiveCoreMConf>
 	// -------------------------------------------- //
 	
 	@Override
-	public void init()
+	public void setActive(boolean active)
 	{
-		super.init();
+		super.setActive(active);
+		
+		if ( ! active) return;
+		
 		MassiveCoreMConf.i = this.get(MassiveCore.INSTANCE, true);
 	}
 	

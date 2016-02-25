@@ -118,7 +118,7 @@ public class Entity<E extends Entity<E>>
 		Coll<E> coll = this.getColl();
 		if (coll == null) return false;
 		
-		if ( ! coll.inited()) return false;
+		if ( ! coll.isActive()) return false;
 		
 		return true;
 	}

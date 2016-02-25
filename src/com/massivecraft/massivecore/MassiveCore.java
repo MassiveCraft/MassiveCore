@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore;
 
 import java.lang.reflect.Modifier;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
@@ -97,7 +96,10 @@ public class MassiveCore extends MassivePlugin
 	
 	private static MassiveCore i;
 	public static MassiveCore get() { return i; }
-	public MassiveCore() { i = this; }
+	public MassiveCore()
+	{
+		i = this;
+	}
 	
 	// -------------------------------------------- //
 	// STATIC
@@ -153,26 +155,6 @@ public class MassiveCore extends MassivePlugin
 	}
 	
 	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	// Commands
-	private CmdMassiveCore outerCmdMassiveCore;
-	public CmdMassiveCore getOuterCmdMassiveCore() { return this.outerCmdMassiveCore; }
-	
-	private CmdMassiveCoreUsys outerCmdMassiveCoreUsys;
-	public CmdMassiveCoreUsys getOuterCmdMassiveCoreUsys() { return this.outerCmdMassiveCoreUsys; }
-	
-	private CmdMassiveCoreStore outerCmdMassiveCoreStore;
-	public CmdMassiveCoreStore getOuterCmdMassiveCoreStore() { return this.outerCmdMassiveCoreStore; }
-	
-	private CmdMassiveCoreBuffer outerCmdMassiveCoreBuffer;
-	public CmdMassiveCoreBuffer getOuterCmdMassiveCoreBuffer() { return this.outerCmdMassiveCoreBuffer; }
-	
-	private CmdMassiveCoreCmdurl outerCmdMassiveCoreCmdurl;
-	public CmdMassiveCoreCmdurl getOuterCmdMassiveCoreCmdurl() { return this.outerCmdMassiveCoreCmdurl; }
-	
-	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
@@ -185,7 +167,7 @@ public class MassiveCore extends MassivePlugin
 	}
 	
 	@Override
-	public void onEnable()
+	public void onEnableInner()
 	{
 		// This is safe since all plugins using Persist should bukkit-depend this plugin.
 		// Note this one must be before preEnable. dooh.
@@ -193,68 +175,57 @@ public class MassiveCore extends MassivePlugin
 		// TODO: Test and ensure reload compat.
 		// Coll.instances.clear();
 		
-		if ( ! preEnable()) return;
-		
 		// Load Server Config
 		ConfServer.get().load();
 		
 		// Setup IdUtil
 		IdUtil.setup();
 		
-		// Engine
-		EngineMassiveCoreChestGui.get().activate();
-		EngineMassiveCoreCollTick.get().activate();
-		EngineMassiveCoreCommandRegistration.get().activate();
-		EngineMassiveCoreDatabase.get().activate();
-		EngineMassiveCoreDestination.get().activate();
-		EngineMassiveCoreGank.get().activate();
-		EngineMassiveCoreMain.get().activate();
-		EngineMassiveCorePlayerLeave.get().activate();
-		EngineMassiveCorePlayerState.get().activate();
-		EngineMassiveCorePlayerUpdate.get().activate();
-		EngineMassiveCoreScheduledTeleport.get().activate();
-		EngineMassiveCoreTeleportMixinCause.get().activate();
-		EngineMassiveCoreVariable.get().activate();
-		EngineMassiveCoreWorldNameSet.get().activate();
+		// Activate
+		this.activate(
+			// Coll
+			MultiverseColl.get(),
+			AspectColl.get(),
+			MassiveCoreMConfColl.get(),
 		
-		PlayerUtil.get().activate();
-		
-		// Collections
-		MultiverseColl.get().init();
-		AspectColl.get().init();
-		MassiveCoreMConfColl.get().init();
+			// Engine
+			EngineMassiveCoreChestGui.get(),
+			EngineMassiveCoreCollTick.get(),
+			EngineMassiveCoreCommandRegistration.get(),
+			EngineMassiveCoreDatabase.get(),
+			EngineMassiveCoreDestination.get(),
+			EngineMassiveCoreGank.get(),
+			EngineMassiveCoreMain.get(),
+			EngineMassiveCorePlayerLeave.get(),
+			EngineMassiveCorePlayerState.get(),
+			EngineMassiveCorePlayerUpdate.get(),
+			EngineMassiveCoreScheduledTeleport.get(),
+			EngineMassiveCoreTeleportMixinCause.get(),
+			EngineMassiveCoreVariable.get(),
+			EngineMassiveCoreWorldNameSet.get(),
+			
+			// Util
+			PlayerUtil.get(),
+			
+			// Integration
+			IntegrationVault.get(),
+			
+			// Command
+			CmdMassiveCore.get(),
+			CmdMassiveCoreUsys.get(),
+			CmdMassiveCoreStore.get(),
+			CmdMassiveCoreBuffer.get(),
+			CmdMassiveCoreCmdurl.get()
+		);
 		
 		// Start the examine threads
 		// Start AFTER initializing the MConf, because they rely on the MConf.
 		ModificationPollerLocal.get().start();
 		ModificationPollerRemote.get().start();
 		
-		// Register commands
-		this.outerCmdMassiveCore = new CmdMassiveCore() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCore; } };
-		this.outerCmdMassiveCore.register(this);
-		
-		this.outerCmdMassiveCoreUsys = new CmdMassiveCoreUsys() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreUsys; } };
-		this.outerCmdMassiveCoreUsys.register(this);
-		
-		this.outerCmdMassiveCoreStore = new CmdMassiveCoreStore() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreStore; } };
-		this.outerCmdMassiveCoreStore.register(this);
-		
-		this.outerCmdMassiveCoreBuffer = new CmdMassiveCoreBuffer() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreBuffer; } };
-		this.outerCmdMassiveCoreBuffer.register(this);
-		
-		this.outerCmdMassiveCoreCmdurl = new CmdMassiveCoreCmdurl() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesOuterMassiveCoreCmdurl; } };
-		this.outerCmdMassiveCoreCmdurl.register(this);
-		
-		// Integration
-		this.integrate(
-			IntegrationVault.get()
-		);
-		
 		// Delete Files (at once and additionally after all plugins loaded)
 		MassiveCoreTaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, MassiveCoreTaskDeleteFiles.get());
-		
-		this.postEnable();
 	}
 	
 	@Override

@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.massivecraft.massivecore.Active;
 import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.util.MUtil;
 
-public abstract class Colls<C extends Coll<E>, E extends Entity<E>>
+public abstract class Colls<C extends Coll<E>, E extends Entity<E>> implements Active
 {
 	protected Map<String, C> name2coll = new HashMap<String, C>();
 	
@@ -21,11 +23,6 @@ public abstract class Colls<C extends Coll<E>, E extends Entity<E>>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public void init()
-	{
-		this.getColls();
-	}
-	
 	public List<C> getColls()
 	{
 		List<C> ret = new ArrayList<C>(); 
@@ -36,6 +33,44 @@ public abstract class Colls<C extends Coll<E>, E extends Entity<E>>
 			ret.add(this.getForUniverse(universe));
 		}
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// ACTIVE
+	// -------------------------------------------- //
+	
+	private boolean active = false; 
+	@Override
+	public boolean isActive()
+	{
+		return this.active;
+	}
+	@Override
+	public void setActive(boolean active)
+	{
+		this.active = active;
+		if (active)
+		{
+			this.getColls();
+		}
+		else
+		{
+			// TODO: Uuuuuh
+		}
+	}
+	
+	private MassivePlugin plugin = null;
+	@Override
+	public MassivePlugin setActivePlugin(MassivePlugin plugin)
+	{
+		MassivePlugin ret = this.plugin;
+		this.plugin = plugin;
+		return ret;
+	}
+	@Override
+	public MassivePlugin getActivePlugin()
+	{
+		return this.plugin;
 	}
 	
 	// -------------------------------------------- //
@@ -78,7 +113,8 @@ public abstract class Colls<C extends Coll<E>, E extends Entity<E>>
 		{
 			ret = this.createColl(collname);
 			this.name2coll.put(collname, ret);
-			ret.init();
+			ret.setActivePlugin(this.getActivePlugin());
+			ret.setActive(true);
 		}
 		return ret;
 	}

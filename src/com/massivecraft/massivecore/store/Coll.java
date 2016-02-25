@@ -74,18 +74,13 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// SUPPORTING SYSTEM
 	// -------------------------------------------- //
 	
-	protected Plugin plugin;
-	@Override public Plugin getPlugin() { return this.plugin; }
+	protected MassivePlugin plugin;
+	@Override public MassivePlugin getPlugin() { return this.plugin; }
 	public Gson getGson()
 	{
-		if (this.getPlugin() instanceof MassivePlugin)
-		{
-			return ((MassivePlugin)this.getPlugin()).getGson();
-		}
-		else
-		{
-			return MassiveCore.gson;
-		}
+		MassivePlugin plugin = this.getPlugin();
+		if (plugin == null) return MassiveCore.gson;
+		return plugin.getGson();
 	}
 	
 	protected Db db;
@@ -700,7 +695,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			case LOCAL_ALTER:
 			case LOCAL_ATTACH:
 				this.saveToRemoteFixed(id);
-				if (this.inited())
+				if (this.isActive())
 				{
 					this.addSyncCountFixed(TOTAL, false);
 					this.addSyncCountFixed(id, false);
@@ -708,7 +703,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			break;
 			case LOCAL_DETACH:
 				this.removeAtRemoteFixed(id);
-				if (this.inited())
+				if (this.isActive())
 				{
 					this.addSyncCountFixed(TOTAL, false);
 					this.addSyncCountFixed(id, false);
@@ -717,7 +712,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			case REMOTE_ALTER:
 			case REMOTE_ATTACH:
 				this.loadFromRemoteFixed(id, remoteEntry);
-				if (this.inited())
+				if (this.isActive())
 				{
 					this.addSyncCountFixed(TOTAL, true);
 					this.addSyncCountFixed(id, true);
@@ -725,7 +720,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			break;
 			case REMOTE_DETACH:
 				this.removeAtLocalFixed(id);
-				if (this.inited())
+				if (this.isActive())
 				{
 					this.addSyncCountFixed(TOTAL, true);
 					this.addSyncCountFixed(id, true);
@@ -934,7 +929,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db db, Plugin plugin)
+	public Coll(String name, Class<E> entityClass, Db db, MassivePlugin plugin)
 	{
 		// Setup the name and the parsed parts
 		this.name = name;
@@ -969,40 +964,59 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		};
 	}
 	
+	// -------------------------------------------- //
+	// ACTIVE
+	// -------------------------------------------- //
+	
 	@Override
-	public void init()
+	public MassivePlugin setActivePlugin(MassivePlugin plugin)
 	{
-		if (this.inited()) throw new IllegalStateException("Already initialised.");
-		
-		if (this.supportsPusher())
-		{
-			this.getPusher().init();
-		}
-		
-		this.initLoadAllFromRemote();
-		//this.syncIdentified();
-		
-		name2instance.put(this.getName(), this);
+		MassivePlugin ret = this.plugin;
+		this.plugin = plugin;
+		return ret;
 	}
 	
 	@Override
-	public void deinit()
+	public MassivePlugin getActivePlugin()
 	{
-		if ( ! this.inited()) throw new IllegalStateException("Not initialised.");
-		
-		if (this.supportsPusher())
-		{
-			this.getPusher().deinit();
-		}
-		
-		// TODO: Save outwards only? We may want to avoid loads at this stage...
-		this.syncAll();
-		
-		name2instance.remove(this.getName());
+		return this.plugin;
 	}
 	
 	@Override
-	public boolean inited()
+	public void setActive(boolean active)
+	{
+		// NoChange
+		if (this.isActive() == active) throw new IllegalStateException("Active Already " + active);
+		
+		// TODO: Clean up this stuff below. It branches too late.
+		if (active)
+		{
+			if (this.supportsPusher())
+			{
+				this.getPusher().init();
+			}
+			
+			this.initLoadAllFromRemote();
+			//this.syncIdentified();
+			
+			name2instance.put(this.getName(), this);
+		}
+		else
+		{
+			if (this.supportsPusher())
+			{
+				this.getPusher().deinit();
+			}
+			
+			// TODO: Save outwards only? We may want to avoid loads at this stage...
+			this.syncAll();
+			
+			name2instance.remove(this.getName());
+		}
+	}
+	
+	@Override
+	public boolean isActive()
 	{
 		return name2instance.containsKey(this.getName());
 	}

@@ -31,9 +31,11 @@ public class MultiverseColl extends Coll<Multiverse>
 	// -------------------------------------------- //
 	
 	@Override
-	public void init()
+	public void setActive(boolean active)
 	{
-		super.init();
+		super.setActive(active);
+		
+		if ( ! active) return;
 		
 		// Ensure the default multiverse exits
 		this.get(MassiveCore.DEFAULT, true);

@@ -9,10 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.plugin.Plugin;
-
-import com.massivecraft.massivecore.EngineAbstract;
-import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.TypePS;
@@ -31,7 +28,7 @@ import com.massivecraft.massivecore.teleport.DestinationUtil;
 import com.massivecraft.massivecore.teleport.DestinationWorld;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class EngineMassiveCoreDestination extends EngineAbstract
+public class EngineMassiveCoreDestination extends Engine
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -39,16 +36,6 @@ public class EngineMassiveCoreDestination extends EngineAbstract
 	
 	private static EngineMassiveCoreDestination i = new EngineMassiveCoreDestination();
 	public static EngineMassiveCoreDestination get() { return i; }
-	
-	// -------------------------------------------- //
-	// OVERRIDE
-	// -------------------------------------------- //
-	
-	@Override
-	public Plugin getPlugin()
-	{
-		return MassiveCore.get();
-	}
 	
 	// -------------------------------------------- //
 	// DESTINATION ARG
