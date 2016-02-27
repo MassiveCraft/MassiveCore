@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -99,32 +98,32 @@ public class Mson implements Serializable
 	// FIELD: bold
 	private final Boolean bold;
 	public Boolean isBold() { return bold; }
-	public boolean isEffectiveBold() { return bold != null ? bold : isInheritedBold(); }
-	public boolean isInheritedBold() { return hasParent() && getParent().isEffectiveBold(); }
+	public Boolean isEffectiveBold() { return bold != null ? bold : isInheritedBold(); }
+	public Boolean isInheritedBold() { return hasParent() ? getParent().isEffectiveBold() : null; }
 
 	// FIELD: italic
 	private final Boolean italic;
 	public Boolean isItalic() { return this.italic; }
-	public boolean isEffectiveItalic() { return italic != null ? italic : isInheritedItalic(); }
-	protected boolean isInheritedItalic() { return hasParent() && getParent().isEffectiveItalic(); }
+	public Boolean isEffectiveItalic() { return italic != null ? italic : isInheritedItalic(); }
+	protected Boolean isInheritedItalic() { return hasParent() ? getParent().isEffectiveItalic() : null; }
 
 	// FIELD: underlined
 	private final Boolean underlined;
 	public Boolean isUnderlined() { return this.underlined; }
-	public boolean isEffectiveUnderlined() { return underlined != null ? underlined : isInheritedUnderlined(); }
-	protected boolean isInheritedUnderlined() { return hasParent() && getParent().isEffectiveUnderlined(); }
+	public Boolean isEffectiveUnderlined() { return underlined != null ? underlined : isInheritedUnderlined(); }
+	protected Boolean isInheritedUnderlined() { return hasParent() ? getParent().isEffectiveUnderlined() : null; }
 
 	// FIELD: strikethrough
 	private final Boolean strikethrough;
 	public Boolean isStrikethrough() { return this.strikethrough; }
-	public boolean isEffectiveStrikethrough() { return strikethrough != null ? strikethrough : isInheritedStrikethrough(); }
-	protected boolean isInheritedStrikethrough() { return hasParent() && getParent().isEffectiveStrikethrough(); }
+	public Boolean isEffectiveStrikethrough() { return strikethrough != null ? strikethrough : isInheritedStrikethrough(); }
+	protected Boolean isInheritedStrikethrough() { return hasParent() ? getParent().isEffectiveStrikethrough() : null; }
 
 	// FIELD: obfuscated
 	private final Boolean obfuscated;
 	public Boolean isObfuscated() { return this.obfuscated; }
-	public boolean isEffectiveObfuscated() { return obfuscated != null ? obfuscated : isInheritedObfuscated(); }
-	protected boolean isInheritedObfuscated() { return hasParent() && getParent().isEffectiveObfuscated(); }
+	public Boolean isEffectiveObfuscated() { return obfuscated != null ? obfuscated : isInheritedObfuscated(); }
+	protected Boolean isInheritedObfuscated() { return hasParent() ? getParent().isEffectiveObfuscated() : null; }
 
 	// FIELD: The Events which happen when you click, hover over or shift-click the message
 	protected final MsonEvent clickEvent;
@@ -255,7 +254,7 @@ public class Mson implements Serializable
 	
 	public Mson insertionString(String insertionString) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	public Mson extra(List<Mson> extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson extra(Mson[] extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, ImmutableList.copyOf(extra), parent); }
+	public Mson extra(Mson[] extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra == null ? null : ImmutableList.copyOf(extra), parent); }
 	public Mson parent(Mson parent) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
 	
 	// -------------------------------------------- //
@@ -377,6 +376,26 @@ public class Mson implements Serializable
 		}
 		
 		return ret;
+	}
+	
+	// This will set all style and behaviour to the effective value.
+	// So parents won't affect this.
+	public Mson enforced()
+	{
+		return valueOf(
+			this.getText(), 
+			this.getEffectiveColor(),
+			this.isEffectiveBold(),
+			this.isEffectiveItalic(),
+			this.isEffectiveUnderlined(),
+			this.isEffectiveStrikethrough(),
+			this.isEffectiveObfuscated(),
+			this.getEffectiveEvent(MsonEventType.CLICK),
+			this.getEffectiveEvent(MsonEventType.HOVER),
+			this.getEffectiveInsertionString(),
+			this.getExtra(),
+			null
+		);
 	}
 	
 	// -------------------------------------------- //
@@ -720,7 +739,118 @@ public class Mson implements Serializable
 		return ret;
 	}
 	
-	// Replace
+	// Contains
+	public boolean contains(CharSequence sequence)
+	{
+		if (sequence == null) throw new NullPointerException("sequence");
+		
+		if (this.getText().contains(sequence)) return true;
+		
+		if (this.hasExtra())
+		{
+			for (Mson part : this.getExtra())
+			{
+				if (part.contains(sequence)) return true;
+			}
+		}
+		
+		return false;
+	}
+	public boolean contains(Pattern pattern)
+	{
+		if (pattern == null) throw new NullPointerException("pattern");
+		
+		if (pattern.matcher(this.getText()).find()) return true;
+		
+		if (this.hasExtra())
+		{
+			for (Mson part : this.getExtra())
+			{
+				if (part.contains(pattern)) return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public List<Mson> split(String regex)
+	{
+		if (regex == null) throw new NullPointerException("regex");
+		
+		return this.split(Pattern.compile(regex));
+	}
+	
+	public List<Mson> split(Pattern pattern)
+	{
+		if (pattern == null) throw new NullPointerException("pattern");
+		
+		List<Mson> ret = new MassiveList<>();
+		Mson recent = this.splitInner(pattern, ret, null);
+		if ( ! recent.isEmpty()) ret.add(recent);
+		return ret;
+	}
+	
+	private Mson splitInner(Pattern pattern, List<Mson> ret, Mson recent)
+	{
+		String[] parts = pattern.split(this.getText(), -1);
+		
+		// If it starts with a split ...
+		if (parts[0].isEmpty() && ! this.getText().isEmpty())
+		{
+			// ... add the most recent.
+			if (recent != null) ret.add(recent);
+			else ret.add(mson());
+			recent = null;
+			parts = Arrays.copyOfRange(parts, 1, parts.length);
+		}
+		
+		for (int i = 0; i < parts.length; i++)
+		{
+			Mson part = this.enforced().extra((List<Mson>) null).text(parts[i]);
+			boolean ultimate = (i == parts.length - 1);
+			if ( ! ultimate)
+			{
+				Mson mson;
+				if (recent != null) mson = mson(recent, part);
+				else mson = part;
+				ret.add(mson);
+				recent = null;
+			}
+			else
+			{
+				boolean empty = parts[i].isEmpty();
+				if (empty && ! this.getText().isEmpty())
+				{
+					
+					if (recent != null) ret.add(recent);
+					recent = mson();
+				}
+				else
+				{
+					Mson mson;
+					if (recent != null) mson = mson(recent, part);
+					else mson = part;
+					recent = mson;
+				}
+			}
+		}
+		
+		if (this.hasExtra())
+		{
+			for (Mson extra : this.getExtra())
+			{
+				recent = extra.splitInner(pattern, ret, recent);
+			}
+		}
+		
+		return recent;
+	}
+	
+	// -------------------------------------------- //
+	// REPLACE
+	// -------------------------------------------- //
+	
+	// Needed?
 	public Mson replace(char oldChar, char newChar)
 	{
 		Mson ret = this.text(this.getText().replace(oldChar, newChar));
@@ -739,29 +869,7 @@ public class Mson implements Serializable
 
 		return ret;
 	}
-	
-	public Mson replace(CharSequence replace, CharSequence replacement)
-	{
-		if (replace == null) throw new NullPointerException("replace");
-		if (replacement == null) throw new NullPointerException("replacement");
 		
-		Mson ret = this.text(this.getText().replace(replace, replacement));
-		
-		if (this.hasExtra())
-		{
-			Mson[] extra = new Mson[this.getExtra().size()];
-			int i = 0;
-			for (Mson part : this.getExtra())
-			{
-				extra[i] = part.replace(replace, replacement);
-				i++;
-			}
-			ret = ret.extra(extra);
-		}
-
-		return ret;
-	}
-	
 	public Mson replaceAll(String regex, String replacement)
 	{
 		if (regex == null) throw new NullPointerException("regex");
@@ -1009,34 +1117,29 @@ public class Mson implements Serializable
 	// If the centerpiece is multiple Strings it concatenates prefix + suffix and then appends the centerpice at the end.
 	// This algorithm is used in the editor system.
 	
-	public static List<Mson> prepondfix(Mson prefix, List<Mson> msons, Mson suffix)
-	{
-		// Create
-		List<Mson> ret = new MassiveList<>();
-		
-		// Fill
-		List<Mson> parts = new MassiveList<>();
-		if (prefix != null) parts.add(prefix);
-		if (msons.size() == 1) parts.add(msons.get(0));
-		if (suffix != null) parts.add(suffix);
-		
-		ret.add(implode(parts, SPACE));
-		
-		if (msons.size() != 1)
-		{
-			ret.addAll(msons);
-		}
-		
-		// Return
-		return ret;
-	}
-	
 	public static Mson prepondfix(Mson prefix, Mson mson, Mson suffix)
 	{
-		// HELP! How do I do this?
-		//List<Mson> strings = Arrays.asList(PATTERN_NEWLINE.split(string));
-		List<Mson> ret = prepondfix(prefix, Collections.singletonList(mson), suffix);
-		return implode(ret, mson("\n"));
+		// Fill
+		if (mson.contains("\n"))
+		{
+			List<Mson> parts = new MassiveList<>();
+			if (prefix != null) parts.add(prefix);
+			if (suffix != null) parts.add(suffix);
+			
+			return mson(
+				implode(parts, SPACE),
+				"\n",
+				mson
+			);
+		}
+		else
+		{
+			List<Mson> parts = new MassiveList<>();
+			if (prefix != null) parts.add(prefix);
+			parts.add(mson);
+			if (suffix != null) parts.add(suffix);
+			return implode(parts, SPACE);
+		}
 	}
 	
 	// -------------------------------------------- //
@@ -1083,12 +1186,12 @@ public class Mson implements Serializable
 	
 	public String toPlain(boolean styled)
 	{
-		StringBuilder ret = new StringBuilder();
+		final StringBuilder ret = new StringBuilder();
 		this.toPlain0(ret, styled);
 		return ret.toString();
 	}
 
-	private void toPlain0(StringBuilder builder, boolean styled)
+	private void toPlain0(final StringBuilder builder, boolean styled)
 	{
 		if ( ! this.getText().isEmpty())
 		{
@@ -1097,11 +1200,11 @@ public class Mson implements Serializable
 			if (styled)
 			{
 				if (this.getEffectiveColor() != null) builder.append(this.getEffectiveColor());
-				if (this.isEffectiveBold()) builder.append(ChatColor.BOLD);
-				if (this.isEffectiveItalic()) builder.append(ChatColor.ITALIC);
-				if (this.isEffectiveUnderlined()) builder.append(ChatColor.UNDERLINE);
-				if (this.isEffectiveStrikethrough()) builder.append(ChatColor.STRIKETHROUGH);
-				if (this.isEffectiveObfuscated()) builder.append(ChatColor.MAGIC);
+				if (this.isEffectiveBold() != null && this.isEffectiveBold()) builder.append(ChatColor.BOLD);
+				if (this.isEffectiveItalic() != null && this.isEffectiveItalic()) builder.append(ChatColor.ITALIC);
+				if (this.isEffectiveUnderlined() != null && this.isEffectiveUnderlined()) builder.append(ChatColor.UNDERLINE);
+				if (this.isEffectiveStrikethrough() != null && this.isEffectiveStrikethrough()) builder.append(ChatColor.STRIKETHROUGH);
+				if (this.isEffectiveObfuscated() != null && this.isEffectiveObfuscated()) builder.append(ChatColor.MAGIC);
 			}
 			
 			builder.append(this.getText());

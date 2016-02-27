@@ -122,7 +122,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	public Mson getVisualMsonInner(T value, CommandSender sender)
 	{
-		return Mson.fromParsedMessage(this.getVisualInner(value, sender)).tooltip("LUL, TEST");
+		return Mson.fromParsedMessage(this.getVisualInner(value, sender));
 	}
 	
 	public Mson getVisualMsonInner(T value)

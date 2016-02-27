@@ -1,7 +1,12 @@
 package com.massivecraft.massivecore.mson;
 
 import static com.massivecraft.massivecore.mson.Mson.mson;
-import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.BLUE;
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.YELLOW;
+
+import java.util.List;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.util.Txt;
@@ -67,14 +72,30 @@ public class Test
 		test("format");
 		
 		// -------------------------------------------- //
+		// TEST SPLIT
+		// -------------------------------------------- //
+		
+		mson = mson(mson("1 2 3 4").split(Txt.PATTERN_NEWLINE));
+		test("split0");
+		
+		mson = mson(mson("\n1 2 \n3 4").split(Txt.PATTERN_NEWLINE));
+		test("split1");
+		
+		mson = mson(mson(" 1 2 3 4 ").add("5 6 7").split(Txt.PATTERN_WHITESPACE));
+		test("split2");
+		
+		Mson split = mson(" 1 2 3 4 ").add("5 6 7").add("8 9");
+		List<Mson> splits = split.split(Txt.PATTERN_WHITESPACE);
+		
+		test("splitA", split);
+		test("splitB", Mson.implode(splits, Mson.SPACE));
+		
+		// -------------------------------------------- //
 		// TEST REPLACE
 		// -------------------------------------------- //
 		
 		mson = mson("1 2 3 4 5 6 1 7 tests", " 01010101").getRoot().replace('1', '0');
 		test("charr");
-		
-		mson = mson("1 2 3 4 5 6 1 7 tests", " 01010101").getRoot().replace("1", "0");
-		test("sequence");
 	
 		mson = mson("1 2 3 4 5 6 1 7 tests", " 01010101").getRoot().replaceAll("1", "0");
 		test("regex");

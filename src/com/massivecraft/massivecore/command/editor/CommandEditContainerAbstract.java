@@ -101,7 +101,7 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 			" for ",
 			this.getObjectVisual(),
 			" not changed."	
-			).color(ChatColor.GRAY);
+		).color(ChatColor.GRAY);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -109,29 +109,40 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	public void attemptSetPerform(V after)
 	{
 		V before = this.getInheritedValue();
-		String descProperty = this.getProperty().getDisplayName();
+		Mson descProperty = this.getProperty().getDisplayNameMson();
 		
 		// Apply
 		// We set the new property value.
 		this.getProperty().setValue(this.getObject(), after);
 		
 		// Create messages
-		List<String> messages = new MassiveList<>();
+		List<Mson> messages = new MassiveList<>();
 		
-		messages.add(Txt.parse("%s<silver> for %s<silver> edited:", descProperty, this.getObjectVisual()));
+		messages.add(mson(
+			descProperty,
+			mson(" for ").color(ChatColor.GRAY),
+			this.getObjectVisual(),
+			mson(" edited:").color(ChatColor.GRAY)
+		));
 		
 		// Note: The result of getAdditions is not actually V, but the implementation doesn't care.
 		Collection<Object> additions = ContainerUtil.getAdditions(before, after);
 		if ( ! additions.isEmpty())
 		{
-			messages.add(Txt.parse("<k>Additions: %s", this.getValueType().getVisual((V) additions)));
+			messages.add(mson(
+				mson("Additions: ").color(ChatColor.AQUA),
+				this.getValueType().getVisualMson((V) additions)
+			));
 		}
 		
 		// Note: The result of getDeletions is not actually V, but the implementation doesn't care.
 		Collection<Object> deletions = ContainerUtil.getDeletions(before, after);
 		if ( ! deletions.isEmpty())
 		{
-			messages.add(Txt.parse("<k>Deletions: %s", this.getValueType().getVisual((V) deletions)));
+			messages.add(mson(
+				mson("Deletions: ").color(ChatColor.AQUA),
+				this.getValueType().getVisualMson((V) deletions)
+			));
 		}
 		
 		message(messages);

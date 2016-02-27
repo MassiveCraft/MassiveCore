@@ -194,16 +194,20 @@ public abstract class Property<O, V> implements Named
 		return ChatColor.AQUA.toString() + this.getName();
 	}
 	
-	public List<String> getShowLines(O object, CommandSender sender)
+	public List<Mson> getShowLines(O object, CommandSender sender)
 	{
-		String ret = Txt.parse("<aqua>%s<silver>: <pink>%s", this.getDisplayName(), this.getInheritedVisual(object, sender));
-		return new MassiveList<String>(Txt.PATTERN_NEWLINE.split(ret));
+		Mson ret = Mson.mson(
+			this.getDisplayNameMson(),
+			Mson.mson(": ").color(ChatColor.GRAY),
+			this.getInheritedVisual(object, sender)
+			);
+		return ret.split(Txt.PATTERN_NEWLINE);
 	}
 	
-	public static <O> List<String> getShowLines(O object, CommandSender sender, Collection<? extends Property<O, ?>> properties)
+	public static <O> List<Mson> getShowLines(O object, CommandSender sender, Collection<? extends Property<O, ?>> properties)
 	{
 		// Create
-		List<String> ret = new MassiveList<String>();
+		List<Mson> ret = new MassiveList<>();
 		
 		// Fill
 		for (Property<O, ?> property : properties)
