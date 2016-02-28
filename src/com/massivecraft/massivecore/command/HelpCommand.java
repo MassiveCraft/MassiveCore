@@ -68,7 +68,9 @@ public class HelpCommand extends MassiveCommand
 		if ( ! (this.hasParent() && visible)) return visible;
 		
 		int pageHeight = (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE;
-		int size = this.getParent().getChildren().size();
+		
+		// Minues one, don't count ourself.
+		int size = this.getParent().getChildren().size()-1;
 		
 		if (size <= pageHeight)
 		{

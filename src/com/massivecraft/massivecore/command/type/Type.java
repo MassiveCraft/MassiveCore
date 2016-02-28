@@ -54,7 +54,6 @@ public interface Type<T>
 	// A visual mson.
 	
 	public Mson getVisualMsonInner(T value, CommandSender sender);
-	public Mson getVisualMsonInner(T value);
 	public Mson getVisualMson(T value, CommandSender sender);
 	public Mson getVisualMson(T value);
 	
@@ -64,7 +63,6 @@ public interface Type<T>
 	// A visual and colorful representation. Possibly with added detail such as simple ASCII art.
 	
 	public String getVisualInner(T value, CommandSender sender);
-	public String getVisualInner(T value);
 	public String getVisual(T value, CommandSender sender);
 	public String getVisual(T value);
 

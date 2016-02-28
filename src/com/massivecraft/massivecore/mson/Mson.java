@@ -48,6 +48,7 @@ public class Mson implements Serializable
 	public static final Mson SPACE = mson(" ");
 	public static final Mson EMPTY = mson("");
 	public static final Mson NEWLINE = mson("\n");
+	public static final Mson DOT = mson(".");
 	
 	// -------------------------------------------- //
 	// GSON

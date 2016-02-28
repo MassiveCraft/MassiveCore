@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.command.type.combined;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
-import java.util.AbstractMap.SimpleEntry;
 
 import org.bukkit.command.CommandSender;
 
@@ -14,6 +14,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeAbstract;
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeCombined<T> extends TypeAbstract<T>
@@ -45,6 +46,15 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	private String typeNameSeparator = " ";
 	public String getTypeNameSeparator() { return this.typeNameSeparator; }
 	public void setTypeNameSeparator(String typeNameSeparator) { this.typeNameSeparator = typeNameSeparator; }
+	
+	// Visual Mson
+	private boolean visualMsonNullIncluded = true;
+	public boolean isVisualMsonNullIncluded() { return this.visualMsonNullIncluded; }
+	public void setVisualMsonNullIncluded(boolean visualMsonNullIncluded) { this.visualMsonNullIncluded = visualMsonNullIncluded; }
+	
+	private Mson visualMsonSeparator = Mson.SPACE;
+	public Mson getVisualMsonSeparator() { return this.visualMsonSeparator; }
+	public void setVisualMsonSeparator(Mson visualMsonSeparator) { this.visualMsonSeparator = visualMsonSeparator; }
 	
 	// Visual
 	private boolean visualNullIncluded = true;
@@ -136,6 +146,32 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	}
 	
 	// -------------------------------------------- //
+	// WRITE VISUAL MSON
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Mson getVisualMsonInner(T value, CommandSender sender)
+	{
+		// Create
+		List<Mson> parts = new MassiveList<>();
+		
+		// Fill
+		List<Entry<Type<?>, Object>> entries = this.splitEntries(value);
+		for (int i = 0; i < entries.size(); i++)
+		{
+			Entry<Type<?>, Object> entry = entries.get(this.getIndexTech(i));
+			Type<Object> type = (Type<Object>) entry.getKey();
+			Mson part = type.getVisualMson(entry.getValue(), sender);
+			if ( ! this.isVisualMsonNullIncluded() && part == null) continue;
+			parts.add(part);
+		}
+		
+		// Return
+		return Mson.implode(parts, this.getVisualMsonSeparator());
+	}
+
+	// -------------------------------------------- //
 	// WRITE VISUAL
 	// -------------------------------------------- //
 	
@@ -144,7 +180,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public String getVisualInner(T value, CommandSender sender)
 	{
 		// Create
-		List<String> parts = new MassiveList<String>();
+		List<String> parts = new MassiveList<>();
 		
 		// Fill
 		List<Entry<Type<?>, Object>> entries = this.splitEntries(value);
@@ -169,7 +205,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public String getNameInner(T value)
 	{
 		// Create
-		List<String> parts = new MassiveList<String>();
+		List<String> parts = new MassiveList<>();
 		
 		// Fill
 		for (Entry<Type<?>, Object> entry : this.splitEntries(value))
@@ -193,7 +229,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public String getIdInner(T value)
 	{
 		// Create
-		List<String> parts = new MassiveList<String>();
+		List<String> parts = new MassiveList<>();
 		
 		// Fill
 		for (Entry<Type<?>, Object> entry : this.splitEntries(value))

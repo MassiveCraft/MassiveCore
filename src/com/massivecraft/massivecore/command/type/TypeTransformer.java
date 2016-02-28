@@ -124,14 +124,6 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	}
 	
 	@Override
-	public Mson getVisualMsonInner(O outer)
-	{
-		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualMsonInner(outer));
-		return INNER.getVisualMsonInner(inner);
-	}
-	
-	@Override
 	public Mson getVisualMson(O outer, CommandSender sender)
 	{
 		I inner = outerToInner(outer);
@@ -157,14 +149,6 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) return prefix(OUTER.getVisualInner(outer, sender));
 		return INNER.getVisualInner(inner, sender);
-	}
-	
-	@Override
-	public String getVisualInner(O outer)
-	{
-		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualInner(outer));
-		return INNER.getVisualInner(inner);
 	}
 	
 	@Override
