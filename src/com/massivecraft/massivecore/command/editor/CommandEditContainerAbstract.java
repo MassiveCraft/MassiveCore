@@ -129,20 +129,14 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		Collection<Object> additions = ContainerUtil.getAdditions(before, after);
 		if ( ! additions.isEmpty())
 		{
-			messages.add(mson(
-				mson("Additions: ").color(ChatColor.AQUA),
-				this.getValueType().getVisualMson((V) additions)
-			));
+			messages.add(Mson.prepondfix(mson("Additions: ").color(ChatColor.AQUA), this.getValueType().getVisualMson((V) additions), null));
 		}
 		
 		// Note: The result of getDeletions is not actually V, but the implementation doesn't care.
 		Collection<Object> deletions = ContainerUtil.getDeletions(before, after);
 		if ( ! deletions.isEmpty())
 		{
-			messages.add(mson(
-				mson("Deletions: ").color(ChatColor.AQUA),
-				this.getValueType().getVisualMson((V) deletions)
-			));
+			messages.add(Mson.prepondfix(mson("Deletions: ").color(ChatColor.AQUA), this.getValueType().getVisualMson((V) deletions), null));
 		}
 		
 		message(messages);

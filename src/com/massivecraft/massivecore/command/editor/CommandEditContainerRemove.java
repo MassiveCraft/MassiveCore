@@ -1,7 +1,7 @@
 package com.massivecraft.massivecore.command.editor;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -32,7 +32,7 @@ public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstra
 	{
 		if (this.isCollection())
 		{
-			this.alterCollection((List<?>) container);
+			this.alterCollection((Collection<?>) container);
 		}
 		else
 		{
@@ -44,7 +44,7 @@ public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstra
 	// OVERRIDE > COLLECTION
 	// -------------------------------------------- //
 	
-	public void alterCollection(List<?> elements) throws MassiveException
+	public void alterCollection(Collection<?> elements) throws MassiveException
 	{
 		// Args
 		Object element = this.readElement();

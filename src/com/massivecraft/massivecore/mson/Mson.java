@@ -47,6 +47,7 @@ public class Mson implements Serializable
 	
 	public static final Mson SPACE = mson(" ");
 	public static final Mson EMPTY = mson("");
+	public static final Mson NEWLINE = mson("\n");
 	
 	// -------------------------------------------- //
 	// GSON
@@ -1117,30 +1118,35 @@ public class Mson implements Serializable
 	// If the centerpiece is multiple Strings it concatenates prefix + suffix and then appends the centerpice at the end.
 	// This algorithm is used in the editor system.
 	
+	public static List<Mson> prepondfix(Mson prefix, List<Mson> msons, Mson suffix)
+	{
+		// Create
+		List<Mson> ret = new MassiveList<>();
+		
+		// Fill
+		List<Mson> parts = new MassiveList<>();
+		if (prefix != null) parts.add(prefix);
+		if (msons.size() == 1) parts.add(msons.get(0));
+		if (suffix != null) parts.add(suffix);
+		
+		ret.add(implode(parts, SPACE));
+		
+		if (msons.size() != 1)
+		{
+			ret.addAll(msons);
+		}
+		
+		// Return
+		return ret;
+	}
+	
 	public static Mson prepondfix(Mson prefix, Mson mson, Mson suffix)
 	{
-		// Fill
-		if (mson.contains("\n"))
-		{
-			List<Mson> parts = new MassiveList<>();
-			if (prefix != null) parts.add(prefix);
-			if (suffix != null) parts.add(suffix);
-			
-			return mson(
-				implode(parts, SPACE),
-				"\n",
-				mson
-			);
-		}
-		else
-		{
-			List<Mson> parts = new MassiveList<>();
-			if (prefix != null) parts.add(prefix);
-			parts.add(mson);
-			if (suffix != null) parts.add(suffix);
-			return implode(parts, SPACE);
-		}
+		List<Mson> msons = mson.split(Txt.PATTERN_NEWLINE);
+		List<Mson> ret = prepondfix(prefix, msons, suffix);
+		return implode(ret, NEWLINE);
 	}
+	
 	
 	// -------------------------------------------- //
 	// MESSAGE
