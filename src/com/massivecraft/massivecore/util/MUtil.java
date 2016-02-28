@@ -1754,11 +1754,19 @@ public class MUtil
 		return d;
 	}
 	
-	public static long probabilityRound(double val)
+	public static long probabilityRound(double value)
 	{
-		long ret = (long) Math.floor(val);
-		double prob = val % 1;
-		if (MassiveCore.random.nextDouble() < prob) ret += 1;
+		long ret = (long) Math.floor(value);
+		double probability = value % 1;
+		if (MassiveCore.random.nextDouble() < probability) ret += 1;
+		return ret;
+	}
+	
+	public static int probabilityRound(float value)
+	{
+		int ret = (int) Math.floor(value);
+		float probability = value % 1;
+		if (MassiveCore.random.nextFloat() < probability) ret += 1;
 		return ret;
 	}
 	
