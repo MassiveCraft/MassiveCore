@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -75,59 +76,81 @@ public class InventoryUtil
 		return event.getRawSlot() >= event.getInventory().getSize();
 	}
 	
+	@Deprecated
 	public static boolean isGiving(InventoryClickEvent event)
 	{
-		if (isOutside(event)) return false;
-		boolean topClicked = isTopInventory(event);
-		
-		if (event.getClick() == ClickType.NUMBER_KEY)
-		{
-			if (!topClicked) return false;
-			if (isSomething(event.getCurrentItem())) return false;
-			ItemStack hotbar = event.getView().getBottomInventory().getItem(event.getHotbarButton());
-			if (isNothing(hotbar)) return false;
-			return true;
-		}
-		
-		boolean ret = false;
-		
-		if (topClicked)
-		{
-			ret = isSomething(event.getCursor());
-		}
-		else
-		{
-			ret = event.isShiftClick();
-		}
-		
-		return ret;
+		return getAlter(event).isGiving();
 	}
 	
+	@Deprecated
 	public static boolean isTaking(InventoryClickEvent event)
 	{
-		if (isOutside(event)) return false;
-		boolean topClicked = isTopInventory(event);
-		
-		if (event.getClick() == ClickType.NUMBER_KEY)
-		{
-			if (!topClicked) return false;
-			if (isNothing(event.getCurrentItem())) return false;
-			return true;
-		}
-		
-		boolean ret = false;
-		
-		if (topClicked)
-		{
-			ret = isSomething(event.getCurrentItem());
-		}
-		
-		return ret;
+		return getAlter(event).isTaking();
 	}
 	
 	public static boolean isAltering(InventoryClickEvent event)
 	{
-		return isGiving(event) || isTaking(event);
+		return getAlter(event).isAltering();
+	}
+	
+	public static InventoryAlter getAlter(InventoryClickEvent event)
+	{
+		if (isOutside(event)) return InventoryAlter.NONE;
+		boolean topClicked = isTopInventory(event);
+		InventoryAction action = event.getAction();
+
+		// Actual
+		if (event.getClick() == ClickType.NUMBER_KEY)
+		{
+			if (!topClicked) return InventoryAlter.NONE;
+			if (isSomething(event.getCurrentItem())) return InventoryAlter.TAKE;
+			
+			ItemStack hotbar = event.getView().getBottomInventory().getItem(event.getHotbarButton());
+			if (isSomething(hotbar)) return InventoryAlter.GIVE;
+			return InventoryAlter.NONE;
+		}
+		
+		if (topClicked)
+		{
+			boolean give = false;
+			boolean take = false;
+			
+			take = (action == InventoryAction.MOVE_TO_OTHER_INVENTORY || isSomething(event.getCurrentItem()));
+			give = (action != InventoryAction.MOVE_TO_OTHER_INVENTORY && isSomething(event.getCursor()));
+			
+			if (give && take) return InventoryAlter.BOTH;
+			if (give) return InventoryAlter.GIVE;
+			if (take) return InventoryAlter.TAKE;
+		}
+		else
+		{
+			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY) return InventoryAlter.GIVE;
+		}
+		
+		return InventoryAlter.NONE;
+	}
+	
+	public enum InventoryAlter
+	{
+		GIVE,
+		TAKE,
+		NONE,
+		BOTH,
+		
+		;
+		
+		public boolean isAltering()
+		{
+			return this != NONE;
+		}
+		public boolean isGiving()
+		{
+			return this == GIVE || this == BOTH;
+		}
+		public boolean isTaking()
+		{
+			return this == TAKE || this == BOTH;
+		}
 	}
 	
 	/**
@@ -193,8 +216,7 @@ public class InventoryUtil
 		System.out.println("isOutside(event) " + isOutside(event));
 		System.out.println("isTopInventory(event) " + isTopInventory(event));
 		System.out.println("isBottomInventory(event) " + isBottomInventory(event));
-		System.out.println("isGiving(event) " + isGiving(event));
-		System.out.println("isTaking(event) " + isTaking(event));
+		System.out.println("getAlter(event) " + getAlter(event));
 		System.out.println("isAltering(event) " + isAltering(event));
 		System.out.println("isEquipping(event) " + isEquipping(event));
 		System.out.println("===== DEBUG END =====");
