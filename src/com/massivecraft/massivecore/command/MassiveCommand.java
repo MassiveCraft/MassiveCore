@@ -165,7 +165,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	protected String descPermission = null;
 	
 	// Free text displayed at the top of the help command.
-	protected List<String> help = new ArrayList<String>();
+	protected List<?> help = new ArrayList<>();
 	
 	// The visibility of this command in help command.
 	protected Visibility visibility = Visibility.VISIBLE; 
@@ -769,9 +769,9 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		return null;
 	}
 		
-	public void setHelp(List<String> val) { this.help = val; }
-	public void setHelp(String... val) { this.help = Arrays.asList(val); }
-	public List<String> getHelp() { return this.help; }
+	public void setHelp(List<?> val) { this.help = val; }
+	public void setHelp(Object... val) { this.help = Arrays.asList(val); }
+	public List<?> getHelp() { return this.help; }
 	
 	public Visibility getVisibility() { return this.visibility; }
 	public void setVisibility(Visibility visibility) { this.visibility = visibility; }

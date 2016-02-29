@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -46,9 +47,9 @@ public class HelpCommand extends MassiveCommand
 		
 		// Create Lines
 		List<Mson> lines = new ArrayList<Mson>();
-		for (String helpline : parent.getHelp())
+		for (Object helpline : parent.getHelp())
 		{
-			lines.add(Mson.parse("<a>#<i> " + helpline));
+			lines.add(mson(Mson.parse("<a># "), helpline).color(ChatColor.YELLOW));
 		}
 		
 		for (MassiveCommand child : parent.getChildren())
