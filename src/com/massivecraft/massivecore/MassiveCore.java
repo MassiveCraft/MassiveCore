@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -25,6 +26,7 @@ import com.massivecraft.massivecore.adapter.ModdedEnumTypeAdapter;
 import com.massivecraft.massivecore.adapter.MsonAdapter;
 import com.massivecraft.massivecore.adapter.MsonEventAdapter;
 import com.massivecraft.massivecore.adapter.PlayerInventoryAdapter;
+import com.massivecraft.massivecore.adapter.SoundAdapter;
 import com.massivecraft.massivecore.adapter.UUIDAdapter;
 import com.massivecraft.massivecore.collections.BackstringEnumSet;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -118,6 +120,7 @@ public class MassiveCore extends MassivePlugin
 		.registerTypeAdapter(JsonPrimitive.class, JsonElementAdapter.get())
 		.registerTypeAdapter(JsonArray.class, JsonElementAdapter.get())
 		.registerTypeAdapter(JsonObject.class, JsonElementAdapter.get())
+		.registerTypeAdapter(Sound.class, SoundAdapter.get())
 		.registerTypeAdapter(UUID.class, UUIDAdapter.get())
 		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
 		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())

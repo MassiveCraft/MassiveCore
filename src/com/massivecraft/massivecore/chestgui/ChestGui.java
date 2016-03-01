@@ -2,14 +2,11 @@ package com.massivecraft.massivecore.chestgui;
 
 import java.util.Map;
 
-import org.bukkit.Sound;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.massivecore.SoundEffect;
 import com.massivecraft.massivecore.collections.MassiveMap;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class ChestGui
 {
@@ -46,28 +43,9 @@ public class ChestGui
 	// FIELDS: SOUND
 	// -------------------------------------------- //
 	
-	protected Sound sound = Sound.CLICK;
-	public Sound getSound() { return this.sound; }
-	
-	protected float volume = 1.0f;
-	public float getVolume() { return this.volume; }
-	public ChestGui setVolume(float volume) { this.volume = volume; return this; }
-	
-	protected float pitch = 1.0f;
-	public float getPitch() { return this.pitch; }
-	public ChestGui setPitch(float pitch) { this.pitch = pitch; return this; }
-	
-	public void playSound(Player player)
-	{
-		player.playSound(player.getEyeLocation(), this.getSound(), this.getVolume(), this.getPitch());
-	}
-	
-	public void playSound(HumanEntity human)
-	{
-		if (MUtil.isntPlayer(human)) return;
-		Player player = (Player)human;
-		this.playSound(player);
-	}
+	protected SoundEffect soundEffect = SoundEffect.valueOf("CLICK", 1.0f, 1.0f);
+	public SoundEffect getSoundEffect() { return this.soundEffect; }
+	public ChestGui setSoundEffect(SoundEffect soundEffect) { this.soundEffect = soundEffect; return this; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

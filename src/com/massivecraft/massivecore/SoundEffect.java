@@ -5,9 +5,13 @@ import java.util.Collection;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
-public final class SoundEffect implements Cloneable, Serializable
+import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
+import com.massivecraft.massivecore.util.MUtil;
+
+public final class SoundEffect implements Serializable
 {
 	private static final transient long serialVersionUID = 1L;
 	
@@ -15,8 +19,12 @@ public final class SoundEffect implements Cloneable, Serializable
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
-	private final Sound sound;
-	public Sound getSound() { return this.sound; }
+	private final String soundId;
+	public String getSoundId() { return this.soundId; }
+	public Sound getSound()
+	{
+		return TypeSound.valueOf(this.getSoundId());
+	}
 	
 	private final float volume;
 	public float getVolume() { return this.volume; }
@@ -28,17 +36,17 @@ public final class SoundEffect implements Cloneable, Serializable
 	// FIELDS: WITH
 	// -------------------------------------------- //
 	
-	public SoundEffect withSound(Sound sound) { return new SoundEffect(sound, volume, pitch); }
-	public SoundEffect withVolume(float volume) { return new SoundEffect(sound, volume, pitch); }
-	public SoundEffect withPitch(float pitch) { return new SoundEffect(sound, volume, pitch); }
+	public SoundEffect withSound(Sound sound) { return new SoundEffect(soundId, volume, pitch); }
+	public SoundEffect withVolume(float volume) { return new SoundEffect(soundId, volume, pitch); }
+	public SoundEffect withPitch(float pitch) { return new SoundEffect(soundId, volume, pitch); }
 	
 	// -------------------------------------------- //
 	// CONSTUCT
 	// -------------------------------------------- //
 	
-	private SoundEffect(Sound sound, float volume, float pitch)
+	private SoundEffect(String soundId, float volume, float pitch)
 	{
-		this.sound = sound;
+		this.soundId = soundId;
 		this.volume = volume;
 		this.pitch = pitch;
 	}
@@ -53,9 +61,14 @@ public final class SoundEffect implements Cloneable, Serializable
 	// VALUE OF
 	// -------------------------------------------- //
 	
+	public static SoundEffect valueOf(String soundId, float volume, float pitch)
+	{
+		return new SoundEffect(soundId, volume, pitch);
+	}
+	
 	public static SoundEffect valueOf(Sound sound, float volume, float pitch)
 	{
-		return new SoundEffect(sound, volume, pitch);
+		return valueOf(TypeSound.get().getId(sound), volume, pitch);
 	}
 	
 	// -------------------------------------------- //
@@ -67,14 +80,16 @@ public final class SoundEffect implements Cloneable, Serializable
 		location.getWorld().playSound(location, this.getSound(), this.getVolume(), this.getPitch());
 	}
 	
-	public void run(Player player, Location location)
+	public void run(HumanEntity human, Location location)
 	{
+		if (MUtil.isntPlayer(human)) return;
+		Player player = (Player)human;
 		player.playSound(location, this.getSound(), this.getVolume(), this.getPitch());
 	}
 	
-	public void run(Player player)
+	public void run(HumanEntity human)
 	{
-		this.run(player, player.getEyeLocation());
+		this.run(human, human.getEyeLocation());
 	}
 	
 	// -------------------------------------------- //
@@ -89,30 +104,20 @@ public final class SoundEffect implements Cloneable, Serializable
 		}
 	}
 	
-	public static void runAll(Collection<SoundEffect> soundEffects, Player player, Location location)
+	public static void runAll(Collection<SoundEffect> soundEffects, HumanEntity human, Location location)
 	{
 		for (SoundEffect soundEffect : soundEffects)
 		{
-			soundEffect.run(player, location);
+			soundEffect.run(human, location);
 		}
 	}
 	
-	public static void runAll(Collection<SoundEffect> soundEffects, Player player)
+	public static void runAll(Collection<SoundEffect> soundEffects, HumanEntity human)
 	{
 		for (SoundEffect soundEffect : soundEffects)
 		{
-			soundEffect.run(player);
+			soundEffect.run(human);
 		}
-	}
-	
-	// -------------------------------------------- //
-	// CLONE
-	// -------------------------------------------- //
-	
-	@Override
-	public SoundEffect clone()
-	{
-		return this;
 	}
 	
 	// -------------------------------------------- //
@@ -125,11 +130,11 @@ public final class SoundEffect implements Cloneable, Serializable
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Float.floatToIntBits(pitch);
-		result = prime * result + ((sound == null) ? 0 : sound.hashCode());
+		result = prime * result + ((soundId == null) ? 0 : soundId.hashCode());
 		result = prime * result + Float.floatToIntBits(volume);
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -138,7 +143,11 @@ public final class SoundEffect implements Cloneable, Serializable
 		if (!(obj instanceof SoundEffect)) return false;
 		SoundEffect other = (SoundEffect) obj;
 		if (Float.floatToIntBits(pitch) != Float.floatToIntBits(other.pitch)) return false;
-		if (sound != other.sound) return false;
+		if (soundId == null)
+		{
+			if (other.soundId != null) return false;
+		}
+		else if (!soundId.equals(other.soundId)) return false;
 		if (Float.floatToIntBits(volume) != Float.floatToIntBits(other.volume)) return false;
 		return true;
 	}

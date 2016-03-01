@@ -55,7 +55,7 @@ public class EngineMassiveCoreChestGui extends Engine
 		if (action == null) return;
 		
 		// ... then play the sound ...
-		gui.playSound(event.getWhoClicked());
+		gui.getSoundEffect().run(event.getWhoClicked());
 		
 		// ... close the GUI ...
 		event.getView().close();
