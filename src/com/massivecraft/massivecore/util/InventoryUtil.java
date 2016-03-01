@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -98,35 +97,67 @@ public class InventoryUtil
 		if (isOutside(event)) return InventoryAlter.NONE;
 		boolean topClicked = isTopInventory(event);
 		InventoryAction action = event.getAction();
-
-		// Actual
-		if (event.getClick() == ClickType.NUMBER_KEY)
-		{
-			if (!topClicked) return InventoryAlter.NONE;
-			if (isSomething(event.getCurrentItem())) return InventoryAlter.TAKE;
-			
-			ItemStack hotbar = event.getView().getBottomInventory().getItem(event.getHotbarButton());
-			if (isSomething(hotbar)) return InventoryAlter.GIVE;
-			return InventoryAlter.NONE;
-		}
 		
 		if (topClicked)
 		{
-			boolean give = false;
-			boolean take = false;
-			
-			take = (action == InventoryAction.MOVE_TO_OTHER_INVENTORY || isSomething(event.getCurrentItem()));
-			give = (action != InventoryAction.MOVE_TO_OTHER_INVENTORY && isSomething(event.getCursor()));
-			
-			if (give && take) return InventoryAlter.BOTH;
-			if (give) return InventoryAlter.GIVE;
-			if (take) return InventoryAlter.TAKE;
+			switch (action)
+			{
+				// TODO
+				case UNKNOWN:
+					break;
+				
+				// Possibly both
+				case HOTBAR_SWAP:
+					ItemStack hotbar = event.getView().getBottomInventory().getItem(event.getHotbarButton());
+					ItemStack current = event.getCurrentItem();
+					boolean give = isSomething(hotbar);
+					boolean take = isSomething(current);
+					
+					return getAlter(give, take);
+					
+				// Neither give nor take
+				case NOTHING: return InventoryAlter.NONE;
+				case CLONE_STACK: return InventoryAlter.NONE;
+				case DROP_ALL_CURSOR: return InventoryAlter.NONE;
+				case DROP_ALL_SLOT: return InventoryAlter.NONE;
+				case DROP_ONE_CURSOR: return InventoryAlter.NONE;
+				case DROP_ONE_SLOT: return InventoryAlter.NONE;
+	
+				// Take
+				case PICKUP_ALL: return InventoryAlter.TAKE;
+				case PICKUP_HALF: return InventoryAlter.TAKE;
+				case PICKUP_ONE: return InventoryAlter.TAKE;
+				case PICKUP_SOME: return InventoryAlter.TAKE;
+				case MOVE_TO_OTHER_INVENTORY: return InventoryAlter.TAKE;
+				case COLLECT_TO_CURSOR:return InventoryAlter.TAKE;
+				case HOTBAR_MOVE_AND_READD: return InventoryAlter.TAKE;
+				
+				// Give
+				case PLACE_ALL: return InventoryAlter.GIVE;
+				case PLACE_ONE: return InventoryAlter.GIVE;
+				case PLACE_SOME: return InventoryAlter.GIVE;
+				case SWAP_WITH_CURSOR: return InventoryAlter.BOTH;
+
+			}
+			throw new RuntimeException("Unsupported action: " + action);
 		}
 		else
 		{
 			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY) return InventoryAlter.GIVE;
+			
+			// This one will possibly take, but we cannot be 100% sure.
+			// We will return TAKE for security reasons.
+			if (action == InventoryAction.COLLECT_TO_CURSOR) return InventoryAlter.TAKE;
+	
+			return InventoryAlter.NONE;
 		}
-		
+	}
+	
+	private static InventoryAlter getAlter(boolean give, boolean take)
+	{
+		if (give && take) return InventoryAlter.BOTH;
+		if (give) return InventoryAlter.GIVE;
+		if (take) return InventoryAlter.TAKE;
 		return InventoryAlter.NONE;
 	}
 	
