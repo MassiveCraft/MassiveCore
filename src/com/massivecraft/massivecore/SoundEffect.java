@@ -36,7 +36,8 @@ public final class SoundEffect implements Serializable
 	// FIELDS: WITH
 	// -------------------------------------------- //
 	
-	public SoundEffect withSound(Sound sound) { return new SoundEffect(soundId, volume, pitch); }
+	public SoundEffect withSoundId(String soundId) { return new SoundEffect(soundId, volume, pitch); }
+	public SoundEffect withSound(Sound sound) { return new SoundEffect(TypeSound.get().getId(sound), volume, pitch); }
 	public SoundEffect withVolume(float volume) { return new SoundEffect(soundId, volume, pitch); }
 	public SoundEffect withPitch(float pitch) { return new SoundEffect(soundId, volume, pitch); }
 	
