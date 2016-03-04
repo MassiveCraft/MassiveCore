@@ -14,7 +14,7 @@ public class ComparatorCaseInsensitive extends ComparatorAbstract<String>
 	// -------------------------------------------- //
 
 	@Override
-	public int compareInner(String string1, String string2)
+	public Integer compareInner(String string1, String string2)
 	{
 		return String.CASE_INSENSITIVE_ORDER.compare(string1, string2);
 	}

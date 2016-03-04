@@ -25,6 +25,7 @@ import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.command.requirement.Requirement;
+import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -331,9 +332,9 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	
 	public void addChild(MassiveCommand child, int index)
 	{
-		if (this.children.isEmpty() && ! (child instanceof HelpCommand))
+		if (this.children.isEmpty() && ! (child instanceof MassiveCommandHelp))
 		{
-			this.children.add(0, HelpCommand.get());
+			this.children.add(0, MassiveCommandHelp.get());
 			index++;
 		}
 		child.addToChain(this);
@@ -718,20 +719,12 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	
 	public boolean isRequirementsMet(CommandSender sender, boolean verboose)
 	{
-		String error = this.getRequirementsError(sender, verboose);
-		if (error != null && verboose) Mixin.messageOne(sender, error);
-		return error == null;
+		return RequirementAbstract.isRequirementsMet(this.getRequirements(), sender, this, verboose);
 	}
 	
 	public String getRequirementsError(CommandSender sender, boolean verboose)
 	{
-		for (Requirement requirement : this.getRequirements())
-		{
-			if (requirement.apply(sender, this)) continue;
-			if ( ! verboose) return "";
-			return requirement.createErrorMessage(sender, this);
-		}
-		return null;
+		return RequirementAbstract.getRequirementsError(this.getRequirements(), sender, this, verboose);
 	}
 	
 	// -------------------------------------------- //
@@ -943,7 +936,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		List<MassiveCommand> chain = new ArrayList<MassiveCommand>(this.getChain());
 		chain.add(this);
 		
-		HelpCommand.get().execute(this.sender, this.getArgs(), chain);
+		MassiveCommandHelp.get().execute(this.sender, this.getArgs(), chain);
 	}
 
 	// -------------------------------------------- //

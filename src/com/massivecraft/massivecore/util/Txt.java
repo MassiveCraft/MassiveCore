@@ -167,6 +167,7 @@ public class Txt
 	
 	public static String parse(String string)
 	{
+		if (string == null) return null;
 		StringBuffer ret = new StringBuffer();
 		Matcher matcher = parsePattern.matcher(string);
 		while (matcher.find())
@@ -198,6 +199,7 @@ public class Txt
 	
 	public static ArrayList<String> wrap(final String string)
 	{
+		if (string == null) return null;
 		return new ArrayList<String>(Arrays.asList(PATTERN_NEWLINE.split(string)));
 	}
 	

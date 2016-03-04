@@ -29,7 +29,7 @@ public class ComparatorLenient<T> extends ComparatorAbstractWrapper<T, T>
 		ret = ComparatorHashCode.get().compare(type1, type2);
 		if (ret != 0) return ret;
 		
-		ret = ComparatorIdentityHashCode.get().compare(type1, type2);
+		ret = ComparatorIdentity.get().compare(type1, type2);
 		if (ret != 0) return ret;
 		
 		return 1;

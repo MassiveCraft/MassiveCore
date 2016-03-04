@@ -11,15 +11,15 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
-public class HelpCommand extends MassiveCommand
+public class MassiveCommandHelp extends MassiveCommand
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	protected static HelpCommand i = new HelpCommand();
-	public static HelpCommand get() { return i; }
-	private HelpCommand()
+	protected static MassiveCommandHelp i = new MassiveCommandHelp();
+	public static MassiveCommandHelp get() { return i; }
+	private MassiveCommandHelp()
 	{
 		// Aliases
 		this.addAliases("?", "h", "help");

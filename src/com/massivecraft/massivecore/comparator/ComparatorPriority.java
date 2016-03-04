@@ -17,7 +17,7 @@ public class ComparatorPriority extends ComparatorAbstract<Prioritized>
 	// -------------------------------------------- //
 	
 	@Override
-	public int compareInner(Prioritized prioritized1, Prioritized prioritized2)
+	public Integer compareInner(Prioritized prioritized1, Prioritized prioritized2)
 	{
 		// Equals
 		if (prioritized1.equals(prioritized2)) return 0;
@@ -35,7 +35,7 @@ public class ComparatorPriority extends ComparatorAbstract<Prioritized>
 		}
 		
 		// We should only return 0 if the items actually are equal.
-		return Integer.compare(prioritized1.hashCode(), prioritized2.hashCode());
+		return ComparatorIdentity.get().compare(prioritized1, prioritized2);
 	}
 	
 }

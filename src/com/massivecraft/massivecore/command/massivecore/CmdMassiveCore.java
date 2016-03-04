@@ -6,7 +6,7 @@ import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.VersionCommand;
+import com.massivecraft.massivecore.command.MassiveCommandVersion;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 public class CmdMassiveCore extends MassiveCommand
@@ -29,7 +29,7 @@ public class CmdMassiveCore extends MassiveCommand
 	public CmdMassiveCoreHearsound cmdMassiveCoreHearsound = new CmdMassiveCoreHearsound();
 	public CmdMassiveCoreBuffer cmdMassiveCoreBuffer = new CmdMassiveCoreBuffer();
 	public CmdMassiveCoreCmdurl cmdMassiveCoreCmdurl = new CmdMassiveCoreCmdurl();
-	public VersionCommand cmdMassiveCoreVersion = new VersionCommand(MassiveCore.get(), MassiveCorePerm.VERSION.node, "v", "version");
+	public MassiveCommandVersion cmdMassiveCoreVersion = new MassiveCommandVersion(MassiveCore.get(), MassiveCorePerm.VERSION.node, "v", "version");
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

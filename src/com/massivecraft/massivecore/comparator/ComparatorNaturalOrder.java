@@ -43,7 +43,7 @@ public class ComparatorNaturalOrder extends ComparatorAbstract<Object>
 	// -------------------------------------------- //
 
 	@Override
-	public int compareInner(Object object1, Object object2)
+	public Integer compareInner(Object object1, Object object2)
 	{
 		// Martin Pool
 		String a = object1.toString();

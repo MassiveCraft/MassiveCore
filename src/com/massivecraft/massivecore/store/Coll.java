@@ -14,9 +14,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateEqualsIgnoreCase;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -1019,4 +1022,32 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return name2instance.containsKey(this.getName());
 	}
 
+	
+	// -------------------------------------------- //
+	// NAME UTILITIES
+	// -------------------------------------------- //
+	
+	public E getByName(String name)
+	{
+		if (name == null) throw new NullPointerException("name");
+		
+		Predicate<String> predicate = PredicateEqualsIgnoreCase.get(name);
+		for (E entity : this.getAll())
+		{
+			if (entity == null) continue;
+			
+			if ( ! (entity instanceof Named)) continue;
+			Named named = (Named)entity;
+			
+			if (predicate.apply(named.getName())) return entity;
+		}
+		
+		return null;
+	}
+	
+	public boolean isNameTaken(String str)
+	{
+		return this.getByName(str) != null;
+	}
+	
 }

@@ -7,6 +7,7 @@ import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class Pager<T>
 	protected List<String> args = null;
 	public boolean hasArgs() { return this.args != null; }
 	public Pager<T> setArgs(List<String> args) { this.args = args; return this; }
+	public Pager<T> setArgs(String... args) { this.setArgs(Arrays.asList(args)); return this; }
 	public List<String> getArgs() { return this.args; }
 	public List<String> getArgsCalc()
 	{

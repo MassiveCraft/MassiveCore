@@ -1,6 +1,6 @@
 package com.massivecraft.massivecore.command;
 
-public class DeprecatedCommand extends MassiveCommand
+public class MassiveCommandDeprecated extends MassiveCommand
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -12,7 +12,7 @@ public class DeprecatedCommand extends MassiveCommand
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public DeprecatedCommand(MassiveCommand target, String... aliases)
+	public MassiveCommandDeprecated(MassiveCommand target, String... aliases)
 	{
 		// Fields
 		this.target = target;

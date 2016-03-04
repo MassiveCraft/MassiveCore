@@ -10,7 +10,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
-public class VersionCommand extends MassiveCommand
+public class MassiveCommandVersion extends MassiveCommand
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -29,12 +29,12 @@ public class VersionCommand extends MassiveCommand
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public VersionCommand(Plugin plugin, String permissionName, String... aliases)
+	public MassiveCommandVersion(Plugin plugin, String permissionName, String... aliases)
 	{
 		this(plugin, permissionName, Arrays.asList(aliases));
 	}
 	
-	public VersionCommand(Plugin plugin, String permissionName, Collection<String> aliases)
+	public MassiveCommandVersion(Plugin plugin, String permissionName, Collection<String> aliases)
 	{
 		this.plugin = plugin;
 		

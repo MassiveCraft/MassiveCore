@@ -18,7 +18,7 @@ public abstract class ComparatorAbstractTransformer<T, X> extends ComparatorAbst
 	// -------------------------------------------- //
 	
 	@Override
-	public int compareInner(T type1, T type2)
+	public Integer compareInner(T type1, T type2)
 	{
 		X x1 = this.transform(type1);
 		X x2 = this.transform(type2);
