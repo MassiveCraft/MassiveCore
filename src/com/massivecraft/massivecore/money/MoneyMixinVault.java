@@ -147,7 +147,7 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories, String message)
+	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories, Object message)
 	{
 		Economy economy = this.getEconomy();
 		

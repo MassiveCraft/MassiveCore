@@ -125,12 +125,12 @@ public class Money
 	// MOVE
 	// -------------------------------------------- //
 	
-	public static boolean move(Object from, Object to, Object by, double amount, Collection<String> categories, String message)
+	public static boolean move(Object from, Object to, Object by, double amount, Collection<String> categories, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.move(accountId(from), accountId(to), accountId(by), amount, categories, message);
 	}
-	public static boolean move(Object from, Object to, Object by, double amount, String category, String message)
+	public static boolean move(Object from, Object to, Object by, double amount, String category, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.move(accountId(from), accountId(to), accountId(by), amount, category, message);
@@ -155,12 +155,12 @@ public class Money
 	// SPAWN
 	// -------------------------------------------- //
 	
-	public static boolean spawn(Object to, Object by, double amount, Collection<String> categories, String message)
+	public static boolean spawn(Object to, Object by, double amount, Collection<String> categories, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.spawn(accountId(to), accountId(by), amount, categories, message);
 	}
-	public static boolean spawn(Object to, Object by, double amount, String category, String message)
+	public static boolean spawn(Object to, Object by, double amount, String category, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.spawn(accountId(to), accountId(by), amount, category, message);
@@ -185,12 +185,12 @@ public class Money
 	// DESPAWN
 	// -------------------------------------------- //
 	
-	public static boolean despawn(Object from, Object by, double amount, Collection<String> categories, String message)
+	public static boolean despawn(Object from, Object by, double amount, Collection<String> categories, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.despawn(accountId(from), accountId(by), amount, categories, message);
 	}
-	public static boolean despawn(Object from, Object by, double amount, String category, String message)
+	public static boolean despawn(Object from, Object by, double amount, String category, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.despawn(accountId(from), accountId(by), amount, category, message);
@@ -215,12 +215,12 @@ public class Money
 	// SET
 	// -------------------------------------------- //
 	
-	public static boolean set(Object account, Object by, double amount, Collection<String> categories, String message)
+	public static boolean set(Object account, Object by, double amount, Collection<String> categories, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.set(accountId(account), accountId(by), amount, categories, message);
 	}
-	public static boolean set(Object account, Object by, double amount, String category, String message)
+	public static boolean set(Object account, Object by, double amount, String category, Object message)
 	{
 		if (disabled()) return false;
 		return mixin.set(accountId(account), accountId(by), amount, category, message);

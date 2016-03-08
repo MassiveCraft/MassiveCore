@@ -35,7 +35,7 @@ public class MsonAdapter implements JsonDeserializer<Mson>, JsonSerializer<Mson>
 	@Override
 	public Mson deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return Mson.fromJson(json.getAsJsonObject());
+		return Mson.fromJson(json);
 	}
 
 }

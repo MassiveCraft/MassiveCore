@@ -26,7 +26,7 @@ import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 public class Mson implements Serializable
 {
@@ -1179,9 +1179,28 @@ public class Mson implements Serializable
 	{
 		return GSON.toJsonTree(this);
 	}
-	public static Mson fromJson(JsonObject json)
+	public static Mson fromJson(JsonElement json)
 	{
-		return GSON.fromJson(json, Mson.class);
+		// Escape the null.
+		if (json.isJsonNull())
+		{
+			return null;
+		}
+		
+		// If converting from an old system.
+		if (json.isJsonPrimitive() && ((JsonPrimitive) json).isString())
+		{
+			return fromParsedMessage(json.getAsString());
+		}
+		
+		// Just a normal mson.
+		if (json.isJsonObject())
+		{
+			return GSON.fromJson(json, Mson.class);
+		}
+		
+		// Something is horribly wrong.
+		throw new IllegalArgumentException("Neither string nor object: " + json);
 	}
 	
 	private transient String raw = null;

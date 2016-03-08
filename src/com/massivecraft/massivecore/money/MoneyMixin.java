@@ -44,26 +44,26 @@ public interface MoneyMixin
 	// MODIFY
 	// -------------------------------------------- //
 	
-	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories, String message);
-	public boolean move(String fromId, String toId, String byId, double amount, String category, String message);
+	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories, Object message);
+	public boolean move(String fromId, String toId, String byId, double amount, String category, Object message);
 	public boolean move(String fromId, String toId, String byId, double amount, Collection<String> categories);
 	public boolean move(String fromId, String toId, String byId, double amount, String category);
 	public boolean move(String fromId, String toId, String byId, double amount);
 	
-	public boolean spawn(String toId, String byId, double amount, Collection<String> categories, String message);
-	public boolean spawn(String toId, String byId, double amount, String category, String message);
+	public boolean spawn(String toId, String byId, double amount, Collection<String> categories, Object message);
+	public boolean spawn(String toId, String byId, double amount, String category, Object message);
 	public boolean spawn(String toId, String byId, double amount, Collection<String> categories);
 	public boolean spawn(String toId, String byId, double amount, String category);
 	public boolean spawn(String toId, String byId, double amount);
 	
-	public boolean despawn(String fromId, String byId, double amount, Collection<String> categories, String message);
-	public boolean despawn(String fromId, String byId, double amount, String category, String message);
+	public boolean despawn(String fromId, String byId, double amount, Collection<String> categories, Object message);
+	public boolean despawn(String fromId, String byId, double amount, String category, Object message);
 	public boolean despawn(String fromId, String byId, double amount, Collection<String> categories);
 	public boolean despawn(String fromId, String byId, double amount, String category);
 	public boolean despawn(String fromId, String byId, double amount);
 	
-	public boolean set(String accountId, String byId, double amount, Collection<String> categories, String message);
-	public boolean set(String accountId, String byId, double amount, String category, String message);
+	public boolean set(String accountId, String byId, double amount, Collection<String> categories, Object message);
+	public boolean set(String accountId, String byId, double amount, String category, Object message);
 	public boolean set(String accountId, String byId, double amount, Collection<String> categories);
 	public boolean set(String accountId, String byId, double amount, String category);
 	public boolean set(String accountId, String byId, double amount);
