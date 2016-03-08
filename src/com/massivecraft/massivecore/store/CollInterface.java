@@ -7,18 +7,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.massivecraft.massivecore.Active;
+import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-public interface CollInterface<E extends Entity<E>> extends Named, Active
+public interface CollInterface<E extends Entity<E>> extends Named, Active, Identified
 {
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
 	
-	public String getName();
+	public String getId();
 	public String getBasename();
 	public String getUniverse();
 	public Class<E> getEntityClass();

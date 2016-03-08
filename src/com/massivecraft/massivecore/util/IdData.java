@@ -1,16 +1,19 @@
 package com.massivecraft.massivecore.util;
 
-public class IdData
+import com.massivecraft.massivecore.Identified;
+import com.massivecraft.massivecore.Named;
+
+public class IdData implements Identified, Named
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
 	protected final String id;
-	public String getId() { return this.id; }
+	@Override public String getId() { return this.id; }
 	
 	protected final String name;
-	public String getName() { return this.name; }
+	@Override public String getName() { return this.name; }
 	
 	protected final long millis;
 	public long getMillis() { return this.millis; }

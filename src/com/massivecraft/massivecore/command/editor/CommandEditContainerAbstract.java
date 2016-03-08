@@ -192,8 +192,8 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 			}
 			else
 			{
-				this.addParameter(null, TypeNullable.get(keyType, "any", "all"), keyType.getTypeName(), "any");
-				this.addParameter(null, TypeNullable.get(valueType, "any", "all"), valueType.getTypeName(), "any", true);
+				this.addParameter(null, TypeNullable.get(keyType, "any", "all"), keyType.getName(), "any");
+				this.addParameter(null, TypeNullable.get(valueType, "any", "all"), valueType.getName(), "any", true);
 			}
 		}
 	}

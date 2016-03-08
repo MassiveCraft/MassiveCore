@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.store;
 
 import java.util.Objects;
 
+import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.accessor.Accessor;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -15,7 +16,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 // Self referencing generic.
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
-public class Entity<E extends Entity<E>>
+public class Entity<E extends Entity<E>> implements Identified
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -27,7 +28,7 @@ public class Entity<E extends Entity<E>>
 	
 	protected transient String id;
 	protected void setId(String id) { this.id = id; }
-	public String getId() { return this.id; }
+	@Override public String getId() { return this.id; }
 	
 	public String getUniverse()
 	{

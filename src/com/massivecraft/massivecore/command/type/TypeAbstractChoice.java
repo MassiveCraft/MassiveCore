@@ -147,14 +147,14 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		String message;
 		if (matches.isEmpty())
 		{
-			message = String.format(MESSAGE_MATCH_NOTHING, this.getTypeName(), arg);
+			message = String.format(MESSAGE_MATCH_NOTHING, this.getName(), arg);
 			exception.addMessage(message);
 			suggestLevenshtein = true;
 		}
 		// Ambiguous
 		else
 		{
-			message = String.format(MESSAGE_MATCH_AMBIGUOUS, matches.size(), this.getTypeName(), arg);
+			message = String.format(MESSAGE_MATCH_AMBIGUOUS, matches.size(), this.getName(), arg);
 			exception.addMessage(message);
 			suggestAmbiguous = true;
 		}
@@ -169,7 +169,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		}
 		else if (suggestNone)
 		{
-			message = String.format(MESSAGE_AVAILABLE_EMPTY, this.getTypeName());
+			message = String.format(MESSAGE_AVAILABLE_EMPTY, this.getName());
 			exception.addMessage(message);
 		}
 		else

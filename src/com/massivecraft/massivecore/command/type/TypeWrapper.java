@@ -24,9 +24,9 @@ public class TypeWrapper<T> extends TypeAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
-		return this.getInnerType().getTypeName();
+		return this.getInnerType().getName();
 	}
 	
 	@Override

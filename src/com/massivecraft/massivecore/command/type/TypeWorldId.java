@@ -20,7 +20,7 @@ public class TypeWorldId extends TypeAbstractChoice<String>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "world";
 	}

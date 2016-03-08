@@ -80,9 +80,9 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
-		return INNER.getTypeName();
+		return INNER.getName();
 	}
 	
 	// -------------------------------------------- //

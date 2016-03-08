@@ -9,19 +9,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.mson.Mson;
 
-public interface Type<T>
+public interface Type<T> extends Named
 {
 	// -------------------------------------------- //
 	// META
 	// -------------------------------------------- //
 	
 	// Human friendly name
-	public String getTypeName();
+	public String getName();
 	
 	// -------------------------------------------- //
 	// INNER

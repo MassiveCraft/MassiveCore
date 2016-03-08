@@ -59,8 +59,8 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
 	
-	protected final String name;
-	@Override public String getName() { return this.name; }
+	protected final String id;
+	@Override public String getId() { return this.id; }
 	
 	protected final String basename;
 	@Override public String getBasename() { return this.basename; }
@@ -930,15 +930,15 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public Coll(String name, Class<E> entityClass, Db db, MassivePlugin plugin)
+	public Coll(String id, Class<E> entityClass, Db db, MassivePlugin plugin)
 	{
 		// Setup the name and the parsed parts
-		this.name = name;
-		String[] nameParts = this.name.split("\\@");
-		this.basename = nameParts[0];
-		if (nameParts.length > 1)
+		this.id = id;
+		String[] idParts = this.id.split("\\@");
+		this.basename = idParts[0];
+		if (idParts.length > 1)
 		{
-			this.universe = nameParts[1];
+			this.universe = idParts[1];
 		}
 		else
 		{

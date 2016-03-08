@@ -16,7 +16,7 @@ public class TypeDouble extends TypeAbstractNumber<Double>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "number with decimals";
 	}

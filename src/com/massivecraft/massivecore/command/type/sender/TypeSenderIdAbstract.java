@@ -68,7 +68,7 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		switch (presence)
 		{
@@ -178,7 +178,7 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 	
 	public String getErrorMessageForArg(String arg)
 	{
-		return Txt.parse("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
+		return Txt.parse("<b>No %s matches \"<h>%s<b>\".", this.getName(), arg);
 	}
 	
 	public String getSenderIdFor(String arg)

@@ -17,7 +17,7 @@ public class CommandEditUsed<O> extends CommandEditSimple<CommandSender, O>
 		this.setAliases("used", "selected");
 		
 		// Desc
-		this.setDesc("edit used " + this.getProperty().getValueType().getTypeName());
+		this.setDesc("edit used " + this.getProperty().getValueType().getName());
 	}
 	
 }

@@ -56,7 +56,7 @@ public abstract class TypeAbstractSelect<T> extends TypeAbstract<T> implements A
 	public MassiveException createExceptionForInvalidArg(String arg, CommandSender sender)
 	{
 		MassiveException ret = new MassiveException();
-		ret.addMsg("<b>No %s matches \"<h>%s<b>\".", this.getTypeName(), arg);
+		ret.addMsg("<b>No %s matches \"<h>%s<b>\".", this.getName(), arg);
 		
 		if (this.canList(sender))
 		{			
@@ -67,7 +67,7 @@ public abstract class TypeAbstractSelect<T> extends TypeAbstract<T> implements A
 			
 			if (names.isEmpty())
 			{
-				ret.addMsg("<i>Note: There is no %s available.", this.getTypeName());
+				ret.addMsg("<i>Note: There is no %s available.", this.getName());
 			}
 			else if ( ! matches.isEmpty() && matches.size() <= LIST_COUNT_MAX)
 			{

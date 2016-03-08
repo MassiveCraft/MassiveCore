@@ -67,7 +67,7 @@ public class TypeBoolean extends TypeAbstractChoice<Boolean>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "toggle";
 	}

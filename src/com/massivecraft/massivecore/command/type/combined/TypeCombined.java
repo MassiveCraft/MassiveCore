@@ -130,7 +130,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		// Create
 		List<String> parts = new MassiveList<String>();
@@ -138,7 +138,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		// Fill
 		for (Type<?> type : this.getInnerTypes())
 		{
-			parts.add(type.getTypeName());
+			parts.add(type.getName());
 		}
 		
 		// Return

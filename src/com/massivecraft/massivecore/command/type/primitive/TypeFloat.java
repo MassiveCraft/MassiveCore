@@ -16,7 +16,7 @@ public class TypeFloat extends TypeAbstractNumber<Float>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "number with decimals";
 	}

@@ -28,7 +28,7 @@ public class TypeDate extends TypeAbstractSimple<Date>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "YYYY-MM-DD date";
 	}

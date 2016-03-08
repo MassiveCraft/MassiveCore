@@ -21,7 +21,7 @@ public class TypeString extends TypeAbstract<String>
 	// -------------------------------------------- //
 
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "text";
 	}

@@ -20,7 +20,7 @@ public class TypeStringId extends TypeString
 	// -------------------------------------------- //
 
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "text id";
 	}

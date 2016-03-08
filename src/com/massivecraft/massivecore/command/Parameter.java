@@ -148,7 +148,7 @@ public class Parameter<T>
 	// Without defaultValue, name, reqFromConsole and defaultDesc.
 	public Parameter(Type<T> type)
 	{
-		this(type, REQUIRED_FROM_CONSOLE_DEFAULT, type.getTypeName(), DEFAULT_DESC_DEFAULT);
+		this(type, REQUIRED_FROM_CONSOLE_DEFAULT, type.getName(), DEFAULT_DESC_DEFAULT);
 	}
 	
 	// -------------------------------------------- //

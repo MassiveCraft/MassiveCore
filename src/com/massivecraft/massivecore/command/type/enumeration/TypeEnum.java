@@ -29,7 +29,7 @@ public class TypeEnum<T extends Enum<T>> extends TypeAbstractChoice<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return Txt.getNicedEnumString(this.getClazz().getSimpleName());
 	}

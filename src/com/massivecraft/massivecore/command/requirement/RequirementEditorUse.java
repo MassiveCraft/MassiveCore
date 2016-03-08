@@ -34,7 +34,7 @@ public class RequirementEditorUse extends RequirementAbstract
 		if ( ! (command instanceof CommandEditAbstract)) return Txt.parse("<b>This is not an editor!");
 		CommandEditAbstract<?, ?> commandEditor = (CommandEditAbstract<?, ?>)command;
 		
-		String noun = commandEditor.getSettings().getObjectType().getTypeName();
+		String noun = commandEditor.getSettings().getObjectType().getName();
 		String aan = Txt.aan(noun);
 		
 		return Txt.parse("<b>You must use %s %s to edit it.", aan, noun);

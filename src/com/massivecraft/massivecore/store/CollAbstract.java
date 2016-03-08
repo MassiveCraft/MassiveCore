@@ -15,7 +15,13 @@ public abstract class CollAbstract<E extends Entity<E>> implements CollInterface
 	// -------------------------------------------- //
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
-	// This is all placed in the implementation.
+	
+	@Override
+	public String getName()
+	{
+		return this.getId();
+	}
+	
 	
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM

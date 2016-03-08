@@ -24,7 +24,7 @@ public class TypeMillisDiff extends TypeAbstractException<Long>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "time amount";
 	}

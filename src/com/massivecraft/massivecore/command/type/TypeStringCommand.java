@@ -39,7 +39,7 @@ public class TypeStringCommand extends TypeAbstract<String>
 	}
 
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "command";
 	}

@@ -113,14 +113,14 @@ public class EditSettings<O>
 		{
 			O ret = this.getUsed(sender);
 			if (ret != null) return ret;
-			String noun = this.getObjectType().getTypeName();
+			String noun = this.getObjectType().getName();
 			String aan = Txt.aan(noun);
 			throw new MassiveException().addMsg("<b>You must select %s %s for use to skip the optional argument.", aan, noun);
 		}
 		if (ALIASES_USED.contains(arg))
 		{
 			O ret = this.getUsed(sender);
-			if (ret == null) throw new MassiveException().addMsg("<b>You have no selected %s.", this.getObjectType().getTypeName() );
+			if (ret == null) throw new MassiveException().addMsg("<b>You have no selected %s.", this.getObjectType().getName() );
 			return ret;
 		}
 		

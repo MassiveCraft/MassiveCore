@@ -35,14 +35,14 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
-		return this.getCollectionTypeName() + " of " + this.getInnerType().getTypeName();
+		return this.getCollectionTypeName() + " of " + this.getInnerType().getName();
 	}
 	
 	public String getCollectionTypeName()
 	{
-		return super.getTypeName();
+		return super.getName();
 	}
 	
 	// -------------------------------------------- //

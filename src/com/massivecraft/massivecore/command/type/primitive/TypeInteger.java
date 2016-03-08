@@ -16,7 +16,7 @@ public class TypeInteger extends TypeAbstractNumber<Integer>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		return "number";
 	}

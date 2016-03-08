@@ -16,7 +16,7 @@ import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
-public abstract class MassivePlugin extends JavaPlugin implements Listener
+public abstract class MassivePlugin extends JavaPlugin implements Listener, Named
 {
 	// -------------------------------------------- //
 	// FIELDS

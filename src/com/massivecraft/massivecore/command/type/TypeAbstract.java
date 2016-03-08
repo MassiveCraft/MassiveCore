@@ -13,6 +13,8 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.Colorized;
+import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -22,7 +24,6 @@ import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.comparator.ComparatorHashCode;
 import com.massivecraft.massivecore.mson.Mson;
-import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
@@ -52,7 +53,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getTypeName()
+	public String getName()
 	{
 		int prefixLength = "Type".length();
 		String name = this.getClass().getSimpleName();
@@ -111,6 +112,11 @@ public abstract class TypeAbstract<T> implements Type<T>
 	@Override
 	public ChatColor getVisualColor(T value, CommandSender sender)
 	{
+		if (value instanceof Colorized)
+		{
+			Colorized colorized = (Colorized) value;
+			return colorized.getColor();
+		}
 		return this.visualColor;
 	}
 	@Override
@@ -228,10 +234,10 @@ public abstract class TypeAbstract<T> implements Type<T>
 	@Override
 	public String getIdInner(T value)
 	{
-		if (value instanceof Entity)
+		if (value instanceof Identified)
 		{
-			Entity<?> entity = (Entity<?>)value;
-			return entity.getId();
+			Identified identified = (Identified)value;
+			return identified.getId();
 		}
 		else if (value instanceof String || value instanceof Number || value instanceof Boolean)
 		{
