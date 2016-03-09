@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,16 @@ import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerializer<Inventory>
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final int SIZE_PLAYER_STORAGE = 36;
+	public static final int INDEX_PLAYER_STORAGE_FROM = 0;
+	public static final int INDEX_PLAYER_STORAGE_TO = SIZE_PLAYER_STORAGE - 1;
+	
+	public static final int INDEX_PLAYER_SHIELD = 40;
+	
+	// -------------------------------------------- //
 	// FIELD NAME CONSTANTS
 	// -------------------------------------------- //
 	
@@ -36,6 +47,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 	public static final String CHESTPLATE = "chestplate";
 	public static final String LEGGINGS = "leggings";
 	public static final String BOOTS = "boots";
+	public static final String SHIELD = "shield";
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -84,7 +96,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 			// Cast to PlayerInventory
 			PlayerInventory psrc = (PlayerInventory)src;
 			
-			// helmet
+			// Helmet
 			itemStack = psrc.getHelmet();
 			if (itemStack != null)
 			{
@@ -92,7 +104,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 				jsonInventory.add(HELMET, jsonItemStack);
 			}
 			
-			// chestplate
+			// Chestplate
 			itemStack = psrc.getChestplate();
 			if (itemStack != null)
 			{
@@ -100,7 +112,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 				jsonInventory.add(CHESTPLATE, jsonItemStack);
 			}
 			
-			// leggings
+			// Leggings
 			itemStack = psrc.getLeggings();
 			if (itemStack != null)
 			{
@@ -108,13 +120,25 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 				jsonInventory.add(LEGGINGS, jsonItemStack);
 			}
 			
-			// boots
+			// Boots
 			itemStack = psrc.getBoots();
 			if (itemStack != null)
 			{
 				jsonItemStack = MassiveCore.gson.toJsonTree(itemStack, ItemStack.class);
 				jsonInventory.add(BOOTS, jsonItemStack);
 			}
+			
+			// Shield (Minecraft 1.9)
+			itemStack = null;
+			if (INDEX_PLAYER_SHIELD < itemStacks.length) itemStack = itemStacks[INDEX_PLAYER_SHIELD];
+			if (itemStack != null)
+			{
+				jsonItemStack = MassiveCore.gson.toJsonTree(itemStack, ItemStack.class);
+				jsonInventory.add(SHIELD, jsonItemStack);
+			}
+			
+			// Storage Range (Minecraft 1.9)
+			itemStacks = range(itemStacks, INDEX_PLAYER_STORAGE_FROM, INDEX_PLAYER_STORAGE_TO);
 		}
 		else
 		{
@@ -157,13 +181,13 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 		if (jsonSize.isString() && jsonSize.getAsString().equals(PLAYER))
 		{
 			// We use 36 here since it's the size of the player inventory (without armor)
-			size = 36;
+			size = SIZE_PLAYER_STORAGE;
 			
 			// This is a PlayerInventory
 			ret = Mixin.createPlayerInventory();
 			PlayerInventory pret = (PlayerInventory)ret;
 			
-			// helmet
+			// Helmet
 			if (jsonInventory.has(HELMET))
 			{
 				jsonItemStack = jsonInventory.get(HELMET);
@@ -171,7 +195,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 				pret.setHelmet(itemStack);
 			}
 			
-			// chestplate
+			// Chestplate
 			if (jsonInventory.has(CHESTPLATE))
 			{
 				jsonItemStack = jsonInventory.get(CHESTPLATE);
@@ -179,7 +203,7 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 				pret.setChestplate(itemStack);
 			}
 			
-			// leggings
+			// Leggings
 			if (jsonInventory.has(LEGGINGS))
 			{
 				jsonItemStack = jsonInventory.get(LEGGINGS);
@@ -187,12 +211,20 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 				pret.setLeggings(itemStack);
 			}
 			
-			// boots
+			// Boots
 			if (jsonInventory.has(BOOTS))
 			{
 				jsonItemStack = jsonInventory.get(BOOTS);
 				itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
 				pret.setBoots(itemStack);
+			}
+			
+			// Shield (Minecraft 1.9)
+			if (jsonInventory.has(SHIELD) && INDEX_PLAYER_SHIELD < pret.getSize())
+			{
+				jsonItemStack = jsonInventory.get(SHIELD);
+				itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
+				pret.setItem(INDEX_PLAYER_SHIELD, itemStack);
 			}
 		}
 		else
@@ -205,18 +237,29 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 		}
 		
 		// Now process content
-		ItemStack[] itemStacks = new ItemStack[size];
 		for (int i = 0; i < size; i++)
 		{
-			// Fetch the jsonItemStack or mark it as empty and continue
 			String stackIdx = String.valueOf(i);
 			jsonItemStack = jsonInventory.get(stackIdx);
+			if (jsonItemStack == null) continue;
 			itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
-			itemStacks[i] = itemStack;
+			if (itemStack == null) continue;
+			ret.setItem(i, itemStack);
 		}
-		ret.setContents(itemStacks);
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	// This is a modified copyOfRange implementation.
+	// It returns the original when possible.
+	public static <T> T[] range(T[] original, int from, int to)
+	{
+		if (from == 0 && to == original.length - 1) return original;
+		return Arrays.copyOfRange(original, from, to);
 	}
 	
 }
