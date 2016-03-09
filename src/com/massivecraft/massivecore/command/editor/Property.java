@@ -85,7 +85,7 @@ public abstract class Property<O, V> implements Named
 		return this.getRaw(object);
 	}
 	
-	public V setValue(O object, V value)
+	public V setValue(CommandSender sender, O object, V value)
 	{
 		// Get Before
 		V before = this.getRaw(object);
@@ -105,7 +105,7 @@ public abstract class Property<O, V> implements Named
 		if (entity != null) entity.changed();
 		
 		// On Change
-		this.onChange(object, before, value);
+		this.onChange(sender, object, before, value);
 		
 		// Return Before
 		return before;
@@ -115,7 +115,7 @@ public abstract class Property<O, V> implements Named
 	// ON CHANGE
 	// -------------------------------------------- //
 	
-	public void onChange(O object, V before, V after)
+	public void onChange(CommandSender sender, O object, V before, V after)
 	{
 		
 	}

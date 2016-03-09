@@ -158,7 +158,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 
 		// Apply
 		// We set the new property value.
-		this.getProperty().setValue(this.getObject(), after);
+		this.getProperty().setValue(sender, this.getObject(), after);
 
 		// After
 		// We inform what the value is after.
@@ -245,7 +245,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	
 	public V setValue(V value)
 	{
-		return this.getProperty().setValue(this.getObject(), value);
+		return this.getProperty().setValue(sender, this.getObject(), value);
 	}
 	
 	public Entry<O, V> getInheritedEntry()

@@ -74,7 +74,7 @@ public class EditSettings<O>
 	
 	public void setUsed(CommandSender sender, O used)
 	{
-		this.getUsedProperty().setValue(sender, used);
+		this.getUsedProperty().setValue(sender, sender, used);
 	}
 	
 	// -------------------------------------------- //
