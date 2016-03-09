@@ -68,7 +68,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 			Mson part = Mson.mson(
 				Mson.mson(String.valueOf(index)).color(ChatColor.WHITE),
 				" ",
-				innerType.getVisualMsonInner(element, sender)
+				innerType.getVisualMson(element, sender)
 			);
 			parts.add(part);
 		}
@@ -97,7 +97,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		for (E element : elements)
 		{
 			index++;
-			String part = Txt.parse("<white>%d <yellow>%s", index, innerType.getVisualInner(element, sender));
+			String part = Txt.parse("<white>%d <yellow>%s", index, innerType.getVisual(element, sender));
 			parts.add(part);
 		}
 		
@@ -123,7 +123,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		Type<E> innerType = this.getInnerType();
 		for (E element : elements)
 		{
-			String part = innerType.getNameInner(element);
+			String part = innerType.getName(element);
 			parts.add(part);
 		}
 		
@@ -149,7 +149,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		List<E> elements = this.getContainerElementsOrdered(container);
 		for (E element : elements)
 		{
-			String part = innerType.getIdInner(element);
+			String part = innerType.getId(element);
 			parts.add(part);
 		}
 		

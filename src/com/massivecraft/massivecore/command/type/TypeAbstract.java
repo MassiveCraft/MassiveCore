@@ -26,6 +26,7 @@ import com.massivecraft.massivecore.comparator.ComparatorHashCode;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.ContainerUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -141,7 +142,9 @@ public abstract class TypeAbstract<T> implements Type<T>
 	@Override
 	public Mson getVisualMsonInner(T value, CommandSender sender)
 	{
-		return Mson.fromParsedMessage(this.getVisualInner(value, sender));
+		String visualInner = this.getVisualInner(value, sender);
+		if (visualInner == null) MUtil.stackTraceDebug("visualInner null for + " + value);
+		return Mson.fromParsedMessage(visualInner);
 	}
 	
 	@Override

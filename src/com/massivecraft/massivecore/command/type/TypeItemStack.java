@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.util.Txt;
 
 public class TypeItemStack extends TypeAbstract<ItemStack>
 {
@@ -22,10 +24,9 @@ public class TypeItemStack extends TypeAbstract<ItemStack>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getVisualInner(ItemStack value, CommandSender sender)
+	public Mson getVisualMsonInner(ItemStack value, CommandSender sender)
 	{
-		// TODO: Implement
-		return null;
+		return Txt.createItemMson(value);
 	}
 
 	@Override
