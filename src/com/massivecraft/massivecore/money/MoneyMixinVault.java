@@ -71,13 +71,14 @@ public class MoneyMixinVault extends MoneyMixinAbstract
 		else
 		{
 			int fractionalDigits = this.fractionalDigits();
+			amount = prepare(amount);
 			if (fractionalDigits < 0)
 			{
 				return String.valueOf(amount);
 			}
 			else if (fractionalDigits == 0)
 			{
-				return String.valueOf((int)Math.round(amount));
+				return String.valueOf((int)amount);
 			}
 			else
 			{

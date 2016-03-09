@@ -27,7 +27,7 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 		if (fractionalDigits < 0) return amount;
 		
 		// 0 means no fractional digits
-		if (fractionalDigits == 0) return Math.ceil(amount);
+		if (fractionalDigits == 0) return moneyCeil(amount);
 		
 		// OK! I'll have to calculate :P
 		int factor = (int) Math.round(Math.pow(10, fractionalDigits));
@@ -36,6 +36,12 @@ public abstract class MoneyMixinAbstract implements MoneyMixin
 		amount = amount / factor;
 		
 		return amount;
+	}
+	
+	public static double moneyCeil(double amount)
+	{
+		if (amount < 0) return Math.floor(amount);
+		else return Math.ceil(amount);
 	}
 	
 	// -------------------------------------------- //
