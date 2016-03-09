@@ -34,7 +34,13 @@ public class MassiveException extends Exception
 	public MassiveException setMsg(String msg, Object... objects) { this.messages = Mson.parse(msg, objects); return this; }
 	
 	// Add single
-	public MassiveException addMessage(Object part) { this.messages = this.messages.add(Mson.mson("\n", part)); return this; }
+	public MassiveException addMessage(Object part)
+	{
+		// Only add a newline if not empty.
+		Mson mson = this.messages.isEmpty() ? Mson.mson(part) : Mson.mson("\n", part);
+		this.messages = this.messages.add(mson);
+		return this;
+	}
 	public MassiveException addMsg(String msg) { return this.addMessage(Mson.parse(msg)); }
 	public MassiveException addMsg(String msg, Object... args) { return this.addMessage(Mson.parse(msg, args)); }
 	
