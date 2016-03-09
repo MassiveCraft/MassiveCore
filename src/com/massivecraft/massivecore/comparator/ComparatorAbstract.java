@@ -2,9 +2,9 @@ package com.massivecraft.massivecore.comparator;
 
 import java.util.Comparator;
 
+import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.Prioritized;
-import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 
 public class ComparatorAbstract<T> implements Comparator<T>
@@ -68,12 +68,12 @@ public class ComparatorAbstract<T> implements Comparator<T>
 			if (ret != null) return ret;
 		}
 		
-		// EntityId
-		if (type1 instanceof Entity<?>)
+		// Identified
+		if (type1 instanceof Identified)
 		{
-			Entity<?> entity1 = (Entity<?>)type1;
-			Entity<?> entity2 = (Entity<?>)type2;
-			ret = MUtil.compare(entity1.getId(), entity2.getId());
+			Identified identified1 = (Identified)type1;
+			Identified identified2 = (Identified)type2;
+			ret = MUtil.compare(identified1.getId(), identified2.getId());
 			if (ret != null) return ret;
 		}
 		
