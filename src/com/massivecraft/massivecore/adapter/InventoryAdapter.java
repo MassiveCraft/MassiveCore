@@ -255,11 +255,12 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 	// -------------------------------------------- //
 	
 	// This is a modified copyOfRange implementation.
+	// Both boundaries are inclusive.
 	// It returns the original when possible.
 	public static <T> T[] range(T[] original, int from, int to)
 	{
 		if (from == 0 && to == original.length - 1) return original;
-		return Arrays.copyOfRange(original, from, to);
+		return Arrays.copyOfRange(original, from, to + 1);
 	}
 	
 }
