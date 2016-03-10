@@ -29,7 +29,7 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 	// FIELDS
 	// -------------------------------------------- //
 	
-	protected ItemStackAdapterInner inner;
+	private ItemStackAdapterInner inner;
 	public ItemStackAdapterInner getInner() { return this.inner; }
 	public void setInner(ItemStackAdapterInner inner) { this.inner = inner; }
 	
@@ -39,18 +39,30 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 	
 	public ItemStackAdapter()
 	{
-		// 1.7
-		this.inner = ItemStackAdapterInnerV1_7.get();
+		// 1.9
+		try
+		{
+			this.inner = ItemStackAdapterInner19.get();
+			return;
+		}
+		catch (Throwable t)
+		{
+			
+		}
 		
 		// 1.8
 		try
 		{
-			this.inner = ItemStackAdapterInnerV1_8.get();
+			this.inner = ItemStackAdapterInner18.get();
+			return;
 		}
 		catch (Throwable t)
 		{
-			return;
+			
 		}
+		
+		// 1.7
+		this.inner = ItemStackAdapterInner17.get();
 	}
 	
 	// -------------------------------------------- //

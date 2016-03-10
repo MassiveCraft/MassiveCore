@@ -8,9 +8,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -23,7 +25,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 @SuppressWarnings("deprecation")
-public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
+public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
 {
 	// -------------------------------------------- //
 	// CONSTANTS: NAMES
@@ -40,26 +42,38 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static ItemStackAdapterInnerV1_8 i = new ItemStackAdapterInnerV1_8();
-	public static ItemStackAdapterInnerV1_8 get() { return i; }
+	public static ItemStackAdapterInner18 i = new ItemStackAdapterInner18();
+	public static ItemStackAdapterInner18 get() { return i; }
 
+	// -------------------------------------------- //
+	// PROVOKE
+	// -------------------------------------------- //
+	
+	@Override
+	public Object provoke()
+	{
+		ItemStack stack = new ItemStack(Material.STONE);
+		ItemMeta meta = stack.getItemMeta();
+		return meta.spigot().isUnbreakable();
+	}
+	
 	// -------------------------------------------- //
 	// UNSPECIFIC META
 	// -------------------------------------------- //
 
 	@Override
-	public void transferMetaUnspecific(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferMetaUnspecific(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
-		super.transferMetaUnspecific(meta, json, meta2json);
-		this.transferUnbreakable(meta, json, meta2json);
-		this.transferItemFlags(meta, json, meta2json);
+		super.transferMetaUnspecific(stack, json, meta2json, meta);
+		this.transferUnbreakable(stack, json, meta2json, meta);
+		this.transferItemFlags(stack, json, meta2json, meta);
 	}
 
 	// -------------------------------------------- //
 	// UNSPECIFIC META: UNBREAKABLE
 	// -------------------------------------------- //
 
-	public void transferUnbreakable(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferUnbreakable(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if (meta2json)
 		{
@@ -79,7 +93,7 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	// UNSPECIFIC META: ITEM FLAGS
 	// -------------------------------------------- //
 
-	public void transferItemFlags(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferItemFlags(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if (meta2json)
 		{
@@ -144,15 +158,15 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	// -------------------------------------------- //
 
 	@Override
-	public void transferMetaSpecific(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferMetaSpecific(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if (meta instanceof BannerMeta)
 		{
-			this.transferBanner((BannerMeta) meta, json, meta2json);
+			this.transferBanner(stack, json, meta2json, (BannerMeta)meta);
 		}
 		else
 		{
-			super.transferMetaSpecific(meta, json, meta2json);
+			super.transferMetaSpecific(stack, json, meta2json, meta);
 		}
 	}
 	
@@ -165,7 +179,7 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	// Different servers might serialize different heads differently.
 	
 	@Override
-	public void transferSkull(SkullMeta meta, JsonObject json, boolean meta2json)
+	public void transferSkull(ItemStack stack, JsonObject json, boolean meta2json, SkullMeta meta)
 	{
 		if (meta2json)
 		{
@@ -198,17 +212,17 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	// SPECIFIC META: BANNER
 	// -------------------------------------------- //
 
-	public void transferBanner(BannerMeta meta, JsonObject json, boolean meta2json)
+	public void transferBanner(ItemStack stack, JsonObject json, boolean meta2json, BannerMeta meta)
 	{
-		this.transferBannerBase(meta, json, meta2json);
-		this.transferBannerPatterns(meta, json, meta2json);
+		this.transferBannerBase(stack, json, meta2json, meta);
+		this.transferBannerPatterns(stack, json, meta2json, meta);
 	}
 	
 	// -------------------------------------------- //
 	// SPECIFIC META: BANNER BASE
 	// -------------------------------------------- //
 	
-	public void transferBannerBase(BannerMeta meta, JsonObject json, boolean meta2json)
+	public void transferBannerBase(ItemStack stack, JsonObject json, boolean meta2json, BannerMeta meta)
 	{
 		if (meta2json)
 		{
@@ -235,7 +249,7 @@ public class ItemStackAdapterInnerV1_8 extends ItemStackAdapterInnerV1_7
 	// SPECIFIC META: BANNER PATTERNS
 	// -------------------------------------------- //
 	
-	public void transferBannerPatterns(BannerMeta meta, JsonObject json, boolean meta2json)
+	public void transferBannerPatterns(ItemStack stack, JsonObject json, boolean meta2json, BannerMeta meta)
 	{
 		if (meta2json)
 		{

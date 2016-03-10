@@ -32,7 +32,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 @SuppressWarnings("deprecation")
-public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
+public class ItemStackAdapterInner17 implements ItemStackAdapterInner
 {
 	// -------------------------------------------- //
 	// CONSTANTS: NAMES
@@ -73,9 +73,23 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static ItemStackAdapterInnerV1_7 i = new ItemStackAdapterInnerV1_7();
-	public static ItemStackAdapterInnerV1_7 get() { return i; }
+	public static ItemStackAdapterInner17 i = new ItemStackAdapterInner17();
+	public static ItemStackAdapterInner17 get() { return i; }
+	public ItemStackAdapterInner17()
+	{
+		this.provoke();
+	}
 
+	// -------------------------------------------- //
+	// PROVOKE
+	// -------------------------------------------- //
+	
+	@Override
+	public Object provoke()
+	{
+		return null;
+	}
+	
 	// -------------------------------------------- //
 	// WRITE
 	// -------------------------------------------- //
@@ -137,7 +151,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 		this.transferBasic(stack, json, stack2json);
 
 		ItemMeta meta = stack.getItemMeta();
-		this.transferMeta(meta, json, stack2json);
+		this.transferMeta(stack, json, stack2json, meta);
 
 		if (stack2json == false)
 		{
@@ -221,29 +235,29 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// META
 	// -------------------------------------------- //
 
-	public void transferMeta(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferMeta(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
-		this.transferMetaUnspecific(meta, json, meta2json);
-		this.transferMetaSpecific(meta, json, meta2json);
+		this.transferMetaUnspecific(stack, json, meta2json, meta);
+		this.transferMetaSpecific(stack, json, meta2json, meta);
 	}
 
 	// -------------------------------------------- //
 	// UNSPECIFIC META
 	// -------------------------------------------- //
 
-	public void transferMetaUnspecific(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferMetaUnspecific(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
-		this.transferName(meta, json, meta2json);
-		this.transferLore(meta, json, meta2json);
-		this.transferEnchants(meta, json, meta2json);
-		this.transferRepaircost(meta, json, meta2json);
+		this.transferName(stack, json, meta2json, meta);
+		this.transferLore(stack, json, meta2json, meta);
+		this.transferEnchants(stack, json, meta2json, meta);
+		this.transferRepaircost(stack, json, meta2json, meta);
 	}
 
 	// -------------------------------------------- //
 	// UNSPECIFIC META: NAME
 	// -------------------------------------------- //
 
-	public void transferName(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferName(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if (meta2json)
 		{
@@ -262,7 +276,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// UNSPECIFIC META: LORE
 	// -------------------------------------------- //
 
-	public void transferLore(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferLore(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if (meta2json)
 		{
@@ -281,7 +295,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// UNSPECIFIC META: ENCHANTS
 	// -------------------------------------------- //
 
-	public void transferEnchants(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferEnchants(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if (meta2json)
 		{
@@ -303,7 +317,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// UNSPECIFIC META: REPAIRCOST
 	// -------------------------------------------- //
 
-	public void transferRepaircost(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferRepaircost(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if ( ! (meta instanceof Repairable)) return;
 		Repairable repairable = (Repairable) meta;
@@ -326,39 +340,39 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META
 	// -------------------------------------------- //
 
-	public void transferMetaSpecific(ItemMeta meta, JsonObject json, boolean meta2json)
+	public void transferMetaSpecific(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
 	{
 		if (meta instanceof BookMeta)
 		{
-			this.transferBook((BookMeta) meta, json, meta2json);
+			this.transferBook(stack, json, meta2json, (BookMeta)meta);
 		}
 		else if (meta instanceof LeatherArmorMeta)
 		{
-			this.transferLeatherArmor((LeatherArmorMeta) meta, json, meta2json);
+			this.transferLeatherArmor(stack, json, meta2json, (LeatherArmorMeta)meta);
 		}
 		else if (meta instanceof MapMeta)
 		{
-			this.transferMap((MapMeta) meta, json, meta2json);
+			this.transferMap(stack, json, meta2json, (MapMeta)meta);
 		}
 		else if (meta instanceof PotionMeta)
 		{
-			this.transferPotion((PotionMeta) meta, json, meta2json);
+			this.transferPotion(stack, json, meta2json, (PotionMeta)meta);
 		}
 		else if (meta instanceof SkullMeta)
 		{
-			this.transferSkull((SkullMeta) meta, json, meta2json);
+			this.transferSkull(stack, json, meta2json, (SkullMeta)meta);
 		}
 		else if (meta instanceof FireworkEffectMeta)
 		{
-			this.transferFireworkEffect((FireworkEffectMeta) meta, json, meta2json);
+			this.transferFireworkEffect(stack, json, meta2json, (FireworkEffectMeta)meta);
 		}
 		else if (meta instanceof FireworkMeta)
 		{
-			this.transferFirework((FireworkMeta) meta, json, meta2json);
+			this.transferFirework(stack, json, meta2json, (FireworkMeta)meta);
 		}
 		else if (meta instanceof EnchantmentStorageMeta)
 		{
-			this.transferEnchantmentStorage((EnchantmentStorageMeta) meta, json, meta2json);
+			this.transferEnchantmentStorage(stack, json, meta2json, (EnchantmentStorageMeta)meta);
 		}
 	}
 
@@ -366,14 +380,14 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: BOOK
 	// -------------------------------------------- //
 
-	public void transferBook(BookMeta meta, JsonObject json, boolean meta2json)
+	public void transferBook(ItemStack stack, JsonObject json, boolean meta2json, BookMeta meta)
 	{
-		this.transferTitle(meta, json, meta2json);
-		this.transferAuthor(meta, json, meta2json);
-		this.transferPages(meta, json, meta2json);
+		this.transferTitle(stack, json, meta2json, meta);
+		this.transferAuthor(stack, json, meta2json, meta);
+		this.transferPages(stack, json, meta2json, meta);
 	}
 
-	public void transferTitle(BookMeta meta, JsonObject json, boolean meta2json)
+	public void transferTitle(ItemStack stack, JsonObject json, boolean meta2json, BookMeta meta)
 	{
 		if (meta2json)
 		{
@@ -388,7 +402,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 		}
 	}
 
-	public void transferAuthor(BookMeta meta, JsonObject json, boolean meta2json)
+	public void transferAuthor(ItemStack stack, JsonObject json, boolean meta2json, BookMeta meta)
 	{
 		if (meta2json)
 		{
@@ -403,7 +417,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 		}
 	}
 
-	public void transferPages(BookMeta meta, JsonObject json, boolean meta2json)
+	public void transferPages(ItemStack stack, JsonObject json, boolean meta2json, BookMeta meta)
 	{
 		if (meta2json)
 		{
@@ -430,7 +444,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: LEATHER ARMOR
 	// -------------------------------------------- //
 
-	public void transferLeatherArmor(LeatherArmorMeta meta, JsonObject json, boolean meta2json)
+	public void transferLeatherArmor(ItemStack stack, JsonObject json, boolean meta2json, LeatherArmorMeta meta)
 	{
 		if (meta2json)
 		{
@@ -452,7 +466,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: MAP
 	// -------------------------------------------- //
 
-	public void transferMap(MapMeta meta, JsonObject json, boolean meta2json)
+	public void transferMap(ItemStack stack, JsonObject json, boolean meta2json, MapMeta meta)
 	{
 		if (meta2json)
 		{
@@ -472,7 +486,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: POTION
 	// -------------------------------------------- //
 
-	public void transferPotion(PotionMeta meta, JsonObject json, boolean meta2json)
+	public void transferPotion(ItemStack stack, JsonObject json, boolean meta2json, PotionMeta meta)
 	{
 		if (meta2json)
 		{
@@ -497,7 +511,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: SKULL
 	// -------------------------------------------- //
 
-	public void transferSkull(SkullMeta meta, JsonObject json, boolean meta2json)
+	public void transferSkull(ItemStack stack, JsonObject json, boolean meta2json, SkullMeta meta)
 	{
 		if (meta2json)
 		{
@@ -516,7 +530,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: FIREWORK EFFECT
 	// -------------------------------------------- //
 
-	public void transferFireworkEffect(FireworkEffectMeta meta, JsonObject json, boolean meta2json)
+	public void transferFireworkEffect(ItemStack stack, JsonObject json, boolean meta2json, FireworkEffectMeta meta)
 	{
 		if (meta2json)
 		{
@@ -535,13 +549,13 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: FIREWORK
 	// -------------------------------------------- //
 
-	public void transferFirework(FireworkMeta meta, JsonObject json, boolean meta2json)
+	public void transferFirework(ItemStack stack, JsonObject json, boolean meta2json, FireworkMeta meta)
 	{
-		this.transferFireworkEffects(meta, json, meta2json);
-		this.transferFireworkPower(meta, json, meta2json);
+		this.transferFireworkEffects(stack, json, meta2json, meta);
+		this.transferFireworkPower(stack, json, meta2json, meta);
 	}
 	
-	public void transferFireworkEffects(FireworkMeta meta, JsonObject json, boolean meta2json)
+	public void transferFireworkEffects(ItemStack stack, JsonObject json, boolean meta2json, FireworkMeta meta)
 	{
 		if (meta2json)
 		{
@@ -557,7 +571,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 		}
 	}
 	
-	public void transferFireworkPower(FireworkMeta meta, JsonObject json, boolean meta2json)
+	public void transferFireworkPower(ItemStack stack, JsonObject json, boolean meta2json, FireworkMeta meta)
 	{
 		if (meta2json)
 		{
@@ -575,7 +589,7 @@ public class ItemStackAdapterInnerV1_7 implements ItemStackAdapterInner
 	// SPECIFIC META: ENCHANTMENT STORAGE
 	// -------------------------------------------- //
 
-	public void transferEnchantmentStorage(EnchantmentStorageMeta meta, JsonObject json, boolean meta2json)
+	public void transferEnchantmentStorage(ItemStack stack, JsonObject json, boolean meta2json, EnchantmentStorageMeta meta)
 	{
 		if (meta2json)
 		{
