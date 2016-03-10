@@ -55,11 +55,13 @@ public class NmsItem extends NmsAbstract
 	
 	public static String itemToString(ItemStack item)
 	{
+		if (item == null) throw new NullPointerException("item");
+		
 		if ( ! get().isAvailable()) return null;
 		try
 		{
 			Object nmsItem = toNms.invoke(null, item);
-			if (nmsItem == null) throw new RuntimeException();
+			if (nmsItem == null) throw new RuntimeException(item.toString());
 			String str = toJson.invoke(nmsItem, nbtTag.newInstance()).toString();
 			return str;
 		}
