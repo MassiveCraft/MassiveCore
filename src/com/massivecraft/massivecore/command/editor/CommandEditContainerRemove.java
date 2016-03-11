@@ -66,8 +66,10 @@ public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstra
 	public void alterMap(Map<?, ?> elements) throws MassiveException
 	{
 		// Args
-		Object key = this.readArg();
-		Object value = this.readArg();
+		Object element = this.readElement();
+		Entry<?, ?> entry = (Entry<?, ?>) element;
+		Object key = entry.getKey();
+		Object value = entry.getValue();
 		
 		// Validate
 		if (key == null && value == null) throw new MassiveException().addMsg("<b>Please supply key and/or value.");
