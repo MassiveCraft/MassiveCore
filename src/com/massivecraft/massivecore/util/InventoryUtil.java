@@ -60,19 +60,32 @@ public class InventoryUtil
 	// EVENT INTERPRETATION
 	// -------------------------------------------- //
 	
+	public static boolean isOutside(int rawSlot)
+	{
+		return rawSlot < 0; 
+	}
+	public static boolean isTopInventory(int rawSlot, Inventory inventory)
+	{
+		if (isOutside(rawSlot)) return false;
+		return rawSlot < inventory.getSize();
+	}
+	public static boolean isBottomInventory(int rawSlot, Inventory inventory)
+	{
+		if (isOutside(rawSlot)) return false;
+		return rawSlot >= inventory.getSize();
+	}
+	
 	public static boolean isOutside(InventoryClickEvent event)
 	{
-		return event.getRawSlot() < 0; 
+		return isOutside(event.getRawSlot());
 	}
 	public static boolean isTopInventory(InventoryClickEvent event)
 	{
-		if (isOutside(event)) return false;
-		return event.getRawSlot() < event.getInventory().getSize();
+		return isTopInventory(event.getRawSlot(), event.getInventory());
 	}
 	public static boolean isBottomInventory(InventoryClickEvent event)
 	{
-		if (isOutside(event)) return false;
-		return event.getRawSlot() >= event.getInventory().getSize();
+		return isBottomInventory(event.getRawSlot(), event.getInventory());
 	}
 	
 	@Deprecated
