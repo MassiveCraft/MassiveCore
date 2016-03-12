@@ -81,39 +81,50 @@ public abstract class MessageMixinAbstract implements MessageMixin
 	@Override
 	public boolean messageAll(Object message)
 	{
-		return this.messageAll(Collections.singleton(message));
+		return this.messageAll(asCollection(message));
 	}
 	
 	@Override
 	public boolean messageAll(Object... messages)
 	{
-		return this.messageAll(Arrays.asList(messages));
+		return this.messageAll(asCollection(messages));
 	}
 	
 	// Predicate
 	@Override
 	public boolean messagePredicate(Predicate<CommandSender> predicate, Object message)
 	{
-		return this.messagePredicate(predicate, Collections.singleton(message));
+		return this.messagePredicate(predicate, asCollection(message));
 	}
 	
 	@Override
 	public boolean messagePredicate(Predicate<CommandSender> predicate, Object... messages)
 	{
-		return this.messagePredicate(predicate, Arrays.asList(messages));
+		return this.messagePredicate(predicate, asCollection(messages));
 	}
 	
 	// One
 	@Override
 	public boolean messageOne(Object sendeeObject, Object message)
 	{
-		return this.messageOne(sendeeObject, Collections.singleton(message));
+		return this.messageOne(sendeeObject, asCollection(message));
 	}
 	
 	@Override
 	public boolean messageOne(Object sendeeObject, Object... messages)
 	{
-		return this.messageOne(sendeeObject, Arrays.asList(messages));
+		return this.messageOne(sendeeObject, asCollection(messages));
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public Collection<?> asCollection(Object message)
+	{
+		if (message instanceof Collection) return (Collection<?>) message;
+		if (message instanceof Object[]) return Arrays.asList((Object[]) message);
+		return Collections.singleton(message);
 	}
 	
 }
