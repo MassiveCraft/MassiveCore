@@ -1,7 +1,12 @@
 package com.massivecraft.massivecore.adapter;
 
+import org.bukkit.Material;
+import org.bukkit.block.Banner;
+import org.bukkit.block.BlockState;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
@@ -38,6 +43,41 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 	public Object provoke()
 	{
 		return PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT;
+	}
+	
+	// -------------------------------------------- //
+	// SPECIFIC META (SHIELD)
+	// -------------------------------------------- //
+
+	@Override
+	public void transferMetaSpecific(ItemStack stack, JsonObject json, boolean meta2json, ItemMeta meta)
+	{
+		if (stack.getType() == Material.SHIELD)
+		{
+			this.transferShield(stack, json, meta2json, (BlockStateMeta)meta);
+		}
+		else
+		{
+			super.transferMetaSpecific(stack, json, meta2json, meta);
+		}
+	}
+	
+	public void transferShield(ItemStack stack, JsonObject json, boolean meta2json, BlockStateMeta meta)
+	{
+		BlockState state = (Banner) meta.getBlockState();
+		this.transferBanner(stack, json, meta2json, state);
+		
+		if (meta2json)
+		{
+			// TODO: This direction seems to work fine.
+			// TODO: Serialization seems to work fine.
+		}
+		else
+		{
+			// TODO: This does not seem to work.
+			// TODO: Is it because an inferior ItemStack vs CraftItemStack implementation?
+			meta.setBlockState(state);
+		}
 	}
 	
 	// -------------------------------------------- //

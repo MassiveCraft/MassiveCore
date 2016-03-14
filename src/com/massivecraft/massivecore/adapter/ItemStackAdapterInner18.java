@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemFlag;
@@ -212,7 +213,7 @@ public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
 	// SPECIFIC META: BANNER
 	// -------------------------------------------- //
 
-	public void transferBanner(ItemStack stack, JsonObject json, boolean meta2json, BannerMeta meta)
+	public void transferBanner(ItemStack stack, JsonObject json, boolean meta2json, Object meta)
 	{
 		this.transferBannerBase(stack, json, meta2json, meta);
 		this.transferBannerPatterns(stack, json, meta2json, meta);
@@ -222,11 +223,13 @@ public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
 	// SPECIFIC META: BANNER BASE
 	// -------------------------------------------- //
 	
-	public void transferBannerBase(ItemStack stack, JsonObject json, boolean meta2json, BannerMeta meta)
+	public void transferBannerBase(ItemStack stack, JsonObject json, boolean meta2json, Object meta)
 	{
 		if (meta2json)
 		{
-			DyeColor baseColor = meta.getBaseColor();
+			DyeColor baseColor = null;
+			if (meta instanceof BannerMeta) baseColor = ((BannerMeta)meta).getBaseColor();
+			if (meta instanceof Banner) baseColor = ((Banner)meta).getBaseColor();
 			
 			// The default base color is null.
 			// This occurs when no patterns are set.
@@ -241,7 +244,9 @@ public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
 			JsonElement element = json.get(BANNER_BASE);
 			if (element == null) return;
 			DyeColor baseColor = DyeColor.getByDyeData(element.getAsByte());
-			meta.setBaseColor(baseColor);
+			
+			if (meta instanceof BannerMeta) ((BannerMeta)meta).setBaseColor(baseColor);
+			if (meta instanceof Banner) ((Banner)meta).setBaseColor(baseColor);
 		}
 	}
 	
@@ -249,11 +254,15 @@ public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
 	// SPECIFIC META: BANNER PATTERNS
 	// -------------------------------------------- //
 	
-	public void transferBannerPatterns(ItemStack stack, JsonObject json, boolean meta2json, BannerMeta meta)
+	public void transferBannerPatterns(ItemStack stack, JsonObject json, boolean meta2json, Object meta)
 	{
 		if (meta2json)
 		{
-			JsonArray data = convertBannerPatterns(meta.getPatterns());
+			List<Pattern> patterns = null;
+			if (meta instanceof BannerMeta) patterns = ((BannerMeta)meta).getPatterns();
+			if (meta instanceof Banner) patterns = ((Banner)meta).getPatterns();
+			
+			JsonArray data = convertBannerPatterns(patterns);
 			if (data == null) return;
 			json.add(BANNER_PATTERNS, data);
 		}
@@ -262,7 +271,9 @@ public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
 			JsonElement element = json.get(BANNER_PATTERNS);
 			if (element == null) return;
 			List<Pattern> patterns = convertBannerPatterns(element);
-			meta.setPatterns(patterns);
+			
+			if (meta instanceof BannerMeta) ((BannerMeta)meta).setPatterns(patterns);
+			if (meta instanceof Banner) ((Banner)meta).setPatterns(patterns);
 		}
 	}
 	
