@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableBiMap;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
+@SuppressWarnings("deprecation")
 public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 {
 	// -------------------------------------------- //
@@ -20,7 +21,7 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 	// -------------------------------------------- //
 
 	public static final String POTION = "potion";
-	public static final PotionData DATA_NULL = new PotionData(PotionType.UNCRAFTABLE, false, false);
+	public static final PotionData POTION_DEFAULT = new PotionData(PotionType.UNCRAFTABLE, false, false);
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -42,110 +43,137 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 	// -------------------------------------------- //
 	// SPECIFIC META: POTION
 	// -------------------------------------------- //
+	// In Minecraft 1.8 the damage value was used to store the potion effects.
+	// In Minecraft 1.9 the damage value is no longer used and the potion effect is stored by string instead.
+	// 
+	// Sticking to the damage value for serialization is not feasible.
+	// Minecraft 1.9 adds new potion effects that did not exist in Minecraft 1.9 such as LUCK.
+	//
+	// Thus we upgrade the database from damage values to the new potion string where possible.
+	// Invalid old damage values that does not make any sense are left as is.
 	
-	@Override @SuppressWarnings("deprecation")
+	@Override
 	public void transferPotion(ItemStack stack, JsonObject json, boolean meta2json, PotionMeta meta)
 	{
 		super.transferPotion(stack, json, meta2json, meta);
-
-		// Note: We serialize/deserialize PotionData if available, otherwise fall back to damage values
-		// NOTE: Damage values are NOT safe and thus should not be used to serialize data in 1.9.
+		
 		if (meta2json)
 		{
-			PotionData data = meta.getBasePotionData();
-			json.addProperty(POTION, fromBukkit(data));
+			PotionData potionData = meta.getBasePotionData();
+			if (potionData != null && ! potionData.equals(POTION_DEFAULT))
+			{
+				String potionString = toPotionString(potionData);
+				if (potionString != null)
+				{
+					json.addProperty(POTION, potionString);
+				}
+			}
 		}
 		else
 		{
-			JsonElement element = json.get(POTION);
-			if (element != null)
+			JsonElement potionElement = json.get(POTION);
+			if (potionElement != null)
 			{
-				meta.setBasePotionData(toBukkit(element.getAsString()));
+				String potionString = potionElement.getAsString();
+				PotionData potionData = toPotionData(potionString); 
+				if (potionData != null)
+				{
+					meta.setBasePotionData(potionData);
+				}
 				return;
 			}
 
-			// NOTE: PotionData is initialized with UNCRAFTABLE. If is freshly initialized, try from damage values.
-			PotionData data = meta.getBasePotionData();
-			if ( ! data.equals(DATA_NULL)) return;
-
-			int damage = DEFAULT_DAMAGE;
 			JsonElement damageElement = json.get(DAMAGE);
-			if (damageElement != null) damage = damageElement.getAsInt();
-			Potion.fromDamage(damage).apply(stack);
+			if (damageElement != null)
+			{
+				int damage = damageElement.getAsInt();
+				PotionData potionData = toPotionData(damage);
+				if (potionData != null)
+				{
+					meta.setBasePotionData(potionData);
+					stack.setDurability((short) 0);
+				}
+			}
 		}
 	}
 
 	// -------------------------------------------- //
-	// CRAFT POTION UTIL
+	// POTION UTIL
 	// -------------------------------------------- //
 
-	public static String fromBukkit(PotionData data)
+	public static PotionData toPotionData(int damage)
 	{
-		if (data.isUpgraded()) return upgradeable.get(data.getType());
-		if (data.isExtended()) return extendable.get(data.getType());
-		return regular.get(data.getType());
+		try
+		{
+			Potion potion = Potion.fromDamage(damage);
+			PotionType type = potion.getType();
+			boolean extended = potion.hasExtendedDuration();
+			boolean upgraded = (potion.getLevel() >= 2);
+			return new PotionData(type, extended, upgraded);
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
-
-	public static PotionData toBukkit(String type)
+	
+	public static PotionData toPotionData(String potionString)
 	{
-		PotionType potionType = null;
-
-		// Extended
-		potionType = extendable.inverse().get(type);
-		if (potionType != null) return new PotionData(potionType, true, false);
-
-		// Upgraded
-		potionType = upgradeable.inverse().get(type);
-		if (potionType != null) return new PotionData(potionType, false, true);
-
-		// Regular
-		return new PotionData(regular.inverse().get(type), false, false);
+		if (potionString == null) return null;
+		return POTION_ID_TO_DATA.get(potionString);
 	}
-
-	private static final BiMap<PotionType, String> regular = ImmutableBiMap.<PotionType, String>builder()
-		.put(PotionType.UNCRAFTABLE, "empty")
-		.put(PotionType.WATER, "water")
-		.put(PotionType.MUNDANE, "mundane")
-		.put(PotionType.THICK, "thick")
-		.put(PotionType.AWKWARD, "awkward")
-		.put(PotionType.NIGHT_VISION, "night_vision")
-		.put(PotionType.INVISIBILITY, "invisibility")
-		.put(PotionType.JUMP, "leaping")
-		.put(PotionType.FIRE_RESISTANCE, "fire_resistance")
-		.put(PotionType.SPEED, "swiftness")
-		.put(PotionType.SLOWNESS, "slowness")
-		.put(PotionType.WATER_BREATHING, "water_breathing")
-		.put(PotionType.INSTANT_HEAL, "healing")
-		.put(PotionType.INSTANT_DAMAGE, "harming")
-		.put(PotionType.POISON, "poison")
-		.put(PotionType.REGEN, "regeneration")
-		.put(PotionType.STRENGTH, "strength")
-		.put(PotionType.WEAKNESS, "weakness")
-		.put(PotionType.LUCK, "luck")
-		.build();
-
-	private static final BiMap<PotionType, String> upgradeable = ImmutableBiMap.<PotionType, String>builder()
-		.put(PotionType.JUMP, "strong_leaping")
-		.put(PotionType.SPEED, "strong_swiftness")
-		.put(PotionType.INSTANT_HEAL, "strong_healing")
-		.put(PotionType.INSTANT_DAMAGE, "strong_harming")
-		.put(PotionType.POISON, "strong_poison")
-		.put(PotionType.REGEN, "strong_regeneration")
-		.put(PotionType.STRENGTH, "strong_strength")
-		.build();
-
-	private static final BiMap<PotionType, String> extendable = ImmutableBiMap.<PotionType, String>builder()
-		.put(PotionType.NIGHT_VISION, "long_night_vision")
-		.put(PotionType.INVISIBILITY, "long_invisibility")
-		.put(PotionType.JUMP, "long_leaping")
-		.put(PotionType.FIRE_RESISTANCE, "long_fire_resistance")
-		.put(PotionType.SPEED, "long_swiftness")
-		.put(PotionType.SLOWNESS, "long_slowness")
-		.put(PotionType.WATER_BREATHING, "long_water_breathing")
-		.put(PotionType.POISON, "long_poison")
-		.put(PotionType.REGEN, "long_regeneration")
-		.put(PotionType.STRENGTH, "long_strength")
-		.put(PotionType.WEAKNESS, "long_weakness")
-		.build();
+	
+	public static String toPotionString(PotionData potionData)
+	{
+		if (potionData == null) return null;
+		return POTION_ID_TO_DATA.inverse().get(potionData);
+	}
+	
+	private static final BiMap<String, PotionData> POTION_ID_TO_DATA = ImmutableBiMap.<String, PotionData>builder()
+		// REGULAR
+		.put("empty", new PotionData(PotionType.UNCRAFTABLE, false, false))
+		.put("water", new PotionData(PotionType.WATER, false, false))
+		.put("mundane", new PotionData(PotionType.MUNDANE, false, false))
+		.put("thick", new PotionData(PotionType.THICK, false, false))
+		.put("awkward", new PotionData(PotionType.AWKWARD, false, false))
+		.put("night_vision", new PotionData(PotionType.NIGHT_VISION, false, false))
+		.put("invisibility", new PotionData(PotionType.INVISIBILITY, false, false))
+		.put("leaping", new PotionData(PotionType.JUMP, false, false))
+		.put("fire_resistance", new PotionData(PotionType.FIRE_RESISTANCE, false, false))
+		.put("swiftness", new PotionData(PotionType.SPEED, false, false))
+		.put("slowness", new PotionData(PotionType.SLOWNESS, false, false))
+		.put("water_breathing", new PotionData(PotionType.WATER_BREATHING, false, false))
+		.put("healing", new PotionData(PotionType.INSTANT_HEAL, false, false))
+		.put("harming", new PotionData(PotionType.INSTANT_DAMAGE, false, false))
+		.put("poison", new PotionData(PotionType.POISON, false, false))
+		.put("regeneration", new PotionData(PotionType.REGEN, false, false))
+		.put("strength", new PotionData(PotionType.STRENGTH, false, false))
+		.put("weakness", new PotionData(PotionType.WEAKNESS, false, false))
+		.put("luck", new PotionData(PotionType.LUCK, false, false))
+		
+		// UPGRADABLE
+		.put("strong_leaping", new PotionData(PotionType.JUMP, false, true))
+		.put("strong_swiftness", new PotionData(PotionType.SPEED, false, true))
+		.put("strong_healing", new PotionData(PotionType.INSTANT_HEAL, false, true))
+		.put("strong_harming", new PotionData(PotionType.INSTANT_DAMAGE, false, true))
+		.put("strong_poison", new PotionData(PotionType.POISON, false, true))
+		.put("strong_regeneration", new PotionData(PotionType.REGEN, false, true))
+		.put("strong_strength", new PotionData(PotionType.STRENGTH, false, true))
+		
+		// EXTENDABLE
+		.put("long_night_vision", new PotionData(PotionType.NIGHT_VISION, true, false))
+		.put("long_invisibility", new PotionData(PotionType.INVISIBILITY, true, false))
+		.put("long_leaping", new PotionData(PotionType.JUMP, true, false))
+		.put("long_fire_resistance", new PotionData(PotionType.FIRE_RESISTANCE, true, false))
+		.put("long_swiftness", new PotionData(PotionType.SPEED, true, false))
+		.put("long_slowness", new PotionData(PotionType.SLOWNESS, true, false))
+		.put("long_water_breathing", new PotionData(PotionType.WATER_BREATHING, true, false))
+		.put("long_poison", new PotionData(PotionType.POISON, true, false))
+		.put("long_regeneration", new PotionData(PotionType.REGEN, true, false))
+		.put("long_strength", new PotionData(PotionType.STRENGTH, true, false))
+		.put("long_weakness", new PotionData(PotionType.WEAKNESS, true, false))
+	
+	// BUILD
+	.build();
 
 }
