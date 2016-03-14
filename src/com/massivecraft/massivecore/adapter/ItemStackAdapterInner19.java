@@ -21,7 +21,7 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 	// -------------------------------------------- //
 
 	public static final String POTION = "potion";
-	public static final PotionData POTION_DEFAULT = new PotionData(PotionType.UNCRAFTABLE, false, false);
+	public static final PotionData POTION_DEFAULT = new PotionData(PotionType.WATER, false, false);
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -59,9 +59,11 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 		
 		if (meta2json)
 		{
+			// Check Null and Default
 			PotionData potionData = meta.getBasePotionData();
 			if (potionData != null && ! potionData.equals(POTION_DEFAULT))
 			{
+				// Check Null (silent on failure)
 				String potionString = toPotionString(potionData);
 				if (potionString != null)
 				{
@@ -71,6 +73,10 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 		}
 		else
 		{
+			// Create
+			PotionData target = null;
+			
+			// Get by "potion"
 			JsonElement potionElement = json.get(POTION);
 			if (potionElement != null)
 			{
@@ -78,22 +84,34 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 				PotionData potionData = toPotionData(potionString); 
 				if (potionData != null)
 				{
-					meta.setBasePotionData(potionData);
+					target = potionData;
 				}
-				return;
 			}
-
-			JsonElement damageElement = json.get(DAMAGE);
-			if (damageElement != null)
+			
+			// Get by "damage"
+			if (target == null)
 			{
-				int damage = damageElement.getAsInt();
-				PotionData potionData = toPotionData(damage);
-				if (potionData != null)
+				JsonElement damageElement = json.get(DAMAGE);
+				if (damageElement != null)
 				{
-					meta.setBasePotionData(potionData);
-					stack.setDurability((short) 0);
+					int damage = damageElement.getAsInt();
+					PotionData potionData = toPotionData(damage);
+					if (potionData != null)
+					{
+						stack.setDurability((short) 0);
+						target = potionData;
+					}
 				}
 			}
+			
+			// Get by POTION_DEFAULT
+			if (target == null)
+			{
+				target = POTION_DEFAULT;
+			}
+			
+			// Set
+			meta.setBasePotionData(target);
 		}
 	}
 
@@ -109,6 +127,14 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 			PotionType type = potion.getType();
 			boolean extended = potion.hasExtendedDuration();
 			boolean upgraded = (potion.getLevel() >= 2);
+			
+			// Try to avoid slow exceptions.
+			// The same checks are done in the PotionData constructor.
+			if (type == null) return null;
+			if (extended && ! type.isExtendable()) return null;
+			if (upgraded && ! type.isUpgradeable()) return null;
+			if (upgraded && extended) return null;
+			
 			return new PotionData(type, extended, upgraded);
 		}
 		catch (Exception e)
