@@ -125,6 +125,7 @@ public class EngineMassiveCoreScheduledTeleport extends Engine
 	public void cancelTeleport(PlayerDeathEvent event)
 	{
 		final Player player = event.getEntity();
+		if (MUtil.isntPlayer(player)) return;
 		
 		this.cancelTeleport(player);
 	}
