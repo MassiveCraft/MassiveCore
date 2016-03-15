@@ -36,9 +36,9 @@ public abstract class MassiveCommandToggle extends MassiveCommand
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract boolean get();
+	public abstract boolean getValue();
 	
-	public abstract void set(boolean value);
+	public abstract void setValue(boolean value);
 	
 	// -------------------------------------------- //
 	// GET NAME
@@ -58,7 +58,7 @@ public abstract class MassiveCommandToggle extends MassiveCommand
 	public void perform() throws MassiveException
 	{
 		// Args
-		boolean before = this.get();
+		boolean before = this.getValue();
 		boolean after = this.readArg( ! before);
 		String afterDesc = TypeBoolean.getOn().getVisual(after, sender);
 		
@@ -72,7 +72,7 @@ public abstract class MassiveCommandToggle extends MassiveCommand
 		}
 		
 		// Apply
-		set(after);
+		this.setValue(after);
 		
 		// Inform
 		String message = Txt.parse("<h>%s<i> is now <h>%s<i>.", this.getName(), afterDesc);
