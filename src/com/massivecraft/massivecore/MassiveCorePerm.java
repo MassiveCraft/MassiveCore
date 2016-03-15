@@ -44,6 +44,7 @@ public enum MassiveCorePerm
 	NOTPDELAY("notpdelay"),
 	VARIABLE_BOOK("variable.book"),
 	VARIABLE_BUFFER("variable.buffer"),
+	CLICK("click"),
 	
 	// END OF LIST
 	;

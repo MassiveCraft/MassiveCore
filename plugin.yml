@@ -41,6 +41,7 @@ permissions:
   massivecore.buffer.add: {description: add to buffer, default: false}
   massivecore.buffer.whitespace: {description: add whitespace to buffer, default: false}
   massivecore.cmdurl: {description: run all lines of url content, default: false}
+  massivecore.click: {description: click, default: false}
 # misc
   massivecore.notpdelay: {description: teleport without delay, default: false}
   massivecore.variable.book: {description: replace ***book*** with content of book in your hand, default: false}
@@ -82,6 +83,7 @@ permissions:
       massivecore.buffer.add: true
       massivecore.buffer.whitespace: true
       massivecore.cmdurl: true
+      massivecore.click: true
       massivecore.notpdelay: true
       massivecore.variable.book: true
       massivecore.variable.buffer: true
@@ -129,6 +131,7 @@ permissions:
     children:
       massivecore.basecommand: true
       massivecore.hearsound: true
+      massivecore.click: true
       massivecore.version: true
   massivecore.kit.default:
     default: true

@@ -41,6 +41,7 @@ import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreBuffer;
+import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreClick;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreCmdurl;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreStore;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreUsys;
@@ -218,7 +219,8 @@ public class MassiveCore extends MassivePlugin
 			CmdMassiveCoreUsys.get(),
 			CmdMassiveCoreStore.get(),
 			CmdMassiveCoreBuffer.get(),
-			CmdMassiveCoreCmdurl.get()
+			CmdMassiveCoreCmdurl.get(),
+			CmdMassiveCoreClick.get()
 		);
 		
 		// Start the examine threads

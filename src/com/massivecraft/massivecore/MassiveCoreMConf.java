@@ -88,11 +88,21 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 		return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnDelete);
 	}
 	
+	// -------------------------------------------- //
+	// VARIABLES
+	// -------------------------------------------- //
+	
 	public String variableBook = "***book***";
 	public boolean usingVariableBook = true;
 	
 	public String variableBuffer = "***buffer***";
 	public boolean usingVariableBuffer = true;
+	
+	// -------------------------------------------- //
+	// CLICK COMMAND
+	// -------------------------------------------- //
+	
+	public SoundEffect commandClickSound = SoundEffect.valueOf("UI_BUTTON_CLICK", 1.0f, 1.0f);
 	
 	// -------------------------------------------- //
 	// MSTORE CONFIGURATON
@@ -103,4 +113,5 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public volatile long millisBetweenRemotePollWithPusher = TimeUnit.MILLIS_PER_MINUTE * 1;
 	
 	public boolean warnOnLocalAlter = false;
+
 }
