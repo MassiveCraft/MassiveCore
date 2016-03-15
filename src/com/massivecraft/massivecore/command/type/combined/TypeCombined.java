@@ -102,13 +102,13 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public abstract List<Object> split(T value);
 	
 	// -------------------------------------------- //
-	// METHODS
+	// SPLIT ENTRIES
 	// -------------------------------------------- //
 	
 	public List<Entry<Type<?>, Object>> splitEntries(T value)
 	{
 		// Create
-		List<Entry<Type<?>, Object>> ret = new MassiveList<Entry<Type<?>, Object>>();
+		List<Entry<Type<?>, Object>> ret = new MassiveList<>();
 		
 		// Fill
 		List<?> parts = this.split(value);
@@ -123,6 +123,64 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		
 		// Return
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// SPLIT ENTRIES USER
+	// -------------------------------------------- //
+	// This entire section was made to handle the problem that the visual should contain what is nulled in user order.
+	// Just because we don't want it when we read arguments in commands does not mean we can omit it from the visual.
+	// The better and abstracted solution (that I skipped) would be to have multiple custom orders.
+	// One for command parameters.
+	// One for visuals.
+	// TODO: Implement such an abstraction.
+	// TODO: The current hack assumes we want all in the visuals. That may not be true.
+	
+	public List<Entry<Type<?>, Object>> splitEntriesUser(T value)
+	{
+		// Create
+		List<Entry<Type<?>, Object>> ret = new MassiveList<>();
+		
+		// Fill
+		List<Entry<Type<?>, Object>> tech = this.splitEntries(value);
+		for (int i : this.getUserOrderAugmented())
+		{
+			ret.add(tech.get(i));
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	public List<Integer> getUserOrderAugmented()
+	{
+		// Create
+		List<Integer> ret = new MassiveList<>(this.getUserOrder());
+		
+		// Fill
+		for (int indexTech = 0; indexTech < this.getInnerTypes().size(); indexTech++)
+		{
+			if (ret.contains(indexTech)) continue;
+			addSorted(ret, indexTech);
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	private static void addSorted(List<Integer> list, Integer element)
+	{
+		for (int index = 0; index < list.size(); index++)
+		{
+			Integer current = list.get(index);
+			Integer next = (index + 1 < list.size() ? list.get(index + 1) : null);
+			if ((element <= current) && (next == null || element >= next))
+			{
+				list.add(index, element);
+				return;
+			}
+		}
+		list.add(element);
 	}
 	
 	// -------------------------------------------- //
@@ -157,10 +215,8 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		List<Mson> parts = new MassiveList<>();
 		
 		// Fill
-		List<Entry<Type<?>, Object>> entries = this.splitEntries(value);
-		for (int i = 0; i < entries.size(); i++)
+		for (Entry<Type<?>, Object> entry : this.splitEntriesUser(value))
 		{
-			Entry<Type<?>, Object> entry = entries.get(this.getIndexTech(i));
 			Type<Object> type = (Type<Object>) entry.getKey();
 			Mson part = type.getVisualMson(entry.getValue(), sender);
 			if ( ! this.isVisualMsonNullIncluded() && part == null) continue;
@@ -183,10 +239,8 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		List<String> parts = new MassiveList<>();
 		
 		// Fill
-		List<Entry<Type<?>, Object>> entries = this.splitEntries(value);
-		for (int i = 0; i < entries.size(); i++)
+		for (Entry<Type<?>, Object> entry : this.splitEntriesUser(value))
 		{
-			Entry<Type<?>, Object> entry = entries.get(this.getIndexTech(i));
 			Type<Object> type = (Type<Object>) entry.getKey();
 			String part = type.getVisual(entry.getValue(), sender);
 			if ( ! this.isVisualNullIncluded() && part == null) continue;
