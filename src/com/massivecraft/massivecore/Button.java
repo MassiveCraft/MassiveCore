@@ -9,9 +9,12 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
 import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.mson.MsonEvent;
+
 import static com.massivecraft.massivecore.mson.Mson.mson;
 
 public class Button
@@ -86,6 +89,10 @@ public class Button
 	public Button setArgs(Collection<String> args) { this.args = new MassiveList<>(args); return this; }
 	public Button setArgs(String... args) { this.setArgs(Arrays.asList(args)); return this; }
 	
+	public boolean clicking = true;
+	public boolean isClicking() { return this.clicking; }
+	public Button setClicking(boolean clicking) { this.clicking = clicking; return this; }
+	
 	// -------------------------------------------- //
 	// FIELDS > LINK
 	// -------------------------------------------- //
@@ -133,7 +140,20 @@ public class Button
 		{
 			if (this.getCommand() != null)
 			{
-				ret = ret.command(this.getCommand(), this.getArgs());
+				// Create the command line
+				String commandLine = this.getCommand().getCommandLine(this.getArgs());
+				
+				// Render the corresponding tooltip
+				String tooltip = MsonEvent.command(commandLine).createTooltip();
+				
+				// Possibly make command line clicking
+				if (this.isClicking()) commandLine = CmdMassiveCore.get().cmdMassiveCoreClick.getCommandLine(commandLine);
+				
+				// Apply command
+				ret = ret.command(commandLine);
+				
+				// Possibly set tooltip to hide the clicking clutter
+				if (this.isClicking()) ret = ret.tooltip(tooltip);
 			}
 			else if (this.getLink() != null)
 			{

@@ -78,6 +78,7 @@ public final class SoundEffect implements Serializable
 	
 	public void run(Location location)
 	{
+		if (location == null) return;
 		location.getWorld().playSound(location, this.getSound(), this.getVolume(), this.getPitch());
 	}
 	
@@ -90,6 +91,7 @@ public final class SoundEffect implements Serializable
 	
 	public void run(HumanEntity human)
 	{
+		if (MUtil.isntPlayer(human)) return;
 		this.run(human, human.getEyeLocation());
 	}
 	

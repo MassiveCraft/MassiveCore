@@ -99,10 +99,10 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public boolean usingVariableBuffer = true;
 	
 	// -------------------------------------------- //
-	// CLICK COMMAND
+	// CLICK
 	// -------------------------------------------- //
 	
-	public SoundEffect commandClickSound = SoundEffect.valueOf("UI_BUTTON_CLICK", 1.0f, 1.0f);
+	public SoundEffect clickSound = SoundEffect.valueOf("UI_BUTTON_CLICK", 0.75f, 1.0f);
 	
 	// -------------------------------------------- //
 	// MSTORE CONFIGURATON

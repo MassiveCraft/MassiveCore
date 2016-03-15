@@ -27,7 +27,7 @@ public class CmdMassiveCoreClick extends MassiveCommand
 		this.addAliases("click");
 		
 		// Parameters
-		this.addParameter(TypeStringCommand.get(), "command", true).setDesc("the command to perform");
+		this.addParameter(null, TypeStringCommand.get(), "command", "none", true).setDesc("the command to perform");
 		
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.CLICK.node));
@@ -40,11 +40,9 @@ public class CmdMassiveCoreClick extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
+		MassiveCoreMConf.get().clickSound.run(me);
 		String command = this.readArg();
-		if ( ! senderIsConsole)
-		{
-			MassiveCoreMConf.get().commandClickSound.run(me);
-		}
+		if (command == null) return;
 		Mixin.dispatchCommand(sender, command);
 	}
 	
