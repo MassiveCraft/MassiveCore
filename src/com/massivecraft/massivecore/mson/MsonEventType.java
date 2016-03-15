@@ -27,7 +27,7 @@ public abstract class MsonEventType
 				mson.isObfuscated(),
 				event,
 				mson.getEvent(HOVER),
-				mson.getInsertionString(),
+				mson.getInsertion(),
 				mson.getExtra(),
 				mson.getParent()
 			);
@@ -55,7 +55,7 @@ public abstract class MsonEventType
 				mson.isObfuscated(),
 				mson.getEvent(CLICK),
 				event,
-				mson.getInsertionString(),
+				mson.getInsertion(),
 				mson.getExtra(),
 				mson.getParent()
 			);

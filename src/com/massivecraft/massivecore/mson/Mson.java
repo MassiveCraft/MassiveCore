@@ -134,10 +134,10 @@ public class Mson implements Serializable
 	public MsonEvent getEffectiveEvent(MsonEventType type) { return type.get(this) != null ? type.get(this) : getInheritedEvent(type); }
 	protected MsonEvent getInheritedEvent(MsonEventType type) { return this.hasParent() ? this.getParent().getEffectiveEvent(type) : null; }
 
-	private final String insertionString;
-	public String getInsertionString() { return this.insertionString; }
-	public String getEffectiveInsertionString() { return insertionString != null ? insertionString : getInheritedInsertionString(); }
-	protected String getInheritedInsertionString() { return this.hasParent() ? this.getParent().getEffectiveInsertionString() : null; }
+	private final String insertion;
+	public String getInsertion() { return this.insertion; }
+	public String getEffectiveInsertion() { return insertion != null ? insertion : getInheritedInsertion(); }
+	protected String getInheritedInsertion() { return this.hasParent() ? this.getParent().getEffectiveInsertion() : null; }
 
 	// The other parts of the message
 	private final List<Mson> extra;
@@ -197,7 +197,7 @@ public class Mson implements Serializable
 		if (this.isObfuscated() != null) return false;
 		if (this.getEvent(MsonEventType.CLICK) != null) return false;
 		if (this.getEvent(MsonEventType.HOVER) != null) return false;
-		if (this.getInsertionString() != null) return false;
+		if (this.getInsertion() != null) return false;
 		if (this.hasExtra()) return false;
 		return true;
 	}
@@ -206,7 +206,7 @@ public class Mson implements Serializable
 	{
 		if (this.getEvent(MsonEventType.CLICK) != null) return true;
 		if (this.getEvent(MsonEventType.HOVER) != null) return true;
-		if (this.getInsertionString() != null) return true;
+		if (this.getInsertion() != null) return true;
 		
 		if (this.hasExtra())
 		{
@@ -223,13 +223,13 @@ public class Mson implements Serializable
 	// WITH FIELDS
 	// -------------------------------------------- //
 	
-	public Mson text(String text) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson color(ChatColor color) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson bold(Boolean bold) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson italic(Boolean italic) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson underlined(Boolean underlined) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson strikethrough(Boolean strikethrough) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson obfuscated(Boolean obfuscated) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
+	public Mson text(String text) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
+	public Mson color(ChatColor color) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
+	public Mson bold(Boolean bold) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
+	public Mson italic(Boolean italic) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
+	public Mson underlined(Boolean underlined) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
+	public Mson strikethrough(Boolean strikethrough) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
+	public Mson obfuscated(Boolean obfuscated) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
 	
 	public Mson event(Boolean tooltip, MsonEventType type, MsonEvent event)
 	{
@@ -255,9 +255,9 @@ public class Mson implements Serializable
 	}
 	
 	public Mson insertionString(String insertionString) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson extra(List<Mson> extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
-	public Mson extra(Mson[] extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra == null ? null : ImmutableList.copyOf(extra), parent); }
-	public Mson parent(Mson parent) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
+	public Mson extra(List<Mson> extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
+	public Mson extra(Mson[] extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra == null ? null : ImmutableList.copyOf(extra), parent); }
+	public Mson parent(Mson parent) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
 	
 	// -------------------------------------------- //
 	// ADD
@@ -358,12 +358,12 @@ public class Mson implements Serializable
 	{
 		// NOTE: We can't use null.
 		// Since we want to override color and format in parents.
-		return Mson.valueOf(text, ChatColor.WHITE, false, false, false, false, false, clickEvent, hoverEvent, insertionString, extra, parent);
+		return Mson.valueOf(text, ChatColor.WHITE, false, false, false, false, false, clickEvent, hoverEvent, insertion, extra, parent);
 	}
 
 	public Mson stripStyle()
 	{
-		Mson ret = Mson.valueOf(text, null, null, null, null, null, null, clickEvent, hoverEvent, insertionString, null, parent);
+		Mson ret = Mson.valueOf(text, null, null, null, null, null, null, clickEvent, hoverEvent, insertion, null, parent);
 		
 		if (this.hasExtra())
 		{
@@ -394,7 +394,7 @@ public class Mson implements Serializable
 			this.isEffectiveObfuscated(),
 			this.getEffectiveEvent(MsonEventType.CLICK),
 			this.getEffectiveEvent(MsonEventType.HOVER),
-			this.getEffectiveInsertionString(),
+			this.getEffectiveInsertion(),
 			this.getExtra(),
 			null
 		);
@@ -456,7 +456,7 @@ public class Mson implements Serializable
 				
 		
 		// Insertionstring
-		this.insertionString = insertionString;
+		this.insertion = insertionString;
 		
 		// Mojang doesn't allow zero sized arrays, but null is fine. So null.
 		if (extra != null && extra.size() == 0) extra = null;
@@ -1293,7 +1293,7 @@ public class Mson implements Serializable
 		result = prime * result + Objects.hashCode(this.underlined);
 		result = prime * result + Objects.hashCode(this.clickEvent);
 		result = prime * result + Objects.hashCode(this.hoverEvent);
-		result = prime * result + Objects.hashCode(this.insertionString);
+		result = prime * result + Objects.hashCode(this.insertion);
 		result = prime * result + Objects.hashCode(this.extra);
 		return result;
 	}
@@ -1314,7 +1314,7 @@ public class Mson implements Serializable
 		if ( ! MUtil.equals(this.underlined, that.underlined)) return false;
 		if ( ! MUtil.equals(this.clickEvent, that.clickEvent)) return false;
 		if ( ! MUtil.equals(this.hoverEvent, that.hoverEvent)) return false;
-		if ( ! MUtil.equals(this.insertionString, that.insertionString)) return false;
+		if ( ! MUtil.equals(this.insertion, that.insertion)) return false;
 		if ( ! MUtil.equals(this.extra, that.extra)) return false;
 
 		return true;
