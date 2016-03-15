@@ -741,6 +741,20 @@ public class Mson implements Serializable
 		return ret;
 	}
 	
+	// Length
+	public int length()
+	{
+		int ret = this.getText().length();
+		if (this.hasExtra())
+		{
+			for (Mson part : this.getExtra())
+			{
+				ret += part.length();
+			}
+		}
+		return ret;
+	}
+	
 	// Contains
 	public boolean contains(CharSequence sequence)
 	{

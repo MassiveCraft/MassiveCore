@@ -35,7 +35,7 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 	{
 		Aspect aspect = this.readArg();
 		
-		msg(Txt.titleize("Aspect: "+aspect.getId()));
+		message(Txt.titleize("Aspect: "+aspect.getId()));
 		msg("<k>using multiverse: <v>%s",aspect.getMultiverse().getId());
 		
 		for (String descLine : aspect.getDesc())

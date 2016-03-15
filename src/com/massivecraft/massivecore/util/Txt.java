@@ -466,18 +466,30 @@ public class Txt
 	
 	private final static String titleizeLine = repeat("_", 52);
 	private final static int titleizeBalance = -1;
-	public static String titleize(String str)
+	public static Mson titleize(Object obj)
 	{
-		String center = ".[ "+ parse("<l>") + str + parse("<a>") + " ].";
-		int centerlen = ChatColor.stripColor(center).length();
+		Mson title = mson(obj);
+		if (title.getColor() == null) title = title.color(ChatColor.DARK_GREEN);
+		
+		Mson center = mson(
+			mson(".[ ").color(ChatColor.GOLD),
+			title,
+			mson(" ].").color(ChatColor.GOLD)
+		);
+		
+		int centerlen = center.length();
 		int pivot = titleizeLine.length() / 2;
 		int eatLeft = (centerlen / 2) - titleizeBalance;
 		int eatRight = (centerlen - eatLeft) + titleizeBalance;
 
 		if (eatLeft < pivot)
-			return parse("<a>")+titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
+			return mson(
+				mson(titleizeLine.substring(0, pivot - eatLeft)).color(ChatColor.GOLD),
+				center,
+				mson(titleizeLine.substring(pivot + eatRight)).color(ChatColor.GOLD)
+			);
 		else
-			return parse("<a>")+center;
+			return center;
 	}
 	
 	public static Mson getMessageEmpty()
@@ -501,14 +513,20 @@ public class Txt
 		}
 	}
 	
-	public static Mson titleizeMson(String str, int pagecount, int pageHumanBased, MassiveCommand command, List<String> args)
+	public static Mson titleizeMson(Object obj, int pagecount, int pageHumanBased, MassiveCommand command, List<String> args)
 	{
-		if (command == null) return mson(titleize(str + parse("<a>") + " " + pageHumanBased + "/" + pagecount));
+		if (command == null)
+		{
+			return titleize(mson(
+				obj,
+				Mson.SPACE,
+				mson(pageHumanBased + "/" + pagecount).color(ChatColor.GOLD)
+			));
+		}
 		
 		// Math
-		String title = str + " " + "[<]" + pageHumanBased + "/" + pagecount + "[>]";
-		String center = ".[ " + title + " ].";
-		int centerlen = center.length();
+		Mson title = mson(obj, Mson.SPACE, "[<]", String.valueOf(pageHumanBased), "/", String.valueOf(pagecount), "[>]");
+		int centerlen = ".[ ".length() + title.length() + " ].".length();
 		int pivot = titleizeLine.length() / 2;
 		int eatLeft = (centerlen / 2) - titleizeBalance;
 		int eatRight = (centerlen - eatLeft) + titleizeBalance;
@@ -516,7 +534,7 @@ public class Txt
 		// Mson
 		Mson centerMson = mson(
 			mson(".[ ").color(ChatColor.GOLD),
-			mson(str + " ").color(ChatColor.DARK_GREEN),
+			mson(obj, Mson.SPACE).color(ChatColor.DARK_GREEN),
 			getFlipSection(pagecount, pageHumanBased, args, command),
 			mson(" ].").color(ChatColor.GOLD)
 		);
@@ -537,36 +555,36 @@ public class Txt
 		}
 	}
 	
-	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title)
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, Object title)
 	{
 		return getPage(lines, pageHumanBased, title, null, null, null);
 	}
 	
-	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, CommandSender sender)
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, Object title, CommandSender sender)
 	{
 		return getPage(lines, pageHumanBased, title, sender, null, null);
 	}
 	
-	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, MassiveCommand command)
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, Object title, MassiveCommand command)
 	{
 		return getPage(lines, pageHumanBased, title, command, command.getArgs());
 	}
 	
-	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, MassiveCommand command, List<String> args)
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, Object title, MassiveCommand command, List<String> args)
 	{
 		return getPage(lines, pageHumanBased, title, command.sender, command, args);
 	}
 	
-	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, CommandSender sender, MassiveCommand command, List<String> args)
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, Object title, CommandSender sender, MassiveCommand command, List<String> args)
 	{
 		return getPage(lines, pageHumanBased, title, (sender == null || sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE, command, args);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Mson> getPage(List<?> lines, int pageHumanBased, String title, int pageheight, MassiveCommand command, List<String> args)
+	public static List<Mson> getPage(List<?> lines, int pageHumanBased, Object title, int pageheight, MassiveCommand command, List<String> args)
 	{
 		// Create Ret
-		List<Mson> ret = new ArrayList<Mson>();
+		List<Mson> ret = new MassiveList<>();
 		int pageZeroBased = pageHumanBased - 1;
 		int pagecount = (int)Math.ceil(((double)lines.size()) / pageheight);
 		

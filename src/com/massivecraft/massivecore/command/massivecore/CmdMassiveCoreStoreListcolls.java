@@ -54,7 +54,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 		collnames.addAll(db.getCollnames());
 		
 		// Do it!
-		msg(Txt.titleize("Collections in "+db.getDbName()));
+		message(Txt.titleize("Collections in "+db.getDbName()));
 		for (String collname : collnames)
 		{
 			String message = Txt.parse("<h>") + collname;

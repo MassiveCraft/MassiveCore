@@ -49,7 +49,7 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 	
 	public void performTotal()
 	{
-		msg(Txt.titleize("MStore Total Statistics"));
+		message(Txt.titleize("MStore Total Statistics"));
 		//msg("<k>Last Examine Duration: <v>%d<i>ms", ExamineThread.get().getLastDurationMillis());
 		msg("<a>== <k>Coll <a>| <k>Sync Count In <a>| <k>Sync Count Out <a>==");
 		for (Entry<String, Coll<?>> entry : Coll.getMap().entrySet())
@@ -65,7 +65,7 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 	
 	public void performColl(Coll<?> coll)
 	{
-		msg(Txt.titleize("MStore "+coll.getName()+" Statistics"));
+		message(Txt.titleize("MStore "+coll.getName()+" Statistics"));
 		msg("<k>Basename: <v>%s", coll.getBasename());
 		msg("<k>Universe: <v>%s", coll.getUniverse());
 		msg("<k>Entity Count: <v>%d", coll.getIds().size());

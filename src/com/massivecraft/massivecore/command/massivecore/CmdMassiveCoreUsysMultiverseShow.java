@@ -40,7 +40,7 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 	{
 		Multiverse multiverse = this.readArg();
 		
-		msg(Txt.titleize("Multiverse: "+multiverse.getId()));
+		message(Txt.titleize("Multiverse: "+multiverse.getId()));
 		
 		for (String universe : multiverse.getUniverses())
 		{

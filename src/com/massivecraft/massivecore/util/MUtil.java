@@ -534,7 +534,7 @@ public class MUtil
 		List<String> messages = new MassiveList<>();
 		
 		// Fill
-		messages.add(Txt.titleize(title));
+		messages.add(Txt.titleize(title).toPlain(true));
 		messages.addAll(MUtil.getStackTraceStrings(1, true));
 		
 		// Message
