@@ -67,7 +67,6 @@ public class MessageMixinDefault extends MessageMixinAbstract
 	
 	// One
 	// NOTE: The core implementation
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean messageOne(Object sendeeObject, Collection<?> messages)
 	{
@@ -79,41 +78,34 @@ public class MessageMixinDefault extends MessageMixinAbstract
 		if (messages == null) return false;
 		if (messages.isEmpty()) return false;
 		
-		// Type Switch
-		Object first = messages.iterator().next();
-		if (first instanceof String)
+		// For each Message
+		for (Object message : messages)
 		{
-			// String
-			Collection<String> strings = (Collection<String>) messages;
-			sendee.sendMessage(strings.toArray(new String[0]));
-			return true;
-		}
-		else if (first instanceof Mson)
-		{
-			// Mson
-			Collection<Mson> msons = (Collection<Mson>) messages;
-			if (sendee instanceof Player && NmsPacket.get().isAvailable())
+			if (message instanceof String)
 			{
-				Player player = (Player) sendee;
-				for (Mson mson : msons)
+				String string = (String)message;
+				sendee.sendMessage(string);
+			}
+			else if (message instanceof Mson)
+			{
+				Mson mson = (Mson)message;
+				if (sendee instanceof Player && NmsPacket.get().isAvailable())
 				{
+					Player player = (Player) sendee;
 					NmsPacket.sendRaw(player, mson.toRaw());
 				}
-			}
-			else
-			{
-				for (Mson mson : msons)
+				else
 				{
 					sendee.sendMessage(mson.toPlain(true));
 				}
 			}
-			return true;
+			else
+			{
+				String desc = (message == null ? "null" : message.getClass().getSimpleName());
+				throw new IllegalArgumentException(desc + " is neither String nor Mson.");
+			}
 		}
-		else
-		{
-			String desc = first == null ? "null" : first.getClass().getSimpleName();
-			throw new IllegalArgumentException(desc + " is neither String nor Mson.");
-		}
+		return true;
 	}
 
 }
