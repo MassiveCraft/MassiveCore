@@ -87,17 +87,20 @@ public abstract class TypeAbstract<T> implements Type<T>
 	private List<Integer> userOrder = null;
 	@Override public void setUserOrder(List<Integer> userOrder) { this.userOrder = userOrder; }
 	@Override public void setUserOrder(Integer... userOrder) { this.setUserOrder(Arrays.asList(userOrder)); }
+	@Override public List<Integer> getUserOrder() { return this.userOrder; }
 	@Override
-	public int getIndexUser(int indexTechy)
+	public Integer getIndexUser(int indexTechy)
 	{
 		if (this.userOrder == null) return indexTechy;
-		return userOrder.get(indexTechy);
+		Integer ret = this.userOrder.indexOf(indexTechy);
+		if (ret.equals(-1)) return null;
+		return ret;
 	}
 	@Override
-	public int getIndexTech(int indexUser)
+	public Integer getIndexTech(int indexUser)
 	{
 		if (this.userOrder == null) return indexUser;
-		return userOrder.indexOf(indexUser);
+		return this.userOrder.get(indexUser);
 	}
 	
 	// -------------------------------------------- //

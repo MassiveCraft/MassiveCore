@@ -5,6 +5,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import org.bukkit.ChatColor;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import com.massivecraft.massivecore.MassiveException;
@@ -175,25 +176,28 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	
 	public void addParametersElement(boolean strict)
 	{
-		Type<Object> innerType = this.getValueInnerType();
+		Type<Object> elementType = this.getValueInnerType();
 		
 		if (this.isCollection())
 		{
-			this.addParameter(innerType, true);
+			this.addParameter(elementType, true);
 		}
 		else
 		{
-			Type<Object> keyType = innerType.getInnerType(innerType.getIndexUser(0));
-			Type<Object> valueType = innerType.getInnerType(innerType.getIndexUser(1));
-			if (strict)
+			List<Integer> userOrder = elementType.getUserOrder();
+			for (Iterator<Integer> iterator = userOrder.iterator(); iterator.hasNext();)
 			{
-				this.addParameter(keyType);
-				this.addParameter(valueType, true);
-			}
-			else
-			{
-				this.addParameter(null, TypeNullable.get(keyType, "any", "all"), keyType.getName(), "any");
-				this.addParameter(null, TypeNullable.get(valueType, "any", "all"), valueType.getName(), "any", true);
+				Integer indexTech = iterator.next();
+				Type<?> innerType = elementType.getInnerType(indexTech);
+				boolean concatFromHere = ! iterator.hasNext();
+				if (strict)
+				{
+					this.addParameter(innerType, concatFromHere);
+				}
+				else
+				{
+					this.addParameter(null, TypeNullable.get(innerType, "any", "all"), innerType.getName(), "any", concatFromHere);
+				}
 			}
 		}
 	}
@@ -206,10 +210,19 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		}
 		else
 		{
-			Object key = this.readArgAt(this.getValueInnerType().getIndexTech(0));
-			Object value = this.readArgAt(this.getValueInnerType().getIndexTech(1));
+			Object key = this.readElementInner(0);
+			Object value = this.readElementInner(1);
 			return new SimpleImmutableEntry<Object, Object>(key, value);
 		}
+	}
+	
+	public Object readElementInner(int indexTech) throws MassiveException
+	{
+		Type<Object> elementType = this.getValueInnerType();
+		Integer indexUser = elementType.getIndexUser(indexTech);
+		if (indexUser != null) return this.readArgAt(indexUser);
+		Type<Object> innerType = elementType.getInnerType(indexTech);
+		return innerType.read(sender);
 	}
 	
 	// -------------------------------------------- //

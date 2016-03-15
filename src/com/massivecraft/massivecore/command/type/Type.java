@@ -38,8 +38,9 @@ public interface Type<T> extends Named
 	
 	public void setUserOrder(List<Integer> userOrder);
 	public void setUserOrder(Integer... userOrder);
-	public int getIndexUser(int indexTechy);
-	public int getIndexTech(int indexUser);
+	public List<Integer> getUserOrder();
+	public Integer getIndexUser(int indexTechy);
+	public Integer getIndexTech(int indexUser);
 	
 	// -------------------------------------------- //
 	// WRITE VISUAL COLOR
