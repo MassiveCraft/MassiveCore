@@ -1040,7 +1040,7 @@ public class Mson implements Serializable
 	
 	// Implode simple
 	public static Mson implode(final Object[] list, final Mson glue, final Mson format)
-	{	
+	{
 		List<Mson> parts = new MassiveList<>();
 		for (int i = 0; i < list.length; i++)
 		{
@@ -1057,6 +1057,7 @@ public class Mson implements Serializable
 			}
 			parts.add(part);
 		}
+		
 		return Mson.mson(parts);
 	}
 
@@ -1144,7 +1145,10 @@ public class Mson implements Serializable
 		if (msons.size() == 1) parts.add(msons.get(0));
 		if (suffix != null) parts.add(suffix);
 		
-		ret.add(implode(parts, SPACE));
+		if ( ! parts.isEmpty())
+		{
+			ret.add(implode(parts, SPACE));
+		}
 		
 		if (msons.size() != 1)
 		{

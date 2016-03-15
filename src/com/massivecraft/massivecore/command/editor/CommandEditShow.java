@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.command.editor;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.command.Parameter;
 
 public class CommandEditShow<O, V> extends CommandEditAbstract<O, V>
 {	
@@ -17,6 +18,9 @@ public class CommandEditShow<O, V> extends CommandEditAbstract<O, V>
 		String alias = this.createCommandAlias();
 		this.setAliases(alias);
 		
+		// Parameters
+		this.addParameter(Parameter.getPage());
+		
 		// Desc
 		this.setDesc(alias + " " + this.getPropertyName());
 	}
@@ -28,7 +32,8 @@ public class CommandEditShow<O, V> extends CommandEditAbstract<O, V>
 	@Override
 	public void perform() throws MassiveException
 	{
-		this.show(sender);
+		int page = this.readArg();
+		this.show(page);
 	}
 	
 }

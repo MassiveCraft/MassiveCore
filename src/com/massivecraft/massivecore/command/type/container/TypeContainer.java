@@ -67,7 +67,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 			index++;
 			Mson part = Mson.mson(
 				Mson.mson(String.valueOf(index)).color(ChatColor.WHITE),
-				" ",
+				Mson.SPACE,
 				innerType.getVisualMson(element, sender)
 			);
 			parts.add(part);

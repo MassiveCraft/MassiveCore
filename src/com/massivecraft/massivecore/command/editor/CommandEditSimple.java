@@ -32,7 +32,7 @@ public class CommandEditSimple<O, V> extends CommandEditAbstract<O, V>
 		// Show
 		if ( ! this.argIsSet(0))
 		{
-			this.show(sender);
+			this.show(0);
 			return;
 		}
 		

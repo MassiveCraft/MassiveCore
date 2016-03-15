@@ -16,6 +16,7 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.Txt;
 
 public class CommandEditAbstract<O, V> extends MassiveCommand
 {
@@ -297,18 +298,36 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		return alias;
 	}
 	
-	public void show(CommandSender sender)
+	public void show(int page)
 	{
-		Mson descProperty = this.getProperty().getDisplayNameMson();
-		Mson descObject = this.getObjectVisual();
 		Mson descValue = this.getInheritedVisual();
-		message(mson(
-			descProperty,
-			" for ",
-			descObject,
-			": ",
-			descValue
-			).color(ChatColor.GRAY));
+		
+		// For things with line breaks.
+		if (descValue.contains("\n"))
+		{
+			Mson title = mson(
+				this.getProperty().getDisplayNameMson(),
+				" for ",
+				this.getObjectVisual()
+			);
+			List<Mson> lines = descValue.split(Txt.PATTERN_NEWLINE);
+			
+			message(Txt.getPage(lines, page, title, this));
+		}
+		// Others
+		else
+		{
+			Mson descProperty = this.getProperty().getDisplayNameMson();
+			Mson descObject = this.getObjectVisual();
+			
+			message(mson(
+				descProperty,
+				" for ",
+				descObject,
+				": ",
+				descValue
+			).color(ChatColor.GRAY));			
+		}
 	}
 	
 	public void requireNullable() throws MassiveException
