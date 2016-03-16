@@ -433,7 +433,7 @@ public class Txt
 	{
 		if (InventoryUtil.isNothing(itemStack)) return Txt.parse("<silver><em>Nothing");
 		
-		ChatColor color = (itemStack.getEnchantments().size() > 0) ? ChatColor.AQUA : ChatColor.RESET;
+		ChatColor color = (itemStack.getEnchantments().size() > 0) ? ChatColor.AQUA : ChatColor.WHITE;
 		
 		if (itemStack.hasItemMeta())
 		{
