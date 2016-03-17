@@ -68,12 +68,15 @@ public class MassiveCommandHelp extends MassiveCommand
 		boolean visible = super.isVisibleTo(sender);
 		if ( ! (this.hasParent() && visible)) return visible;
 		
+		int visibleSiblingCount = 0;
+		for (MassiveCommand sibling : this.getParent().getChildren())
+		{
+			if (sibling == this) continue;
+			if (sibling.isVisibleTo(sender)) visibleSiblingCount++;
+		}
+		
 		int pageHeight = (sender instanceof Player) ? Txt.PAGEHEIGHT_PLAYER : Txt.PAGEHEIGHT_CONSOLE;
-		
-		// Minues one, don't count ourself.
-		int size = this.getParent().getChildren().size()-1;
-		
-		if (size <= pageHeight)
+		if (visibleSiblingCount <= pageHeight)
 		{
 			return false;
 		}
