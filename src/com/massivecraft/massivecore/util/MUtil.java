@@ -17,12 +17,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -551,6 +551,15 @@ public class MUtil
 		for (int i = 1; i <= times; i++)
 		{
 			ret.add(object);
+		}
+		return ret;
+	}
+	public static List<Integer> range(int from, int to)
+	{
+		List<Integer> ret = new MassiveList<>(to - from);
+		for (int i = from; i < to; i++)
+		{
+			ret.add(i);
 		}
 		return ret;
 	}
