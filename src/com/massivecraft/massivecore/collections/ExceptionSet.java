@@ -35,6 +35,16 @@ public class ExceptionSet<T>
 		this.exceptions.addAll(Arrays.asList(exceptions));
 	}
 	
+	@SafeVarargs
+	public ExceptionSet(boolean standard, T... exceptions)
+	{
+		this.standard = standard;
+		for (T exception : exceptions)
+		{
+			this.exceptions.add(convert(exception));
+		}
+	}
+	
 	// -------------------------------------------- //
 	// CONTAINS
 	// -------------------------------------------- //

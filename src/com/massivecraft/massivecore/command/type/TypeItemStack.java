@@ -2,11 +2,13 @@ package com.massivecraft.massivecore.command.type;
 
 import java.util.Collection;
 
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -14,11 +16,28 @@ import com.massivecraft.massivecore.util.Txt;
 public class TypeItemStack extends TypeAbstract<ItemStack>
 {
 	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private final ExceptionSet<Material> materialsAllowed;
+	
+	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static TypeItemStack i = new TypeItemStack();
+	private static TypeItemStack i = new TypeItemStack(new ExceptionSet<Material>(true));
 	public static TypeItemStack get() { return i; }
+	
+	public static TypeItemStack get(Material... materialWhitelist)
+	{
+		ExceptionSet<Material> materialsAllowed = new ExceptionSet<>(false, materialWhitelist);
+		return new TypeItemStack(materialsAllowed);
+	}
+	
+	public TypeItemStack(ExceptionSet<Material> materialsAllowed)
+	{
+		this.materialsAllowed = materialsAllowed;
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -57,6 +76,10 @@ public class TypeItemStack extends TypeAbstract<ItemStack>
 		
 		ItemStack ret = player.getItemInHand();
 		if (InventoryUtil.isNothing(ret)) throw new MassiveException().addMsg("<b>You must hold an item in your hand.");
+		
+		Material material = ret.getType();
+		if ( ! this.materialsAllowed.contains(material)) throw new MassiveException().addMsg("<h>%s <b>is not allowed.", Txt.getNicedEnum(material));
+		
 		ret = new ItemStack(ret);
 		return ret;
 	}

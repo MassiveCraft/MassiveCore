@@ -24,10 +24,9 @@ public class TypeDyeColor extends TypeEnum<DyeColor>
 	// -------------------------------------------- //
 	
 	@Override
-	public String getVisualInner(DyeColor value, CommandSender sender)
+	public ChatColor getVisualColor(DyeColor value, CommandSender sender)
 	{
-		ChatColor color = MUtil.getChatColor(value);
-		return color + super.getNameInner(value);
+		return MUtil.getChatColor(value);
 	}
 
 }
