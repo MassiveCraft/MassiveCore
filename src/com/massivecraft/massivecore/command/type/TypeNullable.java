@@ -71,4 +71,17 @@ public class TypeNullable<T> extends TypeWrapper<T>
 		return super.read(arg, sender);
 	}
 
+	@Override
+	public Collection<String> getTabList(CommandSender sender, String arg)
+	{
+		// Super
+		Collection<String> ret = super.getTabList(sender, arg);
+
+		// Add nulls
+		ret.addAll(this.getNulls());
+
+		// Return
+		return ret;
+	}
+
 }
