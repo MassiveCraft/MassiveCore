@@ -1,7 +1,5 @@
 package com.massivecraft.massivecore.collections;
 
-import java.util.Arrays;
-
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 
 public class ExceptionSet<T>
@@ -29,47 +27,52 @@ public class ExceptionSet<T>
 		this.standard = standard;
 	}
 	
-	public ExceptionSet(boolean standard, String... exceptions)
+	@SafeVarargs
+	public <X extends Object> ExceptionSet(boolean standard, X... exceptions)
 	{
 		this.standard = standard;
-		this.exceptions.addAll(Arrays.asList(exceptions));
+		if (exceptions.length == 0) return;
+		for (Object exception : exceptions)
+		{
+			String string = asString(exception);
+			this.exceptions.add(string);
+		}
 	}
 	
-	@SafeVarargs
-	public ExceptionSet(boolean standard, T... exceptions)
+	// -------------------------------------------- //
+	// AS STRING
+	// -------------------------------------------- //
+	
+	public String asString(Object exception)
 	{
-		this.standard = standard;
-		for (T exception : exceptions)
-		{
-			this.exceptions.add(convert(exception));
-		}
+		if (exception == null) return null;
+		
+		if (exception instanceof String) return (String)exception;
+		
+		@SuppressWarnings("unchecked")
+		T t = (T)exception;
+		return this.convert(t);
+	}
+	
+	// -------------------------------------------- //
+	// CONVERT
+	// -------------------------------------------- //
+	
+	public String convert(T item)
+	{
+		return item.toString();
 	}
 	
 	// -------------------------------------------- //
 	// CONTAINS
 	// -------------------------------------------- //
 	
-	public boolean containsString(String item)
+	public boolean contains(Object object)
 	{
-		if (this.exceptions.contains(item)) return ! this.standard;
+		if (object == null) return ! this.standard;
+		String string = asString(object);
+		if (this.exceptions.contains(string)) return ! this.standard;
 		return this.standard;
-	}
-	
-	public boolean contains(String item)
-	{
-		return this.containsString(item);
-	}
-
-	public boolean contains(T item)
-	{
-		if (item == null) return ! this.standard;
-		
-		return this.contains(convert(item));
-	}
-	
-	public String convert(T item)
-	{
-		return item.toString();
 	}
 	
 }
