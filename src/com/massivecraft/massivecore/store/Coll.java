@@ -24,6 +24,7 @@ import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonSyntaxException;
 
 public class Coll<E extends Entity<E>> extends CollAbstract<E>
 {
@@ -498,12 +499,23 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			}
 		}
 		
+		if ( ! this.remoteEntryIsOk(id, remoteEntry)) return;
 		JsonObject raw = remoteEntry.getKey();
 		Long mtime = remoteEntry.getValue();
-		if ( ! this.remoteEntryIsOk(id, remoteEntry)) return;
 		
 		// Calculate temp but handle raw cases.
-		E temp = this.getGson().fromJson(raw, this.getEntityClass());
+		E temp;
+		
+		try
+		{
+			temp = this.getGson().fromJson(raw, this.getEntityClass());	
+		}
+		catch (JsonSyntaxException ex)
+		{
+			logLoadError(id, ex.getMessage());
+			return;
+		}
+		
 		E entity = this.getFixed(id, false);
 		if (entity != null)
 		{
@@ -565,7 +577,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		MassiveCore.get().log(Txt.parse("<b>Database could not load entity. You edited a file manually and made wrong JSON?"));
 		MassiveCore.get().log(Txt.parse("<k>Entity: <v>%s", entityId));
-		MassiveCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
+		MassiveCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getDebugName()));
 		MassiveCore.get().log(Txt.parse("<k>Error: <v>%s", error));
 	}
 	
