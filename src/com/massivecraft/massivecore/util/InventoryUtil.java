@@ -543,6 +543,13 @@ public class InventoryUtil
 		return (T) item.getItemMeta();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T extends ItemMeta> T createMeta(ItemStack item)
+	{
+		if (item == null) return null;
+		return (T) item.getItemMeta();
+	}
+	
 	// DISPLAY NAME
 	
 	public static String getDisplayName(ItemStack item)
@@ -556,7 +563,7 @@ public class InventoryUtil
 	
 	public static void setDisplayName(ItemStack item, String displayName)
 	{
-		ItemMeta meta = getMeta(item);
+		ItemMeta meta = createMeta(item);
 		if (meta == null) return;
 		
 		meta.setDisplayName(displayName);
@@ -582,7 +589,7 @@ public class InventoryUtil
 	
 	public static void setLore(ItemStack item, Collection<String> lore)
 	{
-		ItemMeta meta = getMeta(item);
+		ItemMeta meta = createMeta(item);
 		if (meta == null) return;
 		
 		meta.setLore(lore == null ? null : new MassiveList<>(lore));
