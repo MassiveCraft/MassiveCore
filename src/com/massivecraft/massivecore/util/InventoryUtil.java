@@ -1,6 +1,9 @@
 package com.massivecraft.massivecore.util;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,9 +17,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.mixin.Mixin;
 
 public class InventoryUtil
@@ -522,6 +527,71 @@ public class InventoryUtil
 			ret += item.getAmount();
 		}
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// GETTERS AND SETTERS
+	// -------------------------------------------- //
+	
+	// META
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends ItemMeta> T getMeta(ItemStack item)
+	{
+		if (item == null) return null;
+		if ( ! item.hasItemMeta()) return null;
+		return (T) item.getItemMeta();
+	}
+	
+	// DISPLAY NAME
+	
+	public static String getDisplayName(ItemStack item)
+	{
+		ItemMeta meta = getMeta(item);
+		if (meta == null) return null;
+		
+		if ( ! meta.hasDisplayName()) return null;
+		return meta.getDisplayName();
+	}
+	
+	public static void setDisplayName(ItemStack item, String displayName)
+	{
+		ItemMeta meta = getMeta(item);
+		if (meta == null) return;
+		
+		meta.setDisplayName(displayName);
+		item.setItemMeta(meta);
+	}
+	
+	public static boolean isDisplayName(ItemStack item, String displayName)
+	{
+		String value = getDisplayName(item);
+		return MUtil.equals(value, displayName);
+	}
+	
+	// LORE
+	
+	public static List<String> getLore(ItemStack item)
+	{
+		ItemMeta meta = getMeta(item);
+		if (meta == null) return null;
+		
+		if ( ! meta.hasLore()) return null;
+		return meta.getLore();
+	}
+	
+	public static void setLore(ItemStack item, Collection<String> lore)
+	{
+		ItemMeta meta = getMeta(item);
+		if (meta == null) return;
+		
+		meta.setLore(lore == null ? null : new MassiveList<>(lore));
+		item.setItemMeta(meta);
+	}
+	
+	public static void setLore(ItemStack item, String... lore)
+	{
+		setLore(item, Arrays.asList(lore));
 	}
 
 }
