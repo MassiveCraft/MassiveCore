@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.command.type;
 
 import java.util.Collection;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.enumeration.TypeDyeColor;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class TypeColor extends TypeAbstract<Color>
@@ -21,7 +23,29 @@ public class TypeColor extends TypeAbstract<Color>
 	public static TypeColor get() { return i; }
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// WRITE VISUAL
+	// -------------------------------------------- //
+	
+	@Override
+	public String getVisualInner(Color value, CommandSender sender)
+	{
+		DyeColor dyeColor = DyeColor.getByColor(value);
+		if (dyeColor != null) return MUtil.getChatColor(dyeColor) + Txt.getNicedEnum(dyeColor);
+		return ChatColor.RED.toString() + value.getRed() + " " + ChatColor.GREEN.toString() + value.getGreen() + " " + ChatColor.BLUE.toString() + value.getBlue(); 
+	}
+	
+	// -------------------------------------------- //
+	// WRITE ID
+	// -------------------------------------------- //
+	
+	@Override
+	public String getIdInner(Color value)
+	{
+		return value.getRed() + " " + value.getGreen() + " " + value.getBlue(); 
+	}
+	
+	// -------------------------------------------- //
+	// READ
 	// -------------------------------------------- //
 	
 	@Override
@@ -33,11 +57,11 @@ public class TypeColor extends TypeAbstract<Color>
 		ret = readInnerRgb(arg);
 		if (ret != null) return ret;
 		
-		// Try hex
+		// Try Hex
 		ret = readInnerHex(arg);
 		if (ret != null) return ret;
 		
-		// Try chat color
+		// Try DyeColor
 		ret = readInnerDyeColor(arg);
 		if (ret != null) return ret;
 		
@@ -49,14 +73,14 @@ public class TypeColor extends TypeAbstract<Color>
 		String[] rgb = Txt.PATTERN_WHITESPACE.split(arg);
 		if (rgb.length != 3) return null;
 		
-		int red = getRgb(rgb[0]);
-		int green = getRgb(rgb[1]);
-		int blue = getRgb(rgb[2]);
+		int red = readInnerRgbNumber(rgb[0]);
+		int green = readInnerRgbNumber(rgb[1]);
+		int blue = readInnerRgbNumber(rgb[2]);
 
 		return Color.fromRGB(red, green, blue);
 	}
 	
-	private int getRgb(String arg) throws MassiveException
+	private int readInnerRgbNumber(String arg) throws MassiveException
 	{
 		int ret = TypeInteger.get().read(arg);
 		if (ret > 255 || ret < 0) throw new MassiveException().addMsg("<b>RGB number must be between 0 and 255.");
@@ -108,6 +132,10 @@ public class TypeColor extends TypeAbstract<Color>
 			return null;
 		}
 	}
+	
+	// -------------------------------------------- //
+	// TAB LIST
+	// -------------------------------------------- //
 	
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
