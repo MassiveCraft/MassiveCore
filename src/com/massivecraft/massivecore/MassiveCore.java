@@ -60,6 +60,22 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreTeleportMixinCause;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
+import com.massivecraft.massivecore.mixin.MixinActionbar;
+import com.massivecraft.massivecore.mixin.MixinActual;
+import com.massivecraft.massivecore.mixin.MixinCommand;
+import com.massivecraft.massivecore.mixin.MixinDisplayName;
+import com.massivecraft.massivecore.mixin.MixinEvent;
+import com.massivecraft.massivecore.mixin.MixinGamemode;
+import com.massivecraft.massivecore.mixin.MixinInventory;
+import com.massivecraft.massivecore.mixin.MixinKick;
+import com.massivecraft.massivecore.mixin.MixinMessage;
+import com.massivecraft.massivecore.mixin.MixinModification;
+import com.massivecraft.massivecore.mixin.MixinPlayed;
+import com.massivecraft.massivecore.mixin.MixinSenderPs;
+import com.massivecraft.massivecore.mixin.MixinTeleport;
+import com.massivecraft.massivecore.mixin.MixinTitle;
+import com.massivecraft.massivecore.mixin.MixinVisibility;
+import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.ps.PS;
@@ -220,7 +236,25 @@ public class MassiveCore extends MassivePlugin
 			CmdMassiveCoreStore.get(),
 			CmdMassiveCoreBuffer.get(),
 			CmdMassiveCoreCmdurl.get(),
-			CmdMassiveCoreClick.get()
+			CmdMassiveCoreClick.get(),
+			
+			// Mixin
+			MixinEvent.get(), // NOTE: Should be first
+			MixinActionbar.get(),
+			MixinActual.get(),
+			MixinCommand.get(),
+			MixinDisplayName.get(),
+			MixinGamemode.get(),
+			MixinInventory.get(),
+			MixinKick.get(),
+			MixinMessage.get(),
+			MixinModification.get(),
+			MixinPlayed.get(),
+			MixinSenderPs.get(),
+			MixinTeleport.get(),
+			MixinTitle.get(),
+			MixinVisibility.get(),
+			MixinWorld.get()
 		);
 		
 		// Start the examine threads

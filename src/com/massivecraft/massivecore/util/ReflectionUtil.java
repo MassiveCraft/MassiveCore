@@ -264,6 +264,22 @@ public class ReflectionUtil
 		});
 	}
 	
+	public static Class<?> getSuperclassDeclaringField(Class<?> clazz, boolean includeSelf, final String fieldName)
+	{
+		return getSuperclassPredicate(clazz, includeSelf, new Predicate<Class<?>>()
+		{
+			@Override
+			public boolean apply(Class<?> clazz)
+			{
+				for (Field field : clazz.getDeclaredFields())
+				{
+					if (field.getName().equals(fieldName)) return true;
+				}
+				return false;
+			}
+		});
+	}
+	
 	// -------------------------------------------- //
 	// AS RUNTIME EXCEPTION
 	// -------------------------------------------- //

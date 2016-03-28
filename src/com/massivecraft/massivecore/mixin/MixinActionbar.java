@@ -1,25 +1,26 @@
 package com.massivecraft.massivecore.mixin;
 
 import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.nms.NmsPacket;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.Txt;
 
-public class ActionbarMixinDefault extends ActionbarMixinAbstract
+public class MixinActionbar extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-
-	private static ActionbarMixinDefault i = new ActionbarMixinDefault();
-	public static ActionbarMixinDefault get() { return i; }
-
+	
+	private static MixinActionbar d = new MixinActionbar();
+	private static MixinActionbar i = d;
+	public static MixinActionbar get() { return i; }
+	public static void set(MixinActionbar i) { MixinActionbar.i = i; }
+	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// METHODS
 	// -------------------------------------------- //
-
-	@Override
+	
 	public boolean sendActionbarMessage(Object watcherObject, String message)
 	{
 		// Get the player
@@ -31,7 +32,11 @@ public class ActionbarMixinDefault extends ActionbarMixinAbstract
 		return NmsPacket.sendActionbar(player, message);
 	}
 
-	@Override
+	public boolean sendActionbarMsg(Object watcherObject, String message)
+	{
+		return this.sendActionbarMessage(watcherObject, Txt.parse(message));
+	}
+
 	public boolean sendActionbarMson(Object watcherObject, Mson mson)
 	{
 		// Get the player
@@ -44,7 +49,6 @@ public class ActionbarMixinDefault extends ActionbarMixinAbstract
 		return NmsPacket.sendActionbar(player, message);
 	}
 
-	@Override
 	public boolean isActionbarAvailable()
 	{
 		return NmsPacket.get().isAvailable();

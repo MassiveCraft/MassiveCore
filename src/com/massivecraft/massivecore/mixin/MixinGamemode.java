@@ -5,20 +5,21 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class GamemodeMixinDefault extends GamemodeMixinAbstract
+public class MixinGamemode extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static GamemodeMixinDefault i = new GamemodeMixinDefault();
-	public static GamemodeMixinDefault get() { return i; }
-
+	private static MixinGamemode d = new MixinGamemode();
+	private static MixinGamemode i = d;
+	public static MixinGamemode get() { return i; }
+	public static void set(MixinGamemode i) { MixinGamemode.i = i; }
+	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// METHODS
 	// -------------------------------------------- //
 	
-	@Override
 	public GameMode getGamemode(Object playerObject)
 	{
 		Player player = IdUtil.getPlayer(playerObject);
@@ -27,13 +28,12 @@ public class GamemodeMixinDefault extends GamemodeMixinAbstract
 		return player.getGameMode();
 	}
 
-	@Override
-	public void setGamemode(Object playerObject, GameMode gm)
+	public void setGamemode(Object playerObject, GameMode gameMode)
 	{
 		Player player = IdUtil.getPlayer(playerObject);
 		if (player == null) return;
 		
-		player.setGameMode(gm);
+		player.setGameMode(gameMode);
 	}
 
 }
