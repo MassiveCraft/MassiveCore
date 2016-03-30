@@ -2,7 +2,6 @@ package com.massivecraft.massivecore.command.editor;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.TypeNullable;
-import com.massivecraft.massivecore.util.PermUtil;
 
 public class CommandEditSimple<O, V> extends CommandEditAbstract<O, V>
 {
@@ -35,9 +34,6 @@ public class CommandEditSimple<O, V> extends CommandEditAbstract<O, V>
 			this.show(0);
 			return;
 		}
-		
-		// Permission
-		if ( ! PermUtil.has(sender, this.getPropertyPermission(), true)) return;
 		
 		// Arguments
 		V after = this.readArg();

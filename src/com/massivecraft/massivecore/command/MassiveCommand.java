@@ -715,7 +715,8 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	
 	public List<Requirement> getRequirements() { return this.requirements; }
 	public void setRequirements(List<Requirement> requirements) { this.requirements = requirements; }
-	public void addRequirements(Requirement... requirements) { this.requirements.addAll(Arrays.asList(requirements)); }
+	public void addRequirements(Collection<Requirement> requirements) { this.requirements.addAll(requirements); }
+	public void addRequirements(Requirement... requirements) { this.addRequirements(Arrays.asList(requirements)); }
 	
 	public boolean isRequirementsMet(CommandSender sender, boolean verboose)
 	{

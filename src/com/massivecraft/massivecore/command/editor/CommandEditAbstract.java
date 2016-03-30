@@ -5,17 +5,14 @@ import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.permissions.Permission;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorUse;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
 import com.massivecraft.massivecore.mson.Mson;
-import com.massivecraft.massivecore.util.PermUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CommandEditAbstract<O, V> extends MassiveCommand
@@ -54,12 +51,6 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		
 		// Requirements
 		this.addRequirements(RequirementEditorUse.get());
-		
-		if (this.isWrite() != null && this.isWrite())
-		{
-			Permission permission = this.getPropertyPermission();
-			if (permission != null) this.addRequirements(RequirementHasPerm.get(permission.getName()));
-		}
 	}
 
 	// -------------------------------------------- //
@@ -105,9 +96,6 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 			msg("<b>The property <h>%s<b> is not editable.", this.getProperty().getDisplayName());
 			return;
 		}
-		
-		// Permission
-		if ( ! PermUtil.has(sender, this.getPropertyPermission(), true)) return;
 		
 		// Inherited / Source / Before
 		Entry<O, V> inherited = this.getInheritedEntry();
@@ -200,16 +188,6 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	public O getObject()
 	{
 		return this.getSettings().getUsed(sender);
-	}
-	
-	public Permission getPropertyPermission()
-	{
-		return this.getSettings().getPropertyPermission(this.getProperty());
-	}
-	
-	public Permission getUsedPermission()
-	{
-		return this.getSettings().getUsedPermission();
 	}
 	
 	public Mson getObjectVisual()

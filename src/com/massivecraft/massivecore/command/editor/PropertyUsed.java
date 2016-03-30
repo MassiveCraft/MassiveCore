@@ -13,6 +13,7 @@ public abstract class PropertyUsed<V> extends Property<CommandSender, V>
 	public PropertyUsed(EditSettings<V> settings)
 	{
 		super(TypeSender.get(), settings.getObjectType(), "used " + settings.getObjectType().getName());
+		this.addRequirements(settings.getUsedRequirements());
 	}
 
 }

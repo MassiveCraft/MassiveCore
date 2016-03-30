@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.command.editor;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +12,8 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.command.requirement.Requirement;
+import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.Entity;
@@ -56,6 +59,17 @@ public abstract class Property<O, V> implements Named
 	@Override public String getName() { return this.getNames().isEmpty() ? null : this.getNames().get(0); }
 	public void setName(String name) { this.names = new MassiveList<String>(name); }
 	public void setNames(String... names) { this.names = new MassiveList<String>(names); }
+	
+	// -------------------------------------------- //
+	// REQUIREMENTS
+	// -------------------------------------------- //
+	
+	protected List<Requirement> requirements = new ArrayList<Requirement>();
+	
+	public List<Requirement> getRequirements() { return this.requirements; }
+	public void setRequirements(List<Requirement> requirements) { this.requirements = requirements; }
+	public void addRequirements(Collection<Requirement> requirements) { this.requirements.addAll(requirements); }
+	public void addRequirements(Requirement... requirements) { this.addRequirements(Arrays.asList(requirements)); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -147,7 +161,9 @@ public abstract class Property<O, V> implements Named
 	
 	public CommandEditAbstract<O, V> createEditCommand(EditSettings<O> settings)
 	{
-		return this.getValueType().createEditCommand(settings, this);
+		CommandEditAbstract<O, V> ret = this.getValueType().createEditCommand(settings, this);
+		ret.addRequirements(this.getRequirements());
+		return ret;
 	}
 	
 	public Mson getInheritedVisual(O object, O source, V value, CommandSender sender)

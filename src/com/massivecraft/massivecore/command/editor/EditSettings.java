@@ -1,11 +1,13 @@
 package com.massivecraft.massivecore.command.editor;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.permissions.Permission;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.sender.TypeSender;
 import com.massivecraft.massivecore.util.MUtil;
@@ -38,14 +40,7 @@ public class EditSettings<O>
 	}
 	protected EditSettings<CommandSender> createUsedSettings()
 	{
-		final EditSettings<O> main = this;
-		return new EditSettings<CommandSender>(TypeSender.get(), new PropertyThis<CommandSender>(TypeSender.get())) {
-			@Override
-			public Permission getPropertyPermission(Property<CommandSender,?> property)
-			{
-				return main.getUsedPermission();
-			}
-		};
+		return new EditSettings<CommandSender>(TypeSender.get(), new PropertyThis<CommandSender>(TypeSender.get()));
 	}
 	
 	// -------------------------------------------- //
@@ -90,14 +85,9 @@ public class EditSettings<O>
 	// PERMISSONS
 	// -------------------------------------------- //
 	
-	public Permission getPropertyPermission(Property<O, ?> property)
+	public List<Requirement> getUsedRequirements()
 	{
-		return null;
-	}
-	
-	public Permission getUsedPermission()
-	{
-		return null;
+		return Collections.emptyList();
 	}
 	
 	// -------------------------------------------- //
