@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +45,13 @@ public class EditSettings<O>
 		return new EditSettings<CommandSender>(TypeSender.get(), new PropertyThis<CommandSender>(TypeSender.get()));
 	}
 	
+	// The requirements to edit used object.
+	private List<Requirement> usedRequirements = new ArrayList<Requirement>();
+	public List<Requirement> getUsedRequirements() { return this.usedRequirements; }
+	public void setUsedRequirements(List<Requirement> requirements) { this.usedRequirements = requirements; }
+	public void addUsedRequirements(Collection<Requirement> requirements) { this.usedRequirements.addAll(requirements); }
+	public void addUsedRequirements(Requirement... requirements) { this.addUsedRequirements(Arrays.asList(requirements)); }
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -79,15 +88,6 @@ public class EditSettings<O>
 	public CommandEditUsed<O> createCommandEditUsed()
 	{
 		return new CommandEditUsed<O>(this);
-	}
-	
-	// -------------------------------------------- //
-	// PERMISSONS
-	// -------------------------------------------- //
-	
-	public List<Requirement> getUsedRequirements()
-	{
-		return Collections.emptyList();
 	}
 	
 	// -------------------------------------------- //

@@ -22,12 +22,10 @@ public class TypeSenderName extends TypeSenderIdAbstract<String>
 		super(source, presence);
 	}
 	
-	
 	private TypeSenderName(SenderIdSource source, SenderType type)
 	{
 		super(source, type);
 	}
-	
 	
 	private TypeSenderName(SenderIdSource source)
 	{

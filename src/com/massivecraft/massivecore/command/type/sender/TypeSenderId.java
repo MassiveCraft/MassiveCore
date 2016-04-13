@@ -21,12 +21,10 @@ public class TypeSenderId extends TypeSenderIdAbstract<String>
 		super(source, presence);
 	}
 	
-	
 	private TypeSenderId(SenderIdSource source, SenderType type)
 	{
 		super(source, type);
 	}
-	
 	
 	private TypeSenderId(SenderIdSource source)
 	{

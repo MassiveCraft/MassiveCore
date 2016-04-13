@@ -13,6 +13,7 @@ import com.massivecraft.massivecore.command.requirement.RequirementEditorUse;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class CommandEditAbstract<O, V> extends MassiveCommand
@@ -110,11 +111,13 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		
 		// NoChange
 		// We check, inform and cancel on equality.
-		if (this.getValueType().equals(before, after))
+		// For this to count the source must be the object itself.
+		if (MUtil.equals(this.getObject(), source) && this.getValueType().equals(before, after))
 		{
 			message(this.attemptSetNochangeMessage());
 			return;
 		}
+		
 		this.attemptSetPerform(after);
 	}
 	
@@ -126,7 +129,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 			this.getObjectVisual(),
 			" already: ",	
 			this.getInheritedVisual()
-			).color(ChatColor.GRAY);
+		).color(ChatColor.GRAY);
 	}
 	
 	protected void attemptSetPerform(V after)
@@ -143,7 +146,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		messages.add(mson(
 			mson("Before: ").color(ChatColor.AQUA),
 			descValue
-			));
+		));
 
 		// Apply
 		// We set the new property value.
@@ -155,7 +158,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		messages.add(mson(
 			mson("After: ").color(ChatColor.AQUA),
 			descValue
-			));
+		));
 		
 		// Startup
 		// We inform what property and object the edit is taking place on.
@@ -166,7 +169,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 			" for ",
 			descObject,
 			" edited:"
-			).color(ChatColor.GRAY));
+		).color(ChatColor.GRAY));
 		
 		message(messages);
 	}
