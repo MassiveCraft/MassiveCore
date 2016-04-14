@@ -231,7 +231,7 @@ public class MassiveCore extends MassivePlugin
 			IntegrationVault.get()
 		);
 		
-		// Some commands rely on the MConf being present.
+		// NOTE: Some commands rely on the MConf being loaded at construction.
 		this.activate(
 			// Command
 			CmdMassiveCore.get(),

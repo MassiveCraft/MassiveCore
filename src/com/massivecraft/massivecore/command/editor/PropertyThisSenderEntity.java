@@ -32,7 +32,7 @@ public class PropertyThisSenderEntity<O extends SenderEntity<O>> extends Propert
 	@Override
 	public O getRaw(CommandSender object)
 	{
-		return coll.get(object);
+		return this.getColl().get(object);
 	}
 
 	@Override

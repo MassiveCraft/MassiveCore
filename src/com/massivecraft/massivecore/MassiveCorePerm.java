@@ -10,42 +10,42 @@ public enum MassiveCorePerm
 	// ENUM
 	// -------------------------------------------- //
 	
-	BASECOMMAND("basecommand"),
-	TEST("test"),
-	ID("id"),
-	VERSION("version"),
-	HEARSOUND("hearsound"),
-	STORE("store"),
-	STORE_STATS("store.stats"),
-	STORE_LISTCOLLS("store.listcolls"),
-	STORE_COPYDB("store.copydb"),
-	USYS("usys"),
-	USYS_MULTIVERSE("usys.multiverse"),
-	USYS_MULTIVERSE_LIST("usys.multiverse.list"),
-	USYS_MULTIVERSE_SHOW("usys.multiverse.show"),
-	USYS_MULTIVERSE_NEW("usys.multiverse.new"),
-	USYS_MULTIVERSE_DEL("usys.multiverse.del"),
-	USYS_UNIVERSE("usys.universe"),
-	USYS_UNIVERSE_NEW("usys.universe.new"),
-	USYS_UNIVERSE_DEL("usys.universe.del"),
-	USYS_UNIVERSE_CLEAR("usys.universe.clear"),
-	USYS_WORLD("usys.world"),
-	USYS_ASPECT("usys.aspect"),
-	USYS_ASPECT_LIST("usys.aspect.list"),
-	USYS_ASPECT_SHOW("usys.aspect.show"),
-	USYS_ASPECT_USE("usys.aspect.use"),
-	BUFFER("buffer"),
-	BUFFER_PRINT("buffer.print"),
-	BUFFER_CLEAR("buffer.clear"),
-	BUFFER_SET("buffer.set"),
-	BUFFER_ADD("buffer.add"),
-	BUFFER_WHITESPACE("buffer.whitespace"),
-	CMDURL("cmdurl"),
-	CONFIG("config"),
-	NOTPDELAY("notpdelay"),
-	VARIABLE_BOOK("variable.book"),
-	VARIABLE_BUFFER("variable.buffer"),
-	CLICK("click"),
+	BASECOMMAND,
+	TEST,
+	ID,
+	VERSION,
+	HEARSOUND,
+	STORE,
+	STORE_STATS,
+	STORE_LISTCOLLS,
+	STORE_COPYDB,
+	USYS,
+	USYS_MULTIVERSE,
+	USYS_MULTIVERSE_LIST,
+	USYS_MULTIVERSE_SHOW,
+	USYS_MULTIVERSE_NEW,
+	USYS_MULTIVERSE_DEL,
+	USYS_UNIVERSE,
+	USYS_UNIVERSE_NEW,
+	USYS_UNIVERSE_DEL,
+	USYS_UNIVERSE_CLEAR,
+	USYS_WORLD,
+	USYS_ASPECT,
+	USYS_ASPECT_LIST,
+	USYS_ASPECT_SHOW,
+	USYS_ASPECT_USE,
+	BUFFER,
+	BUFFER_PRINT,
+	BUFFER_CLEAR,
+	BUFFER_SET,
+	BUFFER_ADD,
+	BUFFER_WHITESPACE,
+	CMDURL,
+	CONFIG,
+	NOTPDELAY,
+	VARIABLE_BOOK,
+	VARIABLE_BUFFER,
+	CLICK,
 	
 	// END OF LIST
 	;
@@ -60,9 +60,9 @@ public enum MassiveCorePerm
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	MassiveCorePerm(final String permissionNode)
+	MassiveCorePerm()
 	{
-		this.node = "massivecore."+permissionNode;
+		this.node = "massivecore." + this.name().toLowerCase().replace('_', '.');
 	}
 	
 	// -------------------------------------------- //

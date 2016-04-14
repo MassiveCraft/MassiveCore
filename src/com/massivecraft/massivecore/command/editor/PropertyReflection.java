@@ -3,6 +3,10 @@ package com.massivecraft.massivecore.command.editor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorEditable;
+import com.massivecraft.massivecore.command.editor.annotation.EditorInheritable;
+import com.massivecraft.massivecore.command.editor.annotation.EditorNullable;
+import com.massivecraft.massivecore.command.editor.annotation.EditorVisible;
 import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.util.ReflectionUtil;
@@ -35,26 +39,14 @@ public class PropertyReflection<O, V> extends Property<O, V>
 	public PropertyReflection(Type<O> typeObject, Type<V> typeValue, Field field)
 	{
 		super(typeObject, typeValue);
+		
 		ReflectionUtil.makeAccessible(field);
+		this.field = field;
+		
+		this.setInheritable(isInheritable(field));
 		this.setEditable(isEditable(field));
 		this.setNullable(isNullable(field));
 		this.setName(field.getName());
-		this.field = field;
-	}
-	
-	private static boolean isEditable(Field field)
-	{
-		return ! Modifier.isFinal(field.getModifiers());
-	}
-	
-	private static boolean isNullable(Field field)
-	{
-		if (field.getType().isPrimitive()) return false;
-		
-		EditorField setting = field.getAnnotation(EditorField.class);
-		if (setting != null && ! setting.nullable()) return false;
-		
-		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -71,6 +63,73 @@ public class PropertyReflection<O, V> extends Property<O, V>
 	public void setRaw(O object, V value)
 	{
 		ReflectionUtil.setField(this.getField(), object, value);
+	}
+	
+	// -------------------------------------------- //
+	// PROPERTY SETTINGS CALCULATION
+	// -------------------------------------------- //
+	
+	public static boolean isVisible(Field field)
+	{
+		// Create
+		boolean ret = true;
+		
+		// Fill > Standard
+		int modifiers = field.getModifiers();
+		if (Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers)) ret = false;
+		
+		// Fill > Annotation
+		EditorVisible annotation = field.getAnnotation(EditorVisible.class);
+		if (annotation != null) ret = annotation.value();
+		
+		// Return
+		return ret;
+	}
+	
+	public static boolean isInheritable(Field field)
+	{
+		// Create
+		boolean ret = true;
+		
+		// Fill > Annotation
+		EditorInheritable annotation = field.getAnnotation(EditorInheritable.class);
+		if (annotation != null) ret = annotation.value();
+		
+		// Return
+		return ret;
+	}
+	
+	public static boolean isEditable(Field field)
+	{
+		// Create
+		boolean ret = true;
+		
+		// Fill > Standard
+		int modifiers = field.getModifiers();
+		if (Modifier.isFinal(modifiers)) ret = false;
+		
+		// Fill > Annotation
+		EditorEditable annotation = field.getAnnotation(EditorEditable.class);
+		if (annotation != null) ret = annotation.value();
+		
+		// Return
+		return ret;
+	}
+	
+	public static boolean isNullable(Field field)
+	{
+		// Primitive
+		if (field.getType().isPrimitive()) return false;
+		
+		// Create
+		boolean ret = true;
+		
+		// Fill > Annotation
+		EditorNullable annotation = field.getAnnotation(EditorNullable.class);
+		if (annotation != null) ret = annotation.value();
+		
+		// Return
+		return ret;
 	}
 	
 }

@@ -1,7 +1,8 @@
 package com.massivecraft.massivecore.command.editor;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+
+import com.massivecraft.massivecore.command.MassiveCommand;
 
 public class CommandEditReflection<O, V> extends CommandEditAbstract<O, V>
 {
@@ -12,29 +13,18 @@ public class CommandEditReflection<O, V> extends CommandEditAbstract<O, V>
 	public CommandEditReflection(EditSettings<O> settings, Property<O, V> property, Class<V> clazz)
 	{
 		super(settings, property, null);
+		
+		// TODO: What about super classes?
+		// TODO: While we not often use super classes they could in theory also be meant to be editable.
+		// TODO: Something to consider coding in for the future.
 		for (Field field : clazz.getDeclaredFields())
 		{
-			if ( ! this.isOkay(field)) continue;
-			Property<O, ?> propertyReflection = PropertyReflection.get(field);
-			this.addChild(propertyReflection.createEditCommand(settings));
+			if ( ! PropertyReflection.isVisible(field)) continue;
+			Property<O, ?> fieldProperty = PropertyReflection.get(field);
+			MassiveCommand fieldCommand = fieldProperty.createEditCommand(settings);
+			this.addChild(fieldCommand);
 		}
-	}
-	
-	// -------------------------------------------- //
-	// OKAY
-	// -------------------------------------------- //
-	
-	public boolean isOkay(Field field)
-	{
-		if ( ! this.isModifiersOkay(field.getModifiers())) return false;
-		return true;
-	}
-
-	public boolean isModifiersOkay(int modifiers)
-	{
-		if (Modifier.isStatic(modifiers)) return false;
-		if (Modifier.isVolatile(modifiers)) return false;
-		return true;
+		
 	}
 
 }

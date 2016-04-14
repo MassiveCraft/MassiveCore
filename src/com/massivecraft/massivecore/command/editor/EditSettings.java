@@ -45,12 +45,19 @@ public class EditSettings<O>
 		return new EditSettings<CommandSender>(TypeSender.get(), new PropertyThis<CommandSender>(TypeSender.get()));
 	}
 	
-	// The requirements to edit used object.
+	// Requirements to edit the used object.
 	private List<Requirement> usedRequirements = new ArrayList<Requirement>();
 	public List<Requirement> getUsedRequirements() { return this.usedRequirements; }
 	public void setUsedRequirements(List<Requirement> requirements) { this.usedRequirements = requirements; }
 	public void addUsedRequirements(Collection<Requirement> requirements) { this.usedRequirements.addAll(requirements); }
 	public void addUsedRequirements(Requirement... requirements) { this.addUsedRequirements(Arrays.asList(requirements)); }
+	
+	// Requirements to edit properties. Common stuff shared by all properties.
+	private List<Requirement> propertyRequirements = new ArrayList<Requirement>();
+	public List<Requirement> getPropertyRequirements() { return this.propertyRequirements; }
+	public void setPropertyRequirements(List<Requirement> requirements) { this.propertyRequirements = requirements; }
+	public void addPropertyRequirements(Collection<Requirement> requirements) { this.propertyRequirements.addAll(requirements); }
+	public void addPropertyRequirements(Requirement... requirements) { this.addPropertyRequirements(Arrays.asList(requirements)); }
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

@@ -161,7 +161,13 @@ public abstract class Property<O, V> implements Named
 	public CommandEditAbstract<O, V> createEditCommand(EditSettings<O> settings)
 	{
 		CommandEditAbstract<O, V> ret = this.getValueType().createEditCommand(settings, this);
+		
+		// Add general requirements.
+		ret.addRequirements(settings.getPropertyRequirements());
+		
+		// Add specific requirements.
 		ret.addRequirements(this.getRequirements());
+		
 		return ret;
 	}
 	

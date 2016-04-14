@@ -37,7 +37,7 @@ import com.massivecraft.massivecore.SoundEffect;
 import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.WorldExceptionSet;
-import com.massivecraft.massivecore.command.editor.EditorField;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.combined.TypeEntry;
 import com.massivecraft.massivecore.command.type.combined.TypePotionEffectWrap;
 import com.massivecraft.massivecore.command.type.combined.TypeSoundEffect;
@@ -93,12 +93,12 @@ public class RegistryType
 	
 	public static Type<?> getType(Field field)
 	{
-		EditorField setting = field.getAnnotation(EditorField.class);
-		if (setting != null)
+		EditorType annotation = field.getAnnotation(EditorType.class);
+		if (annotation != null)
 		{
-			Class<?> clazz = setting.type();
+			Class<?> clazz = annotation.value();
 			if (clazz == void.class) clazz = getType(field.getGenericType()).getClass();
-			return ReflectionUtil.getField(clazz, setting.singletonName(), null);
+			return ReflectionUtil.getField(clazz, annotation.fieldName(), null);
 		}
 		
 		return getType(field.getGenericType());
@@ -112,32 +112,39 @@ public class RegistryType
 			if (type == null) throw new IllegalStateException(reflectType + " is not registered.");
 			return type;
 		}
+		
 		if (reflectType instanceof ParameterizedType)
 		{
 			ParameterizedType paramType = (ParameterizedType) reflectType;
 			Class<?> parent = (Class<?>) paramType.getRawType();
+			
 			if (Map.class.isAssignableFrom(parent))
 			{
 				TypeEntry<?, ?> typeEntry = TypeEntry.get(getType(paramType.getActualTypeArguments()[0]), getType(paramType.getActualTypeArguments()[1]));
 				return TypeMap.get(typeEntry);
 			}
+			
 			if (List.class.isAssignableFrom(parent))
 			{
 				return TypeList.get(getType(paramType.getActualTypeArguments()[0]));
 			}
+			
 			if (Set.class.isAssignableFrom(parent))
 			{
 				return TypeSet.get(getType(paramType.getActualTypeArguments()[0]));
 			}
+			
 			if (Entry.class.isAssignableFrom(parent))
 			{
 				return TypeEntry.get(getType(paramType.getActualTypeArguments()[0]), getType(paramType.getActualTypeArguments()[1]));
 			}
+			
 			if (ExceptionSet.class.isAssignableFrom(parent))
 			{
 				return TypeExceptionSet.get(getType(paramType.getActualTypeArguments()[0]));
 			}
 		}
+		
 		throw new IllegalArgumentException("Unknown type: " + reflectType);
 	}
 	
