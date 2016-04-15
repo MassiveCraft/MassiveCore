@@ -14,7 +14,7 @@ public class MassiveCoreMConfColl extends Coll<MassiveCoreMConf>
 	public static MassiveCoreMConfColl get() { return i; }
 	private MassiveCoreMConfColl()
 	{
-		super("massivecore_mconf", MassiveCoreMConf.class, MStore.getDb(ConfServer.dburi), MassiveCore.get());
+		super("massivecore_mconf", MassiveCoreMConf.class, MStore.getDb(), MassiveCore.get());
 	}
 
 	// -------------------------------------------- //

@@ -12,6 +12,7 @@ import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
 import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 
@@ -69,8 +70,8 @@ public class Button
 	// Requirements to always be validated.
 	private List<Requirement> requirements = new MassiveList<>();
 	public List<Requirement> getRequirements() { return this.requirements; }
-	public Button setRequirements(Collection<Requirement> requirements) { this.requirements = new MassiveList<>(requirements); return this; }
-	public Button setRequirements(Requirement... requirements) { this.setRequirements(Arrays.asList(requirements)); return this; }
+	public Button addRequirements(Collection<Requirement> requirements) { this.requirements.addAll(requirements); return this; }
+	public Button addRequirements(Requirement... requirements) { this.addRequirements(Arrays.asList(requirements)); return this; }
 	
 	// -------------------------------------------- //
 	// FIELDS > COMMAND
@@ -120,6 +121,8 @@ public class Button
 		{
 			// Get Requirements
 			List<Requirement> requirements = new MassiveList<>();
+			requirements.add(RequirementIsPlayer.get());
+			requirements.addAll(this.getRequirements());
 			if (this.getCommand() != null) requirements.addAll(this.getCommand().getRequirements());
 			
 			// Check Requirements

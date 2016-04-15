@@ -115,5 +115,12 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	
 	@EditorType(fieldName = "iOn")
 	public boolean warnOnLocalAlter = false;
+	
+	// -------------------------------------------- //
+	// SPONSOR
+	// -------------------------------------------- //
+	
+	public boolean sponsorEnabled = true;
+	public long sponsorUpdateMillis = 0;
 
 }

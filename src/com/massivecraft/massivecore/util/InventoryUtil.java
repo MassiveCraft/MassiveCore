@@ -379,7 +379,7 @@ public class InventoryUtil
 		return ret;
 	}
 	
-	public static Inventory cloneInventory(Inventory inventory)
+	public static Inventory cloneInventory(Inventory inventory, boolean playerSupport)
 	{
 		if (inventory == null) return null;
 		
@@ -389,7 +389,7 @@ public class InventoryUtil
 		InventoryHolder holder = inventory.getHolder();
 		String title = inventory.getTitle();
 		
-		if (inventory instanceof PlayerInventory)
+		if (playerSupport && inventory instanceof PlayerInventory)
 		{
 			PlayerInventory pret = Mixin.createPlayerInventory();
 			ret = pret;
@@ -412,9 +412,9 @@ public class InventoryUtil
 		return ret;
 	}
 	
-	public static PlayerInventory cloneInventory(PlayerInventory inventory)
+	public static PlayerInventory cloneInventory(PlayerInventory inventory, boolean playerSupport)
 	{
-		return (PlayerInventory)cloneInventory((Inventory)inventory);
+		return (PlayerInventory)cloneInventory((Inventory)inventory, playerSupport);
 	}
 	
 	// -------------------------------------------- //
@@ -493,9 +493,10 @@ public class InventoryUtil
 	// NOTE: This method does not alter the inventory.
 	public static int roomLeft(Inventory inventory, ItemStack item, int limit)
 	{
-		inventory = cloneInventory(inventory);
+		// NOTE: We can not afford to clone player inventories here.
+		inventory = cloneInventory(inventory, false);
 		int ret = 0;
-		while(limit <= 0 || ret < limit)
+		while (limit <= 0 || ret < limit)
 		{
 			HashMap<Integer, ItemStack> result = inventory.addItem(item.clone());
 			if (result.size() != 0) return ret;

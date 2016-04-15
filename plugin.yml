@@ -13,7 +13,6 @@ permissions:
   massivecore.basecommand: {description: use the MassiveCore base command, default: false}
   massivecore.test: {description: run developer test, default: false}
   massivecore.id: {description: see the server id, default: false}
-  massivecore.version: {description: diplay plugin version, default: false}
   massivecore.hearsound: {description: hear a sound, default: false}
   massivecore.store: {description: use the mstore command, default: false}
   massivecore.store.stats: {description: show mstore statistics, default: false}
@@ -41,8 +40,10 @@ permissions:
   massivecore.buffer.add: {description: add to buffer, default: false}
   massivecore.buffer.whitespace: {description: add whitespace to buffer, default: false}
   massivecore.cmdurl: {description: run all lines of url content, default: false}
-  massivecore.click: {description: click, default: false}
   massivecore.config: {description: edit config, default: false}
+  massivecore.sponsor: {description: toggle sponsor message, default: false}
+  massivecore.click: {description: click, default: false}
+  massivecore.version: {description: diplay plugin version, default: false}
 # misc
   massivecore.notpdelay: {description: teleport without delay, default: false}
   massivecore.variable.book: {description: replace ***book*** with content of book in your hand, default: false}
@@ -56,7 +57,6 @@ permissions:
       massivecore.basecommand: true
       massivecore.test: true
       massivecore.id: true
-      massivecore.version: true
       massivecore.hearsound: true
       massivecore.store: true
       massivecore.store.stats: true
@@ -84,8 +84,10 @@ permissions:
       massivecore.buffer.add: true
       massivecore.buffer.whitespace: true
       massivecore.cmdurl: true
-      massivecore.click: true
       massivecore.config: true
+      massivecore.sponsor: true
+      massivecore.click: true
+      massivecore.version: true
       massivecore.notpdelay: true
       massivecore.variable.book: true
       massivecore.variable.buffer: true

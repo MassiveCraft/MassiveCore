@@ -56,6 +56,7 @@ import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerState;
 import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerUpdate;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreScheduledTeleport;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreSponsor;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreTeleportMixinCause;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
@@ -207,6 +208,7 @@ public class MassiveCore extends MassivePlugin
 			MultiverseColl.get(),
 			AspectColl.get(),
 			MassiveCoreMConfColl.get(),
+			MassiveCoreMSponsorInfoColl.get(),
 		
 			// Engine
 			EngineMassiveCoreChestGui.get(),
@@ -223,6 +225,7 @@ public class MassiveCore extends MassivePlugin
 			EngineMassiveCoreTeleportMixinCause.get(),
 			EngineMassiveCoreVariable.get(),
 			EngineMassiveCoreWorldNameSet.get(),
+			EngineMassiveCoreSponsor.get(),
 			
 			// Util
 			PlayerUtil.get(),

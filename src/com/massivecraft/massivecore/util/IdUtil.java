@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -678,6 +679,12 @@ public class IdUtil implements Listener, Runnable
 	{
 		if (sender instanceof Player) return ((Player) sender).getUniqueId().toString();
 		if (sender instanceof ConsoleCommandSender) return CONSOLE_ID;
+		
+		// We blacklist all entities other than players.
+		// This is because all entities are CommandSenders since Minecraft 1.9.
+		// We do not want Arrows with id "arrow" in the database.
+		if (sender instanceof Entity) return null;
+		
 		return sender.getName().toLowerCase();
 	}
 	

@@ -31,8 +31,9 @@ public class CmdMassiveCore extends MassiveCommand
 	public CmdMassiveCoreHearsound cmdMassiveCoreHearsound = new CmdMassiveCoreHearsound();
 	public CmdMassiveCoreBuffer cmdMassiveCoreBuffer = new CmdMassiveCoreBuffer();
 	public CmdMassiveCoreCmdurl cmdMassiveCoreCmdurl = new CmdMassiveCoreCmdurl();
-	public CmdMassiveCoreClick cmdMassiveCoreClick = new CmdMassiveCoreClick();
 	public CommandEditAbstract<MassiveCoreMConf, MassiveCoreMConf> cmdMassiveCoreConfig = new CommandEditSingleton<>(MassiveCoreMConf.get(), MassiveCorePerm.CONFIG.node);
+	public CmdMassiveCoreSponsor cmdMassiveCoreSponsor = new CmdMassiveCoreSponsor();
+	public CmdMassiveCoreClick cmdMassiveCoreClick = new CmdMassiveCoreClick();
 	public MassiveCommandVersion cmdMassiveCoreVersion = new MassiveCommandVersion(MassiveCore.get(), MassiveCorePerm.VERSION.node, "v", "version");
 	
 	// -------------------------------------------- //
@@ -52,8 +53,9 @@ public class CmdMassiveCore extends MassiveCommand
 		this.addChild(this.cmdMassiveCoreHearsound);
 		this.addChild(this.cmdMassiveCoreBuffer);
 		this.addChild(this.cmdMassiveCoreCmdurl);
-		this.addChild(this.cmdMassiveCoreClick);
 		this.addChild(this.cmdMassiveCoreConfig);
+		this.addChild(this.cmdMassiveCoreSponsor);
+		this.addChild(this.cmdMassiveCoreClick);
 		this.addChild(this.cmdMassiveCoreVersion);
 		
 		// Requirements
