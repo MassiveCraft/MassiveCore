@@ -1,6 +1,6 @@
 main: com.massivecraft.massivecore.MassiveCore
 name: MassiveCore
-version: 2.8.7Beta
+version: 2.8.8
 website: https://www.massivecraft.com/massivecore
 authors: [Cayorion]
 description: §eMassiveCore is a plugin that contains libraries and features that other plugins make use of. §aCayorion §efrom the minecraft server §aMassiveCraft §eis the lead programmer. Feel free to visit us at §bhttps://www.massivecraft.com
