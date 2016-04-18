@@ -1153,7 +1153,7 @@ public class MUtil
 	
 	public static boolean isAxe(BlockBreakEvent event)
 	{
-		return isAxe(event.getPlayer().getItemInHand());
+		return isAxe(InventoryUtil.getWeapon(event.getPlayer()));
 	}
 	
 	// Pickaxe
@@ -1187,7 +1187,7 @@ public class MUtil
 		
 	public static boolean isPickaxe(BlockBreakEvent event)
 	{
-		return isPickaxe(event.getPlayer().getItemInHand());
+		return isPickaxe(InventoryUtil.getWeapon(event.getPlayer()));
 	}
 	
 	// Spade
@@ -1221,7 +1221,7 @@ public class MUtil
 			
 	public static boolean isSpade(BlockBreakEvent event)
 	{
-		return isSpade(event.getPlayer().getItemInHand());
+		return isSpade(InventoryUtil.getWeapon(event.getPlayer()));
 	}
 		
 	// -------------------------------------------- //

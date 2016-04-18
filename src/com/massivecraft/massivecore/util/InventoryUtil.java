@@ -27,6 +27,333 @@ import com.massivecraft.massivecore.mixin.Mixin;
 public class InventoryUtil
 {
 	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final int SIZE_PLAYER_STORAGE = 36;
+	public static final int SIZE_PLAYER_ARMOR = 4;
+	public static final int SIZE_PLAYER_EXTRA = 1;
+	public static final int SIZE_PLAYER_ALL = SIZE_PLAYER_STORAGE + SIZE_PLAYER_ARMOR + SIZE_PLAYER_EXTRA;
+	
+	// 0 --> 36 (35 exclusive)
+	public static final int INDEX_PLAYER_STORAGE_FROM = 0;
+	public static final int INDEX_PLAYER_STORAGE_TO = INDEX_PLAYER_STORAGE_FROM + SIZE_PLAYER_STORAGE;
+	
+	// 36 --> 40 (39 exclusive)
+	public static final int INDEX_PLAYER_ARMOR_FROM = INDEX_PLAYER_STORAGE_TO;
+	public static final int INDEX_PLAYER_ARMOR_TO = INDEX_PLAYER_ARMOR_FROM + SIZE_PLAYER_ARMOR;
+	
+	// 40 --> 41 (40 exclusive)
+	public static final int INDEX_PLAYER_EXTRA_FROM = INDEX_PLAYER_ARMOR_TO;
+	public static final int INDEX_PLAYER_EXTRA_TO = INDEX_PLAYER_EXTRA_FROM + SIZE_PLAYER_EXTRA;
+	
+	// 40
+	public static final int INDEX_PLAYER_SHIELD = INDEX_PLAYER_EXTRA_FROM;
+	
+	// -------------------------------------------- //
+	// UTILS
+	// -------------------------------------------- //
+
+	public static PlayerInventory asPlayerInventory(Inventory inventory)
+	{
+		return (inventory instanceof PlayerInventory) ? (PlayerInventory)inventory : null;
+	}
+	
+	// This is a modified copyOfRange implementation.
+	// Boundary from is inclusive. Boundary to is exclusive. Just like in copyOfRange.
+	// It does however return the original when possible.
+	public static <T> T[] range(T[] original, int fromInclusive, int toExclusive)
+	{
+		if (fromInclusive == 0 && toExclusive == original.length) return original;
+		return Arrays.copyOfRange(original, fromInclusive, toExclusive);
+	}
+	
+	@SafeVarargs
+	public static <T> T[] concat(T[] first, T[]... rest)
+	{
+		int totalLength = first.length;
+		for (T[] array : rest)
+		{
+			totalLength += array.length;
+		}
+		T[] result = Arrays.copyOf(first, totalLength);
+		int offset = first.length;
+		for (T[] array : rest)
+		{
+			System.arraycopy(array, 0, result, offset, array.length);
+			offset += array.length;
+		}
+		return result;
+	}
+	
+	// -------------------------------------------- //
+	// SLOTS
+	// -------------------------------------------- //
+	
+	// HELMET
+	
+	public static ItemStack getHelmet(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		return playerInventory.getHelmet();
+	}
+	public static void setHelmet(Inventory inventory, ItemStack helmet)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return;
+		playerInventory.setHelmet(helmet);
+	}
+	public static ItemStack getHelmet(HumanEntity human)
+	{
+		if (human == null) return null;
+		return getHelmet(human.getInventory());
+	}
+	public static void setHelmet(HumanEntity human, ItemStack helmet)
+	{
+		if (human == null) return;
+		setHelmet(human.getInventory(), helmet);
+	}
+	
+	// CHESTPLATE
+	
+	public static ItemStack getChestplate(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		return playerInventory.getChestplate();
+	}
+	public static void setChestplate(Inventory inventory, ItemStack chestplate)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return;
+		playerInventory.setChestplate(chestplate);
+	}
+	public static ItemStack getChestplate(HumanEntity human)
+	{
+		if (human == null) return null;
+		return getChestplate(human.getInventory());
+	}
+	public static void setChestplate(HumanEntity human, ItemStack chestplate)
+	{
+		if (human == null) return;
+		setChestplate(human.getInventory(), chestplate);
+	}
+	
+	// LEGGINGS
+	
+	public static ItemStack getLeggings(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		return playerInventory.getLeggings();
+	}
+	public static void setLeggings(Inventory inventory, ItemStack leggings)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return;
+		playerInventory.setLeggings(leggings);
+	}
+	public static ItemStack getLeggings(HumanEntity human)
+	{
+		if (human == null) return null;
+		return getLeggings(human.getInventory());
+	}
+	public static void setLeggings(HumanEntity human, ItemStack leggings)
+	{
+		if (human == null) return;
+		setLeggings(human.getInventory(), leggings);
+	}
+	
+	// BOOTS
+	
+	public static ItemStack getBoots(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		return playerInventory.getBoots();
+	}
+	public static void setBoots(Inventory inventory, ItemStack boots)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return;
+		playerInventory.setBoots(boots);
+	}
+	public static ItemStack getBoots(HumanEntity human)
+	{
+		if (human == null) return null;
+		return getBoots(human.getInventory());
+	}
+	public static void setBoots(HumanEntity human, ItemStack boots)
+	{
+		if (human == null) return;
+		setBoots(human.getInventory(), boots);
+	}
+	
+	// WEAPON
+	
+	@SuppressWarnings("deprecation")
+	public static ItemStack getWeapon(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		return playerInventory.getItemInHand();
+	}
+	@SuppressWarnings("deprecation")
+	public static void setWeapon(Inventory inventory, ItemStack weapon)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return;
+		playerInventory.setItemInHand(weapon);
+	}
+	@SuppressWarnings("deprecation")
+	public static ItemStack getWeapon(HumanEntity human)
+	{
+		if (human == null) return null;
+		return human.getItemInHand();
+	}
+	@SuppressWarnings("deprecation")
+	public static void setWeapon(HumanEntity human, ItemStack weapon)
+	{
+		if (human == null) return;
+		human.setItemInHand(weapon);
+	}
+	
+	// SHIELD
+	
+	public static ItemStack getShield(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		if (playerInventory.getSize() <= INDEX_PLAYER_SHIELD) return null;
+		return playerInventory.getItem(INDEX_PLAYER_SHIELD);
+	}
+	public static void setShield(Inventory inventory, ItemStack shield)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return;
+		if (playerInventory.getSize() <= INDEX_PLAYER_SHIELD) return;
+		inventory.setItem(INDEX_PLAYER_SHIELD, shield);
+	}
+	public static ItemStack getShield(HumanEntity human)
+	{
+		if (human == null) return null;
+		return getShield(human.getInventory());
+	}
+	public static void setShield(HumanEntity human, ItemStack shield)
+	{
+		if (human == null) return;
+		setShield(human.getInventory(), shield);
+	}
+	
+	// -------------------------------------------- //
+	// CONTENTS SECTIONS
+	// -------------------------------------------- //
+	
+	// All content varies over versions.
+	// Before 1.9 it was getContents() + getArmorContents().
+	// From and including 1.9 it's just getContents().
+	public static ItemStack[] getContentsAll(Inventory inventory)
+	{
+		if (inventory == null) return null;
+		
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory != null && inventory.getSize() == SIZE_PLAYER_STORAGE)
+		{
+			return concat(playerInventory.getContents(), playerInventory.getArmorContents());
+		}
+		
+		return inventory.getContents();
+	}
+	public static void setContentsAll(Inventory inventory, ItemStack[] all)
+	{
+		if (inventory == null) return;
+		
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null || (all.length == SIZE_PLAYER_ALL && inventory.getSize() == SIZE_PLAYER_ALL))
+		{
+			inventory.setContents(all);
+			return;
+		}
+		
+		if (all.length < INDEX_PLAYER_STORAGE_TO) return;
+		ItemStack[] storage = range(all, INDEX_PLAYER_STORAGE_FROM, INDEX_PLAYER_STORAGE_TO);
+		setContentsStorage(playerInventory, storage);
+		
+		if (all.length < INDEX_PLAYER_ARMOR_TO) return;
+		ItemStack[] armor = range(all, INDEX_PLAYER_ARMOR_FROM, INDEX_PLAYER_ARMOR_TO);
+		setContentsArmor(playerInventory, armor);
+		
+		if (all.length < INDEX_PLAYER_EXTRA_TO) return;
+		ItemStack[] extra = range(all, INDEX_PLAYER_EXTRA_FROM, INDEX_PLAYER_EXTRA_TO);
+		setContentsExtra(playerInventory, extra);
+	}
+	
+	// Storage contents implementation has varied.
+	// Before 1.9 it was the same as getContents().
+	// From and including 1.9 it became the 36 first of those slots.
+	public static ItemStack[] getContentsStorage(Inventory inventory)
+	{
+		if (inventory == null) return null;
+		ItemStack [] all = inventory.getContents();
+		
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return all;
+		
+		return range(all, INDEX_PLAYER_STORAGE_FROM, INDEX_PLAYER_STORAGE_TO);
+	}
+	public static void setContentsStorage(Inventory inventory, ItemStack[] storage)
+	{
+		if (inventory == null) return;
+		
+		// Calculate the exclusive maximum
+		int max = inventory.getSize();
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory != null) max = INDEX_PLAYER_STORAGE_TO;
+		
+		// Set as much as possible
+		for (int i = 0; i < storage.length && i < max; i++)
+		{
+			inventory.setItem(i, storage[i]);
+		}
+	}
+	
+	// Armor contents has always been implemented the same way and can be used directly.
+	public static ItemStack[] getContentsArmor(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		return playerInventory.getArmorContents();
+	}
+	public static void setContentsArmor(Inventory inventory, ItemStack[] armor)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return;
+		playerInventory.setArmorContents(armor);
+	}
+	
+	// The extra contents was added in 1.9.
+	// It is then at the very end of all of the contents.
+	// Slot 40 and forward even though it currently is just a single slot.
+	public static ItemStack[] getContentsExtra(Inventory inventory)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(inventory);
+		if (playerInventory == null) return null;
+		if (inventory.getSize() < INDEX_PLAYER_EXTRA_TO) return null;
+		ItemStack [] all = inventory.getContents();
+		return range(all, INDEX_PLAYER_EXTRA_FROM, INDEX_PLAYER_EXTRA_TO);
+	}
+	public static void setContentsExtra(Inventory intentory, ItemStack[] extra)
+	{
+		PlayerInventory playerInventory = asPlayerInventory(intentory);
+		if (playerInventory == null) return;
+		for (int i = 0; i < extra.length && INDEX_PLAYER_EXTRA_FROM + i < playerInventory.getSize(); i++)
+		{
+			playerInventory.setItem(INDEX_PLAYER_EXTRA_FROM + i, extra[i]);
+		}
+	}
+	
+	// -------------------------------------------- //
 	// UPDATES
 	// -------------------------------------------- //
 	
@@ -361,60 +688,51 @@ public class InventoryUtil
 	// CLONE ITEMSTACKS/INVENTORY
 	// -------------------------------------------- //
 	
-	public static ItemStack cloneItemStack(ItemStack itemStack)
+	public static ItemStack clone(ItemStack itemStack)
 	{
 		if (itemStack == null) return null;
 		return new ItemStack(itemStack);
 	}
 	
-	public static ItemStack[] cloneItemStacks(ItemStack[] itemStacks)
+	public static ItemStack[] clone(ItemStack[] itemStacks)
 	{
 		ItemStack[] ret = new ItemStack[itemStacks.length];
 		for (int i = 0; i < itemStacks.length; i++)
 		{
 			ItemStack stack = itemStacks[i];
 			if (stack == null) continue;
-			ret[i] = cloneItemStack(itemStacks[i]);
+			ret[i] = clone(itemStacks[i]);
 		}
 		return ret;
 	}
 	
-	public static Inventory cloneInventory(Inventory inventory, boolean playerSupport)
+	public static Inventory clone(Inventory inventory, boolean playerSupport)
 	{
+		// Evade
 		if (inventory == null) return null;
 		
+		// Create
 		Inventory ret = null;
-		
-		int size = inventory.getSize();
-		InventoryHolder holder = inventory.getHolder();
-		String title = inventory.getTitle();
-		
-		if (playerSupport && inventory instanceof PlayerInventory)
+		if (inventory instanceof PlayerInventory && playerSupport)
 		{
-			PlayerInventory pret = Mixin.createPlayerInventory();
-			ret = pret;
-			
-			PlayerInventory pinventory = (PlayerInventory)inventory;
-			
-			pret.setHelmet(pinventory.getHelmet() == null ? null : new ItemStack(pinventory.getHelmet()));
-			pret.setChestplate(pinventory.getChestplate() == null ? null : new ItemStack(pinventory.getChestplate()));
-			pret.setLeggings(pinventory.getLeggings() == null ? null : new ItemStack(pinventory.getLeggings()));
-			pret.setBoots(pinventory.getBoots() == null ? null : new ItemStack(pinventory.getBoots()));
+			ret = Mixin.createPlayerInventory();
 		}
 		else
 		{
+			InventoryHolder holder = inventory.getHolder();
+			int size = inventory.getSize();
+			if (inventory instanceof PlayerInventory) size = SIZE_PLAYER_STORAGE;
+			String title = inventory.getTitle();
 			ret = Mixin.createInventory(holder, size, title);
 		}
 		
-		ItemStack[] contents = cloneItemStacks(inventory.getContents());
-		ret.setContents(contents);
+		// Fill
+		ItemStack[] all = getContentsAll(inventory);
+		all = clone(all);
+		setContentsAll(ret, all);
 		
+		// Return
 		return ret;
-	}
-	
-	public static PlayerInventory cloneInventory(PlayerInventory inventory, boolean playerSupport)
-	{
-		return (PlayerInventory)cloneInventory((Inventory)inventory, playerSupport);
 	}
 	
 	// -------------------------------------------- //
@@ -494,7 +812,7 @@ public class InventoryUtil
 	public static int roomLeft(Inventory inventory, ItemStack item, int limit)
 	{
 		// NOTE: We can not afford to clone player inventories here.
-		inventory = cloneInventory(inventory, false);
+		inventory = clone(inventory, false);
 		int ret = 0;
 		while (limit <= 0 || ret < limit)
 		{

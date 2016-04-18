@@ -1,7 +1,19 @@
 package com.massivecraft.massivecore.command.massivecore;
 
+import java.util.List;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.Visibility;
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
+import com.massivecraft.massivecore.command.type.TypeItemStack;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.util.InventoryUtil;
 
 public class CmdMassiveCoreTest extends MassiveCommand
 {
@@ -14,22 +26,12 @@ public class CmdMassiveCoreTest extends MassiveCommand
 		// Aliases
 		this.addAliases("test");
 		
-		
-		// OLD STUFF
-		// Arg
-		/*this.addArg(AREnum.get(ParticleEffect.class), "particleEffect").setDesc("the particle effect type to show");
-		this.addArg(ARFloat.get(), "offsetX").setDesc("the maximum offset on x-axis for this particle");
-		this.addArg(ARFloat.get(), "offsetY").setDesc("the maximum offset on y-axis for this particle");
-		this.addArg(ARFloat.get(), "offsetZ").setDesc("the maximum offset on z-axis for this particle");
-		this.addArg(ARFloat.get(), "speed").setDesc("the speed for this particle");
-		this.addArg(ARInteger.get(), "amount").setDesc("the amount of particles to show");
-		
 		// Requirements
-		this.addRequirements(ReqHasPerm.get(MassiveCorePerm.TEST.node));
-		this.addRequirements(ReqIsPlayer.get());
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.TEST.node));
+		this.addRequirements(RequirementIsPlayer.get());
 		
 		// VisibilityMode
-		this.setVisibilityMode(VisibilityMode.SECRET);*/
+		this.setVisibility(Visibility.SECRET);
 	}
 	
 	// -------------------------------------------- //
@@ -39,23 +41,43 @@ public class CmdMassiveCoreTest extends MassiveCommand
 	@Override
 	public void perform() throws MassiveException
 	{
+		inform("helmet", InventoryUtil.getHelmet(me));
+		inform("chestplate", InventoryUtil.getChestplate(me));
+		inform("leggings", InventoryUtil.getLeggings(me));
+		inform("boots", InventoryUtil.getBoots(me));
+		inform("weapon", InventoryUtil.getWeapon(me));
+		inform("shield", InventoryUtil.getShield(me));
 		
-		message(mson("This is your ", mson("item").item(me.getItemInHand())));
-		// OLD STUFF
-		/*// Args
-		ParticleEffect particleEffect = this.readArg();
+		inform("all", InventoryUtil.getContentsAll(me.getInventory()));
+		inform("storage", InventoryUtil.getContentsStorage(me.getInventory()));
+		inform("armor", InventoryUtil.getContentsArmor(me.getInventory()));
+		inform("extra", InventoryUtil.getContentsExtra(me.getInventory()));
+	}
+	
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
+	
+	public Mson visualize(ItemStack item)
+	{
+		return TypeItemStack.get().getVisualMson(item, sender);
+	}
+	
+	public Mson visualize(ItemStack... items)
+	{
+		List<Mson> msons = new MassiveList<>();
+		for (ItemStack item : items)
+		{
+			msons.add(visualize(item));
+		}
+		return Mson.implode(msons, Mson.SPACE);
+	}
 		
-		Location center = me.getEyeLocation().add(0, 0, 0);
+	public void inform(String key, ItemStack... items)
+	{
 		
-		float offsetX = this.readArg();
-		float offsetY = this.readArg();
-		float offsetZ = this.readArg();
-		float speed = this.readArg();
-		int amount = this.readArg();
 		
-		Player player = me;
-		
-		particleEffect.display(center, offsetX, offsetY, offsetZ, speed, amount, player);*/
+		message(mson(key, ": ", visualize(items)));
 	}
 	
 }
