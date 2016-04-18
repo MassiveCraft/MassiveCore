@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,7 +43,17 @@ public class EngineMassiveCoreSponsor extends Engine
 	{
 		if ( ! active) return;
 
-		this.inform(IdUtil.getConsole());
+		// We delay informing the console.
+		// This is because the console may not exist when this engine is activated.
+		Bukkit.getScheduler().runTask(this.getPlugin(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				ConsoleCommandSender console = IdUtil.getConsole();
+				inform(console);
+			}
+		});
 	}
 	
 	// -------------------------------------------- //
@@ -61,6 +72,9 @@ public class EngineMassiveCoreSponsor extends Engine
 	
 	public void inform(final CommandSender sender)
 	{
+		// Fail Safe
+		if (sender == null) return;
+		
 		// If enabled by mconf ...
 		if ( ! MassiveCoreMConf.get().sponsorEnabled) return;
 		
@@ -131,7 +145,8 @@ public class EngineMassiveCoreSponsor extends Engine
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event)
     {
-		this.inform(event.getPlayer());
+		Player player = event.getPlayer();
+		this.inform(player);
     }
 	
 }

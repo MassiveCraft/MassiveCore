@@ -105,7 +105,7 @@ public class MassiveCoreMSponsorInfo extends Entity<MassiveCoreMSponsorInfo>
 		URL url = null;
 		try
 		{
-			url = new URL("http://sponsorinfo.massivecraft.com/1/");
+			url = new URL("http://sponsorinfo.massivecraft.com/2/");
 		}
 		catch (MalformedURLException e)
 		{
