@@ -72,7 +72,6 @@ public class TypeItemStack extends TypeAbstract<ItemStack>
 		return null;
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public ItemStack read(String arg, CommandSender sender) throws MassiveException
 	{
