@@ -86,6 +86,23 @@ public class InventoryUtil
 		return result;
 	}
 	
+	// This method is used to clean out inconsistent air entries.
+	public static ItemStack clean(ItemStack item)
+	{
+		if (item == null) return null;
+		if (item.getType() == Material.AIR) return null;
+		// NOTE: In 1.9 zero quantity is a thing.
+		return item;
+	}
+	
+	public static void clean(ItemStack[] items)
+	{
+		for (int i = 0; i < items.length; i++)
+		{
+			items[i] = clean(items[i]);
+		}
+	}
+	
 	// -------------------------------------------- //
 	// SLOTS
 	// -------------------------------------------- //
@@ -96,7 +113,9 @@ public class InventoryUtil
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		return playerInventory.getHelmet();
+		ItemStack ret = playerInventory.getHelmet();
+		ret = clean(ret);
+		return ret;
 	}
 	public static void setHelmet(Inventory inventory, ItemStack helmet)
 	{
@@ -121,7 +140,9 @@ public class InventoryUtil
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		return playerInventory.getChestplate();
+		ItemStack ret = playerInventory.getChestplate();
+		ret = clean(ret);
+		return ret;
 	}
 	public static void setChestplate(Inventory inventory, ItemStack chestplate)
 	{
@@ -146,7 +167,9 @@ public class InventoryUtil
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		return playerInventory.getLeggings();
+		ItemStack ret = playerInventory.getLeggings();
+		ret = clean(ret);
+		return ret;
 	}
 	public static void setLeggings(Inventory inventory, ItemStack leggings)
 	{
@@ -171,7 +194,9 @@ public class InventoryUtil
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		return playerInventory.getBoots();
+		ItemStack ret = playerInventory.getBoots();
+		ret = clean(ret);
+		return ret;
 	}
 	public static void setBoots(Inventory inventory, ItemStack boots)
 	{
@@ -192,12 +217,16 @@ public class InventoryUtil
 	
 	// WEAPON
 	
+	// NOTE: We make sure to convert AIR into null due to a Bukkit API inconsistency.
 	@SuppressWarnings("deprecation")
 	public static ItemStack getWeapon(Inventory inventory)
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		return playerInventory.getItemInHand();
+		ItemStack ret = playerInventory.getItemInHand();
+		ret = clean(ret);
+		return ret;
+
 	}
 	@SuppressWarnings("deprecation")
 	public static void setWeapon(Inventory inventory, ItemStack weapon)
@@ -210,7 +239,9 @@ public class InventoryUtil
 	public static ItemStack getWeapon(HumanEntity human)
 	{
 		if (human == null) return null;
-		return human.getItemInHand();
+		ItemStack ret = human.getItemInHand();
+		ret = clean(ret);
+		return ret;
 	}
 	@SuppressWarnings("deprecation")
 	public static void setWeapon(HumanEntity human, ItemStack weapon)
@@ -225,14 +256,22 @@ public class InventoryUtil
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		if (playerInventory.getSize() <= INDEX_PLAYER_SHIELD) return null;
-		return playerInventory.getItem(INDEX_PLAYER_SHIELD);
+		ItemStack[] contents = playerInventory.getContents();
+		
+		if (contents.length <= INDEX_PLAYER_SHIELD) return null;
+		
+		ItemStack ret = contents[INDEX_PLAYER_SHIELD];
+		ret = clean(ret);
+		return ret;
 	}
 	public static void setShield(Inventory inventory, ItemStack shield)
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return;
-		if (playerInventory.getSize() <= INDEX_PLAYER_SHIELD) return;
+		ItemStack[] contents = playerInventory.getContents();
+		
+		if (contents.length <= INDEX_PLAYER_SHIELD) return;
+		
 		inventory.setItem(INDEX_PLAYER_SHIELD, shield);
 	}
 	public static ItemStack getShield(HumanEntity human)
@@ -249,30 +288,40 @@ public class InventoryUtil
 	// -------------------------------------------- //
 	// CONTENTS SECTIONS
 	// -------------------------------------------- //
+	// When Reading:
+	// The content sections NPE evade and aim to behave as the latest Minecraft version.
+	// So rather than returning null for getContentsExtra() we create and return a new array.
+	//
+	// When Writing:
+	// ...
 	
 	// All content varies over versions.
-	// Before 1.9 it was getContents() + getArmorContents().
+	// Before 1.9 it was getContents() + getArmorContents() + new ItemStack[1].
 	// From and including 1.9 it's just getContents().
 	public static ItemStack[] getContentsAll(Inventory inventory)
 	{
 		if (inventory == null) return null;
+		ItemStack[] contents = inventory.getContents();
+		ItemStack[] ret = contents;
 		
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
-		if (playerInventory != null && inventory.getSize() == SIZE_PLAYER_STORAGE)
+		if (playerInventory != null && contents.length == SIZE_PLAYER_STORAGE)
 		{
-			return concat(playerInventory.getContents(), playerInventory.getArmorContents());
+			ret = concat(contents, playerInventory.getArmorContents(), new ItemStack[SIZE_PLAYER_EXTRA]);
 		}
 		
-		return inventory.getContents();
+		clean(ret);
+		return ret;
 	}
 	public static void setContentsAll(Inventory inventory, ItemStack[] all)
 	{
 		if (inventory == null) return;
+		ItemStack[] contents = inventory.getContents();
 		
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
-		if (playerInventory == null || (all.length == SIZE_PLAYER_ALL && inventory.getSize() == SIZE_PLAYER_ALL))
+		if (playerInventory == null)
 		{
-			inventory.setContents(all);
+			inventory.setContents(range(all, 0, contents.length));
 			return;
 		}
 		
@@ -295,24 +344,30 @@ public class InventoryUtil
 	public static ItemStack[] getContentsStorage(Inventory inventory)
 	{
 		if (inventory == null) return null;
-		ItemStack [] all = inventory.getContents();
+		ItemStack[] contents = inventory.getContents();
+		ItemStack[] ret = contents;
 		
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
-		if (playerInventory == null) return all;
+		if (playerInventory != null)
+		{
+			ret = range(contents, INDEX_PLAYER_STORAGE_FROM, INDEX_PLAYER_STORAGE_TO);
+		}
 		
-		return range(all, INDEX_PLAYER_STORAGE_FROM, INDEX_PLAYER_STORAGE_TO);
+		clean(ret);
+		return ret;
 	}
 	public static void setContentsStorage(Inventory inventory, ItemStack[] storage)
 	{
 		if (inventory == null) return;
+		ItemStack[] contents = inventory.getContents();
 		
-		// Calculate the exclusive maximum
-		int max = inventory.getSize();
+		// Calculate exclusive maximum
+		int max = Math.min(storage.length, contents.length);
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
-		if (playerInventory != null) max = INDEX_PLAYER_STORAGE_TO;
+		if (playerInventory != null) max = Math.min(max, INDEX_PLAYER_STORAGE_TO);
 		
 		// Set as much as possible
-		for (int i = 0; i < storage.length && i < max; i++)
+		for (int i = 0; i < max; i++)
 		{
 			inventory.setItem(i, storage[i]);
 		}
@@ -323,12 +378,17 @@ public class InventoryUtil
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		return playerInventory.getArmorContents();
+		
+		ItemStack[] ret = playerInventory.getArmorContents();
+		
+		clean(ret);
+		return ret;
 	}
 	public static void setContentsArmor(Inventory inventory, ItemStack[] armor)
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return;
+
 		playerInventory.setArmorContents(armor);
 	}
 	
@@ -339,15 +399,31 @@ public class InventoryUtil
 	{
 		PlayerInventory playerInventory = asPlayerInventory(inventory);
 		if (playerInventory == null) return null;
-		if (inventory.getSize() < INDEX_PLAYER_EXTRA_TO) return null;
-		ItemStack [] all = inventory.getContents();
-		return range(all, INDEX_PLAYER_EXTRA_FROM, INDEX_PLAYER_EXTRA_TO);
+		ItemStack[] contents = playerInventory.getContents();
+		ItemStack[] ret = new ItemStack[SIZE_PLAYER_EXTRA];
+		
+		int max = SIZE_PLAYER_EXTRA;
+		max = Math.min(max, contents.length - INDEX_PLAYER_EXTRA_FROM);
+		
+		for (int i = 0; i < max; i++)
+		{
+			ret[i] = contents[INDEX_PLAYER_EXTRA_FROM + i];
+		}
+		
+		clean(ret);
+		return ret;
 	}
 	public static void setContentsExtra(Inventory intentory, ItemStack[] extra)
 	{
 		PlayerInventory playerInventory = asPlayerInventory(intentory);
 		if (playerInventory == null) return;
-		for (int i = 0; i < extra.length && INDEX_PLAYER_EXTRA_FROM + i < playerInventory.getSize(); i++)
+		ItemStack[] contents = playerInventory.getContents();
+		
+		int max = SIZE_PLAYER_EXTRA;
+		max = Math.min(max, contents.length - INDEX_PLAYER_EXTRA_FROM);
+		max = Math.min(max, extra.length);
+		
+		for (int i = 0; i < max; i++)
 		{
 			playerInventory.setItem(INDEX_PLAYER_EXTRA_FROM + i, extra[i]);
 		}
