@@ -85,7 +85,7 @@ permissions:
       massivecore.buffer.whitespace: true
       massivecore.cmdurl: true
       massivecore.config: true
-      massivecore.sponsor: true
+      massivecore.sponsor: false
       massivecore.click: true
       massivecore.version: true
       massivecore.notpdelay: true
