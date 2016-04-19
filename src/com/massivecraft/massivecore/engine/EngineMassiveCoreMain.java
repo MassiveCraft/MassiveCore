@@ -54,7 +54,7 @@ public class EngineMassiveCoreMain extends Engine
 	public void recipientChat(final AsyncPlayerChatEvent event)
 	{
 		// Return unless we are using the recipient chat event
-		if (!MassiveCoreMConf.get().usingRecipientChatEvent) return;
+		if ( ! MassiveCoreMConf.get().recipientChatEventEnabled) return;
 		
 		// Prepare vars
 		EventMassiveCorePlayerToRecipientChat recipientEvent;

@@ -146,7 +146,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 		List<String> ret = this.getMassiveCommand().getTabCompletions(args, sender);
 		
 		int retSize = ret.size();
-		int maxSize = MassiveCoreMConf.get().maxTabCompletions;
+		int maxSize = MassiveCoreMConf.get().tabCompletionLimit;
 		if (maxSize > 0 && retSize > maxSize)
 		{
 			Mixin.msgOne(sender, Lang.COMMAND_TOO_MANY_TAB_SUGGESTIONS, retSize);

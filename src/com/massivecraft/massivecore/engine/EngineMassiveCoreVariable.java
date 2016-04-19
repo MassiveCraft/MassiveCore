@@ -13,13 +13,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -67,35 +67,20 @@ public class EngineMassiveCoreVariable extends Engine
 	
 	public static String getBookText(CommandSender sender)
 	{
-		if (sender == null) return null;
-		if (!(sender instanceof HumanEntity)) return null;
+		if ( ! (sender instanceof HumanEntity)) return null;
 		HumanEntity human = (HumanEntity)sender;
-		
-		PlayerInventory inventory = human.getInventory();
-		String ret;
-		
-		ret = getBookText(inventory.getItemInHand());
-		if (ret != null) return ret;
-		
-		// TODO: Handle 1.9 API without breaking 1.8 support
-		
-		// ret = getBookText(inventory.getItemInMainHand());
-		// if (ret != null) return ret;
-		
-		// ret = getBookText(inventory.getItemInOffHand());
-		// if (ret != null) return ret;
-		
-		return null;
+		ItemStack item = InventoryUtil.getWeapon(human);
+		return getBookText(item);
 	}
 	
 	public static String getBookText(ItemStack item)
 	{
 		if (item == null) return null;
-		if (!item.hasItemMeta()) return null;
+		if ( ! item.hasItemMeta()) return null;
 		ItemMeta itemMeta = item.getItemMeta();
-		if (!(itemMeta instanceof BookMeta)) return null;
+		if ( ! (itemMeta instanceof BookMeta)) return null;
 		BookMeta bookMeta = (BookMeta)itemMeta;
-		if (!bookMeta.hasPages()) return null;
+		if ( ! bookMeta.hasPages()) return null;
 		List<String> pages = bookMeta.getPages();
 		String ret = Txt.implode(pages, " ");
 		ret = ret.replaceAll("\\n+", " ");
@@ -105,17 +90,17 @@ public class EngineMassiveCoreVariable extends Engine
 	public static String variableBook(Player player, String message)
 	{
 		// If we are using this variable ...
-		if (!MassiveCoreMConf.get().usingVariableBook) return message;
+		if ( ! MassiveCoreMConf.get().variableBookEnabled) return message;
 		
 		// ... get the variable content ...
 		String content = getBookText(player);
 		if (content == null) return message;
 		
 		// ... check use permission ...
-		if (!MassiveCorePerm.VARIABLE_BOOK.has(player, false)) return message;
+		if ( ! MassiveCorePerm.VARIABLE_BOOK.has(player, false)) return message;
 		
 		// ... and replace.
-		return StringUtils.replace(message, MassiveCoreMConf.get().variableBook, content);
+		return StringUtils.replace(message, MassiveCoreMConf.get().variableBookName, content);
 	}
 	
 	// -------------------------------------------- //
@@ -142,16 +127,16 @@ public class EngineMassiveCoreVariable extends Engine
 	public static String variableBuffer(Player player, String message)
 	{
 		// If we are using this variable ...
-		if (!MassiveCoreMConf.get().usingVariableBuffer) return message;
+		if ( ! MassiveCoreMConf.get().variableBufferEnabled) return message;
 		
 		// ... get the variable content ...
 		String content = getBuffer(player);
 		if (content == null) return message;
 		
 		// ... check use permission ...
-		if (!MassiveCorePerm.VARIABLE_BUFFER.has(player, false)) return message;
+		if ( ! MassiveCorePerm.VARIABLE_BUFFER.has(player, false)) return message;
 		
 		// ... and replace.
-		return StringUtils.replace(message, MassiveCoreMConf.get().variableBuffer, content);
+		return StringUtils.replace(message, MassiveCoreMConf.get().variableBufferName, content);
 	}
 }

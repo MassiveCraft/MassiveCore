@@ -63,6 +63,10 @@ public class EngineMassiveCoreSponsor extends Engine
 	@Override
 	public void run()
 	{
+		// If enabled by mconf ...
+		if ( ! MassiveCoreMConf.get().sponsorEnabled) return;
+		
+		// ... update sponsor info.
 		MassiveCoreMSponsorInfo.update();
 	}
 	

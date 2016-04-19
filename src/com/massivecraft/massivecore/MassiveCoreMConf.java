@@ -23,22 +23,30 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public static MassiveCoreMConf get() { return i; }
 	
 	// -------------------------------------------- //
-	// FIELDS
+	// ALIASES
 	// -------------------------------------------- //
+	// Base command aliases.
+	
+	public List<String> aliasesMcore = MUtil.list("massivecore", "mcore");
+	public List<String> aliasesUsys = MUtil.list("usys");
+	public List<String> aliasesMstore = MUtil.list("massivestore", "mstore");
+	public List<String> aliasesBuffer = MUtil.list("buffer");
+	public List<String> aliasesCmdurl = MUtil.list("cmdurl");
+	
+	// -------------------------------------------- //
+	// GENERAL
+	// -------------------------------------------- //
+	// General configuration options.
 	
 	public String taskServerId = null;
+	public boolean versionSynchronizationEnabled = true;
+	public int tabCompletionLimit = 100;
+	public boolean recipientChatEventEnabled = true;
 	
-	public boolean checkVersionSynchronization = true;
-	
-	public int maxTabCompletions = 100;
-	
-	public List<String> aliasesOuterMassiveCore = MUtil.list("massivecore", "mcore");
-	public List<String> aliasesOuterMassiveCoreUsys = MUtil.list("usys");
-	public List<String> aliasesOuterMassiveCoreStore = MUtil.list("massivestore", "mstore");
-	public List<String> aliasesOuterMassiveCoreBuffer = MUtil.list("buffer");
-	public List<String> aliasesOuterMassiveCoreCmdurl = MUtil.list("cmdurl");
-	
-	public boolean usingRecipientChatEvent = true;
+	// -------------------------------------------- //
+	// PERMISSIONS FORMATS
+	// -------------------------------------------- //
+	// Permission denied formatting.
 	
 	public Map<String, String> permissionDeniedFormats = MUtil.map(
 		"some.awesome.permission.node", "<b>You must be awesome to %s<b>.",
@@ -57,6 +65,11 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 		return ret;
 	}
 	
+	// -------------------------------------------- //
+	// TP DELAY
+	// -------------------------------------------- //
+	// Teleportation delay permissions.
+	
 	public Map<String, Integer> permissionToTpdelay = MUtil.map(
 		"massivecore.notpdelay", 0,
 		"default", 10
@@ -69,45 +82,35 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 		return ret;
 	}
 	
+	// -------------------------------------------- //
+	// DELETE FILES
+	// -------------------------------------------- //
+	// Delete certain files for system cleanliness.
+	
 	public List<String> deleteFiles = new ArrayList<String>();
-	
-	// Used in the MongoDB mstore driver.
-	public boolean catchingMongoDbErrorsOnSave = true;
-	
-	public boolean catchingMongoDbErrorsOnDelete = true;
-	
-	public static WriteConcern getMongoDbWriteConcern(boolean catchingErrors)
-	{
-		return catchingErrors ? WriteConcern.ACKNOWLEDGED : WriteConcern.UNACKNOWLEDGED;
-	}
-	public WriteConcern getMongoDbWriteConcernSave()
-	{
-		return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnSave);
-	}
-	public WriteConcern getMongoDbWriteConcernDelete()
-	{
-		return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnDelete);
-	}
 	
 	// -------------------------------------------- //
 	// VARIABLES
 	// -------------------------------------------- //
+	// Chat and command variables.
 	
-	public String variableBook = "***book***";
-	public boolean usingVariableBook = true;
+	public String variableBookName = "***book***";
+	public boolean variableBookEnabled = true;
 	
-	public String variableBuffer = "***buffer***";
-	public boolean usingVariableBuffer = true;
+	public String variableBufferName = "***buffer***";
+	public boolean variableBufferEnabled = true;
 	
 	// -------------------------------------------- //
 	// CLICK
 	// -------------------------------------------- //
+	// Button click sound configuration.
 	
 	public SoundEffect clickSound = SoundEffect.valueOf("UI_BUTTON_CLICK", 0.75f, 1.0f);
 	
 	// -------------------------------------------- //
-	// MSTORE CONFIGURATON
+	// MSTORE
 	// -------------------------------------------- //
+	// The database system.
 	
 	public volatile long millisBetweenLocalPoll = TimeUnit.MILLIS_PER_MINUTE * 5;
 	public volatile long millisBetweenRemotePollWithoutPusher = TimeUnit.MILLIS_PER_SECOND * 10;
@@ -117,10 +120,30 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public boolean warnOnLocalAlter = false;
 	
 	// -------------------------------------------- //
+	// MONGODB
+	// -------------------------------------------- //
+	// The database system MongoDB driver.
+	
+	public boolean catchingMongoDbErrorsOnSave = true;
+	public boolean catchingMongoDbErrorsOnDelete = true;
+	
+	public static WriteConcern getMongoDbWriteConcern(boolean catchingErrors) { return catchingErrors ? WriteConcern.ACKNOWLEDGED : WriteConcern.UNACKNOWLEDGED; }
+	public WriteConcern getMongoDbWriteConcernSave() { return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnSave); }
+	public WriteConcern getMongoDbWriteConcernDelete() { return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnDelete); }
+	
+	// -------------------------------------------- //
 	// SPONSOR
 	// -------------------------------------------- //
+	// URL connections to http://sponsorinfo.massivecraft.com/
 	
 	public boolean sponsorEnabled = true;
 	public long sponsorUpdateMillis = 0;
+	
+	// -------------------------------------------- //
+	// MCSTATS
+	// -------------------------------------------- //
+	// URL connections to http://mcstats.org/
+	
+	public boolean mcstatsEnabled = true;
 
 }

@@ -69,7 +69,7 @@ public class CmdMassiveCore extends MassiveCommand
 	@Override
 	public List<String> getAliases()
 	{
-		return MassiveCoreMConf.get().aliasesOuterMassiveCore;
+		return MassiveCoreMConf.get().aliasesMcore;
 	}
 
 }

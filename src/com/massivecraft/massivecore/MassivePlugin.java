@@ -57,23 +57,26 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		// Listener
 		Bukkit.getPluginManager().registerEvents(this, this);
 
-		// Metrics
-		try
-		{
-			MetricsLite metrics = new MetricsLite(this);
-			metrics.start();
-		}
-		catch (IOException e)
-		{
-			String message = Txt.parse("<b>Metrics Initialization Failed :'(");
-			log(message);
-		}
-		
 		return true;
 	}
 	
 	public void postEnable()
 	{
+		// Metrics
+		if (MassiveCoreMConf.get().mcstatsEnabled)
+		{
+			try
+			{
+				MetricsLite metrics = new MetricsLite(this);
+				metrics.start();
+			}
+			catch (IOException e)
+			{
+				String message = Txt.parse("<b>Metrics Initialization Failed :'(");
+				log(message);
+			}
+		}
+		
 		long ms = System.currentTimeMillis() - enableTime;
 		log(Txt.parse("=== ENABLE <g>COMPLETE <i>(Took <h>" + ms + "ms<i>) ==="));
 	}
@@ -84,7 +87,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		if ( ! this.isVersionSynchronized()) return;
 		
 		// ... and checking is enabled ...
-		if ( ! MassiveCoreMConf.get().checkVersionSynchronization) return;
+		if ( ! MassiveCoreMConf.get().versionSynchronizationEnabled) return;
 		
 		// ... get the version numbers ...
 		String thisVersion = this.getDescription().getVersion();
