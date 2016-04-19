@@ -74,9 +74,9 @@ public abstract class Engine implements Active, Listener, Runnable
 	}
 	
 	@Override
-	public MassivePlugin setActivePlugin(MassivePlugin activePlugin)
+	public MassivePlugin setActivePlugin(MassivePlugin plugin)
 	{
-		this.setPluginSoft(activePlugin);
+		this.setPluginSoft(plugin);
 		return null;
 	}
 	
@@ -84,6 +84,13 @@ public abstract class Engine implements Active, Listener, Runnable
 	public MassivePlugin getActivePlugin()
 	{
 		return this.getPlugin();
+	}
+	
+	@Override
+	public void setActive(MassivePlugin plugin)
+	{
+		this.setActivePlugin(plugin);
+		this.setActive(plugin != null);
 	}
 	
 	// -------------------------------------------- //

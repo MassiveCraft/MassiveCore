@@ -123,6 +123,19 @@ public class ReflectionUtil
 	}
 	
 	// -------------------------------------------- //
+	// SINGLETON INSTANCE
+	// -------------------------------------------- //
+	
+	public static <T> T getSingletonInstance(Class<T> clazz)
+	{
+		Method get = getMethod(clazz, "get");
+		T ret = invokeMethod(get, null);
+		if (ret == null) throw new NullPointerException("Singleton instance was null for: " + clazz);
+		if ( ! clazz.isAssignableFrom(ret.getClass())) throw new IllegalStateException("Singleton instance was not of same or subclass for: " + clazz);
+		return ret;
+	}
+	
+	// -------------------------------------------- //
 	// FIELD > GET
 	// -------------------------------------------- //
 	

@@ -73,6 +73,13 @@ public abstract class Colls<C extends Coll<E>, E extends Entity<E>> implements A
 		return this.plugin;
 	}
 	
+	@Override
+	public void setActive(MassivePlugin plugin)
+	{
+		this.setActivePlugin(plugin);
+		this.setActive(plugin != null);
+	}
+	
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //

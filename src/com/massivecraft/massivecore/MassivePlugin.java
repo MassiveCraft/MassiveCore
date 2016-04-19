@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
@@ -170,13 +171,35 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		Bukkit.getPluginManager().disablePlugin(this);
 	}
 	
-	public void activate(Active... actives)
+	public void activate(Object... objects)
 	{
-		for (Active active : actives)
+		for (Object object : objects)
 		{
-			active.setActivePlugin(this);
-			active.setActive(true);
+			Active active = asActive(object);
+			active.setActive(this);
 		}
+	}
+	
+	private static Active asActive(Object object)
+	{
+		if (object instanceof Active)
+		{
+			return (Active)object;
+		}
+		
+		if (object instanceof Class<?>)
+		{
+			Class<?> clazz = (Class<?>)object;
+			if ( ! Active.class.isAssignableFrom(clazz)) throw new IllegalArgumentException("Not Active Class: " + (clazz == null ? "NULL" : clazz));
+			
+			Object instance = ReflectionUtil.getSingletonInstance(clazz);
+			if ( ! (instance instanceof Active)) throw new IllegalArgumentException("Not Active Instance: " + (instance == null ? "NULL" : instance) + " for object: " + (object == null ? "NULL" : object));
+			
+			Active active = (Active)instance;
+			return active;
+		}
+		
+		throw new IllegalArgumentException("Neither Active nor Class: " + object);
 	}
 	
 	// -------------------------------------------- //

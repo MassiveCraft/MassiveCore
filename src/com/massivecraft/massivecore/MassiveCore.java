@@ -205,62 +205,59 @@ public class MassiveCore extends MassivePlugin
 		// Activate
 		this.activate(
 			// Coll
-			MultiverseColl.get(),
-			AspectColl.get(),
-			MassiveCoreMConfColl.get(),
-			MassiveCoreMSponsorInfoColl.get(),
+			MultiverseColl.class,
+			AspectColl.class,
+			MassiveCoreMConfColl.class,
+			MassiveCoreMSponsorInfoColl.class,
 		
 			// Engine
-			EngineMassiveCoreChestGui.get(),
-			EngineMassiveCoreCollTick.get(),
-			EngineMassiveCoreCommandRegistration.get(),
-			EngineMassiveCoreDatabase.get(),
-			EngineMassiveCoreDestination.get(),
-			EngineMassiveCoreGank.get(),
-			EngineMassiveCoreMain.get(),
-			EngineMassiveCorePlayerLeave.get(),
-			EngineMassiveCorePlayerState.get(),
-			EngineMassiveCorePlayerUpdate.get(),
-			EngineMassiveCoreScheduledTeleport.get(),
-			EngineMassiveCoreTeleportMixinCause.get(),
-			EngineMassiveCoreVariable.get(),
-			EngineMassiveCoreWorldNameSet.get(),
-			EngineMassiveCoreSponsor.get(),
+			EngineMassiveCoreChestGui.class,
+			EngineMassiveCoreCollTick.class,
+			EngineMassiveCoreCommandRegistration.class,
+			EngineMassiveCoreDatabase.class,
+			EngineMassiveCoreDestination.class,
+			EngineMassiveCoreGank.class,
+			EngineMassiveCoreMain.class,
+			EngineMassiveCorePlayerLeave.class,
+			EngineMassiveCorePlayerState.class,
+			EngineMassiveCorePlayerUpdate.class,
+			EngineMassiveCoreScheduledTeleport.class,
+			EngineMassiveCoreTeleportMixinCause.class,
+			EngineMassiveCoreVariable.class,
+			EngineMassiveCoreWorldNameSet.class,
+			EngineMassiveCoreSponsor.class,
 			
 			// Util
-			PlayerUtil.get(),
+			PlayerUtil.class,
 			
 			// Integration
-			IntegrationVault.get()
-		);
-		
-		// NOTE: Some commands rely on the MConf being loaded at construction.
-		this.activate(
+			IntegrationVault.class,
+			
 			// Command
-			CmdMassiveCore.get(),
-			CmdMassiveCoreUsys.get(),
-			CmdMassiveCoreStore.get(),
-			CmdMassiveCoreBuffer.get(),
-			CmdMassiveCoreCmdurl.get(),
-			CmdMassiveCoreClick.get(),
+			CmdMassiveCore.class,
+			CmdMassiveCoreUsys.class,
+			CmdMassiveCoreStore.class,
+			CmdMassiveCoreBuffer.class,
+			CmdMassiveCoreCmdurl.class,
+			CmdMassiveCoreClick.class,
 			
 			// Mixin
-			MixinEvent.get(), // NOTE: Should be first
-			MixinActionbar.get(),
-			MixinActual.get(),
-			MixinCommand.get(),
-			MixinDisplayName.get(),
-			MixinGamemode.get(),
-			MixinInventory.get(),
-			MixinKick.get(),
-			MixinMessage.get(),
-			MixinModification.get(),
-			MixinPlayed.get(),
-			MixinSenderPs.get(),
-			MixinTeleport.get(),
-			MixinTitle.get(),
-			MixinVisibility.get(),
-			MixinWorld.get()
+			MixinEvent.class, // NOTE: Should be first
+			MixinActionbar.class,
+			MixinActual.class,
+			MixinCommand.class,
+			MixinDisplayName.class,
+			MixinGamemode.class,
+			MixinInventory.class,
+			MixinKick.class,
+			MixinMessage.class,
+			MixinModification.class,
+			MixinPlayed.class,
+			MixinSenderPs.class,
+			MixinTeleport.class,
+			MixinTitle.class,
+			MixinVisibility.class,
+			MixinWorld.class
 		);
 		
 		// Start the examine threads

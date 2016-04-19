@@ -1033,7 +1033,13 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		return name2instance.containsKey(this.getName());
 	}
-
+	
+	@Override
+	public void setActive(MassivePlugin plugin)
+	{
+		this.setActivePlugin(plugin);
+		this.setActive(plugin != null);
+	}
 	
 	// -------------------------------------------- //
 	// NAME UTILITIES

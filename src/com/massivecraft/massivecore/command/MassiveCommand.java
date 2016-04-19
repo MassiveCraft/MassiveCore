@@ -85,6 +85,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		// NOTE: Not Implemented
 	}
 	
+	@Override
 	public MassivePlugin setActivePlugin(MassivePlugin activePlugin)
 	{
 		if (activePlugin == null)
@@ -97,9 +98,17 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		}
 	}
 	
+	@Override
 	public MassivePlugin getActivePlugin()
 	{
 		return registry.get(this);
+	}
+	
+	@Override
+	public void setActive(MassivePlugin plugin)
+	{
+		this.setActivePlugin(plugin);
+		this.setActive(plugin != null);
 	}
 	
 	// -------------------------------------------- //
