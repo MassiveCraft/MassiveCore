@@ -862,10 +862,20 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	
 	public static Set<PS> getDistinctChunks(Collection<PS> pss)
 	{
-		Set<PS> ret = new LinkedHashSet<PS>();
+		Set<PS> ret = new LinkedHashSet<>();
 		for (PS ps : pss)
 		{
 			ret.add(ps.getChunk(true));
+		}
+		return ret;
+	}
+	
+	public static Set<String> getDistinctWorlds(Collection<PS> pss)
+	{
+		Set<String> ret = new LinkedHashSet<>();
+		for (PS ps : pss)
+		{
+			ret.add(ps.getWorld());
 		}
 		return ret;
 	}
