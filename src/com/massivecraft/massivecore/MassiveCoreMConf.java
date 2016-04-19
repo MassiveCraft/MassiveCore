@@ -136,8 +136,8 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// -------------------------------------------- //
 	// URL connections to http://sponsorinfo.massivecraft.com/
 	
-	public boolean sponsorEnabled = true;
 	public long sponsorUpdateMillis = 0;
+	public boolean sponsorEnabled = true;
 	
 	// -------------------------------------------- //
 	// MCSTATS
