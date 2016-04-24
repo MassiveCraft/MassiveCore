@@ -1,31 +1,35 @@
 package com.massivecraft.massivecore.item;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-public abstract class WriterAbstractItemStackMeta<FA, FB> extends WriterAbstractMeta<ItemStack, ItemMeta, FA, FB>
-{	
+public abstract class WriterAbstractItemStackMeta<OB, CB, FA, FB> extends WriterAbstractItemStack<OB, CB, FA, FB>
+{
 	// -------------------------------------------- //
-	// MORPH
+	// FIELDS
 	// -------------------------------------------- //
 	
-	@Override
-	public ItemMeta morphB(ItemStack ob)
+	private Material material = Material.STONE;
+	public Material getMaterial() { return this.material; }
+	@SuppressWarnings("unchecked")
+	public void setMaterial(Material material)
 	{
-		return ob.getItemMeta();
+		this.material = material;
+		CB cb = this.createB();
+		this.setClassB((Class<CB>) cb.getClass());
 	}
 	
 	// -------------------------------------------- //
-	// WRITE
+	// CREATE
 	// -------------------------------------------- //
-
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void writeInner(DataItemStack oa, ItemStack ob, DataItemStack ca, ItemMeta cb, boolean a2b)
+	public CB createB()
 	{
-		super.writeInner(oa, ob, ca, cb, a2b);
-		
-		// Write back the meta 
-		if (a2b) ob.setItemMeta(cb);
+		ItemStack itemStack = (ItemStack) super.createB();
+		itemStack.setType(this.getMaterial());
+		return (CB) itemStack.getItemMeta();
 	}
 	
 }

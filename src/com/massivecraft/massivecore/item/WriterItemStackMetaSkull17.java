@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.item;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.SkullMeta;
 
-public class WriterItemStackMetaSkull17 extends WriterAbstractItemMeta<SkullMeta, String, String>
+public class WriterItemStackMetaSkull17 extends WriterAbstractItemStackMetaField<SkullMeta, String, String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

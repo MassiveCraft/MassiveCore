@@ -1,11 +1,8 @@
 package com.massivecraft.massivecore.item;
 
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.nms.NmsItemStack;
 
-
-public abstract class WriterAbstractItemStack<FA, FB> extends WriterAbstract<DataItemStack, ItemStack, DataItemStack, ItemStack, FA, FB>
+public abstract class WriterAbstractItemStack<OB, CB, FA, FB> extends WriterAbstract<DataItemStack, OB, DataItemStack, CB, FA, FB>
 {
 	// -------------------------------------------- //
 	// CREATE
@@ -17,10 +14,11 @@ public abstract class WriterAbstractItemStack<FA, FB> extends WriterAbstract<Dat
 		return new DataItemStack();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public ItemStack createB()
+	public CB createB()
 	{
-		return NmsItemStack.get().createItemStack();
+		return (CB) NmsItemStack.get().createItemStack();
 	}
 	
 }

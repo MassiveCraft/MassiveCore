@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.item;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.BookMeta;
 
-public class WriterItemStackMetaTitle extends WriterAbstractItemMeta<BookMeta, String, String>
+public class WriterItemStackMetaTitle extends WriterAbstractItemStackMetaField<BookMeta, String, String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

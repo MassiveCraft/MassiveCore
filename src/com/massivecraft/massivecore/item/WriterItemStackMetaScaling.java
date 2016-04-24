@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.item;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.MapMeta;
 
-public class WriterItemStackMetaScaling extends WriterAbstractItemMeta<MapMeta, Boolean, Boolean>
+public class WriterItemStackMetaScaling extends WriterAbstractItemStackMetaField<MapMeta, Boolean, Boolean>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

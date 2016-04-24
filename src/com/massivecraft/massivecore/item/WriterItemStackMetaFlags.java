@@ -5,7 +5,7 @@ import java.util.Set;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class WriterItemStackMetaFlags extends WriterAbstractItemMeta<ItemMeta, Set<String>, Set<ItemFlag>>
+public class WriterItemStackMetaFlags extends WriterAbstractItemStackMetaField<ItemMeta, Set<String>, Set<ItemFlag>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

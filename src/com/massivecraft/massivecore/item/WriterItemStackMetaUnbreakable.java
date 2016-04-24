@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.item;
 
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class WriterItemStackMetaUnbreakable extends WriterAbstractItemMeta<ItemMeta, Boolean, Boolean>
+public class WriterItemStackMetaUnbreakable extends WriterAbstractItemStackMetaField<ItemMeta, Boolean, Boolean>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

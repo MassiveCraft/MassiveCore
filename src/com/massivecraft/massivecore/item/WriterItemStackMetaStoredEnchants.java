@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-public class WriterItemStackMetaStoredEnchants extends WriterAbstractItemMeta<EnchantmentStorageMeta, Map<Integer, Integer>, Map<Enchantment, Integer>>
+public class WriterItemStackMetaStoredEnchants extends WriterAbstractItemStackMetaField<EnchantmentStorageMeta, Map<Integer, Integer>, Map<Enchantment, Integer>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

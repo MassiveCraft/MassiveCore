@@ -3,19 +3,19 @@ package com.massivecraft.massivecore.item;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
-import org.bukkit.inventory.meta.BannerMeta;
 
-public class WriterItemStackMetaBannerPatterns extends WriterAbstractItemStackMetaField<BannerMeta, List<DataBannerPattern>, List<Pattern>>
+public class WriterItemStackMetaStateShieldPatterns extends WriterAbstractItemStackMetaStateField<Banner, List<DataBannerPattern>, List<Pattern>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final WriterItemStackMetaBannerPatterns i = new WriterItemStackMetaBannerPatterns();
-	public static WriterItemStackMetaBannerPatterns get() { return i; }
+	private static final WriterItemStackMetaStateShieldPatterns i = new WriterItemStackMetaStateShieldPatterns();
+	public static WriterItemStackMetaStateShieldPatterns get() { return i; }
 	{
-		this.setMaterial(Material.BANNER);
+		this.setMaterial(Material.SHIELD);
 		this.setConverterTo(ConverterToBannerPatterns.get());
 		this.setConverterFrom(ConverterFromBannerPatterns.get());
 	}
@@ -37,13 +37,13 @@ public class WriterItemStackMetaBannerPatterns extends WriterAbstractItemStackMe
 	}
 	
 	@Override
-	public List<Pattern> getB(BannerMeta cb)
+	public List<Pattern> getB(Banner cb)
 	{
 		return cb.getPatterns();
 	}
 	
 	@Override
-	public void setB(BannerMeta cb, List<Pattern> fb)
+	public void setB(Banner cb, List<Pattern> fb)
 	{
 		cb.setPatterns(fb);
 	}

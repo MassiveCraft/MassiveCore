@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class WriterItemStackMetaEnchants extends WriterAbstractItemMeta<ItemMeta, Map<Integer, Integer>, Map<Enchantment, Integer>>
+public class WriterItemStackMetaEnchants extends WriterAbstractItemStackMetaField<ItemMeta, Map<Integer, Integer>, Map<Enchantment, Integer>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

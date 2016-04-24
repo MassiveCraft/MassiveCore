@@ -4,7 +4,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 
-public class WriterItemStackMetaFireworkEffect extends WriterAbstractItemMeta<FireworkEffectMeta, DataFireworkEffect, FireworkEffect>
+public class WriterItemStackMetaFireworkEffect extends WriterAbstractItemStackMetaField<FireworkEffectMeta, DataFireworkEffect, FireworkEffect>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

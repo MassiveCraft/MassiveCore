@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.massivecraft.massivecore.Couple;
 import com.massivecraft.massivecore.nms.NmsHead;
 
-public class WriterItemStackMetaSkull18 extends WriterAbstractItemMeta<SkullMeta, String, String>
+public class WriterItemStackMetaSkull18 extends WriterAbstractItemStackMetaField<SkullMeta, String, String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

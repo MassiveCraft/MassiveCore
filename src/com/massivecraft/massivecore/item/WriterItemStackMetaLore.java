@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class WriterItemStackMetaLore extends WriterAbstractItemMeta<ItemMeta, List<String>, List<String>>
+public class WriterItemStackMetaLore extends WriterAbstractItemStackMetaField<ItemMeta, List<String>, List<String>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

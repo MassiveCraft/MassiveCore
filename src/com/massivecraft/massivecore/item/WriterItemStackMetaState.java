@@ -1,13 +1,13 @@
 package com.massivecraft.massivecore.item;
 
-public class WriterItemStack extends WriterAbstractItemStackField<Object, Object>
+public class WriterItemStackMetaState extends WriterAbstractItemStackMetaStateMorph<Object, Object>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final WriterItemStack i = new WriterItemStack();
-	public static WriterItemStack get() { return i; }
+	private static final WriterItemStackMetaState i = new WriterItemStackMetaState();
+	public static WriterItemStackMetaState get() { return i; }
 	
 	// -------------------------------------------- //
 	// ACTIVE
@@ -18,17 +18,12 @@ public class WriterItemStack extends WriterAbstractItemStackField<Object, Object
 	{
 		if ( ! active) return;
 		this.clearWriters();
-		 
+		
 		this.addWriters(
-			// BASIC
-			WriterItemStackId.class,
-			WriterItemStackCount.class,
-			WriterItemStackDamage.class,
-			
-			// META
-			WriterItemStackMeta.class
+			// SHIELD
+			WriterItemStackMetaStateShieldBase.class,
+			WriterItemStackMetaStateShieldPatterns.class
 		);
 	}
-
 	
 }

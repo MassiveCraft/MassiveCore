@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.BookMeta;
 
-public class WriterItemStackMetaPages extends WriterAbstractItemMeta<BookMeta, List<String>, List<String>>
+public class WriterItemStackMetaPages extends WriterAbstractItemStackMetaField<BookMeta, List<String>, List<String>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

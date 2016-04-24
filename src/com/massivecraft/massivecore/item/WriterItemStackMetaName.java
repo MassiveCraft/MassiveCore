@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.item;
 
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class WriterItemStackMetaName extends WriterAbstractItemMeta<ItemMeta, String, String>
+public class WriterItemStackMetaName extends WriterAbstractItemStackMetaField<ItemMeta, String, String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

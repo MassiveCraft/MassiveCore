@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.item;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.Repairable;
 
-public class WriterItemStackMetaRepaircost extends WriterAbstractItemMeta<Repairable, Integer, Integer>
+public class WriterItemStackMetaRepaircost extends WriterAbstractItemStackMetaField<Repairable, Integer, Integer>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

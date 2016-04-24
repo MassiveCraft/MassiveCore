@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 
-public class WriterItemStackMetaPotionEffects extends WriterAbstractItemMeta<PotionMeta, List<DataPotionEffect>, List<PotionEffect>>
+public class WriterItemStackMetaPotionEffects extends WriterAbstractItemStackMetaField<PotionMeta, List<DataPotionEffect>, List<PotionEffect>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

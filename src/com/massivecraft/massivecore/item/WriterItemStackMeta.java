@@ -1,6 +1,6 @@
 package com.massivecraft.massivecore.item;
 
-public class WriterItemStackMeta extends WriterAbstractItemStackMeta<Object, Object>
+public class WriterItemStackMeta extends WriterAbstractItemStackMetaMorph<Object, Object>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -60,17 +60,15 @@ public class WriterItemStackMeta extends WriterAbstractItemStackMeta<Object, Obj
 			// FLAGS
 			WriterItemStackMetaFlags.class,
 			
-			// BANNER BASE
+			// BANNER
 			WriterItemStackMetaBannerBase.class,
-			// TODO: Shield?
+			WriterItemStackMetaBannerPatterns.class,
 			
-			// BANNER PATTERNS
-			WriterItemStackMetaBannerPatterns.class
-			// TODO
-			// TODO: Shield?
+			// STATE
+			WriterItemStackMetaState.class
 			
 			// POTION
-			// TODO			
+			// TODO	Merge with potion above?	
 		);
 	}
 	

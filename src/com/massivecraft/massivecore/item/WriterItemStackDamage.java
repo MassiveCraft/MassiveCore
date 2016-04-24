@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.item;
 
 import org.bukkit.inventory.ItemStack;
 
-public class WriterItemStackDamage extends WriterAbstractItemStack<Integer, Integer>
+public class WriterItemStackDamage extends WriterAbstractItemStackField<Integer, Integer>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

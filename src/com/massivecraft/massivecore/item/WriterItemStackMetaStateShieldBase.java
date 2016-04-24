@@ -2,19 +2,19 @@ package com.massivecraft.massivecore.item;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.block.Banner;
 
-public class WriterItemStackMetaBannerBase extends WriterAbstractItemStackMetaField<BannerMeta, Integer, DyeColor>
+public class WriterItemStackMetaStateShieldBase extends WriterAbstractItemStackMetaStateField<Banner, Integer, DyeColor>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final WriterItemStackMetaBannerBase i = new WriterItemStackMetaBannerBase();
-	public static WriterItemStackMetaBannerBase get() { return i; }
-	public WriterItemStackMetaBannerBase()
+	private static final WriterItemStackMetaStateShieldBase i = new WriterItemStackMetaStateShieldBase();
+	public static WriterItemStackMetaStateShieldBase get() { return i; }
+	public WriterItemStackMetaStateShieldBase()
 	{
-		this.setMaterial(Material.BANNER);
+		this.setMaterial(Material.SHIELD);
 		this.setConverterTo(ConverterToDyeColor.get());
 		this.setConverterFrom(ConverterFromDyeColor.get());
 	}
@@ -36,13 +36,13 @@ public class WriterItemStackMetaBannerBase extends WriterAbstractItemStackMetaFi
 	}
 
 	@Override
-	public DyeColor getB(BannerMeta cb)
+	public DyeColor getB(Banner cb)
 	{
 		return cb.getBaseColor();
 	}
 
 	@Override
-	public void setB(BannerMeta cb, DyeColor fb)
+	public void setB(Banner cb, DyeColor fb)
 	{
 		cb.setBaseColor(fb);
 	}

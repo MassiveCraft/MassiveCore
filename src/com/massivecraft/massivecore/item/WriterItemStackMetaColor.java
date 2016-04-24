@@ -4,7 +4,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-public class WriterItemStackMetaColor extends WriterAbstractItemMeta<LeatherArmorMeta, Integer, Color>
+public class WriterItemStackMetaColor extends WriterAbstractItemStackMetaField<LeatherArmorMeta, Integer, Color>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

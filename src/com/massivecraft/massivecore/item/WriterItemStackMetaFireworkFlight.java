@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.item;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-public class WriterItemStackMetaFireworkFlight extends WriterAbstractItemMeta<FireworkMeta, Integer, Integer>
+public class WriterItemStackMetaFireworkFlight extends WriterAbstractItemStackMetaField<FireworkMeta, Integer, Integer>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
