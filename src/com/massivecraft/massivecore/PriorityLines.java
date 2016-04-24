@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-import com.massivecraft.massivecore.comparator.ComparatorHashCode;
+import com.massivecraft.massivecore.comparator.ComparatorIdentity;
+import com.massivecraft.massivecore.comparator.ComparatorPrioritized;
 import com.massivecraft.massivecore.util.MUtil;
 
 public class PriorityLines implements Prioritized, Comparable<PriorityLines>
@@ -55,47 +57,46 @@ public class PriorityLines implements Prioritized, Comparable<PriorityLines>
 	}
 	
 	// -------------------------------------------- //
-	// COMPARABLE
+	// COMPARABLE & EQUALS & HASHCODE
 	// -------------------------------------------- //
 	
 	@Override
 	public int compareTo(PriorityLines that)
 	{
-		int ret;
+		// Create
+		int ret = 0;
 		
-		ret = Integer.compare(this.priority, that.priority);
+		// Fill
+		ret = ComparatorPrioritized.get().compare(this, that);
 		if (ret != 0) return ret;
 		
-		if (MUtil.equals(this.lines, that.lines)) return 0;
-		ret = ComparatorHashCode.get().compare(this.lines, that.lines);
+		ret = ComparatorIdentity.get().compare(this, that);
 		if (ret != 0) return ret;
 		
+		// Return
 		return ret;
 	}
 	
-	// -------------------------------------------- //
-	// HASH CODE & EQUALS
-	// -------------------------------------------- //
+	@Override
+	public boolean equals(Object object)
+	{
+		if ( ! (object instanceof PriorityLines)) return false;
+		PriorityLines that = (PriorityLines)object;
+		return MUtil.equals(
+			this.getPriority(), that.getPriority(),
+			this.getLines(), that.getLines()
+		);
+	}
 	
 	@Override
 	public int hashCode()
 	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((lines == null) ? 0 : lines.hashCode());
-		result = prime * result + priority;
-		return result;
+		return Objects.hash(
+			this.getPriority(),
+			this.getLines()
+		);
 	}
 	
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj) return true;
-		if (!(obj instanceof PriorityLines)) return false;
-		PriorityLines other = (PriorityLines) obj;
-		if (priority != other.priority) return false;
-		if ( ! MUtil.equals(this.lines, other.lines)) return false;
-		return true;
-	}
+	
 
 }

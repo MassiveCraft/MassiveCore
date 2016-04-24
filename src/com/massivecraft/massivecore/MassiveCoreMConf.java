@@ -132,6 +132,12 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public WriteConcern getMongoDbWriteConcernDelete() { return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnDelete); }
 	
 	// -------------------------------------------- //
+	// DEBUG
+	// -------------------------------------------- //
+	
+	public boolean debugWriters = false;
+	
+	// -------------------------------------------- //
 	// SPONSOR
 	// -------------------------------------------- //
 	// URL connections to http://sponsorinfo.massivecraft.com/

@@ -61,6 +61,10 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreTeleportMixinCause;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
+import com.massivecraft.massivecore.item.WriterBannerPattern;
+import com.massivecraft.massivecore.item.WriterFireworkEffect;
+import com.massivecraft.massivecore.item.WriterItemStack;
+import com.massivecraft.massivecore.item.WriterPotionEffect;
 import com.massivecraft.massivecore.mixin.MixinActionbar;
 import com.massivecraft.massivecore.mixin.MixinActual;
 import com.massivecraft.massivecore.mixin.MixinCommand;
@@ -209,6 +213,12 @@ public class MassiveCore extends MassivePlugin
 			AspectColl.class,
 			MassiveCoreMConfColl.class,
 			MassiveCoreMSponsorInfoColl.class,
+			
+			// Writer,
+			WriterItemStack.class,
+			WriterPotionEffect.class,
+			WriterFireworkEffect.class,
+			WriterBannerPattern.class,
 		
 			// Engine
 			EngineMassiveCoreChestGui.class,

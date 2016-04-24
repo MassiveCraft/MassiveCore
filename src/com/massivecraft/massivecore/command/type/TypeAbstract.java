@@ -22,7 +22,7 @@ import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.CommandEditSimple;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
-import com.massivecraft.massivecore.comparator.ComparatorHashCode;
+import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.ContainerUtil;
@@ -518,7 +518,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	{
 		if (this.elementComparator != null) return (Comparator<E>) this.elementComparator;
 		if (this.isContainerIndexed()) return null;
-		return (Comparator<E>) ComparatorHashCode.get().getLenient();
+		return (Comparator<E>) ComparatorSmart.get();
 	}
 	@SuppressWarnings("unchecked")
 	@Override

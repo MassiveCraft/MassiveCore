@@ -2,92 +2,138 @@ package com.massivecraft.massivecore.comparator;
 
 import java.util.Comparator;
 
-import com.massivecraft.massivecore.Identified;
-import com.massivecraft.massivecore.Named;
-import com.massivecraft.massivecore.Prioritized;
-import com.massivecraft.massivecore.util.MUtil;
-
-public class ComparatorAbstract<T> implements Comparator<T>
+public abstract class ComparatorAbstract<T> implements Comparator<T>
 {
 	// -------------------------------------------- //
-	// REVERSED
+	// SMART
 	// -------------------------------------------- //
+	// Smart comparators falls back to generalized Object comparison solutions we have implemented.
+	// They just try to compare better if the initial comparison does not find a difference.
+	// Note that they leave equals be. Objects that actually are equal will remain that way.
 	
-	private ComparatorReversed<T> reversed = null;
-	public ComparatorAbstract<T> getReversed()
-	{
-		if (this.reversed == null) this.reversed = ComparatorReversed.get(this);
-		return this.reversed;
-	}
+	private boolean smart = false;
+	public boolean isSmart() { return this.smart; }
+	public ComparatorAbstract<T> setSmart(boolean smart) { this.smart = smart; return this; }
 	
 	// -------------------------------------------- //
 	// LENIENT
 	// -------------------------------------------- //
+	// Lenient comparators will not ever accept 0 as a return value.
+	// The only common user case is when sorting map entries by value.
 	
-	private ComparatorLenient<T> lenient = null;
-	public ComparatorAbstract<T> getLenient()
-	{
-		if (this.lenient == null) this.lenient = ComparatorLenient.get(this);
-		return this.lenient;
-	}
+	private boolean lenient = false;
+	public boolean isLenient() { return this.lenient; }
+	public ComparatorAbstract<T> setLenient(boolean lenient) { this.lenient = lenient; return this; }
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// REVERSED
+	// -------------------------------------------- //
+	// Reversed comparators multiply the return value with -1.
+	
+	private boolean reversed = false;
+	public boolean isReversed() { return this.reversed; }
+	public ComparatorAbstract<T> setReversed(boolean reversed) { this.reversed = reversed; return this; }
+	
+	// -------------------------------------------- //
+	// COMPARE
 	// -------------------------------------------- //
 	
 	@Override
-	public int compare(T type1, T type2)
+	public int compare(T object1, T object2)
 	{
-		Integer ret;
+		// Create
+		int ret = compareSystem(object1, object2);
 		
-		// Null
-		ret = MUtil.compareNulls(type1, type2);
-		if (ret != null) return ret;
-		
-		// Inner
-		ret = this.compareInner(type1, type2);
-		if (ret != null) return ret;
-		
-		// Prioritized
-		if (type1 instanceof Prioritized)
+		// Lenient
+		if (this.isLenient() && ret == 0)
 		{
-			Prioritized prioritized1 = (Prioritized)type1;
-			Prioritized prioritized2 = (Prioritized)type2;
-			
-			ret = Integer.compare(prioritized1.getPriority(), prioritized2.getPriority());
-			if (ret != null) return ret;
+			ret = ComparatorIdentity.get().compare(object1, object2);
+			if (ret == 0) ret = 1;
 		}
 		
-		// Named
-		if (type1 instanceof Named)
+		// Reversed
+		if (this.isReversed())
 		{
-			Named named1 = (Named)type1;
-			Named named2 = (Named)type2;
-			
-			ret = ComparatorNaturalOrder.get().compare(named1.getName(), named2.getName());
-			if (ret != null) return ret;
+			ret *= -1;
 		}
 		
-		// Identified
-		if (type1 instanceof Identified)
-		{
-			Identified identified1 = (Identified)type1;
-			Identified identified2 = (Identified)type2;
-			ret = MUtil.compare(identified1.getId(), identified2.getId());
-			if (ret != null) return ret;
-		}
-		
-		// Identity
-		return ComparatorIdentity.get().compare(type1, type2);
+		// Return
+		return ret;
 	}
 	
 	// -------------------------------------------- //
-	// INNER
+	// COMPARE > SYSTEM
 	// -------------------------------------------- //
 	
-	public Integer compareInner(T type1, T type2)
+	private int compareSystem(T object1, T object2)
 	{
-		return null;
+		// Create
+		int ret = 0;
+		
+		// Null
+		if (object1 == null && object2 == null) return 0;
+		if (object1 == null) return -1;
+		if (object2 == null) return +1;
+		
+		// Inner
+		ret = this.compareInner(object1, object2);
+		if (ret != 0) return ret;
+		
+		// Smart
+		if (this.isSmart())
+		{
+			ret = ComparatorPrioritized.get().compare(object1, object2);
+			if (ret != 0) return ret;
+			
+			ret = ComparatorNamed.get().compare(object1, object2);
+			if (ret != 0) return ret;
+			
+			ret = ComparatorIdentified.get().compare(object1, object2);
+			if (ret != 0) return ret;
+			
+			ret = ComparatorComparable.get().compare(object1, object2);
+			if (ret != 0) return ret;
+			
+			ret = ComparatorCollection.get().compare(object1, object2);
+			if (ret != 0) return ret;
+			
+			ret = ComparatorMap.get().compare(object1, object2);
+			if (ret != 0) return ret;
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// COMPARE > INNER
+	// -------------------------------------------- //
+	
+	public abstract int compareInner(T type1, T type2);
+	
+	// -------------------------------------------- //
+	// UTILITY
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	public int compare(T... objects)
+	{
+		if (objects == null) throw new NullPointerException("objects");
+		if (objects.length % 2 != 0) throw new IllegalArgumentException("objects length not even");
+		
+		int index = 1;
+		while (index < objects.length)
+		{
+			T object1 = objects[index - 1];
+			T object2 = objects[index];
+			
+			int ret = this.compare(object1, object2);
+			if (ret != 0) return ret;
+			
+			index += 2;
+		}
+		
+		return 0;
 	}
 	
 }

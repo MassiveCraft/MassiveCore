@@ -12,6 +12,7 @@ public class ComparatorReversed<T> extends ComparatorAbstractWrapper<T, T>
 	public ComparatorReversed(Comparator<T> comparator)
 	{
 		super(comparator);
+		this.setReversed(true);
 	}
 	
 	// -------------------------------------------- //
@@ -19,17 +20,9 @@ public class ComparatorReversed<T> extends ComparatorAbstractWrapper<T, T>
 	// -------------------------------------------- //
 	
 	@Override
-	public int compare(T type1, T type2)
+	public int compareInner(T type1, T type2)
 	{
 		return - this.getComparator().compare(type1, type2);
-	}
-	
-	@Override
-	public ComparatorAbstract<T> getReversed()
-	{
-		Comparator<T> comparator = this.getComparator();
-		if (comparator instanceof ComparatorAbstract<?>) return (ComparatorAbstract<T>) comparator;
-		return super.getReversed();
 	}
 	
 }

@@ -1662,39 +1662,33 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
-	// LE NICE EQUALS and compare
+	// EQUALS
 	// -------------------------------------------- //
 	
-	public static boolean equals(Object herp, Object derp)
+	public static boolean equals(Object object1, Object object2)
 	{
-		if (herp == null) return derp == null;
-		if (derp == null) return false;
-		return herp.equals(derp);
+		if (object1 == null) return object2 == null;
+		if (object2 == null) return false;
+		return object1.equals(object2);
 	}
 	
-	public static <T> int compare(Comparable<T> herp, T derp)
+	public static boolean equals(Object... objects)
 	{
-		Integer ret = compareNulls(herp, derp);
-		if (ret != null) return ret;
-		return herp.compareTo(derp);
-	}
-	
-	public static Integer compareNulls(Object one, Object two)
-	{
-		if (one == null && two == null) return 0;
-		if (one == null) return -1;
-		if (two == null) return +1;
-		return null;
-	}
-	
-	public static Integer compareWithList(Object one, Object two, List<? extends Object> list)
-	{
-		int oneIndex = list.indexOf(one);
-		int twoIndex = list.indexOf(two);
-		if (oneIndex != -1 && twoIndex != -1) return oneIndex - twoIndex;
-		if (oneIndex != -1) return -1;
-		if (twoIndex != -1) return +1;
-		return null;
+		if (objects == null) throw new NullPointerException("objects");
+		if (objects.length % 2 != 0) throw new IllegalArgumentException("objects length not even");
+		
+		int index = 1;
+		while (index < objects.length)
+		{
+			Object object1 = objects[index - 1];
+			Object object2 = objects[index];
+			
+			if ( ! equals(object1, object2)) return false;
+			
+			index += 2;
+		}
+		
+		return true;
 	}
 	
 	// -------------------------------------------- //

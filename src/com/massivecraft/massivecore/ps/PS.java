@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -17,6 +18,7 @@ import org.bukkit.util.Vector;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
@@ -44,7 +46,7 @@ import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
  * entity: world, locationX, locationY, locationZ, pitch, yaw, velocityX, velocityY, velocityZ
  */
 
-public final class PS implements Cloneable, Serializable, Comparable<PS>
+public final class PS implements Serializable, Comparable<PS>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -905,23 +907,22 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	
 	public static int calcHashCode(PS ps)
 	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((ps.blockX == null) ? 0 : ps.blockX.hashCode());
-		result = prime * result + ((ps.blockY == null) ? 0 : ps.blockY.hashCode());
-		result = prime * result + ((ps.blockZ == null) ? 0 : ps.blockZ.hashCode());
-		result = prime * result + ((ps.chunkX == null) ? 0 : ps.chunkX.hashCode());
-		result = prime * result + ((ps.chunkZ == null) ? 0 : ps.chunkZ.hashCode());
-		result = prime * result + ((ps.locationX == null) ? 0 : ps.locationX.hashCode());
-		result = prime * result + ((ps.locationY == null) ? 0 : ps.locationY.hashCode());
-		result = prime * result + ((ps.locationZ == null) ? 0 : ps.locationZ.hashCode());
-		result = prime * result + ((ps.pitch == null) ? 0 : ps.pitch.hashCode());
-		result = prime * result + ((ps.velocityX == null) ? 0 : ps.velocityX.hashCode());
-		result = prime * result + ((ps.velocityY == null) ? 0 : ps.velocityY.hashCode());
-		result = prime * result + ((ps.velocityZ == null) ? 0 : ps.velocityZ.hashCode());
-		result = prime * result + ((ps.world == null) ? 0 : ps.world.hashCode());
-		result = prime * result + ((ps.yaw == null) ? 0 : ps.yaw.hashCode());
-		return result;
+		return Objects.hash(
+			ps.world,
+			ps.blockX,
+			ps.blockY,
+			ps.blockZ,
+			ps.locationX,
+			ps.locationY,
+			ps.locationZ,
+			ps.chunkX,
+			ps.chunkZ,
+			ps.pitch,
+			ps.yaw,
+			ps.velocityX,
+			ps.velocityY,
+			ps.velocityZ
+		);
 	}
 	
 	// -------------------------------------------- //
@@ -929,14 +930,27 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean equals(Object derpObject)
+	public boolean equals(Object object)
 	{
-		return equals(this, derpObject);
-	}
-
-	public static boolean equals(PS herp, Object derpObject)
-	{
-		return compareTo(herp, derpObject) == 0;
+		if ( ! (object instanceof PS)) return false;
+		PS that = (PS)object;
+		
+		return MUtil.equals(
+			this.world, that.world,
+			this.blockX, that.blockX,
+			this.blockY, that.blockY,
+			this.blockZ, that.blockZ,
+			this.locationX, that.locationX,
+			this.locationY, that.locationY,
+			this.locationZ, that.locationZ,
+			this.chunkX, that.chunkX,
+			this.chunkZ, that.chunkZ,
+			this.pitch, that.pitch,
+			this.yaw, that.yaw,
+			this.velocityX, that.velocityX,
+			this.velocityY, that.velocityY,
+			this.velocityZ, that.velocityZ
+		);
 	}
 	
 	// -------------------------------------------- //
@@ -944,75 +958,25 @@ public final class PS implements Cloneable, Serializable, Comparable<PS>
 	// -------------------------------------------- //
 	
 	@Override
-	public int compareTo(PS derp)
+	public int compareTo(PS that)
 	{
-		return compareTo(this, derp);
-	}
-	
-	public static int compareTo(PS herp, Object derpObject)
-	{
-		if (herp == null && derpObject == null) return 0;
-		if (herp == null) return -1;
-		if (derpObject == null) return +1;
-		
-		if (!(derpObject instanceof PS)) return -1;
-		PS derp = (PS) derpObject;
-		
-		int ret;
-		
-		ret = MUtil.compare(herp.world, derp.world);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.chunkX, derp.chunkX);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.chunkZ, derp.chunkZ);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.blockX, derp.blockX);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.blockY, derp.blockY);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.blockZ, derp.blockZ);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.locationX, derp.locationX);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.locationX, derp.locationX);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.locationZ, derp.locationZ);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.pitch, derp.pitch);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.yaw, derp.yaw);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.velocityX, derp.velocityX);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.velocityY, derp.velocityY);
-		if (ret != 0) return ret;
-		
-		ret = MUtil.compare(herp.velocityZ, derp.velocityZ);
-		if (ret != 0) return ret;
-		
-		return 0;
-	}
-	
-	// -------------------------------------------- //
-	// CLONE
-	// -------------------------------------------- //
-	
-	@Override
-	public PS clone()
-	{
-		return this;
+		return ComparatorSmart.get().compare(
+			this.world, that.world,
+			this.blockX, that.blockX,
+			this.blockY, that.blockY,
+			this.blockZ, that.blockZ,
+			this.locationX, that.locationX,
+			this.locationY, that.locationY,
+			this.locationZ, that.locationZ,
+			this.chunkX, that.chunkX,
+			this.chunkZ, that.chunkZ,
+			this.pitch, that.pitch,
+			this.yaw, that.yaw,
+			this.velocityX, that.velocityX,
+			this.velocityY, that.velocityY,
+			this.velocityZ, that.velocityZ
+		);
 	}
 	
 }
+ 
