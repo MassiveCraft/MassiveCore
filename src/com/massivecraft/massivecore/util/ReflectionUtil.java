@@ -31,6 +31,9 @@ public class ReflectionUtil
 		}
 	}
 	
+	private static final Class<?>[] EMPTY_ARRAY_OF_CLASS = {};
+	private static final Object[] EMPTY_ARRAY_OF_OBJECT = {};
+	
 	// -------------------------------------------- //
 	// MAKE ACCESSIBLE
 	// -------------------------------------------- //
@@ -96,7 +99,6 @@ public class ReflectionUtil
 		}
 	}
 	
-	private static final Class<?>[] EMPTY_ARRAY_OF_CLASS = {};
 	public static Method getMethod(Class<?> clazz, String name)
 	{
 		return getMethod(clazz, name, EMPTY_ARRAY_OF_CLASS);
@@ -115,11 +117,53 @@ public class ReflectionUtil
 		}
 	}
 	
-	private static final Object[] EMPTY_ARRAY_OF_OBJECT = {};
 	@SuppressWarnings("unchecked")
 	public static <T> T invokeMethod(Method method, Object target)
 	{
 		return (T) invokeMethod(method, target, EMPTY_ARRAY_OF_OBJECT);
+	}
+	
+	// -------------------------------------------- //
+	// CONSTRUCTOR
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	public static <T> Constructor<T> getConstructor(Class<?> clazz, Class<?>... parameterTypes)
+	{
+		try
+		{
+			Constructor<T> ret = (Constructor<T>) clazz.getDeclaredConstructor(parameterTypes);
+			makeAccessible(ret);
+			return ret;
+		}
+		catch (Exception e)
+		{
+			throw asRuntimeException(e);
+		}
+	}
+	
+	public static <T> Constructor<T> getConstructor(Class<?> clazz)
+	{
+		return getConstructor(clazz, EMPTY_ARRAY_OF_CLASS);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T invokeConstructor(Constructor<?> constructor, Object... arguments)
+	{
+		try
+		{
+			return (T) constructor.newInstance(arguments);
+		}
+		catch (Exception e)
+		{
+			throw asRuntimeException(e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T invokeConstructor(Constructor<?> constructor)
+	{
+		return (T) invokeConstructor(constructor, EMPTY_ARRAY_OF_OBJECT);
 	}
 	
 	// -------------------------------------------- //
