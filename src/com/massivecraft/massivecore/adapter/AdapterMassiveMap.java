@@ -14,7 +14,7 @@ public class AdapterMassiveMap extends AdapterMassiveX<MassiveMap<?, ?>>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterMassiveMap i = new AdapterMassiveMap();
+	private static final AdapterMassiveMap i = new AdapterMassiveMap();
 	public static AdapterMassiveMap get() { return i; }
 
 	// -------------------------------------------- //

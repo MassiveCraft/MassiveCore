@@ -20,7 +20,7 @@ public class AdapterEntry implements JsonDeserializer<Entry<?, ?>>, JsonSerializ
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterEntry i = new AdapterEntry();
+	private static final AdapterEntry i = new AdapterEntry();
 	public static AdapterEntry get() { return i; }
 
 	// -------------------------------------------- //

@@ -14,7 +14,7 @@ public class AdapterMassiveList extends AdapterMassiveX<MassiveList<?>>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterMassiveList i = new AdapterMassiveList();
+	private static final AdapterMassiveList i = new AdapterMassiveList();
 	public static AdapterMassiveList get() { return i; }
 
 	// -------------------------------------------- //

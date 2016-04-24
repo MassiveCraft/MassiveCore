@@ -14,7 +14,7 @@ public class AdapterMassiveTreeSet extends AdapterMassiveX<MassiveTreeSet<?, ?>>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterMassiveTreeSet i = new AdapterMassiveTreeSet();
+	private static final AdapterMassiveTreeSet i = new AdapterMassiveTreeSet();
 	public static AdapterMassiveTreeSet get() { return i; }
 
 	// -------------------------------------------- //

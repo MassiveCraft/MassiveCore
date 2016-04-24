@@ -19,9 +19,8 @@ public class AdapterSound implements JsonDeserializer<Sound>, JsonSerializer<Sou
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static AdapterSound i = new AdapterSound();
+	private static final AdapterSound i = new AdapterSound();
 	public static AdapterSound get() { return i; }
-	public AdapterSound() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

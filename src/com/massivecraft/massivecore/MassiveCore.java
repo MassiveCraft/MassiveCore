@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore;
 
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.adapter.AdapterBackstringEnumSet;
+import com.massivecraft.massivecore.adapter.AdapterBannerPatterns;
 import com.massivecraft.massivecore.adapter.AdapterEntry;
 import com.massivecraft.massivecore.adapter.AdapterInventory;
 import com.massivecraft.massivecore.adapter.AdapterItemStack;
@@ -61,6 +63,7 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreTeleportMixinCause;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
+import com.massivecraft.massivecore.item.DataBannerPattern;
 import com.massivecraft.massivecore.item.WriterBannerPattern;
 import com.massivecraft.massivecore.item.WriterFireworkEffect;
 import com.massivecraft.massivecore.item.WriterItemStack;
@@ -98,6 +101,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 public class MassiveCore extends MassivePlugin
 {
@@ -134,39 +138,59 @@ public class MassiveCore extends MassivePlugin
 	
 	public static GsonBuilder getMassiveCoreGsonBuilder()
 	{
-		return new GsonBuilder()
-		.setPrettyPrinting()
-		.disableHtmlEscaping()
-		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
-		.registerTypeAdapter(JsonNull.class, AdapterJsonElement.get())
-		.registerTypeAdapter(JsonPrimitive.class, AdapterJsonElement.get())
-		.registerTypeAdapter(JsonArray.class, AdapterJsonElement.get())
-		.registerTypeAdapter(JsonObject.class, AdapterJsonElement.get())
-		.registerTypeAdapter(Sound.class, AdapterSound.get())
-		.registerTypeAdapter(UUID.class, AdapterUUID.get())
-		.registerTypeAdapter(ItemStack.class, AdapterItemStack.get())
-		.registerTypeAdapter(Inventory.class, AdapterInventory.get())
-		.registerTypeAdapter(PlayerInventory.class, AdapterPlayerInventory.get())
-		.registerTypeAdapter(PS.class, PSAdapter.get())
+		// Create
+		GsonBuilder ret = new GsonBuilder();
 		
-		.registerTypeAdapter(MassiveList.class, AdapterMassiveList.get())
-		.registerTypeAdapter(MassiveListDef.class, AdapterMassiveList.get())
-		.registerTypeAdapter(MassiveMap.class, AdapterMassiveMap.get())
-		.registerTypeAdapter(MassiveMapDef.class, AdapterMassiveMap.get())
-		.registerTypeAdapter(MassiveSet.class, AdapterMassiveSet.get())
-		.registerTypeAdapter(MassiveSetDef.class, AdapterMassiveSet.get())
-		.registerTypeAdapter(MassiveTreeMap.class, AdapterMassiveTreeMap.get())
-		.registerTypeAdapter(MassiveTreeMapDef.class, AdapterMassiveTreeMap.get())
-		.registerTypeAdapter(MassiveTreeSet.class, AdapterMassiveTreeSet.get())
-		.registerTypeAdapter(MassiveTreeSetDef.class, AdapterMassiveTreeSet.get())
+		// Basic Behavior
+		ret.setPrettyPrinting();
+		ret.disableHtmlEscaping();
+		ret.excludeFieldsWithModifiers(Modifier.TRANSIENT);
 		
-		.registerTypeAdapter(Mson.class, AdapterMson.get())
-		.registerTypeAdapter(MsonEvent.class, AdapterMsonEvent.get())
+		// Raw Adapters
+		ret.registerTypeAdapter(JsonNull.class, AdapterJsonElement.get());
+		ret.registerTypeAdapter(JsonPrimitive.class, AdapterJsonElement.get());
+		ret.registerTypeAdapter(JsonArray.class, AdapterJsonElement.get());
+		ret.registerTypeAdapter(JsonObject.class, AdapterJsonElement.get());
 		
-		.registerTypeAdapter(BackstringEnumSet.class, AdapterBackstringEnumSet.get())
-		.registerTypeAdapter(Entry.class, AdapterEntry.get())
+		// Enumeration Annotation Dodge
+		ret.registerTypeAdapterFactory(AdapterModdedEnumType.ENUM_FACTORY);
 		
-		.registerTypeAdapterFactory(AdapterModdedEnumType.ENUM_FACTORY);
+		// Entries (Is this still needed?)
+		ret.registerTypeAdapter(Entry.class, AdapterEntry.get());
+		
+		// Assorted Custom
+		ret.registerTypeAdapter(BackstringEnumSet.class, AdapterBackstringEnumSet.get());
+		ret.registerTypeAdapter(PS.class, PSAdapter.get());
+		ret.registerTypeAdapter(Sound.class, AdapterSound.get());
+		ret.registerTypeAdapter(UUID.class, AdapterUUID.get());
+		
+		// Mson
+		ret.registerTypeAdapter(Mson.class, AdapterMson.get());
+		ret.registerTypeAdapter(MsonEvent.class, AdapterMsonEvent.get());
+		
+		// Items and Inventories
+		ret.registerTypeAdapter(ItemStack.class, AdapterItemStack.get());
+		ret.registerTypeAdapter(Inventory.class, AdapterInventory.get());
+		ret.registerTypeAdapter(PlayerInventory.class, AdapterPlayerInventory.get());
+		
+		// Banner Patterns Upgrade Adapter
+		Type typeBannerPatterns = new TypeToken<MassiveListDef<DataBannerPattern>>(){}.getType();
+		ret.registerTypeAdapter(typeBannerPatterns, AdapterBannerPatterns.get());
+		
+		// Massive Containers
+		ret.registerTypeAdapter(MassiveList.class, AdapterMassiveList.get());
+		ret.registerTypeAdapter(MassiveListDef.class, AdapterMassiveList.get());
+		ret.registerTypeAdapter(MassiveMap.class, AdapterMassiveMap.get());
+		ret.registerTypeAdapter(MassiveMapDef.class, AdapterMassiveMap.get());
+		ret.registerTypeAdapter(MassiveSet.class, AdapterMassiveSet.get());
+		ret.registerTypeAdapter(MassiveSetDef.class, AdapterMassiveSet.get());
+		ret.registerTypeAdapter(MassiveTreeMap.class, AdapterMassiveTreeMap.get());
+		ret.registerTypeAdapter(MassiveTreeMapDef.class, AdapterMassiveTreeMap.get());
+		ret.registerTypeAdapter(MassiveTreeSet.class, AdapterMassiveTreeSet.get());
+		ret.registerTypeAdapter(MassiveTreeSetDef.class, AdapterMassiveTreeSet.get());
+		
+		// Return
+		return ret;
 	}
 	
 	public static String getServerId() { return ConfServer.serverid; }

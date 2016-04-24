@@ -53,7 +53,7 @@ public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerial
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterInventory i = new AdapterInventory();
+	private static final AdapterInventory i = new AdapterInventory();
 	public static AdapterInventory get() { return i; }
 
 	// -------------------------------------------- //

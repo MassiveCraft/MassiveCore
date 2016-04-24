@@ -73,7 +73,7 @@ public class AdapterItemStackInner17 implements AdapterItemStackInner
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static AdapterItemStackInner17 i = new AdapterItemStackInner17();
+	private static final AdapterItemStackInner17 i = new AdapterItemStackInner17();
 	public static AdapterItemStackInner17 get() { return i; }
 	public AdapterItemStackInner17()
 	{

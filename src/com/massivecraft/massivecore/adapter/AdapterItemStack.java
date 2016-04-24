@@ -22,7 +22,7 @@ public class AdapterItemStack implements JsonDeserializer<ItemStack>, JsonSerial
 	// INSTANCE
 	// -------------------------------------------- //
 
-	public static AdapterItemStack i = new AdapterItemStack();
+	private static final AdapterItemStack i = new AdapterItemStack();
 	public static AdapterItemStack get() { return i; }
 	
 	// -------------------------------------------- //

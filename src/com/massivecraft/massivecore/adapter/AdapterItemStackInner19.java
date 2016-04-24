@@ -32,7 +32,7 @@ public class AdapterItemStackInner19 extends AdapterItemStackInner18
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static AdapterItemStackInner19 i = new AdapterItemStackInner19();
+	private static final AdapterItemStackInner19 i = new AdapterItemStackInner19();
 	public static AdapterItemStackInner19 get() { return i; }
 
 	// -------------------------------------------- //

@@ -17,7 +17,7 @@ public class AdapterPlayerInventory implements JsonDeserializer<PlayerInventory>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterPlayerInventory i = new AdapterPlayerInventory();
+	private static final AdapterPlayerInventory i = new AdapterPlayerInventory();
 	public static AdapterPlayerInventory get() { return i; }
 
 	// -------------------------------------------- //

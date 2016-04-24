@@ -14,7 +14,7 @@ public class AdapterMassiveTreeMap extends AdapterMassiveX<MassiveTreeMap<?, ?, 
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterMassiveTreeMap i = new AdapterMassiveTreeMap();
+	private static final AdapterMassiveTreeMap i = new AdapterMassiveTreeMap();
 	public static AdapterMassiveTreeMap get() { return i; }
 
 	// -------------------------------------------- //

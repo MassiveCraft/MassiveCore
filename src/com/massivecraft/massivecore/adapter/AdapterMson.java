@@ -17,9 +17,8 @@ public class AdapterMson implements JsonDeserializer<Mson>, JsonSerializer<Mson>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static AdapterMson i = new AdapterMson();
+	private static final AdapterMson i = new AdapterMson();
 	public static AdapterMson get() { return i; }
-	public AdapterMson() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

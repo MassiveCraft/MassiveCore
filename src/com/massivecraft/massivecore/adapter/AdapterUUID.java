@@ -17,7 +17,7 @@ public class AdapterUUID implements JsonDeserializer<UUID>, JsonSerializer<UUID>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterUUID i = new AdapterUUID();
+	private static final AdapterUUID i = new AdapterUUID();
 	public static AdapterUUID get() { return i; }
 	
 	// -------------------------------------------- //

@@ -15,7 +15,7 @@ public class AdapterJsonElement implements JsonDeserializer<JsonElement>, JsonSe
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterJsonElement i = new AdapterJsonElement();
+	private static final AdapterJsonElement i = new AdapterJsonElement();
 	public static AdapterJsonElement get() { return i; }
 	
 	// -------------------------------------------- //

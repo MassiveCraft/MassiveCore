@@ -25,7 +25,7 @@ public class AdapterBackstringEnumSet implements JsonDeserializer<BackstringEnum
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static AdapterBackstringEnumSet i = new AdapterBackstringEnumSet();
+	private static final AdapterBackstringEnumSet i = new AdapterBackstringEnumSet();
 	public static AdapterBackstringEnumSet get() { return i; }
 	
 	// -------------------------------------------- //

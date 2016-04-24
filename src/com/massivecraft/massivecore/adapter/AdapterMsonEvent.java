@@ -17,9 +17,8 @@ public class AdapterMsonEvent implements JsonDeserializer<MsonEvent>, JsonSerial
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static AdapterMsonEvent i = new AdapterMsonEvent();
+	private static final AdapterMsonEvent i = new AdapterMsonEvent();
 	public static AdapterMsonEvent get() { return i; }
-	public AdapterMsonEvent() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
