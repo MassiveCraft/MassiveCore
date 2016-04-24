@@ -14,14 +14,14 @@ import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
-public class EntryAdapter implements JsonDeserializer<Entry<?, ?>>, JsonSerializer<Entry<?, ?>>
+public class AdapterEntry implements JsonDeserializer<Entry<?, ?>>, JsonSerializer<Entry<?, ?>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static EntryAdapter i = new EntryAdapter();
-	public static EntryAdapter get() { return i; }
+	private static AdapterEntry i = new AdapterEntry();
+	public static AdapterEntry get() { return i; }
 
 	// -------------------------------------------- //
 	// OVERRIDE

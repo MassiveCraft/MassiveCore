@@ -21,7 +21,7 @@ import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Types;
  * It makes sure Def instances "handle empty as null".
  * It makes sure we avoid infinite GSON recurse loops by recursing with supertype.
  */
-public abstract class MassiveXAdapter<T> implements JsonDeserializer<T>, JsonSerializer<T>
+public abstract class AdapterMassiveX<T> implements JsonDeserializer<T>, JsonSerializer<T>
 {
 	// -------------------------------------------- //
 	// OVERRIDE

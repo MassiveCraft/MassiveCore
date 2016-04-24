@@ -11,7 +11,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
-public class LowercaseEnumAdapter<T extends Enum<T>> implements JsonDeserializer<T>, JsonSerializer<T>
+public class AdapterLowercaseEnum<T extends Enum<T>> implements JsonDeserializer<T>, JsonSerializer<T>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -24,12 +24,12 @@ public class LowercaseEnumAdapter<T extends Enum<T>> implements JsonDeserializer
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <T extends Enum<T>> LowercaseEnumAdapter<T> get(Class<T> clazz)
+	public static <T extends Enum<T>> AdapterLowercaseEnum<T> get(Class<T> clazz)
 	{
-		return new LowercaseEnumAdapter<T>(clazz);
+		return new AdapterLowercaseEnum<T>(clazz);
 	}
 	
-	public LowercaseEnumAdapter(Class<T> clazz)
+	public AdapterLowercaseEnum(Class<T> clazz)
 	{
 		if (clazz == null) throw new IllegalArgumentException("passed clazz param is null");
 		if ( ! clazz.isEnum()) throw new IllegalArgumentException("passed clazz param must be an enum");

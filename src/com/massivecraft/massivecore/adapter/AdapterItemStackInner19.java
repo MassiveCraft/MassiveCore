@@ -19,7 +19,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 @SuppressWarnings("deprecation")
-public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
+public class AdapterItemStackInner19 extends AdapterItemStackInner18
 {
 	// -------------------------------------------- //
 	// CONSTANTS: POTION
@@ -32,8 +32,8 @@ public class ItemStackAdapterInner19 extends ItemStackAdapterInner18
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static ItemStackAdapterInner19 i = new ItemStackAdapterInner19();
-	public static ItemStackAdapterInner19 get() { return i; }
+	public static AdapterItemStackInner19 i = new AdapterItemStackInner19();
+	public static AdapterItemStackInner19 get() { return i; }
 
 	// -------------------------------------------- //
 	// PROVOKE

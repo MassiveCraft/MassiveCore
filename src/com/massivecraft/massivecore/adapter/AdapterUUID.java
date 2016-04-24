@@ -11,14 +11,14 @@ import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
-public class UUIDAdapter implements JsonDeserializer<UUID>, JsonSerializer<UUID>
+public class AdapterUUID implements JsonDeserializer<UUID>, JsonSerializer<UUID>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static UUIDAdapter i = new UUIDAdapter();
-	public static UUIDAdapter get() { return i; }
+	private static AdapterUUID i = new AdapterUUID();
+	public static AdapterUUID get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

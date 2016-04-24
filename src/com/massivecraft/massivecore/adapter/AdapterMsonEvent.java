@@ -2,8 +2,8 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
 
-import org.bukkit.inventory.PlayerInventory;
-
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -11,29 +11,30 @@ import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
-public class PlayerInventoryAdapter implements JsonDeserializer<PlayerInventory>, JsonSerializer<PlayerInventory>
+public class AdapterMsonEvent implements JsonDeserializer<MsonEvent>, JsonSerializer<MsonEvent>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
-	private static PlayerInventoryAdapter i = new PlayerInventoryAdapter();
-	public static PlayerInventoryAdapter get() { return i; }
 
+	public static AdapterMsonEvent i = new AdapterMsonEvent();
+	public static AdapterMsonEvent get() { return i; }
+	public AdapterMsonEvent() {}
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public JsonElement serialize(PlayerInventory src, Type typeOfSrc, JsonSerializationContext context)
+	public JsonElement serialize(MsonEvent src, Type typeOfSrc, JsonSerializationContext context)
 	{
-		return InventoryAdapter.toJson(src);
+		return Mson.GSON.toJsonTree(src);
 	}
-	
+
 	@Override
-	public PlayerInventory deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+	public MsonEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return (PlayerInventory) InventoryAdapter.fromJson(json);
+		return Mson.GSON.fromJson(json, MsonEvent.class);
 	}
-	
+
 }

@@ -13,7 +13,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
-public class BackstringEnumSetAdapter implements JsonDeserializer<BackstringEnumSet<?>>, JsonSerializer<BackstringEnumSet<?>>
+public class AdapterBackstringEnumSet implements JsonDeserializer<BackstringEnumSet<?>>, JsonSerializer<BackstringEnumSet<?>>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -25,8 +25,8 @@ public class BackstringEnumSetAdapter implements JsonDeserializer<BackstringEnum
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static BackstringEnumSetAdapter i = new BackstringEnumSetAdapter();
-	public static BackstringEnumSetAdapter get() { return i; }
+	private static AdapterBackstringEnumSet i = new AdapterBackstringEnumSet();
+	public static AdapterBackstringEnumSet get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

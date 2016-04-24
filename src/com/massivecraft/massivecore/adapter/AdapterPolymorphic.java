@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
-public class PolymorphicAdapter<T> implements JsonDeserializer<T>, JsonSerializer<T>
+public class AdapterPolymorphic<T> implements JsonDeserializer<T>, JsonSerializer<T>
 {
 	public static final String TYPE = "type";
 	public static final String VALUE = "value";

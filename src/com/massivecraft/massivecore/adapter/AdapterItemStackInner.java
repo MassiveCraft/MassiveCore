@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-public interface ItemStackAdapterInner
+public interface AdapterItemStackInner
 {
 	public Object provoke();
 	

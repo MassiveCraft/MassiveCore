@@ -8,14 +8,14 @@ import com.massivecraft.massivecore.collections.MassiveSetDef;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
-public class MassiveSetAdapter extends MassiveXAdapter<MassiveSet<?>>
+public class AdapterMassiveSet extends AdapterMassiveX<MassiveSet<?>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveSetAdapter i = new MassiveSetAdapter();
-	public static MassiveSetAdapter get() { return i; }
+	private static AdapterMassiveSet i = new AdapterMassiveSet();
+	public static AdapterMassiveSet get() { return i; }
 
 	// -------------------------------------------- //
 	// OVERRIDE

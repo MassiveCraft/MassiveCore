@@ -23,7 +23,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
  * It handles all inventories as CraftInventoryCustom "Chest"s with size of your choice
  * except for PlayerInventory which it handles pretty darn well!
  */
-public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerializer<Inventory>
+public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerializer<Inventory>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -53,8 +53,8 @@ public class InventoryAdapter implements JsonDeserializer<Inventory>, JsonSerial
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static InventoryAdapter i = new InventoryAdapter();
-	public static InventoryAdapter get() { return i; }
+	private static AdapterInventory i = new AdapterInventory();
+	public static AdapterInventory get() { return i; }
 
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -2,40 +2,44 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
 
-import com.massivecraft.massivecore.mson.Mson;
+import org.bukkit.Sound;
+
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
-public class MsonAdapter implements JsonDeserializer<Mson>, JsonSerializer<Mson>
+public class AdapterSound implements JsonDeserializer<Sound>, JsonSerializer<Sound>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static MsonAdapter i = new MsonAdapter();
-	public static MsonAdapter get() { return i; }
-	public MsonAdapter() {}
+	public static AdapterSound i = new AdapterSound();
+	public static AdapterSound get() { return i; }
+	public AdapterSound() {}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
 	@Override
-	public JsonElement serialize(Mson src, Type typeOfSrc, JsonSerializationContext context)
+	public JsonElement serialize(Sound src, Type typeOfSrc, JsonSerializationContext context)
 	{
 		if (src == null) return JsonNull.INSTANCE;
-		return src.toJson();
+		return new JsonPrimitive(src.name());
 	}
 
 	@Override
-	public Mson deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+	public Sound deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return Mson.fromJson(json);
+		if (json == null) return null;
+		if (json.equals(JsonNull.INSTANCE)) return null;
+		return Sound.valueOf(json.getAsString());
 	}
 
 }

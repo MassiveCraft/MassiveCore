@@ -40,11 +40,11 @@ import java.util.Map;
  * 
  * @author OniBait
  */
-public final class ModdedEnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
+public final class AdapterModdedEnumType<T extends Enum<T>> extends TypeAdapter<T> {
 	private final Map<String, T> nameToConstant = new HashMap<String, T>();
 	private final Map<T, String> constantToName = new HashMap<T, String>();
 
-	public ModdedEnumTypeAdapter(Class<T> classOfT) {
+	public AdapterModdedEnumType(Class<T> classOfT) {
 		for (T constant : classOfT.getEnumConstants()) {
 			String name = constant.name();
 			try { // MassiveCore - Ignore when the field can't be found since modified enums won't have it.
@@ -82,7 +82,7 @@ public final class ModdedEnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<
 				if (!rawType.isEnum()) {
 					rawType = rawType.getSuperclass(); // handle anonymous subclasses
 				}
-				return (TypeAdapter<T>) new ModdedEnumTypeAdapter(rawType);
+				return (TypeAdapter<T>) new AdapterModdedEnumType(rawType);
 			}
 		};
 	}

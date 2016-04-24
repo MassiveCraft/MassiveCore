@@ -9,14 +9,14 @@ import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
-public class JsonElementAdapter implements JsonDeserializer<JsonElement>, JsonSerializer<JsonElement>
+public class AdapterJsonElement implements JsonDeserializer<JsonElement>, JsonSerializer<JsonElement>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static JsonElementAdapter i = new JsonElementAdapter();
-	public static JsonElementAdapter get() { return i; }
+	private static AdapterJsonElement i = new AdapterJsonElement();
+	public static AdapterJsonElement get() { return i; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

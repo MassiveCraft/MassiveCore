@@ -26,7 +26,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 @SuppressWarnings("deprecation")
-public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
+public class AdapterItemStackInner18 extends AdapterItemStackInner17
 {
 	// -------------------------------------------- //
 	// CONSTANTS: NAMES
@@ -43,8 +43,8 @@ public class ItemStackAdapterInner18 extends ItemStackAdapterInner17
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static ItemStackAdapterInner18 i = new ItemStackAdapterInner18();
-	public static ItemStackAdapterInner18 get() { return i; }
+	public static AdapterItemStackInner18 i = new AdapterItemStackInner18();
+	public static AdapterItemStackInner18 get() { return i; }
 
 	// -------------------------------------------- //
 	// PROVOKE

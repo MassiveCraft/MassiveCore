@@ -8,14 +8,14 @@ import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
-public class MassiveTreeSetAdapter extends MassiveXAdapter<MassiveTreeSet<?, ?>>
+public class AdapterMassiveTreeSet extends AdapterMassiveX<MassiveTreeSet<?, ?>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveTreeSetAdapter i = new MassiveTreeSetAdapter();
-	public static MassiveTreeSetAdapter get() { return i; }
+	private static AdapterMassiveTreeSet i = new AdapterMassiveTreeSet();
+	public static AdapterMassiveTreeSet get() { return i; }
 
 	// -------------------------------------------- //
 	// OVERRIDE

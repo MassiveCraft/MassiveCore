@@ -7,7 +7,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 @SuppressWarnings("deprecation")
-public class PotionEffectAdapter
+public class AdapterPotionEffect
 {
 	// -------------------------------------------- //
 	// FIELD CONSTANTS

@@ -16,33 +16,33 @@ import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
  * way. This serializer requires manual updating to work but produces clean
  * json. See the file itemstackformat.txt for more info.
  */
-public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack>
+public class AdapterItemStack implements JsonDeserializer<ItemStack>, JsonSerializer<ItemStack>
 {
 	// -------------------------------------------- //
 	// INSTANCE
 	// -------------------------------------------- //
 
-	public static ItemStackAdapter i = new ItemStackAdapter();
-	public static ItemStackAdapter get() { return i; }
+	public static AdapterItemStack i = new AdapterItemStack();
+	public static AdapterItemStack get() { return i; }
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private ItemStackAdapterInner inner;
-	public ItemStackAdapterInner getInner() { return this.inner; }
-	public void setInner(ItemStackAdapterInner inner) { this.inner = inner; }
+	private AdapterItemStackInner inner;
+	public AdapterItemStackInner getInner() { return this.inner; }
+	public void setInner(AdapterItemStackInner inner) { this.inner = inner; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public ItemStackAdapter()
+	public AdapterItemStack()
 	{
 		// 1.9
 		try
 		{
-			this.inner = ItemStackAdapterInner19.get();
+			this.inner = AdapterItemStackInner19.get();
 			return;
 		}
 		catch (Throwable t)
@@ -53,7 +53,7 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		// 1.8
 		try
 		{
-			this.inner = ItemStackAdapterInner18.get();
+			this.inner = AdapterItemStackInner18.get();
 			return;
 		}
 		catch (Throwable t)
@@ -62,7 +62,7 @@ public class ItemStackAdapter implements JsonDeserializer<ItemStack>, JsonSerial
 		}
 		
 		// 1.7
-		this.inner = ItemStackAdapterInner17.get();
+		this.inner = AdapterItemStackInner17.get();
 	}
 	
 	// -------------------------------------------- //

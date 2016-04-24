@@ -32,7 +32,7 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 @SuppressWarnings("deprecation")
-public class ItemStackAdapterInner17 implements ItemStackAdapterInner
+public class AdapterItemStackInner17 implements AdapterItemStackInner
 {
 	// -------------------------------------------- //
 	// CONSTANTS: NAMES
@@ -73,9 +73,9 @@ public class ItemStackAdapterInner17 implements ItemStackAdapterInner
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 
-	public static ItemStackAdapterInner17 i = new ItemStackAdapterInner17();
-	public static ItemStackAdapterInner17 get() { return i; }
-	public ItemStackAdapterInner17()
+	public static AdapterItemStackInner17 i = new AdapterItemStackInner17();
+	public static AdapterItemStackInner17 get() { return i; }
+	public AdapterItemStackInner17()
 	{
 		this.provoke();
 	}
@@ -535,13 +535,13 @@ public class ItemStackAdapterInner17 implements ItemStackAdapterInner
 		if (meta2json)
 		{
 			if (!meta.hasEffect()) return;
-			json.add(FIREWORK_EFFECT, FireworkEffectAdapter.toJson(meta.getEffect()));
+			json.add(FIREWORK_EFFECT, AdapterFireworkEffect.toJson(meta.getEffect()));
 		}
 		else
 		{
 			JsonElement element = json.get(FIREWORK_EFFECT);
 			if (element == null) return;
-			meta.setEffect(FireworkEffectAdapter.fromJson(element));
+			meta.setEffect(AdapterFireworkEffect.fromJson(element));
 		}
 	}
 
@@ -643,7 +643,7 @@ public class ItemStackAdapterInner17 implements ItemStackAdapterInner
 		JsonArray ret = new JsonArray();
 		for (PotionEffect e : potionEffects)
 		{
-			ret.add(PotionEffectAdapter.toJson(e));
+			ret.add(AdapterPotionEffect.toJson(e));
 		}
 		return ret;
 	}
@@ -659,7 +659,7 @@ public class ItemStackAdapterInner17 implements ItemStackAdapterInner
 		Iterator<JsonElement> iter = array.iterator();
 		while(iter.hasNext())
 		{
-			PotionEffect e = PotionEffectAdapter.fromJson(iter.next());
+			PotionEffect e = AdapterPotionEffect.fromJson(iter.next());
 			if (e == null) continue;
 			ret.add(e);
 		}
@@ -673,7 +673,7 @@ public class ItemStackAdapterInner17 implements ItemStackAdapterInner
 		JsonArray ret = new JsonArray();
 		for (FireworkEffect fe : fireworkEffects)
 		{
-			ret.add(FireworkEffectAdapter.toJson(fe));
+			ret.add(AdapterFireworkEffect.toJson(fe));
 		}
 		return ret;
 	}
@@ -689,7 +689,7 @@ public class ItemStackAdapterInner17 implements ItemStackAdapterInner
 		Iterator<JsonElement> iter = array.iterator();
 		while(iter.hasNext())
 		{
-			FireworkEffect fe = FireworkEffectAdapter.fromJson(iter.next());
+			FireworkEffect fe = AdapterFireworkEffect.fromJson(iter.next());
 			if (fe == null) continue;
 			ret.add(fe);
 		}

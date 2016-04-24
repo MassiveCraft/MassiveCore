@@ -16,7 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.ImmutableList;
-import com.massivecraft.massivecore.adapter.LowercaseEnumAdapter;
+import com.massivecraft.massivecore.adapter.AdapterLowercaseEnum;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mixin.Mixin;
@@ -38,8 +38,8 @@ public class Mson implements Serializable
 
 	public static final Pattern PARSE_PREFIX = Pattern.compile("\u00A7");
 	
-	public static final LowercaseEnumAdapter<ChatColor> ADAPTER_LOWERCASE_CHAT_COLOR = LowercaseEnumAdapter.get(ChatColor.class);
-	public static final LowercaseEnumAdapter<MsonEventAction> ADAPTER_LOWERCASE_MSON_EVENT_ACTION = LowercaseEnumAdapter.get(MsonEventAction.class);
+	public static final AdapterLowercaseEnum<ChatColor> ADAPTER_LOWERCASE_CHAT_COLOR = AdapterLowercaseEnum.get(ChatColor.class);
+	public static final AdapterLowercaseEnum<MsonEventAction> ADAPTER_LOWERCASE_MSON_EVENT_ACTION = AdapterLowercaseEnum.get(MsonEventAction.class);
 	
 	// -------------------------------------------- //
 	// CONSTANTS: REUSABLE MSONS

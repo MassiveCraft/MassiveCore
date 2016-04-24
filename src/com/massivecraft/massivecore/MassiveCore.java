@@ -12,22 +12,22 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.massivecraft.massivecore.adapter.BackstringEnumSetAdapter;
-import com.massivecraft.massivecore.adapter.EntryAdapter;
-import com.massivecraft.massivecore.adapter.InventoryAdapter;
-import com.massivecraft.massivecore.adapter.ItemStackAdapter;
-import com.massivecraft.massivecore.adapter.JsonElementAdapter;
-import com.massivecraft.massivecore.adapter.MassiveListAdapter;
-import com.massivecraft.massivecore.adapter.MassiveMapAdapter;
-import com.massivecraft.massivecore.adapter.MassiveSetAdapter;
-import com.massivecraft.massivecore.adapter.MassiveTreeMapAdapter;
-import com.massivecraft.massivecore.adapter.MassiveTreeSetAdapter;
-import com.massivecraft.massivecore.adapter.ModdedEnumTypeAdapter;
-import com.massivecraft.massivecore.adapter.MsonAdapter;
-import com.massivecraft.massivecore.adapter.MsonEventAdapter;
-import com.massivecraft.massivecore.adapter.PlayerInventoryAdapter;
-import com.massivecraft.massivecore.adapter.SoundAdapter;
-import com.massivecraft.massivecore.adapter.UUIDAdapter;
+import com.massivecraft.massivecore.adapter.AdapterBackstringEnumSet;
+import com.massivecraft.massivecore.adapter.AdapterEntry;
+import com.massivecraft.massivecore.adapter.AdapterInventory;
+import com.massivecraft.massivecore.adapter.AdapterItemStack;
+import com.massivecraft.massivecore.adapter.AdapterJsonElement;
+import com.massivecraft.massivecore.adapter.AdapterMassiveList;
+import com.massivecraft.massivecore.adapter.AdapterMassiveMap;
+import com.massivecraft.massivecore.adapter.AdapterMassiveSet;
+import com.massivecraft.massivecore.adapter.AdapterMassiveTreeMap;
+import com.massivecraft.massivecore.adapter.AdapterMassiveTreeSet;
+import com.massivecraft.massivecore.adapter.AdapterModdedEnumType;
+import com.massivecraft.massivecore.adapter.AdapterMson;
+import com.massivecraft.massivecore.adapter.AdapterMsonEvent;
+import com.massivecraft.massivecore.adapter.AdapterPlayerInventory;
+import com.massivecraft.massivecore.adapter.AdapterSound;
+import com.massivecraft.massivecore.adapter.AdapterUUID;
 import com.massivecraft.massivecore.collections.BackstringEnumSet;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveListDef;
@@ -138,35 +138,35 @@ public class MassiveCore extends MassivePlugin
 		.setPrettyPrinting()
 		.disableHtmlEscaping()
 		.excludeFieldsWithModifiers(Modifier.TRANSIENT)
-		.registerTypeAdapter(JsonNull.class, JsonElementAdapter.get())
-		.registerTypeAdapter(JsonPrimitive.class, JsonElementAdapter.get())
-		.registerTypeAdapter(JsonArray.class, JsonElementAdapter.get())
-		.registerTypeAdapter(JsonObject.class, JsonElementAdapter.get())
-		.registerTypeAdapter(Sound.class, SoundAdapter.get())
-		.registerTypeAdapter(UUID.class, UUIDAdapter.get())
-		.registerTypeAdapter(ItemStack.class, ItemStackAdapter.get())
-		.registerTypeAdapter(Inventory.class, InventoryAdapter.get())
-		.registerTypeAdapter(PlayerInventory.class, PlayerInventoryAdapter.get())
+		.registerTypeAdapter(JsonNull.class, AdapterJsonElement.get())
+		.registerTypeAdapter(JsonPrimitive.class, AdapterJsonElement.get())
+		.registerTypeAdapter(JsonArray.class, AdapterJsonElement.get())
+		.registerTypeAdapter(JsonObject.class, AdapterJsonElement.get())
+		.registerTypeAdapter(Sound.class, AdapterSound.get())
+		.registerTypeAdapter(UUID.class, AdapterUUID.get())
+		.registerTypeAdapter(ItemStack.class, AdapterItemStack.get())
+		.registerTypeAdapter(Inventory.class, AdapterInventory.get())
+		.registerTypeAdapter(PlayerInventory.class, AdapterPlayerInventory.get())
 		.registerTypeAdapter(PS.class, PSAdapter.get())
 		
-		.registerTypeAdapter(MassiveList.class, MassiveListAdapter.get())
-		.registerTypeAdapter(MassiveListDef.class, MassiveListAdapter.get())
-		.registerTypeAdapter(MassiveMap.class, MassiveMapAdapter.get())
-		.registerTypeAdapter(MassiveMapDef.class, MassiveMapAdapter.get())
-		.registerTypeAdapter(MassiveSet.class, MassiveSetAdapter.get())
-		.registerTypeAdapter(MassiveSetDef.class, MassiveSetAdapter.get())
-		.registerTypeAdapter(MassiveTreeMap.class, MassiveTreeMapAdapter.get())
-		.registerTypeAdapter(MassiveTreeMapDef.class, MassiveTreeMapAdapter.get())
-		.registerTypeAdapter(MassiveTreeSet.class, MassiveTreeSetAdapter.get())
-		.registerTypeAdapter(MassiveTreeSetDef.class, MassiveTreeSetAdapter.get())
+		.registerTypeAdapter(MassiveList.class, AdapterMassiveList.get())
+		.registerTypeAdapter(MassiveListDef.class, AdapterMassiveList.get())
+		.registerTypeAdapter(MassiveMap.class, AdapterMassiveMap.get())
+		.registerTypeAdapter(MassiveMapDef.class, AdapterMassiveMap.get())
+		.registerTypeAdapter(MassiveSet.class, AdapterMassiveSet.get())
+		.registerTypeAdapter(MassiveSetDef.class, AdapterMassiveSet.get())
+		.registerTypeAdapter(MassiveTreeMap.class, AdapterMassiveTreeMap.get())
+		.registerTypeAdapter(MassiveTreeMapDef.class, AdapterMassiveTreeMap.get())
+		.registerTypeAdapter(MassiveTreeSet.class, AdapterMassiveTreeSet.get())
+		.registerTypeAdapter(MassiveTreeSetDef.class, AdapterMassiveTreeSet.get())
 		
-		.registerTypeAdapter(Mson.class, MsonAdapter.get())
-		.registerTypeAdapter(MsonEvent.class, MsonEventAdapter.get())
+		.registerTypeAdapter(Mson.class, AdapterMson.get())
+		.registerTypeAdapter(MsonEvent.class, AdapterMsonEvent.get())
 		
-		.registerTypeAdapter(BackstringEnumSet.class, BackstringEnumSetAdapter.get())
-		.registerTypeAdapter(Entry.class, EntryAdapter.get())
+		.registerTypeAdapter(BackstringEnumSet.class, AdapterBackstringEnumSet.get())
+		.registerTypeAdapter(Entry.class, AdapterEntry.get())
 		
-		.registerTypeAdapterFactory(ModdedEnumTypeAdapter.ENUM_FACTORY);
+		.registerTypeAdapterFactory(AdapterModdedEnumType.ENUM_FACTORY);
 	}
 	
 	public static String getServerId() { return ConfServer.serverid; }

@@ -1,21 +1,21 @@
 package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
-import java.util.Map;
+import java.util.Collection;
 
-import com.massivecraft.massivecore.collections.MassiveMap;
-import com.massivecraft.massivecore.collections.MassiveMapDef;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
-public class MassiveMapAdapter extends MassiveXAdapter<MassiveMap<?, ?>>
+public class AdapterMassiveList extends AdapterMassiveX<MassiveList<?>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static MassiveMapAdapter i = new MassiveMapAdapter();
-	public static MassiveMapAdapter get() { return i; }
+	private static AdapterMassiveList i = new AdapterMassiveList();
+	public static AdapterMassiveList get() { return i; }
 
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -23,15 +23,15 @@ public class MassiveMapAdapter extends MassiveXAdapter<MassiveMap<?, ?>>
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public MassiveMap<?,?> create(Object parent, boolean def, JsonElement json, Type typeOfT, JsonDeserializationContext context)
+	public MassiveList<?> create(Object parent, boolean def, JsonElement json, Type typeOfT, JsonDeserializationContext context)
 	{
 		if (def)
 		{
-			return new MassiveMapDef((Map)parent);
+			return new MassiveListDef((Collection)parent);
 		}
 		else
 		{
-			return new MassiveMap((Map)parent);
+			return new MassiveList((Collection)parent);
 		}
 	}
 	
