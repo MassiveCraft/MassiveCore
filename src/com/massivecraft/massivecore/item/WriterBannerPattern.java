@@ -8,22 +8,12 @@ public class WriterBannerPattern extends WriterAbstractBannerPattern<Object, Obj
 	
 	private static final WriterBannerPattern i = new WriterBannerPattern();
 	public static WriterBannerPattern get() { return i; }
-	
-	// -------------------------------------------- //
-	// ACTIVE
-	// -------------------------------------------- //
-	
-	@Override
-	public void setActiveInner(boolean active)
+	public WriterBannerPattern()
 	{
-		if ( ! active) return;
-		this.clearWriters();
-		
-		this.addWriters(
+		this.addWriterClasses(
 			WriterBannerPatternId.class,
 			WriterBannerPatternColor.class
 		);
-
 	}
 	
 }

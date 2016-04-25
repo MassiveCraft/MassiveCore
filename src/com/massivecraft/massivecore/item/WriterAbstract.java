@@ -1,11 +1,13 @@
 package com.massivecraft.massivecore.item;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -14,53 +16,132 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	// -------------------------------------------- //
 	// WRITERS
 	// -------------------------------------------- //
-	// A writer may contain subwriters.
+	// Writer have dependencies and child writers.
+	
+	// A dependency is another writer that must be successfully activated for this writer to function.
+	// For that reason the dependencies are activated just after the provoke logic.
+	// Examples would be WriterPotionEffect and WriterFireworkEffect.
+	// They are implicitly required for some ItemStack field writers. 
+	
+	private List<Class<?>> dependencyClasses = new MassiveList<>();
+	public List<Class<?>> getDependencyClasses() { return this.dependencyClasses; }
+	public void addDependencyClasses(Class<?>... dependencyClasses) { this.getDependencyClasses().addAll(Arrays.asList(dependencyClasses)); }
 
+	// This is the writer classes scheduled to be used at setup.
+	// We do not yet know if they are compatible with this Minecraft version.
+	// All, some or none of them may fail.
+	private List<Class<?>> writerClasses = new MassiveList<>();
+	public List<Class<?>> getWriterClasses() { return this.writerClasses; }
+	public void addWriterClasses(Class<?>... writerClasses) { this.getWriterClasses().addAll(Arrays.asList(writerClasses)); }
+	
+	// These are the actually functional child writers.
+	// This list should only contain writers that passed the provoke routine.
 	private List<WriterAbstract<CA, CB, ?, ?, ?, ?>> writers = new MassiveList<>();
+	public List<WriterAbstract<CA, CB, ?, ?, ?, ?>> getWriters() { return this.writers; }
 
-	public List<WriterAbstract<CA, CB, ?, ?, ?, ?>> getWriters()
+	// Here is the logic to perform the dependency and child writer setup.
+	public void setupDependencies()
 	{
-		return this.writers;
+		for (Class<?> dependencyClass : this.getDependencyClasses())
+		{
+			this.setupWriter(dependencyClass, false);
+		}
 	}
-
-	public void clearWriters()
+	
+	public void setupWriters()
 	{
-		this.writers.clear();
+		for (Class<?> writerClass : this.getWriterClasses())
+		{
+			this.setupWriter(writerClass, true);
+		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	public void addWriter(Class<?> clazz)
+	public void setupWriter(Class<?> writerClass, boolean add)
 	{
-		boolean success = false;
 		try
 		{
-			Class<WriterAbstract<CA, CB, ?, ?, ?, ?>> clazzInner = (Class<WriterAbstract<CA, CB, ?, ?, ?, ?>>) clazz;
-			WriterAbstract<CA, CB, ?, ?, ?, ?> writer = ReflectionUtil.getSingletonInstance(clazzInner);
-			writer.setActive(this.getActivePlugin());
-			this.getWriters().add(writer);
-			success = true;
+			Class<WriterAbstract<?, ?, ?, ?, ?, ?>> writerClassInner = (Class<WriterAbstract<?, ?, ?, ?, ?, ?>>) writerClass;
+			WriterAbstract<?, ?, ?, ?, ?, ?> writer = ReflectionUtil.getSingletonInstance(writerClassInner);
+			
+			if ( ! writer.isActive()) writer.setActive(this.getActivePlugin());
+			
+			if (add) this.getWriters().add((WriterAbstract<CA, CB, ?, ?, ?, ?>)writer);
 		}
 		catch (Throwable t)
 		{
-			if (MassiveCoreMConf.get().debugWriters)
-			{
-				t.printStackTrace();
-			}
-		}
-
-		if (MassiveCoreMConf.get().debugWriters)
-		{
-			String message = Txt.parse("<h>%s %s", clazz.getSimpleName(), TypeBoolean.getOn().getVisual(success));
-			this.getActivePlugin().log(message);
+			this.reportSuccess(false, writerClass.getSimpleName(), t);
 		}
 	}
-
-	public void addWriters(Class<?>... clazzs)
+	
+	public void reportSuccess(boolean success)
 	{
-		for (Class<?> clazz : clazzs)
+		this.reportSuccess(success, this.getClass().getSimpleName());
+	}
+	
+	public void reportSuccess(boolean success, String name)
+	{
+		this.reportSuccess(success, name, null);
+	}
+	
+	public void reportSuccess(boolean success, String name, Throwable t)
+	{
+		if ( ! MassiveCoreMConf.get().debugWriters) return;
+		
+		// Create
+		List<String> messages = new MassiveList<>();
+		
+		// Fill
+		String message;
+		
+		// Main
+		message = Txt.parse("<h>%s %s", name, TypeBoolean.getOn().getVisual(success));
+		messages.add(message);
+		
+		// Throwable
+		if (t != null)
 		{
-			this.addWriter(clazz);
+			message = Txt.parse("<b>### %s <i>%s", t.getClass().getSimpleName(), t.getMessage());
+			messages.add(message);
+			for (String s : MUtil.getStackTraceStrings(Arrays.asList(t.getStackTrace()), true))
+			{
+				message = Txt.parse("<b>--> %s", s);
+				messages.add(message);
+			}
 		}
+		
+		// Send
+		for (String s : messages)
+		{
+			this.getActivePlugin().log(s);
+		}
+	}
+	
+	// -------------------------------------------- //
+	// ACTIVE
+	// -------------------------------------------- //
+	// The setActive method starts out with the provoke.
+	// This means it can fail immediately with a runtime exception.
+	// If this happens it will not have been activated in any way.
+	
+	@Override
+	public void setActive(boolean active)
+	{
+		if (active)
+		{
+			// Provoke
+			this.provoke();
+			
+			// Setup Dependencies
+			this.setupDependencies();
+			
+			// Report This Success
+			this.reportSuccess(true);
+			
+			// Setup Writers
+			this.setupWriters();
+		}
+		super.setActive(active);
 	}
 
 	// -------------------------------------------- //
@@ -122,17 +203,6 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	}
 
 	// -------------------------------------------- //
-	// ACTIVE
-	// -------------------------------------------- //
-
-	@Override
-	public void setActive(boolean active)
-	{
-		this.provoke();
-		super.setActive(active);
-	}
-
-	// -------------------------------------------- //
 	// PROVOKE
 	// -------------------------------------------- //
 
@@ -167,7 +237,7 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 
 	public void write(OA oa, OB ob, boolean a2b)
 	{
-		if (!this.isActive()) throw new IllegalStateException("not active " + this.getClass().getName());
+		if ( ! this.isActive()) throw new IllegalStateException("not active " + this.getClass().getName());
 
 		if (oa == null) throw new NullPointerException("oa");
 		if (ob == null) throw new NullPointerException("ob");

@@ -64,10 +64,7 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.item.DataBannerPattern;
-import com.massivecraft.massivecore.item.WriterBannerPattern;
-import com.massivecraft.massivecore.item.WriterFireworkEffect;
 import com.massivecraft.massivecore.item.WriterItemStack;
-import com.massivecraft.massivecore.item.WriterPotionEffect;
 import com.massivecraft.massivecore.mixin.MixinActionbar;
 import com.massivecraft.massivecore.mixin.MixinActual;
 import com.massivecraft.massivecore.mixin.MixinCommand;
@@ -86,6 +83,7 @@ import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
+import com.massivecraft.massivecore.nms.NmsItemStack;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
 import com.massivecraft.massivecore.store.ModificationPollerLocal;
@@ -168,8 +166,12 @@ public class MassiveCore extends MassivePlugin
 		ret.registerTypeAdapter(Mson.class, AdapterMson.get());
 		ret.registerTypeAdapter(MsonEvent.class, AdapterMsonEvent.get());
 		
-		// Items and Inventories
+		// ItemStack
 		ret.registerTypeAdapter(ItemStack.class, AdapterItemStack.get());
+		Class<?> classCraftItemStack = NmsItemStack.get().classCraftItemStack;
+		if (classCraftItemStack != null) ret.registerTypeAdapter(classCraftItemStack, AdapterItemStack.get());
+		
+		// Inventory
 		ret.registerTypeAdapter(Inventory.class, AdapterInventory.get());
 		ret.registerTypeAdapter(PlayerInventory.class, AdapterPlayerInventory.get());
 		
@@ -240,9 +242,6 @@ public class MassiveCore extends MassivePlugin
 			
 			// Writer,
 			WriterItemStack.class,
-			WriterPotionEffect.class,
-			WriterFireworkEffect.class,
-			WriterBannerPattern.class,
 		
 			// Engine
 			EngineMassiveCoreChestGui.class,

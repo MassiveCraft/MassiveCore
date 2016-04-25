@@ -18,6 +18,9 @@ public class WriterItemStackMetaPotionEffects extends WriterAbstractItemStackMet
 		this.setMaterial(Material.POTION);
 		this.setConverterTo(ConverterToPotionEffects.get());
 		this.setConverterFrom(ConverterFromPotionEffects.get());
+		this.addDependencyClasses(
+			WriterPotionEffect.class
+		);
 	}
 	
 	// -------------------------------------------- //

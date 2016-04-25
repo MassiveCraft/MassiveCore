@@ -61,7 +61,7 @@ public class NmsItemStack extends NmsAbstract
 		// Fill
 		if (this.isAvailable())
 		{
-			ret = ReflectionUtil.invokeConstructor(this.constructorCraftItemStack, (Object[])null);
+			ret = ReflectionUtil.invokeConstructor(this.constructorCraftItemStack, (Object)null);
 		}
 		else
 		{

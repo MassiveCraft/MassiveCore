@@ -71,43 +71,55 @@ public class EngineMassiveCoreSponsor extends Engine
 	}
 	
 	// -------------------------------------------- //
-	// INFORM
+	// ENABLED
 	// -------------------------------------------- //
 	
-	public void inform(final CommandSender sender)
+	public boolean isEnabled(final CommandSender sender)
 	{
-		// Fail Safe
-		if (sender == null) return;
+		// If there is a sender ...
+		if (sender == null) return false;
 		
-		// If enabled by mconf ...
-		if ( ! MassiveCoreMConf.get().sponsorEnabled) return;
+		// ... and enabled by mconf ...
+		if ( ! MassiveCoreMConf.get().sponsorEnabled) return false;
 		
 		// ... and enabled by info base ...
-		if ( ! MassiveCoreMSponsorInfo.get().enabled) return;
+		if ( ! MassiveCoreMSponsorInfo.get().enabled) return false;
 		
 		// ... and enabled by info time ...
 		long now = System.currentTimeMillis();
 		long to = MassiveCoreMSponsorInfo.get().enabledToMillis;
 		long left = to - now;
-		if (left <= 0) return;
+		if (left <= 0) return false;
 		
 		// ... and enabled by sender type ...
-		boolean isConsole = IdUtil.isConsole(sender);
-		boolean enabledByType = (isConsole ? MassiveCoreMSponsorInfo.get().consoleEnabled : MassiveCoreMSponsorInfo.get().ingameEnabled);
-		if ( ! enabledByType) return;
+		boolean enabledByType = (IdUtil.isConsole(sender) ? MassiveCoreMSponsorInfo.get().consoleEnabled : MassiveCoreMSponsorInfo.get().ingameEnabled);
+		if ( ! enabledByType) return false;
 		
 		// ... and enabled by sender operator ...
-		if ( ! sender.isOp()) return;
+		if ( ! sender.isOp()) return false;
 		
 		// ... and enabled by in indicator files ...
 		for (String indicatorFileName : MassiveCoreMSponsorInfo.get().indicatorFileNames)
 		{
 			File indicatorFile = new File(indicatorFileName);
-			if (indicatorFile.exists()) return;
+			if (indicatorFile.exists()) return false;
 		}
 		
-		// ... then schedule inner inform.
-		int delayTicks = (isConsole ? MassiveCoreMSponsorInfo.get().consoleDelayTicks : MassiveCoreMSponsorInfo.get().ingameDelayTicks);
+		// ... then it's actually enabled.
+		return true;
+	}
+	
+	// -------------------------------------------- //
+	// INFORM
+	// -------------------------------------------- //
+	
+	public void inform(final CommandSender sender)
+	{
+		// Enabled
+		if ( ! this.isEnabled(sender)) return;
+		
+		// Schedule
+		int delayTicks = (IdUtil.isConsole(sender) ? MassiveCoreMSponsorInfo.get().consoleDelayTicks : MassiveCoreMSponsorInfo.get().ingameDelayTicks);
 		Bukkit.getScheduler().runTaskLater(this.getPlugin(), new Runnable()
 		{
 			@Override
@@ -120,11 +132,11 @@ public class EngineMassiveCoreSponsor extends Engine
 	
 	public void informInner(CommandSender sender)
 	{
-		// Console?
-		boolean isConsole = IdUtil.isConsole(sender);
+		// Enabled
+		if ( ! this.isEnabled(sender)) return;
 		
 		// Messages
-		List<String> msgs = (isConsole ? MassiveCoreMSponsorInfo.get().consoleMsgs : MassiveCoreMSponsorInfo.get().ingameMsgs);		
+		List<String> msgs = (IdUtil.isConsole(sender) ? MassiveCoreMSponsorInfo.get().consoleMsgs : MassiveCoreMSponsorInfo.get().ingameMsgs);		
 		String senderVisual = MixinDisplayName.get().getDisplayName(sender, sender);
 		for (String msg : msgs)
 		{

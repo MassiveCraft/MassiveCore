@@ -8,18 +8,9 @@ public class WriterItemStackMeta extends WriterAbstractItemStackMetaMorph<Object
 	
 	private static final WriterItemStackMeta i = new WriterItemStackMeta();
 	public static WriterItemStackMeta get() { return i; }
-	
-	// -------------------------------------------- //
-	// ACTIVE
-	// -------------------------------------------- //
-	
-	@Override
-	public void setActiveInner(boolean active)
+	public WriterItemStackMeta()
 	{
-		if ( ! active) return;
-		this.clearWriters();
-		
-		this.addWriters(
+		this.addWriterClasses(
 			// UNSPECIFIC
 			WriterItemStackMetaName.class,
 			WriterItemStackMetaLore.class,

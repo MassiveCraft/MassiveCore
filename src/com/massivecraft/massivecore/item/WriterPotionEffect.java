@@ -8,18 +8,9 @@ public class WriterPotionEffect extends WriterAbstractPotionEffect<Object, Objec
 	
 	private static final WriterPotionEffect i = new WriterPotionEffect();
 	public static WriterPotionEffect get() { return i; }
-	
-	// -------------------------------------------- //
-	// ACTIVE
-	// -------------------------------------------- //
-	
-	@Override
-	public void setActiveInner(boolean active)
+	public WriterPotionEffect()
 	{
-		if ( ! active) return;
-		this.clearWriters();
-		
-		this.addWriters(
+		this.addWriterClasses(
 			WriterPotionEffectId.class,
 			WriterPotionEffectDuraction.class,
 			WriterPotionEffectAmplifier.class,
@@ -27,7 +18,6 @@ public class WriterPotionEffect extends WriterAbstractPotionEffect<Object, Objec
 			WriterPotionEffectParticles.class,
 			WriterPotionEffectColor.class
 		);
-
 	}
 	
 }

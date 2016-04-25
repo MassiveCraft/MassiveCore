@@ -117,6 +117,11 @@ public class ReflectionUtil
 		}
 	}
 	
+	public static <T> T invokeMethod(Method method, Object target, Object argument)
+	{
+		return invokeMethod(method, target, new Object[]{argument});
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <T> T invokeMethod(Method method, Object target)
 	{
@@ -158,6 +163,11 @@ public class ReflectionUtil
 		{
 			throw asRuntimeException(e);
 		}
+	}
+	
+	public static <T> T invokeConstructor(Constructor<?> constructor, Object argument)
+	{
+		return invokeConstructor(constructor, new Object[]{argument});
 	}
 	
 	@SuppressWarnings("unchecked")

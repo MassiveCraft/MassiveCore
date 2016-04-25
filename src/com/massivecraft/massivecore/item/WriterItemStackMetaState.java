@@ -8,18 +8,9 @@ public class WriterItemStackMetaState extends WriterAbstractItemStackMetaStateMo
 	
 	private static final WriterItemStackMetaState i = new WriterItemStackMetaState();
 	public static WriterItemStackMetaState get() { return i; }
-	
-	// -------------------------------------------- //
-	// ACTIVE
-	// -------------------------------------------- //
-	
-	@Override
-	public void setActiveInner(boolean active)
+	public WriterItemStackMetaState()
 	{
-		if ( ! active) return;
-		this.clearWriters();
-		
-		this.addWriters(
+		this.addWriterClasses(
 			// SHIELD
 			WriterItemStackMetaStateShieldBase.class,
 			WriterItemStackMetaStateShieldPatterns.class

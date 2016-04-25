@@ -8,25 +8,15 @@ public class WriterFireworkEffect extends WriterAbstractFireworkEffect<Object, O
 	
 	private static final WriterFireworkEffect i = new WriterFireworkEffect();
 	public static WriterFireworkEffect get() { return i; }
-	
-	// -------------------------------------------- //
-	// ACTIVE
-	// -------------------------------------------- //
-	
-	@Override
-	public void setActiveInner(boolean active)
+	public WriterFireworkEffect()
 	{
-		if ( ! active) return;
-		this.clearWriters();
-		
-		this.addWriters(
+		this.addWriterClasses(
 			WriterFireworkEffectFlicker.class,
 			WriterFireworkEffectTrail.class,
 			WriterFireworkEffectColors.class,
 			WriterFireworkEffectFadeColors.class,
 			WriterFireworkEffectType.class
 		);
-
 	}
 	
 }

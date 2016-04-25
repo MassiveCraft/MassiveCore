@@ -8,18 +8,9 @@ public class WriterItemStack extends WriterAbstractItemStackField<Object, Object
 	
 	private static final WriterItemStack i = new WriterItemStack();
 	public static WriterItemStack get() { return i; }
-	
-	// -------------------------------------------- //
-	// ACTIVE
-	// -------------------------------------------- //
-	
-	@Override
-	public void setActiveInner(boolean active)
+	public WriterItemStack()
 	{
-		if ( ! active) return;
-		this.clearWriters();
-		 
-		this.addWriters(
+		this.addWriterClasses(
 			// BASIC
 			WriterItemStackId.class,
 			WriterItemStackCount.class,
@@ -29,6 +20,5 @@ public class WriterItemStack extends WriterAbstractItemStackField<Object, Object
 			WriterItemStackMeta.class
 		);
 	}
-
 	
 }

@@ -18,6 +18,9 @@ public class WriterItemStackMetaBannerPatterns extends WriterAbstractItemStackMe
 		this.setMaterial(Material.BANNER);
 		this.setConverterTo(ConverterToBannerPatterns.get());
 		this.setConverterFrom(ConverterFromBannerPatterns.get());
+		this.addDependencyClasses(
+			WriterBannerPattern.class
+		);
 	}
 	
 	// -------------------------------------------- //
