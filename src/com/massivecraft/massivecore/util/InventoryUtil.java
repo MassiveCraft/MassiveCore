@@ -540,9 +540,7 @@ public class InventoryUtil
 				case NOTHING: return InventoryAlter.NONE;
 				case CLONE_STACK: return InventoryAlter.NONE;
 				case DROP_ALL_CURSOR: return InventoryAlter.NONE;
-				case DROP_ALL_SLOT: return InventoryAlter.NONE;
 				case DROP_ONE_CURSOR: return InventoryAlter.NONE;
-				case DROP_ONE_SLOT: return InventoryAlter.NONE;
 	
 				// Take
 				case PICKUP_ALL: return InventoryAlter.TAKE;
@@ -552,6 +550,8 @@ public class InventoryUtil
 				case MOVE_TO_OTHER_INVENTORY: return InventoryAlter.TAKE;
 				case COLLECT_TO_CURSOR:return InventoryAlter.TAKE;
 				case HOTBAR_MOVE_AND_READD: return InventoryAlter.TAKE;
+				case DROP_ONE_SLOT: return InventoryAlter.TAKE;
+				case DROP_ALL_SLOT: return InventoryAlter.TAKE;
 				
 				// Give
 				case PLACE_ALL: return InventoryAlter.GIVE;
