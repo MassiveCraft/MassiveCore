@@ -523,9 +523,8 @@ public class InventoryUtil
 		{
 			switch (action)
 			{
-				// TODO
-				case UNKNOWN:
-					break;
+				// What is the best thing to do?
+				case UNKNOWN: return InventoryAlter.BOTH;
 				
 				// Possibly both
 				case HOTBAR_SWAP:
@@ -564,6 +563,9 @@ public class InventoryUtil
 		}
 		else
 		{
+			// What is the best thing to do?
+			if (action == InventoryAction.UNKNOWN) return InventoryAlter.BOTH;
+			
 			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY) return InventoryAlter.GIVE;
 			
 			// This one will possibly take, but we cannot be 100% sure.
