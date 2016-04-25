@@ -74,6 +74,7 @@ public class DriverMongo extends DriverAbstract
 	{
 		Set<String> ret = ((DbMongo)db).db.getCollectionNames();
 		ret.remove("system.indexes");
+		ret.remove("system.users");
 		return ret;
 	}
 	
