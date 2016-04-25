@@ -23,19 +23,19 @@ public class WriterBannerPatternColor extends WriterAbstractBannerPattern<Intege
 	// -------------------------------------------- //
 	
 	@Override
-	public Integer getA(DataBannerPattern ca)
+	public Integer getA(DataBannerPattern ca, Object d)
 	{
 		return ca.getColor();
 	}
 	
 	@Override
-	public void setA(DataBannerPattern ca, Integer fa)
+	public void setA(DataBannerPattern ca, Integer fa, Object d)
 	{
 		ca.setColor(fa);
 	}
 	
 	@Override
-	public DyeColor getB(Pattern cb)
+	public DyeColor getB(Pattern cb, Object d)
 	{
 		return cb.getColor();
 	}

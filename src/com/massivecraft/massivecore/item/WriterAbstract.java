@@ -11,7 +11,18 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
+// A = What we are writing from.
+// B = What we are writing to.
+// 
+// O = The base object. Not yet morphed into specific class.
+// C = The specific class object. Often the same as O but at times very different.
+// F = The field class. Used for field writing.
+//
+// D = The data class. Used for sending arbitrary data along.
+//
+// TIP: Simply set to Object if you are not using a certain generic.
+//
+public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 {
 	// -------------------------------------------- //
 	// WRITERS
@@ -19,10 +30,9 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	// Writer have dependencies and child writers.
 	
 	// A dependency is another writer that must be successfully activated for this writer to function.
-	// For that reason the dependencies are activated just after the provoke logic.
+	// For that reason the dependencies are activated just after the setup logic.
 	// Examples would be WriterPotionEffect and WriterFireworkEffect.
 	// They are implicitly required for some ItemStack field writers. 
-	
 	private List<Class<?>> dependencyClasses = new MassiveList<>();
 	public List<Class<?>> getDependencyClasses() { return this.dependencyClasses; }
 	public void addDependencyClasses(Class<?>... dependencyClasses) { this.getDependencyClasses().addAll(Arrays.asList(dependencyClasses)); }
@@ -35,9 +45,9 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	public void addWriterClasses(Class<?>... writerClasses) { this.getWriterClasses().addAll(Arrays.asList(writerClasses)); }
 	
 	// These are the actually functional child writers.
-	// This list should only contain writers that passed the provoke routine.
-	private List<WriterAbstract<CA, CB, ?, ?, ?, ?>> writers = new MassiveList<>();
-	public List<WriterAbstract<CA, CB, ?, ?, ?, ?>> getWriters() { return this.writers; }
+	// This list should only contain writers that passed the setup routine.
+	private List<WriterAbstract<CA, CB, ?, ?, ?, ?, D>> writers = new MassiveList<>();
+	public List<WriterAbstract<CA, CB, ?, ?, ?, ?, D>> getWriters() { return this.writers; }
 
 	// Here is the logic to perform the dependency and child writer setup.
 	public void setupDependencies()
@@ -61,12 +71,12 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	{
 		try
 		{
-			Class<WriterAbstract<?, ?, ?, ?, ?, ?>> writerClassInner = (Class<WriterAbstract<?, ?, ?, ?, ?, ?>>) writerClass;
-			WriterAbstract<?, ?, ?, ?, ?, ?> writer = ReflectionUtil.getSingletonInstance(writerClassInner);
+			Class<WriterAbstract<?, ?, ?, ?, ?, ?, ?>> writerClassInner = (Class<WriterAbstract<?, ?, ?, ?, ?, ?, ?>>) writerClass;
+			WriterAbstract<?, ?, ?, ?, ?, ?, ?> writer = ReflectionUtil.getSingletonInstance(writerClassInner);
 			
 			if ( ! writer.isActive()) writer.setActive(this.getActivePlugin());
 			
-			if (add) this.getWriters().add((WriterAbstract<CA, CB, ?, ?, ?, ?>)writer);
+			if (add) this.getWriters().add((WriterAbstract<CA, CB, ?, ?, ?, ?, D>)writer);
 		}
 		catch (Throwable t)
 		{
@@ -120,17 +130,14 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	// -------------------------------------------- //
 	// ACTIVE
 	// -------------------------------------------- //
-	// The setActive method starts out with the provoke.
-	// This means it can fail immediately with a runtime exception.
-	// If this happens it will not have been activated in any way.
 	
 	@Override
 	public void setActive(boolean active)
 	{
 		if (active)
 		{
-			// Provoke
-			this.provoke();
+			// Setup Self
+			this.setupSelf();
 			
 			// Setup Dependencies
 			this.setupDependencies();
@@ -141,6 +148,7 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 			// Setup Writers
 			this.setupWriters();
 		}
+		
 		super.setActive(active);
 	}
 
@@ -148,87 +156,91 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	// CREATE
 	// -------------------------------------------- //
 
-	public abstract CA createA();
+	public OA createOA()
+	{
+		return null;
+	}
 
-	public abstract CB createB();
-
+	public OB createOB()
+	{
+		return null;
+	}
+	
 	// -------------------------------------------- //
 	// CLASSES
 	// -------------------------------------------- //
 
-	private Class<CA> classA = null;
+	private Class<?> classOA = null;
+	public Class<?> getClassOA() { return this.classOA; }
+	public void setClassOA(Class<?> classOA) { this.classOA = classOA; }
 
-	public Class<CA> getClassA()
-	{
-		return this.classA;
-	}
+	private Class<?> classOB = null;
+	public Class<?> getClassOB() { return this.classOB; }
+	public void setClassOB(Class<?> classOB) { this.classOB = classOB; }
+	
+	private Class<?> classCA = null;
+	public Class<?> getClassCA() { return this.classCA; }
+	public void setClassCA(Class<?> classCA) { this.classCA = classCA; }
 
-	public void setClassA(Class<CA> classA)
-	{
-		this.classA = classA;
-	}
-
-	private Class<CB> classB = null;
-
-	public Class<CB> getClassB()
-	{
-		return this.classB;
-	}
-
-	public void setClassB(Class<CB> classB)
-	{
-		this.classB = classB;
-	}
+	private Class<?> classCB = null;
+	public Class<?> getClassCB() { return this.classCB; }
+	public void setClassCB(Class<?> classCB) { this.classCB = classCB; }
 
 	// -------------------------------------------- //
 	// MORPH
 	// -------------------------------------------- //
+	// Per default the morph is just a secure cast.
+	// If the morph fails it means the writer was not applicable.
+	// In those cases we don't want a crash.
+	// We rather silently continue.
 
 	@SuppressWarnings("unchecked")
 	public CA morphA(OA oa)
 	{
-		Class<CA> classA = this.getClassA();
-		if (classA != null && !classA.isAssignableFrom(oa.getClass())) return null;
-		CA ca = (CA) oa;
-		return ca;
+		if (this.getClassCA() != null && ! this.getClassCA().isAssignableFrom(oa.getClass())) return null;
+		return (CA)oa;
 	}
 
 	@SuppressWarnings("unchecked")
 	public CB morphB(OB ob)
 	{
-		Class<CB> classB = this.getClassB();
-		if (classB != null && !classB.isAssignableFrom(ob.getClass())) return null;
-		CB cb = (CB) ob;
-		return cb;
+		if (this.getClassCB() != null && ! this.getClassCB().isAssignableFrom(ob.getClass())) return null;
+		return (CB)ob;
 	}
-
+	
 	// -------------------------------------------- //
-	// PROVOKE
+	// SETUP
 	// -------------------------------------------- //
-
-	public Object provoke()
+	
+	public void setupSelf()
 	{
-		// Create Instances
-		CA ia = this.createA();
-		CB ib = this.createB();
+		// Create O
+		OA oa = this.createOA();
+		OB ob = this.createOB();
 
-		// Demand Set
-		if (ia == null) throw new NullPointerException("Couldn't Create A");
-		if (ib == null) throw new NullPointerException("Couldn't Create B");
-
-		// Use Access
-		FA fa = this.getA(ia);
-		this.setA(ia, fa);
-
-		FB fb = this.getB(ib);
-		this.setB(ib, fb);
-
-		// Use To
-		this.toA(fb);
-		this.toB(fa);
-
-		// Return
-		return null;
+		// Demand O
+		if (oa == null) throw new NullPointerException("Couldn't Create OA");
+		if (ob == null) throw new NullPointerException("Couldn't Create OB");
+		
+		// Class O
+		this.setClassOA(oa.getClass());
+		this.setClassOB(ob.getClass());
+		
+		// Morph
+		CA ca = this.morphA(oa);
+		CB cb = this.morphB(ob);
+		
+		// Demand C
+		if (ca == null) throw new NullPointerException("Couldn't Create CA");
+		if (cb == null) throw new NullPointerException("Couldn't Create CB");
+		
+		// Class C
+		this.setClassCA(ca.getClass());
+		this.setClassCB(cb.getClass());
+		
+		// Write (to provoke extra much)
+		this.write(oa, ob, true);
+		this.write(oa, ob, false);
 	}
 
 	// -------------------------------------------- //
@@ -237,38 +249,43 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 
 	public void write(OA oa, OB ob, boolean a2b)
 	{
-		if ( ! this.isActive()) throw new IllegalStateException("not active " + this.getClass().getName());
+		this.write(oa, ob, null, a2b);
+	}
+	
+	public void write(OA oa, OB ob, D d, boolean a2b)
+	{
+		// if ( ! this.isActive()) throw new IllegalStateException("not active " + this.getClass().getName());
 
 		if (oa == null) throw new NullPointerException("oa");
 		if (ob == null) throw new NullPointerException("ob");
-
+		
 		CA ca = this.morphA(oa);
 		if (ca == null) return;
 
 		CB cb = this.morphB(ob);
 		if (cb == null) return;
 
-		this.writeInner(oa, ob, ca, cb, a2b);
+		this.writeInner(oa, ob, ca, cb, d, a2b);
 	}
 
-	public void writeInner(OA oa, OB ob, CA ca, CB cb, boolean a2b)
+	public void writeInner(OA oa, OB ob, CA ca, CB cb, D d, boolean a2b)
 	{
-		for (WriterAbstract<CA, CB, ?, ?, ?, ?> writer : this.getWriters())
+		for (WriterAbstract<CA, CB, ?, ?, ?, ?, D> writer : this.getWriters())
 		{
-			writer.write(ca, cb, a2b);
+			writer.write(ca, cb, d, a2b);
 		}
 
 		if (a2b)
 		{
-			FA fa = getA(ca);
+			FA fa = getA(ca, d);
 			FB fb = toB(fa);
-			setB(cb, fb);
+			setB(cb, fb, d);
 		}
 		else
 		{
-			FB fb = getB(cb);
+			FB fb = getB(cb, d);
 			FA fa = toA(fb);
-			setA(ca, fa);
+			setA(ca, fa, d);
 		}
 	}
 
@@ -276,22 +293,22 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB> extends Engine
 	// ACCESS
 	// -------------------------------------------- //
 
-	public FA getA(CA ca)
+	public FA getA(CA ca, D d)
 	{
 		return null;
 	}
 
-	public void setA(CA ca, FA fa)
+	public void setA(CA ca, FA fa, D d)
 	{
 
 	}
 
-	public FB getB(CB cb)
+	public FB getB(CB cb, D d)
 	{
 		return null;
 	}
 
-	public void setB(CB cb, FB fb)
+	public void setB(CB cb, FB fb, D d)
 	{
 
 	}

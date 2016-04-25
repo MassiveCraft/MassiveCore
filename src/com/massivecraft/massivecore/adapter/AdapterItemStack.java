@@ -2,6 +2,8 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
 import org.bukkit.inventory.ItemStack;
+
+import com.massivecraft.massivecore.item.DataItemStack;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -26,59 +28,21 @@ public class AdapterItemStack implements JsonDeserializer<ItemStack>, JsonSerial
 	public static AdapterItemStack get() { return i; }
 	
 	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	private AdapterItemStackInner inner;
-	public AdapterItemStackInner getInner() { return this.inner; }
-	public void setInner(AdapterItemStackInner inner) { this.inner = inner; }
-	
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	public AdapterItemStack()
-	{
-		// 1.9
-		try
-		{
-			this.inner = AdapterItemStackInner19.get();
-			return;
-		}
-		catch (Throwable t)
-		{
-			
-		}
-		
-		// 1.8
-		try
-		{
-			this.inner = AdapterItemStackInner18.get();
-			return;
-		}
-		catch (Throwable t)
-		{
-			
-		}
-		
-		// 1.7
-		this.inner = AdapterItemStackInner17.get();
-	}
-	
-	// -------------------------------------------- //
-	// GSON INTERFACE IMPLEMENTATION
+	// OVERRIDE
 	// -------------------------------------------- //
 
 	@Override
 	public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context)
 	{
-		return this.getInner().erialize(src);
+		DataItemStack dataItemStack = new DataItemStack(src);
+		return context.serialize(dataItemStack);
 	}
 
 	@Override
 	public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return this.getInner().erialize(json);
+		DataItemStack dataItemStack = context.deserialize(json, DataItemStack.class);
+		return dataItemStack.toBukkit();
 	}
 
 }

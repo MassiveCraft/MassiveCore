@@ -25,13 +25,13 @@ public abstract class WriterAbstractFireworkEffect<FA, FB> extends WriterAbstrac
 	// -------------------------------------------- //
 	
 	@Override
-	public DataFireworkEffect createA()
+	public DataFireworkEffect createOA()
 	{
 		return new DataFireworkEffect();
 	}
 	
 	@Override
-	public FireworkEffect createB()
+	public FireworkEffect createOB()
 	{
 		return FireworkEffect.builder().withColor(Color.GREEN).build();
 	}

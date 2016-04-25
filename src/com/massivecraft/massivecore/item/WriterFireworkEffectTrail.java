@@ -20,19 +20,19 @@ public class WriterFireworkEffectTrail extends WriterAbstractFireworkEffect<Bool
 	// -------------------------------------------- //
 	
 	@Override
-	public Boolean getA(DataFireworkEffect ca)
+	public Boolean getA(DataFireworkEffect ca, Object d)
 	{
 		return ca.hasTrail();
 	}
 	
 	@Override
-	public void setA(DataFireworkEffect ca, Boolean fa)
+	public void setA(DataFireworkEffect ca, Boolean fa, Object d)
 	{
 		ca.setTrail(fa);
 	}
 	
 	@Override
-	public Boolean getB(FireworkEffect cb)
+	public Boolean getB(FireworkEffect cb, Object d)
 	{
 		return cb.hasTrail();
 	}

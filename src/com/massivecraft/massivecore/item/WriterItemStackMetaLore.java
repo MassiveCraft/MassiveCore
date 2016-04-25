@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.item;
 
 import java.util.List;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class WriterItemStackMetaLore extends WriterAbstractItemStackMetaField<ItemMeta, List<String>, List<String>>
@@ -18,25 +19,25 @@ public class WriterItemStackMetaLore extends WriterAbstractItemStackMetaField<It
 	// -------------------------------------------- //
 
 	@Override
-	public List<String> getA(DataItemStack ca)
+	public List<String> getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getLore();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, List<String> fa)
+	public void setA(DataItemStack ca, List<String> fa, ItemStack d)
 	{
 		ca.setLore(fa);
 	}
 
 	@Override
-	public List<String> getB(ItemMeta cb)
+	public List<String> getB(ItemMeta cb, ItemStack d)
 	{
 		return cb.getLore();
 	}
 
 	@Override
-	public void setB(ItemMeta cb, List<String> fb)
+	public void setB(ItemMeta cb, List<String> fb, ItemStack d)
 	{
 		cb.setLore(fb);		
 	}

@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.item;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 
 public class WriterItemStackMetaScaling extends WriterAbstractItemStackMetaField<MapMeta, Boolean, Boolean>
@@ -20,25 +21,25 @@ public class WriterItemStackMetaScaling extends WriterAbstractItemStackMetaField
 	// -------------------------------------------- //
 
 	@Override
-	public Boolean getA(DataItemStack ca)
+	public Boolean getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.isScaling();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Boolean fa)
+	public void setA(DataItemStack ca, Boolean fa, ItemStack d)
 	{
 		ca.setScaling(fa);
 	}
 
 	@Override
-	public Boolean getB(MapMeta cb)
+	public Boolean getB(MapMeta cb, ItemStack d)
 	{
 		return cb.isScaling();
 	}
 
 	@Override
-	public void setB(MapMeta cb, Boolean fb)
+	public void setB(MapMeta cb, Boolean fb, ItemStack d)
 	{
 		cb.setScaling(fb);
 	}

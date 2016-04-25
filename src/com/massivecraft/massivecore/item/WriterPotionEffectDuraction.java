@@ -20,19 +20,19 @@ public class WriterPotionEffectDuraction extends WriterAbstractPotionEffect<Inte
 	// -------------------------------------------- //
 	
 	@Override
-	public Integer getA(DataPotionEffect ca)
+	public Integer getA(DataPotionEffect ca, Object d)
 	{
 		return ca.getDuration();
 	}
 	
 	@Override
-	public void setA(DataPotionEffect ca, Integer fa)
+	public void setA(DataPotionEffect ca, Integer fa, Object d)
 	{
 		ca.setDuration(fa);
 	}
 	
 	@Override
-	public Integer getB(PotionEffect cb)
+	public Integer getB(PotionEffect cb, Object d)
 	{
 		return cb.getDuration();
 	}

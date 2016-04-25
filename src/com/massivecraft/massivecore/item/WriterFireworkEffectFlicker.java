@@ -20,19 +20,19 @@ public class WriterFireworkEffectFlicker extends WriterAbstractFireworkEffect<Bo
 	// -------------------------------------------- //
 	
 	@Override
-	public Boolean getA(DataFireworkEffect ca)
+	public Boolean getA(DataFireworkEffect ca, Object d)
 	{
 		return ca.hasFlicker();
 	}
 	
 	@Override
-	public void setA(DataFireworkEffect ca, Boolean fa)
+	public void setA(DataFireworkEffect ca, Boolean fa, Object d)
 	{
 		ca.setFlicker(fa);
 	}
 	
 	@Override
-	public Boolean getB(FireworkEffect cb)
+	public Boolean getB(FireworkEffect cb, Object d)
 	{
 		return cb.hasFlicker();
 	}

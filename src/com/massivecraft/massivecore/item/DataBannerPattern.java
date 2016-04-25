@@ -60,7 +60,7 @@ public class DataBannerPattern implements Comparable<DataBannerPattern>
 	public Pattern toBukkit()
 	{
 		// Create
-		Pattern ret = WriterBannerPattern.get().createB();
+		Pattern ret = WriterBannerPattern.get().createOB();
 		
 		// Fill
 		this.write(ret, true);

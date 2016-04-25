@@ -26,13 +26,13 @@ public abstract class WriterAbstractBannerPattern<FA, FB> extends WriterAbstract
 	// -------------------------------------------- //
 	
 	@Override
-	public DataBannerPattern createA()
+	public DataBannerPattern createOA()
 	{
 		return new DataBannerPattern();
 	}
 	
 	@Override
-	public Pattern createB()
+	public Pattern createOB()
 	{
 		return new Pattern(DyeColor.WHITE, PatternType.BASE);
 	}

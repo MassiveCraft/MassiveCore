@@ -16,25 +16,25 @@ public class WriterItemStackCount extends WriterAbstractItemStackField<Integer, 
 	// -------------------------------------------- //
 
 	@Override
-	public Integer getA(DataItemStack ca)
+	public Integer getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getCount();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Integer fa)
+	public void setA(DataItemStack ca, Integer fa, ItemStack d)
 	{
 		ca.setCount(fa);
 	}
 
 	@Override
-	public Integer getB(ItemStack cb)
+	public Integer getB(ItemStack cb, ItemStack d)
 	{
 		return cb.getAmount();
 	}
 
 	@Override
-	public void setB(ItemStack cb, Integer fb)
+	public void setB(ItemStack cb, Integer fb, ItemStack d)
 	{
 		cb.setAmount(fb);
 	}

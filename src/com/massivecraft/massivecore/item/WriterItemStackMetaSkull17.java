@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.item;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 public class WriterItemStackMetaSkull17 extends WriterAbstractItemStackMetaField<SkullMeta, String, String>
@@ -21,25 +22,25 @@ public class WriterItemStackMetaSkull17 extends WriterAbstractItemStackMetaField
 	// -------------------------------------------- //
 
 	@Override
-	public String getA(DataItemStack ca)
+	public String getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getSkull();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, String fa)
+	public void setA(DataItemStack ca, String fa, ItemStack d)
 	{
 		ca.setSkull(fa);
 	}
 
 	@Override
-	public String getB(SkullMeta cb)
+	public String getB(SkullMeta cb, ItemStack d)
 	{
 		return cb.getOwner();
 	}
 
 	@Override
-	public void setB(SkullMeta cb, String fb)
+	public void setB(SkullMeta cb, String fb, ItemStack d)
 	{
 		cb.setOwner(fb);
 	}

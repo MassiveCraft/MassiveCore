@@ -23,19 +23,19 @@ public class WriterPotionEffectColor extends WriterAbstractPotionEffect<Integer,
 	// -------------------------------------------- //
 	
 	@Override
-	public Integer getA(DataPotionEffect ca)
+	public Integer getA(DataPotionEffect ca, Object d)
 	{
 		return ca.getColor();
 	}
 	
 	@Override
-	public void setA(DataPotionEffect ca, Integer fa)
+	public void setA(DataPotionEffect ca, Integer fa, Object d)
 	{
 		ca.setColor(fa);
 	}
 	
 	@Override
-	public Color getB(PotionEffect cb)
+	public Color getB(PotionEffect cb, Object d)
 	{
 		return cb.getColor();
 	}

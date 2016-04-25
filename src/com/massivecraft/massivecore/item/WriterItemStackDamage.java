@@ -16,25 +16,25 @@ public class WriterItemStackDamage extends WriterAbstractItemStackField<Integer,
 	// -------------------------------------------- //
 
 	@Override
-	public Integer getA(DataItemStack ca)
+	public Integer getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getDamage();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Integer fa)
+	public void setA(DataItemStack ca, Integer fa, ItemStack d)
 	{
 		ca.setDamage(fa);
 	}
 
 	@Override
-	public Integer getB(ItemStack cb)
+	public Integer getB(ItemStack cb, ItemStack d)
 	{
 		return Integer.valueOf(cb.getDurability());
 	}
 
 	@Override
-	public void setB(ItemStack cb, Integer fb)
+	public void setB(ItemStack cb, Integer fb, ItemStack d)
 	{
 		cb.setDurability(fb.shortValue());
 	}

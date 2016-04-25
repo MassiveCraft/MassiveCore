@@ -20,19 +20,19 @@ public class WriterPotionEffectParticles extends WriterAbstractPotionEffect<Bool
 	// -------------------------------------------- //
 	
 	@Override
-	public Boolean getA(DataPotionEffect ca)
+	public Boolean getA(DataPotionEffect ca, Object d)
 	{
 		return ca.isParticles();
 	}
 	
 	@Override
-	public void setA(DataPotionEffect ca, Boolean fa)
+	public void setA(DataPotionEffect ca, Boolean fa, Object d)
 	{
 		ca.setParticles(fa);
 	}
 	
 	@Override
-	public Boolean getB(PotionEffect cb)
+	public Boolean getB(PotionEffect cb, Object d)
 	{
 		return cb.hasParticles();
 	}

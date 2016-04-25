@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.item;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class WriterItemStackMetaUnbreakable extends WriterAbstractItemStackMetaField<ItemMeta, Boolean, Boolean>
@@ -16,25 +17,25 @@ public class WriterItemStackMetaUnbreakable extends WriterAbstractItemStackMetaF
 	// -------------------------------------------- //
 
 	@Override
-	public Boolean getA(DataItemStack ca)
+	public Boolean getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.isUnbreakable();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Boolean fa)
+	public void setA(DataItemStack ca, Boolean fa, ItemStack d)
 	{
 		ca.setUnbreakable(fa);
 	}
 
 	@Override
-	public Boolean getB(ItemMeta cb)
+	public Boolean getB(ItemMeta cb, ItemStack d)
 	{
 		return cb.spigot().isUnbreakable();
 	}
 
 	@Override
-	public void setB(ItemMeta cb, Boolean fb)
+	public void setB(ItemMeta cb, Boolean fb, ItemStack d)
 	{
 		cb.spigot().setUnbreakable(fb);
 	}

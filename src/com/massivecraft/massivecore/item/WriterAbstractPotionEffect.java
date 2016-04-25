@@ -24,13 +24,13 @@ public abstract class WriterAbstractPotionEffect<FA, FB> extends WriterAbstractR
 	// -------------------------------------------- //
 	
 	@Override
-	public DataPotionEffect createA()
+	public DataPotionEffect createOA()
 	{
 		return new DataPotionEffect();
 	}
 	
 	@Override
-	public PotionEffect createB()
+	public PotionEffect createOB()
 	{
 		return new PotionEffect(PotionEffectType.SPEED, 1, 1);
 	}

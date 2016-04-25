@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
+import org.bukkit.inventory.ItemStack;
 
 public class WriterItemStackMetaStateShieldPatterns extends WriterAbstractItemStackMetaStateField<Banner, List<DataBannerPattern>, List<Pattern>>
 {
@@ -28,25 +29,25 @@ public class WriterItemStackMetaStateShieldPatterns extends WriterAbstractItemSt
 	// -------------------------------------------- //
 	
 	@Override
-	public List<DataBannerPattern> getA(DataItemStack ca)
+	public List<DataBannerPattern> getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getBannerPatterns();
 	}
 	
 	@Override
-	public void setA(DataItemStack ca, List<DataBannerPattern> fa)
+	public void setA(DataItemStack ca, List<DataBannerPattern> fa, ItemStack d)
 	{
 		ca.setBannerPatterns(fa);
 	}
 	
 	@Override
-	public List<Pattern> getB(Banner cb)
+	public List<Pattern> getB(Banner cb, ItemStack d)
 	{
 		return cb.getPatterns();
 	}
 	
 	@Override
-	public void setB(Banner cb, List<Pattern> fb)
+	public void setB(Banner cb, List<Pattern> fb, ItemStack d)
 	{
 		cb.setPatterns(fb);
 	}

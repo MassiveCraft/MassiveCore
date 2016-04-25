@@ -12,7 +12,7 @@ public abstract class WriterAbstractItemStackMetaMorph<FA, FB> extends WriterAbs
 	@Override
 	public ItemMeta morphB(ItemStack ob)
 	{
-		return ob.getItemMeta();
+		return createItemMeta(ob);
 	}
 	
 	// -------------------------------------------- //
@@ -20,9 +20,9 @@ public abstract class WriterAbstractItemStackMetaMorph<FA, FB> extends WriterAbs
 	// -------------------------------------------- //
 
 	@Override
-	public void writeInner(DataItemStack oa, ItemStack ob, DataItemStack ca, ItemMeta cb, boolean a2b)
+	public void writeInner(DataItemStack oa, ItemStack ob, DataItemStack ca, ItemMeta cb, ItemStack d, boolean a2b)
 	{
-		super.writeInner(oa, ob, ca, cb, a2b);
+		super.writeInner(oa, ob, ca, cb, d, a2b);
 		
 		// Write Back 
 		if (a2b) ob.setItemMeta(cb);

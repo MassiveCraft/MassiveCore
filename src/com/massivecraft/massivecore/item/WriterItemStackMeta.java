@@ -56,10 +56,10 @@ public class WriterItemStackMeta extends WriterAbstractItemStackMetaMorph<Object
 			WriterItemStackMetaBannerPatterns.class,
 			
 			// STATE
-			WriterItemStackMetaState.class
+			WriterItemStackMetaState.class,
 			
 			// POTION
-			// TODO	Merge with potion above?	
+			WriterItemStackMetaPotion.class
 		);
 	}
 	

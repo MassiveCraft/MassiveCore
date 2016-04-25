@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.item;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 public class WriterItemStackMetaPages extends WriterAbstractItemStackMetaField<BookMeta, List<String>, List<String>>
@@ -22,25 +23,25 @@ public class WriterItemStackMetaPages extends WriterAbstractItemStackMetaField<B
 	// -------------------------------------------- //
 
 	@Override
-	public List<String> getA(DataItemStack ca)
+	public List<String> getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getPages();
 	}
 	
 	@Override
-	public void setA(DataItemStack ca, List<String> fa)
+	public void setA(DataItemStack ca, List<String> fa, ItemStack d)
 	{
 		ca.setPages(fa);
 	}
 	
 	@Override
-	public List<String> getB(BookMeta cb)
+	public List<String> getB(BookMeta cb, ItemStack d)
 	{
 		return cb.getPages();
 	}
 	
 	@Override
-	public void setB(BookMeta cb, List<String> fb)
+	public void setB(BookMeta cb, List<String> fb, ItemStack d)
 	{
 		cb.setPages(fb);
 	}

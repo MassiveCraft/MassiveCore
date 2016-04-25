@@ -23,19 +23,19 @@ public class WriterPotionEffectId extends WriterAbstractPotionEffect<Integer, Po
 	// -------------------------------------------- //
 	
 	@Override
-	public Integer getA(DataPotionEffect ca)
+	public Integer getA(DataPotionEffect ca, Object d)
 	{
 		return ca.getId();
 	}
 	
 	@Override
-	public void setA(DataPotionEffect ca, Integer fa)
+	public void setA(DataPotionEffect ca, Integer fa, Object d)
 	{
 		ca.setId(fa);
 	}
 	
 	@Override
-	public PotionEffectType getB(PotionEffect cb)
+	public PotionEffectType getB(PotionEffect cb, Object d)
 	{
 		return cb.getType();
 	}

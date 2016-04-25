@@ -83,7 +83,7 @@ public class DataPotionEffect implements Comparable<DataPotionEffect>
 	public PotionEffect toBukkit()
 	{
 		// Create
-		PotionEffect ret = WriterPotionEffect.get().createB();
+		PotionEffect ret = WriterPotionEffect.get().createOB();
 		
 		// Fill
 		this.write(ret, true);

@@ -16,27 +16,27 @@ public class WriterItemStackId extends WriterAbstractItemStackField<Integer, Int
 	// -------------------------------------------- //
 
 	@Override
-	public Integer getA(DataItemStack ca)
+	public Integer getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getId();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Integer fa)
+	public void setA(DataItemStack ca, Integer fa, ItemStack d)
 	{
 		ca.setId(fa);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public Integer getB(ItemStack cb)
+	public Integer getB(ItemStack cb, ItemStack d)
 	{
 		return cb.getTypeId();
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void setB(ItemStack cb, Integer fb)
+	public void setB(ItemStack cb, Integer fb, ItemStack d)
 	{
 		cb.setTypeId(fb);
 	}

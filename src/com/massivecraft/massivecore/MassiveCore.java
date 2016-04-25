@@ -153,6 +153,18 @@ public class MassiveCore extends MassivePlugin
 		// Enumeration Annotation Dodge
 		ret.registerTypeAdapterFactory(AdapterModdedEnumType.ENUM_FACTORY);
 		
+		// Massive Containers
+		ret.registerTypeAdapter(MassiveList.class, AdapterMassiveList.get());
+		ret.registerTypeAdapter(MassiveListDef.class, AdapterMassiveList.get());
+		ret.registerTypeAdapter(MassiveMap.class, AdapterMassiveMap.get());
+		ret.registerTypeAdapter(MassiveMapDef.class, AdapterMassiveMap.get());
+		ret.registerTypeAdapter(MassiveSet.class, AdapterMassiveSet.get());
+		ret.registerTypeAdapter(MassiveSetDef.class, AdapterMassiveSet.get());
+		ret.registerTypeAdapter(MassiveTreeMap.class, AdapterMassiveTreeMap.get());
+		ret.registerTypeAdapter(MassiveTreeMapDef.class, AdapterMassiveTreeMap.get());
+		ret.registerTypeAdapter(MassiveTreeSet.class, AdapterMassiveTreeSet.get());
+		ret.registerTypeAdapter(MassiveTreeSetDef.class, AdapterMassiveTreeSet.get());
+		
 		// Entries (Is this still needed?)
 		ret.registerTypeAdapter(Entry.class, AdapterEntry.get());
 		
@@ -166,6 +178,11 @@ public class MassiveCore extends MassivePlugin
 		ret.registerTypeAdapter(Mson.class, AdapterMson.get());
 		ret.registerTypeAdapter(MsonEvent.class, AdapterMsonEvent.get());
 		
+		// Banner Patterns Upgrade Adapter
+		// NOTE: Must come after the "MassiveContainers" section for priority.
+		Type typeBannerPatterns = new TypeToken<MassiveListDef<DataBannerPattern>>(){}.getType();
+		ret.registerTypeAdapter(typeBannerPatterns, AdapterBannerPatterns.get());
+		
 		// ItemStack
 		ret.registerTypeAdapter(ItemStack.class, AdapterItemStack.get());
 		Class<?> classCraftItemStack = NmsItemStack.get().classCraftItemStack;
@@ -174,22 +191,6 @@ public class MassiveCore extends MassivePlugin
 		// Inventory
 		ret.registerTypeAdapter(Inventory.class, AdapterInventory.get());
 		ret.registerTypeAdapter(PlayerInventory.class, AdapterPlayerInventory.get());
-		
-		// Banner Patterns Upgrade Adapter
-		Type typeBannerPatterns = new TypeToken<MassiveListDef<DataBannerPattern>>(){}.getType();
-		ret.registerTypeAdapter(typeBannerPatterns, AdapterBannerPatterns.get());
-		
-		// Massive Containers
-		ret.registerTypeAdapter(MassiveList.class, AdapterMassiveList.get());
-		ret.registerTypeAdapter(MassiveListDef.class, AdapterMassiveList.get());
-		ret.registerTypeAdapter(MassiveMap.class, AdapterMassiveMap.get());
-		ret.registerTypeAdapter(MassiveMapDef.class, AdapterMassiveMap.get());
-		ret.registerTypeAdapter(MassiveSet.class, AdapterMassiveSet.get());
-		ret.registerTypeAdapter(MassiveSetDef.class, AdapterMassiveSet.get());
-		ret.registerTypeAdapter(MassiveTreeMap.class, AdapterMassiveTreeMap.get());
-		ret.registerTypeAdapter(MassiveTreeMapDef.class, AdapterMassiveTreeMap.get());
-		ret.registerTypeAdapter(MassiveTreeSet.class, AdapterMassiveTreeSet.get());
-		ret.registerTypeAdapter(MassiveTreeSetDef.class, AdapterMassiveTreeSet.get());
 		
 		// Return
 		return ret;

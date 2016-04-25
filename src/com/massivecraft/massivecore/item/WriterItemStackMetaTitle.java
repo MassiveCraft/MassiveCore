@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.item;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 public class WriterItemStackMetaTitle extends WriterAbstractItemStackMetaField<BookMeta, String, String>
@@ -20,25 +21,25 @@ public class WriterItemStackMetaTitle extends WriterAbstractItemStackMetaField<B
 	// -------------------------------------------- //
 
 	@Override
-	public String getA(DataItemStack ca)
+	public String getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getTitle();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, String fa)
+	public void setA(DataItemStack ca, String fa, ItemStack d)
 	{
 		ca.setTitle(fa);
 	}
 
 	@Override
-	public String getB(BookMeta cb)
+	public String getB(BookMeta cb, ItemStack d)
 	{
 		return cb.getTitle();
 	}
 
 	@Override
-	public void setB(BookMeta cb, String fb)
+	public void setB(BookMeta cb, String fb, ItemStack d)
 	{
 		cb.setTitle(fb);
 	}

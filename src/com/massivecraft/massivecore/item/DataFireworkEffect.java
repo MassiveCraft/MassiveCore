@@ -84,7 +84,7 @@ public class DataFireworkEffect implements Comparable<DataFireworkEffect>
 	public FireworkEffect toBukkit()
 	{
 		// Create
-		FireworkEffect ret = WriterFireworkEffect.get().createB();
+		FireworkEffect ret = WriterFireworkEffect.get().createOB();
 		
 		// Fill
 		this.write(ret, true);

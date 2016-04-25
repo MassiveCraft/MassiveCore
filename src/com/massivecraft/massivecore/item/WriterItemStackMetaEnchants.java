@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class WriterItemStackMetaEnchants extends WriterAbstractItemStackMetaField<ItemMeta, Map<Integer, Integer>, Map<Enchantment, Integer>>
@@ -25,25 +26,25 @@ public class WriterItemStackMetaEnchants extends WriterAbstractItemStackMetaFiel
 	// -------------------------------------------- //
 
 	@Override
-	public Map<Integer, Integer> getA(DataItemStack ca)
+	public Map<Integer, Integer> getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getEnchants();
 	}
 	
 	@Override
-	public void setA(DataItemStack ca, Map<Integer, Integer> fa)
+	public void setA(DataItemStack ca, Map<Integer, Integer> fa, ItemStack d)
 	{
 		ca.setEnchants(fa);
 	}
 	
 	@Override
-	public Map<Enchantment, Integer> getB(ItemMeta cb)
+	public Map<Enchantment, Integer> getB(ItemMeta cb, ItemStack d)
 	{
 		return cb.getEnchants();
 	}
 	
 	@Override
-	public void setB(ItemMeta cb, Map<Enchantment, Integer> fb)
+	public void setB(ItemMeta cb, Map<Enchantment, Integer> fb, ItemStack d)
 	{
 		for (Entry<Enchantment, Integer> entry : fb.entrySet())
 		{

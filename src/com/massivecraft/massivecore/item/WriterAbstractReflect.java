@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 import com.massivecraft.massivecore.util.ReflectionUtil;
 
-public abstract class WriterAbstractReflect<OA, OB, CA, CB, FA, FB> extends WriterAbstract<OA, OB, CA, CB, FA, FB>
+public abstract class WriterAbstractReflect<OA, OB, CA, CB, FA, FB> extends WriterAbstract<OA, OB, CA, CB, FA, FB, Object>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -26,7 +26,7 @@ public abstract class WriterAbstractReflect<OA, OB, CA, CB, FA, FB> extends Writ
 	// -------------------------------------------- //
 	
 	@Override
-	public void setB(CB cb, FB fb)
+	public void setB(CB cb, FB fb, Object d)
 	{
 		if (this.field == null) return;
 		ReflectionUtil.setField(this.field, cb, fb);

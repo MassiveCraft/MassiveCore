@@ -1,7 +1,9 @@
 package com.massivecraft.massivecore.item;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class WriterAbstractItemStackMetaState<OB, CB, FA, FB> extends WriterAbstractItemStackMeta<OB, CB, FA, FB>
 {
@@ -11,20 +13,32 @@ public abstract class WriterAbstractItemStackMetaState<OB, CB, FA, FB> extends W
 	
 	public WriterAbstractItemStackMetaState()
 	{
-		// For the initial provoke to pass we must set a Material with a BlockStateMeta.
+		// For the setup to pass we must set a Material with a BlockStateMeta.
 		this.setMaterial(Material.SHIELD);
 	}
 	
 	// -------------------------------------------- //
-	// CREATE
+	// CREATE INNER
 	// -------------------------------------------- //
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public CB createB()
+	public BlockState createItemMetaState()
 	{
-		BlockStateMeta blockStateMeta = (BlockStateMeta) super.createB();
-		return (CB) blockStateMeta.getBlockState();
+		return createItemMetaState(this.createItemMeta());
+	}
+	
+	public static BlockState createItemMetaState(ItemMeta itemMeta)
+	{
+		if ( ! (itemMeta instanceof BlockStateMeta)) return null;
+		BlockStateMeta blockStateMeta = (BlockStateMeta)itemMeta;
+		try
+		{
+			return blockStateMeta.getBlockState();
+		}
+		catch (Exception e)
+		{
+			// Catch errors such as: throw new IllegalStateException("Missing blockState for " + material);
+			return null;
+		}
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.item;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class WriterItemStackMetaColor extends WriterAbstractItemStackMetaField<LeatherArmorMeta, Integer, Color>
@@ -23,25 +24,25 @@ public class WriterItemStackMetaColor extends WriterAbstractItemStackMetaField<L
 	// -------------------------------------------- //
 
 	@Override
-	public Integer getA(DataItemStack ca)
+	public Integer getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getColor();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Integer fa)
+	public void setA(DataItemStack ca, Integer fa, ItemStack d)
 	{
 		ca.setColor(fa);
 	}
 
 	@Override
-	public Color getB(LeatherArmorMeta cb)
+	public Color getB(LeatherArmorMeta cb, ItemStack d)
 	{
 		return cb.getColor();
 	}
 
 	@Override
-	public void setB(LeatherArmorMeta cb, Color fb)
+	public void setB(LeatherArmorMeta cb, Color fb, ItemStack d)
 	{
 		cb.setColor(fb);
 	}

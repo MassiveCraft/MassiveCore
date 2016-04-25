@@ -20,19 +20,19 @@ public class WriterPotionEffectAmplifier extends WriterAbstractPotionEffect<Inte
 	// -------------------------------------------- //
 	
 	@Override
-	public Integer getA(DataPotionEffect ca)
+	public Integer getA(DataPotionEffect ca, Object d)
 	{
 		return ca.getAmplifier();
 	}
 	
 	@Override
-	public void setA(DataPotionEffect ca, Integer fa)
+	public void setA(DataPotionEffect ca, Integer fa, Object d)
 	{
 		ca.setAmplifier(fa);
 	}
 	
 	@Override
-	public Integer getB(PotionEffect cb)
+	public Integer getB(PotionEffect cb, Object d)
 	{
 		return cb.getAmplifier();
 	}

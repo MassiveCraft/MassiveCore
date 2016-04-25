@@ -27,19 +27,19 @@ public class WriterFireworkEffectFadeColors extends WriterAbstractFireworkEffect
 	// -------------------------------------------- //
 	
 	@Override
-	public List<Integer> getA(DataFireworkEffect ca)
+	public List<Integer> getA(DataFireworkEffect ca, Object d)
 	{
 		return ca.getFadeColors();
 	}
 	
 	@Override
-	public void setA(DataFireworkEffect ca, List<Integer> fa)
+	public void setA(DataFireworkEffect ca, List<Integer> fa, Object d)
 	{
 		ca.setFadeColors(fa);
 	}
 	
 	@Override
-	public ImmutableList<Color> getB(FireworkEffect cb)
+	public ImmutableList<Color> getB(FireworkEffect cb, Object d)
 	{
 		return (ImmutableList<Color>) cb.getFadeColors();
 	}

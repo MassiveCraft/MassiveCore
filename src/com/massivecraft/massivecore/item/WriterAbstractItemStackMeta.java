@@ -1,35 +1,22 @@
 package com.massivecraft.massivecore.item;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class WriterAbstractItemStackMeta<OB, CB, FA, FB> extends WriterAbstractItemStack<OB, CB, FA, FB>
 {
 	// -------------------------------------------- //
-	// FIELDS
+	// CREATE INNER
 	// -------------------------------------------- //
 	
-	private Material material = Material.STONE;
-	public Material getMaterial() { return this.material; }
-	@SuppressWarnings("unchecked")
-	public void setMaterial(Material material)
+	public ItemMeta createItemMeta()
 	{
-		this.material = material;
-		CB cb = this.createB();
-		this.setClassB((Class<CB>) cb.getClass());
+		return createItemMeta(this.createItemStack());
 	}
 	
-	// -------------------------------------------- //
-	// CREATE
-	// -------------------------------------------- //
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public CB createB()
+	public static ItemMeta createItemMeta(ItemStack itemStack)
 	{
-		ItemStack itemStack = (ItemStack) super.createB();
-		itemStack.setType(this.getMaterial());
-		return (CB) itemStack.getItemMeta();
+		return itemStack.getItemMeta();
 	}
 	
 }

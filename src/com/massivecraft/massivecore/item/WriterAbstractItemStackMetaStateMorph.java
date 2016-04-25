@@ -1,11 +1,22 @@
 package com.massivecraft.massivecore.item;
 
 import org.bukkit.block.BlockState;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class WriterAbstractItemStackMetaStateMorph<FA, FB> extends WriterAbstractItemStackMetaState<ItemMeta, BlockState, FA, FB>
-{	
+{
+	// -------------------------------------------- //
+	// CREATE
+	// -------------------------------------------- //
+	
+	@Override
+	public ItemMeta createOB()
+	{
+		return this.createItemMeta();
+	}
+	
 	// -------------------------------------------- //
 	// MORPH
 	// -------------------------------------------- //
@@ -13,18 +24,17 @@ public abstract class WriterAbstractItemStackMetaStateMorph<FA, FB> extends Writ
 	@Override
 	public BlockState morphB(ItemMeta ob)
 	{
-		BlockStateMeta state = (BlockStateMeta)ob;
-		return state.getBlockState();
+		return createItemMetaState(ob);
 	}
 	
 	// -------------------------------------------- //
 	// WRITE
 	// -------------------------------------------- //
-
+	
 	@Override
-	public void writeInner(DataItemStack oa, ItemMeta ob, DataItemStack ca, BlockState cb, boolean a2b)
+	public void writeInner(DataItemStack oa, ItemMeta ob, DataItemStack ca, BlockState cb, ItemStack d, boolean a2b)
 	{
-		super.writeInner(oa, ob, ca, cb, a2b);
+		super.writeInner(oa, ob, ca, cb, d, a2b);
 		
 		// Write Back 
 		if (a2b)

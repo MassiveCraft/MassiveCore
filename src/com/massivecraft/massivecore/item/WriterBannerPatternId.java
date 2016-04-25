@@ -23,19 +23,19 @@ public class WriterBannerPatternId extends WriterAbstractBannerPattern<String, P
 	// -------------------------------------------- //
 	
 	@Override
-	public String getA(DataBannerPattern ca)
+	public String getA(DataBannerPattern ca, Object d)
 	{
 		return ca.getId();
 	}
 	
 	@Override
-	public void setA(DataBannerPattern ca, String fa)
+	public void setA(DataBannerPattern ca, String fa, Object d)
 	{
 		ca.setId(fa);
 	}
 	
 	@Override
-	public PatternType getB(Pattern cb)
+	public PatternType getB(Pattern cb, Object d)
 	{
 		return cb.getPattern();
 	}

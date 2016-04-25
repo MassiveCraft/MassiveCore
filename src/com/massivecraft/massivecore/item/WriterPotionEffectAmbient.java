@@ -20,19 +20,19 @@ public class WriterPotionEffectAmbient extends WriterAbstractPotionEffect<Boolea
 	// -------------------------------------------- //
 	
 	@Override
-	public Boolean getA(DataPotionEffect ca)
+	public Boolean getA(DataPotionEffect ca, Object d)
 	{
 		return ca.isAmbient();
 	}
 	
 	@Override
-	public void setA(DataPotionEffect ca, Boolean fa)
+	public void setA(DataPotionEffect ca, Boolean fa, Object d)
 	{
 		ca.setAmbient(fa);
 	}
 	
 	@Override
-	public Boolean getB(PotionEffect cb)
+	public Boolean getB(PotionEffect cb, Object d)
 	{
 		return cb.isAmbient();
 	}

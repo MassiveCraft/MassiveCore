@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.item;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 public class WriterItemStackMetaFireworkFlight extends WriterAbstractItemStackMetaField<FireworkMeta, Integer, Integer>
@@ -20,25 +21,25 @@ public class WriterItemStackMetaFireworkFlight extends WriterAbstractItemStackMe
 	// -------------------------------------------- //
 
 	@Override
-	public Integer getA(DataItemStack ca)
+	public Integer getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getFireworkFlight();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Integer fa)
+	public void setA(DataItemStack ca, Integer fa, ItemStack d)
 	{
 		ca.setFireworkFlight(fa);
 	}
 
 	@Override
-	public Integer getB(FireworkMeta cb)
+	public Integer getB(FireworkMeta cb, ItemStack d)
 	{
 		return cb.getPower();
 	}
 
 	@Override
-	public void setB(FireworkMeta cb, Integer fb)
+	public void setB(FireworkMeta cb, Integer fb, ItemStack d)
 	{
 		cb.setPower(fb);
 	}

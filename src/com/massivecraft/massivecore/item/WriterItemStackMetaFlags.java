@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.item;
 import java.util.Set;
 
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class WriterItemStackMetaFlags extends WriterAbstractItemStackMetaField<ItemMeta, Set<String>, Set<ItemFlag>>
@@ -24,25 +25,25 @@ public class WriterItemStackMetaFlags extends WriterAbstractItemStackMetaField<I
 	// -------------------------------------------- //
 
 	@Override
-	public Set<String> getA(DataItemStack ca)
+	public Set<String> getA(DataItemStack ca, ItemStack d)
 	{
 		return ca.getFlags();
 	}
 
 	@Override
-	public void setA(DataItemStack ca, Set<String> fa)
+	public void setA(DataItemStack ca, Set<String> fa, ItemStack d)
 	{
 		ca.setFlags(fa);
 	}
 
 	@Override
-	public Set<ItemFlag> getB(ItemMeta cb)
+	public Set<ItemFlag> getB(ItemMeta cb, ItemStack d)
 	{
 		return cb.getItemFlags();
 	}
 
 	@Override
-	public void setB(ItemMeta cb, Set<ItemFlag> fb)
+	public void setB(ItemMeta cb, Set<ItemFlag> fb, ItemStack d)
 	{
 		cb.addItemFlags(fb.toArray(new ItemFlag[0]));
 	}

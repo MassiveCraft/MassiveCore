@@ -271,7 +271,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public ItemStack toBukkit()
 	{
 		// Create
-		ItemStack ret = WriterItemStack.get().createB();
+		ItemStack ret = WriterItemStack.get().createOB();
 		
 		// Fill
 		this.write(ret, true);
