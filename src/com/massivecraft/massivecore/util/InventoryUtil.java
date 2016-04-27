@@ -750,10 +750,10 @@ public class InventoryUtil
 			if (InventoryUtil.isBottomInventory(rawSlot, inventory)) continue;
 			
 			ItemStack take = inventory.getItem(rawSlot);
-			if (isSomething(take)) ret.add(new SimpleEntry<ItemStack, Integer>(take, -take.getAmount()));
+			if (isSomething(take)) ret.add(new SimpleEntry<ItemStack, Integer>(take, +take.getAmount()));
 			
 			ItemStack give = entry.getValue();
-			if (isSomething(give)) ret.add(new SimpleEntry<ItemStack, Integer>(give, +take.getAmount()));
+			if (isSomething(give)) ret.add(new SimpleEntry<ItemStack, Integer>(give, -give.getAmount()));
 		}
 		
 		// Return
