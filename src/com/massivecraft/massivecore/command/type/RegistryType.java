@@ -22,7 +22,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.EventPriority;
@@ -75,6 +74,7 @@ import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import com.massivecraft.massivecore.command.type.sender.TypeSender;
 import com.massivecraft.massivecore.command.type.store.TypeAspect;
 import com.massivecraft.massivecore.command.type.store.TypeMultiverse;
+import com.massivecraft.massivecore.nms.NmsAbstract;
 import com.massivecraft.massivecore.particleeffect.ParticleEffect;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.teleport.Destination;
@@ -205,12 +205,14 @@ public class RegistryType
 		register(Material.class, TypeMaterial.get());
 		register(Ocelot.Type.class, TypeOcelotType.get());
 		register(ParticleEffect.class, TypeParticleEffect.get());
-		register(Rabbit.Type.class, TypeRabbitType.get());
 		register(SkeletonType.class, TypeSkeletonType.get());
 		register(Sound.class, TypeSound.get());
 		register(Profession.class, TypeVillagerProfession.get());
 		register(WorldType.class, TypeWorldType.get());
-		
+		// Only register rabbits if the server version is 1.8 or greater.
+		// Uses the fully qualified name instead of importing rabbit to avoid NoClassDefFoundError on Spigot 1.7.x versions
+		if(NmsAbstract.getCurrentVersion() > 7) register(org.bukkit.entity.Rabbit.Type.class, TypeRabbitType.get());
+
 		// Sender
 		register(Player.class, TypePlayer.get());
 		register(CommandSender.class, TypeSender.get());
