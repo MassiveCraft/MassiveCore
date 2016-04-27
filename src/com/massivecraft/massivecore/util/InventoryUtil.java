@@ -2,8 +2,11 @@ package com.massivecraft.massivecore.util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,6 +14,8 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
@@ -496,18 +501,6 @@ public class InventoryUtil
 		return isBottomInventory(event.getRawSlot(), event.getInventory());
 	}
 	
-	@Deprecated
-	public static boolean isGiving(InventoryClickEvent event)
-	{
-		return getAlter(event).isGiving();
-	}
-	
-	@Deprecated
-	public static boolean isTaking(InventoryClickEvent event)
-	{
-		return getAlter(event).isTaking();
-	}
-	
 	public static boolean isAltering(InventoryClickEvent event)
 	{
 		return getAlter(event).isAltering();
@@ -640,6 +633,131 @@ public class InventoryUtil
 			}
 			return null;
 		}
+	}
+	
+	// -------------------------------------------- //
+	// GET CHANGES
+	// -------------------------------------------- //
+	// In this section we interpret the changes made by inventory interact events.
+	// The very same event may cause both giving and taking of multiple different items.
+	// We return a list of entries:
+	// > KEY: The raw and unmodified ItemStack.
+	// > VALUE: The change in amount where positive means take. (count change measured in the "players inventory")
+	// By choosing this return value we can provide the rawest data possible.
+	// We never ever clone or modify the ItemStacks in any way. 
+	// This means that the amount within the ItemStack key is irrelevant.
+	// We can also avoid all kinds of oddities related to ItemStack equals and compare in the Bukkit API.
+	
+	public static List<Entry<ItemStack, Integer>> getChanges(InventoryInteractEvent event)
+	{
+		if (event instanceof InventoryClickEvent)
+		{
+			InventoryClickEvent clickEvent = (InventoryClickEvent)event;
+			return getChangesClick(clickEvent);
+		}
+		
+		if (event instanceof InventoryDragEvent)
+		{
+			InventoryDragEvent dragEvent = (InventoryDragEvent)event;
+			return getChangesDrag(dragEvent);
+		}
+		
+		return Collections.emptyList();
+	}
+	
+	protected static List<Entry<ItemStack, Integer>> getChangesClick(InventoryClickEvent event)
+	{
+		// Create
+		List<Entry<ItemStack, Integer>> ret = new MassiveList<>();		
+		
+		// Fill
+		final InventoryAlter alter = InventoryUtil.getAlter(event);
+		final InventoryAction action = event.getAction();
+		ItemStack item;
+		int amount;
+		
+		// Give
+		if (alter.isGiving())
+		{
+			// Special > MOVE_TO_OTHER_INVENTORY
+			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
+			{
+				item = event.getCurrentItem();
+				
+				ItemStack compare = item.clone();
+				compare.setAmount(1);
+				amount = InventoryUtil.roomLeft(event.getInventory(), compare, item.getAmount());
+			}
+			// Special > HOTBAR_SWAP
+			else if (action == InventoryAction.HOTBAR_SWAP)
+			{
+				item = event.getView().getBottomInventory().getItem(event.getHotbarButton());
+				
+				amount = item.getAmount();
+			}
+			// Normal
+			else
+			{
+				item = event.getCursor();
+				
+				amount = item.getAmount();
+				if (action == InventoryAction.PLACE_ONE)
+				{
+					amount = 1;
+				}
+				else if (action == InventoryAction.PLACE_SOME)
+				{
+					int max = event.getCurrentItem().getType().getMaxStackSize();
+					amount = max - event.getCurrentItem().getAmount();
+				}
+			}
+			
+			amount *= -1;
+			ret.add(new SimpleEntry<ItemStack, Integer>(item, amount));
+		}
+		
+		// Take
+		if (alter.isTaking())
+		{
+			item = event.getCurrentItem();
+			
+			amount = item.getAmount();
+			if (action == InventoryAction.PICKUP_ONE) amount = 1;
+			if (action == InventoryAction.PICKUP_HALF) amount = (int) Math.ceil(amount / 2.0);
+			
+			ret.add(new SimpleEntry<ItemStack, Integer>(item, amount));			
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	// Drag events by nature only matters when they affect the top inventory.
+	// What you are holding in the cursor is already yours.
+	// If you drag it into your own inventory you are not really taking anything.
+	// If you drag into the top inventory however, you may both give and take.
+	// You "take" by dragging over an existing item (since we don't do any math).
+	protected static List<Entry<ItemStack, Integer>> getChangesDrag(InventoryDragEvent event)
+	{
+		// Create
+		List<Entry<ItemStack, Integer>> ret = new MassiveList<>();
+		
+		// Fill
+		final Inventory inventory = event.getInventory();
+		for (Entry<Integer, ItemStack> entry : event.getNewItems().entrySet())
+		{
+			int rawSlot = entry.getKey();
+			if (InventoryUtil.isBottomInventory(rawSlot, inventory)) continue;
+			
+			ItemStack take = inventory.getItem(rawSlot);
+			if (isSomething(take)) ret.add(new SimpleEntry<ItemStack, Integer>(take, -take.getAmount()));
+			
+			ItemStack give = entry.getValue();
+			if (isSomething(give)) ret.add(new SimpleEntry<ItemStack, Integer>(give, +take.getAmount()));
+		}
+		
+		// Return
+		return ret;
 	}
 	
 	// -------------------------------------------- //

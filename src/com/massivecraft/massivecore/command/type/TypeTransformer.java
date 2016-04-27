@@ -14,8 +14,12 @@ import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.mson.Mson;
 
-// The "inner" controls all ways the type behaves and "seems".
-// The "outer" type is how the type interfaces in source code. For example what is read.
+// The INNER type controls all ways the type behaves and seems.
+// It is used for visuals, names, ids and when reading from a command argument.
+// 
+// The OUTER type is how the type interfaces in source code.
+// It is used for instance creation, editor command creation, and as an optional fallback.
+// It should be noted that the OUTER type is kind of optional.
 public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 {
 	// -------------------------------------------- //

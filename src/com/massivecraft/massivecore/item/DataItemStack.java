@@ -4,13 +4,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveListDef;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveTreeMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
@@ -226,7 +229,6 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// The order matters and is explicitly assigned.
 	// String, Number, String, Number ...
 	
-	// TODO: Make sure the special adapter for upgrading the format is implemented!
 	@SerializedName("banner")
 	private MassiveListDef<DataBannerPattern> bannerPatterns = null;
 	public List<DataBannerPattern> getBannerPatterns() { return get(this.bannerPatterns, DEFAULT_BANNER_PATTERNS); }
@@ -265,8 +267,14 @@ public class DataItemStack implements Comparable<DataItemStack>
 	}
 	
 	// -------------------------------------------- //
-	// TO BUKKIT
+	// CONVERT ONE
 	// -------------------------------------------- //
+	
+	public static DataItemStack fromBukkit(ItemStack itemStack)
+	{
+		if (itemStack == null) return null;
+		return new DataItemStack(itemStack);
+	}
 	
 	public ItemStack toBukkit()
 	{
@@ -278,6 +286,93 @@ public class DataItemStack implements Comparable<DataItemStack>
 		
 		// Return
 		return ret;
+	}
+	
+	public static ItemStack toBukkit(DataItemStack dataItemStack)
+	{
+		if (dataItemStack == null) return null;
+		return dataItemStack.toBukkit();
+	}
+	
+	// -------------------------------------------- //
+	// CONVERT MANY
+	// -------------------------------------------- //
+	
+	public static void fromBukkit(Iterable<ItemStack> itemStacks, Collection<DataItemStack> dataItemStacks)
+	{
+		for (ItemStack itemStack : itemStacks)
+		{
+			dataItemStacks.add(fromBukkit(itemStack));
+		}
+	}
+	
+	public static List<DataItemStack> fromBukkit(Iterable<ItemStack> itemStacks)
+	{
+		// Create
+		List<DataItemStack> ret = new MassiveList<>();
+		
+		// Fill
+		fromBukkit(itemStacks, ret);
+		
+		// Return
+		return ret;
+	}
+	
+	public static <V> void fromBukkitKeys(Map<ItemStack, V> itemStacks, Map<DataItemStack, V> dataItemStacks)
+	{
+		for (Entry<ItemStack, V> entry : itemStacks.entrySet())
+		{
+			dataItemStacks.put(fromBukkit(entry.getKey()), entry.getValue());
+		}
+	}
+	
+	public static <V> Map<DataItemStack, V> fromBukkitKeys(Map<ItemStack, V> itemStacks)
+	{
+		// Create
+		Map<DataItemStack, V> ret = new MassiveMap<>();
+		
+		// Fill
+		fromBukkitKeys(itemStacks, ret);
+		
+		// Return
+		return ret;
+	}
+	
+	public static <K> void fromBukkitValues(Map<K, ItemStack> itemStacks, Map<K, DataItemStack> dataItemStacks)
+	{
+		for (Entry<K, ItemStack> entry : itemStacks.entrySet())
+		{
+			dataItemStacks.put(entry.getKey(), fromBukkit(entry.getValue()));
+		}
+	}
+	
+	public static <K> Map<K, DataItemStack> fromBukkitValues(Map<K, ItemStack> itemStacks)
+	{
+		// Create
+		Map<K, DataItemStack> ret = new MassiveMap<>();
+		
+		// Fill
+		fromBukkitValues(itemStacks, ret);
+		
+		// Return
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// UTILITY
+	// -------------------------------------------- //
+	
+	public static boolean isSomething(DataItemStack dataItemStack)
+	{
+		if (dataItemStack == null) return false;
+		if (dataItemStack.getId() == 0) return false;
+		// In Minecraft 1.9 zero quantity is a thing.
+		return true;
+	}
+	
+	public static boolean isNothing(DataItemStack dataItemStack)
+	{
+		return ! isSomething(dataItemStack);
 	}
 	
 	// -------------------------------------------- //
