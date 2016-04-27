@@ -22,7 +22,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.EventPriority;
@@ -205,7 +204,18 @@ public class RegistryType
 		register(Material.class, TypeMaterial.get());
 		register(Ocelot.Type.class, TypeOcelotType.get());
 		register(ParticleEffect.class, TypeParticleEffect.get());
-		register(Rabbit.Type.class, TypeRabbitType.get());
+		
+		// About 15% of all servers are still using 1.7.x.
+		// We catch NoClassDefFoundError and silently move along on those servers.
+		try
+		{
+			register(org.bukkit.entity.Rabbit.Type.class, TypeRabbitType.get());
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		
 		register(SkeletonType.class, TypeSkeletonType.get());
 		register(Sound.class, TypeSound.get());
 		register(Profession.class, TypeVillagerProfession.get());
