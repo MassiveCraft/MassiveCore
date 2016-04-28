@@ -25,6 +25,7 @@ public class TypePS extends TypeAbstract<PS>
 	
 	private static TypePS i = new TypePS();
 	public static TypePS get() { return i; }
+	public TypePS() { super(PS.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

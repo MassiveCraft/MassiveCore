@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.Set;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.sender.TypeSender;
@@ -46,14 +46,14 @@ public class EditSettings<O>
 	}
 	
 	// Requirements to edit the used object.
-	private List<Requirement> usedRequirements = new ArrayList<Requirement>();
+	private List<Requirement> usedRequirements = new MassiveList<>();
 	public List<Requirement> getUsedRequirements() { return this.usedRequirements; }
 	public void setUsedRequirements(List<Requirement> requirements) { this.usedRequirements = requirements; }
 	public void addUsedRequirements(Collection<Requirement> requirements) { this.usedRequirements.addAll(requirements); }
 	public void addUsedRequirements(Requirement... requirements) { this.addUsedRequirements(Arrays.asList(requirements)); }
 	
 	// Requirements to edit properties. Common stuff shared by all properties.
-	private List<Requirement> propertyRequirements = new ArrayList<Requirement>();
+	private List<Requirement> propertyRequirements = new MassiveList<>();
 	public List<Requirement> getPropertyRequirements() { return this.propertyRequirements; }
 	public void setPropertyRequirements(List<Requirement> requirements) { this.propertyRequirements = requirements; }
 	public void addPropertyRequirements(Collection<Requirement> requirements) { this.propertyRequirements.addAll(requirements); }

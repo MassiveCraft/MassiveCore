@@ -114,7 +114,7 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		
 		// Apply
 		// We set the new property value.
-		this.getProperty().setValue(sender, this.getObject(), after);
+		this.setValue(after);
 		
 		// Create messages
 		List<Mson> messages = new MassiveList<>();

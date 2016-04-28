@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
@@ -17,10 +18,15 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.Txt;
 
 public abstract class Property<O, V> implements Named
 {
+	// -------------------------------------------- //
+	// CONSTANTS
+	// -------------------------------------------- //
+	
+	public static final String SHOW_INDENT = "  "; // Two spaces
+	
 	// -------------------------------------------- //
 	// TYPE
 	// -------------------------------------------- //
@@ -95,37 +101,34 @@ public abstract class Property<O, V> implements Named
 	// -------------------------------------------- //
 	
 	public abstract V getRaw(O object);
-	public abstract void setRaw(O object, V value);
+	public abstract O setRaw(O object, V value);
 	
 	public V getValue(O object)
 	{
 		return this.getRaw(object);
 	}
 	
-	public V setValue(CommandSender sender, O object, V value)
+	public O setValue(CommandSender sender, O object, V value)
 	{
 		// Get Before
 		V before = this.getRaw(object);
 		
-		// Get Live Entity
-		Entity<?> entity = null;
-		if (object instanceof Entity) entity = (Entity<?>)object;
-		if (entity != null && ! entity.isLive()) entity = null;
-		
 		// NoChange
-		if (entity != null && MUtil.equals(before, value)) return before;
+		if (MUtil.equals(before, value)) return object;
 		
 		// Apply
-		this.setRaw(object, value);
+		object = this.setRaw(object, value);
 		
-		// Mark Change
-		if (entity != null) entity.changed();
+		// Mark Entity Changed
+		Entity<?> entity = null;
+		if (object instanceof Entity) entity = (Entity<?>)object;
+		if (entity != null && entity.isLive()) entity.changed();
 		
 		// On Change
 		this.onChange(sender, object, before, value);
 		
 		// Return Before
-		return before;
+		return object;
 	}
 	
 	// -------------------------------------------- //
@@ -164,15 +167,7 @@ public abstract class Property<O, V> implements Named
 	
 	public CommandEditAbstract<O, V> createEditCommand(EditSettings<O> settings)
 	{
-		CommandEditAbstract<O, V> ret = this.getValueType().createEditCommand(settings, this);
-		
-		// Add general requirements.
-		ret.addRequirements(settings.getPropertyRequirements());
-		
-		// Add specific requirements.
-		ret.addRequirements(this.getRequirements());
-		
-		return ret;
+		return this.getValueType().createEditCommand(settings, this);
 	}
 	
 	public Mson getInheritedVisual(O object, O source, V value, CommandSender sender)
@@ -221,12 +216,19 @@ public abstract class Property<O, V> implements Named
 	
 	public List<Mson> getShowLines(O object, CommandSender sender)
 	{
-		Mson ret = Mson.mson(
+		Mson prefix = Mson.mson(
 			this.getDisplayNameMson(),
-			Mson.mson(": ").color(ChatColor.GRAY),
-			this.getInheritedVisual(object, sender)
-			);
-		return ret.split(Txt.PATTERN_NEWLINE);
+			Mson.mson(":").color(ChatColor.GRAY)
+		);
+		List<Mson> ret = Mson.prepondfix(prefix, this.getValueType().getShow(this.getInheritedValue(object), sender), null);
+		
+		for (ListIterator<Mson> it = ret.listIterator(1); it.hasNext();)
+		{
+			Mson mson = it.next();
+			it.set(mson.text(SHOW_INDENT + mson.getText()));
+		}
+		
+		return ret;
 	}
 	
 	public static <O> List<Mson> getShowLines(O object, CommandSender sender, Collection<? extends Property<O, ?>> properties)

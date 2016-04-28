@@ -10,6 +10,7 @@ public class TypeFloat extends TypeAbstractNumber<Float>
 	
 	private static TypeFloat i = new TypeFloat();
 	public static TypeFloat get() { return i; }
+	public TypeFloat() { super(Float.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

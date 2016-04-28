@@ -12,6 +12,8 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.command.editor.Property;
+import com.massivecraft.massivecore.command.editor.PropertyReflection;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeAbstract;
 import com.massivecraft.massivecore.mson.Mson;
@@ -87,19 +89,64 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public TypeCombined(Type<?>... innerTypes)
+	public TypeCombined(Class<?> clazz, Type<?>... innerTypes)
 	{
+		super(clazz);
 		this.setInnerTypes(innerTypes);
 		this.setSeparators(SEPARATORS_DEFAULT);
 	}
 	
+	public TypeCombined(Class<T> clazz)
+	{
+		super(clazz);
+		this.setInnerProperties(PropertyReflection.getAll(clazz, this));
+		
+		List<Type<?>> innerTypes = new MassiveList<>();
+		for (Property<T, ?> property : this.getInnerProperties())
+		{
+			innerTypes.add(property.getValueType());
+		}
+		this.setInnerTypes(innerTypes);
+		
+		this.setSeparators(SEPARATORS_DEFAULT);
+	}
+	
 	// -------------------------------------------- //
-	// ABSTRACT
+	// CORE
 	// -------------------------------------------- //
 	
-	public abstract T combine(List<Object> parts);
+	public T combine(List<Object> parts)
+	{
+		if ( ! this.hasInnerProperties()) throw new IllegalStateException("TypeCombined#combine must be implemented.");
+		
+		T ret = this.createNewInstance();
+		if (ret == null) throw new IllegalStateException("Type#createNewInstance must be implemented.");
+		
+		int i = 0;
+		for (Object part : parts)
+		{
+			Property<T, Object> property = this.getInnerProperty(i);
+			property.setRaw(ret, part);
+			
+			i++;
+		}
+		
+		return ret;
+	}
 	
-	public abstract List<Object> split(T value);
+	public List<Object> split(T value)
+	{
+		if ( ! this.hasInnerProperties()) throw new IllegalStateException("TypeCombined#split must be implemented.");
+		
+		List<Object> parts = new MassiveList<>();
+		
+		for (Property<T, ?> property : this.getInnerProperties())
+		{
+			parts.add(property.getValue(value));
+		}
+		
+		return parts;
+	}
 	
 	// -------------------------------------------- //
 	// SPLIT ENTRIES
@@ -115,7 +162,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		if (parts.size() > this.getInnerTypes().size()) throw new RuntimeException("Too many parts!");
 		for (int i = 0; i < parts.size(); i++)
 		{
-			Type<?> type = this.getInnerTypes().get(i);
+			Type<?> type = this.getInnerType(i);
 			Object part = parts.get(i);
 			SimpleEntry<Type<?>, Object> entry = new SimpleEntry<Type<?>, Object>(type, part);
 			ret.add(entry);
@@ -201,6 +248,33 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		
 		// Return
 		return Txt.implode(parts, this.getTypeNameSeparator());
+	}
+	
+	// -------------------------------------------- //
+	// WRITE SHOW
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Mson> getShowInner(T value, CommandSender sender)
+	{
+		if (this.hasInnerProperties())
+		{
+			return super.getShowInner(value, sender);
+		}
+		// Create
+		List<Mson> ret = new MassiveList<>();
+		
+		// Fill
+		for (Entry<Type<?>, Object> entry : this.splitEntriesUser(value))
+		{
+			Type<Object> type = (Type<Object>) entry.getKey();
+			ret.addAll(type.getShow(entry.getValue()));
+		}
+		
+		
+		// Return
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -323,7 +397,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		for (int i = 0; i < innerArgs.size(); i++)
 		{
 			String innerArg = innerArgs.get(i);
-			Type<?> innerType = this.getInnerTypes().get(getIndexUser(i));
+			Type<?> innerType = this.getInnerType(getIndexUser(i));
 			Object part = innerType.read(innerArg, sender);
 			ret.add(part);
 		}

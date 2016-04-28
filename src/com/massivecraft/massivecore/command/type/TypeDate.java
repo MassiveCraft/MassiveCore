@@ -22,7 +22,8 @@ public class TypeDate extends TypeAbstractSimple<Date>
 	
 	private static TypeDate i = new TypeDate();
 	public static TypeDate get() { return i; }
-
+	public TypeDate() { super(Date.class); }
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //

@@ -17,13 +17,18 @@ public class TypeObject<T> extends TypeAbstract<T>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static TypeObject<Object> i = new TypeObject<Object>();
+	/*private static TypeObject<Object> i = new TypeObject<Object>();
 	
 	@SuppressWarnings("unchecked")
-	public static <T> TypeObject<T> get() { return (TypeObject<T>) i; }
+	public static <T> TypeObject<T> get() { return (TypeObject<T>) i; }*/
 	
-	@SuppressWarnings("unchecked")
-	public static <T> TypeObject<T> get(Class<T> classOfT) { return (TypeObject<T>) i; }
+	public static <T> TypeObject<T> get(Class<T> clazz) { return new TypeObject<T>(clazz); }
+	
+	public TypeObject(Class<T> clazz)
+	{
+		super(clazz);
+		this.setInnerProperties(clazz);
+	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

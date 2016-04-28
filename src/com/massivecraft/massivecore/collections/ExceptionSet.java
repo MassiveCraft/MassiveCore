@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.collections;
 
+import java.util.Arrays;
+
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 
 public class ExceptionSet<T>
@@ -11,7 +13,7 @@ public class ExceptionSet<T>
 	public boolean standard = true;
 	public boolean isStandard() { return this.standard; }
 	
-	public MassiveTreeSet<String, ComparatorCaseInsensitive> exceptions = new MassiveTreeSet<String, ComparatorCaseInsensitive>(ComparatorCaseInsensitive.get());
+	public MassiveTreeSet<String, ComparatorCaseInsensitive> exceptions = new MassiveTreeSet<>(ComparatorCaseInsensitive.get());
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -32,11 +34,7 @@ public class ExceptionSet<T>
 	{
 		this.standard = standard;
 		if (exceptions.length == 0) return;
-		for (Object exception : exceptions)
-		{
-			String string = asString(exception);
-			this.exceptions.add(string);
-		}
+		this.exceptions.addAll(asStrings(exceptions));
 	}
 	
 	// -------------------------------------------- //
@@ -53,6 +51,25 @@ public class ExceptionSet<T>
 		T t = (T)exception;
 		return this.convert(t);
 	}
+
+	public MassiveTreeSet<String, ComparatorCaseInsensitive> asStrings(Object... exceptions)
+	{
+		return asStrings(Arrays.asList(exceptions));
+	}
+	
+	public MassiveTreeSet<String, ComparatorCaseInsensitive> asStrings(Iterable<?> exceptions)
+	{
+		MassiveTreeSet<String, ComparatorCaseInsensitive> ret = new MassiveTreeSet<>(ComparatorCaseInsensitive.get());
+		
+		for (Object exception : exceptions)
+		{
+			String string = asString(exception);
+			ret.add(string);
+		}
+		
+		return ret;
+	}
+	
 	
 	// -------------------------------------------- //
 	// CONVERT

@@ -7,9 +7,13 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.ExceptionSet;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.editor.Property;
+import com.massivecraft.massivecore.command.editor.PropertyReflection;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeAbstract;
 import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class TypeExceptionSet<E> extends TypeAbstract<ExceptionSet<E>>
@@ -30,14 +34,55 @@ public class TypeExceptionSet<E> extends TypeAbstract<ExceptionSet<E>>
 		return new TypeExceptionSet<E>(innerType);
 	}
 	
-	public TypeExceptionSet(Type<E> innerType)
+	@SuppressWarnings("unchecked")
+	public TypeExceptionSet(final Type<E> innerType)
 	{
+		super(ExceptionSet.class);
+		
 		this.typeElements = TypeSet.get(innerType);
+		
+		// PROPERTIES
+		Property<ExceptionSet<E>, Boolean> propertyStandard = PropertyReflection.get(ReflectionUtil.getField(ExceptionSet.class, "standard"), this);
+		
+		Property<ExceptionSet<E>, Set<E>> propertyExceptions = new Property<ExceptionSet<E>, Set<E>>(this, typeElements, "exceptions")
+		{
+			@Override
+			public Set<E> getRaw(ExceptionSet<E> object)
+			{
+				Set<E> ret = new MassiveSet<>();
+				
+				for (String exception : object.exceptions)
+				{
+					try
+					{
+						ret.add(innerType.read(exception));
+					}
+					catch (MassiveException e)
+					{
+						e.printStackTrace();
+					}
+				}
+				
+				return ret;
+			}
+
+			@Override
+			public ExceptionSet<E> setRaw(ExceptionSet<E> object, Set<E> value)
+			{
+				object.exceptions = object.asStrings(value);
+				return object;
+				
+			}
+		};
+		propertyExceptions.setNullable(false);
+		
+		this.setInnerProperties(propertyStandard, propertyExceptions);
 	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	// TODO: Do we even need this now?
 	
 	@Override
 	public ExceptionSet<E> read(String arg, CommandSender sender) throws MassiveException

@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.editor;
 
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeSingleton;
 
-public class CommandEditSingleton<O> extends CommandEditReflection<O, O>
+public class CommandEditSingleton<O> extends CommandEditProperties<O, O>
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -16,10 +15,9 @@ public class CommandEditSingleton<O> extends CommandEditReflection<O, O>
 		this(object, getType(object), permission);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public CommandEditSingleton(O object, Type<O> typeObject, String permission)
 	{
-		super(createEditSettings(object, typeObject, permission), new PropertyThis<>(typeObject), (Class<O>) object.getClass());
+		super(createEditSettings(object, typeObject), new PropertyThis<>(typeObject), permission);
 		String name = typeObject.getName(object);
 		this.setAliases(name);
 		this.setDesc("edit " + name);
@@ -29,14 +27,12 @@ public class CommandEditSingleton<O> extends CommandEditReflection<O, O>
 	// UTIL
 	// -------------------------------------------- //
 	
-	private static <O> EditSettings<O> createEditSettings(O object, Type<O> typeObject, String permission)
+	private static <O> EditSettings<O> createEditSettings(O object, Type<O> typeObject)
 	{
 		EditSettings<O> ret = new EditSettings<>(typeObject);
 		
 		PropertyUsed<O> usedProperty = new PropertyUsed<O>(ret, object);
 		ret.setUsedProperty(usedProperty);
-		
-		ret.addPropertyRequirements(RequirementHasPerm.get(permission));
 		
 		return ret;
 	}

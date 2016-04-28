@@ -21,6 +21,7 @@ public class TypeColor extends TypeAbstract<Color>
 	
 	private static TypeColor i = new TypeColor();
 	public static TypeColor get() { return i; }
+	public TypeColor() { super(Color.class); }
 	
 	// -------------------------------------------- //
 	// WRITE VISUAL

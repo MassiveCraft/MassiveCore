@@ -10,6 +10,7 @@ public class TypeByte extends TypeAbstractNumber<Byte>
 	
 	private static TypeByte i = new TypeByte();
 	public static TypeByte get() { return i; }
+	public TypeByte() { super(Byte.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

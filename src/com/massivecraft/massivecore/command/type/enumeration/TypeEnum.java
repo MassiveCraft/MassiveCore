@@ -18,6 +18,7 @@ public class TypeEnum<T extends Enum<T>> extends TypeAbstractChoice<T>
 	
 	public TypeEnum(Class<T> clazz)
 	{
+		super(clazz);
 		if ( ! clazz.isEnum()) throw new IllegalArgumentException("clazz must be enum");
 		this.clazz = clazz;
 		

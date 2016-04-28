@@ -39,9 +39,10 @@ public class PropertyUsed<V> extends Property<CommandSender, V>
 	}
 	
 	@Override
-	public void setRaw(CommandSender sender, V used)
+	public CommandSender setRaw(CommandSender sender, V used)
 	{
 		this.used = used;
+		return sender;
 	}
 
 }

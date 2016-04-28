@@ -53,6 +53,8 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		
 		// Requirements
 		this.addRequirements(RequirementEditorUse.get());
+		this.addRequirements(settings.getPropertyRequirements());
+		this.addRequirements(property.getRequirements());
 	}
 
 	// -------------------------------------------- //
@@ -158,7 +160,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 
 		// Apply
 		// We set the new property value.
-		this.getProperty().setValue(sender, this.getObject(), after);
+		this.setValue(after);
 
 		// After
 		// We inform what the value is after.
@@ -195,10 +197,18 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	{
 		return this.getSettings().getUsed(sender);
 	}
+	public void setObject(CommandSender sender, O object)
+	{
+		this.getSettings().setUsed(sender, object);
+	}
 	
 	public O getObject()
 	{
 		return this.getSettings().getUsed(sender);
+	}
+	public void setObject(O object)
+	{
+		this.setObject(sender, object);
 	}
 	
 	public Mson getObjectVisual()
@@ -233,9 +243,11 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		return this.getProperty().getValue(this.getObject());
 	}
 	
-	public V setValue(V value)
+	public O setValue(V value)
 	{
-		return this.getProperty().setValue(sender, this.getObject(), value);
+		O object = this.getProperty().setValue(sender, this.getObject(), value);
+		this.setObject(object);
+		return object;
 	}
 	
 	public Entry<O, V> getInheritedEntry()
@@ -289,33 +301,41 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	
 	public void show(int page)
 	{
-		Mson descValue = this.getInheritedVisual();
+		List<Mson> show = this.getValueType().getShow(this.getValue(), sender);
+		
+		Property<O, V> property = this.getProperty();
+		Mson descProperty = property.getDisplayNameMson();
+		Mson descObject = this.getObjectVisual();
+		
+		Mson title;
+		if (property instanceof PropertyThis)
+		{
+			title = descObject;
+		}
+		else
+		{
+			title = mson(
+				descProperty,
+				" for ",
+				descObject
+			);
+		}
 		
 		// For things with line breaks.
-		if (descValue.contains("\n"))
+		if (show.size() > 1)
 		{
-			Mson title = mson(
-				this.getProperty().getDisplayNameMson(),
-				" for ",
-				this.getObjectVisual()
-			);
-			List<Mson> lines = descValue.split(Txt.PATTERN_NEWLINE);
-			
-			message(Txt.getPage(lines, page, title, this));
+			message(Txt.getPage(show, page, title, this));
 		}
 		// Others
 		else
 		{
-			Mson descProperty = this.getProperty().getDisplayNameMson();
-			Mson descObject = this.getObjectVisual();
+
 			
-			message(mson(
-				descProperty,
-				" for ",
-				descObject,
-				": ",
-				descValue
-			).color(ChatColor.GRAY));			
+			message(Mson.prepondfix(
+				title.add(mson(":").color(ChatColor.GRAY)),
+				show,
+				null
+			));
 		}
 	}
 	

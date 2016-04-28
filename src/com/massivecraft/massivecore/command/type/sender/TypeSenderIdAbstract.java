@@ -31,8 +31,9 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public TypeSenderIdAbstract(SenderIdSource source, SenderPresence presence, SenderType type)
+	public TypeSenderIdAbstract(Class<?> clazz, SenderIdSource source, SenderPresence presence, SenderType type)
 	{
+		super(clazz);
 		if (source == null) throw new NullPointerException("source");
 		if (presence == null) throw new NullPointerException("presence");
 		if (type == null) throw new NullPointerException("type");
@@ -42,19 +43,19 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		this.type = type;
 	}
 	
-	public TypeSenderIdAbstract(SenderIdSource source, SenderPresence presence)
+	public TypeSenderIdAbstract(Class<?> clazz, SenderIdSource source, SenderPresence presence)
 	{
-		this(source, presence, SenderType.ANY);
+		this(clazz, source, presence, SenderType.ANY);
 	}
 	
-	public TypeSenderIdAbstract(SenderIdSource source, SenderType type)
+	public TypeSenderIdAbstract(Class<?> clazz, SenderIdSource source, SenderType type)
 	{
-		this(source, SenderPresence.ANY, type);
+		this(clazz, source, SenderPresence.ANY, type);
 	}
 	
-	public TypeSenderIdAbstract(SenderIdSource source)
+	public TypeSenderIdAbstract(Class<?> clazz, SenderIdSource source)
 	{
-		this(source, SenderPresence.ANY);
+		this(clazz, source, SenderPresence.ANY);
 	}
 	
 	// -------------------------------------------- //

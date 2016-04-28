@@ -54,6 +54,7 @@ public class TypeBoolean extends TypeAbstractChoice<Boolean>
 	
 	public TypeBoolean(String t, String f)
 	{
+		super(Boolean.class);
 		this.stringTrue = t;
 		this.stringFalse = f;
 		this.setAll(

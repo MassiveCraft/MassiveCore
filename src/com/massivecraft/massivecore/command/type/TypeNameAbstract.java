@@ -6,7 +6,6 @@ import java.util.Collections;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.TypeAbstract;
 
 public abstract class TypeNameAbstract extends TypeAbstract<String>
 {
@@ -24,6 +23,7 @@ public abstract class TypeNameAbstract extends TypeAbstract<String>
 
 	public TypeNameAbstract(boolean strict)
 	{
+		super(String.class);
 		this.strict = strict;
 	}
 

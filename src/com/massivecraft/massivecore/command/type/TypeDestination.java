@@ -17,6 +17,7 @@ public class TypeDestination extends TypeAbstract<Destination>
 	
 	private static TypeDestination i = new TypeDestination();
 	public static TypeDestination get() { return i; }
+	public TypeDestination() { super(Destination.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -99,6 +99,24 @@ public class ReflectionUtil
 		}
 	}
 	
+	public static boolean hasMethod(Class<?> clazz, String name)
+	{
+		return hasMethod(clazz, name, EMPTY_ARRAY_OF_CLASS);
+	}
+	
+	public static boolean hasMethod(Class<?> clazz, String name, Class<?>... parameterTypes)
+	{
+		try
+		{
+			getMethod(clazz, name, parameterTypes);
+			return true;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+	
 	public static Method getMethod(Class<?> clazz, String name)
 	{
 		return getMethod(clazz, name, EMPTY_ARRAY_OF_CLASS);

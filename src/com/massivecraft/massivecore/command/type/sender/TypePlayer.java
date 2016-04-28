@@ -17,7 +17,7 @@ public class TypePlayer extends TypeSenderIdAbstract<Player>
 	public static TypePlayer get() { return i; }
 	private TypePlayer()
 	{
-		super(SenderIdSourceMixinAllSenderIds.get(), SenderPresence.LOCAL, SenderType.PLAYER);
+		super(Player.class, SenderIdSourceMixinAllSenderIds.get(), SenderPresence.LOCAL, SenderType.PLAYER);
 	}
 	
 	// -------------------------------------------- //

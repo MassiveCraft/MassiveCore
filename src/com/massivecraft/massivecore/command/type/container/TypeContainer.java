@@ -25,8 +25,9 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public TypeContainer(Type<E> innerType)
+	public TypeContainer(Class<?> clazz, Type<E> innerType)
 	{
+		super(clazz);
 		this.setInnerType(innerType);
 	}
 	

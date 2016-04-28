@@ -42,9 +42,6 @@ public class CmdMassiveCore extends MassiveCommand
 	
 	public CmdMassiveCore()
 	{
-		// Tweak
-		this.cmdMassiveCoreConfig.setAliases("config");
-		
 		// Children
 		this.addChild(this.cmdMassiveCoreUsys);
 		this.addChild(this.cmdMassiveCoreMStore);

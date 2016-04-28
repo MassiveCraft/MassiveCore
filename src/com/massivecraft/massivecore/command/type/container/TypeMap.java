@@ -25,7 +25,7 @@ public class TypeMap<K, V> extends TypeContainer<Map<K, V>, Entry<K, V>>
 	
 	public TypeMap(TypeEntry<K, V> entryType)
 	{
-		super(entryType);
+		super(Map.class, entryType);
 	}
 	
 	// -------------------------------------------- //

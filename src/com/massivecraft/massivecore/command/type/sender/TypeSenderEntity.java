@@ -20,25 +20,25 @@ public class TypeSenderEntity<T extends SenderEntity<T>> extends TypeSenderIdAbs
 	
 	private TypeSenderEntity(SenderColl<T> coll, SenderPresence presence, SenderType type)
 	{
-		super(coll, presence, type);
+		super(SenderEntity.class, coll, presence, type);
 		this.coll = coll;
 	}
 	
 	private TypeSenderEntity(SenderColl<T> coll, SenderPresence presence)
 	{
-		super(coll, presence);
+		super(SenderEntity.class, coll, presence);
 		this.coll = coll;
 	}
 	
 	private TypeSenderEntity(SenderColl<T> coll, SenderType type)
 	{
-		super(coll, type);
+		super(SenderEntity.class, coll, type);
 		this.coll = coll;
 	}
 	
 	private TypeSenderEntity(SenderColl<T> coll)
 	{
-		super(coll);
+		super(SenderEntity.class, coll);
 		this.coll = coll;
 	}
 	

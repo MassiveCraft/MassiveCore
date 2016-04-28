@@ -8,6 +8,10 @@ import org.bukkit.Sound;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorName;
+import com.massivecraft.massivecore.command.editor.annotation.EditorNullable;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.type.TypeId;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
 import com.massivecraft.massivecore.util.MUtil;
 
@@ -19,6 +23,9 @@ public final class SoundEffect implements Serializable
 	// FIELDS: RAW
 	// -------------------------------------------- //
 	
+	@EditorNullable(false)
+	@EditorName("sound")
+	@EditorType(value = TypeId.class, fieldName = "iSound")
 	private final String soundId;
 	public String getSoundId() { return this.soundId; }
 	public Sound getSound()

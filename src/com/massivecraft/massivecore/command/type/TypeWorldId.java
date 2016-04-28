@@ -14,6 +14,7 @@ public class TypeWorldId extends TypeAbstractChoice<String>
 	
 	private static TypeWorldId i = new TypeWorldId();
 	public static TypeWorldId get() { return i; }
+	public TypeWorldId() { super(String.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

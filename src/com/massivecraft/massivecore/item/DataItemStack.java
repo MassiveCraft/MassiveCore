@@ -16,6 +16,18 @@ import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveTreeMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
+import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeList;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeMap;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeSet;
+import com.massivecraft.massivecore.command.type.TypeMaterialId;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterColor;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterDyeColor;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterEnchant;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterItemFlag;
+import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
+import com.massivecraft.massivecore.command.type.primitive.TypeStringParsed;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
@@ -32,6 +44,7 @@ import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
  * It is mainly used by the ItemStackAdapter and InventoryAdapter.
  * It can also be used directly, for example in maps, since it provides a stable equals and hash code method (as opposed to Bukkit). 
  */
+@EditorMethods(true)
 public class DataItemStack implements Comparable<DataItemStack>
 {
 	// -------------------------------------------- //
@@ -72,6 +85,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// FIELDS > BASIC
 	// -------------------------------------------- //
 	
+	@EditorType(value = TypeMaterialId.class)
 	private Integer id = null;
 	public int getId() { return get(this.id, DEFAULT_ID); }
 	public DataItemStack setId(int id) { this.id = set(id, DEFAULT_ID); return this; }
@@ -88,10 +102,12 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// FIELDS > UNSPECIFIC
 	// -------------------------------------------- //
 	
+	@EditorType(TypeStringParsed.class)
 	private String name = null;
 	public String getName() { return get(this.name, DEFAULT_NAME); }
 	public DataItemStack setName(String name) { this.name = set(name, DEFAULT_NAME); return this; }
 	
+	@EditorTypeList(TypeStringParsed.class)
 	private MassiveListDef<String> lore = null;
 	public List<String> getLore() { return get(this.lore, DEFAULT_LORE); }
 	public DataItemStack setLore(List<String> lore) { this.lore = set(lore, DEFAULT_LORE); return this; }
@@ -99,6 +115,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// The Bukkit ItemMeta#getEnchants() is not sorted by the enchant id.
 	// There may be some sort of custom sorting order, I'm not sure.
 	// We are however enforcing sorting by the enchant id ourselves to be sure.
+	@EditorTypeMap(typeKey = TypeConverterEnchant.class, typeValue = TypeInteger.class)
 	private MassiveTreeMapDef<Integer, Integer, ComparatorSmart> enchants = null;
 	public Map<Integer, Integer> getEnchants() { return get(this.enchants, DEFAULT_ENCHANTS); }
 	public DataItemStack setEnchants(Map<Integer, Integer> enchants) { this.enchants = set(enchants, DEFAULT_ENCHANTS); return this; }
@@ -111,6 +128,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// FIELDS > BOOK
 	// -------------------------------------------- //
 	
+	@EditorType(TypeStringParsed.class)
 	private String title = null;
 	public String getTitle() { return get(this.title, DEFAULT_TITLE); }
 	public DataItemStack setTitle(String title) { this.title = set(title, DEFAULT_TITLE); return this; }
@@ -119,6 +137,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public String getAuthor() { return get(this.author, DEFAULT_AUTHOR); }
 	public DataItemStack setAuthor(String author) { this.author = set(author, DEFAULT_AUTHOR); return this; }
 	
+	@EditorTypeList(TypeStringParsed.class)
 	private MassiveListDef<String> pages = null;
 	public List<String> getPages() { return get(this.pages, DEFAULT_PAGES); }
 	public DataItemStack setPages(Collection<String> pages) { this.pages = set(pages, DEFAULT_PAGES); return this; }
@@ -127,6 +146,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// FIELDS > LEATHER ARMOR
 	// -------------------------------------------- //
 	
+	@EditorType(TypeConverterColor.class)
 	private Integer color = null;
 	public Integer getColor() { return get(this.color, DEFAULT_COLOR); }
 	public DataItemStack setColor(int color) { this.color = set(color, DEFAULT_COLOR); return this; }
@@ -186,6 +206,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// FIELDS > STORED ENCHANTS
 	// -------------------------------------------- //
 	
+	@EditorTypeMap(typeKey = TypeConverterEnchant.class, typeValue = TypeInteger.class)
 	@SerializedName("stored-enchants")
 	private MassiveTreeMapDef<Integer, Integer, ComparatorSmart> storedEnchants = null;
 	public Map<Integer, Integer> getStoredEnchants() { return get(this.storedEnchants, DEFAULT_STORED_ENCHANTS); }
@@ -205,6 +226,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// -------------------------------------------- //
 	// SINCE: 1.8
 	
+	@EditorTypeSet(TypeConverterItemFlag.class)
 	private MassiveTreeSetDef<String, ComparatorSmart> flags = null;
 	public Set<String> getFlags() { return get(this.flags, DEFAULT_FLAGS); }
 	public DataItemStack setFlags(Set<String> flags) { this.flags = set(flags, DEFAULT_FLAGS); return this; }
@@ -216,6 +238,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// The integer is the dye color byte representation.
 	// Is actually nullable in Bukkit.
 	
+	@EditorType(TypeConverterDyeColor.class)
 	@SerializedName("banner-base")
 	private Integer bannerBase = null;
 	public Integer getBannerBase() { return get(this.bannerBase, DEFAULT_BANNER_BASE); }

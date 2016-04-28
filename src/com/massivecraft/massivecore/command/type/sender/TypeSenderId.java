@@ -13,22 +13,22 @@ public class TypeSenderId extends TypeSenderIdAbstract<String>
 	
 	private TypeSenderId(SenderIdSource source, SenderPresence presence, SenderType type)
 	{
-		super(source, presence, type);
+		super(String.class, source, presence, type);
 	}
 	
 	private TypeSenderId(SenderIdSource source, SenderPresence presence)
 	{
-		super(source, presence);
+		super(String.class, source, presence);
 	}
 	
 	private TypeSenderId(SenderIdSource source, SenderType type)
 	{
-		super(source, type);
+		super(String.class, source, type);
 	}
 	
 	private TypeSenderId(SenderIdSource source)
 	{
-		super(source);
+		super(String.class, source);
 	}
 	
 	// -------------------------------------------- //

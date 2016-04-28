@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.command.type;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,9 +20,11 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
+import com.massivecraft.massivecore.command.editor.CommandEditProperties;
 import com.massivecraft.massivecore.command.editor.CommandEditSimple;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
+import com.massivecraft.massivecore.command.editor.PropertyReflection;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.SenderEntity;
@@ -65,6 +68,29 @@ public abstract class TypeAbstract<T> implements Type<T>
 		// We split at uppercase letters, because most class names are camel-case.
 		final String[] words = Txt.PATTERN_UPPERCASE.split(name);
 		return Txt.implode(words, " ").toLowerCase();
+	}
+	
+	protected final Class<T> clazz;
+	public Class<T> getClazz() { return this.clazz; }
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	public TypeAbstract(Class<?> clazz)
+	{
+		this.clazz = (Class<T>) clazz;
+		
+		try
+		{
+			constructor = ReflectionUtil.getConstructor(clazz);	
+		}
+		catch(Exception e)
+		{
+			
+		}
+		
 	}
 	
 	// -------------------------------------------- //
@@ -111,6 +137,47 @@ public abstract class TypeAbstract<T> implements Type<T>
 	}
 	
 	// -------------------------------------------- //
+	// INNER PROPERTY
+	// -------------------------------------------- //
+	
+	protected List<Property<T, ?>> innerProperties = new MassiveList<>();
+	
+	public boolean hasInnerProperties() { return ! this.getInnerProperties().isEmpty(); }
+	
+	@SuppressWarnings("unchecked")
+	public <I extends Property<T, ?>> List<I> getInnerProperties() { return (List<I>) this.innerProperties; }
+	@SuppressWarnings("unchecked")
+	public <I extends Property<T, ?>> I getInnerProperty(int index) { return (I) this.getInnerProperties().get(index); }
+	
+	public <I extends Property<T, ?>> void setInnerProperties(Collection<I> innerProperties) { this.innerProperties = new MassiveList<Property<T, ?>>(innerProperties); }
+	@SuppressWarnings("unchecked")
+	public <I extends Property<T, ?>> void setInnerProperties(I... innerProperties) { this.setInnerProperties(Arrays.asList(innerProperties)); }
+	public void setInnerProperties(Class<T> clazz) { this.setInnerProperties(PropertyReflection.getAll(clazz, this)); }
+	
+	// -------------------------------------------- //
+	// WRITE SHOW
+	// -------------------------------------------- //
+	// A list of property values.
+	
+	public List<Mson> getShowInner(T value, CommandSender sender)
+	{
+		if (this.hasInnerProperties())
+		{
+			return Property.getShowLines(value, sender, this.getInnerProperties());
+		}
+		return this.getVisualMsonInner(value, sender).split(Txt.PATTERN_NEWLINE);
+	}
+	public List<Mson> getShow(T value, CommandSender sender)
+	{
+		if (value == null) return Collections.singletonList(MSON_NULL);
+		return this.getShowInner(value, sender);
+	}
+	public List<Mson> getShow(T value)
+	{
+		return this.getShow(value, null);
+	}
+	
+	// -------------------------------------------- //
 	// WRITE VISUAL COLOR
 	// -------------------------------------------- //
 	
@@ -153,8 +220,10 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public Mson getVisualMsonInner(T value, CommandSender sender)
 	{
 		String visualInner = this.getVisualInner(value, sender);
-		if (visualInner == null) MUtil.stackTraceDebug("visualInner null for + " + value);
-		return Mson.fromParsedMessage(visualInner);
+		
+		Mson ret = Mson.fromParsedMessage(visualInner);
+		if (this.hasInnerProperties()) ret.tooltip(Mson.toPlain(this.getShow(value, sender), true));
+		return ret;
 	}
 	
 	@Override
@@ -581,13 +650,29 @@ public abstract class TypeAbstract<T> implements Type<T>
 	@Override 
 	public <O> CommandEditAbstract<O, T> createEditCommand(EditSettings<O> settings, Property<O, T> property)
 	{
-		return new CommandEditSimple<O, T>(settings, property);
+		if (this.hasInnerProperties())
+		{
+			return new CommandEditProperties<O, T>(settings, property, null); 
+		}
+		else
+		{
+			return new CommandEditSimple<O, T>(settings, property);	
+		}
 	}
 	
+	
+	private Constructor<T> constructor;
 	@Override
 	public T createNewInstance()
 	{
-		return null;
+		try
+		{
+			return this.constructor.newInstance();
+		}
+		catch (Exception e)
+		{
+			return null;
+		}
 	}
-	
+
 }

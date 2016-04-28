@@ -10,6 +10,7 @@ public class TypeInteger extends TypeAbstractNumber<Integer>
 	
 	private static TypeInteger i = new TypeInteger();
 	public static TypeInteger get() { return i; }
+	public TypeInteger() { super(Integer.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

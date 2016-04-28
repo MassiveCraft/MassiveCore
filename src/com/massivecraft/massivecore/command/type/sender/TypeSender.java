@@ -17,7 +17,7 @@ public class TypeSender extends TypeSenderIdAbstract<CommandSender>
 	public static TypeSender get() { return i; }
 	private TypeSender()
 	{
-		super(SenderIdSourceMixinAllSenderIds.get(), SenderPresence.LOCAL, SenderType.ANY);
+		super(CommandSender.class, SenderIdSourceMixinAllSenderIds.get(), SenderPresence.LOCAL, SenderType.ANY);
 	}
 	
 	// -------------------------------------------- //

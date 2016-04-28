@@ -20,8 +20,9 @@ public abstract class TypeAbstractNumber<T extends Number> extends TypeAbstractS
 	// OVERRIDE
 	// -------------------------------------------- //
 	
-	public TypeAbstractNumber()
+	public TypeAbstractNumber(Class<T> clazz)
 	{
+		super(clazz);
 		this.setVisualColor(COLOR_NUMBER);
 	}
 	

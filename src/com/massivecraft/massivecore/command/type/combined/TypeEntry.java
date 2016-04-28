@@ -23,7 +23,7 @@ public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 	public static <K, V> TypeEntry<K, V> get(Type<K> keyType, Type<V> valueType) { return new TypeEntry<K, V>(keyType, valueType); }
 	public TypeEntry(Type<K> keyType, Type<V> valueType)
 	{
-		super(keyType, valueType);
+		super(Entry.class, keyType, valueType);
 		this.setTypeNameSeparator(" and ");
 	}
 	

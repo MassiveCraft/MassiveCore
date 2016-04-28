@@ -13,6 +13,7 @@ public class TypeColl extends TypeAbstractChoice<Coll<?>>
 	
 	private static TypeColl i = new TypeColl();
 	public static TypeColl get() { return i; }
+	public TypeColl() { super(Coll.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

@@ -18,7 +18,7 @@ public class TypeList<E> extends TypeContainer<List<E>, E>
 	
 	public TypeList(Type<E> innerType)
 	{
-		super(innerType);
+		super(List.class, innerType);
 	}
 	
 	// -------------------------------------------- //

@@ -7,9 +7,14 @@ import java.util.Objects;
 
 import org.bukkit.potion.PotionEffect;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterColor;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterPotionEffectType;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
 
+@EditorMethods(true)
 public class DataPotionEffect implements Comparable<DataPotionEffect>
 {
 	// -------------------------------------------- //
@@ -27,6 +32,7 @@ public class DataPotionEffect implements Comparable<DataPotionEffect>
 	// FIELDS
 	// -------------------------------------------- //
 	
+	@EditorType(value = TypeConverterPotionEffectType.class)
 	private Integer id = null;
 	public Integer getId() { return get(this.id, DEFAULT_ID); }
 	public DataPotionEffect setId(Integer id) { this.id = set(id, DEFAULT_ID); return this; }
@@ -49,6 +55,7 @@ public class DataPotionEffect implements Comparable<DataPotionEffect>
 	public DataPotionEffect setParticles(boolean particles) { this.particles = set(particles, DEFAULT_PARTICLES); return this; }
 	
 	// SINCE: 1.9
+	@EditorType(TypeConverterColor.class)
 	private Integer color = null;
 	public Integer getColor() { return get(this.color, DEFAULT_COLOR); }
 	public DataPotionEffect setColor(Integer color) { this.color = set(color, DEFAULT_COLOR); return this; }

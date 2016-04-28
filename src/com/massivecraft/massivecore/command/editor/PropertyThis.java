@@ -24,9 +24,9 @@ public class PropertyThis<O> extends Property<O, O>
 	}
 
 	@Override
-	public void setRaw(O object, O value)
+	public O setRaw(O object, O value)
 	{
-		return;
+		return object;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.permissions.Permissible;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorNullable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.store.Entity;
@@ -14,6 +15,7 @@ import com.massivecraft.massivecore.util.PermUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
 
+@EditorName("config")
 public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 {
 	// -------------------------------------------- //

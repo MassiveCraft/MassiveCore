@@ -19,6 +19,7 @@ public class TypeEntity<T extends Entity<T>> extends TypeAbstractChoice<T>
 	
 	public TypeEntity(Coll<T> coll)
 	{
+		super(coll.getEntityClass());
 		this.coll = coll;
 	}
 	
@@ -51,6 +52,12 @@ public class TypeEntity<T extends Entity<T>> extends TypeAbstractChoice<T>
 	public Collection<T> getAll()
 	{
 		return this.getColl().getAll();
+	}
+	
+	@Override
+	public T createNewInstance()
+	{
+		return this.getColl().createNewInstance();
 	}
 
 }

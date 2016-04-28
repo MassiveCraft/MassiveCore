@@ -66,6 +66,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	
 	public TypeTransformer(Type<I> typeInner, Type<O> typeOuter)
 	{
+		super(typeOuter.getClazz());
 		this.setInnerTypes(typeInner, typeOuter);
 		INNER = typeInner;
 		OUTER = typeOuter;
@@ -87,6 +88,22 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	public String getName()
 	{
 		return INNER.getName();
+	}
+	
+	// -------------------------------------------- //
+	// INNER PROPERTIES
+	// -------------------------------------------- //
+	
+	@Override
+	public <U extends Property<O, ?>> List<U> getInnerProperties()
+	{
+		return OUTER.getInnerProperties();
+	}
+	
+	@Override
+	public <U extends Property<O, ?>> void setInnerProperties(Collection<U> innerProperties)
+	{
+		OUTER.setInnerProperties(innerProperties);
 	}
 	
 	// -------------------------------------------- //

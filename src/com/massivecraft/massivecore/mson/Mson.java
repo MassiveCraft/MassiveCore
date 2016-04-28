@@ -1228,6 +1228,18 @@ public class Mson implements Serializable
 		return raw;
 	}
 	
+	public static List<String> toPlain(Iterable<Mson> iterable, boolean styled)
+	{
+		List<String> ret = new MassiveList<>();
+		
+		for (Mson mson : iterable)
+		{
+			ret.add(mson.toPlain(styled));
+		}
+		
+		return ret;
+	}
+	
 	public String toPlain(boolean styled)
 	{
 		final StringBuilder ret = new StringBuilder();

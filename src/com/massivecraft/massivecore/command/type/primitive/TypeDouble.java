@@ -10,6 +10,7 @@ public class TypeDouble extends TypeAbstractNumber<Double>
 	
 	private static TypeDouble i = new TypeDouble();
 	public static TypeDouble get() { return i; }
+	public TypeDouble() { super(Double.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

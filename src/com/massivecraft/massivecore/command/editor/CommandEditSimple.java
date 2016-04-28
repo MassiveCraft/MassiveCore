@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.command.editor;
 
 import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeNullable;
 
 public class CommandEditSimple<O, V> extends CommandEditAbstract<O, V>
@@ -17,7 +18,9 @@ public class CommandEditSimple<O, V> extends CommandEditAbstract<O, V>
 		// Parameters
 		if (property.isEditable())
 		{
-			this.addParameter(TypeNullable.get(this.getProperty().getValueType()), "set", "show", true);	
+			Type<V> type = this.getValueType();
+			if (property.isNullable()) type = TypeNullable.get(type);
+			this.addParameter(type, "set", "show", true);	
 		}
 	}
 	

@@ -14,6 +14,15 @@ public abstract class TypeAbstractException<T> extends TypeAbstract<T>
 	public abstract T valueOf(String arg, CommandSender sender) throws Exception;
 	
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public TypeAbstractException(Class<?> clazz)
+	{
+		super(clazz);
+	}
+	
+	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	

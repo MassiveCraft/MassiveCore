@@ -36,6 +36,7 @@ public class TypeItemStack extends TypeAbstract<ItemStack>
 	
 	public TypeItemStack(ExceptionSet<Material> materialsAllowed)
 	{
+		super(ItemStack.class);
 		this.materialsAllowed = materialsAllowed;
 	}
 	

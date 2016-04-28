@@ -1,20 +1,25 @@
 package com.massivecraft.massivecore.item;
 
+import static com.massivecraft.massivecore.item.DataItemStack.get;
+import static com.massivecraft.massivecore.item.DataItemStack.set;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import org.bukkit.FireworkEffect;
 
-import static com.massivecraft.massivecore.item.DataItemStack.get;
-import static com.massivecraft.massivecore.item.DataItemStack.set;
-
 import com.massivecraft.massivecore.collections.MassiveListDef;
+import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeList;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterColor;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterFireworkEffectType;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
 
-
+@EditorMethods(true)
 public class DataFireworkEffect implements Comparable<DataFireworkEffect>
 {
 	// -------------------------------------------- //
@@ -41,15 +46,18 @@ public class DataFireworkEffect implements Comparable<DataFireworkEffect>
 	public boolean hasTrail() { return get(this.trail, DEFAULT_TRAIL); }
 	public DataFireworkEffect setTrail(boolean trail) { this.trail = set(trail, DEFAULT_TRAIL); return this; }
 	
+	@EditorTypeList(TypeConverterColor.class)
 	private MassiveListDef<Integer> colors = null;
 	public List<Integer> getColors() { return get(this.colors, DEFAULT_COLORS); }
 	public DataFireworkEffect setColors(List<Integer> colors) { this.colors = set(colors, DEFAULT_COLORS); return this; }
 	
+	@EditorTypeList(TypeConverterColor.class)
 	@SerializedName("fade-colors")
 	private MassiveListDef<Integer> fadeColors = null;
 	public List<Integer> getFadeColors() { return get(this.fadeColors, DEFAULT_FADE_COLORS); }
 	public DataFireworkEffect setFadeColors(List<Integer> fadeColors) { this.fadeColors = set(fadeColors, DEFAULT_FADE_COLORS); return this; }
 	
+	@EditorType(TypeConverterFireworkEffectType.class)
 	private String type = null;
 	public String getType() { return get(this.type, DEFAULT_TYPE); }
 	public DataFireworkEffect setType(String type) { this.type = set(type, DEFAULT_TYPE); return this; }

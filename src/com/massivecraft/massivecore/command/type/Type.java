@@ -24,8 +24,10 @@ public interface Type<T> extends Named
 	// Human friendly name
 	public String getName();
 	
+	public Class<T> getClazz();
+	
 	// -------------------------------------------- //
-	// INNER
+	// INNER TYPE
 	// -------------------------------------------- //
 	
 	public <I extends Type<?>> List<I> getInnerTypes();
@@ -43,12 +45,34 @@ public interface Type<T> extends Named
 	public Integer getIndexTech(int indexUser);
 	
 	// -------------------------------------------- //
+	// INNER PROPERTY
+	// -------------------------------------------- //
+	
+	public boolean hasInnerProperties();
+	
+	public <I extends Property<T, ?>> List<I> getInnerProperties();
+	public <I extends Property<T, ?>> I getInnerProperty(int index);
+	
+	public <I extends Property<T, ?>> void setInnerProperties(Collection<I> innerTypes);
+	@SuppressWarnings("unchecked")
+	public <I extends Property<T, ?>> void setInnerProperties(I... innerTypes);
+
+	// -------------------------------------------- //
 	// WRITE VISUAL COLOR
 	// -------------------------------------------- //
 	
 	public ChatColor getVisualColor(T value, CommandSender sender);
 	public ChatColor getVisualColor(T value);
 	public void setVisualColor(ChatColor color);
+	
+	// -------------------------------------------- //
+	// WRITE SHOW
+	// -------------------------------------------- //
+	// A list of property values.
+	
+	public List<Mson> getShowInner(T value, CommandSender sender);
+	public List<Mson> getShow(T value, CommandSender sender);
+	public List<Mson> getShow(T value);
 	
 	// -------------------------------------------- //
 	// WRITE VISUAL MSON

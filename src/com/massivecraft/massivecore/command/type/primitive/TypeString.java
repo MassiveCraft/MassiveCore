@@ -15,6 +15,7 @@ public class TypeString extends TypeAbstract<String>
 	
 	private static TypeString i = new TypeString();
 	public static TypeString get() { return i; }
+	public TypeString() { super(String.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

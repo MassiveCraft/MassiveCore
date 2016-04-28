@@ -18,7 +18,7 @@ public class TypeSet<E> extends TypeContainer<Set<E>, E>
 	
 	public TypeSet(Type<E> innerType)
 	{
-		super(innerType);
+		super(Set.class, innerType);
 	}
 	
 	// -------------------------------------------- //

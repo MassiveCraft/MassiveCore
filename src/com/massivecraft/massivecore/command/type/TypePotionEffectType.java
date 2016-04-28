@@ -12,6 +12,7 @@ public class TypePotionEffectType extends TypeAbstractChoice<PotionEffectType>
 	public static TypePotionEffectType get() { return i; }
 	public TypePotionEffectType()
 	{
+		super(PotionEffectType.class);
 		this.setAll(PotionEffectType.values());
 	}
 	

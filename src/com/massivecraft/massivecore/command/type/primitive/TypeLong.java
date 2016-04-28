@@ -10,6 +10,7 @@ public class TypeLong extends TypeAbstractNumber<Long>
 	
 	private static TypeLong i = new TypeLong();
 	public static TypeLong get() { return i; }
+	public TypeLong() { super(Long.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

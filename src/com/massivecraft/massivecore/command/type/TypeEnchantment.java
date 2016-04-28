@@ -19,6 +19,7 @@ public class TypeEnchantment extends TypeAbstractChoice<Enchantment>
 	public static TypeEnchantment get() { return i; }
 	public TypeEnchantment()
 	{
+		super(Enchantment.class);
 		this.setVisualColor(ChatColor.AQUA);
 		this.setAll(Enchantment.values());
 	}

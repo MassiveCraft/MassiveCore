@@ -29,6 +29,15 @@ public abstract class TypeAbstractSelect<T> extends TypeAbstract<T> implements A
 	public boolean canList(CommandSender sender) { return true; }
 	
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public TypeAbstractSelect(Class<?> clazz)
+	{
+		super(clazz);
+	}
+	
+	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	

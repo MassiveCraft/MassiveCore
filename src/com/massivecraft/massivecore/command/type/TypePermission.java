@@ -12,6 +12,7 @@ public class TypePermission extends TypeAbstractChoice<Permission>
 	
 	private static TypePermission i = new TypePermission();
 	public static TypePermission get() { return i; }
+	public TypePermission() { super(Permission.class); }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

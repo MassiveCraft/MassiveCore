@@ -5,7 +5,16 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeAbstractSimple<T> extends TypeAbstractException<T>
-{	
+{
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public TypeAbstractSimple(Class<?> clazz)
+	{
+		super(clazz);
+	}
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //

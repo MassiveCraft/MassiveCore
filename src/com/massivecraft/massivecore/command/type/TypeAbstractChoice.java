@@ -96,6 +96,15 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public void setTabs(Collection<String> tabs) { this.tabs = tabs; }
 	
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public TypeAbstractChoice(Class<?> clazz)
+	{
+		super(clazz);
+	}
+	
+	// -------------------------------------------- //
 	// OVERRIDE: TYPE
 	// -------------------------------------------- //
 	

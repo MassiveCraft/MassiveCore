@@ -36,9 +36,9 @@ public class PropertyThisSenderEntity<O extends SenderEntity<O>> extends Propert
 	}
 
 	@Override
-	public void setRaw(CommandSender object, O value)
+	public CommandSender setRaw(CommandSender object, O value)
 	{
-		return;
+		return object;
 	}
 
 }

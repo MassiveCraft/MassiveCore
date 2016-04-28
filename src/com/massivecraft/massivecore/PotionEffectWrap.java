@@ -8,6 +8,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterPotionEffectType;
 
 /**
  * This class wraps the Bukkit PotionEffect class by reimplementing storage of the data.
@@ -21,6 +23,7 @@ public class PotionEffectWrap
 	// FIELDS
 	// -------------------------------------------- //
 	
+	@EditorType(TypeConverterPotionEffectType.class)
 	protected int id;
 	public int getId() { return this.id; }
 	public void setId(int id) { this.id = id; }

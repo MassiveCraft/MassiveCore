@@ -47,6 +47,7 @@ import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreClick;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreCmdurl;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreStore;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreUsys;
+import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreGank;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreChestGui;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreCollTick;
@@ -233,6 +234,9 @@ public class MassiveCore extends MassivePlugin
 		
 		// Setup IdUtil
 		IdUtil.setup();
+		
+		// Setup RegistryType
+		RegistryType.registerAll();
 		
 		// Activate
 		this.activate(

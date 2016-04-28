@@ -27,8 +27,8 @@ public class TypeUniverse extends TypeAbstractChoice<String>
 	public static TypeUniverse get(Aspect aspect) { return new TypeUniverse(aspect); }
 	public static TypeUniverse get(Multiverse multiverse) { return new TypeUniverse(multiverse); }
 	
-	public TypeUniverse(Aspect aspect) { this.aspect = aspect; }
-	public TypeUniverse(Multiverse multiverse) { this.multiverse = multiverse; }
+	public TypeUniverse(Aspect aspect) { super(String.class); this.aspect = aspect; }
+	public TypeUniverse(Multiverse multiverse) { super(String.class); this.multiverse = multiverse; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE

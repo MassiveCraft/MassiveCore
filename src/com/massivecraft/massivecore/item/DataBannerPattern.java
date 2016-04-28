@@ -6,9 +6,15 @@ import static com.massivecraft.massivecore.item.DataItemStack.set;
 import java.util.Objects;
 
 import org.bukkit.block.banner.Pattern;
+
+import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterBannerPatternType;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterDyeColor;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
 
+@EditorMethods(true)
 public class DataBannerPattern implements Comparable<DataBannerPattern>
 {
 	// -------------------------------------------- //
@@ -22,10 +28,12 @@ public class DataBannerPattern implements Comparable<DataBannerPattern>
 	// FIELDS
 	// -------------------------------------------- //
 	
+	@EditorType(TypeConverterBannerPatternType.class)
 	private String id = null;
 	public String getId() { return get(this.id, DEFAULT_ID); }
 	public DataBannerPattern setId(String id) { this.id = set(id, DEFAULT_ID); return this; }
 	
+	@EditorType(TypeConverterDyeColor.class)
 	private Integer color = null;
 	public Integer getColor() { return get(this.color, DEFAULT_COLOR); }
 	public DataBannerPattern setColor(Integer color) { this.color = set(color, DEFAULT_ID); return this; }
