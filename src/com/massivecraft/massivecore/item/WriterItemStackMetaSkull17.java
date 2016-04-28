@@ -14,6 +14,7 @@ public class WriterItemStackMetaSkull17 extends WriterAbstractItemStackMetaField
 	public static WriterItemStackMetaSkull17 get() { return i; }
 	public WriterItemStackMetaSkull17()
 	{
+		super(SkullMeta.class);
 		this.setMaterial(Material.SKULL_ITEM);
 	}
 	

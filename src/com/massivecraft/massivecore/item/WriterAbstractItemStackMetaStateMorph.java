@@ -8,6 +8,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 public abstract class WriterAbstractItemStackMetaStateMorph<FA, FB> extends WriterAbstractItemStackMetaState<ItemMeta, BlockState, FA, FB>
 {
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public WriterAbstractItemStackMetaStateMorph()
+	{
+		super(BlockState.class);
+	}
+	
+	// -------------------------------------------- //
 	// CREATE
 	// -------------------------------------------- //
 	

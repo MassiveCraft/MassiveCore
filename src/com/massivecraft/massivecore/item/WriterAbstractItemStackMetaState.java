@@ -11,8 +11,10 @@ public abstract class WriterAbstractItemStackMetaState<OB, CB, FA, FB> extends W
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public WriterAbstractItemStackMetaState()
+	public WriterAbstractItemStackMetaState(Class<CB> classCB)
 	{
+		super(classCB);
+		
 		// For the setup to pass we must set a Material with a BlockStateMeta.
 		this.setMaterial(Material.SHIELD);
 	}

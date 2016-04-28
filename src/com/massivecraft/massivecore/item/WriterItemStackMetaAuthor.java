@@ -12,7 +12,10 @@ public class WriterItemStackMetaAuthor extends WriterAbstractItemStackMetaField<
 	
 	private static final WriterItemStackMetaAuthor i = new WriterItemStackMetaAuthor();
 	public static WriterItemStackMetaAuthor get() { return i; }
+	
+	public WriterItemStackMetaAuthor()
 	{
+		super(BookMeta.class);
 		this.setMaterial(Material.WRITTEN_BOOK);
 	}
 	

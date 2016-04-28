@@ -18,6 +18,7 @@ public abstract class WriterAbstractReflect<OA, OB, CA, CB, FA, FB> extends Writ
 	
 	public WriterAbstractReflect(Class<?> clazz, String fieldName)
 	{
+		super(null, null);
 		this.field = (fieldName == null ? null : ReflectionUtil.getField(clazz, fieldName)); 
 	}
 	

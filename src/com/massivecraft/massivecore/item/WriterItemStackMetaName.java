@@ -11,6 +11,10 @@ public class WriterItemStackMetaName extends WriterAbstractItemStackMetaField<It
 	
 	private static final WriterItemStackMetaName i = new WriterItemStackMetaName();
 	public static WriterItemStackMetaName get() { return i; }
+	public WriterItemStackMetaName()
+	{
+		super(ItemMeta.class);
+	}
 	
 	// -------------------------------------------- //
 	// ACCESS

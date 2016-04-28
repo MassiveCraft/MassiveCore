@@ -15,7 +15,10 @@ public class WriterItemStackMetaStateShieldPatterns extends WriterAbstractItemSt
 	
 	private static final WriterItemStackMetaStateShieldPatterns i = new WriterItemStackMetaStateShieldPatterns();
 	public static WriterItemStackMetaStateShieldPatterns get() { return i; }
+	
+	public WriterItemStackMetaStateShieldPatterns()
 	{
+		super(Banner.class);
 		this.setMaterial(Material.SHIELD);
 		this.setConverterTo(ConverterToBannerPatterns.get());
 		this.setConverterFrom(ConverterFromBannerPatterns.get());

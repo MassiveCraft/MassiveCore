@@ -17,6 +17,7 @@ public class WriterItemStackMetaEnchants extends WriterAbstractItemStackMetaFiel
 	public static WriterItemStackMetaEnchants get() { return i; }
 	public WriterItemStackMetaEnchants()
 	{
+		super(ItemMeta.class);
 		this.setConverterTo(ConverterToEnchants.get());
 		this.setConverterFrom(ConverterFromEnchants.get());
 	}

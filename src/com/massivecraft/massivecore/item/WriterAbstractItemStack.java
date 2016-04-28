@@ -8,6 +8,15 @@ import com.massivecraft.massivecore.nms.NmsItemStack;
 public abstract class WriterAbstractItemStack<OB, CB, FA, FB> extends WriterAbstract<DataItemStack, OB, DataItemStack, CB, FA, FB, ItemStack>
 {
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public WriterAbstractItemStack(Class<CB> classCB)
+	{
+		super(DataItemStack.class, classCB);
+	}
+	
+	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	

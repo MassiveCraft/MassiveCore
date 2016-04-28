@@ -14,7 +14,9 @@ public class WriterItemStackMetaPotion extends WriterAbstractItemStackMetaField<
 	
 	private static final WriterItemStackMetaPotion i = new WriterItemStackMetaPotion();
 	public static WriterItemStackMetaPotion get() { return i; }
+	public WriterItemStackMetaPotion()
 	{
+		super(PotionMeta.class);
 		this.setMaterial(Material.POTION);
 	}
 	

@@ -12,7 +12,9 @@ public class WriterItemStackMetaScaling extends WriterAbstractItemStackMetaField
 	
 	private static final WriterItemStackMetaScaling i = new WriterItemStackMetaScaling();
 	public static WriterItemStackMetaScaling get() { return i; }
+	public WriterItemStackMetaScaling()
 	{
+		super(MapMeta.class);
 		this.setMaterial(Material.MAP);
 	}
 	

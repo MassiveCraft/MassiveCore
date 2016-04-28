@@ -13,6 +13,10 @@ public class WriterItemStackMetaLore extends WriterAbstractItemStackMetaField<It
 	
 	private static final WriterItemStackMetaLore i = new WriterItemStackMetaLore();
 	public static WriterItemStackMetaLore get() { return i; }
+	public WriterItemStackMetaLore()
+	{
+		super(ItemMeta.class);
+	}
 	
 	// -------------------------------------------- //
 	// ACCESS

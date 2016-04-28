@@ -14,7 +14,9 @@ public class WriterItemStackMetaPages extends WriterAbstractItemStackMetaField<B
 	
 	private static final WriterItemStackMetaPages i = new WriterItemStackMetaPages();
 	public static WriterItemStackMetaPages get() { return i; }
+	public WriterItemStackMetaPages()
 	{
+		super(BookMeta.class);
 		this.setMaterial(Material.WRITTEN_BOOK);
 	}
 

@@ -15,6 +15,7 @@ public class WriterItemStackMetaBannerBase extends WriterAbstractItemStackMetaFi
 	public static WriterItemStackMetaBannerBase get() { return i; }
 	public WriterItemStackMetaBannerBase()
 	{
+		super(BannerMeta.class);
 		this.setMaterial(Material.BANNER);
 		this.setConverterTo(ConverterToDyeColor.get());
 		this.setConverterFrom(ConverterFromDyeColor.get());

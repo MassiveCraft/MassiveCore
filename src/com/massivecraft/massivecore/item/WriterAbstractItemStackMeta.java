@@ -6,6 +6,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 public abstract class WriterAbstractItemStackMeta<OB, CB, FA, FB> extends WriterAbstractItemStack<OB, CB, FA, FB>
 {
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public WriterAbstractItemStackMeta(Class<CB> classCB)
+	{
+		super(classCB);
+	}
+	
+	// -------------------------------------------- //
 	// CREATE INNER
 	// -------------------------------------------- //
 	

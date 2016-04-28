@@ -15,6 +15,7 @@ public class WriterItemStackMetaStateShieldBase extends WriterAbstractItemStackM
 	public static WriterItemStackMetaStateShieldBase get() { return i; }
 	public WriterItemStackMetaStateShieldBase()
 	{
+		super(Banner.class);
 		this.setMaterial(Material.SHIELD);
 		this.setConverterTo(ConverterToDyeColor.get());
 		this.setConverterFrom(ConverterFromDyeColor.get());

@@ -11,6 +11,10 @@ public class WriterItemStackMetaUnbreakable extends WriterAbstractItemStackMetaF
 	
 	private static final WriterItemStackMetaUnbreakable i = new WriterItemStackMetaUnbreakable();
 	public static WriterItemStackMetaUnbreakable get() { return i; }
+	public WriterItemStackMetaUnbreakable()
+	{
+		super(ItemMeta.class);
+	}
 	
 	// -------------------------------------------- //
 	// ACCESS

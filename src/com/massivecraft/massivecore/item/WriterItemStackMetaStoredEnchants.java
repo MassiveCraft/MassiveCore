@@ -18,6 +18,7 @@ public class WriterItemStackMetaStoredEnchants extends WriterAbstractItemStackMe
 	public static WriterItemStackMetaStoredEnchants get() { return i; }
 	public WriterItemStackMetaStoredEnchants()
 	{
+		super(EnchantmentStorageMeta.class);
 		this.setMaterial(Material.ENCHANTED_BOOK);
 		this.setConverterTo(ConverterToEnchants.get());
 		this.setConverterFrom(ConverterFromEnchants.get());

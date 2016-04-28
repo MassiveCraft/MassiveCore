@@ -16,6 +16,7 @@ public class WriterItemStackMetaFlags extends WriterAbstractItemStackMetaField<I
 	public static WriterItemStackMetaFlags get() { return i; }
 	public WriterItemStackMetaFlags()
 	{
+		super(ItemMeta.class);
 		this.setConverterTo(ConverterToItemFlags.get());
 		this.setConverterFrom(ConverterFromItemFlags.get());
 	}

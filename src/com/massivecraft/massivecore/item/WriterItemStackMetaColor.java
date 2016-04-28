@@ -13,7 +13,10 @@ public class WriterItemStackMetaColor extends WriterAbstractItemStackMetaField<L
 	
 	private static final WriterItemStackMetaColor i = new WriterItemStackMetaColor();
 	public static WriterItemStackMetaColor get() { return i; }
+	
+	public WriterItemStackMetaColor()
 	{
+		super(LeatherArmorMeta.class);
 		this.setMaterial(Material.LEATHER_HELMET);
 		this.setConverterTo(ConverterToColor.get());
 		this.setConverterFrom(ConverterFromColor.get());

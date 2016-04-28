@@ -12,7 +12,9 @@ public class WriterItemStackMetaRepaircost extends WriterAbstractItemStackMetaFi
 	
 	private static final WriterItemStackMetaRepaircost i = new WriterItemStackMetaRepaircost();
 	public static WriterItemStackMetaRepaircost get() { return i; }
+	public WriterItemStackMetaRepaircost()
 	{
+		super(Repairable.class);
 		this.setMaterial(Material.IRON_CHESTPLATE);
 	}
 	

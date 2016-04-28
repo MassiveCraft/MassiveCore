@@ -4,7 +4,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public abstract class WriterAbstractItemStackMetaMorph<FA, FB> extends WriterAbstractItemStackMeta<ItemStack, ItemMeta, FA, FB>
-{	
+{
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public WriterAbstractItemStackMetaMorph()
+	{
+		super(ItemMeta.class);
+	}
+	
 	// -------------------------------------------- //
 	// MORPH
 	// -------------------------------------------- //

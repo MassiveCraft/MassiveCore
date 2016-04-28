@@ -25,6 +25,16 @@ import com.massivecraft.massivecore.util.Txt;
 public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 {
 	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	
+	public WriterAbstract(Class<CA> classCA, Class<CB> classCB)
+	{
+		this.classCA = classCA;
+		this.classCB = classCB;
+	}
+	
+	// -------------------------------------------- //
 	// WRITERS
 	// -------------------------------------------- //
 	// Writer have dependencies and child writers.
@@ -169,22 +179,12 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 	// -------------------------------------------- //
 	// CLASSES
 	// -------------------------------------------- //
-
-	private Class<?> classOA = null;
-	public Class<?> getClassOA() { return this.classOA; }
-	public void setClassOA(Class<?> classOA) { this.classOA = classOA; }
-
-	private Class<?> classOB = null;
-	public Class<?> getClassOB() { return this.classOB; }
-	public void setClassOB(Class<?> classOB) { this.classOB = classOB; }
 	
-	private Class<?> classCA = null;
-	public Class<?> getClassCA() { return this.classCA; }
-	public void setClassCA(Class<?> classCA) { this.classCA = classCA; }
+	private final Class<CA> classCA;
+	public Class<CA> getClassCA() { return this.classCA; }
 
-	private Class<?> classCB = null;
-	public Class<?> getClassCB() { return this.classCB; }
-	public void setClassCB(Class<?> classCB) { this.classCB = classCB; }
+	private final Class<CB> classCB;
+	public Class<CB> getClassCB() { return this.classCB; }
 
 	// -------------------------------------------- //
 	// MORPH
@@ -222,10 +222,6 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 		if (oa == null) throw new NullPointerException("Couldn't Create OA");
 		if (ob == null) throw new NullPointerException("Couldn't Create OB");
 		
-		// Class O
-		this.setClassOA(oa.getClass());
-		this.setClassOB(ob.getClass());
-		
 		// Morph
 		CA ca = this.morphA(oa);
 		CB cb = this.morphB(ob);
@@ -233,10 +229,6 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 		// Demand C
 		if (ca == null) throw new NullPointerException("Couldn't Create CA");
 		if (cb == null) throw new NullPointerException("Couldn't Create CB");
-		
-		// Class C
-		this.setClassCA(ca.getClass());
-		this.setClassCB(cb.getClass());
 		
 		// Write (to provoke extra much)
 		this.write(oa, ob, true);

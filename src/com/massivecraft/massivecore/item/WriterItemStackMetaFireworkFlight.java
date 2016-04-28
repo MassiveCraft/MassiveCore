@@ -12,7 +12,9 @@ public class WriterItemStackMetaFireworkFlight extends WriterAbstractItemStackMe
 	
 	private static final WriterItemStackMetaFireworkFlight i = new WriterItemStackMetaFireworkFlight();
 	public static WriterItemStackMetaFireworkFlight get() { return i; }
+	public WriterItemStackMetaFireworkFlight()
 	{
+		super(FireworkMeta.class);
 		this.setMaterial(Material.FIREWORK);
 	}
 	

@@ -255,30 +255,6 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 		return outer;
 	}
 	
-	@Override
-	public O read(CommandSender sender) throws MassiveException
-	{
-		I inner = INNER.read(sender);
-		O outer = innerToOuter(inner);
-		return outer;
-	}
-	
-	@Override
-	public O read(String arg) throws MassiveException
-	{
-		I inner = INNER.read(arg);
-		O outer = innerToOuter(inner);
-		return outer;
-	}
-	
-	@Override
-	public O read() throws MassiveException
-	{
-		I inner = INNER.read();
-		O outer = innerToOuter(inner);
-		return outer;
-	}
-	
 	// -------------------------------------------- //
 	// VALID
 	// -------------------------------------------- //
