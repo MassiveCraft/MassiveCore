@@ -37,6 +37,10 @@ public abstract class Property<O, V> implements Named
 	// SETTINGS
 	// -------------------------------------------- //
 	
+	protected boolean visible = true;
+	public boolean isVisible() { return this.visible; }
+	public void setVisible(boolean visible) { this.visible = visible; }
+	
 	protected boolean inheritable = true;
 	public boolean isInheritable() { return this.inheritable; }
 	public void setInheritable(boolean inheritable) { this.inheritable = inheritable; }
@@ -233,6 +237,7 @@ public abstract class Property<O, V> implements Named
 		// Fill
 		for (Property<O, ?> property : properties)
 		{
+			if ( ! property.isVisible()) continue;
 			ret.addAll(property.getShowLines(object, sender));
 		}
 				

@@ -43,6 +43,7 @@ public class PropertyReflection<O, V> extends Property<O, V>
 		ReflectionUtil.makeAccessible(field);
 		this.field = field;
 		
+		this.setVisible(isVisible(field));
 		this.setInheritable(isInheritable(field));
 		this.setEditable(isEditable(field));
 		this.setNullable(isNullable(field));
@@ -106,7 +107,7 @@ public class PropertyReflection<O, V> extends Property<O, V>
 		
 		// Fill > Standard
 		int modifiers = field.getModifiers();
-		if (Modifier.isFinal(modifiers)) ret = false;
+		if (Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers) || Modifier.isFinal(modifiers)) ret = false;
 		
 		// Fill > Annotation
 		EditorEditable annotation = field.getAnnotation(EditorEditable.class);

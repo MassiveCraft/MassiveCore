@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.Visibility;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorUse;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
@@ -57,6 +58,13 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
+	
+	@Override
+	public Visibility getVisibility()
+	{
+		if ( ! this.getProperty().isVisible()) return Visibility.INVISIBLE;
+		return super.getVisibility();
+	}
 	
 	@Override
 	public void perform() throws MassiveException

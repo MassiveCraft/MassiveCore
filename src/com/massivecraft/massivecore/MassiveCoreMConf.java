@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.permissions.Permissible;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorNullable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
@@ -27,10 +28,15 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// -------------------------------------------- //
 	// Base command aliases.
 	
+	@EditorNullable(false)
 	public List<String> aliasesMcore = MUtil.list("massivecore", "mcore");
+	@EditorNullable(false)
 	public List<String> aliasesUsys = MUtil.list("usys");
+	@EditorNullable(false)
 	public List<String> aliasesMstore = MUtil.list("massivestore", "mstore");
+	@EditorNullable(false)
 	public List<String> aliasesBuffer = MUtil.list("buffer");
+	@EditorNullable(false)
 	public List<String> aliasesCmdurl = MUtil.list("cmdurl");
 	
 	// -------------------------------------------- //
@@ -48,6 +54,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// -------------------------------------------- //
 	// Permission denied formatting.
 	
+	@EditorNullable(false)
 	public Map<String, String> permissionDeniedFormats = MUtil.map(
 		"some.awesome.permission.node", "<b>You must be awesome to %s<b>.",
 		"some.derp.permission.node.1", "derp",
@@ -70,6 +77,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// -------------------------------------------- //
 	// Teleportation delay permissions.
 	
+	@EditorNullable(false)
 	public Map<String, Integer> permissionToTpdelay = MUtil.map(
 		"massivecore.notpdelay", 0,
 		"default", 10
