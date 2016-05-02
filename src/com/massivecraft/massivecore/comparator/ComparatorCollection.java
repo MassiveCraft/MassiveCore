@@ -50,7 +50,7 @@ public class ComparatorCollection extends ComparatorAbstract<Object>
 		Collections.sort(elements2, ComparatorSmart.get());
 		
 		Iterator<Object> iterator1 = elements1.iterator();
-		Iterator<Object> iterator2 = elements1.iterator();
+		Iterator<Object> iterator2 = elements2.iterator();
 		
 		while (iterator1.hasNext())
 		{

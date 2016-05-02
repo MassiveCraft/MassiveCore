@@ -66,7 +66,7 @@ public abstract class ComparatorAbstract<T> implements Comparator<T>
 	// -------------------------------------------- //
 	
 	private int compareSystem(T object1, T object2)
-	{
+	{	
 		// Create
 		int ret = 0;
 		
@@ -92,6 +92,9 @@ public abstract class ComparatorAbstract<T> implements Comparator<T>
 			if (ret != 0) return ret;
 			
 			ret = ComparatorComparable.get().compare(object1, object2);
+			if (ret != 0) return ret;
+			
+			ret = ComparatorEntry.get().compare(object1, object2);
 			if (ret != 0) return ret;
 			
 			ret = ComparatorCollection.get().compare(object1, object2);
