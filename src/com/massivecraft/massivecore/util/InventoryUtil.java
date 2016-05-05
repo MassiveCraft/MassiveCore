@@ -880,6 +880,19 @@ public class InventoryUtil
 		return true;
 	}
 	
+	public static boolean isPotion(ItemStack itemStack)
+	{
+		if (isNothing(itemStack)) return false;
+		Material material = itemStack.getType();
+		return isPotion(material);
+	}
+	
+	public static boolean isPotion(Material material)
+	{
+		if (material == null) return false;
+		return material.name().contains("POTION");
+	}
+	
 	// -------------------------------------------- //
 	// CLONE ITEMSTACKS/INVENTORY
 	// -------------------------------------------- //

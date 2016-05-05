@@ -1669,6 +1669,7 @@ public class MUtil
 	{
 		if (object1 == null) return object2 == null;
 		if (object2 == null) return false;
+		
 		return object1.equals(object2);
 	}
 	
@@ -1689,6 +1690,20 @@ public class MUtil
 		}
 		
 		return true;
+	}
+	
+	// -------------------------------------------- //
+	// EQUALSISH
+	// -------------------------------------------- //
+	
+	public static final double EQUALSISH_EPSILON = 0.0001;
+	
+	public static boolean equalsish(Number number1, Number number2)
+	{
+		if (number1 == null) return number2 == null;
+		if (number2 == null) return false;
+		
+		return Math.abs(number1.doubleValue() - number2.doubleValue()) < EQUALSISH_EPSILON;
 	}
 	
 	// -------------------------------------------- //
