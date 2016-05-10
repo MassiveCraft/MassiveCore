@@ -886,8 +886,18 @@ public class BoardUtil extends Engine
 	{
 		String id = getKey(key);
 		Team team = getTeam(board, id, false);
-		if (team == null && creative) team = createPersonalTeam(board, key);
-		addTeamMember(team, key);
+		if (team == null)
+		{
+			if (creative)
+			{
+				team = createPersonalTeam(board, key);
+			}
+		}
+		else
+		{
+			addTeamMember(team, key);			
+		}
+		
 		return team;
 	}
 	
