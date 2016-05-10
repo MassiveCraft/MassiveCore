@@ -982,17 +982,9 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// -------------------------------------------- //
 	
 	@Override
-	public MassivePlugin setActivePlugin(MassivePlugin plugin)
+	public boolean isActive()
 	{
-		MassivePlugin ret = this.plugin;
-		this.plugin = plugin;
-		return ret;
-	}
-	
-	@Override
-	public MassivePlugin getActivePlugin()
-	{
-		return this.plugin;
+		return name2instance.containsKey(this.getName());
 	}
 	
 	@Override
@@ -1029,9 +1021,17 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	}
 	
 	@Override
-	public boolean isActive()
+	public MassivePlugin getActivePlugin()
 	{
-		return name2instance.containsKey(this.getName());
+		return this.plugin;
+	}
+	
+	@Override
+	public MassivePlugin setActivePlugin(MassivePlugin plugin)
+	{
+		MassivePlugin ret = this.plugin;
+		this.plugin = plugin;
+		return ret;
 	}
 	
 	@Override

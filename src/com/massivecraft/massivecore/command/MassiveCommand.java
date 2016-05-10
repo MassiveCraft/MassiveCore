@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,6 +23,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
@@ -52,22 +52,8 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// This task unregisters /all/ registered MCommands and then register them all again.
 	// When registering again we use the fresh and current aliases.
 	
-	// STATIC
-	private static final transient Map<MassiveCommand, MassivePlugin> registry = new LinkedHashMap<MassiveCommand, MassivePlugin>();
-	public static Map<MassiveCommand, MassivePlugin> getRegistry() { return registry; }
-	public static Set<MassiveCommand> getRegisteredCommands() { return registry.keySet(); }
-	public static void unregister(Plugin plugin)
-	{
-		Iterator<Entry<MassiveCommand, MassivePlugin>> iter = registry.entrySet().iterator();
-		while (iter.hasNext())
-		{
-			Entry<MassiveCommand, MassivePlugin> entry = iter.next();
-			if (plugin.equals(entry.getValue()))
-			{
-				iter.remove();
-			}
-		}
-	}
+	private static final transient Set<MassiveCommand> allInstances = new MassiveSet<>();
+	public static Set<MassiveCommand> getAllInstances() { return allInstances; }
 	
 	// -------------------------------------------- //
 	// ACTIVE
@@ -76,32 +62,36 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	@Override
 	public boolean isActive()
 	{
-		return registry.containsKey(this);
+		return getAllInstances().contains(this);
 	}
 	
 	@Override
 	public void setActive(boolean active)
 	{
-		// NOTE: Not Implemented
+		if (active)
+		{
+			getAllInstances().add(this);
+		}
+		else
+		{
+			getAllInstances().remove(this);
+		}
 	}
+	
+	private MassivePlugin activePlugin = null;
 	
 	@Override
 	public MassivePlugin setActivePlugin(MassivePlugin activePlugin)
 	{
-		if (activePlugin == null)
-		{
-			return registry.remove(this);
-		}
-		else
-		{
-			return registry.put(this, activePlugin);
-		}
+		MassivePlugin ret = this.activePlugin;
+		this.activePlugin = activePlugin;
+		return ret;
 	}
 	
 	@Override
 	public MassivePlugin getActivePlugin()
 	{
-		return registry.get(this);
+		return this.activePlugin;
 	}
 	
 	@Override

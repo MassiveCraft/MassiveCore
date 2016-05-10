@@ -57,7 +57,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
+import com.massivecraft.massivecore.Active;
+import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
@@ -133,7 +136,7 @@ public class MUtil
 		return ret;
 	}
 	
-	public static Collection<? extends Player> getOnlinePlayers()
+	public static Collection<Player> getOnlinePlayers()
 	{
 		// Fetch some kind of playersObject.
 		Object playersObject = null;
@@ -160,7 +163,7 @@ public class MUtil
 		if (playersObject instanceof Collection<?>)
 		{
 			@SuppressWarnings("unchecked")
-			Collection<? extends Player> playersCollection = (Collection<? extends Player>)playersObject;
+			Collection<Player> playersCollection = (Collection<Player>)playersObject;
 			return playersCollection;
 		}
 		else if (playersObject instanceof Player[])

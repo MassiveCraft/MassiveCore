@@ -88,6 +88,7 @@ import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
 import com.massivecraft.massivecore.store.ModificationPollerLocal;
 import com.massivecraft.massivecore.store.ModificationPollerRemote;
+import com.massivecraft.massivecore.util.BoardUtil;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PlayerUtil;
@@ -263,6 +264,7 @@ public class MassiveCore extends MassivePlugin
 			
 			// Util
 			PlayerUtil.class,
+			BoardUtil.class,
 			
 			// Integration
 			IntegrationVault.class,

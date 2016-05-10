@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -8,10 +10,19 @@ import org.bukkit.event.block.BlockMultiPlaceEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 
 public abstract class Engine implements Active, Listener, Runnable
 {
+	// -------------------------------------------- //
+	// REGISTRY
+	// -------------------------------------------- //
+	
+	private static final transient Set<Engine> allInstances = new MassiveSet<>();
+	public static Set<Engine> getAllInstances() { return allInstances; }
+	
+	
 	// -------------------------------------------- //
 	// PLUGIN
 	// -------------------------------------------- //
@@ -56,12 +67,10 @@ public abstract class Engine implements Active, Listener, Runnable
 	// ACTIVE
 	// -------------------------------------------- //
 	
-	private boolean active = false;
-	
 	@Override
 	public boolean isActive()
 	{
-		return this.active;
+		return getAllInstances().contains(this);
 	}
 	
 	@Override
@@ -70,7 +79,14 @@ public abstract class Engine implements Active, Listener, Runnable
 		this.setActiveListener(active);
 		this.setActiveTask(active);
 		this.setActiveInner(active);
-		this.active = active;
+		if (active)
+		{
+			getAllInstances().add(this);
+		}
+		else
+		{
+			getAllInstances().remove(this);
+		}
 	}
 	
 	@Override

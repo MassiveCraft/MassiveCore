@@ -1,6 +1,9 @@
 package com.massivecraft.massivecore;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +13,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.util.ReflectionUtil;
@@ -140,14 +144,13 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	public void onDisable()
 	{
 		// Commands
-		MassiveCommand.unregister(this);
+		this.deactivate(MassiveCommand.getAllInstances());
+		
+		// Engines
+		this.deactivate(Engine.getAllInstances());
 		
 		// Collections
-		for (Coll<?> coll : Coll.getInstances())
-		{
-			if (coll.getPlugin() != this) continue;
-			coll.setActive(false);
-		}
+		this.deactivate(Coll.getInstances());
 		
 		log("Disabled");
 	}
@@ -200,6 +203,28 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		}
 		
 		throw new IllegalArgumentException("Neither Active nor Class: " + object);
+	}
+	
+	private void deactivate(Collection<? extends Active> actives)
+	{
+		// Fail Fast
+		if (actives == null) throw new NullPointerException("actives");
+		
+		// Clone to Avoid CME
+		List<Active> all = new MassiveList<>(actives);
+		
+		// Reverse to Disable Reversely
+		Collections.reverse(all);
+		
+		// Loop
+		for (Active active : all)
+		{
+			// Check
+			if ( ! this.equals(active.getActivePlugin())) continue;
+			
+			// Deactivate
+			active.setActive(false);
+		}
 	}
 	
 	// -------------------------------------------- //
