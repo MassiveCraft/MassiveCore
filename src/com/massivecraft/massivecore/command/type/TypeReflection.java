@@ -8,7 +8,7 @@ public class TypeReflection<T> extends TypeAbstractChoice<T>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <T> TypeReflection<T> get(Class<T> clazz){ return new TypeReflection<>(clazz); }
+	public static <T> TypeReflection<T> get(Class<T> clazz) { return new TypeReflection<>(clazz); }
 	public TypeReflection(Class<T> clazz)
 	{
 		super(clazz);
