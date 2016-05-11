@@ -329,8 +329,6 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		// Others
 		else
 		{
-
-			
 			message(Mson.prepondfix(
 				title.add(mson(":").color(ChatColor.GRAY)),
 				show,

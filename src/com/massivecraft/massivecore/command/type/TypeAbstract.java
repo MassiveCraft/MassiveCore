@@ -150,8 +150,8 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public <I extends Property<T, ?>> I getInnerProperty(int index) { return (I) this.getInnerProperties().get(index); }
 	
 	public <I extends Property<T, ?>> void setInnerProperties(Collection<I> innerProperties) { this.innerProperties = new MassiveList<Property<T, ?>>(innerProperties); }
-	@SuppressWarnings("unchecked")
-	public <I extends Property<T, ?>> void setInnerProperties(I... innerProperties) { this.setInnerProperties(Arrays.asList(innerProperties)); }
+	@SafeVarargs
+	public final <I extends Property<T, ?>> void setInnerProperties(I... innerProperties) { this.setInnerProperties(Arrays.asList(innerProperties)); }
 	public void setInnerProperties(Class<T> clazz) { this.setInnerProperties(PropertyReflection.getAll(clazz, this)); }
 	
 	// -------------------------------------------- //
@@ -652,7 +652,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	{
 		if (this.hasInnerProperties())
 		{
-			return new CommandEditProperties<O, T>(settings, property, null); 
+			return new CommandEditProperties<O, T>(settings, property, null);
 		}
 		else
 		{

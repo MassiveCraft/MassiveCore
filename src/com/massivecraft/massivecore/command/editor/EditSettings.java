@@ -89,12 +89,27 @@ public class EditSettings<O>
 	}
 	
 	// -------------------------------------------- //
-	// USED COMMAND
+	// COMMAND CREATION
 	// -------------------------------------------- //
 	
-	public CommandEditUsed<O> createCommandEditUsed()
+	public CommandEditUsed<O> createCommandUsed()
 	{
 		return new CommandEditUsed<O>(this);
+	}
+	
+	public CommandEditShow<O, O> createCommandShow()
+	{
+		return new CommandEditShow<O, O>(this, new PropertyThis<>(this.getObjectType()));
+	}
+	
+	public CommandEditAbstract<O, O> createCommandEdit()
+	{
+		// TODO: Where does command creation belong? Inside the type or the edit settings.
+		// TODO: Resolve and research asymmetry between createCommandShow() and createCommandEdit().
+		// TODO: Where should the permission nodes and requirements be set?
+		CommandEditAbstract<O, O> ret = this.getObjectType().createEditCommand(this, new PropertyThis<>(this.getObjectType()));
+		ret.setAliases("edit");
+		return ret;
 	}
 	
 	// -------------------------------------------- //
