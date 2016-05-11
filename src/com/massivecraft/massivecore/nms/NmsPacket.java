@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
@@ -242,14 +243,21 @@ public final class NmsPacket extends NmsAbstract
 	// UTIL
 	// -------------------------------------------- //
 
-	public static void sendPacket(Player player, Object packet) throws Exception
+	public static void sendPacket(Player player, Object packet)
 	{
-		sendPacket.invoke(getPlayerConnection(player), packet);
+		Object connection = getPlayerConnection(player);
+		ReflectionUtil.invokeMethod(sendPacket, connection, packet);
 	}
 
-	public static Object getPlayerConnection(Player player) throws Exception
+	public static <T> T getPlayerConnection(Player player)
 	{
-		return playerConnection.get(getHandle.invoke(player));
+		Object handle = getHandle(player);
+		return ReflectionUtil.getField(playerConnection, handle);
+	}
+	
+	public static <T> T getHandle(Player player)
+	{
+		return ReflectionUtil.invokeMethod(getHandle, player);
 	}
 
 	public static Object toChatBaseComponent(String str) throws Exception

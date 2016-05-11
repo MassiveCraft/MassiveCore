@@ -19,7 +19,7 @@ public class TypeItemStack extends TypeAbstract<ItemStack>
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final ExceptionSet<Material> materialsAllowed;
+	private final ExceptionSet materialsAllowed;
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -30,11 +30,11 @@ public class TypeItemStack extends TypeAbstract<ItemStack>
 	
 	public static TypeItemStack get(Material... materialWhitelist)
 	{
-		ExceptionSet<Material> materialsAllowed = new ExceptionSet<>(false, materialWhitelist);
+		ExceptionSet materialsAllowed = new ExceptionSet(false, materialWhitelist);
 		return new TypeItemStack(materialsAllowed);
 	}
 	
-	public TypeItemStack(ExceptionSet<Material> materialsAllowed)
+	public TypeItemStack(ExceptionSet materialsAllowed)
 	{
 		super(ItemStack.class);
 		this.materialsAllowed = materialsAllowed;
@@ -42,7 +42,7 @@ public class TypeItemStack extends TypeAbstract<ItemStack>
 	
 	public TypeItemStack()
 	{
-		this(new ExceptionSet<Material>(true));
+		this(new ExceptionSet(true));
 	}
 	
 	// -------------------------------------------- //

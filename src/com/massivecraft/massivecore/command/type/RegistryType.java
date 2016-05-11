@@ -154,11 +154,6 @@ public class RegistryType
 			{
 				return TypeEntry.get(getType(paramType.getActualTypeArguments()[0]), getType(paramType.getActualTypeArguments()[1]));
 			}
-			
-			if (ExceptionSet.class.isAssignableFrom(parent))
-			{
-				return TypeExceptionSet.get(getType(paramType.getActualTypeArguments()[0]));
-			}
 		}
 		
 		throw new IllegalArgumentException("Unknown type: " + reflectType);
@@ -247,7 +242,8 @@ public class RegistryType
 		register(TypeMultiverse.get());
 		
 		// Collection
-		register(WorldExceptionSet.class, TypeExceptionSet.get(TypeWorld.get()));
+		register(ExceptionSet.class, TypeExceptionSet.get());
+		register(WorldExceptionSet.class, TypeExceptionSet.get());
 	}
 	
 }

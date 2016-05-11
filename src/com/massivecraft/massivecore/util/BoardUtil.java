@@ -26,7 +26,7 @@ import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.nms.NmsTeamColor;
+import com.massivecraft.massivecore.nms.NmsBoard;
 
 // # RESEARCH > CLEANUP
 // The main server scoreboard is the only one that is saved to NBT.
@@ -321,6 +321,25 @@ public class BoardUtil extends Engine
 	}
 	
 	// -------------------------------------------- //
+	// BOARD > TEMPORARY
+	// -------------------------------------------- //
+	// This board is used for the construction of lies and bogus only.
+	// It should never ever be directly assigned to a player.
+	
+	private static Scoreboard BOARD_TEMPORARY = null;
+	
+	public static Scoreboard getBoardTemporary()
+	{
+		if (BOARD_TEMPORARY == null) BOARD_TEMPORARY = Bukkit.getScoreboardManager().getNewScoreboard();
+		return BOARD_TEMPORARY;
+	}
+	
+	public static boolean isBoardTemporary(Scoreboard board)
+	{
+		return getBoardOur().equals(board);
+	}
+	
+	// -------------------------------------------- //
 	// OBJECTIVE
 	// -------------------------------------------- //
 	
@@ -333,10 +352,10 @@ public class BoardUtil extends Engine
 		return board.registerNewObjective(id, OBJECTIVE_CRITERIA_DUMMY);
 	}
 	
-	public static Objective createObjective(Scoreboard board, String id, boolean persistent, String name, DisplaySlot slot, Map<String, Integer> entries)
+	public static Objective getObjective(Scoreboard board, String id, boolean creative)
 	{
-		Objective objective = createObjective(board, id);
-		setObjective(objective, persistent, name, slot, entries);
+		Objective objective = board.getObjective(id);
+		if (objective == null && creative) createObjective(board, id);
 		return objective;
 	}
 	
@@ -360,27 +379,22 @@ public class BoardUtil extends Engine
 		deleteObjective(objective);
 	}
 	
-	public static Objective getObjective(Scoreboard board, String id, boolean creative)
-	{
-		Objective objective = board.getObjective(id);
-		if (objective == null && creative) createObjective(board, id);
-		return objective;
-	}
-	
-	public static Objective getObjective(Scoreboard board, String id, boolean creative, Boolean persistent, String name, DisplaySlot slot, Map<String, Integer> entries)
-	{
-		Objective objective = getObjective(board, id, creative);
-		if (objective == null) return null;
-		setObjective(objective, persistent, name, slot, entries);
-		return objective;
-	}
-	
 	public static void setObjective(Objective objective, Boolean persistent, String name, DisplaySlot slot, Map<String, Integer> entries)
 	{
 		setObjectivePersistent(objective, persistent);
 		setObjectiveName(objective, name);
 		setObjectiveSlot(objective, slot);
 		setObjectiveEntries(objective, entries);
+	}
+	
+	public static void setObjective(Objective objective, Objective blueprint)
+	{
+		setObjective(objective,
+			isObjectivePersistent(blueprint),
+			getObjectiveName(blueprint),
+			getObjectiveSlot(blueprint),
+			getObjectiveEntries(blueprint)
+		);
 	}
 	
 	// -------------------------------------------- //
@@ -533,10 +547,10 @@ public class BoardUtil extends Engine
 		return board.registerNewTeam(id);
 	}
 	
-	public static Team createTeam(Scoreboard board, String id, Boolean persistent, String name, String prefix, String suffix, ChatColor color, Boolean friendlyFireEnabled, Boolean friendlyTruesightEnabled, Map<Option, OptionStatus> options, Set<String> members)
+	public static Team getTeam(Scoreboard board, String id, boolean creative)
 	{
-		Team team = createTeam(board, id);
-		setTeam(team, persistent, name, prefix, suffix, color, friendlyFireEnabled, friendlyTruesightEnabled, options, members);
+		Team team = board.getTeam(id);
+		if (team == null && creative) team = createTeam(board, id);
 		return team;
 	}
 	
@@ -560,21 +574,6 @@ public class BoardUtil extends Engine
 		deleteTeam(team);
 	}
 	
-	public static Team getTeam(Scoreboard board, String id, boolean creative)
-	{
-		Team team = board.getTeam(id);
-		if (team == null && creative) team = createTeam(board, id);
-		return team;
-	}
-	
-	public static Team getTeam(Scoreboard board, String id, boolean creative, Boolean persistent, String name, String prefix, String suffix, ChatColor color, Boolean friendlyFireEnabled, Boolean friendlyTruesightEnabled, Map<Option, OptionStatus> options, Set<String> members)
-	{
-		Team team = getTeam(board, id, creative);
-		if (team == null) return null;
-		setTeam(team, persistent, name, prefix, suffix, color, friendlyFireEnabled, friendlyTruesightEnabled, options, members);
-		return team;
-	}
-	
 	public static void setTeam(Team team, Boolean persistent, String name, String prefix, String suffix, ChatColor color, Boolean friendlyFireEnabled, Boolean friendlyTruesightEnabled, Map<Option, OptionStatus> options, Set<String> members)
 	{
 		setTeamPersistent(team, persistent);
@@ -586,6 +585,30 @@ public class BoardUtil extends Engine
 		setTeamFriendlyTruesightEnabled(team, friendlyTruesightEnabled);
 		setTeamOptions(team, options);
 		setTeamMembers(team, members);
+	}
+	
+	public static void setTeam(Team team, Team blueprint)
+	{
+		setTeam(team,
+			isTeamPersistent(blueprint),
+			getTeamName(blueprint),
+			getTeamPrefix(blueprint),
+			getTeamSuffix(blueprint),
+			getTeamColor(blueprint),
+			isTeamFriendlyFireEnabled(blueprint),
+			isTeamFriendlyTruesightEnabled(blueprint),
+			getTeamOptions(blueprint),
+			getTeamMembers(blueprint)
+		);
+	}
+	
+	// -------------------------------------------- //
+	// TEAM > SEND
+	// -------------------------------------------- //
+	
+	public static void sendTeamUpdate(Team team, Player player)
+	{
+		NmsBoard.get().sendTeamUpdatePacket(team, player);
 	}
 	
 	// -------------------------------------------- //
@@ -679,7 +702,7 @@ public class BoardUtil extends Engine
 	
 	public static ChatColor getTeamColor(Team team)
 	{
-		return NmsTeamColor.get().get(team);
+		return NmsBoard.get().getColor(team);
 	}
 	
 	public static void setTeamColor(Team team, ChatColor color)
@@ -687,7 +710,7 @@ public class BoardUtil extends Engine
 		if (color == null) return;
 		ChatColor before = getTeamColor(team);
 		if (MUtil.equals(before, color)) return;
-		NmsTeamColor.get().set(team, color);
+		NmsBoard.get().setColor(team, color);
 	}
 	
 	// -------------------------------------------- //
@@ -869,7 +892,11 @@ public class BoardUtil extends Engine
 	
 	public static Team createPersonalTeam(Scoreboard board, Object key)
 	{
+		// Create
 		String id = getKey(key);
+		Team team = createTeam(board, id);
+		
+		// Fill
 		Boolean persistent = PERSONAL_DEFAULT_PERSISTENT;
 		String name = PERSONAL_DEFAULT_NAME;
 		String prefix = PERSONAL_DEFAULT_PREFIX;
@@ -879,7 +906,11 @@ public class BoardUtil extends Engine
 		Boolean friendlyTruesightEnabled = PERSONAL_DEFAULT_FRIENDLY_TRUESIGHT_ENABLED;
 		Map<Option, OptionStatus> options = PERSONAL_DEFAULT_OPTIONS;
 		Set<String> members = Collections.singleton(id);
-		return createTeam(board, id, persistent, name, prefix, suffix, color, friendlyFireEnabled, friendlyTruesightEnabled, options, members);
+		
+		setTeam(team, persistent, name, prefix, suffix, color, friendlyFireEnabled, friendlyTruesightEnabled, options, members);
+		
+		// Return
+		return team;
 	}
 	
 	public static Team getPersonalTeam(Scoreboard board, Object key, boolean creative)

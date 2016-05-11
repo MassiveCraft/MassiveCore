@@ -6,7 +6,7 @@ import org.bukkit.entity.Entity;
 
 import com.massivecraft.massivecore.ps.PS;
 
-public class WorldExceptionSet extends ExceptionSet<World>
+public class WorldExceptionSet extends ExceptionSet
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -23,7 +23,7 @@ public class WorldExceptionSet extends ExceptionSet<World>
 	}
 	
 	@SafeVarargs
-	public <X extends Object> WorldExceptionSet(boolean standard, X... exceptions)
+	public <O extends Object> WorldExceptionSet(boolean standard, O... exceptions)
 	{
 		super(standard, exceptions);
 	}
@@ -31,12 +31,6 @@ public class WorldExceptionSet extends ExceptionSet<World>
 	// -------------------------------------------- //
 	// CONTAINS
 	// -------------------------------------------- //
-	
-	@Override
-	public String convert(World world)
-	{
-		return world.getName();
-	}
 	
 	public boolean contains(PS ps)
 	{
@@ -51,6 +45,18 @@ public class WorldExceptionSet extends ExceptionSet<World>
 	public boolean contains(Entity entity)
 	{
 		return this.contains(entity.getWorld());
+	}
+	
+	// -------------------------------------------- //
+	// STRINGIFY
+	// -------------------------------------------- //
+	
+	@Override
+	public String stringifyInner(Object object)
+	{
+		if ( ! (object instanceof World)) return null;
+		World world = (World)object;
+		return world.getName();
 	}
 
 }

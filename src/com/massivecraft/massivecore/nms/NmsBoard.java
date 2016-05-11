@@ -1,9 +1,11 @@
 package com.massivecraft.massivecore.nms;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import com.google.common.collect.BiMap;
@@ -11,14 +13,14 @@ import com.google.common.collect.ImmutableBiMap;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 
-public class NmsTeamColor extends NmsAbstract
+public class NmsBoard extends NmsAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static NmsTeamColor i = new NmsTeamColor();
-	public static NmsTeamColor get () { return i; }
+	private static NmsBoard i = new NmsBoard();
+	public static NmsBoard get () { return i; }
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -45,6 +47,12 @@ public class NmsTeamColor extends NmsAbstract
 	// net.minecraft.server.EnumChatFormat.a(int i) <-- for code
 	private Method methodNmsColorFor;
 	
+	// net.minecraft.server.PacketPlayOutScoreboardTeam
+	private Class<?> classPacketTeam;
+	
+	// net.minecraft.server.PacketPlayOutScoreboardTeam(ScoreboardTeam, int)
+	private Constructor<?> constructorPacketTeamUpdate;
+	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
@@ -67,27 +75,30 @@ public class NmsTeamColor extends NmsAbstract
 		this.classNmsColor = PackageType.MINECRAFT_SERVER.getClass("EnumChatFormat");
 		this.fieldNmsColorCode = ReflectionUtil.getField(this.classNmsColor, "C");
 		this.methodNmsColorFor = ReflectionUtil.getMethod(this.classNmsColor, "a", int.class);
+		
+		this.classPacketTeam = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutScoreboardTeam");
+		this.constructorPacketTeamUpdate = ReflectionUtil.getConstructor(this.classPacketTeam, this.classNmsTeam, int.class);
 	}
 	
 	// -------------------------------------------- //
 	// ACCESS
 	// -------------------------------------------- //
 	
-	public ChatColor get(Team team)
+	public ChatColor getColor(Team team)
 	{
 		if ( ! this.isAvailable()) return null;
 		
-		Object nmsTeam = convertTeam(team);
+		Object nmsTeam = getTeamHandle(team);
 		Object nmsColor = ReflectionUtil.getField(this.fieldNmsTeamColor, nmsTeam);
 		
 		return convertColor(nmsColor);
 	}
 	
-	public void set(Team team, ChatColor color)
+	public void setColor(Team team, ChatColor color)
 	{
 		if ( ! this.isAvailable()) return;
 		
-		Object nmsTeam = convertTeam(team);
+		Object nmsTeam = getTeamHandle(team);
 		Object nmsColor = convertColor(color);
 		ReflectionUtil.setField(this.fieldNmsTeamColor, nmsTeam, nmsColor);
 		
@@ -97,26 +108,46 @@ public class NmsTeamColor extends NmsAbstract
 	}
 	
 	// -------------------------------------------- //
-	// CONVERT TEAM
+	// TEAM
 	// -------------------------------------------- //
 	
-	private Object convertTeam(Team team)
+	public <T> T getTeamHandle(Team team)
 	{
 		return ReflectionUtil.getField(this.fieldCraftTeamHandle, team);
 	}
 	
 	// -------------------------------------------- //
-	// CONVERT COLOR
+	// PACKET
 	// -------------------------------------------- //
 	
-	private ChatColor convertColor(Object nms)
+	// This is a magic NMS value for the packet constructor.
+	// 2 simply means update exiting team rather than creating a new one.
+	private static final int PACKET_UPDATE_MODE = 2;
+	
+	public <T> T createTeamUpdatePacket(Team team)
+	{
+		Object handle = getTeamHandle(team);
+		return ReflectionUtil.invokeConstructor(this.constructorPacketTeamUpdate, handle, PACKET_UPDATE_MODE);
+	}
+	
+	public void sendTeamUpdatePacket(Team team, Player player)
+	{
+		Object packet = this.createTeamUpdatePacket(team);
+		NmsPacket.sendPacket(player, packet);
+	}
+	
+	// -------------------------------------------- //
+	// COLOR > CONVERT
+	// -------------------------------------------- //
+	
+	public ChatColor convertColor(Object nms)
 	{
 		if (nms == null) return null;
 		int code = ReflectionUtil.getField(this.fieldNmsColorCode, nms);
 		return code(code);
 	}
 	
-	private Object convertColor(ChatColor bukkit)
+	public <T> T convertColor(ChatColor bukkit)
 	{
 		if (bukkit == null) return null;
 		int code = code(bukkit);
@@ -124,24 +155,24 @@ public class NmsTeamColor extends NmsAbstract
 	}
 	
 	// -------------------------------------------- //
-	// CODE
+	// COLOR > CODE
 	// -------------------------------------------- //
 	
-	private static ChatColor code(int code)
+	public static ChatColor code(int code)
 	{
 		ChatColor ret = COLOR_TO_CODE.inverse().get(code);
 		if (ret == null) throw new IllegalArgumentException("Unsupported Code " + code);
 		return ret;
 	}
 	
-	private static int code(ChatColor color)
+	public static int code(ChatColor color)
 	{
 		Integer ret = COLOR_TO_CODE.get(color);
 		if (ret == null) throw new IllegalArgumentException("Unsupported Color " + color);
 		return ret;
 	}
 	
-	private static final BiMap<ChatColor, Integer> COLOR_TO_CODE = ImmutableBiMap.<ChatColor, Integer>builder()
+	public static final BiMap<ChatColor, Integer> COLOR_TO_CODE = ImmutableBiMap.<ChatColor, Integer>builder()
 		.put(ChatColor.BLACK, 0)
 		.put(ChatColor.DARK_BLUE, 1)
 		.put(ChatColor.DARK_GREEN, 2)
