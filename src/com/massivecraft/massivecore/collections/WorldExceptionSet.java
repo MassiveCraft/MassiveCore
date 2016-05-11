@@ -22,6 +22,12 @@ public class WorldExceptionSet extends ExceptionSet<World>
 		super(standard);
 	}
 	
+	@SafeVarargs
+	public <X extends Object> WorldExceptionSet(boolean standard, X... exceptions)
+	{
+		super(standard, exceptions);
+	}
+	
 	// -------------------------------------------- //
 	// CONTAINS
 	// -------------------------------------------- //
