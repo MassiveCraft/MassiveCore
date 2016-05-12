@@ -3,6 +3,8 @@ package com.massivecraft.massivecore.collections;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.type.container.TypeMassiveTreeSetInsensitive;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 
 public class ExceptionSet
@@ -15,6 +17,7 @@ public class ExceptionSet
 	public boolean isStandard() { return this.standard; }
 	public void setStandard(boolean standard) { this.standard = standard; }
 	
+	@EditorType(TypeMassiveTreeSetInsensitive.class)
 	public MassiveTreeSet<String, ComparatorCaseInsensitive> exceptions = new MassiveTreeSet<>(ComparatorCaseInsensitive.get());
 	
 	// -------------------------------------------- //
