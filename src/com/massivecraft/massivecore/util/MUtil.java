@@ -57,10 +57,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.massivecraft.massivecore.Active;
-import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
@@ -175,6 +172,15 @@ public class MUtil
 		{
 			throw new RuntimeException("Failed retrieving online players.");
 		}
+	}
+	
+	// -------------------------------------------- //
+	// IS SYNCHRONOUS
+	// -------------------------------------------- //
+	
+	public static boolean isSynchronous()
+	{
+		return Thread.holdsLock(Bukkit.getPluginManager()) || Bukkit.isPrimaryThread();
 	}
 	
 	// -------------------------------------------- //

@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.util;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -73,8 +72,8 @@ public class BoardUtil extends Engine
 	// -------------------------------------------- //
 	
 	// All online players at the beginning of the tick.
-	private static Collection<Player> players;
-	public static Collection<Player> getPlayers() { return players; }
+	private static Map<String, Player> players;
+	public static Map<String, Player> getPlayers() { return players; }
 	
 	// The boards based off the players above.
 	private static Set<Scoreboard> boards;
@@ -152,8 +151,14 @@ public class BoardUtil extends Engine
 	public static void updatePlayers()
 	{
 		// Create
-		Collection<Player> players = MUtil.getOnlinePlayers();
-		players = Collections.unmodifiableCollection(players);
+		Map<String, Player> players = new MassiveMap<>();
+		
+		// Fill
+		for (Player player : MUtil.getOnlinePlayers())
+		{
+			players.put(player.getName(), player);
+		}
+		players = Collections.unmodifiableMap(players);
 		
 		// Set
 		BoardUtil.players = players;
@@ -169,7 +174,7 @@ public class BoardUtil extends Engine
 		boards.add(getBoardOur());
 		
 		// Fill > Players
-		for (Player player : getPlayers())
+		for (Player player : getPlayers().values())
 		{
 			Scoreboard board = getBoard(player);
 			boards.add(board);
@@ -182,7 +187,7 @@ public class BoardUtil extends Engine
 	
 	public static void updateEnsure()
 	{
-		for (Player player : getPlayers())
+		for (Player player : getPlayers().values())
 		{
 			if (isEnsureBoardEnabled())
 			{
@@ -321,25 +326,6 @@ public class BoardUtil extends Engine
 	}
 	
 	// -------------------------------------------- //
-	// BOARD > TEMPORARY
-	// -------------------------------------------- //
-	// This board is used for the construction of lies and bogus only.
-	// It should never ever be directly assigned to a player.
-	
-	private static Scoreboard BOARD_TEMPORARY = null;
-	
-	public static Scoreboard getBoardTemporary()
-	{
-		if (BOARD_TEMPORARY == null) BOARD_TEMPORARY = Bukkit.getScoreboardManager().getNewScoreboard();
-		return BOARD_TEMPORARY;
-	}
-	
-	public static boolean isBoardTemporary(Scoreboard board)
-	{
-		return getBoardOur().equals(board);
-	}
-	
-	// -------------------------------------------- //
 	// OBJECTIVE
 	// -------------------------------------------- //
 	
@@ -379,17 +365,19 @@ public class BoardUtil extends Engine
 		deleteObjective(objective);
 	}
 	
-	public static void setObjective(Objective objective, Boolean persistent, String name, DisplaySlot slot, Map<String, Integer> entries)
+	public static boolean setObjective(Objective objective, Boolean persistent, String name, DisplaySlot slot, Map<String, Integer> entries)
 	{
-		setObjectivePersistent(objective, persistent);
-		setObjectiveName(objective, name);
-		setObjectiveSlot(objective, slot);
-		setObjectiveEntries(objective, entries);
+		boolean ret = false;
+		ret |= setObjectivePersistent(objective, persistent);
+		ret |= setObjectiveName(objective, name);
+		ret |= setObjectiveSlot(objective, slot);
+		ret |= setObjectiveEntries(objective, entries);
+		return ret;
 	}
 	
-	public static void setObjective(Objective objective, Objective blueprint)
+	public static boolean setObjective(Objective objective, Objective blueprint)
 	{
-		setObjective(objective,
+		return setObjective(objective,
 			isObjectivePersistent(blueprint),
 			getObjectiveName(blueprint),
 			getObjectiveSlot(blueprint),
@@ -415,17 +403,17 @@ public class BoardUtil extends Engine
 		return ! getTemporaryObjectives().contains(objective);
 	}
 	
-	public static void setObjectivePersistent(Objective objective, Boolean persistent)
+	public static boolean setObjectivePersistent(Objective objective, Boolean persistent)
 	{
-		if (persistent == null) return;
+		if (persistent == null) return false;
 		
 		if (persistent)
 		{
-			getTemporaryObjectives().remove(objective);
+			return getTemporaryObjectives().remove(objective);
 		}
 		else
 		{
-			getTemporaryObjectives().add(objective);
+			return getTemporaryObjectives().add(objective);
 		}
 	}
 	
@@ -438,12 +426,13 @@ public class BoardUtil extends Engine
 		return objective.getDisplayName();
 	}
 	
-	public static void setObjectiveName(Objective objective, String name)
+	public static boolean setObjectiveName(Objective objective, String name)
 	{
-		if (name == null) return;
+		if (name == null) return false;
 		String before = getObjectiveName(objective);
-		if (MUtil.equals(before, name)) return;
+		if (MUtil.equals(before, name)) return false;
 		objective.setDisplayName(name);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -455,12 +444,13 @@ public class BoardUtil extends Engine
 		return objective.getDisplaySlot();
 	}
 	
-	public static void setObjectiveSlot(Objective objective, DisplaySlot slot)
+	public static boolean setObjectiveSlot(Objective objective, DisplaySlot slot)
 	{
-		if (slot == null) return;
+		if (slot == null) return false;
 		DisplaySlot before = getObjectiveSlot(objective);
-		if (MUtil.equals(before, slot)) return;
+		if (MUtil.equals(before, slot)) return false;
 		objective.setDisplaySlot(slot);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -473,11 +463,11 @@ public class BoardUtil extends Engine
 		return getScoreValue(score);
 	}
 	
-	public static void setObjectiveValue(Objective objective, Object key, Integer value)
+	public static boolean setObjectiveValue(Objective objective, Object key, Integer value)
 	{
-		if (value == null) return;
+		if (value == null) return false;
 		Score score = objective.getScore(getKey(key));
-		setScoreValue(score, value);
+		return setScoreValue(score, value);
 	}
 	
 	// -------------------------------------------- //
@@ -501,24 +491,27 @@ public class BoardUtil extends Engine
 		return ret;
 	}
 	
-	public static void setObjectiveEntries(Objective objective, Map<String, Integer> entries)
+	public static boolean setObjectiveEntries(Objective objective, Map<String, Integer> entries)
 	{
-		if (entries == null) return;
+		if (entries == null) return false;
+		boolean ret = false;
 		
 		// Add or Update
 		for (Entry<String, Integer> entry : entries.entrySet())
 		{
 			String key = entry.getKey();
 			Integer value = entry.getValue();
-			setObjectiveValue(objective, key, value);
+			ret |= setObjectiveValue(objective, key, value);
 		}
 		
 		// Remove
 		for (String key : objective.getScoreboard().getEntries())
 		{
 			if (entries.containsKey(key)) continue;
-			setObjectiveValue(objective, key, 0);
+			ret |= setObjectiveValue(objective, key, 0);
 		}
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -530,12 +523,13 @@ public class BoardUtil extends Engine
 		return score.getScore();
 	}
 	
-	public static void setScoreValue(Score score, Integer value)
+	public static boolean setScoreValue(Score score, Integer value)
 	{
-		if (value == null) return;
+		if (value == null) return false;
 		int before = getScoreValue(score);
-		if (before == value) return;
+		if (before == value) return false;
 		score.setScore(value);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -574,22 +568,24 @@ public class BoardUtil extends Engine
 		deleteTeam(team);
 	}
 	
-	public static void setTeam(Team team, Boolean persistent, String name, String prefix, String suffix, ChatColor color, Boolean friendlyFireEnabled, Boolean friendlyTruesightEnabled, Map<Option, OptionStatus> options, Set<String> members)
+	public static boolean setTeam(Team team, Boolean persistent, String name, String prefix, String suffix, ChatColor color, Boolean friendlyFireEnabled, Boolean friendlyTruesightEnabled, Map<Option, OptionStatus> options, Set<String> members)
 	{
-		setTeamPersistent(team, persistent);
-		setTeamName(team, name);
-		setTeamPrefix(team, prefix);
-		setTeamSuffix(team, suffix);
-		setTeamColor(team, color);
-		setTeamFriendlyFireEnabled(team, friendlyFireEnabled);
-		setTeamFriendlyTruesightEnabled(team, friendlyTruesightEnabled);
-		setTeamOptions(team, options);
-		setTeamMembers(team, members);
+		boolean ret = false;
+		ret |= setTeamPersistent(team, persistent);
+		ret |= setTeamName(team, name);
+		ret |= setTeamPrefix(team, prefix);
+		ret |= setTeamSuffix(team, suffix);
+		ret |= setTeamColor(team, color);
+		ret |= setTeamFriendlyFireEnabled(team, friendlyFireEnabled);
+		ret |= setTeamFriendlyTruesightEnabled(team, friendlyTruesightEnabled);
+		ret |= setTeamOptions(team, options);
+		ret |= setTeamMembers(team, members);
+		return ret;
 	}
 	
-	public static void setTeam(Team team, Team blueprint)
+	public static boolean setTeam(Team team, Team blueprint)
 	{
-		setTeam(team,
+		return setTeam(team,
 			isTeamPersistent(blueprint),
 			getTeamName(blueprint),
 			getTeamPrefix(blueprint),
@@ -605,6 +601,11 @@ public class BoardUtil extends Engine
 	// -------------------------------------------- //
 	// TEAM > SEND
 	// -------------------------------------------- //
+	
+	public static void sendTeamUpdate(Team team)
+	{
+		team.setDisplayName(team.getDisplayName());
+	}
 	
 	public static void sendTeamUpdate(Team team, Player player)
 	{
@@ -629,17 +630,17 @@ public class BoardUtil extends Engine
 		return ! getTemporaryTeams().contains(team);
 	}
 	
-	public static void setTeamPersistent(Team team, Boolean persistent)
+	public static boolean setTeamPersistent(Team team, Boolean persistent)
 	{
-		if (persistent == null) return;
+		if (persistent == null) return false;
 		
 		if (persistent)
 		{
-			getTemporaryTeams().remove(team);
+			return getTemporaryTeams().remove(team);
 		}
 		else
 		{
-			getTemporaryTeams().add(team);
+			return getTemporaryTeams().add(team);
 		}
 	}
 	
@@ -652,12 +653,13 @@ public class BoardUtil extends Engine
 		return team.getDisplayName();
 	}
 	
-	public static void setTeamName(Team team, String name)
+	public static boolean setTeamName(Team team, String name)
 	{
-		if (name == null) return;
+		if (name == null) return false;
 		String before = getTeamName(team);
-		if (MUtil.equals(before, name)) return;
+		if (MUtil.equals(before, name)) return false;
 		team.setDisplayName(name);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -669,12 +671,13 @@ public class BoardUtil extends Engine
 		return team.getPrefix();
 	}
 	
-	public static void setTeamPrefix(Team team, String prefix)
+	public static boolean setTeamPrefix(Team team, String prefix)
 	{
-		if (prefix == null) return;
+		if (prefix == null) return false;
 		String before = getTeamPrefix(team);
-		if (MUtil.equals(before, prefix)) return;
+		if (MUtil.equals(before, prefix)) return false;
 		team.setPrefix(prefix);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -686,12 +689,13 @@ public class BoardUtil extends Engine
 		return team.getSuffix();
 	}
 	
-	public static void setTeamSuffix(Team team, String suffix)
+	public static boolean setTeamSuffix(Team team, String suffix)
 	{
-		if (suffix == null) return;
+		if (suffix == null) return false;
 		String before = getTeamSuffix(team);
-		if (MUtil.equals(before, suffix)) return;
+		if (MUtil.equals(before, suffix)) return false;
 		team.setSuffix(suffix);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -705,12 +709,13 @@ public class BoardUtil extends Engine
 		return NmsBoard.get().getColor(team);
 	}
 	
-	public static void setTeamColor(Team team, ChatColor color)
+	public static boolean setTeamColor(Team team, ChatColor color)
 	{
-		if (color == null) return;
+		if (color == null) return false;
 		ChatColor before = getTeamColor(team);
-		if (MUtil.equals(before, color)) return;
+		if (MUtil.equals(before, color)) return false;
 		NmsBoard.get().setColor(team, color);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -722,12 +727,13 @@ public class BoardUtil extends Engine
 		return team.allowFriendlyFire();
 	}
 	
-	public static void setTeamFriendlyFireEnabled(Team team, Boolean friendlyFireEnabled)
+	public static boolean setTeamFriendlyFireEnabled(Team team, Boolean friendlyFireEnabled)
 	{
-		if (friendlyFireEnabled == null) return;
+		if (friendlyFireEnabled == null) return false;
 		boolean before = isTeamFriendlyFireEnabled(team);
-		if (MUtil.equals(before, friendlyFireEnabled)) return;
+		if (MUtil.equals(before, friendlyFireEnabled)) return false;
 		team.setAllowFriendlyFire(friendlyFireEnabled);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -739,12 +745,13 @@ public class BoardUtil extends Engine
 		return team.canSeeFriendlyInvisibles();
 	}
 	
-	public static void setTeamFriendlyTruesightEnabled(Team team, Boolean friendlyTruesightEnabled)
+	public static boolean setTeamFriendlyTruesightEnabled(Team team, Boolean friendlyTruesightEnabled)
 	{
-		if (friendlyTruesightEnabled == null) return;
+		if (friendlyTruesightEnabled == null) return false;
 		boolean before = isTeamFriendlyTruesightEnabled(team);
-		if (MUtil.equals(before, friendlyTruesightEnabled)) return;
+		if (MUtil.equals(before, friendlyTruesightEnabled)) return false;
 		team.setCanSeeFriendlyInvisibles(friendlyTruesightEnabled);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -756,12 +763,13 @@ public class BoardUtil extends Engine
 		return team.getOption(option);
 	}
 	
-	public static void setTeamOption(Team team, Option option, OptionStatus status)
+	public static boolean setTeamOption(Team team, Option option, OptionStatus status)
 	{
-		if (status == null) return;
+		if (status == null) return false;
 		OptionStatus before = getTeamOption(team, option);
-		if (before == status) return;
+		if (before == status) return false;
 		team.setOption(option, status);
+		return true;
 	}
 	
 	// -------------------------------------------- //
@@ -784,32 +792,36 @@ public class BoardUtil extends Engine
 		return ret;
 	}
 	
-	public static void setTeamOptions(Team team, Map<Option, OptionStatus> options)
+	public static boolean setTeamOptions(Team team, Map<Option, OptionStatus> options)
 	{
-		if (options == null) return;
+		if (options == null) return false;
 		
+		boolean ret = false;
 		for (Entry<Option, OptionStatus> entry : options.entrySet())
 		{
 			Option option = entry.getKey();
 			OptionStatus status = entry.getValue();
-			setTeamOption(team, option, status);
+			ret |= setTeamOption(team, option, status);
 		}
+		return ret;
 	}
 	
 	// -------------------------------------------- //
 	// TEAM > MEMBERS
 	// -------------------------------------------- //
 	
-	public static void addTeamMember(Team team, Object key)
+	public static boolean addTeamMember(Team team, Object key)
 	{
-		if (isTeamMember(team, key)) return;
+		if (isTeamMember(team, key)) return false;
 		team.addEntry(getKey(key));
+		return true;
 	}
 	
-	public static void removeTeamMember(Team team, Object key)
+	public static boolean removeTeamMember(Team team, Object key)
 	{
-		if ( ! isTeamMember(team, key)) return;
+		if ( ! isTeamMember(team, key)) return false;
 		team.removeEntry(getKey(key));
+		return true;
 	}
 	
 	public static boolean isTeamMember(Team team, Object key)
@@ -822,16 +834,18 @@ public class BoardUtil extends Engine
 		return team.getEntries();
 	}
 	
-	public static void setTeamMembers(Team team, Set<String> members)
+	public static boolean setTeamMembers(Team team, Set<String> members)
 	{
-		if (members == null) return;
+		if (members == null) return false;
 		Set<String> befores = getTeamMembers(team);
+		boolean ret = false;
 		
 		// Add
 		for (String member : members)
 		{
 			if (befores.contains(member)) continue;
 			team.addEntry(member);
+			ret = true;
 		}
 		
 		// Remove
@@ -839,7 +853,10 @@ public class BoardUtil extends Engine
 		{
 			if (members.contains(before)) continue;
 			team.removeEntry(before);
+			ret = true;
 		}
+		
+		return ret;
 	}
 	
 	// -------------------------------------------- //
