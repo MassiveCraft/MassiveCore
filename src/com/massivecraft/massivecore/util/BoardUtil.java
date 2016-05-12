@@ -802,11 +802,13 @@ public class BoardUtil extends Engine
 	
 	public static void addTeamMember(Team team, Object key)
 	{
+		if (isTeamMember(team, key)) return;
 		team.addEntry(getKey(key));
 	}
 	
 	public static void removeTeamMember(Team team, Object key)
 	{
+		if ( ! isTeamMember(team, key)) return;
 		team.removeEntry(getKey(key));
 	}
 	
@@ -855,6 +857,8 @@ public class BoardUtil extends Engine
 	{
 		Team before = getKeyTeam(board, key);
 		if (MUtil.equals(before, team)) return;
+		// TODO: Do we really need to remove from the old team first?
+		// TODO: Chances are this would be done automatically.
 		if (before != null) removeTeamMember(before, key);
 		if (team != null) addTeamMember(team, key);
 	}
