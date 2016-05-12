@@ -42,10 +42,12 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public static final String NULL = Txt.parse("<silver><em>NONE");
 	public static final String EMPTY = Txt.parse("<silver><em>EMPTY");
 	public static final String UNKNOWN = Txt.parse("<b>???");
+	public static final String COLONSPACE = Txt.parse("<silver>: ");
 	
 	public static final Mson MSON_NULL = Mson.fromParsedMessage(NULL);
 	public static final Mson MSON_EMPTY = Mson.fromParsedMessage(EMPTY);
 	public static final Mson MSON_UNKNOWN = Mson.fromParsedMessage(UNKNOWN);
+	public static final Mson MSON_COLONSPACE = Mson.fromParsedMessage(COLONSPACE);
 	
 	public static final ChatColor COLOR_DEFAULT = ChatColor.YELLOW;
 	public static final ChatColor COLOR_NUMBER = ChatColor.LIGHT_PURPLE;

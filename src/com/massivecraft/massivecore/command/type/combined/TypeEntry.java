@@ -25,6 +25,8 @@ public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 	{
 		super(Entry.class, keyType, valueType);
 		this.setTypeNameSeparator(" and ");
+		this.setVisualSeparator(COLONSPACE);
+		this.setVisualMsonSeparator(MSON_COLONSPACE);
 	}
 	
 	// -------------------------------------------- //
