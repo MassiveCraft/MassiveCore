@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.massivecraft.massivecore.adapter.AdapterLowercaseEnum;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -1174,19 +1174,19 @@ public class Mson implements Serializable
 	// All
 	public boolean messageAll()
 	{
-		return Mixin.messageAll(this);
+		return MixinMessage.get().messageAll(this);
 	}
 
 	// Predicate
 	public boolean messagePredicate(Predicate<CommandSender> predicate)
 	{
-		return Mixin.messagePredicate(predicate, this);
+		return MixinMessage.get().messagePredicate(predicate, this);
 	}
 
 	// One
 	public boolean messageOne(Object senderObject)
 	{
-		return Mixin.messageOne(senderObject, this);
+		return MixinMessage.get().messageOne(senderObject, this);
 	}
 	
 	// -------------------------------------------- //

@@ -15,7 +15,7 @@ import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.WebUtil;
 
 public class CmdMassiveCoreCmdurl extends MassiveCommand
@@ -81,19 +81,19 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 						@Override
 						public void run()
 						{
-							Mixin.msgOne(commander, "<i>... <h>%d <i>lines loaded. Now executing ...", lines.size());
+							MixinMessage.get().msgOne(commander, "<i>... <h>%d <i>lines loaded. Now executing ...", lines.size());
 							for (int i = 0; i <= lines.size() - 1; i++)
 							{
 								String line = lines.get(i);
 								line = line.trim();
 								if (line.length() == 0 || line.startsWith("#"))
 								{
-									Mixin.msgOne(commander, "<b>#%d: <i>%s", i, line);
+									MixinMessage.get().msgOne(commander, "<b>#%d: <i>%s", i, line);
 									// Ignore the line
 								}
 								else
 								{
-									Mixin.msgOne(commander, "<g>#%d: <i>%s", i, line);
+									MixinMessage.get().msgOne(commander, "<g>#%d: <i>%s", i, line);
 									// Run the line
 									commander.chat(line);
 								}
@@ -109,7 +109,7 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 						@Override
 						public void run()
 						{
-							Mixin.msgOne(commander, "<b>%s: %s", e.getClass().getSimpleName(), e.getMessage());
+							MixinMessage.get().msgOne(commander, "<b>%s: %s", e.getClass().getSimpleName(), e.getMessage());
 						}
 					});
 					return;

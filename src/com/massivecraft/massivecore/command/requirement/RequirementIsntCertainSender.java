@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.command.requirement;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -38,7 +38,7 @@ public class RequirementIsntCertainSender extends RequirementAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return Txt.parse("<b>Player can't be <h>%s<b>.", Mixin.getDisplayName(this.getSenderId(), sender));
+		return Txt.parse("<b>Player can't be <h>%s<b>.", MixinDisplayName.get().getDisplayName(this.getSenderId(), sender));
 	}
 	
 }

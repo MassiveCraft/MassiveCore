@@ -27,7 +27,7 @@ import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerRespawn;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerTeleport;
 import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.IdUtil;
@@ -129,7 +129,7 @@ public class EngineMassiveCoreMain extends Engine
 		{
 			if ( ! predicate.apply(senderName)) continue;
 			if (current.contains(senderName)) continue;
-			if ( ! Mixin.isVisible(senderName, watcher)) continue;
+			if ( ! MixinVisibility.get().isVisible(senderName, watcher)) continue;
 			
 			event.getTabCompletions().add(senderName);
 		}

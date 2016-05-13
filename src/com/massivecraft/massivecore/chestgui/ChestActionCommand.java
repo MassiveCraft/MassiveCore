@@ -5,7 +5,7 @@ import java.security.InvalidParameterException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinCommand;
 
 public class ChestActionCommand extends ChestActionAbstract
 {
@@ -56,7 +56,7 @@ public class ChestActionCommand extends ChestActionAbstract
 		String commandLine = this.getCommandLine();
 		if (commandLine == null) return false;
 		
-		return Mixin.dispatchCommand(player, commandLine);
+		return MixinCommand.get().dispatchCommand(player, commandLine);
 	}
 	
 }

@@ -25,7 +25,7 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinSenderPs;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -199,7 +199,7 @@ public class ExtractorLogic
 	{
 		if (senderObject == null) return null;
 		
-		PS ps = Mixin.getSenderPs(senderObject);
+		PS ps = MixinSenderPs.get().getSenderPs(senderObject);
 		if (ps == null) return null;
 		
 		return ps.getWorld();

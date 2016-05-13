@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinWorld;
 
 public class TypeWorldId extends TypeAbstractChoice<String>
 {
@@ -29,13 +29,13 @@ public class TypeWorldId extends TypeAbstractChoice<String>
 	@Override
 	public String getVisualInner(String value, CommandSender sender)
 	{
-		return Mixin.getWorldDisplayName(value);
+		return MixinWorld.get().getWorldDisplayName(value);
 	}
 
 	@Override
 	public String getNameInner(String value)
 	{
-		return Mixin.getWorldAliasOrId(value);
+		return MixinWorld.get().getWorldAliasOrId(value);
 	}
 
 	@Override
@@ -47,13 +47,13 @@ public class TypeWorldId extends TypeAbstractChoice<String>
 	@Override
 	public Collection<String> getAll()
 	{
-		return Mixin.getWorldIds();
+		return MixinWorld.get().getWorldIds();
 	}
 	
 	@Override
 	public boolean canSee(String value, CommandSender sender)
 	{
-		return Mixin.canSeeWorld(sender, value);
+		return MixinWorld.get().canSeeWorld(sender, value);
 	}
 	
 }

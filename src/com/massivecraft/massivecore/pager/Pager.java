@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.pager;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -268,7 +268,7 @@ public class Pager<T>
 		List<Mson> messages = this.get();
 		
 		// Message
-		Mixin.messageOne(this.getSender(), messages);
+		MixinMessage.get().messageOne(this.getSender(), messages);
 	}
 	
 	public void messageAsync()

@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.util.Txt;
 
 public class RequirementTitlesAvailable extends RequirementAbstract
@@ -25,7 +25,7 @@ public class RequirementTitlesAvailable extends RequirementAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
-		return Mixin.isTitlesAvailable();
+		return MixinTitle.get().isTitlesAvailable();
 	}
 	
 	@Override

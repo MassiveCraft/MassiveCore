@@ -5,7 +5,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.ps.PS;
 
 public class DestinationWorld extends DestinationAbstract
@@ -60,13 +60,13 @@ public class DestinationWorld extends DestinationAbstract
 		String worldId = this.getWorldId();
 		if (worldId == null) return null;
 		
-		return Mixin.getWorldSpawnPs(worldId);
+		return MixinWorld.get().getWorldSpawnPs(worldId);
 	}
 	
 	@Override
 	public String getDesc(Object watcherObject)
 	{
-		return "World " + Mixin.getWorldDisplayName(this.getWorldId());
+		return "World " + MixinWorld.get().getWorldDisplayName(this.getWorldId());
 	}
 
 }

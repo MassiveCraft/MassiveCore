@@ -121,13 +121,13 @@ public class MixinWorld extends MixinAbstract
 		{
 			if (verbooseChange || verbooseSame)
 			{
-				Mixin.msgOne(sender, "<b>Unknown world <h>%s<b>.", worldId);
+				MixinMessage.get().msgOne(sender, "<b>Unknown world <h>%s<b>.", worldId);
 			}
 			return false;
 		}
 		
 		// Pre Calculations
-		String worldDisplayName = Mixin.getWorldDisplayName(worldId);
+		String worldDisplayName = MixinWorld.get().getWorldDisplayName(worldId);
 		PS current = this.getWorldSpawnPs(worldId);
 		String currentFormatted = current.toString(PSFormatDesc.get());
 		String goalFormatted = goal.toString(PSFormatDesc.get());
@@ -137,7 +137,7 @@ public class MixinWorld extends MixinAbstract
 		{
 			if (verbooseSame)
 			{
-				Mixin.msgOne(sender, "<i>Spawn location is already <h>%s <i>for <h>%s<i>.", currentFormatted, worldDisplayName);
+				MixinMessage.get().msgOne(sender, "<i>Spawn location is already <h>%s <i>for <h>%s<i>.", currentFormatted, worldDisplayName);
 			}
 			return true;
 		}
@@ -145,7 +145,7 @@ public class MixinWorld extends MixinAbstract
 		// Report
 		if (verbooseChange)
 		{
-			Mixin.msgOne(sender, "<i>Changing spawn location from <h>%s <i>to <h>%s <i>for <h>%s<i>.", currentFormatted, goalFormatted, worldDisplayName);
+			MixinMessage.get().msgOne(sender, "<i>Changing spawn location from <h>%s <i>to <h>%s <i>for <h>%s<i>.", currentFormatted, goalFormatted, worldDisplayName);
 		}
 		
 		// Set it

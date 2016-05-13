@@ -30,7 +30,8 @@ import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderRegister;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderUnregister;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinActual;
+import com.massivecraft.massivecore.mixin.MixinPlayed;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
@@ -397,7 +398,7 @@ public class IdUtil implements Listener, Runnable
 		// Declaring Existence? Sure, whatever you were before!
 		// It can definitely not be local at this point.
 		// But online or offline is fine.
-		boolean online = Mixin.isOnline(player);
+		boolean online = MixinPlayed.get().isOnline(player);
 		
 		update(id, name, SenderPresence.fromOnline(online));
 	}
@@ -430,7 +431,7 @@ public class IdUtil implements Listener, Runnable
 		
 		// Leaving? Is it an actuall leave?
 		SenderPresence presence;
-		if (Mixin.isActualLeave(event))
+		if (MixinActual.get().isActualLeave(event))
 		{
 			// They actually left.
 			// They are offline.

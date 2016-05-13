@@ -18,7 +18,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinInventory;
 import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 
@@ -120,7 +120,7 @@ public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<
 		if (itemStacks == null) return null;
 		
 		// Create Ret
-		Inventory ret = Mixin.createInventory(me, 54, this.getProperty().getName());
+		Inventory ret = MixinInventory.get().createInventory(me, 54, this.getProperty().getName());
 		
 		// Fill Ret
 		for (int i = 0; i < itemStacks.size(); i++)

@@ -15,7 +15,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinActual;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.teleport.ScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -99,7 +100,7 @@ public class EngineMassiveCoreScheduledTeleport extends Engine
 		scheduledTeleport.unschedule();
 		
 		// ... and inform the teleportee.
-		Mixin.msgOne(scheduledTeleport.getTeleporteeId(), "<rose>Cancelled <i>teleport to <h>"+scheduledTeleport.getDestination().getDesc(scheduledTeleport.getTeleporteeId())+"<i>.");
+		MixinMessage.get().msgOne(scheduledTeleport.getTeleporteeId(), "<rose>Cancelled <i>teleport to <h>"+scheduledTeleport.getDestination().getDesc(scheduledTeleport.getTeleporteeId())+"<i>.");
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -133,7 +134,7 @@ public class EngineMassiveCoreScheduledTeleport extends Engine
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void cancelTeleport(EventMassiveCorePlayerLeave event)
 	{
-		if ( ! Mixin.isActualLeave(event)) return;
+		if ( ! MixinActual.get().isActualLeave(event)) return;
 		final Player player = event.getPlayer();
 		
 		this.cancelTeleport(player);

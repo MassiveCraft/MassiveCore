@@ -1,7 +1,8 @@
 package com.massivecraft.massivecore.teleport;
 
 import com.massivecraft.massivecore.engine.EngineMassiveCoreScheduledTeleport;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
+import com.massivecraft.massivecore.mixin.MixinTeleport;
 import com.massivecraft.massivecore.mixin.TeleporterException;
 
 public class ScheduledTeleport implements Runnable
@@ -66,11 +67,11 @@ public class ScheduledTeleport implements Runnable
 		
 		try
 		{
-			Mixin.teleport(this.getTeleporteeId(), this.getDestination(), 0);
+			MixinTeleport.get().teleport(this.getTeleporteeId(), this.getDestination(), 0);
 		}
 		catch (TeleporterException e)
 		{
-			Mixin.messageOne(this.getTeleporteeId(), e.getMessage());
+			MixinMessage.get().messageOne(this.getTeleporteeId(), e.getMessage());
 		}
 	}
 	

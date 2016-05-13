@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 
 public abstract class RequirementAbstract implements Requirement, Serializable
 {
@@ -40,7 +40,7 @@ public abstract class RequirementAbstract implements Requirement, Serializable
 	public static boolean isRequirementsMet(Iterable<Requirement> requirements, CommandSender sender, MassiveCommand command, boolean verboose)
 	{
 		String error = getRequirementsError(requirements, sender, command, verboose);
-		if (error != null && verboose) Mixin.messageOne(sender, error);
+		if (error != null && verboose) MixinMessage.get().messageOne(sender, error);
 		return error == null;
 	}
 	

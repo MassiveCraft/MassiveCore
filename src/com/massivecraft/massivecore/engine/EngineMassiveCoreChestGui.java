@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.chestgui.ChestAction;
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.InventoryUtil;
 
 public class EngineMassiveCoreChestGui extends Engine
@@ -45,7 +45,7 @@ public class EngineMassiveCoreChestGui extends Engine
 		// ... warn on bottom inventory ...
 		if (InventoryUtil.isBottomInventory(event))
 		{
-			Mixin.msgOne(event.getWhoClicked(), "<b>Exit the GUI to edit your items.");
+			MixinMessage.get().msgOne(event.getWhoClicked(), "<b>Exit the GUI to edit your items.");
 			return;
 		}
 		

@@ -28,7 +28,7 @@ import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.PermUtil;
@@ -866,17 +866,17 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 					// OR
 					// Message: "The sub command X is ambiguous."
 					Mson bluetoken = mson(token).color(ChatColor.AQUA);
-					Mixin.messageOne(sender, base.replaceAll(Lang.COMMAND_REPLACEMENT, bluetoken).command(this));
+					MixinMessage.get().messageOne(sender, base.replaceAll(Lang.COMMAND_REPLACEMENT, bluetoken).command(this));
 				
 					// Message: "/f access ..."
 					// Message: "/f ally ..."
 					for (MassiveCommand suggestion : suggestions)
 					{
-						Mixin.messageOne(sender, suggestion.getTemplate(suggestion.getChain(), false, false, sender));
+						MixinMessage.get().messageOne(sender, suggestion.getTemplate(suggestion.getChain(), false, false, sender));
 					}
 				
 					// Message: "Use /Y to see all commands."
-					Mixin.messageOne(sender, Lang.COMMAND_CHILD_HELP.replaceAll(Lang.COMMAND_REPLACEMENT, this.getTemplate(chain, false, false, sender)).command(this));
+					MixinMessage.get().messageOne(sender, Lang.COMMAND_CHILD_HELP.replaceAll(Lang.COMMAND_REPLACEMENT, this.getTemplate(chain, false, false, sender)).command(this));
 				}
 				
 				// NOTE: This return statement will jump to the finally block.
@@ -894,7 +894,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 			// Sometimes Types (or commands themselves) throw exceptions, to stop executing and notify the user.
 			if (ex.hasMessages())
 			{
-				Mixin.messageOne(sender, ex.getMessages());
+				MixinMessage.get().messageOne(sender, ex.getMessages());
 			}
 		}
 		finally
@@ -968,8 +968,8 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		{
 			if (sender != null)
 			{
-				Mixin.msgOne(sender, Lang.COMMAND_TOO_FEW_ARGUMENTS);
-				Mixin.messageOne(sender, this.getTemplate());
+				MixinMessage.get().msgOne(sender, Lang.COMMAND_TOO_FEW_ARGUMENTS);
+				MixinMessage.get().messageOne(sender, this.getTemplate());
 			}
 			return false;
 		}
@@ -982,9 +982,9 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 			{
 				// Get the too many string slice
 				List<String> theTooMany = args.subList(this.getParameterCount(sender), args.size());
-				Mixin.msgOne(sender, Lang.COMMAND_TOO_MANY_ARGUMENTS, Txt.implodeCommaAndDot(theTooMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
-				Mixin.msgOne(sender, Lang.COMMAND_TOO_MANY_ARGUMENTS2);
-				Mixin.messageOne(sender, this.getTemplate());
+				MixinMessage.get().msgOne(sender, Lang.COMMAND_TOO_MANY_ARGUMENTS, Txt.implodeCommaAndDot(theTooMany, Txt.parse("<aqua>%s"), Txt.parse("<b>, "), Txt.parse("<b> and "), ""));
+				MixinMessage.get().msgOne(sender, Lang.COMMAND_TOO_MANY_ARGUMENTS2);
+				MixinMessage.get().messageOne(sender, this.getTemplate());
 			}
 			return false;
 		}
@@ -1230,34 +1230,34 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	
 	public boolean msg(String msg)
 	{
-		return Mixin.msgOne(this.sender, msg);
+		return MixinMessage.get().msgOne(this.sender, msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return Mixin.msgOne(this.sender, msg, args);
+		return MixinMessage.get().msgOne(this.sender, msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return Mixin.msgOne(this.sender, msgs);
+		return MixinMessage.get().msgOne(this.sender, msgs);
 	}
 	
 	// MESSAGE
 	
 	public boolean message(Object message)
 	{
-		return Mixin.messageOne(this.sender, message);
+		return MixinMessage.get().messageOne(this.sender, message);
 	}
 	
 	public boolean message(Object... messages)
 	{
-		return Mixin.messageOne(this.sender, messages);
+		return MixinMessage.get().messageOne(this.sender, messages);
 	}
 	
 	public boolean message(Collection<?> messages)
 	{
-		return Mixin.messageOne(this.sender, messages);
+		return MixinMessage.get().messageOne(this.sender, messages);
 	}
 	
 	// CONVENIENCE MSON

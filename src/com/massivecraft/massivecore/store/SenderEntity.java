@@ -10,7 +10,10 @@ import org.bukkit.entity.Player;
 
 import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinDisplayName;
+import com.massivecraft.massivecore.mixin.MixinMessage;
+import com.massivecraft.massivecore.mixin.MixinPlayed;
+import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.PermUtil;
@@ -119,42 +122,42 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 
 	public boolean isOnline()
 	{
-		return Mixin.isOnline(this.getId());
+		return MixinPlayed.get().isOnline(this.getId());
 	}
 	
 	public boolean isOffline()
 	{
-		return Mixin.isOffline(this.getId());
+		return MixinPlayed.get().isOffline(this.getId());
 	}
 	
 	public Long getLastPlayed()
 	{
-		return Mixin.getLastPlayed(this.getId());
+		return MixinPlayed.get().getLastPlayed(this.getId());
 	}
 	
 	public Long getFirstPlayed()
 	{
-		return Mixin.getFirstPlayed(this.getId());
+		return MixinPlayed.get().getFirstPlayed(this.getId());
 	}
 	
 	public boolean hasPlayedBefore()
 	{
-		return Mixin.hasPlayedBefore(this.getId());
+		return MixinPlayed.get().hasPlayedBefore(this.getId());
 	}
 	
 	public String getIp()
 	{
-		return Mixin.getIp(this.getId());
+		return MixinPlayed.get().getIp(this.getId());
 	}
 	
 	public boolean isVisible()
 	{
-		return Mixin.isVisible(this);
+		return MixinVisibility.get().isVisible(this);
 	}
 	
 	public boolean isVisible(Object watcherObject)
 	{
-		return Mixin.isVisible(this, watcherObject);
+		return MixinVisibility.get().isVisible(this, watcherObject);
 	}
 	
 	public boolean isOnline(Object watcherObject)
@@ -171,21 +174,14 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	// DISPLAY NAME
 	// -------------------------------------------- //
 	
-	// TODO: Remove this one shortly.
-	@Deprecated
-	public String getDisplayName()
-	{
-		return Mixin.getDisplayName(this.getId());
-	}
-	
 	public String getDisplayName(Object watcherObject)
 	{
-		return Mixin.getDisplayName(this.getId(), watcherObject);
+		return MixinDisplayName.get().getDisplayName(this.getId(), watcherObject);
 	}
 	
 	public Mson getDisplayNameMson(Object watcherObject)
 	{
-		return Mixin.getDisplayNameMson(this.getId(), watcherObject);
+		return MixinDisplayName.get().getDisplayNameMson(this.getId(), watcherObject);
 	}
 	
 	// -------------------------------------------- //
@@ -196,34 +192,34 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	
 	public boolean msg(String msg)
 	{
-		return Mixin.msgOne(this.getId(), msg);
+		return MixinMessage.get().msgOne(this.getId(), msg);
 	}
 	
 	public boolean msg(String msg, Object... args)
 	{
-		return Mixin.msgOne(this.getId(), msg, args);
+		return MixinMessage.get().msgOne(this.getId(), msg, args);
 	}
 	
 	public boolean msg(Collection<String> msgs)
 	{
-		return Mixin.msgOne(this.getId(), msgs);
+		return MixinMessage.get().msgOne(this.getId(), msgs);
 	}
 	
 	// MESSAGE
 	
 	public boolean message(Object message)
 	{
-		return Mixin.messageOne(this.getId(), message);
+		return MixinMessage.get().messageOne(this.getId(), message);
 	}
 	
 	public boolean message(Object... messages)
 	{
-		return Mixin.messageOne(this.getId(), messages);
+		return MixinMessage.get().messageOne(this.getId(), messages);
 	}
 	
 	public boolean message(Collection<?> messages)
 	{
-		return Mixin.messageOne(this.getId(), messages);
+		return MixinMessage.get().messageOne(this.getId(), messages);
 	}
 	
 	// -------------------------------------------- //

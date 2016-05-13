@@ -3,7 +3,7 @@ import java.lang.ref.WeakReference;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.util.IdUtil;
 
 public class PredicateVisibleTo implements Predicate<Object>
@@ -32,7 +32,7 @@ public class PredicateVisibleTo implements Predicate<Object>
 	@Override
 	public boolean apply(Object watcheeObject)
 	{
-		return Mixin.isVisible(watcheeObject, this.getWatcher());
+		return MixinVisibility.get().isVisible(watcheeObject, this.getWatcher());
 	}
 
 }

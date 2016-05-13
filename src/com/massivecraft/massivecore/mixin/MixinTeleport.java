@@ -99,7 +99,7 @@ public class MixinTeleport extends MixinAbstract
 	public void teleport(Object teleporteeObject, Destination destination, int delaySeconds) throws TeleporterException
 	{
 		String teleporteeId = IdUtil.getId(teleporteeObject);
-		if (!IdUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", Mixin.getDisplayName(teleporteeId, IdUtil.getConsole())));
+		if (!IdUtil.isPlayerId(teleporteeId)) throw new TeleporterException(Txt.parse("<white>%s <b>is not a player.", MixinDisplayName.get().getDisplayName(teleporteeId, IdUtil.getConsole())));
 		
 		PS ps;
 		try
@@ -117,11 +117,11 @@ public class MixinTeleport extends MixinAbstract
 			// With delay
 			if (desc != null && ! desc.isEmpty())
 			{
-				Mixin.msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
+				MixinMessage.get().msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+" <i>in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			else
 			{
-				Mixin.msgOne(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
+				MixinMessage.get().msgOne(teleporteeId, "<i>Teleporting in <h>"+delaySeconds+"s <i>unless you move.");
 			}
 			
 			new ScheduledTeleport(teleporteeId, destination, delaySeconds).schedule();
@@ -131,7 +131,7 @@ public class MixinTeleport extends MixinAbstract
 			// Without delay AKA "now"/"at once"
 			
 			// Run event
-			EventMassiveCorePlayerPSTeleport event = new EventMassiveCorePlayerPSTeleport(teleporteeId, Mixin.getSenderPs(teleporteeId), destination);
+			EventMassiveCorePlayerPSTeleport event = new EventMassiveCorePlayerPSTeleport(teleporteeId, MixinSenderPs.get().getSenderPs(teleporteeId), destination);
 			event.run();
 			if (event.isCancelled()) return;
 			destination = event.getDestination();
@@ -139,7 +139,7 @@ public class MixinTeleport extends MixinAbstract
 			
 			if (desc != null && ! desc.isEmpty())
 			{
-				Mixin.msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+"<i>.");
+				MixinMessage.get().msgOne(teleporteeId, "<i>Teleporting to <h>"+desc+"<i>.");
 			}
 			
 			Player teleportee = IdUtil.getPlayer(teleporteeId);
@@ -149,7 +149,7 @@ public class MixinTeleport extends MixinAbstract
 			}
 			else
 			{
-				Mixin.setSenderPs(teleporteeId, ps);
+				MixinSenderPs.get().setSenderPs(teleporteeId, ps);
 			}
 		}
 	}

@@ -6,7 +6,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.TypeStringCommand;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinCommand;
 
 public class CmdMassiveCoreClick extends MassiveCommand
 {
@@ -43,7 +43,7 @@ public class CmdMassiveCoreClick extends MassiveCommand
 		MassiveCoreMConf.get().clickSound.run(me);
 		String command = this.readArg();
 		if (command == null) return;
-		Mixin.dispatchCommand(sender, command);
+		MixinCommand.get().dispatchCommand(sender, command);
 	}
 	
 }

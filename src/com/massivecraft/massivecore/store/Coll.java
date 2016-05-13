@@ -17,7 +17,7 @@ import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinModification;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateEqualsIgnoreCase;
 import com.massivecraft.massivecore.util.Txt;
@@ -446,7 +446,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		this.removeIdentifiedModificationFixed(id);
 		
 		this.getDb().delete(this, id);
-		Mixin.syncModification(this, id);
+		MixinModification.get().syncModification(this, id);
 	}
 	
 	@Override
@@ -476,7 +476,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			if (mtime == 0) return;
 			entity.setLastMtime(mtime);
 		}
-		Mixin.syncModification(entity);
+		MixinModification.get().syncModification(entity);
 	}
 	
 	@Override

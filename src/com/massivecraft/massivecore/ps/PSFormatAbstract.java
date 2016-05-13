@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.ps;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.util.Txt;
 
 public class PSFormatAbstract implements PSFormat
@@ -93,11 +93,11 @@ public class PSFormatAbstract implements PSFormat
 		{
 			if (this.useWorldDisplayname)
 			{
-				val = Mixin.getWorldDisplayName(val.toString());
+				val = MixinWorld.get().getWorldDisplayName(val.toString());
 			}
 			else if (this.useWorldAlias)
 			{
-				val = Mixin.getWorldAliasOrId(val.toString());
+				val = MixinWorld.get().getWorldAliasOrId(val.toString());
 			}
 			ret.add(String.format(this.formatWorld, val));
 		}

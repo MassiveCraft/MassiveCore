@@ -65,7 +65,7 @@ import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.nms.NmsEntity;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.extractor.Extractor;
@@ -547,7 +547,7 @@ public class MUtil
 		messages.addAll(MUtil.getStackTraceStrings(1, true));
 		
 		// Message
-		Mixin.messageOne(IdUtil.CONSOLE_ID, messages);
+		MixinMessage.get().messageOne(IdUtil.CONSOLE_ID, messages);
 	}
 	
 	// -------------------------------------------- //

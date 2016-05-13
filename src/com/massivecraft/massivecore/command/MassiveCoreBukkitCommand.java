@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -149,7 +149,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 		int maxSize = MassiveCoreMConf.get().tabCompletionLimit;
 		if (maxSize > 0 && retSize > maxSize)
 		{
-			Mixin.msgOne(sender, Lang.COMMAND_TOO_MANY_TAB_SUGGESTIONS, retSize);
+			MixinMessage.get().msgOne(sender, Lang.COMMAND_TOO_MANY_TAB_SUGGESTIONS, retSize);
 			return Collections.emptyList();
 		}
 		

@@ -11,7 +11,8 @@ import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.TypeAbstract;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinDisplayName;
+import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -87,7 +88,7 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		String id = IdUtil.getId(value);
 		if (id == null) return null;
 		
-		return Mixin.getDisplayName(id, sender);
+		return MixinDisplayName.get().getDisplayName(id, sender);
 	}
 
 	@Override
@@ -162,7 +163,7 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		Set<String> ret = new MassiveSet<String>(size);
 		for (String id : ids)
 		{
-			if ( ! Mixin.isVisible(id, sender)) continue;
+			if ( ! MixinVisibility.get().isVisible(id, sender)) continue;
 			if (addIds) ret.add(id);
 			String name = IdUtil.getName(id);
 			if (name == null) continue;

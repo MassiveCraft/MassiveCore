@@ -27,7 +27,7 @@ import org.bukkit.material.MaterialData;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinInventory;
 
 public class InventoryUtil
 {
@@ -924,7 +924,7 @@ public class InventoryUtil
 		Inventory ret = null;
 		if (inventory instanceof PlayerInventory && playerSupport)
 		{
-			ret = Mixin.createPlayerInventory();
+			ret = MixinInventory.get().createPlayerInventory();
 		}
 		else
 		{
@@ -932,7 +932,7 @@ public class InventoryUtil
 			int size = inventory.getSize();
 			if (inventory instanceof PlayerInventory) size = SIZE_PLAYER_STORAGE;
 			String title = inventory.getTitle();
-			ret = Mixin.createInventory(holder, size, title);
+			ret = MixinInventory.get().createInventory(holder, size, title);
 		}
 		
 		// Fill
