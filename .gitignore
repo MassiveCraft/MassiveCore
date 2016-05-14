@@ -17,11 +17,12 @@
 .*.sw[a-p]
 
 # Maven
-/build.xml
+/pom.xml
 /target
 /dependency-reduced-pom.xml
 
 # various other potential build files
+/build.xml
 /build
 /bin
 /dist
