@@ -81,8 +81,7 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 	{
 		try
 		{
-			Class<WriterAbstract<?, ?, ?, ?, ?, ?, ?>> writerClassInner = (Class<WriterAbstract<?, ?, ?, ?, ?, ?, ?>>) writerClass;
-			WriterAbstract<?, ?, ?, ?, ?, ?, ?> writer = ReflectionUtil.getSingletonInstance(writerClassInner);
+			WriterAbstract<?, ?, ?, ?, ?, ?, ?> writer = ReflectionUtil.getSingletonInstance(writerClass);
 			
 			if ( ! writer.isActive()) writer.setActive(this.getActivePlugin());
 			

@@ -89,7 +89,7 @@ public class ReflectionUtil
 	{
 		try
 		{
-			Method ret = clazz.getMethod(name, parameterTypes);
+			Method ret = clazz.getDeclaredMethod(name, parameterTypes);
 			makeAccessible(ret);
 			return ret;
 		}
@@ -198,7 +198,7 @@ public class ReflectionUtil
 	// SINGLETON INSTANCE
 	// -------------------------------------------- //
 	
-	public static <T> T getSingletonInstance(Class<T> clazz)
+	public static <T> T getSingletonInstance(Class<?> clazz)
 	{
 		Method get = getMethod(clazz, "get");
 		T ret = invokeMethod(get, null);
@@ -369,16 +369,16 @@ public class ReflectionUtil
 	// AS RUNTIME EXCEPTION
 	// -------------------------------------------- //
 	
-	public static RuntimeException asRuntimeException(Throwable e)
+	public static RuntimeException asRuntimeException(Throwable t)
 	{
 		// Runtime
-		if (e instanceof RuntimeException) return (RuntimeException) e;
+		if (t instanceof RuntimeException) return (RuntimeException) t;
 		
 		// Invocation
-		if (e instanceof InvocationTargetException) return asRuntimeException(((InvocationTargetException)e).getCause());
+		if (t instanceof InvocationTargetException) return asRuntimeException(((InvocationTargetException)t).getCause());
 		
 		// Rest
-		return new IllegalStateException(e.getClass().getSimpleName() + ": " + e.getMessage());
+		return new IllegalStateException(t.getClass().getSimpleName() + ": " + t.getMessage());
 	}
 	
 }

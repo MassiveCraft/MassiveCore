@@ -308,6 +308,13 @@ public class MassiveCore extends MassivePlugin
 		// Delete Files (at once and additionally after all plugins loaded)
 		MassiveCoreTaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, MassiveCoreTaskDeleteFiles.get());
+		
+		// TEST
+		//PickerTest.get().action();
+		//this.activate(
+		//	PickerTest.class
+		//);
+		//PickerTest.get().action();
 	}
 	
 	@Override
