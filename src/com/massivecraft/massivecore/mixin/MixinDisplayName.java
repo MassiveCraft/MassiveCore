@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class MixinDisplayName extends MixinAbstract
+public class MixinDisplayName extends Mixin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,7 +14,6 @@ public class MixinDisplayName extends MixinAbstract
 	private static MixinDisplayName d = new MixinDisplayName();
 	private static MixinDisplayName i = d;
 	public static MixinDisplayName get() { return i; }
-	public static void set(MixinDisplayName i) { MixinDisplayName.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

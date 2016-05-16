@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class MixinPlayed extends MixinAbstract
+public class MixinPlayed extends Mixin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -18,7 +18,6 @@ public class MixinPlayed extends MixinAbstract
 	private static MixinPlayed d = new MixinPlayed();
 	private static MixinPlayed i = d;
 	public static MixinPlayed get() { return i; }
-	public static void set(MixinPlayed i) { MixinPlayed.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

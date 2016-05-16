@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class MixinKick extends MixinAbstract
+public class MixinKick extends Mixin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -13,7 +13,6 @@ public class MixinKick extends MixinAbstract
 	private static MixinKick d = new MixinKick();
 	private static MixinKick i = d;
 	public static MixinKick get() { return i; }
-	public static void set(MixinKick i) { MixinKick.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

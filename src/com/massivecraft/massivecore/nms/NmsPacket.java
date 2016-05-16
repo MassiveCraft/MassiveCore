@@ -1,10 +1,8 @@
 package com.massivecraft.massivecore.nms;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
@@ -38,11 +36,6 @@ public final class NmsPacket extends NmsAbstract
 	// The object we send instead of a string
 	private static Class<?> iChatBaseComponent;
 
-	// Handling the players conenction
-	private static Method getHandle;
-	private static Field playerConnection;
-	private static Method sendPacket;
-
 	// The title packet and its constructor
 	private static Constructor<?> titlePacketConstructor;
 	private static Constructor<?> titlePacketConstructorTimes;
@@ -64,6 +57,8 @@ public final class NmsPacket extends NmsAbstract
 	@Override
 	protected void setup() throws Throwable
 	{
+		NmsBasics.get().require();
+		
 		// The enum used for titles
 		titleEnumClass = getTitleEnumClass();
 
@@ -90,11 +85,6 @@ public final class NmsPacket extends NmsAbstract
 		Class<?> chatPacketClass = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutChat");
 		chatPacketConstructor = ReflectionUtils.getConstructor(chatPacketClass, iChatBaseComponent);
 		chatPacketActionbarConstructor = ReflectionUtils.getConstructor(chatPacketClass, iChatBaseComponent, Byte.TYPE);
-
-		// Player connection
-		getHandle = ReflectionUtils.getMethod("CraftPlayer", PackageType.CRAFTBUKKIT_ENTITY, "getHandle");
-		playerConnection = ReflectionUtils.getField("EntityPlayer", PackageType.MINECRAFT_SERVER, false, "playerConnection");
-		sendPacket = ReflectionUtils.getMethod(playerConnection.getType(), "sendPacket", PackageType.MINECRAFT_SERVER.getClass("Packet"));
 
 		// Set accessible
 		setAllAccessible();
@@ -138,9 +128,6 @@ public final class NmsPacket extends NmsAbstract
 		titlePacketConstructor.setAccessible(true);
 		titlePacketConstructorTimes.setAccessible(true);
 		chatPacketConstructor.setAccessible(true);
-		getHandle.setAccessible(true);
-		playerConnection.setAccessible(true);
-		sendPacket.setAccessible(true);
 	}
 
 	// -------------------------------------------- //
@@ -155,15 +142,16 @@ public final class NmsPacket extends NmsAbstract
 		{
 			// Fadein, stay, fadeout
 			Object timesPacket = titlePacketConstructorTimes.newInstance(titleTimesEnum, null, ticksIn, ticksStay, ticksOut);
-			sendPacket(player, timesPacket);
+			
+			NmsBasics.get().sendPacket(player, timesPacket);
 
 			if (titleMain != null)
 			{
 				// Title
 				Object titleMainChat = toChatBaseComponent(titleMain);
 				Object titleMainPacket = titlePacketConstructor.newInstance(titleMainEnum, titleMainChat);
-				sendPacket(player, titleMainPacket);
-
+				
+				NmsBasics.get().sendPacket(player, titleMainPacket);
 			}
 
 			if (titleSub != null)
@@ -171,7 +159,8 @@ public final class NmsPacket extends NmsAbstract
 				// SubTitle
 				Object titleSubChat = toChatBaseComponent(titleSub);
 				Object titleSubPacket = titlePacketConstructor.newInstance(titleSubEnum, titleSubChat);
-				sendPacket(player, titleSubPacket);
+				
+				NmsBasics.get().sendPacket(player, titleSubPacket);
 			}
 
 		}
@@ -200,7 +189,7 @@ public final class NmsPacket extends NmsAbstract
 			Object rawChat = toChatBaseComponent(string);
 			Object chatPacket = chatPacketConstructor.newInstance(rawChat);
 
-			sendPacket(player, chatPacket);
+			NmsBasics.get().sendPacket(player, chatPacket);
 		}
 		catch (Exception ex)
 		{
@@ -226,7 +215,7 @@ public final class NmsPacket extends NmsAbstract
 			Object actionbar = toChatBaseComponent(string);
 			Object chatPacket = chatPacketActionbarConstructor.newInstance(actionbar, (byte) 2);
 
-			sendPacket(player, chatPacket);
+			NmsBasics.get().sendPacket(player, chatPacket);
 		}
 		catch(Exception ex)
 		{
@@ -242,23 +231,6 @@ public final class NmsPacket extends NmsAbstract
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
-
-	public static void sendPacket(Player player, Object packet)
-	{
-		Object connection = getPlayerConnection(player);
-		ReflectionUtil.invokeMethod(sendPacket, connection, packet);
-	}
-
-	public static <T> T getPlayerConnection(Player player)
-	{
-		Object handle = getHandle(player);
-		return ReflectionUtil.getField(playerConnection, handle);
-	}
-	
-	public static <T> T getHandle(Player player)
-	{
-		return ReflectionUtil.invokeMethod(getHandle, player);
-	}
 
 	public static Object toChatBaseComponent(String str) throws Exception
 	{

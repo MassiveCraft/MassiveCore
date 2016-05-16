@@ -16,7 +16,7 @@ import com.massivecraft.massivecore.teleport.ScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MixinTeleport extends MixinAbstract
+public class MixinTeleport extends Mixin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -25,7 +25,6 @@ public class MixinTeleport extends MixinAbstract
 	private static MixinTeleport d = new MixinTeleport();
 	private static MixinTeleport i = d;
 	public static MixinTeleport get() { return i; }
-	public static void set(MixinTeleport i) { MixinTeleport.i = i; }
 
 	// -------------------------------------------- //
 	// METHODS

@@ -70,12 +70,12 @@ public class Integration extends Engine
 			
 			this.integrationActive = integrationActive;
 			
-			String message = Txt.parse(integrationActive ? "<g>Activated Integration <h>%s" : "<b>Deactivated Integration <h>%s", this.getName());
+			String message = Txt.parse(integrationActive ? "<g>Integration Activated <h>%s" : "<b>Integration Deactivated <h>%s", this.getName());
 			this.getPlugin().log(message);
 		}
 		catch (Throwable t)
 		{
-			String message = Txt.parse(integrationActive ? "<b>Activating Integration <h>%s<b> FAILED:" : "<b>Deactivating Integration <h>%s<b> FAILED:", this.getName());
+			String message = Txt.parse(integrationActive ? "<b>Integration Activation <h>%s<b> FAILED:" : "<b>Integration Deactivation <h>%s<b> FAILED:", this.getName());
 			this.getPlugin().log(message);
 			t.printStackTrace();
 		}

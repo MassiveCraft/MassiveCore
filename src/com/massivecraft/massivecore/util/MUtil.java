@@ -66,7 +66,7 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.mixin.MixinMessage;
-import com.massivecraft.massivecore.nms.NmsEntity;
+import com.massivecraft.massivecore.nms.NmsEntityGet;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.extractor.Extractor;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayer;
@@ -189,57 +189,12 @@ public class MUtil
 	
 	public static Entity getEntity(World world, UUID uuid)
 	{
-		if (world == null) throw new NullPointerException("world");
-		if (uuid == null) return null;
-		
-		if (NmsEntity.get().isAvailable())
-		{
-			return NmsEntity.get().getEntity(world, uuid);
-		}
-		else
-		{
-			return getEntityFallback(world, uuid);
-		}
+		return NmsEntityGet.get().getEntity(world, uuid);
 	}
 	
 	public static Entity getEntity(UUID uuid)
 	{
-		if (uuid == null) return null;
-		
-		if (NmsEntity.get().isAvailable())
-		{
-			return NmsEntity.get().getEntity(uuid);
-		}
-		else
-		{
-			return getEntityFallback(uuid);
-		}
-	}
-	
-	private static Entity getEntityFallback(World world, UUID uuid)
-	{
-		if (world == null) throw new NullPointerException("world");
-		if (uuid == null) return null;
-		
-		for (Entity entity : world.getEntities())
-		{
-			if (entity.getUniqueId().equals(uuid)) return entity;
-		}
-		
-		return null;
-	}
-	
-	private static Entity getEntityFallback(UUID uuid)
-	{
-		if (uuid == null) return null;
-		
-		for (World world : Bukkit.getWorlds())
-		{
-			Entity ret = getEntityFallback(world, uuid);
-			if (ret != null) return ret;
-		}
-		
-		return null;
+		return NmsEntityGet.get().getEntity(uuid);
 	}
 	
 	// -------------------------------------------- //

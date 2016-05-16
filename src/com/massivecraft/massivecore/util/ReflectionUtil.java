@@ -207,6 +207,22 @@ public class ReflectionUtil
 		return ret;
 	}
 	
+	public static <T> T getSingletonInstanceFirstCombatible(Iterable<Class<?>> classes, T fallback)
+	{
+		for (Class<?> c : classes)
+		{
+			try
+			{
+				return ReflectionUtil.getSingletonInstance(c);
+			}
+			catch (Throwable t)
+			{
+				// Not Compatible
+			}
+		}
+		return fallback;
+	}
+	
 	// -------------------------------------------- //
 	// FIELD > GET
 	// -------------------------------------------- //

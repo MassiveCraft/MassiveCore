@@ -6,7 +6,7 @@ import com.massivecraft.massivecore.nms.NmsPacket;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MixinActionbar extends MixinAbstract
+public class MixinActionbar extends Mixin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -15,7 +15,6 @@ public class MixinActionbar extends MixinAbstract
 	private static MixinActionbar d = new MixinActionbar();
 	private static MixinActionbar i = d;
 	public static MixinActionbar get() { return i; }
-	public static void set(MixinActionbar i) { MixinActionbar.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

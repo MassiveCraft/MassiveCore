@@ -6,7 +6,7 @@ import com.massivecraft.massivecore.nms.NmsPacket;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MixinTitle extends MixinAbstract
+public class MixinTitle extends Mixin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -15,7 +15,6 @@ public class MixinTitle extends MixinAbstract
 	private static MixinTitle d = new MixinTitle();
 	private static MixinTitle i = d;
 	public static MixinTitle get() { return i; }
-	public static void set(MixinTitle i) { MixinTitle.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

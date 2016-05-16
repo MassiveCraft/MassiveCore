@@ -13,7 +13,7 @@ import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class MixinMessage extends MixinAbstract
+public class MixinMessage extends Mixin
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -22,7 +22,6 @@ public class MixinMessage extends MixinAbstract
 	private static MixinMessage d = new MixinMessage();
 	private static MixinMessage i = d;
 	public static MixinMessage get() { return i; }
-	public static void set(MixinMessage i) { MixinMessage.i = i; }
 	
 	// -------------------------------------------- //
 	// MSG > ALL

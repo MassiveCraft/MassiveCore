@@ -26,12 +26,6 @@ public class NmsBoard extends NmsAbstract
 	// FIELDS
 	// -------------------------------------------- //
 	
-	// org.bukkit.craftbukkit.scoreboard.CraftTeam
-	private Class<?> classCraftTeam;
-	
-	// org.bukkit.craftbukkit.scoreboard.CraftTeam#team
-	private Field fieldCraftTeamHandle;
-	
 	// net.minecraft.server.ScoreboardTeam
 	private Class<?> classNmsTeam;
 	
@@ -66,8 +60,8 @@ public class NmsBoard extends NmsAbstract
 	@Override
 	protected void setup() throws Throwable
 	{
-		this.classCraftTeam = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftTeam");
-		this.fieldCraftTeamHandle = ReflectionUtil.getField(this.classCraftTeam, "team");
+		// TODO: Move to provoke?
+		NmsBasics.get().require();
 		
 		this.classNmsTeam = PackageType.MINECRAFT_SERVER.getClass("ScoreboardTeam");
 		this.fieldNmsTeamColor = ReflectionUtil.getField(this.classNmsTeam, "k");
@@ -88,7 +82,7 @@ public class NmsBoard extends NmsAbstract
 	{
 		if ( ! this.isAvailable()) return null;
 		
-		Object nmsTeam = getTeamHandle(team);
+		Object nmsTeam = NmsBasics.get().getHandle(team);
 		Object nmsColor = ReflectionUtil.getField(this.fieldNmsTeamColor, nmsTeam);
 		
 		return convertColor(nmsColor);
@@ -98,22 +92,13 @@ public class NmsBoard extends NmsAbstract
 	{
 		if ( ! this.isAvailable()) return;
 		
-		Object nmsTeam = getTeamHandle(team);
+		Object nmsTeam = NmsBasics.get().getHandle(team);
 		Object nmsColor = convertColor(color);
 		ReflectionUtil.setField(this.fieldNmsTeamColor, nmsTeam, nmsColor);
 		
 		// This is a quick and dirty solution.
 		// It makes sure the scoreboard is updated.
 		team.setDisplayName(team.getDisplayName());
-	}
-	
-	// -------------------------------------------- //
-	// TEAM
-	// -------------------------------------------- //
-	
-	public <T> T getTeamHandle(Team team)
-	{
-		return ReflectionUtil.getField(this.fieldCraftTeamHandle, team);
 	}
 	
 	// -------------------------------------------- //
@@ -126,14 +111,14 @@ public class NmsBoard extends NmsAbstract
 	
 	public <T> T createTeamUpdatePacket(Team team)
 	{
-		Object handle = getTeamHandle(team);
+		Object handle = NmsBasics.get().getHandle(team);
 		return ReflectionUtil.invokeConstructor(this.constructorPacketTeamUpdate, handle, PACKET_UPDATE_MODE);
 	}
 	
 	public void sendTeamUpdatePacket(Team team, Player player)
 	{
 		Object packet = this.createTeamUpdatePacket(team);
-		NmsPacket.sendPacket(player, packet);
+		NmsBasics.get().sendPacket(player, packet);
 	}
 	
 	// -------------------------------------------- //

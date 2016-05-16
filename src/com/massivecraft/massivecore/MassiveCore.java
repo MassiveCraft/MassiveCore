@@ -84,7 +84,11 @@ import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
-import com.massivecraft.massivecore.nms.NmsItemStack;
+import com.massivecraft.massivecore.nms.NmsBasics;
+import com.massivecraft.massivecore.nms.NmsEntityGet;
+import com.massivecraft.massivecore.nms.NmsItemStackCreate;
+import com.massivecraft.massivecore.nms.NmsItemStackCreate17R4P;
+import com.massivecraft.massivecore.nms.NmsPlayerInventoryCreate;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
 import com.massivecraft.massivecore.store.ModificationPollerLocal;
@@ -187,7 +191,7 @@ public class MassiveCore extends MassivePlugin
 		
 		// ItemStack
 		ret.registerTypeAdapter(ItemStack.class, AdapterItemStack.get());
-		Class<?> classCraftItemStack = NmsItemStack.get().classCraftItemStack;
+		Class<?> classCraftItemStack = NmsItemStackCreate17R4P.getClassCraftItemStackCatch();
 		if (classCraftItemStack != null) ret.registerTypeAdapter(classCraftItemStack, AdapterItemStack.get());
 		
 		// Inventory
@@ -245,6 +249,12 @@ public class MassiveCore extends MassivePlugin
 			AspectColl.class,
 			MassiveCoreMConfColl.class,
 			MassiveCoreMSponsorInfoColl.class,
+			
+			// Nms
+			NmsBasics.class,
+			NmsEntityGet.class,
+			NmsItemStackCreate.class,
+			NmsPlayerInventoryCreate.class,
 			
 			// Writer,
 			WriterItemStack.class,
@@ -308,13 +318,6 @@ public class MassiveCore extends MassivePlugin
 		// Delete Files (at once and additionally after all plugins loaded)
 		MassiveCoreTaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, MassiveCoreTaskDeleteFiles.get());
-		
-		// TEST
-		//PickerTest.get().action();
-		//this.activate(
-		//	PickerTest.class
-		//);
-		//PickerTest.get().action();
 	}
 	
 	@Override
