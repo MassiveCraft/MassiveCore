@@ -26,17 +26,18 @@ public class NmsBoard17R4 extends NmsBoard
 	
 	// net.minecraft.server.Scoreboard
 	protected Class<?> classNmsScoreboard;
+	// net.minecraft.server.ScoreboardTeam
+	protected Class<?> classNmsScoreboardTeam;
+	
 	// net.minecraft.server.Scoreboard#getTeam(String)
 	protected Method methodNmsScoreboardGetTeam;
 	// net.minecraft.server.Scoreboard#addPlayerToTeam(String, String)
 	protected Method methodNmsScoreboardAddPlayerToTeam;
-	// net.minecraft.server.Scoreboard#removePlayerFromTeam(String, String)
+	// net.minecraft.server.Scoreboard#removePlayerFromTeam(String, net.minecraft.server.ScoreboardTeam)
 	protected Method methodNmsScoreboardRemovePlayerFromTeam;
 	// net.minecraft.server.Scoreboard#getPlayerTeam(String)
 	protected Method methodNmsScoreboardGetPlayerTeam;
-	
-	// net.minecraft.server.ScoreboardTeam
-	protected Class<?> classNmsScoreboardTeam;
+
 	// net.minecraft.server.ScoreboardTeam#getPlayerNameSet()
 	protected Method methodNmsScoreboardTeamGetPlayerNameSet;
 	
@@ -54,28 +55,21 @@ public class NmsBoard17R4 extends NmsBoard
 	@Override
 	public void setup() throws Throwable
 	{
-		try
-		{
-			NmsBasics.get().require();
-			
-			this.classNmsScoreboard = PackageType.MINECRAFT_SERVER.getClass("Scoreboard");
-			this.methodNmsScoreboardGetTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "getTeam", String.class);
-			this.methodNmsScoreboardAddPlayerToTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "addPlayerToTeam", String.class, String.class);
-			this.methodNmsScoreboardRemovePlayerFromTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "removePlayerFromTeam", String.class, String.class);
-			this.methodNmsScoreboardGetPlayerTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "getPlayerTeam", String.class);
-			
-			this.classNmsScoreboardTeam = PackageType.MINECRAFT_SERVER.getClass("ScoreboardTeam");
-			this.methodNmsScoreboardTeamGetPlayerNameSet = ReflectionUtil.getMethod(this.classNmsScoreboardTeam, "getPlayerNameSet");
-			
-			this.classCraftScoreboard = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftScoreboard");
-			this.classCraftTeam = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftTeam");
-			this.constructorCraftTeam = ReflectionUtil.getConstructor(this.classCraftTeam, this.classCraftScoreboard, this.classNmsScoreboardTeam);
-		}
-		catch (Throwable t)
-		{
-			t.printStackTrace();
-			throw t;
-		}
+		NmsBasics.get().require();
+		
+		this.classNmsScoreboard = PackageType.MINECRAFT_SERVER.getClass("Scoreboard");
+		this.classNmsScoreboardTeam = PackageType.MINECRAFT_SERVER.getClass("ScoreboardTeam");
+		
+		this.methodNmsScoreboardGetTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "getTeam", String.class);
+		this.methodNmsScoreboardAddPlayerToTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "addPlayerToTeam", String.class, String.class);
+		this.methodNmsScoreboardRemovePlayerFromTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "removePlayerFromTeam", String.class, this.classNmsScoreboardTeam);
+		this.methodNmsScoreboardGetPlayerTeam = ReflectionUtil.getMethod(this.classNmsScoreboard, "getPlayerTeam", String.class);
+					
+		this.methodNmsScoreboardTeamGetPlayerNameSet = ReflectionUtil.getMethod(this.classNmsScoreboardTeam, "getPlayerNameSet");
+		
+		this.classCraftScoreboard = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftScoreboard");
+		this.classCraftTeam = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftTeam");
+		this.constructorCraftTeam = ReflectionUtil.getConstructor(this.classCraftTeam, this.classCraftScoreboard, this.classNmsScoreboardTeam);
 	}
 	
 	// -------------------------------------------- //
@@ -114,7 +108,10 @@ public class NmsBoard17R4 extends NmsBoard
 		
 		if ( ! this.getMembersRaw(team).contains(key)) return false;
 		
-		ReflectionUtil.invokeMethod(this.methodNmsScoreboardRemovePlayerFromTeam, handle, key, team.getName());
+		Object teamHandle = NmsBasics.get().getHandle(team);
+		
+		ReflectionUtil.invokeMethod(this.methodNmsScoreboardRemovePlayerFromTeam, handle, key, teamHandle);
+		
 		return true;
 	}
 	
