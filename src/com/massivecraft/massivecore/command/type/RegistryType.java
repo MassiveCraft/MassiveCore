@@ -162,7 +162,10 @@ public class RegistryType
 	// -------------------------------------------- //
 	// DEFAULTS
 	// -------------------------------------------- //
-
+	// NOTE: As of 2016-05-17 about 15% of all servers are still using 1.7.x.
+	// With this in mind there are some try catch clauses.
+	// We catch NoClassDefFoundError and silently move along on those servers.
+	
 	public static void registerAll()
 	{
 		// Primitive
@@ -203,8 +206,7 @@ public class RegistryType
 		register(TypeOcelotType.get());
 		register(TypeParticleEffect.get());
 		
-		// About 15% of all servers are still using 1.7.x.
-		// We catch NoClassDefFoundError and silently move along on those servers.
+		// 1.7 Compat
 		try
 		{
 			register(TypeRabbitType.get());
@@ -222,7 +224,17 @@ public class RegistryType
 		// Bukkit
 		register(TypeDestination.get());
 		register(TypeItemStack.get());
-		register(TypeDataBannerPattern.get());
+		
+		// 1.7 Compat
+		try
+		{
+			register(TypeDataBannerPattern.get());
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		
 		register(TypeDataPotionEffect.get());
 		register(TypeDataFireworkEffect.get());
 		register(TypeDataItemStack.get());
