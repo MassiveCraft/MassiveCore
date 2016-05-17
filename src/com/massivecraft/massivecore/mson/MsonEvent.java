@@ -7,7 +7,7 @@ import java.util.Objects;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.nms.NmsItem;
+import com.massivecraft.massivecore.nms.NmsItemStackTooltip;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 
@@ -127,7 +127,10 @@ public final class MsonEvent implements Serializable
 	public static MsonEvent item(ItemStack item)
 	{
 		if (item == null) throw new NullPointerException("item");
-		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, NmsItem.itemToString(item));
+		String nbtStringTooltip = null;
+		NmsItemStackTooltip nms = NmsItemStackTooltip.get();
+		if (nms.isAvailable()) nbtStringTooltip = nms.getNbtStringTooltip(item);
+		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, nbtStringTooltip);
 	}
 
 	// -------------------------------------------- //

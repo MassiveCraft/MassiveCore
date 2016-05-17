@@ -85,10 +85,13 @@ import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.nms.NmsBasics;
+import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.nms.NmsEntityGet;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate17R4P;
+import com.massivecraft.massivecore.nms.NmsItemStackTooltip;
 import com.massivecraft.massivecore.nms.NmsPlayerInventoryCreate;
+import com.massivecraft.massivecore.nms.NmsSkullMeta;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
 import com.massivecraft.massivecore.store.ModificationPollerLocal;
@@ -252,9 +255,12 @@ public class MassiveCore extends MassivePlugin
 			
 			// Nms
 			NmsBasics.class,
+			NmsChat.class,
 			NmsEntityGet.class,
 			NmsItemStackCreate.class,
+			NmsItemStackTooltip.class,
 			NmsPlayerInventoryCreate.class,
+			NmsSkullMeta.class,
 			
 			// Writer,
 			WriterItemStack.class,

@@ -5,10 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.mson.Mson;
-import com.massivecraft.massivecore.nms.NmsPacket;
+import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -179,15 +178,7 @@ public class MixinMessage extends Mixin
 			else if (message instanceof Mson)
 			{
 				Mson mson = (Mson)message;
-				if (sendee instanceof Player && NmsPacket.get().isAvailable())
-				{
-					Player player = (Player) sendee;
-					NmsPacket.sendRaw(player, mson.toRaw());
-				}
-				else
-				{
-					sendee.sendMessage(mson.toPlain(true));
-				}
+				NmsChat.get().sendChatMson(sendee, mson);
 			}
 			else
 			{

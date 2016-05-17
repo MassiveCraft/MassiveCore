@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.mixin;
 
 import org.bukkit.entity.Player;
+
 import com.massivecraft.massivecore.mson.Mson;
-import com.massivecraft.massivecore.nms.NmsPacket;
-import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.nms.NmsChat;
 
 public class MixinActionbar extends Mixin
 {
@@ -17,40 +16,37 @@ public class MixinActionbar extends Mixin
 	public static MixinActionbar get() { return i; }
 	
 	// -------------------------------------------- //
-	// METHODS
+	// AVAILABLE
 	// -------------------------------------------- //
 	
-	public boolean sendActionbarMessage(Object watcherObject, String message)
+	@Override
+	public boolean isAvailable()
 	{
-		// Get the player
-		Player player = IdUtil.getPlayer(watcherObject);
-		if(player == null) return false;
-
-		message = NmsPacket.toJson(message);
-
-		return NmsPacket.sendActionbar(player, message);
+		return NmsChat.get().isAvailable();
+	}
+	
+	// -------------------------------------------- //
+	// SEND
+	// -------------------------------------------- //
+	
+	public void sendActionbarRaw(Player player, String raw)
+	{
+		NmsChat.get().sendActionbarRaw(player, raw);
+	}
+	
+	public void sendActionbarMson(Object watcherObject, Mson mson)
+	{
+		NmsChat.get().sendActionbarMson(watcherObject, mson);
+	}
+	
+	public void sendActionbarMessage(Object watcherObject, String message)
+	{
+		NmsChat.get().sendActionbarMessage(watcherObject, message);
 	}
 
-	public boolean sendActionbarMsg(Object watcherObject, String message)
+	public void sendActionbarMsg(Object watcherObject, String msg)
 	{
-		return this.sendActionbarMessage(watcherObject, Txt.parse(message));
-	}
-
-	public boolean sendActionbarMson(Object watcherObject, Mson mson)
-	{
-		// Get the player
-		Player player = IdUtil.getPlayer(watcherObject);
-		if(player == null) return false;
-
-		// Convert to raw
-		String message = mson.toRaw();
-
-		return NmsPacket.sendActionbar(player, message);
-	}
-
-	public boolean isActionbarAvailable()
-	{
-		return NmsPacket.get().isAvailable();
+		NmsChat.get().sendActionbarMsg(watcherObject, msg);
 	}
 
 }

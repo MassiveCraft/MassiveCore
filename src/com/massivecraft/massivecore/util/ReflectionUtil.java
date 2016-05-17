@@ -195,6 +195,23 @@ public class ReflectionUtil
 	}
 	
 	// -------------------------------------------- //
+	// NEW INSTANCE
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T newInstance(Class<?> clazz)
+	{
+		try
+		{
+			return (T) clazz.newInstance();
+		}
+		catch (Exception e)
+		{
+			throw asRuntimeException(e);
+		}
+	}
+	
+	// -------------------------------------------- //
 	// SINGLETON INSTANCE
 	// -------------------------------------------- //
 	

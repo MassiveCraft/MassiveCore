@@ -25,7 +25,7 @@ public class RequirementTitlesAvailable extends RequirementAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
-		return MixinTitle.get().isTitlesAvailable();
+		return MixinTitle.get().isAvailable();
 	}
 	
 	@Override

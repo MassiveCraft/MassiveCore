@@ -2,9 +2,8 @@ package com.massivecraft.massivecore.mixin;
 
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.nms.NmsPacket;
-import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.nms.NmsChat;
 
 public class MixinTitle extends Mixin
 {
@@ -17,35 +16,37 @@ public class MixinTitle extends Mixin
 	public static MixinTitle get() { return i; }
 	
 	// -------------------------------------------- //
-	// METHODS
+	// AVAILABLE
 	// -------------------------------------------- //
 	
-	public boolean sendTitleMessage(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
+	@Override
+	public boolean isAvailable()
 	{
-		// Get the player
-		Player player = IdUtil.getPlayer(watcherObject);
-		if (player == null) return false;
-		
-		// If we don't send any message (empty is ok) we might end up displaying old messages.
-		if (titleSub == null) titleSub = "";
-		if (titleMain == null) titleMain = "";
-
-		titleSub = NmsPacket.toJson(titleSub);
-		titleMain = NmsPacket.toJson(titleMain);
-		
-		return NmsPacket.sendTitle(player, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
+		return NmsChat.get().isAvailable();
 	}
 	
-	public boolean sendTitleMsg(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String titleMain, String titleSub)
+	// -------------------------------------------- //
+	// SEND
+	// -------------------------------------------- //
+	
+	public void sendTitleRaw(Player player, int ticksIn, int ticksStay, int ticksOut, String rawMain, String rawSub)
 	{
-		if (titleMain != null) titleMain = Txt.parse(titleMain);
-		if (titleSub != null) titleSub = Txt.parse(titleSub);
-		return this.sendTitleMessage(watcherObject, ticksIn, ticksStay, ticksOut, titleMain, titleSub);
+		NmsChat.get().sendTitleRaw(player, ticksIn, ticksStay, ticksOut, rawMain, rawSub);
 	}
 	
-	public boolean isTitlesAvailable()
+	public void sendTitleMson(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, Mson msonMain, Mson msonSub)
 	{
-		return NmsPacket.get().isAvailable();
+		NmsChat.get().sendTitleMson(watcherObject, ticksIn, ticksStay, ticksOut, msonMain, msonSub);
+	}
+	
+	public void sendTitleMessage(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String messageMain, String messageSub)
+	{
+		NmsChat.get().sendTitleMessage(watcherObject, ticksIn, ticksStay, ticksOut, messageMain, messageSub);
+	}
+	
+	public void sendTitleMsg(Object watcherObject, int ticksIn, int ticksStay, int ticksOut, String msgMain, String msgSub)
+	{
+		NmsChat.get().sendTitleMsg(watcherObject, ticksIn, ticksStay, ticksOut, msgMain, msgSub);
 	}
 
 }

@@ -1,18 +1,23 @@
 package com.massivecraft.massivecore.item;
 
+import java.util.UUID;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-public class WriterItemStackMetaSkull17 extends WriterAbstractItemStackMetaField<SkullMeta, String, String>
+import com.massivecraft.massivecore.Couple;
+import com.massivecraft.massivecore.nms.NmsSkullMeta;
+
+public class WriterItemStackMetaSkull extends WriterAbstractItemStackMetaField<SkullMeta, String, String>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final WriterItemStackMetaSkull17 i = new WriterItemStackMetaSkull17();
-	public static WriterItemStackMetaSkull17 get() { return i; }
-	public WriterItemStackMetaSkull17()
+	private static final WriterItemStackMetaSkull i = new WriterItemStackMetaSkull();
+	public static WriterItemStackMetaSkull get() { return i; }
+	public WriterItemStackMetaSkull()
 	{
 		super(SkullMeta.class);
 		this.setMaterial(Material.SKULL_ITEM);
@@ -31,6 +36,7 @@ public class WriterItemStackMetaSkull17 extends WriterAbstractItemStackMetaField
 	@Override
 	public void setA(DataItemStack ca, String fa, ItemStack d)
 	{
+		if (fa != null) fa = fa.toLowerCase();
 		ca.setSkull(fa);
 	}
 
@@ -43,7 +49,19 @@ public class WriterItemStackMetaSkull17 extends WriterAbstractItemStackMetaField
 	@Override
 	public void setB(SkullMeta cb, String fb, ItemStack d)
 	{
-		cb.setOwner(fb);
+		String name = fb;
+		UUID id = null;
+		
+		NmsSkullMeta nms = NmsSkullMeta.get();
+		
+		Couple<String, UUID> resolved = nms.resolve(name, id);
+		name = resolved.getFirst();
+		id = resolved.getSecond();
+		
+		if (name != null || id != null)
+		{
+			nms.set(cb, name, id);
+		}
 	}
 	
 }
