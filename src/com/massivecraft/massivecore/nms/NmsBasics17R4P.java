@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
@@ -36,10 +38,20 @@ public class NmsBasics17R4P extends NmsBasics
 	// org.bukkit.craftbukkit.CraftWorld#world
 	public Field fieldCraftWorldWorld;
 	
+	// org.bukkit.craftbukkit.scoreboard.CraftScoreboard
+	private Class<?> classCraftScoreboard;
+	// org.bukkit.craftbukkit.scoreboard.CraftScoreboard#board
+	private Field fieldCraftScoreboardHandle;
+	
 	// org.bukkit.craftbukkit.scoreboard.CraftTeam
 	private Class<?> classCraftTeam;
 	// org.bukkit.craftbukkit.scoreboard.CraftTeam#team
 	private Field fieldCraftTeamHandle;
+	
+	// org.bukkit.craftbukkit.scoreboard.CraftObjective
+	private Class<?> classCraftObjective;
+	// org.bukkit.craftbukkit.scoreboard.CraftObjective#objective
+	private Field fieldCraftObjectiveHandle;
 	
 	// GET BUKKIT
 	// net.minecraft.server.Entity
@@ -75,8 +87,14 @@ public class NmsBasics17R4P extends NmsBasics
 		this.classCraftWorld = PackageType.CRAFTBUKKIT.getClass("CraftWorld");
 		this.fieldCraftWorldWorld = ReflectionUtil.getField(this.classCraftWorld, "world");
 		
+		this.classCraftScoreboard = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftScoreboard");
+		this.fieldCraftScoreboardHandle = ReflectionUtil.getField(this.classCraftScoreboard, "board");
+		
 		this.classCraftTeam = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftTeam");
 		this.fieldCraftTeamHandle = ReflectionUtil.getField(this.classCraftTeam, "team");
+		
+		this.classCraftObjective = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftObjective");
+		this.fieldCraftObjectiveHandle = ReflectionUtil.getField(this.classCraftObjective, "objective");
 		
 		// GET BUKKIT
 		this.classNmsEntity = PackageType.MINECRAFT_SERVER.getClass("Entity");
@@ -108,9 +126,21 @@ public class NmsBasics17R4P extends NmsBasics
 	}
 	
 	@Override
+	public <T> T getHandle(Scoreboard scoreboard)
+	{
+		return ReflectionUtil.getField(this.fieldCraftScoreboardHandle, scoreboard);
+	}
+	
+	@Override
 	public <T> T getHandle(Team team)
 	{
 		return ReflectionUtil.getField(this.fieldCraftTeamHandle, team);
+	}
+	
+	@Override
+	public <T> T getHandle(Objective objective)
+	{
+		return ReflectionUtil.getField(this.fieldCraftObjectiveHandle, objective);
 	}
 	
 	// -------------------------------------------- //

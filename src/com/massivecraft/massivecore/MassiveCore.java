@@ -85,6 +85,7 @@ import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.nms.NmsBasics;
+import com.massivecraft.massivecore.nms.NmsBoard;
 import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.nms.NmsEntityGet;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate;
@@ -255,6 +256,7 @@ public class MassiveCore extends MassivePlugin
 			
 			// Nms
 			NmsBasics.class,
+			NmsBoard.class,
 			NmsChat.class,
 			NmsEntityGet.class,
 			NmsItemStackCreate.class,

@@ -1,186 +1,130 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.Set;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
-import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
-import com.massivecraft.massivecore.util.ReflectionUtil;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.collections.MassiveTreeSet;
+import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsBoard extends NmsAbstract
+public class NmsBoard extends Mixin
 {
+	// -------------------------------------------- //
+	// DEFAULT
+	// -------------------------------------------- //
+	
+	private static NmsBoard d = new NmsBoard().setAlternatives(
+		NmsBoard19R1P.class,
+		NmsBoard18R1P.class,
+		NmsBoard17R4.class
+	);
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static NmsBoard i = new NmsBoard();
-	public static NmsBoard get () { return i; }
+	private static NmsBoard i = d;
+	public static NmsBoard get() { return i; }
 	
 	// -------------------------------------------- //
-	// FIELDS
+	// RESEARCH
 	// -------------------------------------------- //
-	
-	// net.minecraft.server.ScoreboardTeam
-	private Class<?> classNmsTeam;
-	
-	// net.minecraft.server.ScoreboardTeam#k <--- color
-	private Field fieldNmsTeamColor;
-	
-	// net.minecraft.server.EnumChatFormat
-	private Class<?> classNmsColor;
-	
-	// net.minecraft.server.EnumChatFormat#C <-- code
-	private Field fieldNmsColorCode;
-	
-	// net.minecraft.server.EnumChatFormat.a(int i) <-- for code
-	private Method methodNmsColorFor;
-	
-	// net.minecraft.server.PacketPlayOutScoreboardTeam
-	private Class<?> classPacketTeam;
-	
-	// net.minecraft.server.PacketPlayOutScoreboardTeam(ScoreboardTeam, int)
-	private Constructor<?> constructorPacketTeamUpdate;
+	// Minecraft 1.8 ended with 29 Feb 2016
+	// Minecraft 1.7 ended with 25 Nov 2014
+	// 
+	// This means that 1.8 lacks the Option and OptionStatus system.
+	// https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/diff/src/main/java/org/bukkit/scoreboard/Team.java?until=f8573a0ca2e384e889832dc30ed41712e046fd30
+	//
+	// This means that 1.7 lacks the String Team entries:
+	// https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/diff/src/main/java/org/bukkit/scoreboard/Team.java?until=d24844cdd9ed1568412ebc2ad7e6b6157ac2c26a
+	//
+	// This means that 1.7 lacks name tag visibility.
+	// Note that it should be implemented as part of the Option system.
+	// https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/diff/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftTeam.java?autoSincePath=false&until=606cf0eea44b88d5630623ff8a5d63571fa42793
+	// 
+	// This means that 1.7 lacks proper equals and hash code implementation:
+	// https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/diff/src/main/java/org/bukkit/craftbukkit/scoreboard/CraftTeam.java?autoSincePath=false&until=4b6df5adfeb92cd09428e59a963a6ee56d7d28d6
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// OPTIONS
 	// -------------------------------------------- //
 	
-	@Override
-	public int getRequiredVersion()
+	public TeamOptionValue getOption(Team team, TeamOptionKey key)
 	{
-		return 9;
+		throw notImplemented();
 	}
 	
-	@Override
-	protected void setup() throws Throwable
+	public void setOption(Team team, TeamOptionKey key, TeamOptionValue value)
 	{
-		// TODO: Move to provoke?
-		NmsBasics.get().require();
-		
-		this.classNmsTeam = PackageType.MINECRAFT_SERVER.getClass("ScoreboardTeam");
-		this.fieldNmsTeamColor = ReflectionUtil.getField(this.classNmsTeam, "k");
-		
-		this.classNmsColor = PackageType.MINECRAFT_SERVER.getClass("EnumChatFormat");
-		this.fieldNmsColorCode = ReflectionUtil.getField(this.classNmsColor, "C");
-		this.methodNmsColorFor = ReflectionUtil.getMethod(this.classNmsColor, "a", int.class);
-		
-		this.classPacketTeam = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutScoreboardTeam");
-		this.constructorPacketTeamUpdate = ReflectionUtil.getConstructor(this.classPacketTeam, this.classNmsTeam, int.class);
+		throw notImplemented();
 	}
 	
 	// -------------------------------------------- //
-	// ACCESS
+	// MEMBERS
 	// -------------------------------------------- //
 	
-	public ChatColor getColor(Team team)
+	public void addMember(Team team, String key)
 	{
-		if ( ! this.isAvailable()) return null;
-		
-		Object nmsTeam = NmsBasics.get().getHandle(team);
-		Object nmsColor = ReflectionUtil.getField(this.fieldNmsTeamColor, nmsTeam);
-		
-		return convertColor(nmsColor);
+		throw notImplemented();
 	}
 	
-	public void setColor(Team team, ChatColor color)
+	public boolean removeMember(Team team, String key)
 	{
-		if ( ! this.isAvailable()) return;
-		
-		Object nmsTeam = NmsBasics.get().getHandle(team);
-		Object nmsColor = convertColor(color);
-		ReflectionUtil.setField(this.fieldNmsTeamColor, nmsTeam, nmsColor);
-		
-		// This is a quick and dirty solution.
-		// It makes sure the scoreboard is updated.
-		team.setDisplayName(team.getDisplayName());
+		throw notImplemented();
+	}
+	
+	public boolean isMember(Team team, String key)
+	{
+		throw notImplemented();
+	}
+	
+	public Set<String> getMembers(Team team)
+	{
+		throw notImplemented();
 	}
 	
 	// -------------------------------------------- //
-	// PACKET
+	// KEY TEAM
 	// -------------------------------------------- //
 	
-	// This is a magic NMS value for the packet constructor.
-	// 2 simply means update exiting team rather than creating a new one.
-	private static final int PACKET_UPDATE_MODE = 2;
-	
-	public <T> T createTeamUpdatePacket(Team team)
+	public Team getKeyTeam(Scoreboard board, String key)
 	{
-		Object handle = NmsBasics.get().getHandle(team);
-		return ReflectionUtil.invokeConstructor(this.constructorPacketTeamUpdate, handle, PACKET_UPDATE_MODE);
-	}
-	
-	public void sendTeamUpdatePacket(Team team, Player player)
-	{
-		Object packet = this.createTeamUpdatePacket(team);
-		NmsBasics.get().sendPacket(player, packet);
+		throw notImplemented();
 	}
 	
 	// -------------------------------------------- //
-	// COLOR > CONVERT
+	// IS EQUALS IMPLEMENTED
 	// -------------------------------------------- //
 	
-	public ChatColor convertColor(Object nms)
+	public boolean isEqualsImplemented()
 	{
-		if (nms == null) return null;
-		int code = ReflectionUtil.getField(this.fieldNmsColorCode, nms);
-		return code(code);
+		throw notImplemented();
 	}
 	
-	public <T> T convertColor(ChatColor bukkit)
+	public Set<Team> createTeamSet()
 	{
-		if (bukkit == null) return null;
-		int code = code(bukkit);
-		return ReflectionUtil.invokeMethod(this.methodNmsColorFor, null, code);
+		if (this.isEqualsImplemented()) return new MassiveSet<>();
+		return new MassiveTreeSet<>(ComparatorHandleIdentityTeam.get());
+	}
+	
+	public Set<Objective> createObjectiveSet()
+	{
+		if (this.isEqualsImplemented()) return new MassiveSet<>();
+		return new MassiveTreeSet<>(ComparatorHandleIdentityObjective.get());
 	}
 	
 	// -------------------------------------------- //
-	// COLOR > CODE
+	// ENUM CONVERT
 	// -------------------------------------------- //
 	
-	public static ChatColor code(int code)
+	protected static <T extends Enum<T>> T convert(Enum<?> from, T[] to)
 	{
-		ChatColor ret = COLOR_TO_CODE.inverse().get(code);
-		if (ret == null) throw new IllegalArgumentException("Unsupported Code " + code);
-		return ret;
+		return to[from.ordinal()];
 	}
-	
-	public static int code(ChatColor color)
-	{
-		Integer ret = COLOR_TO_CODE.get(color);
-		if (ret == null) throw new IllegalArgumentException("Unsupported Color " + color);
-		return ret;
-	}
-	
-	public static final BiMap<ChatColor, Integer> COLOR_TO_CODE = ImmutableBiMap.<ChatColor, Integer>builder()
-		.put(ChatColor.BLACK, 0)
-		.put(ChatColor.DARK_BLUE, 1)
-		.put(ChatColor.DARK_GREEN, 2)
-		.put(ChatColor.DARK_AQUA, 3)
-		.put(ChatColor.DARK_RED, 4)
-		.put(ChatColor.DARK_PURPLE, 5)
-		.put(ChatColor.GOLD, 6)
-		.put(ChatColor.GRAY, 7)
-		.put(ChatColor.DARK_GRAY, 8)
-		.put(ChatColor.BLUE, 9)
-		.put(ChatColor.GREEN, 10)
-		.put(ChatColor.AQUA, 11)
-		.put(ChatColor.RED, 12)
-		.put(ChatColor.LIGHT_PURPLE, 13)
-		.put(ChatColor.YELLOW, 14)
-		.put(ChatColor.WHITE, 15)
-		// The only supported format is RESET.
-		// .put(ChatColor.MAGIC, ???)
-		// .put(ChatColor.BOLD, ???)
-		// .put(ChatColor.STRIKETHROUGH, ???)
-		// .put(ChatColor.UNDERLINE, ???)
-		// .put(ChatColor.ITALIC, ???)
-		.put(ChatColor.RESET, -1)
-	.build();
 	
 }
+
+
