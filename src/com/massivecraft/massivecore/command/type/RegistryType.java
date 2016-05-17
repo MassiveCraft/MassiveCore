@@ -237,7 +237,19 @@ public class RegistryType
 		
 		register(TypeDataPotionEffect.get());
 		register(TypeDataFireworkEffect.get());
-		register(TypeDataItemStack.get());
+		
+		// 1.? Compat
+		// TODO: The annotations breaks with 1.7.
+		// TODO: Find a solution to dodge the converter annotation class inits.
+		try
+		{
+			register(TypeDataItemStack.get());
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		
 		register(TypePermission.get());
 		register(TypePotionEffectType.get());
 		register(TypePS.get());
