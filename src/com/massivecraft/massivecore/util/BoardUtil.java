@@ -72,11 +72,11 @@ public class BoardUtil extends Engine
 	// -------------------------------------------- //
 	
 	// All online players at the beginning of the tick.
-	private static Map<String, Player> players;
+	private static Map<String, Player> players = Collections.emptyMap();
 	public static Map<String, Player> getPlayers() { return players; }
 	
 	// The boards based off the players above.
-	private static Set<Scoreboard> boards;
+	private static Set<Scoreboard> boards = Collections.emptySet();
 	public static Set<Scoreboard> getBoards() { return boards; }
 	
 	// Ensure things, possibly strictly.
