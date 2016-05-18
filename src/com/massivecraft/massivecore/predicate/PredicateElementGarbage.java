@@ -19,7 +19,8 @@ public class PredicateElementGarbage extends PredicateElementRegexes
 			"^" + Pattern.quote("com.massivecraft.massivecore.command.MassiveCommand.execute") + ".*$", // MassiveCommand - Execution Garbage
 			
 			"^" + Pattern.quote("sun.reflect") + ".*$", // Event Reflection
-			"^" + Pattern.quote("java.lang.reflect") + ".*$" // Event Reflection
+			"^" + Pattern.quote("java.lang.reflect") + ".*$", // Event Reflection
+			"^" + Pattern.quote("java.security.AccessController.doPrivileged") + ".*$" // Event Reflection
 		);
 	}
 	
