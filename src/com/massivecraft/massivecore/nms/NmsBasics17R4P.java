@@ -72,6 +72,10 @@ public class NmsBasics17R4P extends NmsBasics
 	// net.minecraft.server.PlayerConnection#sendPacket(Packet)
 	private Method methodPlayerConnectionsendPacket;
 	
+	// PING
+	// net.minecraft.server.EntityPlayer#ping
+	private Field fieldNmsPlayerPing;
+	
 	// -------------------------------------------- //
 	// SETUP
 	// -------------------------------------------- //
@@ -107,6 +111,9 @@ public class NmsBasics17R4P extends NmsBasics
 		this.classNmsPacket = PackageType.MINECRAFT_SERVER.getClass("Packet");
 		this.classNmsPlayerConnection = PackageType.MINECRAFT_SERVER.getClass("PlayerConnection");
 		this.methodPlayerConnectionsendPacket = ReflectionUtil.getMethod(this.classNmsPlayerConnection, "sendPacket", this.classNmsPacket);
+		
+		// PING
+		this.fieldNmsPlayerPing = ReflectionUtil.getField(this.classNmsPlayer, "ping");
 	}
 	
 	// -------------------------------------------- //
@@ -168,6 +175,16 @@ public class NmsBasics17R4P extends NmsBasics
 	public void sendPacket(Object connection, Object packet)
 	{
 		ReflectionUtil.invokeMethod(this.methodPlayerConnectionsendPacket, connection, packet);
+	}
+	
+	// -------------------------------------------- //
+	// PING
+	// -------------------------------------------- //
+	
+	public int getPing(Player player)
+	{
+		Object handle = this.getHandle(player);
+		return ReflectionUtil.getField(this.fieldNmsPlayerPing, handle);
 	}
 	
 }

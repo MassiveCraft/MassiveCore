@@ -84,4 +84,13 @@ public class NmsBasics extends Mixin
 		throw this.notImplemented();
 	}
 	
+	// -------------------------------------------- //
+	// PING
+	// -------------------------------------------- //
+	
+	public int getPing(Player player)
+	{
+		throw this.notImplemented();
+	}
+	
 }

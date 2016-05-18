@@ -217,16 +217,19 @@ public class MassiveCore extends MassivePlugin
 	}
 	
 	// -------------------------------------------- //
-	// OVERRIDE
+	// LOAD
 	// -------------------------------------------- //
 	
 	@Override
-	public void onLoad()
+	public void onLoadInner()
 	{
-		super.onLoad();
 		// Attempting to fix a race condition within the class asynchronous class loader.
 		System.out.println("TimeUnit.MILLIS_PER_MINUTE: " + TimeUnit.MILLIS_PER_MINUTE);
 	}
+	
+	// -------------------------------------------- //
+	// ENABLE
+	// -------------------------------------------- //
 	
 	@Override
 	public void onEnableInner()
@@ -327,6 +330,10 @@ public class MassiveCore extends MassivePlugin
 		MassiveCoreTaskDeleteFiles.get().run();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, MassiveCoreTaskDeleteFiles.get());
 	}
+	
+	// -------------------------------------------- //
+	// DISABLE
+	// -------------------------------------------- //
 	
 	@Override
 	public void onDisable()

@@ -88,31 +88,42 @@ public class RegistryType
 	
 	public static Type<?> getType(Field field)
 	{
-		EditorType annotation = field.getAnnotation(EditorType.class);
-		if (annotation != null)
+		try
 		{
-			Class<?> clazz = annotation.value();
-			if (clazz == void.class) clazz = getType(field.getGenericType()).getClass();
-			return getType(clazz, annotation.fieldName());
+			EditorType annotation = field.getAnnotation(EditorType.class);
+			if (annotation != null)
+			{
+				Class<?> clazz = annotation.value();
+				if (clazz == void.class) clazz = getType(field.getGenericType()).getClass();
+				return getType(clazz, annotation.fieldName());
+			}
+			
+			EditorTypeList annList = field.getAnnotation(EditorTypeList.class);
+			if (annList != null)
+			{
+				return TypeList.get(getType(annList.value(), annList.fieldName()));
+			}
+			
+			EditorTypeSet annSet = field.getAnnotation(EditorTypeSet.class);
+			if (annSet != null)
+			{
+				return TypeSet.get(getType(annSet.value(), annSet.fieldName()));
+			}
+			
+			EditorTypeMap annMap = field.getAnnotation(EditorTypeMap.class);
+			if (annMap != null)
+			{
+				return TypeMap.get(getType(annMap.typeKey(), annMap.fieldNameKey()), getType(annMap.typeValue(), annMap.fieldNameValue()));
+			}
+		}
+		catch (Throwable t)
+		{
+			// This has to do with backwards compatibility (Usually 1.7).
+			// The EditorType annotations may trigger creation of type class instances.
+			// Those type classes may refer to Bukkit classes not present.
+			// This issue was first encountered for TypeDataItemStack. 
 		}
 		
-		EditorTypeList annList = field.getAnnotation(EditorTypeList.class);
-		if (annList != null)
-		{
-			return TypeList.get(getType(annList.value(), annList.fieldName()));
-		}
-		
-		EditorTypeSet annSet = field.getAnnotation(EditorTypeSet.class);
-		if (annSet != null)
-		{
-			return TypeSet.get(getType(annSet.value(), annSet.fieldName()));
-		}
-		
-		EditorTypeMap annMap = field.getAnnotation(EditorTypeMap.class);
-		if (annMap != null)
-		{
-			return TypeMap.get(getType(annMap.typeKey(), annMap.fieldNameKey()), getType(annMap.typeValue(), annMap.fieldNameValue()));
-		}
 		return getType(field.getGenericType());
 	}
 	private static Type<?> getType(Class<?> clazz, String fieldName)
@@ -225,30 +236,10 @@ public class RegistryType
 		register(TypeDestination.get());
 		register(TypeItemStack.get());
 		
-		// 1.7 Compat
-		try
-		{
-			register(TypeDataBannerPattern.get());
-		}
-		catch (Throwable t)
-		{
-			
-		}
-		
+		register(TypeDataBannerPattern.get());
 		register(TypeDataPotionEffect.get());
 		register(TypeDataFireworkEffect.get());
-		
-		// 1.? Compat
-		// TODO: The annotations breaks with 1.7.
-		// TODO: Find a solution to dodge the converter annotation class inits.
-		try
-		{
-			register(TypeDataItemStack.get());
-		}
-		catch (Throwable t)
-		{
-			
-		}
+		register(TypeDataItemStack.get());
 		
 		register(TypePermission.get());
 		register(TypePotionEffectType.get());

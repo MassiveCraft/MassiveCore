@@ -47,25 +47,31 @@ public class DataBannerPattern implements Comparable<DataBannerPattern>
 		
 	}
 	
-	public DataBannerPattern(Pattern pattern)
+	// Minecraft 1.7 Compatibility
+	public DataBannerPattern(Object pattern)
 	{
-		this.write(pattern, false);
+		if ( ! (pattern instanceof Pattern)) throw new IllegalArgumentException("pattern");
+		this.write((Pattern)pattern, false);
 	}
 	
 	// -------------------------------------------- //
 	// WRITE
 	// -------------------------------------------- //
 	
-	public void write(Pattern pattern, boolean a2b)
+	// Minecraft 1.7 Compatibility
+	public void write(Object pattern, boolean a2b)
 	{
-		WriterBannerPattern.get().write(this, pattern, a2b);
+		if ( ! (pattern instanceof Pattern)) throw new IllegalArgumentException("pattern");
+		WriterBannerPattern.get().write(this, (Pattern)pattern, a2b);
 	}
 	
 	// -------------------------------------------- //
 	// TO BUKKIT
 	// -------------------------------------------- //
 	
-	public Pattern toBukkit()
+	// Minecraft 1.7 Compatibility
+	@SuppressWarnings("unchecked")
+	public <T> T toBukkit()
 	{
 		// Create
 		Pattern ret = WriterBannerPattern.get().createOB();
@@ -74,7 +80,7 @@ public class DataBannerPattern implements Comparable<DataBannerPattern>
 		this.write(ret, true);
 		
 		// Return
-		return ret;
+		return (T) ret;
 	}
 	
 	// -------------------------------------------- //

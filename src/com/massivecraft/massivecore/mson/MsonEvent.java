@@ -127,10 +127,8 @@ public final class MsonEvent implements Serializable
 	public static MsonEvent item(ItemStack item)
 	{
 		if (item == null) throw new NullPointerException("item");
-		String nbtStringTooltip = null;
-		NmsItemStackTooltip nms = NmsItemStackTooltip.get();
-		if (nms.isAvailable()) nbtStringTooltip = nms.getNbtStringTooltip(item);
-		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, nbtStringTooltip);
+		String value = NmsItemStackTooltip.get().getNbtStringTooltip(item);
+		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, value);
 	}
 
 	// -------------------------------------------- //

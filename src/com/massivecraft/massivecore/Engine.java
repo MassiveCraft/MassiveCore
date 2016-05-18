@@ -22,7 +22,6 @@ public abstract class Engine implements Active, Listener, Runnable
 	private static final transient Set<Engine> allInstances = new MassiveSet<>();
 	public static Set<Engine> getAllInstances() { return allInstances; }
 	
-	
 	// -------------------------------------------- //
 	// PLUGIN
 	// -------------------------------------------- //
@@ -117,7 +116,12 @@ public abstract class Engine implements Active, Listener, Runnable
 	{
 		if (active)
 		{
-			Bukkit.getPluginManager().registerEvents(this, this.getPlugin());
+			// Support without at load
+			MassivePlugin plugin = this.getPlugin();
+			if (plugin.isEnabled())
+			{
+				Bukkit.getPluginManager().registerEvents(this, this.getPlugin());
+			}
 		}
 		else
 		{
@@ -135,13 +139,18 @@ public abstract class Engine implements Active, Listener, Runnable
 		{
 			if (this.getPeriod() != null)
 			{
-				if (this.isSync())
+				// Support without at load
+				MassivePlugin plugin = this.getPlugin();
+				if (plugin.isEnabled())
 				{
-					this.task = Bukkit.getScheduler().runTaskTimer(this.getPlugin(), this, this.getDelay(), this.getPeriod());
-				}
-				else
-				{
-					this.task = Bukkit.getScheduler().runTaskTimerAsynchronously(this.getPlugin(), this, this.getDelay(), this.getPeriod());
+					if (this.isSync())
+					{
+						this.task = Bukkit.getScheduler().runTaskTimer(this.getPlugin(), this, this.getDelay(), this.getPeriod());
+					}
+					else
+					{
+						this.task = Bukkit.getScheduler().runTaskTimerAsynchronously(this.getPlugin(), this, this.getDelay(), this.getPeriod());
+					}
 				}
 			}
 		}

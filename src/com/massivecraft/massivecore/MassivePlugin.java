@@ -37,18 +37,51 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	public void setVersionSynchronized(boolean versionSynchronized) { this.versionSynchronized = versionSynchronized; }
 	
 	// -------------------------------------------- //
+	// LOAD
+	// -------------------------------------------- //
+	
+	@Override
+	public void onLoad()
+	{
+		this.onLoadPre();
+		this.onLoadInner();
+		this.onLoadPost();
+	}
+	
+	public void onLoadPre()
+	{
+		this.logPrefixColored = Txt.parse("<teal>[<aqua>%s %s<teal>] <i>", this.getDescription().getName(), this.getDescription().getVersion());
+		this.logPrefixPlain = ChatColor.stripColor(this.logPrefixColored);
+	}
+	
+	public void onLoadInner()
+	{
+		
+	}
+	
+	public void onLoadPost()
+	{
+		
+	}
+	
+	// -------------------------------------------- //
 	// ENABLE
 	// -------------------------------------------- //
+	
+	@Override
+	public void onEnable()
+	{
+		if ( ! this.onEnablePre()) return;
+		this.onEnableInner();
+		this.onEnablePost();
+	}
 	
 	private long enableTime;
 	public long getEnableTime() { return this.enableTime; }
 	
-	public boolean preEnable()
+	public boolean onEnablePre()
 	{
-		enableTime = System.currentTimeMillis();
-		
-		this.logPrefixColored = Txt.parse("<teal>[<aqua>%s %s<teal>] <i>", this.getDescription().getName(), this.getDescription().getVersion());
-		this.logPrefixPlain = ChatColor.stripColor(this.logPrefixColored);
+		this.enableTime = System.currentTimeMillis();
 		
 		log("=== ENABLE START ===");
 		
@@ -63,27 +96,6 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		Bukkit.getPluginManager().registerEvents(this, this);
 
 		return true;
-	}
-	
-	public void postEnable()
-	{
-		// Metrics
-		if (MassiveCoreMConf.get().mcstatsEnabled)
-		{
-			try
-			{
-				MetricsLite metrics = new MetricsLite(this);
-				metrics.start();
-			}
-			catch (IOException e)
-			{
-				String message = Txt.parse("<b>Metrics Initialization Failed :'(");
-				log(message);
-			}
-		}
-		
-		long ms = System.currentTimeMillis() - enableTime;
-		log(Txt.parse("=== ENABLE <g>COMPLETE <i>(Took <h>" + ms + "ms<i>) ==="));
 	}
 	
 	public void checkVersionSynchronization()
@@ -121,19 +133,30 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		}
 	}
 	
-	@Override
-	public void onEnable()
-	{
-		if ( ! this.preEnable()) return;
-		
-		this.onEnableInner();
-		
-		this.postEnable();
-	}
-	
 	public void onEnableInner()
 	{
 		
+	}
+	
+	public void onEnablePost()
+	{
+		// Metrics
+		if (MassiveCoreMConf.get().mcstatsEnabled)
+		{
+			try
+			{
+				MetricsLite metrics = new MetricsLite(this);
+				metrics.start();
+			}
+			catch (IOException e)
+			{
+				String message = Txt.parse("<b>Metrics Initialization Failed :'(");
+				log(message);
+			}
+		}
+		
+		long ms = System.currentTimeMillis() - this.enableTime;
+		log(Txt.parse("=== ENABLE <g>COMPLETE <i>(Took <h>" + ms + "ms<i>) ==="));
 	}
 	
 	// -------------------------------------------- //

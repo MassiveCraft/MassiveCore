@@ -65,7 +65,7 @@ public class Mixin extends Engine
 	// NOTE: This field must be set in the default constructor!
 	private Boolean availableDefault = null;
 	public boolean isAvailableDefault() { return (this.availableDefault != null ? this.availableDefault : this.getDefault().getAlternatives().isEmpty()); }
-	public void setAvailableDefault(boolean availableDefault) { this.setAvailableDefault(availableDefault); }
+	public void setAvailableDefault(boolean availableDefault) { this.availableDefault = availableDefault; }
 	public boolean isAvailable() { return this.isAvailableDefault() || this.getInstance() != this.getDefault(); }
 	public void require() { if (this.isAvailable()) return; throw new IllegalStateException(this.getBaseName() + " is Required"); }
 	
