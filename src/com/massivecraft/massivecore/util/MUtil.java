@@ -68,6 +68,8 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.nms.NmsEntityGet;
 import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateElementGarbage;
+import com.massivecraft.massivecore.predicate.PredicateElementSignificant;
 import com.massivecraft.massivecore.util.extractor.Extractor;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayer;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayerName;
@@ -344,7 +346,7 @@ public class MUtil
 		
 		StackTraceElement[] elements = thread.getStackTrace();
 		elements = Arrays.copyOfRange(elements, skip, elements.length);
-		return new ArrayList<StackTraceElement>(Arrays.asList(elements));
+		return new MassiveList<>(Arrays.asList(elements));
 	}
 	
 	public static List<StackTraceElement> getStackTrace(Thread thread)
@@ -378,6 +380,39 @@ public class MUtil
 		Thread thread = Thread.currentThread();
 		
 		return getStackTrace(thread, skip);
+	}
+	
+	// -------------------------------------------- //
+	// STACK TRACE: CUT
+	// -------------------------------------------- //
+	
+	public static void cutStackTrace(List<StackTraceElement> trace)
+	{
+		// Cut Significant
+		int index = 0;
+		while (index < trace.size())
+		{
+			StackTraceElement element = trace.get(index);
+			if (PredicateElementSignificant.get().apply(element)) break;
+			index++;
+		}
+		trace.subList(index, trace.size()).clear();
+		
+		// Reverse
+		Collections.reverse(trace);
+		
+		// Eat Garbage
+		for (Iterator<StackTraceElement> iterator = trace.iterator(); iterator.hasNext();)
+		{
+			StackTraceElement element = iterator.next();
+			if (PredicateElementGarbage.get().apply(element))
+			{
+				iterator.remove();
+			}
+		}
+		
+		// Unreverse
+		Collections.reverse(trace);
 	}
 	
 	// -------------------------------------------- //
