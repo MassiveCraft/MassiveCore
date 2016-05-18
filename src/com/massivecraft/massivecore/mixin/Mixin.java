@@ -137,6 +137,11 @@ public class Mixin extends Engine
 	@Override
 	public void setActive(boolean active)
 	{
+		this.setActiveVerboose(active, true);
+	}
+	
+	public void setActiveVerboose(boolean active, boolean verbose)
+	{
 		// NoChange
 		if (this.isActive() == active) return;
 		
@@ -147,20 +152,23 @@ public class Mixin extends Engine
 		after.setPluginSoft(this.getPlugin());
 		
 		// Deactivate Before
-		if (before != this) before.setActive(false);
+		if (before != this) before.setActiveVerboose(false, false);
 		
 		// Set Instance
 		this.setInstance(after);
 		
 		// Activate After
-		if (after != this) after.setActive(true);
+		if (after != this) after.setActiveVerboose(true, verbose);
 		
 		// This
 		if (after != this) return;
 		
 		// Inform
-		String message = Txt.parse("<i>Mixin <h>%s<i> set to <h>%s", this.getBaseName(), this.getName());
-		after.getPlugin().log(message);
+		if (verbose)
+		{
+			String message = Txt.parse("<i>Mixin <h>%s<i> set to <h>%s", this.getBaseName(), this.getName());
+			after.getPlugin().log(message);
+		}
 		
 		// Super
 		super.setActive(active);
