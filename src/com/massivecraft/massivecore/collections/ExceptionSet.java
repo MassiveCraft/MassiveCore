@@ -2,10 +2,12 @@ package com.massivecraft.massivecore.collections;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.container.TypeMassiveTreeSetInsensitive;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
+import com.massivecraft.massivecore.util.MUtil;
 
 public class ExceptionSet
 {
@@ -102,6 +104,31 @@ public class ExceptionSet
 		}
 		
 		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// EQUALS & HASH CODE
+	// -------------------------------------------- //
+	
+	@Override
+	public boolean equals(Object object)
+	{
+		if ( ! (object instanceof ExceptionSet)) return false;
+		ExceptionSet that = (ExceptionSet)object;
+		
+		return MUtil.equals(
+			this.standard, that.standard,
+			this.exceptions, that.exceptions
+		);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(
+			this.standard,
+			this.exceptions
+		);
 	}
 	
 }
