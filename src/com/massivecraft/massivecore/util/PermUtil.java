@@ -140,27 +140,40 @@ public class PermUtil
 	
 	// ONE FIELD
 	
-	public static void set(Permission permission, String description)
+	public static boolean set(Permission permission, String description)
 	{
+		if (permission == null) throw new NullPointerException("permission");
+		if (description == null) return false;
+		
 		// Recalculation need created: FALSE
 		// Recalculation auto-performed: FALSE
 		permission.setDescription(description);
+		
+		return false;
 	}
 	
-	public static void set(Permission permission, PermissionDefault defaultValue)
+	public static boolean set(Permission permission, PermissionDefault defaultValue)
 	{
-		if (defaultValue == null) return;
-		if (permission.getDefault() == defaultValue) return;
+		if (permission == null) throw new NullPointerException("permission");
+		if (defaultValue == null) return false;
+		
+		// NoChange
+		if (permission.getDefault() == defaultValue) return false;
 		
 		// Recalculation need created: TRUE
 		// Recalculation auto-performed: TRUE
 		permission.setDefault(defaultValue);
+		
+		return true;
 	}
 	
-	public static void set(Permission permission, Map<String, Boolean> children)
+	public static boolean set(Permission permission, Map<String, Boolean> children)
 	{
-		if (children == null) return;
-		if (permission.getChildren().equals(children)) return;
+		if (permission == null) throw new NullPointerException("permission");
+		if (children == null) return false;
+		
+		// NoChange
+		if (children.equals(permission.getChildren())) return false;
 		
 		// Recalculation need created: TRUE
 		// Recalculation auto-performed: FALSE
@@ -169,28 +182,34 @@ public class PermUtil
 		
 		// Manual Recalculation
 		permission.recalculatePermissibles();
+		
+		return true;
 	}
 	
 	// TWO FIELDS
 	
-	public static void set(Permission permission, String description, PermissionDefault defaultValue)
+	public static boolean set(Permission permission, String description, PermissionDefault defaultValue)
 	{
-		set(permission, defaultValue);
-		set(permission, description);
+		boolean ret = false;
+		ret |= set(permission, description);
+		ret |= set(permission, defaultValue);
+		return ret;
 	}
 	
-	public static void set(Permission permission, String description, Map<String, Boolean> children)
+	public static boolean set(Permission permission, String description, Map<String, Boolean> children)
 	{
-		set(permission, children);
-		set(permission, description);
+		boolean ret = false;
+		ret |= set(permission, description);
+		ret |= set(permission, children);
+		return ret;
 	}
 	
-	public static void set(Permission permission, PermissionDefault defaultValue, Map<String, Boolean> children)
+	public static boolean set(Permission permission, PermissionDefault defaultValue, Map<String, Boolean> children)
 	{
 		boolean childrenChanged = false;
 		boolean defaultChanged = false;
-				
-		if ( ! permission.getChildren().equals(children))
+		
+		if (children != null && ! children.equals(permission.getChildren()))
 		{
 			// Recalculation need created: TRUE
 			// Recalculation auto-performed: FALSE
@@ -199,7 +218,7 @@ public class PermUtil
 			childrenChanged = true;
 		}
 		
-		if (permission.getDefault() != defaultValue)
+		if (defaultValue != null && defaultValue != permission.getDefault())
 		{
 			// Recalculation need created: TRUE
 			// Recalculation auto-performed: TRUE
@@ -213,22 +232,47 @@ public class PermUtil
 			// Manual Recalculation
 			permission.recalculatePermissibles();
 		}
+		
+		return childrenChanged || defaultChanged;
 	}
 	
 	// THREE FIELDS
 	
-	public static void set(Permission permission, String description, PermissionDefault defaultValue, Map<String, Boolean> children)
+	public static boolean set(Permission permission, String description, PermissionDefault defaultValue, Map<String, Boolean> children)
 	{
-		set(permission, defaultValue, children);
-		set(permission, description);
+		boolean ret = false;
+		ret |= set(permission, defaultValue, children);
+		ret |= set(permission, description);
+		return ret;
+	}
+	
+	// -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
+	// This is just a nicer constructor.
+	// It will not register in any way.
+	
+	public static Permission construct(String name, String description, PermissionDefault defaultValue, Map<String, Boolean> children)
+	{
+		if (name == null) throw new NullPointerException("name");
+		
+		if (description != null && defaultValue != null && children != null) return new Permission(name, description, defaultValue, children);
+		
+		if (description != null && defaultValue != null) return new Permission(name, description, defaultValue);
+		if (description != null && children != null) return new Permission(name, description, defaultValue, children);
+		if (defaultValue != null && children != null) return new Permission(name, description, defaultValue, children);
+		
+		if (description != null) return new Permission(name, description);
+		if (defaultValue != null) return new Permission(name, defaultValue);
+		if (children != null) return new Permission(name, children);
+		
+		return new Permission(name);
 	}
 	
 	// -------------------------------------------- //
 	// GET PERMISSION
 	// -------------------------------------------- //
 	
-	// This is the original logic
-	// The other below are just copy pastes with argument permutation 
 	public static Permission get(boolean create, boolean update, String name, String description, PermissionDefault defaultValue, Map<String, Boolean> children)
 	{
 		Permission ret = Bukkit.getPluginManager().getPermission(name);
@@ -236,7 +280,7 @@ public class PermUtil
 		{
 			if (create)
 			{
-				ret = new Permission(name, description, defaultValue, children);
+				ret = construct(name, description, defaultValue, children);
 				Bukkit.getPluginManager().addPermission(ret);
 			}
 		}
@@ -254,146 +298,41 @@ public class PermUtil
 	
 	public static Permission get(boolean create, String name)
 	{
-		Permission ret = Bukkit.getPluginManager().getPermission(name);
-		if (ret == null)
-		{
-			if (create)
-			{
-				ret = new Permission(name);
-				Bukkit.getPluginManager().addPermission(ret);
-			}
-		}
-		return ret;
+		return get(create, false, name, null, null, null);
 	}
 	
 	// ONE FIELD
 	
 	public static Permission get(boolean create, boolean update, String name, String description)
 	{
-		Permission ret = Bukkit.getPluginManager().getPermission(name);
-		if (ret == null)
-		{
-			if (create)
-			{
-				ret = new Permission(name, description);
-				Bukkit.getPluginManager().addPermission(ret);
-			}
-		}
-		else
-		{
-			if (update)
-			{
-				set(ret, description);
-			}
-		}
-		return ret;
+		return get(create, update, name, description, null, null);
 	}
 	
 	public static Permission get(boolean create, boolean update, String name, PermissionDefault defaultValue)
 	{
-		Permission ret = Bukkit.getPluginManager().getPermission(name);
-		if (ret == null)
-		{
-			if (create)
-			{
-				ret = new Permission(name, defaultValue);
-				Bukkit.getPluginManager().addPermission(ret);
-			}
-		}
-		else
-		{
-			if (update)
-			{
-				set(ret, defaultValue);
-			}
-		}
-		return ret;
+		return get(create, update, name, null, defaultValue, null);
 	}
 	
 	public static Permission get(boolean create, boolean update, String name, Map<String, Boolean> children)
 	{
-		Permission ret = Bukkit.getPluginManager().getPermission(name);
-		if (ret == null)
-		{
-			if (create)
-			{
-				ret = new Permission(name, children);
-				Bukkit.getPluginManager().addPermission(ret);
-			}
-		}
-		else
-		{
-			if (update)
-			{
-				set(ret, children);
-			}
-		}
-		return ret;
+		return get(create, false, name, null, null, children);
 	}
 	
 	// TWO FIELDS
 	
 	public static Permission get(boolean create, boolean update, String name, String description, PermissionDefault defaultValue)
 	{
-		Permission ret = Bukkit.getPluginManager().getPermission(name);
-		if (ret == null)
-		{
-			if (create)
-			{
-				ret = new Permission(name, description, defaultValue);
-				Bukkit.getPluginManager().addPermission(ret);
-			}
-		}
-		else
-		{
-			if (update)
-			{
-				set(ret, description, defaultValue);
-			}
-		}
-		return ret;
+		return get(create, false, name, description, defaultValue, null);
 	}
 	
 	public static Permission get(boolean create, boolean update, String name, String description, Map<String, Boolean> children)
 	{
-		Permission ret = Bukkit.getPluginManager().getPermission(name);
-		if (ret == null)
-		{
-			if (create)
-			{
-				ret = new Permission(name, description, children);
-				Bukkit.getPluginManager().addPermission(ret);
-			}
-		}
-		else
-		{
-			if (update)
-			{
-				set(ret, description, children);
-			}
-		}
-		return ret;
+		return get(create, false, name, description, null, children);
 	}
 	
 	public static Permission get(boolean create, boolean update, String name, PermissionDefault defaultValue, Map<String, Boolean> children)
 	{
-		Permission ret = Bukkit.getPluginManager().getPermission(name);
-		if (ret == null)
-		{
-			if (create)
-			{
-				ret = new Permission(name, defaultValue, children);
-				Bukkit.getPluginManager().addPermission(ret);
-			}
-		}
-		else
-		{
-			if (update)
-			{
-				set(ret, defaultValue, children);
-			}
-		}
-		return ret;
+		return get(create, false, name, null, defaultValue, children);
 	}
 	
 }

@@ -91,6 +91,7 @@ import com.massivecraft.massivecore.nms.NmsEntityGet;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate17R4P;
 import com.massivecraft.massivecore.nms.NmsItemStackTooltip;
+import com.massivecraft.massivecore.nms.NmsPermissions;
 import com.massivecraft.massivecore.nms.NmsPlayerInventoryCreate;
 import com.massivecraft.massivecore.nms.NmsSkullMeta;
 import com.massivecraft.massivecore.ps.PS;
@@ -264,6 +265,7 @@ public class MassiveCore extends MassivePlugin
 			NmsEntityGet.class,
 			NmsItemStackCreate.class,
 			NmsItemStackTooltip.class,
+			NmsPermissions.class,
 			NmsPlayerInventoryCreate.class,
 			NmsSkullMeta.class,
 			
