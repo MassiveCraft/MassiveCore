@@ -352,9 +352,19 @@ public class MUtil
 	
 	public static boolean isNpc(Object object)
 	{
-		if (!(object instanceof Metadatable)) return false;
+		if ( ! (object instanceof Metadatable)) return false;
 		Metadatable metadatable = (Metadatable)object;
-		return metadatable.hasMetadata("NPC");
+		try
+		{
+			return metadatable.hasMetadata("NPC");
+		}
+		catch (UnsupportedOperationException e)
+		{
+			// ProtocolLib
+			// UnsupportedOperationException: The method hasMetadata is not supported for temporary players.
+			return false;
+		}
+		
 	}
 	public static boolean isntNpc(Object object)
 	{
