@@ -58,6 +58,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
@@ -237,6 +238,55 @@ public class MUtil
 	public static boolean isUuid(String string)
 	{
 		return asUuid(string) != null;
+	}
+	
+	// -------------------------------------------- //
+	// CONTAINS COMMAND
+	// -------------------------------------------- //
+	
+	public static boolean containsCommand(String needle, ExceptionSet haystack)
+	{
+		boolean ret = haystack.isStandard();
+		if (containsCommand(needle, haystack.exceptions)) ret = !ret; 
+		return ret;
+	}
+	
+	public static boolean containsCommand(String needle, Iterable<String> haystack)
+	{
+		if (needle == null) return false;
+		needle = prepareCommand(needle);
+		
+		for (String straw : haystack)
+		{
+			if (straw == null) continue;
+			straw = prepareCommand(straw);
+			
+			// If it starts with then it is possibly a subject.
+			if ( ! needle.startsWith(straw)) continue;
+			
+			// Get the remainder.
+			String remainder = needle.substring(straw.length());
+			
+			// If they were equal, definitely true.
+			if (remainder.isEmpty()) return true;
+			
+			// If the next is a space, the space is used as separator for sub commands or arguments.
+			// Otherwise it might just have been another command coincidentally starting with the first command.
+			// The old behaviour was if (needle.startsWith(straw)) return true;
+			// If "s" was block, then all commands starting with "s" was, now it isn't.
+			if (remainder.startsWith(" ")) return true;
+		}
+		
+		return false;
+	}
+	
+	private static String prepareCommand(String string)
+	{
+		if (string == null) return null;
+		string = Txt.removeLeadingCommandDust(string);
+		string = string.toLowerCase();
+		string = string.trim();
+		return string;
 	}
 	
 	// -------------------------------------------- //
