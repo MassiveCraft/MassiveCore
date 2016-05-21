@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.command.requirement;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.PermissionUtil;
 
 public class RequirementHasPerm extends RequirementAbstract
 {
@@ -36,7 +36,7 @@ public class RequirementHasPerm extends RequirementAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return PermUtil.getDeniedMessage(this.perm);
+		return PermissionUtil.getDeniedMessage(this.perm);
 	}
 	
 }

@@ -31,7 +31,7 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
-import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
 public class MassiveCommand implements Active, PluginIdentifiableCommand
@@ -739,7 +739,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		String perm = this.getDescPermission();
 		if (perm != null)
 		{
-			String pdesc = PermUtil.getDescription(perm);
+			String pdesc = PermissionUtil.getDescription(perm);
 			if (pdesc != null)
 			{
 				return pdesc;

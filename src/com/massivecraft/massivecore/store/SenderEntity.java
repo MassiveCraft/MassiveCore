@@ -16,7 +16,7 @@ import com.massivecraft.massivecore.mixin.MixinPlayed;
 import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.PermissionUtil;
 
 public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> implements Named
 {
@@ -75,7 +75,7 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 		T ret = super.convertGet(value, defaultValue);
 		
 		// Permission Requirement
-		if ( ! Objects.equal(value, defaultValue) && ! PermUtil.has(this.getSender(), permission)) return defaultValue;
+		if ( ! Objects.equal(value, defaultValue) && ! PermissionUtil.has(this.getSender(), permission)) return defaultValue;
 		
 		// Return
 		return ret;

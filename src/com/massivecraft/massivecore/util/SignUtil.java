@@ -126,7 +126,7 @@ public class SignUtil
 		if ( ! title.equalsIgnoreCase(lenientTitle)) return false;
 		
 		// ... verify that the player has permission to create that type of sign ...
-		if ( ! PermUtil.has(player, permissionNode, true))
+		if ( ! PermissionUtil.has(player, permissionNode, true))
 		{
 			event.setCancelled(true);
 			return false;

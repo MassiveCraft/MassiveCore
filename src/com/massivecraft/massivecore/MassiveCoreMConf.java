@@ -11,7 +11,7 @@ import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.TypeMillisDiff;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.PermUtil;
+import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
 
@@ -80,7 +80,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	
 	public int getTpdelay(Permissible permissible)
 	{
-		Integer ret = PermUtil.pickFirstVal(permissible, permissionToTpdelay);
+		Integer ret = PermissionUtil.pickFirstVal(permissible, permissionToTpdelay);
 		if (ret == null) ret = 0;
 		return ret;
 	}

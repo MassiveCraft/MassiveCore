@@ -13,7 +13,7 @@ import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
 
-public class PermUtil
+public class PermissionUtil
 {
 	// -------------------------------------------- //
 	// HAS
