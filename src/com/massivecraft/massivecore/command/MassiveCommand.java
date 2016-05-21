@@ -739,7 +739,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		String perm = this.getDescPermission();
 		if (perm != null)
 		{
-			String pdesc = PermissionUtil.getDescription(perm);
+			String pdesc = PermissionUtil.getPermissionAction(perm);
 			if (pdesc != null)
 			{
 				return pdesc;

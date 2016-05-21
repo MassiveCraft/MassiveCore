@@ -36,7 +36,7 @@ public class RequirementHasPerm extends RequirementAbstract
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return PermissionUtil.getDeniedMessage(this.perm);
+		return PermissionUtil.getPermissionDeniedMessage(this.perm);
 	}
 	
 }

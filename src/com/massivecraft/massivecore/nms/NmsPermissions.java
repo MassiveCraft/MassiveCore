@@ -3,7 +3,6 @@ package com.massivecraft.massivecore.nms;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.PermissionAttachment;
@@ -36,51 +35,26 @@ public class NmsPermissions extends Mixin
 	}
 	
 	// -------------------------------------------- //
-	// PLAYER
+	// PERMISSIBLE
 	// -------------------------------------------- //
 	
-	public PermissibleBase getBase(Player player)
+	public PermissibleBase getBase(Permissible permissible)
 	{
 		throw this.notImplemented();
-	}
-	
-	public List<PermissionAttachment> getAttachments(Player player)
-	{
-		PermissibleBase base = this.getBase(player);
-		return this.getAttachments(base);
 	}
 	
 	// -------------------------------------------- //
 	// ATTACHMENT
 	// -------------------------------------------- //
 	
-	public Map<String, Boolean> getAttachmentPermissionsRaw(PermissionAttachment permissionAttachment)
+	public Map<String, Boolean> getAttachmentPermissions(PermissionAttachment permissionAttachment)
 	{
 		throw this.notImplemented();
 	}
 	
-	public void setAttachmentPermissionsRaw(PermissionAttachment permissionAttachment, Map<String, Boolean> permissions)
+	public void setAttachmentPermissions(PermissionAttachment permissionAttachment, Map<String, Boolean> permissions)
 	{
 		throw this.notImplemented();
 	}
-	
-	public boolean updateAttachmentPermissions(PermissionAttachment attachment, Map<String, Boolean> permissions)
-	{
-		if (attachment == null) throw new NullPointerException("attachment");
-		if (permissions == null) throw new NullPointerException("permissions");
-		
-		Map<String, Boolean> inner = this.getAttachmentPermissionsRaw(attachment);
-		if (inner.equals(permissions)) return false;
-		
-		inner.clear();
-		inner.putAll(permissions);
-		
-		Permissible permissible = attachment.getPermissible();
-		if (permissible != null) permissible.recalculatePermissions();
-		
-		return true;
-	}
-	
-
 	
 }

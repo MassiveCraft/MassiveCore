@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.PermissionAttachment;
 
@@ -50,6 +51,7 @@ public class NmsPermissions17R4P extends NmsPermissions
 	// BASE
 	// -------------------------------------------- //
 	
+	@Override
 	public List<PermissionAttachment> getAttachments(PermissibleBase base)
 	{
 		return ReflectionUtil.getField(this.fieldPermissibleBaseAttachments, base);
@@ -59,9 +61,14 @@ public class NmsPermissions17R4P extends NmsPermissions
 	// PLAYER
 	// -------------------------------------------- //
 	
-	public PermissibleBase getBase(Player player)
+	@Override
+	public PermissibleBase getBase(Permissible permissible)
 	{
-		return ReflectionUtil.getField(this.fieldCraftHumanEntityBase, player);
+		if (permissible instanceof Player)
+		{
+			return ReflectionUtil.getField(this.fieldCraftHumanEntityBase, permissible);
+		}
+		return null;
 	}
 	
 	// -------------------------------------------- //
@@ -69,13 +76,13 @@ public class NmsPermissions17R4P extends NmsPermissions
 	// -------------------------------------------- //
 	
 	@Override
-	public Map<String, Boolean> getAttachmentPermissionsRaw(PermissionAttachment permissionAttachment)
+	public Map<String, Boolean> getAttachmentPermissions(PermissionAttachment permissionAttachment)
 	{
 		return ReflectionUtil.getField(this.fieldAttachmentPermissions, permissionAttachment);
 	}
 	
 	@Override
-	public void setAttachmentPermissionsRaw(PermissionAttachment permissionAttachment, Map<String, Boolean> permissions)
+	public void setAttachmentPermissions(PermissionAttachment permissionAttachment, Map<String, Boolean> permissions)
 	{
 		ReflectionUtil.setField(this.fieldAttachmentPermissions, permissionAttachment, permissions);
 	}

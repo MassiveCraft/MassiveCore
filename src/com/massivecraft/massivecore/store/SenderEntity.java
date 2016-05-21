@@ -75,7 +75,7 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 		T ret = super.convertGet(value, defaultValue);
 		
 		// Permission Requirement
-		if ( ! Objects.equal(value, defaultValue) && ! PermissionUtil.has(this.getSender(), permission)) return defaultValue;
+		if ( ! Objects.equal(value, defaultValue) && ! PermissionUtil.hasPermission(this.getSender(), permission)) return defaultValue;
 		
 		// Return
 		return ret;
