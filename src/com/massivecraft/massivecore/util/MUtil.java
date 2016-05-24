@@ -897,7 +897,7 @@ public class MUtil
 		if ( ! isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor);
 		
 		// No Change?
-		if (factor == 1) return;
+		if (equalsish(factor, 1)) return;
 		
 		for (DamageModifier modifier : DamageModifier.values())
 		{
