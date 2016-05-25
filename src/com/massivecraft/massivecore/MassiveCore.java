@@ -87,6 +87,7 @@ import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.nms.NmsBasics;
 import com.massivecraft.massivecore.nms.NmsBoard;
 import com.massivecraft.massivecore.nms.NmsChat;
+import com.massivecraft.massivecore.nms.NmsEntityDamageEvent;
 import com.massivecraft.massivecore.nms.NmsEntityGet;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate17R4P;
@@ -262,6 +263,7 @@ public class MassiveCore extends MassivePlugin
 			NmsBasics.class,
 			NmsBoard.class,
 			NmsChat.class,
+			NmsEntityDamageEvent.class,
 			NmsEntityGet.class,
 			NmsItemStackCreate.class,
 			NmsItemStackTooltip.class,

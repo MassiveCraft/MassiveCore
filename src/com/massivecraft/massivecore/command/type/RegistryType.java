@@ -25,6 +25,7 @@ import com.massivecraft.massivecore.command.type.container.TypeMap;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
 import com.massivecraft.massivecore.command.type.enumeration.TypeBiome;
 import com.massivecraft.massivecore.command.type.enumeration.TypeChatColor;
+import com.massivecraft.massivecore.command.type.enumeration.TypeDamageModifier;
 import com.massivecraft.massivecore.command.type.enumeration.TypeDifficulty;
 import com.massivecraft.massivecore.command.type.enumeration.TypeDyeColor;
 import com.massivecraft.massivecore.command.type.enumeration.TypeEntityType;
@@ -221,6 +222,7 @@ public class RegistryType
 		try
 		{
 			register(TypeRabbitType.get());
+			register(TypeDamageModifier.get());
 		}
 		catch (Throwable t)
 		{
