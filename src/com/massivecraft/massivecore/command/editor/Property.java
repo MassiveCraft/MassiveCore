@@ -188,7 +188,11 @@ public abstract class Property<O, V> implements Named
 		Mson ret = null;
 		if (source != null && ! source.equals(object))
 		{
-			ret = Mson.parse("<silver>[%s<silver>]").replaceAll("%s", this.getObjectType().getVisualMson(source));
+			ret = Mson.mson(
+				"[",
+				this.getObjectType().getVisualMson(source),
+				"]"
+			).color(ChatColor.GRAY);
 		}
 		return ret;
 	}
