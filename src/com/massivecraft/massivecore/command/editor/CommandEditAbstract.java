@@ -293,8 +293,8 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	public String createCommandAlias()
 	{
 		// Split at uppercase letters
-		final String[] words = this.getClass().getSimpleName().split("(?=[A-Z])");
-		String alias = words[words.length - 1];
+		final List<String> words = Txt.camelsplit(this.getClass().getSimpleName());
+		String alias = words.get(words.size() - 1);
 		alias = alias.toLowerCase();
 		return alias;
 	}
