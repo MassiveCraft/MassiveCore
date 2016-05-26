@@ -8,21 +8,21 @@ public class CommandEditProperties<O, V> extends CommandEditAbstract<O, V>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CommandEditProperties(EditSettings<O> settings, Property<O, V> property)
+	public CommandEditProperties(EditSettings<O> parentSettings, Property<O, V> childProperty)
 	{
 		// Super
-		super(settings, property, null);
+		super(parentSettings, childProperty, null);
 		
-		this.addChild(new CommandEditShow<>(settings, property));
+		this.addChild(new CommandEditShow<>(parentSettings, childProperty));
 		
 		// Parameters
-		if (property.isEditable())
+		if (childProperty.isEditable())
 		{
 			Type<V> type = this.getValueType();
-			EditSettings<V> fieldSettings = new EditSettingsDelegate<>(settings, property);
+			EditSettings<V> childSettings = new EditSettings<>(parentSettings, childProperty);
 			for (Property<V, ?> prop : type.getInnerProperties())
 			{
-				this.addChild(prop.createEditCommand(fieldSettings));
+				this.addChild(prop.createEditCommand(childSettings));
 			}
 		}
 	}
