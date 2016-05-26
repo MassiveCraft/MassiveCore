@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
 
 public class CommandEditProperties<O, V> extends CommandEditAbstract<O, V>
@@ -9,7 +8,7 @@ public class CommandEditProperties<O, V> extends CommandEditAbstract<O, V>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CommandEditProperties(EditSettings<O> settings, Property<O, V> property, String permission)
+	public CommandEditProperties(EditSettings<O> settings, Property<O, V> property)
 	{
 		// Super
 		super(settings, property, null);
@@ -26,8 +25,6 @@ public class CommandEditProperties<O, V> extends CommandEditAbstract<O, V>
 				this.addChild(prop.createEditCommand(fieldSettings));
 			}
 		}
-		
-		if (permission != null) this.addRequirements(RequirementHasPerm.get(permission));
 	}
 
 }

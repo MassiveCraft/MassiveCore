@@ -22,7 +22,7 @@ public class CmdMassiveCoreUsysMultiverseNew extends MassiveCommand
 		this.addParameter(TypeString.get(), "multiverse").setDesc("name of multiverse to create");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_NEW.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_NEW));
 	}
 	
 	// -------------------------------------------- //

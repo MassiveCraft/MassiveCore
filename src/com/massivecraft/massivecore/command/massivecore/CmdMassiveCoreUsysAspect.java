@@ -29,7 +29,7 @@ public class CmdMassiveCoreUsysAspect extends MassiveCommand
 		this.addAliases("aspect");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT));
 	}
 
 }

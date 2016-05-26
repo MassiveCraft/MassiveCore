@@ -26,7 +26,7 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 		this.addParameter(Parameter.getPage());
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_LIST.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_LIST));
 	}
 	
 	// -------------------------------------------- //

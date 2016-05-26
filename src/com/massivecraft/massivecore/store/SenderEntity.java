@@ -69,22 +69,22 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	// -------------------------------------------- //
 	
 	// GENERIC
-	public <T> T convertGet(T value, T defaultValue, String permission)
+	public <T> T convertGet(T value, T defaultValue, String permissionId)
 	{
 		// Create
 		T ret = super.convertGet(value, defaultValue);
 		
 		// Permission Requirement
-		if ( ! Objects.equal(value, defaultValue) && ! PermissionUtil.hasPermission(this.getSender(), permission)) return defaultValue;
+		if ( ! Objects.equal(value, defaultValue) && ! PermissionUtil.hasPermission(this.getSender(), permissionId)) return defaultValue;
 		
 		// Return
 		return ret;
 	}
 	
 	// BOOLEAN
-	public boolean convertGet(Boolean value, String permission)
+	public boolean convertGet(Boolean value, String permissionId)
 	{
-		return this.convertGet(value, false, permission);
+		return this.convertGet(value, false, permissionId);
 	}
 	
 	// -------------------------------------------- //

@@ -17,7 +17,7 @@ public class CmdMassiveCoreBufferClear extends MassiveCommand
 		this.addAliases("clear");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_CLEAR.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_CLEAR));
 	}
 	
 	// -------------------------------------------- //

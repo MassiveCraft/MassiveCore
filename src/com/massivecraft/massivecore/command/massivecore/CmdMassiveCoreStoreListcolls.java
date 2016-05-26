@@ -30,7 +30,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 		this.addParameter(TypeString.get(), "db", ConfServer.dburi).setDesc("the database to list colls from");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_LISTCOLLS.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_LISTCOLLS));
 	}
 	
 	// -------------------------------------------- //

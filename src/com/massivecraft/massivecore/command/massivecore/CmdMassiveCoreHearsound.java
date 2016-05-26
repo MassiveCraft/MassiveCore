@@ -26,7 +26,7 @@ public class CmdMassiveCoreHearsound extends MassiveCommand
 		this.addParameter(TypeList.get(TypeSoundEffect.get()), "sound(s)", true).setDesc("the sounds to hear");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.HEARSOUND.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.HEARSOUND));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 	

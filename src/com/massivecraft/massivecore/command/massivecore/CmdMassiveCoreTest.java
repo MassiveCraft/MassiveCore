@@ -33,7 +33,7 @@ public class CmdMassiveCoreTest extends MassiveCommand
 		this.addParameter(false, TypeBoolean.getYes(), "set", "no");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.TEST.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.TEST));
 		this.addRequirements(RequirementIsPlayer.get());
 		
 		// VisibilityMode

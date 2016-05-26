@@ -32,7 +32,7 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 		this.addParameter(TypeString.get(), "to").setDesc("the database to copy to");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_COPYDB.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_COPYDB));
 	}
 	
 	// -------------------------------------------- //

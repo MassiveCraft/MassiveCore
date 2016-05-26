@@ -25,7 +25,7 @@ public class CmdMassiveCoreUsysUniverseClear extends MassiveCommand
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to clear");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE_CLEAR.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE_CLEAR));
 	}
 	
 	// -------------------------------------------- //

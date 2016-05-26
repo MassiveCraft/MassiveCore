@@ -654,7 +654,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	{
 		if (this.hasInnerProperties())
 		{
-			return new CommandEditProperties<O, T>(settings, property, null);
+			return new CommandEditProperties<O, T>(settings, property);
 		}
 		else
 		{

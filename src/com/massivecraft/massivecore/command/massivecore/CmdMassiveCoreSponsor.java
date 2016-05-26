@@ -24,7 +24,7 @@ public class CmdMassiveCoreSponsor extends MassiveCommandToggle
 		this.addAliases("sponsor");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.SPONSOR.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.SPONSOR));
 	}
 	
 	// -------------------------------------------- //

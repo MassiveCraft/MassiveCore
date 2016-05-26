@@ -23,7 +23,7 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 		this.addParameter(TypeAspect.get(), "aspect").setDesc("the aspect to show info about");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_SHOW.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_SHOW));
 	}
 	
 	// -------------------------------------------- //

@@ -41,7 +41,7 @@ public class CmdMassiveCoreUsys extends MassiveCommand
 		this.addAliases("usys");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS));
 	}
 
 }

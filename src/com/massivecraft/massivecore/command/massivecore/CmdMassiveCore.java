@@ -31,10 +31,10 @@ public class CmdMassiveCore extends MassiveCommand
 	public CmdMassiveCoreHearsound cmdMassiveCoreHearsound = new CmdMassiveCoreHearsound();
 	public CmdMassiveCoreBuffer cmdMassiveCoreBuffer = new CmdMassiveCoreBuffer();
 	public CmdMassiveCoreCmdurl cmdMassiveCoreCmdurl = new CmdMassiveCoreCmdurl();
-	public CommandEditAbstract<MassiveCoreMConf, MassiveCoreMConf> cmdMassiveCoreConfig = new CommandEditSingleton<>(MassiveCoreMConf.get(), MassiveCorePerm.CONFIG.node);
+	public CommandEditAbstract<MassiveCoreMConf, MassiveCoreMConf> cmdMassiveCoreConfig = new CommandEditSingleton<>(MassiveCoreMConf.get()).addRequirements(RequirementHasPerm.get(MassiveCorePerm.CONFIG));
 	public CmdMassiveCoreSponsor cmdMassiveCoreSponsor = new CmdMassiveCoreSponsor();
 	public CmdMassiveCoreClick cmdMassiveCoreClick = new CmdMassiveCoreClick();
-	public MassiveCommandVersion cmdMassiveCoreVersion = new MassiveCommandVersion(MassiveCore.get(), MassiveCorePerm.VERSION.node, "v", "version");
+	public MassiveCommandVersion cmdMassiveCoreVersion = new MassiveCommandVersion(MassiveCore.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(MassiveCorePerm.VERSION));
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -56,7 +56,7 @@ public class CmdMassiveCore extends MassiveCommand
 		this.addChild(this.cmdMassiveCoreVersion);
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BASECOMMAND.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BASECOMMAND));
 	}
 	
 	// -------------------------------------------- //

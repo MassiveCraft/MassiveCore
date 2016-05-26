@@ -41,6 +41,11 @@ public class PermissionUtil
 		return ret;
 	}
 	
+	public static String createPermissionId(Plugin plugin, Enum<?> e)
+	{
+		return plugin.getName().toLowerCase() + "." + e.name().toLowerCase().replace('_', '.'); 
+	}
+	
 	// -------------------------------------------- //
 	// ENSURE HAS
 	// -------------------------------------------- //

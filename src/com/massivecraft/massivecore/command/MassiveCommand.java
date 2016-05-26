@@ -195,7 +195,8 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// -------------------------------------------- //
 	
 	public List<MassiveCommand> getChildren() { return this.children; }
-	public void setChildren(List<MassiveCommand> children) { this.children = children; }
+	@SuppressWarnings("unchecked")
+	public <T extends MassiveCommand> T setChildren(List<MassiveCommand> children) { this.children = children; return (T) this; }
 	
 	public boolean isParent()
 	{
@@ -324,23 +325,12 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// CHILDREN > ADD & REMOVE
 	// -------------------------------------------- //
 	
-	public void addChild(MassiveCommand child)
+	public <T extends MassiveCommand> T addChild(MassiveCommand child)
 	{
-		this.addChild(child, this.children.size());
+		return this.addChild(child, this.children.size());
 	}
 	
-	public void addChild(MassiveCommand child, int index)
-	{
-		if (this.children.isEmpty() && ! (child instanceof MassiveCommandHelp))
-		{
-			this.children.add(0, new MassiveCommandHelp());
-			index++;
-		}
-		child.addToChain(this);
-		this.children.add(index, child);
-	}
-	
-	public void addChildAfter(MassiveCommand child, MassiveCommand after)
+	public <T extends MassiveCommand> T addChildAfter(MassiveCommand child, MassiveCommand after)
 	{
 		int index = this.children.indexOf(after);
 		if (index == -1)
@@ -351,7 +341,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		{
 			index++;
 		}
-		this.addChild(child, index);
+		return this.addChild(child, index);
 	}
 	
 	public int removeChild(MassiveCommand child)
@@ -369,17 +359,33 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		return index;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T extends MassiveCommand> T addChild(MassiveCommand child, int index)
+	{
+		if (this.children.isEmpty() && ! (child instanceof MassiveCommandHelp))
+		{
+			this.children.add(0, new MassiveCommandHelp());
+			index++;
+		}
+		child.addToChain(this);
+		this.children.add(index, child);
+		
+		return (T) this;
+	}
+	
 	// -------------------------------------------- //
 	// ALIASES
 	// -------------------------------------------- //
 	
 	public List<String> getAliases() { return this.aliases; }
 	
-	public void setAliases(Collection<String> aliases) { this.aliases = new MassiveList<String>(aliases); }
-	public void setAliases(String... aliases) { this.setAliases(Arrays.asList(aliases)); }
+	@SuppressWarnings("unchecked")
+	public <T extends MassiveCommand> T setAliases(Collection<String> aliases) { this.aliases = new MassiveList<String>(aliases); return (T) this; }
+	public <T extends MassiveCommand> T setAliases(String... aliases) { return this.setAliases(Arrays.asList(aliases)); }
 	
-	public void addAliases(Collection<String> aliases) { this.aliases.addAll(aliases); }
-	public void addAliases(String... aliases) { this.addAliases(Arrays.asList(aliases)); }
+	@SuppressWarnings("unchecked")
+	public <T extends MassiveCommand> T addAliases(Collection<String> aliases) { this.aliases.addAll(aliases); return (T) this; }
+	public <T extends MassiveCommand> T addAliases(String... aliases) { return this.addAliases(Arrays.asList(aliases)); }
 	
 	// -------------------------------------------- //
 	// PARAMETERS
@@ -605,7 +611,6 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		return this.addParameter(new Parameter<T>(type));
 	}
 	
-	
 	// -------------------------------------------- //
 	// PREPROCESS
 	// -------------------------------------------- //
@@ -713,9 +718,12 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// -------------------------------------------- //
 	
 	public List<Requirement> getRequirements() { return this.requirements; }
-	public void setRequirements(List<Requirement> requirements) { this.requirements = requirements; }
-	public void addRequirements(Collection<Requirement> requirements) { this.requirements.addAll(requirements); }
-	public void addRequirements(Requirement... requirements) { this.addRequirements(Arrays.asList(requirements)); }
+	@SuppressWarnings("unchecked")
+	public <T extends MassiveCommand> T setRequirements(List<Requirement> requirements) { this.requirements = requirements; return (T) this; }
+	@SuppressWarnings("unchecked")
+	public <T extends MassiveCommand> T addRequirements(Collection<Requirement> requirements) { this.requirements.addAll(requirements); return (T) this; }
+	@SuppressWarnings("unchecked")
+	public <T extends MassiveCommand> T addRequirements(Requirement... requirements) { this.addRequirements(Arrays.asList(requirements)); return (T) this; }
 	
 	public boolean isRequirementsMet(CommandSender sender, boolean verboose)
 	{
@@ -757,7 +765,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		for (Requirement requirement : this.getRequirements())
 		{
 			if ( ! (requirement instanceof RequirementHasPerm)) continue;
-			return ((RequirementHasPerm)requirement).getPerm();
+			return ((RequirementHasPerm)requirement).getPermissionId();
 		}
 		return null;
 	}
@@ -829,6 +837,9 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 			args = this.applyPuzzler(args, sender);
 			this.setArgs(args);
 			
+			// Requirements
+			if ( ! this.isRequirementsMet(sender, true)) return;
+			
 			// Child Execution
 			if (this.isParent() && args.size() > 0)
 			{
@@ -883,11 +894,11 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 				return;
 			}
 			
-			// Self Execution (Perform)
-			if (this.isValidCall(this.sender, this.getArgs()))
-			{
-				this.perform();
-			}
+			// Self Execution > Arguments Valid
+			if ( ! this.isArgsValid(this.getArgs(), this.sender)) return;
+			
+			// Self Execution > Perform
+			this.perform();
 		}
 		catch (MassiveException ex)
 		{
@@ -944,24 +955,6 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// CALL VALIDATION
 	// -------------------------------------------- //
 	
-	/**
-	 * In this method we validate that all prerequisites to perform this command has been met.
-	 */
-	public boolean isValidCall(CommandSender sender, List<String> args)
-	{
-		if ( ! this.isRequirementsMet(sender, true))
-		{
-			return false;
-		}
-		
-		if ( ! this.isArgsValid(args, sender))
-		{
-			return false;
-		}
-		
-		return true;
-	}
-	
 	public boolean isArgsValid(List<String> args, CommandSender sender)
 	{
 		if (args.size() < this.getParameterCountRequired(sender))
@@ -990,6 +983,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		}
 		return true;
 	}
+	
 	public boolean isArgsValid(List<String> args)
 	{
 		return this.isArgsValid(args, null);

@@ -25,7 +25,7 @@ public class CmdMassiveCoreUsysWorld extends MassiveCommand
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to move the world to");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_WORLD.node));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_WORLD));
 	}
 	
 	// -------------------------------------------- //
