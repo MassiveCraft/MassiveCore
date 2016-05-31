@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.ImmutableList;
 import com.massivecraft.massivecore.adapter.AdapterLowercaseEnum;
+import com.massivecraft.massivecore.adapter.AdapterMsonEventFix;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mixin.MixinMessage;
@@ -26,6 +27,7 @@ import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
 public class Mson implements Serializable
@@ -34,34 +36,60 @@ public class Mson implements Serializable
 	// CONSTANTS: TECHY
 	// -------------------------------------------- //
 
-	private static final long serialVersionUID = 1L;
+	private static final transient long serialVersionUID = 1L;
 
-	public static final Pattern PARSE_PREFIX = Pattern.compile("\u00A7");
+	public static final transient Pattern PATTERN_PARSE_PREFIX = Pattern.compile("\u00A7");
 	
-	public static final AdapterLowercaseEnum<ChatColor> ADAPTER_LOWERCASE_CHAT_COLOR = AdapterLowercaseEnum.get(ChatColor.class);
-	public static final AdapterLowercaseEnum<MsonEventAction> ADAPTER_LOWERCASE_MSON_EVENT_ACTION = AdapterLowercaseEnum.get(MsonEventAction.class);
+	public static final transient AdapterLowercaseEnum<ChatColor> ADAPTER_LOWERCASE_CHAT_COLOR = AdapterLowercaseEnum.get(ChatColor.class);
+	public static final transient AdapterLowercaseEnum<MsonEventAction> ADAPTER_LOWERCASE_MSON_EVENT_ACTION = AdapterLowercaseEnum.get(MsonEventAction.class);
 	
 	// -------------------------------------------- //
 	// CONSTANTS: REUSABLE MSONS
 	// -------------------------------------------- //
 	
-	public static final Mson SPACE = mson(" ");
-	public static final Mson EMPTY = mson("");
-	public static final Mson NEWLINE = mson("\n");
-	public static final Mson DOT = mson(".");
+	public static final transient Mson SPACE = mson(" ");
+	public static final transient Mson EMPTY = mson("");
+	public static final transient Mson NEWLINE = mson("\n");
+	public static final transient Mson DOT = mson(".");
 	
 	// -------------------------------------------- //
 	// GSON
 	// -------------------------------------------- //
+	// We need two different Gson instances that chain into each other.
+	// The external one contains repairs and preprocessors.
+	// The internal one is free from repairs and preprocessors.
+	// This way we can avoid stack overflows.
 
-	public static final Gson GSON;
+	private static transient Gson GSON_EXTERNAL = null;
+	private static transient Gson GSON_INTERNAL = null;
 	
-	static 
+	public static Gson getGson(boolean external)
+	{
+		Gson ret = (external ? GSON_EXTERNAL : GSON_INTERNAL);
+		if (ret == null)
+		{
+			ret = createGson(external);
+			if (external)
+			{
+				GSON_EXTERNAL = ret;
+			}
+			else
+			{
+				GSON_INTERNAL = ret;
+			}
+		}
+		return ret;
+	}
+	
+	private static Gson createGson(boolean external)
 	{
 		GsonBuilder builder = new GsonBuilder();
 		builder.disableHtmlEscaping();
 		
+		if (external) builder.registerTypeAdapter(MsonEvent.class, AdapterMsonEventFix.get());
+		
 		builder.registerTypeAdapter(MsonEventAction.class, ADAPTER_LOWERCASE_MSON_EVENT_ACTION);
+		
 		builder.registerTypeAdapter(ChatColor.class, ADAPTER_LOWERCASE_CHAT_COLOR);
 		
 		// For some unknown reason, the different chat colors
@@ -77,7 +105,7 @@ public class Mson implements Serializable
 			builder.registerTypeAdapter(color.getClass(), ADAPTER_LOWERCASE_CHAT_COLOR);
 		}
 		
-		GSON = builder.create();
+		return builder.create();
 	}
 
 	// -------------------------------------------- //
@@ -578,7 +606,7 @@ public class Mson implements Serializable
 		message = ensureStartsWithColorCode(message);
 
 		// We split at color/format change.
-		String[] parts = PARSE_PREFIX.split(message);
+		String[] parts = PATTERN_PARSE_PREFIX.split(message);
 
 		// Since we start with a color, the first element will be empty.
 		// We don't want that empty element.
@@ -1195,8 +1223,15 @@ public class Mson implements Serializable
 	
 	public JsonElement toJson()
 	{
-		return GSON.toJsonTree(this);
+		return toJson(this);
 	}
+	
+	public static JsonElement toJson(Mson mson)
+	{
+		if (mson == null) return JsonNull.INSTANCE;
+		return getGson(true).toJsonTree(mson);
+	}
+	
 	public static Mson fromJson(JsonElement json)
 	{
 		// Escape the null.
@@ -1214,7 +1249,18 @@ public class Mson implements Serializable
 		// Just a normal mson.
 		if (json.isJsonObject())
 		{
-			return GSON.fromJson(json, Mson.class);
+			Mson ret = getGson(true).fromJson(json, Mson.class);
+			
+			// TODO: Temporary Repair
+			MsonEvent event;
+			
+			event = ret.getEvent(MsonEventType.CLICK);
+			if (event != null) event.repair();
+			
+			event = ret.getEvent(MsonEventType.HOVER);
+			if (event != null) event.repair();
+			
+			return ret;
 		}
 		
 		// Something is horribly wrong.
@@ -1294,42 +1340,40 @@ public class Mson implements Serializable
 	@Override
 	public int hashCode()
 	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Objects.hashCode(this.text);
-		result = prime * result + Objects.hashCode(this.color);
-		result = prime * result + Objects.hashCode(this.bold);
-		result = prime * result + Objects.hashCode(this.italic);
-		result = prime * result + Objects.hashCode(this.obfuscated);
-		result = prime * result + Objects.hashCode(this.strikethrough);
-		result = prime * result + Objects.hashCode(this.underlined);
-		result = prime * result + Objects.hashCode(this.clickEvent);
-		result = prime * result + Objects.hashCode(this.hoverEvent);
-		result = prime * result + Objects.hashCode(this.insertion);
-		result = prime * result + Objects.hashCode(this.extra);
-		return result;
+		return Objects.hash(
+			this.text,
+			this.color,
+			this.bold,
+			this.italic,
+			this.underlined,
+			this.strikethrough,
+			this.obfuscated,
+			this.clickEvent,
+			this.hoverEvent,
+			this.insertion,
+			this.extra
+		);
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(Object object)
 	{
-		if (this == obj) return true;
-		if ( ! (obj instanceof Mson)) return false;
-		Mson that = (Mson) obj;
-
-		if ( ! MUtil.equals(this.text, that.text)) return false;
-		if ( ! MUtil.equals(this.color, that.color)) return false;
-		if ( ! MUtil.equals(this.bold, that.bold)) return false;
-		if ( ! MUtil.equals(this.italic, that.italic)) return false;
-		if ( ! MUtil.equals(this.obfuscated, that.obfuscated)) return false;
-		if ( ! MUtil.equals(this.strikethrough, that.strikethrough)) return false;
-		if ( ! MUtil.equals(this.underlined, that.underlined)) return false;
-		if ( ! MUtil.equals(this.clickEvent, that.clickEvent)) return false;
-		if ( ! MUtil.equals(this.hoverEvent, that.hoverEvent)) return false;
-		if ( ! MUtil.equals(this.insertion, that.insertion)) return false;
-		if ( ! MUtil.equals(this.extra, that.extra)) return false;
-
-		return true;
+		if (this == object) return true;
+		if ( ! (object instanceof Mson)) return false;
+		Mson that = (Mson)object;
+		return MUtil.equals(
+			this.text, that.text,
+			this.color, that.color,
+			this.bold, that.bold,
+			this.italic, that.italic,
+			this.underlined, that.underlined,
+			this.strikethrough, that.strikethrough,
+			this.obfuscated, that.obfuscated,
+			this.clickEvent, that.clickEvent,
+			this.hoverEvent, that.hoverEvent,
+			this.insertion, that.insertion,
+			this.extra, that.extra
+		);
 	}
 
 }

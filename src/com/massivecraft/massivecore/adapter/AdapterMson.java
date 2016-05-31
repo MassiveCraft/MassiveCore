@@ -6,7 +6,6 @@ import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
@@ -27,8 +26,7 @@ public class AdapterMson implements JsonDeserializer<Mson>, JsonSerializer<Mson>
 	@Override
 	public JsonElement serialize(Mson src, Type typeOfSrc, JsonSerializationContext context)
 	{
-		if (src == null) return JsonNull.INSTANCE;
-		return src.toJson();
+		return Mson.toJson(src);
 	}
 
 	@Override
