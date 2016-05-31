@@ -282,24 +282,24 @@ public class PermissionUtil
 	
 	public static Permission getPermission(boolean create, boolean update, String id, Map<String, Boolean> children)
 	{
-		return getPermission(create, false, id, null, null, children);
+		return getPermission(create, update, id, null, null, children);
 	}
 	
 	// TWO FIELDS
 	
 	public static Permission getPermission(boolean create, boolean update, String id, String description, PermissionDefault standard)
 	{
-		return getPermission(create, false, id, description, standard, null);
+		return getPermission(create, update, id, description, standard, null);
 	}
 	
 	public static Permission getPermission(boolean create, boolean update, String id, String description, Map<String, Boolean> children)
 	{
-		return getPermission(create, false, id, description, null, children);
+		return getPermission(create, update, id, description, null, children);
 	}
 	
 	public static Permission getPermission(boolean create, boolean update, String id, PermissionDefault standard, Map<String, Boolean> children)
 	{
-		return getPermission(create, false, id, null, standard, children);
+		return getPermission(create, update, id, null, standard, children);
 	}
 	
 	// -------------------------------------------- //
