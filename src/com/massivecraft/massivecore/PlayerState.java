@@ -40,11 +40,13 @@ public enum PlayerState
 	
 	public static PlayerState get(UUID id)
 	{
+		if (id == null) throw new NullPointerException("id");
 		return EngineMassiveCorePlayerState.get().getState(id);
 	}
 	
 	public static PlayerState get(Player player)
 	{
+		if (player == null) throw new NullPointerException("player");		
 		return EngineMassiveCorePlayerState.get().getState(player);
 	}
 	
