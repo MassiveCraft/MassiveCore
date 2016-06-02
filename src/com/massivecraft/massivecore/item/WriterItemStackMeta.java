@@ -54,8 +54,9 @@ public class WriterItemStackMeta extends WriterAbstractItemStackMetaMorph<Object
 			WriterItemStackMetaBannerBase.class,
 			WriterItemStackMetaBannerPatterns.class,
 			
-			// STATE
-			WriterItemStackMetaState.class,
+			// SHIELD
+			WriterItemStackMetaShieldBase.class,
+			WriterItemStackMetaShieldPatterns.class,
 			
 			// POTION
 			WriterItemStackMetaPotion.class

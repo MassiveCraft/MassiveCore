@@ -250,7 +250,6 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// SINCE: 1.8
 	// This should really be a list and not a set.
 	// The order matters and is explicitly assigned.
-	// String, Number, String, Number ...
 	
 	@SerializedName("banner")
 	private MassiveListDef<DataBannerPattern> bannerPatterns = null;
