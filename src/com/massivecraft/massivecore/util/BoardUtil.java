@@ -23,6 +23,7 @@ import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.event.EventMassiveCoreBoardEnsure;
 import com.massivecraft.massivecore.nms.NmsBoard;
 import com.massivecraft.massivecore.nms.TeamOptionKey;
 import com.massivecraft.massivecore.nms.TeamOptionValue;
@@ -78,24 +79,6 @@ public class BoardUtil extends Engine
 	// The boards based off the players above.
 	private static Set<Scoreboard> boards = Collections.emptySet();
 	public static Set<Scoreboard> getBoards() { return boards; }
-	
-	// Ensure things, possibly strictly.
-	
-	private static boolean ensureBoardEnabled = false;
-	public static boolean isEnsureBoardEnabled() { return ensureBoardEnabled; }
-	public static void setEnsureBoardEnabled() { ensureBoardEnabled = true; }
-	
-	private static boolean ensureBoardStrict = false;
-	public static boolean isEnsureBoardStrict() { return ensureBoardStrict; }
-	public static void setEnsureBoardStrict() { ensureBoardStrict = true; }
-	
-	private static boolean ensureTeamEnabled = false;
-	public static boolean isEnsureTeamEnabled() { return ensureTeamEnabled; }
-	public static void setEnsureTeamEnabled() { ensureTeamEnabled = true; }
-	
-	private static boolean ensureTeamStrict = false;
-	public static boolean isEnsureTeamStrict() { return ensureTeamStrict; }
-	public static void setEnsureTeamStrict() { ensureTeamStrict = true; }
 	
 	// Temporary Fake Fields
 	private static Set<Objective> temporaryObjectives = null;
@@ -195,18 +178,21 @@ public class BoardUtil extends Engine
 	
 	public static void updateEnsure()
 	{
+		EventMassiveCoreBoardEnsure event = new EventMassiveCoreBoardEnsure();
+		event.run();
+		
 		for (Player player : getPlayers().values())
 		{
-			if (isEnsureBoardEnabled())
+			if (event.isEnsureBoardEnabled())
 			{
-				ensureBoard(player, isEnsureBoardStrict());
+				ensureBoard(player, event.isEnsureBoardStrict());
 			}
 			
-			if (isEnsureTeamEnabled())
+			if (event.isEnsureTeamEnabled())
 			{
 				for (Scoreboard board : getBoards())
 				{
-					ensureTeam(board, player, isEnsureTeamStrict());
+					ensureTeam(board, player, event.isEnsureTeamStrict());
 				}
 			}
 		}
