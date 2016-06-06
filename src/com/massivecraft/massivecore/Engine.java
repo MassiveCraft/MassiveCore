@@ -8,6 +8,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockMultiPlaceEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.massivecraft.massivecore.collections.MassiveSet;
@@ -174,9 +176,9 @@ public abstract class Engine implements Active, Listener, Runnable
 	}
 	
 	// -------------------------------------------- //
-	// UTIL
+	// IS FAKE
 	// -------------------------------------------- //
-	
+
 	public static final PredicateStartsWithIgnoreCase STARTING_WITH_FAKE = PredicateStartsWithIgnoreCase.get("fake");
 	public static boolean isFake(Event event)
 	{
@@ -188,6 +190,22 @@ public abstract class Engine implements Active, Listener, Runnable
 		else
 		{
 			return STARTING_WITH_FAKE.apply(clazz.getSimpleName());
+		}
+	}
+	
+	// -------------------------------------------- //
+	// IS OFF HAND
+	// -------------------------------------------- //
+	
+	public static boolean isOffHand(PlayerInteractEntityEvent event)
+	{
+		try
+		{
+			return event.getHand() == org.bukkit.inventory.EquipmentSlot.OFF_HAND; 
+		}
+		catch (Throwable t)
+		{
+			return false;
 		}
 	}
 	
