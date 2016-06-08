@@ -9,9 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EditorType
 {
-	// This is the type class.
-	Class<?> value() default void.class;
-	
-	// The name of the singleton instance field to use.
-	String fieldName() default "i";
+	Class<?> value();
 }

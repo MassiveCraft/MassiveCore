@@ -7,11 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EditorTypeSet
+public @interface EditorTypeInner
 {
-	// This is the type class.
-	Class<?> value();
-	
-	// The name of the singleton instance field to use.
-	String fieldName() default "i";
+	Class<?>[] value();
 }

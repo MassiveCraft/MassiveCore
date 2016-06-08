@@ -8,35 +8,31 @@ import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.TypeAbstractChoice;
 
-public class TypeBoolean extends TypeAbstractChoice<Boolean>
+public abstract class TypeBooleanAbstract extends TypeAbstractChoice<Boolean>
 {
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
 	
+	public static final String NAME_YES = "Yes";
+	public static final String NAME_TRUE = "True";
+	public static final String NAME_ON = "On";
+	
+	public static final String NAME_NO = "No";
+	public static final String NAME_FALSE = "False";
+	public static final String NAME_OFF = "Off";
+	
 	public static final Set<String> NAMES_TRUE = new MassiveSet<String>(
-		"Yes",
-		"True",
-		"On"
+		NAME_YES,
+		NAME_TRUE,
+		NAME_ON
 	);
 	
 	public static final Set<String> NAMES_FALSE = new MassiveSet<String>(
-		"No",
-		"False",
-		"Off"
+		NAME_NO,
+		NAME_FALSE,
+		NAME_OFF
 	);
-	
-	// -------------------------------------------- //
-	// INSTANCE
-	// -------------------------------------------- //
-	
-	private static TypeBoolean iYes = new TypeBoolean("Yes", "No");
-	private static TypeBoolean iTrue = new TypeBoolean("True", "False");
-	private static TypeBoolean iOn = new TypeBoolean("On", "Off");
-	
-	public static TypeBoolean getYes() { return iYes; }
-	public static TypeBoolean getTrue() { return iTrue; }
-	public static TypeBoolean getOn() { return iOn; }
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -52,7 +48,7 @@ public class TypeBoolean extends TypeAbstractChoice<Boolean>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public TypeBoolean(String t, String f)
+	public TypeBooleanAbstract(String t, String f)
 	{
 		super(Boolean.class);
 		this.stringTrue = t;

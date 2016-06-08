@@ -12,7 +12,7 @@ import org.bukkit.FireworkEffect;
 import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
-import com.massivecraft.massivecore.command.editor.annotation.EditorTypeList;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterColor;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterFireworkEffectType;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
@@ -46,12 +46,12 @@ public class DataFireworkEffect implements Comparable<DataFireworkEffect>
 	public boolean hasTrail() { return get(this.trail, DEFAULT_TRAIL); }
 	public DataFireworkEffect setTrail(boolean trail) { this.trail = set(trail, DEFAULT_TRAIL); return this; }
 	
-	@EditorTypeList(TypeConverterColor.class)
+	@EditorTypeInner(TypeConverterColor.class)
 	private MassiveListDef<Integer> colors = null;
 	public List<Integer> getColors() { return get(this.colors, DEFAULT_COLORS); }
 	public DataFireworkEffect setColors(List<Integer> colors) { this.colors = set(colors, DEFAULT_COLORS); return this; }
 	
-	@EditorTypeList(TypeConverterColor.class)
+	@EditorTypeInner(TypeConverterColor.class)
 	@SerializedName("fade-colors")
 	private MassiveListDef<Integer> fadeColors = null;
 	public List<Integer> getFadeColors() { return get(this.fadeColors, DEFAULT_FADE_COLORS); }

@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.command;
 import java.util.List;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
+import com.massivecraft.massivecore.command.type.primitive.TypeBooleanOn;
 import com.massivecraft.massivecore.util.Txt;
 
 public abstract class MassiveCommandToggle extends MassiveCommand
@@ -29,7 +29,7 @@ public abstract class MassiveCommandToggle extends MassiveCommand
 	public MassiveCommandToggle()
 	{
 		// Parameters
-		this.addParameter(TypeBoolean.getOn(), "on|off", "toggle");
+		this.addParameter(TypeBooleanOn.get(), "on|off", "toggle");
 	}
 	
 	// -------------------------------------------- //
@@ -60,7 +60,7 @@ public abstract class MassiveCommandToggle extends MassiveCommand
 		// Args
 		boolean before = this.getValue();
 		boolean after = this.readArg( ! before);
-		String afterDesc = TypeBoolean.getOn().getVisual(after, sender);
+		String afterDesc = TypeBooleanOn.get().getVisual(after, sender);
 		
 		// NoChange
 		if (after == before)

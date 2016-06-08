@@ -214,12 +214,10 @@
 		"HIDE_UNBREAKABLE"
 		...
 	]
-	banner-base: byte (dye color) // It seems this one never is used
+	banner-base: byte (dye color)
 	banner:
 	[
-		str (pattern id), byte (dye color),
-		str (pattern id), byte (dye color),
-		str (pattern id), byte (dye color),
+		*banner-pattern*
 		...
 	]
 

@@ -8,12 +8,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.massivecraft.massivecore.collections.ExceptionSet;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.WorldExceptionSet;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
-import com.massivecraft.massivecore.command.editor.annotation.EditorTypeList;
-import com.massivecraft.massivecore.command.editor.annotation.EditorTypeMap;
-import com.massivecraft.massivecore.command.editor.annotation.EditorTypeSet;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
 import com.massivecraft.massivecore.command.type.combined.TypeDataBannerPattern;
 import com.massivecraft.massivecore.command.type.combined.TypeDataPotionEffect;
 import com.massivecraft.massivecore.command.type.combined.TypeEntry;
@@ -44,7 +43,7 @@ import com.massivecraft.massivecore.command.type.enumeration.TypeSkeletonType;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
 import com.massivecraft.massivecore.command.type.enumeration.TypeVillagerProfession;
 import com.massivecraft.massivecore.command.type.enumeration.TypeWorldType;
-import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
+import com.massivecraft.massivecore.command.type.primitive.TypeBooleanTrue;
 import com.massivecraft.massivecore.command.type.primitive.TypeByte;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.command.type.primitive.TypeFloat;
@@ -64,111 +63,171 @@ public class RegistryType
 	// -------------------------------------------- //
 	
 	private static final Map<Class<?>, Type<?>> registry = new MassiveMap<>();
+	
 	public static <T> void register(Class<T> clazz, Type<? super T> type)
 	{
 		if (clazz == null) throw new NullPointerException("clazz");
 		if (type == null) throw new NullPointerException("type");
 		registry.put(clazz, type);
 	}
+	
 	public static <T> void register(Type<T> type)
 	{
 		if (type == null) throw new NullPointerException("type");
 		register(type.getClazz(), type);
 	}
+	
 	@SuppressWarnings("unchecked")
 	public static <T> Type<? super T> unregister(Class<T> clazz)
 	{
 		if (clazz == null) throw new NullPointerException("clazz");
 		return (Type<T>) registry.remove(clazz);
 	}
+	
 	public static boolean isRegistered(Class<?> clazz)
 	{
 		if (clazz == null) throw new NullPointerException("clazz");
 		return registry.containsKey(clazz);
 	}
 	
-	public static Type<?> getType(Field field)
+	// -------------------------------------------- //
+	// GET TYPE
+	// -------------------------------------------- //
+	
+	public static Type<?> getType(Field field, java.lang.reflect.Type fieldType, boolean strictThrow)
 	{
-		try
+		if (field != null)
 		{
-			EditorType annotation = field.getAnnotation(EditorType.class);
-			if (annotation != null)
+			EditorType annotationType = ReflectionUtil.getAnnotation(field, EditorType.class);
+			if (annotationType != null)
 			{
-				Class<?> clazz = annotation.value();
-				if (clazz == void.class) clazz = getType(field.getGenericType()).getClass();
-				return getType(clazz, annotation.fieldName());
+				Class<?> typeClass = annotationType.value();
+				Type<?> type = ReflectionUtil.getSingletonInstance(typeClass);
+				return type;
 			}
 			
-			EditorTypeList annList = field.getAnnotation(EditorTypeList.class);
-			if (annList != null)
+			if (fieldType == null)
 			{
-				return TypeList.get(getType(annList.value(), annList.fieldName()));
+				fieldType = field.getGenericType();
 			}
-			
-			EditorTypeSet annSet = field.getAnnotation(EditorTypeSet.class);
-			if (annSet != null)
-			{
-				return TypeSet.get(getType(annSet.value(), annSet.fieldName()));
-			}
-			
-			EditorTypeMap annMap = field.getAnnotation(EditorTypeMap.class);
-			if (annMap != null)
-			{
-				return TypeMap.get(getType(annMap.typeKey(), annMap.fieldNameKey()), getType(annMap.typeValue(), annMap.fieldNameValue()));
-			}
-		}
-		catch (Throwable t)
-		{
-			// This has to do with backwards compatibility (Usually 1.7).
-			// The EditorType annotations may trigger creation of type class instances.
-			// Those type classes may refer to Bukkit classes not present.
-			// This issue was first encountered for TypeDataItemStack. 
 		}
 		
-		return getType(field.getGenericType());
-	}
-	private static Type<?> getType(Class<?> clazz, String fieldName)
-	{
-		return ReflectionUtil.getField(clazz, fieldName, null);
+		if (fieldType != null)
+		{
+			if (fieldType instanceof ParameterizedType)
+			{
+				Class<?> fieldClass = field.getType();
+				List<Type<?>> innerTypes;
+				
+				if (List.class.isAssignableFrom(fieldClass))
+				{
+					innerTypes = getInnerTypes(field, fieldType, 1);
+					return TypeList.get(innerTypes.get(0));
+				}
+				
+				if (Set.class.isAssignableFrom(fieldClass))
+				{
+					innerTypes = getInnerTypes(field, fieldType, 1);
+					return TypeSet.get(innerTypes.get(0));
+				}
+				
+				if (Entry.class.isAssignableFrom(fieldClass))
+				{
+					innerTypes = getInnerTypes(field, fieldType, 2);
+					return TypeEntry.get(innerTypes.get(0), innerTypes.get(1));
+				}
+				
+				if (Map.class.isAssignableFrom(fieldClass))
+				{
+					innerTypes = getInnerTypes(field, fieldType, 2);
+					return TypeMap.get(innerTypes.get(0), innerTypes.get(1));
+				}
+				
+				if (strictThrow) throw new IllegalArgumentException("Unhandled ParameterizedType: " + fieldType);
+				return null;
+			}
+			
+			if (fieldType instanceof Class)
+			{
+				Type<?> type = registry.get(fieldType);
+				if (strictThrow && type == null) throw new IllegalStateException(fieldType + " is not registered.");
+				return type;
+			}
+			
+			throw new IllegalArgumentException("Neither ParameterizedType nor Class: " + fieldType);
+		}
+		
+		throw new IllegalArgumentException("No Information Supplied");
 	}
 	
-	public static Type<?> getType(java.lang.reflect.Type reflectType)
+	public static Type<?> getType(Field field, boolean strictThrow)
 	{
-		if (reflectType instanceof Class)
+		return getType(field, null, strictThrow);
+	}
+	
+	public static Type<?> getType(java.lang.reflect.Type fieldType, boolean strictThrow)
+	{
+		return getType(null, fieldType, strictThrow);
+	}
+	
+	public static Type<?> getType(Field field)
+	{
+		return getType(field, true);
+	}
+	
+	public static Type<?> getType(java.lang.reflect.Type fieldType)
+	{
+		return getType(fieldType, true);
+	}
+	
+	// -------------------------------------------- //
+	// GET INNER TYPES
+	// -------------------------------------------- //
+	
+	public static List<Type<?>> getInnerTypes(Field field, java.lang.reflect.Type fieldType, int amountRequired)
+	{
+		// Create
+		List<Type<?>> ret = new MassiveList<>();
+		
+		// Fill > Annotation
+		if (field != null)
 		{
-			Type<?> type = registry.get(reflectType);
-			if (type == null) throw new IllegalStateException(reflectType + " is not registered.");
-			return type;
+			EditorTypeInner annotation = ReflectionUtil.getAnnotation(field, EditorTypeInner.class);
+			if (annotation != null)
+			{
+				Class<?>[] innerTypeClasses = annotation.value();
+				for (Class<?> innerTypeClass : innerTypeClasses)
+				{
+					Type<?> innerType = ReflectionUtil.getSingletonInstance(innerTypeClass);
+					ret.add(innerType);
+				}
+			}
+			
+			if (fieldType == null)
+			{
+				fieldType = field.getGenericType();
+			}
 		}
 		
-		if (reflectType instanceof ParameterizedType)
+		// Fill > Reflection
+		if (fieldType != null)
 		{
-			ParameterizedType paramType = (ParameterizedType) reflectType;
-			Class<?> parent = (Class<?>) paramType.getRawType();
-			
-			if (Map.class.isAssignableFrom(parent))
+			if (fieldType instanceof ParameterizedType)
 			{
-				TypeEntry<?, ?> typeEntry = TypeEntry.get(getType(paramType.getActualTypeArguments()[0]), getType(paramType.getActualTypeArguments()[1]));
-				return TypeMap.get(typeEntry);
-			}
-			
-			if (List.class.isAssignableFrom(parent))
-			{
-				return TypeList.get(getType(paramType.getActualTypeArguments()[0]));
-			}
-			
-			if (Set.class.isAssignableFrom(parent))
-			{
-				return TypeSet.get(getType(paramType.getActualTypeArguments()[0]));
-			}
-			
-			if (Entry.class.isAssignableFrom(parent))
-			{
-				return TypeEntry.get(getType(paramType.getActualTypeArguments()[0]), getType(paramType.getActualTypeArguments()[1]));
+				ParameterizedType parameterizedType = (ParameterizedType)fieldType;
+				int count = 0;
+				for (java.lang.reflect.Type actualTypeArgument : parameterizedType.getActualTypeArguments())
+				{
+					boolean strictThrow = (amountRequired < 0 || count < amountRequired);
+					Type<?> innerType = getType(actualTypeArgument, strictThrow);
+					ret.add(innerType);
+					count++;
+				}
 			}
 		}
 		
-		throw new IllegalArgumentException("Unknown type: " + reflectType);
+		// Return
+		return ret;
 	}
 	
 	// -------------------------------------------- //
@@ -181,8 +240,8 @@ public class RegistryType
 	public static void registerAll()
 	{
 		// Primitive
-		register(Boolean.TYPE, TypeBoolean.getTrue());
-		register(Boolean.class, TypeBoolean.getTrue());
+		register(Boolean.TYPE, TypeBooleanTrue.get());
+		register(Boolean.class, TypeBooleanTrue.get());
 		
 		register(Byte.TYPE, TypeByte.get());
 		register(Byte.class, TypeByte.get());
@@ -222,6 +281,14 @@ public class RegistryType
 		try
 		{
 			register(TypeRabbitType.get());
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		
+		try
+		{
 			register(TypeDamageModifier.get());
 		}
 		catch (Throwable t)

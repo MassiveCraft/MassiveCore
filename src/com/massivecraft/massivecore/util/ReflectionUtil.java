@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -238,6 +239,27 @@ public class ReflectionUtil
 			}
 		}
 		return fallback;
+	}
+	
+	// -------------------------------------------- //
+	// ANNOTATION
+	// -------------------------------------------- //
+	
+	public static <T extends Annotation> T getAnnotation(Field field, Class<T> annotationClass)
+	{
+		// Fail Fast
+		if (field == null) throw new NullPointerException("field");
+		if (annotationClass == null) throw new NullPointerException("annotationClass");
+		
+		try
+		{
+			return field.getAnnotation(annotationClass);
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+			return null;
+		}
 	}
 	
 	// -------------------------------------------- //

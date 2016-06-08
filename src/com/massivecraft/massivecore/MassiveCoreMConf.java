@@ -9,6 +9,7 @@ import org.bukkit.permissions.Permissible;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.TypeMillisDiff;
+import com.massivecraft.massivecore.command.type.primitive.TypeBooleanOn;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
@@ -122,7 +123,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	@EditorType(TypeMillisDiff.class)
 	public volatile long millisBetweenRemotePollWithPusher = TimeUnit.MILLIS_PER_MINUTE * 1;
 	
-	@EditorType(fieldName = "iOn")
+	@EditorType(TypeBooleanOn.class)
 	public boolean warnOnLocalAlter = false;
 	
 	// -------------------------------------------- //
