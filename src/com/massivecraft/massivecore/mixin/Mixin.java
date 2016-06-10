@@ -206,8 +206,11 @@ public class Mixin extends Engine
 		"19R1", "Minecraft 1.9.0 --> 1.9.3 [1_9_R1]",
 		"19R1P", "Minecraft 1.9.0+ [1_9_R1+]",
 		
-		"19R2", "Minecraft 1.9.4 --> ? [1_9_R2]",
-		"19R2P", "Minecraft 1.9.4+ [1_9_R2+]"
+		"19R2", "Minecraft 1.9.4 [1_9_R2]",
+		"19R2P", "Minecraft 1.9.4+ [1_9_R2+]",
+		
+		"110R1", "Minecraft 1.10.0 --> ? [1_10_R1]",
+		"110R1P", "Minecraft 1.10.0+ [1_0_R1+]"
 	);
 	
 	public String createName()
