@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 
 /**
  * <b>ParticleEffect Library</b>
@@ -1388,7 +1389,7 @@ public enum ParticleEffect {
 				return;
 			}
 			try {
-				version = Integer.parseInt(Character.toString(PackageType.getServerVersion().charAt(3)));
+				version = ReflectionUtil.getVersionMinor();
 				if (version > 7) {
 					enumParticle = PackageType.MINECRAFT_SERVER.getClass("EnumParticle");
 				}

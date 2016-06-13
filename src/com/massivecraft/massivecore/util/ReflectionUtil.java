@@ -9,6 +9,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.massivecore.predicate.Predicate;
 
 public class ReflectionUtil
@@ -435,5 +437,32 @@ public class ReflectionUtil
 		// Rest
 		return new IllegalStateException(t.getClass().getSimpleName() + ": " + t.getMessage());
 	}
+	
+	// -------------------------------------------- //
+	// BUKKIT VERSION
+	// -------------------------------------------- //
+	
+	// Example: "v1_9_R4"
+	private static String versionRaw = Bukkit.getServer().getClass().getPackage().getName().substring(23);
+	public static String getVersionRaw() { return versionRaw; }
+	
+	public static String getVersionRawPart(int index)
+	{
+		String versionRaw = getVersionRaw();
+		String[] parts = versionRaw.split("_");
+		return parts[index];
+	}
+	
+	// Example: 1
+	private static int versionMajor = Integer.valueOf(getVersionRawPart(0).substring(1));
+	public static int getVersionMajor() { return versionMajor; }
+	
+	// Example: 9
+	private static int versionMinor = Integer.valueOf(getVersionRawPart(1));
+	public static int getVersionMinor() { return versionMinor; }
+	
+	// Example: 4
+	private static int versionRelease = Integer.valueOf(getVersionRawPart(2).substring(1));
+	public static int getVersionRelease() { return versionRelease; }
 	
 }
