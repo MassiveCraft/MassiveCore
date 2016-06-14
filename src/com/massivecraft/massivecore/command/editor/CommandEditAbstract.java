@@ -80,9 +80,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 			{
 				// ... skip directly to it.
 				CommandEditShow<?, ?> cmd = (CommandEditShow<?, ?>) children.get(0);
-				List<MassiveCommand> chain = this.getChain();
-				chain.add(this);
-				cmd.execute(this.sender, this.args, chain);
+				cmd.execute(this.sender, this.args);
 			}
 			else
 			{
