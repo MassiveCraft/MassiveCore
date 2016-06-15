@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.SoundEffect;
 import com.massivecraft.massivecore.chestgui.ChestAction;
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.mixin.MixinMessage;
@@ -60,10 +61,11 @@ public class EngineMassiveCoreChestGui extends Engine
 		gui.setLastAction(action);
 		
 		// ... then play the sound ...
-		gui.getSoundEffect().run(event.getWhoClicked());
+		SoundEffect soundEffect = gui.getSoundEffect();
+		if (soundEffect != null) soundEffect.run(event.getWhoClicked());
 		
 		// ... close the GUI ...
-		event.getView().close();
+		if (gui.isAutoclosing()) event.getView().close();
 		
 		// ... and use that action.
 		action.onClick(event);		

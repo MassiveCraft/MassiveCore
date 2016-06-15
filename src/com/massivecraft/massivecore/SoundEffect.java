@@ -28,10 +28,7 @@ public final class SoundEffect implements Serializable
 	@EditorType(TypeSoundId.class)
 	private final String soundId;
 	public String getSoundId() { return this.soundId; }
-	public Sound getSound()
-	{
-		return TypeSound.valueOf(this.getSoundId());
-	}
+	public Sound getSound() { return TypeSound.valueOf(this.getSoundId()); }
 	
 	private final float volume;
 	public float getVolume() { return this.volume; }
