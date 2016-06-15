@@ -1,12 +1,15 @@
 package com.massivecraft.massivecore.engine;
 
 import org.bukkit.event.Event.Result;
+
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.SoundEffect;
@@ -60,9 +63,9 @@ public class EngineMassiveCoreChestGui extends Engine
 		// ... set last action ...
 		gui.setLastAction(action);
 		
-		// ... then play the sound ...
-		SoundEffect soundEffect = gui.getSoundEffect();
-		if (soundEffect != null) soundEffect.run(event.getWhoClicked());
+		// ... then play click sound ...
+		SoundEffect sound = gui.getSoundClick();
+		if (sound != null) sound.run(event.getWhoClicked());
 		
 		// ... close the GUI ...
 		if (gui.isAutoclosing()) event.getView().close();
@@ -80,12 +83,21 @@ public class EngineMassiveCoreChestGui extends Engine
 		final ChestGui gui = ChestGui.get(inventory);
 		if (gui == null) return;
 		
-		// Runnables
+		// Sound
+		SoundEffect sound = gui.getSoundOpen();
+		if (sound != null)
+		{
+			HumanEntity human = event.getPlayer();
+			sound.run(human);
+		}
+		
+		// Later
 		Bukkit.getScheduler().runTask(getPlugin(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
+				// Runnables
 				for (Runnable runnable : gui.getRunnablesOpen())
 				{
 					runnable.run();
@@ -93,8 +105,6 @@ public class EngineMassiveCoreChestGui extends Engine
 			}
 		});
 	}
-	
-	// NOTE:
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClose(InventoryCloseEvent event)
@@ -105,15 +115,26 @@ public class EngineMassiveCoreChestGui extends Engine
 		final ChestGui gui = ChestGui.get(inventory);
 		if (gui == null) return;
 		
-		// Runnables
+		// Human
+		final HumanEntity human = event.getPlayer();
+		
+		// Later
 		Bukkit.getScheduler().runTask(getPlugin(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
+				// Runnables
 				for (Runnable runnable : gui.getRunnablesClose())
 				{
 					runnable.run();
+				}
+				
+				// Sound
+				SoundEffect sound = gui.getSoundClose();
+				if (sound != null && human.getOpenInventory().getTopInventory().getType() == InventoryType.CRAFTING)
+				{
+					sound.run(human);
 				}
 			}
 		});

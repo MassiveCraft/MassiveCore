@@ -178,6 +178,39 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
+	// GET NEARBY PLAYERS
+	// -------------------------------------------- //
+	
+	public static Set<Player> getNearbyPlayers(Entity entity, double raidus, boolean includeSelf)
+	{
+		Set<Player> ret = getNearbyPlayers(entity.getLocation(), raidus);
+		if (isPlayer(entity) && !includeSelf) ret.remove(entity);
+		return ret;
+	}
+	
+	public static Set<Player> getNearbyPlayers(Location location, double radius)
+	{
+		// Create
+		Set<Player> ret = new MassiveSet<>();
+		
+		// Fill
+		final World world = location.getWorld();
+		final double radiusSquared = radius * radius;
+		for (Player player : MUtil.getOnlinePlayers())
+		{
+			Location playerLocation = player.getLocation();
+			World playerWorld = playerLocation.getWorld();
+			if ( ! world.equals(playerWorld)) continue;
+			double distanceSquared = location.distanceSquared(playerLocation);
+			if (distanceSquared > radiusSquared) continue;
+			ret.add(player);
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	// -------------------------------------------- //
 	// IS SYNCHRONOUS
 	// -------------------------------------------- //
 	

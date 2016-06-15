@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.event.EventMassiveCoreAknowledge;
 import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinPlayed;
@@ -182,6 +183,17 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	public Mson getDisplayNameMson(Object watcherObject)
 	{
 		return MixinDisplayName.get().getDisplayNameMson(this.getId(), watcherObject);
+	}
+	
+	// -------------------------------------------- //
+	// AKNOWLEDGE
+	// -------------------------------------------- //
+	
+	public boolean isAcknowledging(Object sender)
+	{
+		EventMassiveCoreAknowledge event = new EventMassiveCoreAknowledge(sender, this);
+		event.run();
+		return ! event.isCancelled();
 	}
 	
 	// -------------------------------------------- //
