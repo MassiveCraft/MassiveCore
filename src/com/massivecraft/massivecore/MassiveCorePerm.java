@@ -72,13 +72,14 @@ public enum MassiveCorePerm implements Identified
 	// HAS
 	// -------------------------------------------- //
 	
-	public boolean has(Permissible permissible, boolean informSenderIfNot)
+	public boolean has(Permissible permissible, boolean verboose)
 	{
-		return PermissionUtil.hasPermission(permissible, this.id, informSenderIfNot);
+		return PermissionUtil.hasPermission(permissible, this, verboose);
 	}
 	
 	public boolean has(Permissible permissible)
 	{
-		return has(permissible, false);
+		return PermissionUtil.hasPermission(permissible, this);
 	}
+	
 }

@@ -13,6 +13,7 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
@@ -68,6 +69,32 @@ public class PermissionUtil
 	public static void ensureHas(Permissible permissible, Permission permission)
 	{
 		ensureHas(permissible, permission.getName());
+	}
+	
+	// -------------------------------------------- //
+	// AS
+	// -------------------------------------------- //
+	
+	public static String asPermissionId(Object object)
+	{
+		if (object == null) return null;
+		
+		if (object instanceof String) return (String)object;
+		if (object instanceof Identified) return ((Identified)object).getId();
+		if (object instanceof Permission) return getPermissionId((Permission)object);
+		
+		throw new IllegalArgumentException(object.toString());
+	}
+	
+	public static Permission asPermission(Object object)
+	{
+		if (object == null) return null;
+		
+		if (object instanceof Permission) return (Permission)object;
+		
+		String permissionId = asPermissionId(object);
+		Permission permission = getPermission(false, permissionId);
+		return permission;
 	}
 	
 	// -------------------------------------------- //
@@ -311,17 +338,11 @@ public class PermissionUtil
 	// The action should fit into the format for a denied message such as:
 	// You don't have permission to FLY TO THE MOON.
 	
-	public static String getPermissionAction(String permissionId)
+	public static String getPermissionAction(Object permission)
 	{
-		if (permissionId == null) return Lang.PERM_DEFAULT_DESCRIPTION;
-		Permission permission = Bukkit.getPluginManager().getPermission(permissionId);
-		return getPermissionAction(permission);
-	}
-	
-	public static String getPermissionAction(Permission permission)
-	{
-		if (permission == null) return Lang.PERM_DEFAULT_DESCRIPTION;
-		String ret = getPermissionDescription(permission);
+		Permission permissionBukkit = asPermission(permission);
+		if (permissionBukkit == null) return Lang.PERM_DEFAULT_DESCRIPTION;
+		String ret = getPermissionDescription(permissionBukkit);
 		if (ret == null || ret.isEmpty()) ret = Lang.PERM_DEFAULT_DESCRIPTION;
 		return ret;
 	}
@@ -330,8 +351,9 @@ public class PermissionUtil
 	// PERMISSION > DENIED FORMAT
 	// -------------------------------------------- //
 	
-	public static String getPermissionDeniedFormat(String permissionId)
+	public static String getPermissionDeniedFormat(Object permission)
 	{
+		String permissionId = asPermissionId(permission);
 		EventMassiveCorePermissionDeniedFormat event = new EventMassiveCorePermissionDeniedFormat(permissionId);
 		event.run();
 		String ret = event.getFormat();
@@ -339,23 +361,11 @@ public class PermissionUtil
 		return ret;
 	}
 	
-	public static String getPermissionDeniedFormat(Permission permission)
-	{
-		return getPermissionDeniedFormat(permission == null ? null : permission.getName());
-	}
-	
 	// -------------------------------------------- //
 	// PERMISSION > DENIED MESSAGE
 	// -------------------------------------------- //
 	
-	public static String getPermissionDeniedMessage(String permissionId)
-	{
-		String deniedFormat = getPermissionDeniedFormat(permissionId);
-		String action = getPermissionAction(permissionId);
-		return Txt.parse(deniedFormat, action);
-	}
-	
-	public static String getPermissionDeniedMessage(Permission permission)
+	public static String getPermissionDeniedMessage(Object permission)
 	{
 		String deniedFormat = getPermissionDeniedFormat(permission);
 		String action = getPermissionAction(permission);
@@ -364,39 +374,32 @@ public class PermissionUtil
 	
 	// -------------------------------------------- //
 	// PERMISSION > HAS
-	// -------------------------------------------- //
+	// -------------------------------------------- //	
 	
-	public static boolean hasPermission(Permissible permissable, Permission permission)
+	public static boolean hasPermission(Permissible permissible, Object permission, boolean verbose)
 	{
-		return hasPermission(permissable, permission.getName());
-	}
-	
-	public static boolean hasPermission(Permissible permissable, String permissionId)
-	{
-		if (permissable == null) return false;
-		return permissable.hasPermission(permissionId);
-	}
-	
-	public static boolean hasPermission(Permissible permissable, Permission permission, boolean verbose)
-	{
-		return hasPermission(permissable, permission.getName(), verbose);
-	}
-	
-	public static boolean hasPermission(Permissible permissible, String permissionId, boolean verbose)
-	{
-		if (hasPermission(permissible, permissionId))
+		// Fail Fast
+		if (permissible == null) throw new NullPointerException("permissible");
+		if (permission == null) throw new NullPointerException("permission");
+		
+		String permissionId = asPermissionId(permission);
+		if (permissionId == null) throw new NullPointerException("permissionId");
+		
+		if (permissible.hasPermission(permissionId)) return true;
+		
+		if (verbose && permissible instanceof CommandSender)
 		{
-			return true;
+			CommandSender sender = (CommandSender)permissible;
+			String message = getPermissionDeniedMessage(permission);
+			sender.sendMessage(message);
 		}
-		else if (verbose && permissible != null)
-		{
-			if (permissible instanceof CommandSender)
-			{
-				CommandSender sender = (CommandSender)permissible;
-				sender.sendMessage(getPermissionDeniedMessage(permissionId));
-			}
-		}
+		
 		return false;
+	}
+	
+	public static boolean hasPermission(Permissible permissible, Object permission)
+	{
+		return hasPermission(permissible, permission, false);
 	}
 	
 	// -------------------------------------------- //

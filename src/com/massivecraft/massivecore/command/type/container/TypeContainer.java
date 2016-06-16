@@ -47,6 +47,20 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	}
 	
 	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
+	
+	private int indexStart = 0;
+	public int getIndexStart() { return this.indexStart; }
+	@SuppressWarnings("unchecked")
+	public <X> X setIndexStart(int indexStart) { this.indexStart = indexStart; return (X)this; }
+	
+	private boolean indexVisible = true;
+	public boolean isIndexVisible() { return this.indexVisible; }
+	@SuppressWarnings("unchecked")
+	public <X> X setIndexVisible(boolean indexVisible) { this.indexVisible = indexVisible; return (X)this; }
+	
+	// -------------------------------------------- //
 	// WRITE VISUAL
 	// -------------------------------------------- //
 	
@@ -62,16 +76,20 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		// Fill
 		List<E> elements = this.getContainerElementsOrdered(container);
 		Type<E> innerType = this.getInnerType();
-		int index = -1;
+		int index = this.getIndexStart();
 		for (E element : elements)
 		{
-			index++;
-			Mson part = Mson.mson(
-				Mson.mson(String.valueOf(index)).color(ChatColor.WHITE),
-				Mson.SPACE,
-				innerType.getVisualMson(element, sender)
-			);
+			Mson part = innerType.getVisualMson(element, sender);
+			if (this.isIndexVisible())
+			{
+				part = Mson.mson(
+					Mson.mson(String.valueOf(index)).color(ChatColor.WHITE),
+					Mson.SPACE,
+					part
+				);
+			}
 			parts.add(part);
+			index++;
 		}
 		
 		// Return
@@ -94,12 +112,13 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 		// Fill
 		List<E> elements = this.getContainerElementsOrdered(container);
 		Type<E> innerType = this.getInnerType();
-		int index = -1;
+		int index = this.getIndexStart();
 		for (E element : elements)
 		{
-			index++;
-			String part = Txt.parse("<white>%d <yellow>%s", index, innerType.getVisual(element, sender));
+			String part = innerType.getVisual(element, sender);
+			if (this.isIndexVisible()) part = Txt.parse("<white>%d <yellow>%s", index, part);
 			parts.add(part);
+			index++;
 		}
 		
 		// Return

@@ -2,7 +2,6 @@ package com.massivecraft.massivecore.command.requirement;
 
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.util.PermissionUtil;
 
@@ -14,21 +13,15 @@ public class RequirementHasPerm extends RequirementAbstract
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static RequirementHasPerm get(String permissionId) { return new RequirementHasPerm(permissionId); }
-	public static RequirementHasPerm get(Identified identified) { return new RequirementHasPerm(identified); }
+	public static RequirementHasPerm get(Object permission) { return new RequirementHasPerm(permission); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public RequirementHasPerm(String permissionId)
+	public RequirementHasPerm(Object permission)
 	{
-		this.permissionId = permissionId;
-	}
-	
-	public RequirementHasPerm(Identified identified)
-	{
-		this(identified.getId());
+		this.permissionId = PermissionUtil.asPermissionId(permission);
 	}
 	
 	// -------------------------------------------- //

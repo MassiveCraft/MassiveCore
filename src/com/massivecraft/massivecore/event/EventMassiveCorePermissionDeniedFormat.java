@@ -16,8 +16,8 @@ public class EventMassiveCorePermissionDeniedFormat extends EventMassiveCore
 	// FIELD
 	// -------------------------------------------- //
 	
-	private final String permissionName;
-	public String getPermissionName() { return this.permissionName; }
+	private final String permissionId;
+	public String getPermissionId() { return this.permissionId; }
 	
 	private String format;
 	public String getFormat() { return this.format; }
@@ -28,9 +28,9 @@ public class EventMassiveCorePermissionDeniedFormat extends EventMassiveCore
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventMassiveCorePermissionDeniedFormat(String permissionName)
+	public EventMassiveCorePermissionDeniedFormat(String permissionId)
 	{
-		this.permissionName = permissionName;
+		this.permissionId = permissionId;
 		this.format = null;
 	}
 	

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.PlayerState;
 import com.massivecraft.massivecore.event.EventMassiveCoreAknowledge;
 import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.mixin.MixinMessage;
@@ -70,22 +71,53 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	// -------------------------------------------- //
 	
 	// GENERIC
-	public <T> T convertGet(T value, T defaultValue, String permissionId)
+	public <T> T convertGet(T value, T standard, Object permission)
 	{
 		// Create
-		T ret = super.convertGet(value, defaultValue);
+		T ret = this.convertGet(value, standard);
 		
 		// Permission Requirement
-		if ( ! Objects.equal(value, defaultValue) && ! PermissionUtil.hasPermission(this.getSender(), permissionId)) return defaultValue;
+		if ( ! Objects.equal(value, standard) && !this.hasPermission(permission, true)) return standard;
 		
 		// Return
 		return ret;
 	}
 	
 	// BOOLEAN
-	public boolean convertGet(Boolean value, String permissionId)
+	public boolean convertGet(Boolean value, Object permission)
 	{
-		return this.convertGet(value, false, permissionId);
+		return this.convertGet(value, false, permission);
+	}
+	
+	// -------------------------------------------- //
+	// CONVENIENCE: PERMISSON
+	// -------------------------------------------- //
+	
+	public Boolean hasPermission(Object permission, Boolean standard, boolean verboose)
+	{
+		// Null
+		if (permission == null) throw new NullPointerException("permission");
+		
+		// Sender
+		CommandSender sender = this.getSender();
+		if (sender == null) return standard;
+		
+		// Players must be fully joined.
+		// The permission manager may not have updated permissions during the early login/connect stages. 
+		if (sender instanceof Player)
+		{
+			Player player = (Player)sender;
+			PlayerState state = PlayerState.get(player);
+			if (state != PlayerState.JOINED) return standard;
+		}
+		
+		// Check
+		return PermissionUtil.hasPermission(sender, permission, verboose);
+	}
+	
+	public Boolean hasPermission(Object permission, Boolean standard)
+	{
+		return this.hasPermission(permission, standard, false);
 	}
 	
 	// -------------------------------------------- //
