@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.nms;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import org.bukkit.World;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
@@ -52,6 +53,11 @@ public class NmsBasics17R4P extends NmsBasics
 	// org.bukkit.craftbukkit.scoreboard.CraftObjective#objective
 	private Field fieldCraftObjectiveHandle;
 	
+	// org.bukkit.craftbukkit.block.CraftSign
+	private Class<?> classCraftSign;
+	// org.bukkit.craftbukkit.block.CraftSign#sign
+	private Field fieldclassCraftSignHandle;
+	
 	// GET BUKKIT
 	// net.minecraft.server.Entity
 	private Class<?> classNmsEntity;
@@ -99,6 +105,9 @@ public class NmsBasics17R4P extends NmsBasics
 		this.classCraftObjective = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftObjective");
 		this.fieldCraftObjectiveHandle = ReflectionUtil.getField(this.classCraftObjective, "objective");
 		
+		this.classCraftSign = PackageType.CRAFTBUKKIT_BLOCK.getClass("CraftSign");
+		this.fieldclassCraftSignHandle = ReflectionUtil.getField(this.classCraftSign, "sign");
+		
 		// GET BUKKIT
 		this.classNmsEntity = PackageType.MINECRAFT_SERVER.getClass("Entity");
 		this.methodNmsEntityGetBukkitEntity = ReflectionUtil.getMethod(this.classNmsEntity, "getBukkitEntity");
@@ -122,31 +131,43 @@ public class NmsBasics17R4P extends NmsBasics
 	@Override
 	public <T> T getHandle(Entity entity)
 	{
+		if (entity == null) return null;
 		return ReflectionUtil.invokeMethod(this.methodCraftEntityGetHandle, entity);
 	}
 	
 	@Override
 	public <T> T getHandle(World world)
 	{
+		if (world == null) return null;
 		return ReflectionUtil.getField(this.fieldCraftWorldWorld, world);
 	}
 	
 	@Override
 	public <T> T getHandle(Scoreboard scoreboard)
 	{
+		if (scoreboard == null) return null;
 		return ReflectionUtil.getField(this.fieldCraftScoreboardHandle, scoreboard);
 	}
 	
 	@Override
 	public <T> T getHandle(Team team)
 	{
+		if (team == null) return null;
 		return ReflectionUtil.getField(this.fieldCraftTeamHandle, team);
 	}
 	
 	@Override
 	public <T> T getHandle(Objective objective)
 	{
+		if (objective == null) return null;
 		return ReflectionUtil.getField(this.fieldCraftObjectiveHandle, objective);
+	}
+	
+	@Override
+	public <T> T getHandle(Sign sign)
+	{
+		if (sign == null) return null;
+		return ReflectionUtil.getField(this.fieldclassCraftSignHandle, sign);
 	}
 	
 	// -------------------------------------------- //
@@ -156,6 +177,7 @@ public class NmsBasics17R4P extends NmsBasics
 	@Override
 	public <T extends Entity> T getBukkit(Object handle)
 	{
+		if (handle == null) return null;
 		return ReflectionUtil.invokeMethod(this.methodNmsEntityGetBukkitEntity, handle);
 	}
 	

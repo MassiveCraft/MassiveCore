@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.nms;
 
 import org.bukkit.World;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
@@ -51,6 +52,11 @@ public class NmsBasics extends Mixin
 	}
 	
 	public <T> T getHandle(Objective objective)
+	{
+		throw this.notImplemented();
+	}
+	
+	public <T> T getHandle(Sign sign)
 	{
 		throw this.notImplemented();
 	}
