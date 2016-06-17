@@ -93,14 +93,14 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	// CONVENIENCE: PERMISSON
 	// -------------------------------------------- //
 	
-	public Boolean hasPermission(Object permission, Boolean standard, boolean verboose)
+	public Boolean hasPermission(Object permission, Boolean unsure, boolean verboose)
 	{
 		// Null
 		if (permission == null) throw new NullPointerException("permission");
 		
 		// Sender
 		CommandSender sender = this.getSender();
-		if (sender == null) return standard;
+		if (sender == null) return unsure;
 		
 		// Players must be fully joined.
 		// The permission manager may not have updated permissions during the early login/connect stages. 
@@ -108,16 +108,16 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 		{
 			Player player = (Player)sender;
 			PlayerState state = PlayerState.get(player);
-			if (state != PlayerState.JOINED) return standard;
+			if (state != PlayerState.JOINED) return unsure;
 		}
 		
 		// Check
 		return PermissionUtil.hasPermission(sender, permission, verboose);
 	}
 	
-	public Boolean hasPermission(Object permission, Boolean standard)
+	public Boolean hasPermission(Object permission, Boolean unsure)
 	{
-		return this.hasPermission(permission, standard, false);
+		return this.hasPermission(permission, unsure, false);
 	}
 	
 	// -------------------------------------------- //
