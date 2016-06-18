@@ -98,12 +98,22 @@ public class RegistryType
 	{
 		if (field != null)
 		{
-			EditorType annotationType = ReflectionUtil.getAnnotation(field, EditorType.class);
-			if (annotationType != null)
+			try
 			{
-				Class<?> typeClass = annotationType.value();
-				Type<?> type = ReflectionUtil.getSingletonInstance(typeClass);
-				return type;
+				EditorType annotationType = ReflectionUtil.getAnnotation(field, EditorType.class);
+				if (annotationType != null)
+				{
+					Class<?> typeClass = annotationType.value();
+					Type<?> type = ReflectionUtil.getSingletonInstance(typeClass);
+					return type;
+				}
+			}
+			catch (Throwable t)
+			{
+				// This has to do with backwards compatibility (Usually 1.7).
+				// The annotations may trigger creation of type class instances.
+				// Those type classes may refer to Bukkit classes not present.
+				// This issue was first encountered for TypeDataItemStack. 
 			}
 			
 			if (fieldType == null)
@@ -186,21 +196,35 @@ public class RegistryType
 	
 	public static List<Type<?>> getInnerTypes(Field field, java.lang.reflect.Type fieldType, int amountRequired)
 	{
-		// Create
-		List<Type<?>> ret = new MassiveList<>();
-		
-		// Fill > Annotation
+		// Annotation
 		if (field != null)
 		{
-			EditorTypeInner annotation = ReflectionUtil.getAnnotation(field, EditorTypeInner.class);
-			if (annotation != null)
+			try
 			{
-				Class<?>[] innerTypeClasses = annotation.value();
-				for (Class<?> innerTypeClass : innerTypeClasses)
+				EditorTypeInner annotation = ReflectionUtil.getAnnotation(field, EditorTypeInner.class);
+				if (annotation != null)
 				{
-					Type<?> innerType = ReflectionUtil.getSingletonInstance(innerTypeClass);
-					ret.add(innerType);
+					// Create
+					List<Type<?>> ret = new MassiveList<>();
+					
+					// Fill
+					Class<?>[] innerTypeClasses = annotation.value();
+					for (Class<?> innerTypeClass : innerTypeClasses)
+					{
+						Type<?> innerType = ReflectionUtil.getSingletonInstance(innerTypeClass);
+						ret.add(innerType);
+					}
+					
+					// Return
+					return ret;
 				}
+			}
+			catch (Throwable t)
+			{
+				// This has to do with backwards compatibility (Usually 1.7).
+				// The annotations may trigger creation of type class instances.
+				// Those type classes may refer to Bukkit classes not present.
+				// This issue was first encountered for TypeDataItemStack. 
 			}
 			
 			if (fieldType == null)
@@ -209,11 +233,15 @@ public class RegistryType
 			}
 		}
 		
-		// Fill > Reflection
+		// Reflection
 		if (fieldType != null)
 		{
 			if (fieldType instanceof ParameterizedType)
 			{
+				// Create
+				List<Type<?>> ret = new MassiveList<>();
+				
+				// Fill
 				ParameterizedType parameterizedType = (ParameterizedType)fieldType;
 				int count = 0;
 				for (java.lang.reflect.Type actualTypeArgument : parameterizedType.getActualTypeArguments())
@@ -223,11 +251,15 @@ public class RegistryType
 					ret.add(innerType);
 					count++;
 				}
+				
+				// Return
+				return ret;
 			}
+			
+			throw new IllegalArgumentException("Not ParameterizedType: " + fieldType);
 		}
 		
-		// Return
-		return ret;
+		throw new IllegalArgumentException("Failure");
 	}
 	
 	// -------------------------------------------- //
