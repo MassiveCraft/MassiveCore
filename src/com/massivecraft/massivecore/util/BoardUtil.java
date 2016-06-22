@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -268,9 +269,29 @@ public class BoardUtil extends Engine
 	public static String getKey(Object key)
 	{
 		if (key == null) return null;
-		if (key instanceof String) return (String)key;
-		if (key instanceof Player) return ((Player)key).getName();
-		if (key instanceof Entity) return ((Entity)key).getUniqueId().toString();
+		
+		if (key instanceof String)
+		{
+			String string = (String)key;
+			return string;
+		}
+		
+		if (key instanceof Player)
+		{
+			Player player = (Player)key;
+			String name = player.getName();
+			return name;
+		}
+		
+		if (key instanceof Entity)
+		{
+			Entity entity = (Entity)key; 
+			UUID uuid = entity.getUniqueId();
+			String string = uuid.toString();
+			string = string.substring(0, 16);
+			return string;
+		}
+		
 		throw new IllegalArgumentException(key.toString());
 	}
 	
