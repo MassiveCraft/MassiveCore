@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore;
 
 import com.massivecraft.massivecore.store.Coll;
-import com.massivecraft.massivecore.store.MStore;
 
 public class MassiveCoreMSponsorInfoColl extends Coll<MassiveCoreMSponsorInfo>
 {
@@ -13,7 +12,7 @@ public class MassiveCoreMSponsorInfoColl extends Coll<MassiveCoreMSponsorInfo>
 	public static MassiveCoreMSponsorInfoColl get() { return i; }
 	private MassiveCoreMSponsorInfoColl()
 	{
-		super("massivecore_msponsorinfo", MassiveCoreMSponsorInfo.class, MStore.getDb(), MassiveCore.get());
+		super("massivecore_msponsorinfo");
 	}
 
 	// -------------------------------------------- //

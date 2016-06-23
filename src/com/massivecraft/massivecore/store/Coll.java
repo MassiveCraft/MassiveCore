@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.store;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,6 +12,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
@@ -85,10 +91,10 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return plugin.getGson();
 	}
 	
-	protected Db db;
+	protected final Db db;
 	@Override public Db getDb() { return this.db; }
 	
-	protected Object collDriverObject;
+	protected final Object collDriverObject;
 	@Override public Object getCollDriverObject() { return this.collDriverObject; }
 	
 	@Override
@@ -944,7 +950,16 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	
 	public Coll(String id, Class<E> entityClass, Db db, MassivePlugin plugin)
 	{
-		// Setup the name and the parsed parts
+		// Plugin
+		if (plugin == null) plugin = this.calculatePlugin();
+		this.plugin = plugin;
+		
+		// Entity Class
+		if (entityClass == null) entityClass = this.calculateEntityClass();
+		this.entityClass = entityClass;
+		
+		// Id
+		if (id == null) id = this.calculateId();
 		this.id = id;
 		String[] idParts = this.id.split("\\@");
 		this.basename = idParts[0];
@@ -957,24 +972,77 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			this.universe = null;
 		}
 		
-		// WHAT DO WE HANDLE?
-		this.entityClass = entityClass;
-		
-		// SUPPORTING SYSTEM
-		this.plugin = plugin;
+		// Db
+		if (db == null) db = this.calculateDb();
 		this.db = db;
 		this.collDriverObject = db.createCollDriverObject(this);
 		
-		// STORAGE
+		// Collections
 		this.id2entity = new ConcurrentHashMap<String, E>();
-		
-		// ENTITY DATA
 		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
 		
+		// Tasks
 		this.tickTask = new Runnable()
 		{
 			@Override public void run() { Coll.this.onTick(); }
 		};
+	}
+	
+	public Coll(String id)
+	{
+		this(id, null, null, null);
+	}
+	
+	public Coll()
+	{
+		this(null, null, null, null);
+	}
+	
+	public MassivePlugin calculatePlugin()
+	{
+		// Create
+		int retlength = 0;
+		MassivePlugin ret = null;
+		
+		// Fill
+		String me = this.getClass().getName();
+		for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+		{
+			if (!(plugin instanceof MassivePlugin)) continue;
+			MassivePlugin mplugin = (MassivePlugin)plugin;
+			String you = mplugin.getDescription().getMain();
+			
+			String prefix = StringUtils.getCommonPrefix(new String[]{me, you});
+			if (prefix == null) continue;
+			int length = prefix.length();
+			if (length <= retlength) continue;
+			
+			retlength = length;
+			ret = mplugin;
+		}
+		
+		// Return
+		if (ret == null) throw new RuntimeException("plugin could not be calculated");
+		return ret;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Class<E> calculateEntityClass()
+	{
+		Class<?> clazz = this.getClass();
+		ParameterizedType superType = (ParameterizedType) clazz.getGenericSuperclass();
+		Type[] typeArguments = superType.getActualTypeArguments();
+		return (Class<E>) typeArguments[0];
+	}
+	
+	public String calculateId()
+	{
+		return this.getPlugin().getDescription().getName().toLowerCase() + "_" + this.getEntityClass().getSimpleName().toLowerCase();
+	}
+	
+	public Db calculateDb()
+	{
+		return MStore.getDb();
 	}
 	
 	// -------------------------------------------- //

@@ -21,11 +21,21 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public SenderColl(String name, Class<E> entityClass, Db db, MassivePlugin plugin)
+	public SenderColl(String id, Class<E> entityClass, Db db, MassivePlugin plugin)
 	{	
-		super(name, entityClass, db, plugin);
+		super(id, entityClass, db, plugin);
 		this.setCreative(true);
 		this.setLowercasing(true);
+	}
+	
+	public SenderColl(String id)
+	{	
+		this(id, null, null, null);
+	}
+	
+	public SenderColl()
+	{	
+		this(null, null, null, null);
 	}
 
 	// -------------------------------------------- //
