@@ -30,7 +30,7 @@ public final class MsonEvent implements Serializable
 	
 	// TODO: should be final. only temporairly mutable for repairs.
 	@Deprecated
-	public void setAction(MsonEventAction action) { this.action = action;}
+	public void setAction(MsonEventAction action) { this.action = action; }
 
 	private final String value;
 	public String getValue() { return this.value; }
