@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.command.requirement;
 import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.util.PermissionUtil;
+import com.massivecraft.massivecore.util.PermUtil;
 
 public class RequirementHasPerm extends RequirementAbstract
 {
@@ -13,23 +13,15 @@ public class RequirementHasPerm extends RequirementAbstract
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static RequirementHasPerm get(Object permission) { return new RequirementHasPerm(permission); }
-	
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	public RequirementHasPerm(Object permission)
-	{
-		this.permissionId = PermissionUtil.asPermissionId(permission);
-	}
+	public static RequirementHasPerm get(String perm) { return new RequirementHasPerm(perm); }
+	public RequirementHasPerm(String perm) { this.perm = perm; }
 	
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final String permissionId;
-	public String getPermissionId() { return this.permissionId; }
+	private final String perm;
+	public String getPerm() { return this.perm; }
 	
 	// -------------------------------------------- //
 	// OVERRIDE
@@ -38,13 +30,13 @@ public class RequirementHasPerm extends RequirementAbstract
 	@Override
 	public boolean apply(CommandSender sender, MassiveCommand command)
 	{
-		return sender.hasPermission(this.permissionId);
+		return sender.hasPermission(this.perm);
 	}
 	
 	@Override
 	public String createErrorMessage(CommandSender sender, MassiveCommand command)
 	{
-		return PermissionUtil.getPermissionDeniedMessage(this.permissionId);
+		return PermUtil.getDeniedMessage(this.perm);
 	}
 	
 }

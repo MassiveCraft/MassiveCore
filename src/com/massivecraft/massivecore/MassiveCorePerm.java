@@ -2,9 +2,9 @@ package com.massivecraft.massivecore;
 
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.massivecore.util.PermissionUtil;
+import com.massivecraft.massivecore.util.PermUtil;
 
-public enum MassiveCorePerm implements Identified
+public enum MassiveCorePerm
 {
 	// -------------------------------------------- //
 	// ENUM
@@ -56,8 +56,7 @@ public enum MassiveCorePerm implements Identified
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final String id;
-	@Override public String getId() { return this.id; }
+	public final String node;
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -65,21 +64,20 @@ public enum MassiveCorePerm implements Identified
 	
 	MassiveCorePerm()
 	{
-		this.id = PermissionUtil.createPermissionId(MassiveCore.get(), this);
+		this.node = "massivecore." + this.name().toLowerCase().replace('_', '.');
 	}
 	
 	// -------------------------------------------- //
 	// HAS
 	// -------------------------------------------- //
 	
-	public boolean has(Permissible permissible, boolean verboose)
+	public boolean has(Permissible permissible, boolean informSenderIfNot)
 	{
-		return PermissionUtil.hasPermission(permissible, this, verboose);
+		return PermUtil.has(permissible, this.node, informSenderIfNot);
 	}
 	
 	public boolean has(Permissible permissible)
 	{
-		return PermissionUtil.hasPermission(permissible, this);
+		return has(permissible, false);
 	}
-	
 }

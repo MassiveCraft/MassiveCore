@@ -5,9 +5,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.massivecraft.massivecore.nms.NmsPlayerInventoryCreate;
+import com.massivecraft.massivecore.nms.NmsInventory;
 
-public class MixinInventory extends Mixin
+public class MixinInventory extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -16,6 +16,7 @@ public class MixinInventory extends Mixin
 	private static MixinInventory d = new MixinInventory();
 	private static MixinInventory i = d;
 	public static MixinInventory get() { return i; }
+	public static void set(MixinInventory i) { MixinInventory.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS
@@ -23,9 +24,7 @@ public class MixinInventory extends Mixin
 	
 	public PlayerInventory createPlayerInventory()
 	{
-		NmsPlayerInventoryCreate nmsPlayerInventory = NmsPlayerInventoryCreate.get();
-		if ( ! nmsPlayerInventory.isAvailable()) return null;
-		return nmsPlayerInventory.create();
+		return NmsInventory.createPlayerInventory();
 	}
 	
 	public Inventory createInventory(InventoryHolder holder, int size, String title)

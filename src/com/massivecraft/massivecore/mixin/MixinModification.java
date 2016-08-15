@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.mixin;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Entity;
 
-public class MixinModification extends Mixin
+public class MixinModification extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -12,6 +12,7 @@ public class MixinModification extends Mixin
 	private static MixinModification d = new MixinModification();
 	private static MixinModification i = d;
 	public static MixinModification get() { return i; }
+	public static void set(MixinModification i) { MixinModification.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

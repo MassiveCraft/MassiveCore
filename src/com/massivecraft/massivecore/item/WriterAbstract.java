@@ -6,7 +6,7 @@ import java.util.List;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.command.type.primitive.TypeBooleanOn;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -114,7 +114,7 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 		String message;
 		
 		// Main
-		message = Txt.parse("<h>%s %s", name, TypeBooleanOn.get().getVisual(success));
+		message = Txt.parse("<h>%s %s", name, TypeBoolean.getOn().getVisual(success));
 		messages.add(message);
 		
 		// Throwable

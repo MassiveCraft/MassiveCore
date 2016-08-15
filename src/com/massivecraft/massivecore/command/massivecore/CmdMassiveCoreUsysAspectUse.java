@@ -25,7 +25,7 @@ public class CmdMassiveCoreUsysAspectUse extends MassiveCommand
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse which the aspect should use");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_USE));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_USE.node));
 	}
 	
 	// -------------------------------------------- //

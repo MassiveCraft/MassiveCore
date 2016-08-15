@@ -98,7 +98,7 @@ public class EngineMassiveCoreMain extends Engine
 		if (event.hasFormat()) return;
 		
 		// ... and we have a custom format in the config ...
-		String customFormat = MassiveCoreMConf.get().getPermissionDeniedFormat(event.getPermissionId());
+		String customFormat = MassiveCoreMConf.get().getPermissionDeniedFormat(event.getPermissionName());
 		if (customFormat == null) return;
 		
 		// ... then make use of that format.

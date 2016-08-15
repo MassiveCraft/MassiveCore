@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class MixinCommand extends Mixin
+public class MixinCommand extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -13,6 +13,7 @@ public class MixinCommand extends Mixin
 	private static MixinCommand d = new MixinCommand();
 	private static MixinCommand i = d;
 	public static MixinCommand get() { return i; }
+	public static void set(MixinCommand i) { MixinCommand.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

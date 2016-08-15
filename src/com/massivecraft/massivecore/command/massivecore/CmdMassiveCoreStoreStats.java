@@ -26,7 +26,7 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 		this.addParameter(TypeColl.get(), "coll", Coll.TOTAL).setDesc("the coll to show info about");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_STATS));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_STATS.node));
 	}
 	
 	// -------------------------------------------- //

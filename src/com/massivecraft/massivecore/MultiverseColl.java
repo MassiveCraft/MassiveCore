@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore;
 
 import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
 
 public class MultiverseColl extends Coll<Multiverse>
 {
@@ -12,7 +13,7 @@ public class MultiverseColl extends Coll<Multiverse>
 	public static MultiverseColl get() { return i; }
 	private MultiverseColl()
 	{
-		super("massivecore_multiverse");
+		super("massivecore_multiverse", Multiverse.class, MStore.getDb("default"), MassiveCore.get());
 	}
 
 	// -------------------------------------------- //

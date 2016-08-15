@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.util;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -8,8 +7,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.Bukkit;
 
 import com.massivecraft.massivecore.predicate.Predicate;
 
@@ -157,7 +154,7 @@ public class ReflectionUtil
 	public static <T> Constructor<T> getConstructor(Class<?> clazz, Class<?>... parameterTypes)
 	{
 		try
-		{	
+		{
 			Constructor<T> ret = (Constructor<T>) clazz.getDeclaredConstructor(parameterTypes);
 			makeAccessible(ret);
 			return ret;
@@ -198,23 +195,6 @@ public class ReflectionUtil
 	}
 	
 	// -------------------------------------------- //
-	// NEW INSTANCE
-	// -------------------------------------------- //
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T newInstance(Class<?> clazz)
-	{
-		try
-		{
-			return (T) clazz.newInstance();
-		}
-		catch (Exception e)
-		{
-			throw asRuntimeException(e);
-		}
-	}
-	
-	// -------------------------------------------- //
 	// SINGLETON INSTANCE
 	// -------------------------------------------- //
 	
@@ -225,43 +205,6 @@ public class ReflectionUtil
 		if (ret == null) throw new NullPointerException("Singleton instance was null for: " + clazz);
 		if ( ! clazz.isAssignableFrom(ret.getClass())) throw new IllegalStateException("Singleton instance was not of same or subclass for: " + clazz);
 		return ret;
-	}
-	
-	public static <T> T getSingletonInstanceFirstCombatible(Iterable<Class<?>> classes, T fallback)
-	{
-		for (Class<?> c : classes)
-		{
-			try
-			{
-				return ReflectionUtil.getSingletonInstance(c);
-			}
-			catch (Throwable t)
-			{
-				// Not Compatible
-			}
-		}
-		return fallback;
-	}
-	
-	// -------------------------------------------- //
-	// ANNOTATION
-	// -------------------------------------------- //
-	
-	public static <T extends Annotation> T getAnnotation(Field field, Class<T> annotationClass)
-	{
-		// Fail Fast
-		if (field == null) throw new NullPointerException("field");
-		if (annotationClass == null) throw new NullPointerException("annotationClass");
-		
-		try
-		{
-			return field.getAnnotation(annotationClass);
-		}
-		catch (Throwable t)
-		{
-			t.printStackTrace();
-			return null;
-		}
 	}
 	
 	// -------------------------------------------- //
@@ -437,32 +380,5 @@ public class ReflectionUtil
 		// Rest
 		return new IllegalStateException(t.getClass().getSimpleName() + ": " + t.getMessage());
 	}
-	
-	// -------------------------------------------- //
-	// BUKKIT VERSION
-	// -------------------------------------------- //
-	
-	// Example: "v1_9_R4"
-	private static String versionRaw = Bukkit.getServer().getClass().getPackage().getName().substring(23);
-	public static String getVersionRaw() { return versionRaw; }
-	
-	public static String getVersionRawPart(int index)
-	{
-		String versionRaw = getVersionRaw();
-		String[] parts = versionRaw.split("_");
-		return parts[index];
-	}
-	
-	// Example: 1
-	private static int versionMajor = Integer.valueOf(getVersionRawPart(0).substring(1));
-	public static int getVersionMajor() { return versionMajor; }
-	
-	// Example: 9
-	private static int versionMinor = Integer.valueOf(getVersionRawPart(1));
-	public static int getVersionMinor() { return versionMinor; }
-	
-	// Example: 4
-	private static int versionRelease = Integer.valueOf(getVersionRawPart(2).substring(1));
-	public static int getVersionRelease() { return versionRelease; }
 	
 }

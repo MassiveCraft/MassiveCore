@@ -22,7 +22,7 @@ public class CmdMassiveCoreBufferSet extends MassiveCommand
 		this.addParameter(TypeString.get(), "text", true).setDesc("the text to set your buffer to");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_SET));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_SET.node));
 	}
 	
 	// -------------------------------------------- //

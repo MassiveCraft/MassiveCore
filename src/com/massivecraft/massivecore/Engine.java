@@ -8,7 +8,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockMultiPlaceEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.massivecraft.massivecore.collections.MassiveSet;
@@ -22,6 +21,7 @@ public abstract class Engine implements Active, Listener, Runnable
 	
 	private static final transient Set<Engine> allInstances = new MassiveSet<>();
 	public static Set<Engine> getAllInstances() { return allInstances; }
+	
 	
 	// -------------------------------------------- //
 	// PLUGIN
@@ -117,12 +117,7 @@ public abstract class Engine implements Active, Listener, Runnable
 	{
 		if (active)
 		{
-			// Support without at load
-			MassivePlugin plugin = this.getPlugin();
-			if (plugin.isEnabled())
-			{
-				Bukkit.getPluginManager().registerEvents(this, this.getPlugin());
-			}
+			Bukkit.getPluginManager().registerEvents(this, this.getPlugin());
 		}
 		else
 		{
@@ -140,18 +135,13 @@ public abstract class Engine implements Active, Listener, Runnable
 		{
 			if (this.getPeriod() != null)
 			{
-				// Support without at load
-				MassivePlugin plugin = this.getPlugin();
-				if (plugin.isEnabled())
+				if (this.isSync())
 				{
-					if (this.isSync())
-					{
-						this.task = Bukkit.getScheduler().runTaskTimer(this.getPlugin(), this, this.getDelay(), this.getPeriod());
-					}
-					else
-					{
-						this.task = Bukkit.getScheduler().runTaskTimerAsynchronously(this.getPlugin(), this, this.getDelay(), this.getPeriod());
-					}
+					this.task = Bukkit.getScheduler().runTaskTimer(this.getPlugin(), this, this.getDelay(), this.getPeriod());
+				}
+				else
+				{
+					this.task = Bukkit.getScheduler().runTaskTimerAsynchronously(this.getPlugin(), this, this.getDelay(), this.getPeriod());
 				}
 			}
 		}
@@ -175,9 +165,9 @@ public abstract class Engine implements Active, Listener, Runnable
 	}
 	
 	// -------------------------------------------- //
-	// IS FAKE
+	// UTIL
 	// -------------------------------------------- //
-
+	
 	public static final PredicateStartsWithIgnoreCase STARTING_WITH_FAKE = PredicateStartsWithIgnoreCase.get("fake");
 	public static boolean isFake(Event event)
 	{
@@ -189,22 +179,6 @@ public abstract class Engine implements Active, Listener, Runnable
 		else
 		{
 			return STARTING_WITH_FAKE.apply(clazz.getSimpleName());
-		}
-	}
-	
-	// -------------------------------------------- //
-	// IS OFF HAND
-	// -------------------------------------------- //
-	
-	public static boolean isOffHand(PlayerInteractEntityEvent event)
-	{
-		try
-		{
-			return event.getHand() == org.bukkit.inventory.EquipmentSlot.OFF_HAND; 
-		}
-		catch (Throwable t)
-		{
-			return false;
 		}
 	}
 	

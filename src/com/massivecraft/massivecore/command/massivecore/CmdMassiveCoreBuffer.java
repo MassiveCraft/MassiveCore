@@ -43,7 +43,7 @@ public class CmdMassiveCoreBuffer extends MassiveCommand
 		this.addAliases("buffer");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER.node));
 	}
 
 }

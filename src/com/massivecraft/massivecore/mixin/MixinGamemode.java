@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class MixinGamemode extends Mixin
+public class MixinGamemode extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,6 +14,7 @@ public class MixinGamemode extends Mixin
 	private static MixinGamemode d = new MixinGamemode();
 	private static MixinGamemode i = d;
 	public static MixinGamemode get() { return i; }
+	public static void set(MixinGamemode i) { MixinGamemode.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

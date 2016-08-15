@@ -32,7 +32,8 @@ public class WriterItemStackMeta extends WriterAbstractItemStackMetaMorph<Object
 			WriterItemStackMetaPotionEffects.class,
 			
 			// SKULL
-			WriterItemStackMetaSkull.class,
+			WriterItemStackMetaSkull17.class,
+			WriterItemStackMetaSkull18.class,
 			
 			// FIREWORK EFFECT
 			WriterItemStackMetaFireworkEffect.class,
@@ -54,9 +55,8 @@ public class WriterItemStackMeta extends WriterAbstractItemStackMetaMorph<Object
 			WriterItemStackMetaBannerBase.class,
 			WriterItemStackMetaBannerPatterns.class,
 			
-			// SHIELD
-			WriterItemStackMetaShieldBase.class,
-			WriterItemStackMetaShieldPatterns.class,
+			// STATE
+			WriterItemStackMetaState.class,
 			
 			// POTION
 			WriterItemStackMetaPotion.class

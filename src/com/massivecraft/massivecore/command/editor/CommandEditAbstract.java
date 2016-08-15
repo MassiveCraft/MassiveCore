@@ -80,7 +80,9 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 			{
 				// ... skip directly to it.
 				CommandEditShow<?, ?> cmd = (CommandEditShow<?, ?>) children.get(0);
-				cmd.execute(this.sender, this.args);
+				List<MassiveCommand> chain = this.getChain();
+				chain.add(this);
+				cmd.execute(this.sender, this.args, chain);
 			}
 			else
 			{
@@ -291,8 +293,8 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 	public String createCommandAlias()
 	{
 		// Split at uppercase letters
-		final List<String> words = Txt.camelsplit(this.getClass().getSimpleName());
-		String alias = words.get(words.size() - 1);
+		final String[] words = this.getClass().getSimpleName().split("(?=[A-Z])");
+		String alias = words[words.length - 1];
 		alias = alias.toLowerCase();
 		return alias;
 	}

@@ -173,33 +173,31 @@ public abstract class Property<O, V> implements Named
 	public Mson getInheritedVisual(O object, O source, V value, CommandSender sender)
 	{
 		Mson mson = this.getValueType().getVisualMson(value, sender);
-		return Mson.prepondfix(null, mson, this.getInheritanceSuffix(object, source));
+		/*if (string == null)
+		{
+			System.out.println("value type " + this.getValueType());
+			System.out.println("value type name" + this.getValueType().getTypeName());
+			System.out.println("object " + object);
+			System.out.println("source " + source);
+			System.out.println("value " + value);
+			System.out.println("sender " + sender);
+		}*/
+		
+		Mson suffix = null;
+		if (source != null && ! source.equals(object))
+		{
+			suffix = Mson.parse("<silver>[%s<silver>]").replaceAll("%s", this.getObjectType().getVisualMson(source));
+		}
+		
+		return Mson.prepondfix(null, mson, suffix);
 	}
+	
 	public Mson getInheritedVisual(O object, CommandSender sender)
 	{
 		Entry<O, V> inherited = this.getInheritedEntry(object);
 		O source = inherited.getKey();
 		V value = inherited.getValue();
 		return this.getInheritedVisual(object, source, value, sender);
-	}
-	
-	public Mson getInheritanceSuffix(O object, O source)
-	{
-		Mson ret = null;
-		if (source != null && ! source.equals(object))
-		{
-			ret = Mson.mson(
-				"[",
-				this.getObjectType().getVisualMson(source),
-				"]"
-			).color(ChatColor.GRAY);
-		}
-		return ret;
-	}
-	
-	public Mson getInheritanceSuffix(O object)
-	{
-		return this.getInheritanceSuffix(object, this.getInheritedObject(object));
 	}
 	
 	// -------------------------------------------- //
@@ -222,7 +220,7 @@ public abstract class Property<O, V> implements Named
 			this.getDisplayNameMson(),
 			Mson.mson(":").color(ChatColor.GRAY)
 		);
-		List<Mson> ret = Mson.prepondfix(prefix, this.getValueType().getShow(this.getInheritedValue(object), sender), this.getInheritanceSuffix(object));
+		List<Mson> ret = Mson.prepondfix(prefix, this.getValueType().getShow(this.getInheritedValue(object), sender), null);
 		
 		for (ListIterator<Mson> it = ret.listIterator(1); it.hasNext();)
 		{

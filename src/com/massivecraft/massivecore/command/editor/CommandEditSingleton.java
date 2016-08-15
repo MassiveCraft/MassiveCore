@@ -10,14 +10,14 @@ public class CommandEditSingleton<O> extends CommandEditProperties<O, O>
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CommandEditSingleton(O object)
+	public CommandEditSingleton(O object, String permission)
 	{
-		this(object, getType(object));
+		this(object, getType(object), permission);
 	}
 	
-	public CommandEditSingleton(O object, Type<O> typeObject)
+	public CommandEditSingleton(O object, Type<O> typeObject, String permission)
 	{
-		super(createEditSettings(object, typeObject), new PropertyThis<>(typeObject));
+		super(createEditSettings(object, typeObject), new PropertyThis<>(typeObject), permission);
 		String name = typeObject.getName(object);
 		this.setAliases(name);
 		this.setDesc("edit " + name);

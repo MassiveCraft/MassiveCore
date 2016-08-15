@@ -30,7 +30,7 @@ public class CmdMassiveCoreClick extends MassiveCommand
 		this.addParameter(null, TypeStringCommand.get(), "command", "none", true).setDesc("the command to perform");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.CLICK));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.CLICK.node));
 	}
 	
 	// -------------------------------------------- //

@@ -31,7 +31,7 @@ public class CmdMassiveCoreUsysMultiverse extends MassiveCommand
 		this.addAliases("multiverse");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE.node));
 	}
 
 }

@@ -28,7 +28,7 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse to show info about");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_SHOW));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_SHOW.node));
 	}
 	
 	// -------------------------------------------- //

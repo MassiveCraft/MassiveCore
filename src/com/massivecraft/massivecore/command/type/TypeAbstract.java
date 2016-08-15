@@ -68,7 +68,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 		name = name.substring(prefixLength);
 		
 		// We split at uppercase letters, because most class names are camel-case.
-		final List<String> words = Txt.camelsplit(name);
+		final String[] words = Txt.PATTERN_UPPERCASE.split(name);
 		return Txt.implode(words, " ").toLowerCase();
 	}
 	
@@ -654,7 +654,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	{
 		if (this.hasInnerProperties())
 		{
-			return new CommandEditProperties<O, T>(settings, property);
+			return new CommandEditProperties<O, T>(settings, property, null);
 		}
 		else
 		{

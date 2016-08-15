@@ -24,7 +24,7 @@ public class CmdMassiveCoreUsysUniverseNew extends MassiveCommand
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to create");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE_NEW));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE_NEW.node));
 	}
 	
 	// -------------------------------------------- //

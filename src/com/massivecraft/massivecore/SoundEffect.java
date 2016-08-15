@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorNullable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.type.TypeId;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
-import com.massivecraft.massivecore.command.type.enumeration.TypeSoundId;
 import com.massivecraft.massivecore.util.MUtil;
 
 public final class SoundEffect implements Serializable
@@ -25,10 +25,13 @@ public final class SoundEffect implements Serializable
 	
 	@EditorNullable(false)
 	@EditorName("sound")
-	@EditorType(TypeSoundId.class)
+	@EditorType(value = TypeId.class, fieldName = "iSound")
 	private final String soundId;
 	public String getSoundId() { return this.soundId; }
-	public Sound getSound() { return TypeSound.valueOf(this.getSoundId()); }
+	public Sound getSound()
+	{
+		return TypeSound.valueOf(this.getSoundId());
+	}
 	
 	private final float volume;
 	public float getVolume() { return this.volume; }

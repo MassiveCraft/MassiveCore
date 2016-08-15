@@ -29,7 +29,7 @@ public class CmdMassiveCoreUsysUniverse extends MassiveCommand
 		this.addAliases("universe");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE.node));
 	}
 
 }

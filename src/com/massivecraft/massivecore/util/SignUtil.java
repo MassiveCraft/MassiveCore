@@ -109,11 +109,11 @@ public class SignUtil
 	// -------------------------------------------- //
 	// Returns true if the result is a special sign of with the specified title.
 	
-	public static boolean handleSpecialPermissionFix(SignChangeEvent event, String title, String permissionId)
+	public static boolean handleSpecialPermissionFix(SignChangeEvent event, String title, String permissionNode)
     {
 		if (event == null) throw new NullPointerException("event");
 		if (title == null) throw new NullPointerException("title");
-		if (permissionId == null) throw new NullPointerException("permissionId");
+		if (permissionNode == null) throw new NullPointerException("permissionNode");
 		
 		// If a player is changing a sign ...
 		final Player player = event.getPlayer();
@@ -126,7 +126,7 @@ public class SignUtil
 		if ( ! title.equalsIgnoreCase(lenientTitle)) return false;
 		
 		// ... verify that the player has permission to create that type of sign ...
-		if ( ! PermissionUtil.hasPermission(player, permissionId, true))
+		if ( ! PermUtil.has(player, permissionNode, true))
 		{
 			event.setCancelled(true);
 			return false;

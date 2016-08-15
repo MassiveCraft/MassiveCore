@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
-public class MixinEvent extends Mixin
+public class MixinEvent extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,6 +14,7 @@ public class MixinEvent extends Mixin
 	private static MixinEvent d = new MixinEvent();
 	private static MixinEvent i = d;
 	public static MixinEvent get() { return i; }
+	public static void set(MixinEvent i) { MixinEvent.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

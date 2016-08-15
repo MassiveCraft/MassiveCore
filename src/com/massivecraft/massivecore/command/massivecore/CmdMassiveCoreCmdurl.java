@@ -40,7 +40,7 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 		this.addParameter(TypeString.get(), "url").setDesc("the url to load");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.CMDURL));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.CMDURL.node));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 	

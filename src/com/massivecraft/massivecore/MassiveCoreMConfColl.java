@@ -2,6 +2,7 @@ package com.massivecraft.massivecore;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
 
 public class MassiveCoreMConfColl extends Coll<MassiveCoreMConf>
 {
@@ -13,7 +14,7 @@ public class MassiveCoreMConfColl extends Coll<MassiveCoreMConf>
 	public static MassiveCoreMConfColl get() { return i; }
 	private MassiveCoreMConfColl()
 	{
-		super("massivecore_mconf");
+		super("massivecore_mconf", MassiveCoreMConf.class, MStore.getDb(), MassiveCore.get());
 	}
 
 	// -------------------------------------------- //

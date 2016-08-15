@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
 
+import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
@@ -26,13 +27,13 @@ public class AdapterMsonEvent implements JsonDeserializer<MsonEvent>, JsonSerial
 	@Override
 	public JsonElement serialize(MsonEvent src, Type typeOfSrc, JsonSerializationContext context)
 	{
-		return MsonEvent.toJson(src);
+		return Mson.GSON.toJsonTree(src);
 	}
 
 	@Override
 	public MsonEvent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		return MsonEvent.fromJson(json);
+		return Mson.GSON.fromJson(json, MsonEvent.class);
 	}
-	
+
 }

@@ -176,15 +176,15 @@ public class Entity<E extends Entity<E>> implements Identified
 	// -------------------------------------------- //
 
 	// GENERIC
-	public <T> T convertGet(T value, T standard)
+	public <T> T convertGet(T value, T defaultValue)
 	{
-		return value != null ? value : standard;
+		return value != null ? value : defaultValue;
 	}
 	
-	public <T> T convertSet(T value, T standard)
+	public <T> T convertSet(T value, T defaultValue)
 	{
 		this.changed();
-		return Objects.equals(value, standard) ? null : value;
+		return Objects.equals(value, defaultValue) ? null : value;
 	}
 	
 	// BOOLEAN

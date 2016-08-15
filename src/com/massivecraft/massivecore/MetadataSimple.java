@@ -47,36 +47,22 @@ public class MetadataSimple extends MetadataValueAdapter
 	
 	public static void set(Plugin plugin, Metadatable metadatable, String key, Object value)
 	{
-		if (value != null)
-		{
-			metadatable.setMetadata(key, new MetadataSimple(plugin, value));
-		}
-		else
-		{
-			metadatable.removeMetadata(key, plugin);
-		}
+		metadatable.setMetadata(key, new MetadataSimple(plugin, value));
 	}
 	
 	public static MetadataValue getMeta(Metadatable metadatable, String key)
 	{
-		if (metadatable == null) return null;
 		List<MetadataValue> metaValues = metadatable.getMetadata(key);
 		if (metaValues == null) return null;
-		if (metaValues.isEmpty()) return null;
+		if (metaValues.size() < 1) return null;
 		return metaValues.get(0);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static <T> T get(Metadatable metadatable, String key)
+	public static Object get(Metadatable metadatable, String key)
 	{
 		MetadataValue metaValue = getMeta(metadatable, key);
 		if (metaValue == null) return null;
-		return (T) metaValue.value();
-	}
-	
-	public static boolean has(Metadatable metadatable, String key)
-	{
-		return get(metadatable, key) != null;
+		return metaValue.value();
 	}
 	
 }

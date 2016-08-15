@@ -1,11 +1,12 @@
 package com.massivecraft.massivecore.mixin;
 
 import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.mson.Mson;
-import com.massivecraft.massivecore.nms.NmsChat;
+import com.massivecraft.massivecore.nms.NmsPacket;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.Txt;
 
-public class MixinActionbar extends Mixin
+public class MixinActionbar extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,39 +15,43 @@ public class MixinActionbar extends Mixin
 	private static MixinActionbar d = new MixinActionbar();
 	private static MixinActionbar i = d;
 	public static MixinActionbar get() { return i; }
+	public static void set(MixinActionbar i) { MixinActionbar.i = i; }
 	
 	// -------------------------------------------- //
-	// AVAILABLE
+	// METHODS
 	// -------------------------------------------- //
 	
-	@Override
-	public boolean isAvailable()
+	public boolean sendActionbarMessage(Object watcherObject, String message)
 	{
-		return NmsChat.get().isAvailable();
-	}
-	
-	// -------------------------------------------- //
-	// SEND
-	// -------------------------------------------- //
-	
-	public void sendActionbarRaw(Player player, String raw)
-	{
-		NmsChat.get().sendActionbarRaw(player, raw);
-	}
-	
-	public void sendActionbarMson(Object watcherObject, Mson mson)
-	{
-		NmsChat.get().sendActionbarMson(watcherObject, mson);
-	}
-	
-	public void sendActionbarMessage(Object watcherObject, String message)
-	{
-		NmsChat.get().sendActionbarMessage(watcherObject, message);
+		// Get the player
+		Player player = IdUtil.getPlayer(watcherObject);
+		if(player == null) return false;
+
+		message = NmsPacket.toJson(message);
+
+		return NmsPacket.sendActionbar(player, message);
 	}
 
-	public void sendActionbarMsg(Object watcherObject, String msg)
+	public boolean sendActionbarMsg(Object watcherObject, String message)
 	{
-		NmsChat.get().sendActionbarMsg(watcherObject, msg);
+		return this.sendActionbarMessage(watcherObject, Txt.parse(message));
+	}
+
+	public boolean sendActionbarMson(Object watcherObject, Mson mson)
+	{
+		// Get the player
+		Player player = IdUtil.getPlayer(watcherObject);
+		if(player == null) return false;
+
+		// Convert to raw
+		String message = mson.toRaw();
+
+		return NmsPacket.sendActionbar(player, message);
+	}
+
+	public boolean isActionbarAvailable()
+	{
+		return NmsPacket.get().isAvailable();
 	}
 
 }

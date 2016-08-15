@@ -82,8 +82,10 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 	public String createCommandAlias()
 	{
 		// Split at uppercase letters
-		String alias = this.getClass().getSimpleName();
-		alias = alias.substring("CommandEditContainer".length());
+		String name = this.getClass().getSimpleName();
+		name = name.substring("CommandEditContainer".length());
+		final String[] words = name.split("(?=[A-Z])");
+		String alias = Txt.implode(words, "");
 		alias = Txt.lowerCaseFirst(alias);
 		return alias;
 	}

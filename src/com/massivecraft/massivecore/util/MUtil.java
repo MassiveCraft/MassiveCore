@@ -58,7 +58,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
@@ -67,10 +66,8 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.mixin.MixinMessage;
-import com.massivecraft.massivecore.nms.NmsEntityGet;
+import com.massivecraft.massivecore.nms.NmsEntity;
 import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.predicate.PredicateElementGarbage;
-import com.massivecraft.massivecore.predicate.PredicateElementSignificant;
 import com.massivecraft.massivecore.util.extractor.Extractor;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayer;
 import com.massivecraft.massivecore.util.extractor.ExtractorPlayerName;
@@ -178,39 +175,6 @@ public class MUtil
 	}
 	
 	// -------------------------------------------- //
-	// GET NEARBY PLAYERS
-	// -------------------------------------------- //
-	
-	public static Set<Player> getNearbyPlayers(Entity entity, double raidus, boolean includeSelf)
-	{
-		Set<Player> ret = getNearbyPlayers(entity.getLocation(), raidus);
-		if (isPlayer(entity) && !includeSelf) ret.remove(entity);
-		return ret;
-	}
-	
-	public static Set<Player> getNearbyPlayers(Location location, double radius)
-	{
-		// Create
-		Set<Player> ret = new MassiveSet<>();
-		
-		// Fill
-		final World world = location.getWorld();
-		final double radiusSquared = radius * radius;
-		for (Player player : MUtil.getOnlinePlayers())
-		{
-			Location playerLocation = player.getLocation();
-			World playerWorld = playerLocation.getWorld();
-			if ( ! world.equals(playerWorld)) continue;
-			double distanceSquared = location.distanceSquared(playerLocation);
-			if (distanceSquared > radiusSquared) continue;
-			ret.add(player);
-		}
-		
-		// Return
-		return ret;
-	}
-	
-	// -------------------------------------------- //
 	// IS SYNCHRONOUS
 	// -------------------------------------------- //
 	
@@ -225,12 +189,57 @@ public class MUtil
 	
 	public static Entity getEntity(World world, UUID uuid)
 	{
-		return NmsEntityGet.get().getEntity(world, uuid);
+		if (world == null) throw new NullPointerException("world");
+		if (uuid == null) return null;
+		
+		if (NmsEntity.get().isAvailable())
+		{
+			return NmsEntity.get().getEntity(world, uuid);
+		}
+		else
+		{
+			return getEntityFallback(world, uuid);
+		}
 	}
 	
 	public static Entity getEntity(UUID uuid)
 	{
-		return NmsEntityGet.get().getEntity(uuid);
+		if (uuid == null) return null;
+		
+		if (NmsEntity.get().isAvailable())
+		{
+			return NmsEntity.get().getEntity(uuid);
+		}
+		else
+		{
+			return getEntityFallback(uuid);
+		}
+	}
+	
+	private static Entity getEntityFallback(World world, UUID uuid)
+	{
+		if (world == null) throw new NullPointerException("world");
+		if (uuid == null) return null;
+		
+		for (Entity entity : world.getEntities())
+		{
+			if (entity.getUniqueId().equals(uuid)) return entity;
+		}
+		
+		return null;
+	}
+	
+	private static Entity getEntityFallback(UUID uuid)
+	{
+		if (uuid == null) return null;
+		
+		for (World world : Bukkit.getWorlds())
+		{
+			Entity ret = getEntityFallback(world, uuid);
+			if (ret != null) return ret;
+		}
+		
+		return null;
 	}
 	
 	// -------------------------------------------- //
@@ -271,55 +280,6 @@ public class MUtil
 	public static boolean isUuid(String string)
 	{
 		return asUuid(string) != null;
-	}
-	
-	// -------------------------------------------- //
-	// CONTAINS COMMAND
-	// -------------------------------------------- //
-	
-	public static boolean containsCommand(String needle, ExceptionSet haystack)
-	{
-		boolean ret = haystack.isStandard();
-		if (containsCommand(needle, haystack.exceptions)) ret = !ret; 
-		return ret;
-	}
-	
-	public static boolean containsCommand(String needle, Iterable<String> haystack)
-	{
-		if (needle == null) return false;
-		needle = prepareCommand(needle);
-		
-		for (String straw : haystack)
-		{
-			if (straw == null) continue;
-			straw = prepareCommand(straw);
-			
-			// If it starts with then it is possibly a subject.
-			if ( ! needle.startsWith(straw)) continue;
-			
-			// Get the remainder.
-			String remainder = needle.substring(straw.length());
-			
-			// If they were equal, definitely true.
-			if (remainder.isEmpty()) return true;
-			
-			// If the next is a space, the space is used as separator for sub commands or arguments.
-			// Otherwise it might just have been another command coincidentally starting with the first command.
-			// The old behaviour was if (needle.startsWith(straw)) return true;
-			// If "s" was block, then all commands starting with "s" was, now it isn't.
-			if (remainder.startsWith(" ")) return true;
-		}
-		
-		return false;
-	}
-	
-	private static String prepareCommand(String string)
-	{
-		if (string == null) return null;
-		string = Txt.removeLeadingCommandDust(string);
-		string = string.toLowerCase();
-		string = string.trim();
-		return string;
 	}
 	
 	// -------------------------------------------- //
@@ -385,19 +345,9 @@ public class MUtil
 	
 	public static boolean isNpc(Object object)
 	{
-		if ( ! (object instanceof Metadatable)) return false;
+		if (!(object instanceof Metadatable)) return false;
 		Metadatable metadatable = (Metadatable)object;
-		try
-		{
-			return metadatable.hasMetadata("NPC");
-		}
-		catch (UnsupportedOperationException e)
-		{
-			// ProtocolLib
-			// UnsupportedOperationException: The method hasMetadata is not supported for temporary players.
-			return false;
-		}
-		
+		return metadatable.hasMetadata("NPC");
 	}
 	public static boolean isntNpc(Object object)
 	{
@@ -439,7 +389,7 @@ public class MUtil
 		
 		StackTraceElement[] elements = thread.getStackTrace();
 		elements = Arrays.copyOfRange(elements, skip, elements.length);
-		return new MassiveList<>(Arrays.asList(elements));
+		return new ArrayList<StackTraceElement>(Arrays.asList(elements));
 	}
 	
 	public static List<StackTraceElement> getStackTrace(Thread thread)
@@ -473,39 +423,6 @@ public class MUtil
 		Thread thread = Thread.currentThread();
 		
 		return getStackTrace(thread, skip);
-	}
-	
-	// -------------------------------------------- //
-	// STACK TRACE: CUT
-	// -------------------------------------------- //
-	
-	public static void cutStackTrace(List<StackTraceElement> trace)
-	{
-		// Cut Significant
-		int index = 0;
-		while (index < trace.size())
-		{
-			StackTraceElement element = trace.get(index);
-			if (PredicateElementSignificant.get().apply(element)) break;
-			index++;
-		}
-		trace.subList(index, trace.size()).clear();
-		
-		// Reverse
-		Collections.reverse(trace);
-		
-		// Eat Garbage
-		for (Iterator<StackTraceElement> iterator = trace.iterator(); iterator.hasNext();)
-		{
-			StackTraceElement element = iterator.next();
-			if (PredicateElementGarbage.get().apply(element))
-			{
-				iterator.remove();
-			}
-		}
-		
-		// Unreverse
-		Collections.reverse(trace);
 	}
 	
 	// -------------------------------------------- //
@@ -930,7 +847,7 @@ public class MUtil
 		if ( ! isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor);
 		
 		// No Change?
-		if (equalsish(factor, 1)) return;
+		if (factor == 1) return;
 		
 		for (DamageModifier modifier : DamageModifier.values())
 		{

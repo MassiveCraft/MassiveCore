@@ -18,43 +18,6 @@ import com.massivecraft.massivecore.util.Txt;
 public class EditSettings<O>
 {
 	// -------------------------------------------- //
-	// PARENTS
-	// -------------------------------------------- //
-	
-	private EditSettings<?> parent = null;
-	public EditSettings<?> getParent() { return this.parent; }
-	public void setParent(EditSettings<?> parent) { this.parent = parent; }
-	public boolean hasParent() { return this.getParent() != null; }
-	
-	public List<EditSettings<?>> getParents()
-	{
-		// Create
-		List<EditSettings<?>> ret = new MassiveList<>();
-		
-		// Fill
-		EditSettings<?> parent = this;
-		while (parent.hasParent())
-		{
-			parent = parent.getParent();
-			ret.add(parent);
-		}
-		
-		// Return
-		return ret;
-	}
-	
-	public boolean isRoot() { return ! this.hasParent(); }
-	public EditSettings<?> getRoot()
-	{
-		EditSettings<?> ret = this;
-		while (ret.hasParent())
-		{
-			ret = ret.getParent();
-		}
-		return ret;
-	}
-	
-	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
@@ -97,52 +60,18 @@ public class EditSettings<O>
 	public void addPropertyRequirements(Requirement... requirements) { this.addPropertyRequirements(Arrays.asList(requirements)); }
 	
 	// -------------------------------------------- //
-	// CONSTRUCT > NORMAL
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EditSettings(Type<O> objectType, Property<CommandSender, O> usedProperty)
+	public EditSettings(Type<O> objectType, Property<CommandSender, O> objectProperty)
 	{
 		this.objectType = objectType;
-		this.usedProperty = usedProperty;
+		this.usedProperty = objectProperty;
 	}
 	
 	public EditSettings(Type<O> objectType)
 	{
 		this(objectType, null);
-	}
-	
-	// -------------------------------------------- //
-	// CONSTRUCT > DELEGATE
-	// -------------------------------------------- //
-	
-	public <P> EditSettings(final EditSettings<P> parentSettings, final Property<P, O> childProperty)
-	{
-		this(childProperty.getValueType());
-		
-		this.setParent(parentSettings);
-		
-		PropertyUsed<O> usedProperty = new PropertyUsed<O>(this) {
-			
-			@Override
-			public O getRaw(CommandSender sender)
-			{
-				P parentUsed = parentSettings.getUsed(sender);
-				return childProperty.getRaw(parentUsed);
-			}
-			
-			@Override
-			public CommandSender setRaw(CommandSender sender, O used)
-			{
-				P parentUsed = parentSettings.getUsed(sender);
-				childProperty.setRaw(parentUsed, used);
-				return sender;
-			}
-			
-		};
-		this.setUsedProperty(usedProperty);
-		
-		this.addUsedRequirements(parentSettings.getPropertyRequirements());
-		this.addUsedRequirements(childProperty.getRequirements());
 	}
 	
 	// -------------------------------------------- //

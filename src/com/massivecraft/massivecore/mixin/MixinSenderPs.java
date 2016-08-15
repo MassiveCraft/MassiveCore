@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.IdUtil;
 
-public class MixinSenderPs extends Mixin
+public class MixinSenderPs extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -14,6 +14,7 @@ public class MixinSenderPs extends Mixin
 	private static MixinSenderPs d = new MixinSenderPs();
 	private static MixinSenderPs i = d;
 	public static MixinSenderPs get() { return i; }
+	public static void set(MixinSenderPs i) { MixinSenderPs.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

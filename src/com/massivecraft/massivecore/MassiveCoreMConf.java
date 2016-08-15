@@ -9,10 +9,9 @@ import org.bukkit.permissions.Permissible;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.TypeMillisDiff;
-import com.massivecraft.massivecore.command.type.primitive.TypeBooleanOn;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.PermissionUtil;
+import com.massivecraft.massivecore.util.PermUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
 
@@ -81,7 +80,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	
 	public int getTpdelay(Permissible permissible)
 	{
-		Integer ret = PermissionUtil.pickFirstVal(permissible, permissionToTpdelay);
+		Integer ret = PermUtil.pickFirstVal(permissible, permissionToTpdelay);
 		if (ret == null) ret = 0;
 		return ret;
 	}
@@ -123,7 +122,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	@EditorType(TypeMillisDiff.class)
 	public volatile long millisBetweenRemotePollWithPusher = TimeUnit.MILLIS_PER_MINUTE * 1;
 	
-	@EditorType(TypeBooleanOn.class)
+	@EditorType(fieldName = "iOn")
 	public boolean warnOnLocalAlter = false;
 	
 	// -------------------------------------------- //

@@ -10,15 +10,13 @@ import org.bukkit.entity.Player;
 
 import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
-import com.massivecraft.massivecore.PlayerState;
-import com.massivecraft.massivecore.event.EventMassiveCoreAknowledge;
 import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinPlayed;
 import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.PermissionUtil;
+import com.massivecraft.massivecore.util.PermUtil;
 
 public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> implements Named
 {
@@ -71,53 +69,22 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	// -------------------------------------------- //
 	
 	// GENERIC
-	public <T> T convertGet(T value, T standard, Object permission)
+	public <T> T convertGet(T value, T defaultValue, String permission)
 	{
 		// Create
-		T ret = this.convertGet(value, standard);
+		T ret = super.convertGet(value, defaultValue);
 		
 		// Permission Requirement
-		if ( ! Objects.equal(value, standard) && !this.hasPermission(permission, true)) return standard;
+		if ( ! Objects.equal(value, defaultValue) && ! PermUtil.has(this.getSender(), permission)) return defaultValue;
 		
 		// Return
 		return ret;
 	}
 	
 	// BOOLEAN
-	public boolean convertGet(Boolean value, Object permission)
+	public boolean convertGet(Boolean value, String permission)
 	{
 		return this.convertGet(value, false, permission);
-	}
-	
-	// -------------------------------------------- //
-	// CONVENIENCE: PERMISSON
-	// -------------------------------------------- //
-	
-	public Boolean hasPermission(Object permission, Boolean unsure, boolean verboose)
-	{
-		// Null
-		if (permission == null) throw new NullPointerException("permission");
-		
-		// Sender
-		CommandSender sender = this.getSender();
-		if (sender == null) return unsure;
-		
-		// Players must be fully joined.
-		// The permission manager may not have updated permissions during the early login/connect stages. 
-		if (sender instanceof Player)
-		{
-			Player player = (Player)sender;
-			PlayerState state = PlayerState.get(player);
-			if (state != PlayerState.JOINED) return unsure;
-		}
-		
-		// Check
-		return PermissionUtil.hasPermission(sender, permission, verboose);
-	}
-	
-	public Boolean hasPermission(Object permission, Boolean unsure)
-	{
-		return this.hasPermission(permission, unsure, false);
 	}
 	
 	// -------------------------------------------- //
@@ -215,17 +182,6 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	public Mson getDisplayNameMson(Object watcherObject)
 	{
 		return MixinDisplayName.get().getDisplayNameMson(this.getId(), watcherObject);
-	}
-	
-	// -------------------------------------------- //
-	// AKNOWLEDGE
-	// -------------------------------------------- //
-	
-	public boolean isAcknowledging(Object sender)
-	{
-		EventMassiveCoreAknowledge event = new EventMassiveCoreAknowledge(sender, this);
-		event.run();
-		return ! event.isCancelled();
 	}
 	
 	// -------------------------------------------- //

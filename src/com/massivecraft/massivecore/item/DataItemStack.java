@@ -18,7 +18,9 @@ import com.massivecraft.massivecore.collections.MassiveTreeMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
-import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeList;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeMap;
+import com.massivecraft.massivecore.command.editor.annotation.EditorTypeSet;
 import com.massivecraft.massivecore.command.type.TypeMaterialId;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterColor;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterDyeColor;
@@ -105,7 +107,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public String getName() { return get(this.name, DEFAULT_NAME); }
 	public DataItemStack setName(String name) { this.name = set(name, DEFAULT_NAME); return this; }
 	
-	@EditorTypeInner(TypeStringParsed.class)
+	@EditorTypeList(TypeStringParsed.class)
 	private MassiveListDef<String> lore = null;
 	public List<String> getLore() { return get(this.lore, DEFAULT_LORE); }
 	public DataItemStack setLore(List<String> lore) { this.lore = set(lore, DEFAULT_LORE); return this; }
@@ -113,7 +115,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// The Bukkit ItemMeta#getEnchants() is not sorted by the enchant id.
 	// There may be some sort of custom sorting order, I'm not sure.
 	// We are however enforcing sorting by the enchant id ourselves to be sure.
-	@EditorTypeInner({TypeConverterEnchant.class, TypeInteger.class})
+	@EditorTypeMap(typeKey = TypeConverterEnchant.class, typeValue = TypeInteger.class)
 	private MassiveTreeMapDef<Integer, Integer, ComparatorSmart> enchants = null;
 	public Map<Integer, Integer> getEnchants() { return get(this.enchants, DEFAULT_ENCHANTS); }
 	public DataItemStack setEnchants(Map<Integer, Integer> enchants) { this.enchants = set(enchants, DEFAULT_ENCHANTS); return this; }
@@ -135,7 +137,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public String getAuthor() { return get(this.author, DEFAULT_AUTHOR); }
 	public DataItemStack setAuthor(String author) { this.author = set(author, DEFAULT_AUTHOR); return this; }
 	
-	@EditorTypeInner(TypeStringParsed.class)
+	@EditorTypeList(TypeStringParsed.class)
 	private MassiveListDef<String> pages = null;
 	public List<String> getPages() { return get(this.pages, DEFAULT_PAGES); }
 	public DataItemStack setPages(Collection<String> pages) { this.pages = set(pages, DEFAULT_PAGES); return this; }
@@ -204,7 +206,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// FIELDS > STORED ENCHANTS
 	// -------------------------------------------- //
 	
-	@EditorTypeInner({TypeConverterEnchant.class, TypeInteger.class})
+	@EditorTypeMap(typeKey = TypeConverterEnchant.class, typeValue = TypeInteger.class)
 	@SerializedName("stored-enchants")
 	private MassiveTreeMapDef<Integer, Integer, ComparatorSmart> storedEnchants = null;
 	public Map<Integer, Integer> getStoredEnchants() { return get(this.storedEnchants, DEFAULT_STORED_ENCHANTS); }
@@ -224,7 +226,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// -------------------------------------------- //
 	// SINCE: 1.8
 	
-	@EditorTypeInner(TypeConverterItemFlag.class)
+	@EditorTypeSet(TypeConverterItemFlag.class)
 	private MassiveTreeSetDef<String, ComparatorSmart> flags = null;
 	public Set<String> getFlags() { return get(this.flags, DEFAULT_FLAGS); }
 	public DataItemStack setFlags(Set<String> flags) { this.flags = set(flags, DEFAULT_FLAGS); return this; }
@@ -248,6 +250,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// SINCE: 1.8
 	// This should really be a list and not a set.
 	// The order matters and is explicitly assigned.
+	// String, Number, String, Number ...
 	
 	@SerializedName("banner")
 	private MassiveListDef<DataBannerPattern> bannerPatterns = null;

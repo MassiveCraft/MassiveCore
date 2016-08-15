@@ -14,7 +14,7 @@ import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSFormatDesc;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class MixinWorld extends Mixin
+public class MixinWorld extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -23,6 +23,7 @@ public class MixinWorld extends Mixin
 	private static MixinWorld d = new MixinWorld();
 	private static MixinWorld i = d;
 	public static MixinWorld get() { return i; }
+	public static void set(MixinWorld i) { MixinWorld.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

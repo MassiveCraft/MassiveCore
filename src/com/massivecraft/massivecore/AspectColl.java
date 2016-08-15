@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.MStore;
 
 public class AspectColl extends Coll<Aspect>
 {
@@ -13,6 +14,10 @@ public class AspectColl extends Coll<Aspect>
 	
 	private static AspectColl i = new AspectColl();
 	public static AspectColl get() { return i; }
+	private AspectColl()
+	{
+		super("massivecore_aspect", Aspect.class, MStore.getDb("default"), MassiveCore.get());
+	}
 
 	// -------------------------------------------- //
 	// STACK TRACEABILITY

@@ -1,10 +1,13 @@
 package com.massivecraft.massivecore.command;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
+import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.util.Txt;
 
 public class MassiveCommandVersion extends MassiveCommand
@@ -26,13 +29,22 @@ public class MassiveCommandVersion extends MassiveCommand
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public MassiveCommandVersion(Plugin plugin)
+	public MassiveCommandVersion(Plugin plugin, String permissionName, String... aliases)
+	{
+		this(plugin, permissionName, Arrays.asList(aliases));
+	}
+	
+	public MassiveCommandVersion(Plugin plugin, String permissionName, Collection<String> aliases)
 	{
 		this.plugin = plugin;
 		
-		this.setAliases("version");
-		
+		if (permissionName != null)
+		{
+			this.addRequirements(RequirementHasPerm.get(permissionName));
+		}
 		this.setDesc("display plugin version");
+		
+		this.addAliases(aliases);
 	}
 
 	// -------------------------------------------- //

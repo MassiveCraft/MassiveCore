@@ -39,7 +39,7 @@ public class CmdMassiveCoreStore extends MassiveCommand
 		this.addAliases("store");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE.node));
 	}
 
 }

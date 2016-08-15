@@ -14,7 +14,7 @@ import com.massivecraft.massivecore.command.Visibility;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.TypeItemStack;
-import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
+import com.massivecraft.massivecore.command.type.primitive.TypeBoolean;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.InventoryUtil;
 
@@ -30,10 +30,10 @@ public class CmdMassiveCoreTest extends MassiveCommand
 		this.addAliases("test");
 		
 		// Parameters
-		this.addParameter(false, TypeBooleanYes.get(), "set", "no");
+		this.addParameter(false, TypeBoolean.getYes(), "set", "no");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.TEST));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.TEST.node));
 		this.addRequirements(RequirementIsPlayer.get());
 		
 		// VisibilityMode

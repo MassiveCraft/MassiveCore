@@ -27,7 +27,7 @@ public class Test
 	
 	public static Mson mson;
 	public static void test()
-	{
+	{	
 		mson = mson("hello");
 		test("ofString");
 		

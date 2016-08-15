@@ -17,11 +17,11 @@ public class AdapterLowercaseEnum<T extends Enum<T>> implements JsonDeserializer
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Class<T> clazz;
+	protected final Class<T> clazz;
 	public Class<T> getClazz() { return this.clazz; }
 	
 	// -------------------------------------------- //
-	// INSTANCE
+	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
 	public static <T extends Enum<T>> AdapterLowercaseEnum<T> get(Class<T> clazz)
@@ -29,14 +29,10 @@ public class AdapterLowercaseEnum<T extends Enum<T>> implements JsonDeserializer
 		return new AdapterLowercaseEnum<T>(clazz);
 	}
 	
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
 	public AdapterLowercaseEnum(Class<T> clazz)
 	{
-		if (clazz == null) throw new IllegalArgumentException("clazz is null");
-		if ( ! clazz.isEnum()) throw new IllegalArgumentException("clazz is not enum");
+		if (clazz == null) throw new IllegalArgumentException("passed clazz param is null");
+		if ( ! clazz.isEnum()) throw new IllegalArgumentException("passed clazz param must be an enum");
 		this.clazz = clazz;
 	}
 			
@@ -47,76 +43,65 @@ public class AdapterLowercaseEnum<T extends Enum<T>> implements JsonDeserializer
 	@Override
 	public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context)
 	{
-		// Null
 		if (src == null) return JsonNull.INSTANCE;
-		
-		String comparable = this.getComparable(src);
-		return new JsonPrimitive(comparable);
+		return new JsonPrimitive(src.name().toLowerCase());
 	}
 
 	@Override
 	public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
 	{
-		// Null
 		if (json == null) return null;
-		if (json.equals(JsonNull.INSTANCE)) return null;
-		
-		T ret = this.getEnumValueFrom(json);
-		return ret;
+		T value = getEnumValueFrom(json);
+		return value;
 	}
 
 	// -------------------------------------------- //
-	// GET ENUM VALUE FROM
+	// UTIL
 	// -------------------------------------------- //
 	
 	public T getEnumValueFrom(JsonElement json)
 	{
-		String string = this.getComparable(json);
-		return this.getEnumValueFrom(string);
+		return getEnumValueFrom(json.toString());
 	}
 	
-	public T getEnumValueFrom(String string)
+	public T getEnumValueFrom(String str)
 	{
-		string = this.getComparable(string);
-		for (T value : this.getEnumValues())
-		{
-			String comparable = this.getComparable(value);
-			if (comparable.equals(string)) return value;
-		}
-		return null;
+		return getEnumValueFrom(str, clazz);
 	}
 	
-	// -------------------------------------------- //
-	// GET ENUM VALUES
-	// -------------------------------------------- //
-	
-	public T[] getEnumValues()
+	public static <T> T[] getEnumValues(Class<T> clazz)
 	{
-		Class<T> clazz = this.getClazz();
+		if (clazz == null) throw new IllegalArgumentException("passed clazz param is null");
+		if ( ! clazz.isEnum()) throw new IllegalArgumentException("passed clazz param must be an enum");
+		
 		T[] ret = clazz.getEnumConstants();
+		if (ret == null) throw new RuntimeException("failed to retrieve enum constants at runtime");
+		
 		return ret;
 	}
 	
-	// -------------------------------------------- //
-	// GET COMPARABLE
-	// -------------------------------------------- //
-	
-	public String getComparable(Enum<?> value)
+	public static String getComparable(Enum<?> value)
 	{
 		if (value == null) return null;
-		return this.getComparable(value.name());
+		return getComparable(value.name());
 	}
 	
-	public String getComparable(JsonElement json)
-	{
-		if (json == null) return null;
-		return this.getComparable(json.getAsString());
-	}
-	
-	public String getComparable(String string)
+	public static String getComparable(String string)
 	{
 		if (string == null) return null;
 		return string.toLowerCase();
+	}
+	
+	public static<T extends Enum<T>> T getEnumValueFrom(String str, Class<T> clazz)
+	{
+		str = getComparable(str);
+		
+		for (T value : getEnumValues(clazz))
+		{
+			if (getComparable(value).equals(str)) return value;
+		}
+		
+		return null;
 	}
 	
 }

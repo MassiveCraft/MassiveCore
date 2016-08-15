@@ -7,10 +7,9 @@ import java.util.Objects;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.nms.NmsItemStackTooltip;
+import com.massivecraft.massivecore.nms.NmsItem;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 public final class MsonEvent implements Serializable
 {
@@ -24,42 +23,12 @@ public final class MsonEvent implements Serializable
 	// FIELDS
 	// -------------------------------------------- //
 
-	// TODO: should be final. only temporairly mutable for repairs.
-	private MsonEventAction action;
+	private final MsonEventAction action;
 	public MsonEventAction getAction() { return this.action; }
-	
-	// TODO: should be final. only temporairly mutable for repairs.
-	@Deprecated
-	public void setAction(MsonEventAction action) { this.action = action; }
 
 	private final String value;
 	public String getValue() { return this.value; }
 
-	// -------------------------------------------- //
-	// REPAIR
-	// -------------------------------------------- //
-	// TODO: Remove this soon.
-	
-	public void repair()
-	{
-		MsonEventAction action = this.getAction();
-		if (action != null) return;
-		
-		String value = this.getValue();
-		if (value == null) return;
-		
-		action = guessAction(value);
-		this.setAction(action);
-	}
-	
-	private static MsonEventAction guessAction(String value)
-	{
-		if (value.startsWith("{id:")) return MsonEventAction.SHOW_ITEM;
-		if (value.startsWith("/")) return MsonEventAction.SUGGEST_COMMAND;
-		if (value.startsWith("http")) return MsonEventAction.OPEN_URL;
-		return MsonEventAction.SHOW_TEXT;
-	}
-	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -68,12 +37,6 @@ public final class MsonEvent implements Serializable
 	{
 		this.action = action;
 		this.value = value;
-	}
-	
-	// NoArg Constructor for GSON 
-	protected MsonEvent()
-	{
-		this(null, null);
 	}
 
 	// -------------------------------------------- //
@@ -164,8 +127,7 @@ public final class MsonEvent implements Serializable
 	public static MsonEvent item(ItemStack item)
 	{
 		if (item == null) throw new NullPointerException("item");
-		String value = NmsItemStackTooltip.get().getNbtStringTooltip(item);
-		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, value);
+		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, NmsItem.itemToString(item));
 	}
 
 	// -------------------------------------------- //
@@ -173,20 +135,6 @@ public final class MsonEvent implements Serializable
 	// -------------------------------------------- //
 
 	public MsonEventType getType() { return this.getAction().getType(); }
-	
-	// -------------------------------------------- //
-	// JSON
-	// -------------------------------------------- //
-	
-	public static MsonEvent fromJson(JsonElement json)
-	{
-		return Mson.getGson(true).fromJson(json, MsonEvent.class);
-	}
-	
-	public static JsonElement toJson(MsonEvent event)
-	{
-		return Mson.getGson(true).toJsonTree(event);
-	}
 
 	// -------------------------------------------- //
 	// EQUALS AND HASHCODE
@@ -195,22 +143,24 @@ public final class MsonEvent implements Serializable
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(
-			this.action,
-			this.value
-		);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Objects.hashCode(action);
+		result = prime * result + Objects.hashCode(value);
+		return result;
 	}
 
 	@Override
-	public boolean equals(Object object)
+	public boolean equals(Object obj)
 	{
-		if (this == object) return true;
-		if ( ! (object instanceof MsonEvent)) return false;
-		MsonEvent that = (MsonEvent) object;
-		return MUtil.equals(
-			this.action, that.action,
-			this.value, that.value
-		);
+		if (this == obj) return true;
+		if (  ! (obj instanceof MsonEvent)) return false;
+		MsonEvent that = (MsonEvent) obj;
+
+		if ( ! MUtil.equals(this.action, that.action)) return false;
+		if ( ! MUtil.equals(this.value, that.value)) return false;
+		
+		return true;
 	}
 
 }

@@ -25,7 +25,7 @@ public class CmdMassiveCoreUsysUniverseDel extends MassiveCommand
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to delete");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_DEL));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_DEL.node));
 	}
 	
 	// -------------------------------------------- //

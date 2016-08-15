@@ -17,7 +17,7 @@ public class CmdMassiveCoreBufferPrint extends MassiveCommand
 		this.addAliases("print");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_PRINT));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_PRINT.node));
 	}
 	
 	// -------------------------------------------- //

@@ -23,7 +23,7 @@ public class CmdMassiveCoreBufferWhitespace extends MassiveCommand
 		this.addParameter(1, TypeInteger.get(), "times").setDesc("the amount of whitespace to add to your buffer");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_WHITESPACE));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_WHITESPACE.node));
 	}
 	
 	// -------------------------------------------- //

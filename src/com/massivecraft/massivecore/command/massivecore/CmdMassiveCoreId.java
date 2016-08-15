@@ -17,7 +17,7 @@ public class CmdMassiveCoreId extends MassiveCommand
 		this.addAliases("id");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.ID));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.ID.node));
 	}
 	
 	// -------------------------------------------- //

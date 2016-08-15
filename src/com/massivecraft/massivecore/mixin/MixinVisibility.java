@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class MixinVisibility extends Mixin
+public class MixinVisibility extends MixinAbstract
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -13,6 +13,7 @@ public class MixinVisibility extends Mixin
 	private static MixinVisibility d = new MixinVisibility();
 	private static MixinVisibility i = d;
 	public static MixinVisibility get() { return i; }
+	public static void set(MixinVisibility i) { MixinVisibility.i = i; }
 	
 	// -------------------------------------------- //
 	// METHODS

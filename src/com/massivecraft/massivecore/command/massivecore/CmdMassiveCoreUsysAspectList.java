@@ -26,7 +26,7 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 		this.addParameter(Parameter.getPage()).setDesc("the page in the aspect list");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_LIST));
+		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_LIST.node));
 	}
 	
 	// -------------------------------------------- //

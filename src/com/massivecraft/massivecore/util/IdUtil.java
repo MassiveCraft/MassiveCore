@@ -678,18 +678,7 @@ public class IdUtil implements Listener, Runnable
 	
 	public static String getIdFromSender(CommandSender sender)
 	{
-		if (sender instanceof Player)
-		{
-			try
-			{
-				return ((Player) sender).getUniqueId().toString();
-			}
-			catch (UnsupportedOperationException e)
-			{
-				// ProtocolLib: The method getUniqueId is not supported for temporary players.
-				return null;
-			}
-		}
+		if (sender instanceof Player) return ((Player) sender).getUniqueId().toString();
 		if (sender instanceof ConsoleCommandSender) return CONSOLE_ID;
 		
 		// We blacklist all entities other than players.

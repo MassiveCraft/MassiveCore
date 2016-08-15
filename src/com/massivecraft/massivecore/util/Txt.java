@@ -41,7 +41,7 @@ public class Txt
 	
 	public static final Pattern PATTERN_WHITESPACE = Pattern.compile("\\s+");
 	public static final Pattern PATTERN_NEWLINE = Pattern.compile("\\r?\\n");
-	private static final Pattern PATTERN_UPPERCASE_ZEROWIDTH = Pattern.compile("(?=[A-Z])"); // NOTE: Use camelsplit instead for Java 6/7 compatibility.
+	public static final Pattern PATTERN_UPPERCASE = Pattern.compile("(?=[A-Z])");
 	
 	public static final long millisPerSecond = 1000;
 	public static final long millisPerMinute = 60 * millisPerSecond;
@@ -231,15 +231,6 @@ public class Txt
 	// -------------------------------------------- //
 	// Standard utils like UCFirst, implode and repeat.
 	// -------------------------------------------- //
-	
-	public static List<String> camelsplit(String string)
-	{
-		List<String> ret = Arrays.asList(PATTERN_UPPERCASE_ZEROWIDTH.split(string));
-		// In version before Java 8 zero width matches in the beginning created a leading empty string.
-		// We manually look for it and removes it to be compatible with Java 6 and 7.
-		if (ret.get(0).isEmpty()) ret = ret.subList(1, ret.size());
-		return ret;
-	}
 	
 	public static String upperCaseFirst(String string)
 	{

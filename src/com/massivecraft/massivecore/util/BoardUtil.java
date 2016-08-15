@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,15 +18,14 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.Team.Option;
+import org.bukkit.scoreboard.Team.OptionStatus;
 
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.event.EventMassiveCoreBoardEnsure;
 import com.massivecraft.massivecore.nms.NmsBoard;
-import com.massivecraft.massivecore.nms.TeamOptionKey;
-import com.massivecraft.massivecore.nms.TeamOptionValue;
 
 // # RESEARCH > CLEANUP
 // The main server scoreboard is the only one that is saved to NBT.
@@ -74,27 +72,37 @@ public class BoardUtil extends Engine
 	// -------------------------------------------- //
 	
 	// All online players at the beginning of the tick.
-	private static Map<String, Player> players = Collections.emptyMap();
+	private static Map<String, Player> players;
 	public static Map<String, Player> getPlayers() { return players; }
 	
 	// The boards based off the players above.
-	private static Set<Scoreboard> boards = Collections.emptySet();
+	private static Set<Scoreboard> boards;
 	public static Set<Scoreboard> getBoards() { return boards; }
 	
-	// Temporary Fake Fields
-	private static Set<Objective> temporaryObjectives = null;
-	public static Set<Objective> getTemporaryObjectives()
-	{
-		if (temporaryObjectives == null) temporaryObjectives = NmsBoard.get().createObjectiveSet();
-		return temporaryObjectives;
-	}
+	// Ensure things, possibly strictly.
 	
-	private static Set<Team> temporaryTeams = null;
-	public static Set<Team> getTemporaryTeams()
-	{
-		if (temporaryTeams == null) temporaryTeams = NmsBoard.get().createTeamSet();
-		return temporaryTeams;
-	}
+	private static boolean ensureBoardEnabled = false;
+	public static boolean isEnsureBoardEnabled() { return ensureBoardEnabled; }
+	public static void setEnsureBoardEnabled() { ensureBoardEnabled = true; }
+	
+	private static boolean ensureBoardStrict = false;
+	public static boolean isEnsureBoardStrict() { return ensureBoardStrict; }
+	public static void setEnsureBoardStrict() { ensureBoardStrict = true; }
+	
+	private static boolean ensureTeamEnabled = false;
+	public static boolean isEnsureTeamEnabled() { return ensureTeamEnabled; }
+	public static void setEnsureTeamEnabled() { ensureTeamEnabled = true; }
+	
+	private static boolean ensureTeamStrict = false;
+	public static boolean isEnsureTeamStrict() { return ensureTeamStrict; }
+	public static void setEnsureTeamStrict() { ensureTeamStrict = true; }
+	
+	// Temporary Fake Fields
+	public static Set<Objective> temporaryObjectives = new MassiveSet<>();
+	public static Set<Objective> getTemporaryObjectives() { return temporaryObjectives; }
+	
+	public static Set<Team> temporaryTeams = new MassiveSet<>();
+	public static Set<Team> getTemporaryTeams() { return temporaryTeams; }
 	
 	// -------------------------------------------- //
 	// UPDATE
@@ -179,21 +187,18 @@ public class BoardUtil extends Engine
 	
 	public static void updateEnsure()
 	{
-		EventMassiveCoreBoardEnsure event = new EventMassiveCoreBoardEnsure();
-		event.run();
-		
 		for (Player player : getPlayers().values())
 		{
-			if (event.isEnsureBoardEnabled())
+			if (isEnsureBoardEnabled())
 			{
-				ensureBoard(player, event.isEnsureBoardStrict());
+				ensureBoard(player, isEnsureBoardStrict());
 			}
 			
-			if (event.isEnsureTeamEnabled())
+			if (isEnsureTeamEnabled())
 			{
 				for (Scoreboard board : getBoards())
 				{
-					ensureTeam(board, player, event.isEnsureTeamStrict());
+					ensureTeam(board, player, isEnsureTeamStrict());
 				}
 			}
 		}
@@ -269,29 +274,9 @@ public class BoardUtil extends Engine
 	public static String getKey(Object key)
 	{
 		if (key == null) return null;
-		
-		if (key instanceof String)
-		{
-			String string = (String)key;
-			return string;
-		}
-		
-		if (key instanceof Player)
-		{
-			Player player = (Player)key;
-			String name = player.getName();
-			return name;
-		}
-		
-		if (key instanceof Entity)
-		{
-			Entity entity = (Entity)key; 
-			UUID uuid = entity.getUniqueId();
-			String string = uuid.toString();
-			string = string.substring(0, 16);
-			return string;
-		}
-		
+		if (key instanceof String) return (String)key;
+		if (key instanceof Player) return ((Player)key).getName();
+		if (key instanceof Entity) return ((Entity)key).getUniqueId().toString();
 		throw new IllegalArgumentException(key.toString());
 	}
 	
@@ -583,13 +568,14 @@ public class BoardUtil extends Engine
 		deleteTeam(team);
 	}
 	
-	public static boolean setTeam(Team team, Boolean persistent, String name, String prefix, String suffix, Boolean friendlyFireEnabled, Boolean friendlyTruesightEnabled, Map<TeamOptionKey, TeamOptionValue> options, Set<String> members)
+	public static boolean setTeam(Team team, Boolean persistent, String name, String prefix, String suffix, ChatColor color, Boolean friendlyFireEnabled, Boolean friendlyTruesightEnabled, Map<Option, OptionStatus> options, Set<String> members)
 	{
 		boolean ret = false;
 		ret |= setTeamPersistent(team, persistent);
 		ret |= setTeamName(team, name);
 		ret |= setTeamPrefix(team, prefix);
 		ret |= setTeamSuffix(team, suffix);
+		ret |= setTeamColor(team, color);
 		ret |= setTeamFriendlyFireEnabled(team, friendlyFireEnabled);
 		ret |= setTeamFriendlyTruesightEnabled(team, friendlyTruesightEnabled);
 		ret |= setTeamOptions(team, options);
@@ -604,6 +590,7 @@ public class BoardUtil extends Engine
 			getTeamName(blueprint),
 			getTeamPrefix(blueprint),
 			getTeamSuffix(blueprint),
+			getTeamColor(blueprint),
 			isTeamFriendlyFireEnabled(blueprint),
 			isTeamFriendlyTruesightEnabled(blueprint),
 			getTeamOptions(blueprint),
@@ -618,6 +605,11 @@ public class BoardUtil extends Engine
 	public static void sendTeamUpdate(Team team)
 	{
 		team.setDisplayName(team.getDisplayName());
+	}
+	
+	public static void sendTeamUpdate(Team team, Player player)
+	{
+		NmsBoard.get().sendTeamUpdatePacket(team, player);
 	}
 	
 	// -------------------------------------------- //
@@ -707,6 +699,26 @@ public class BoardUtil extends Engine
 	}
 	
 	// -------------------------------------------- //
+	// TEAM > COLOR
+	// -------------------------------------------- //
+	// SINCE: Minecraft 1.9
+	// NOTE: We use reflected NMS implementation since Spigot does not have an implementation yet.
+	
+	public static ChatColor getTeamColor(Team team)
+	{
+		return NmsBoard.get().getColor(team);
+	}
+	
+	public static boolean setTeamColor(Team team, ChatColor color)
+	{
+		if (color == null) return false;
+		ChatColor before = getTeamColor(team);
+		if (MUtil.equals(before, color)) return false;
+		NmsBoard.get().setColor(team, color);
+		return true;
+	}
+	
+	// -------------------------------------------- //
 	// TEAM > FRIENDLY FIRE ENABLED
 	// -------------------------------------------- //
 	
@@ -746,17 +758,17 @@ public class BoardUtil extends Engine
 	// TEAM > OPTION
 	// -------------------------------------------- //
 	
-	public static TeamOptionValue getTeamOption(Team team, TeamOptionKey key)
+	public static OptionStatus getTeamOption(Team team, Option option)
 	{
-		return NmsBoard.get().getOption(team, key);
+		return team.getOption(option);
 	}
 	
-	public static boolean setTeamOption(Team team, TeamOptionKey key, TeamOptionValue value)
+	public static boolean setTeamOption(Team team, Option option, OptionStatus status)
 	{
-		if (value == null) return false;
-		TeamOptionValue before = getTeamOption(team, key);
-		if (before == value) return false;
-		NmsBoard.get().setOption(team, key, value);
+		if (status == null) return false;
+		OptionStatus before = getTeamOption(team, option);
+		if (before == status) return false;
+		team.setOption(option, status);
 		return true;
 	}
 	
@@ -764,32 +776,31 @@ public class BoardUtil extends Engine
 	// TEAM > OPTIONS
 	// -------------------------------------------- //
 	
-	public static Map<TeamOptionKey, TeamOptionValue> getTeamOptions(Team team)
+	public static Map<Option, OptionStatus> getTeamOptions(Team team)
 	{
 		// Create
-		Map<TeamOptionKey, TeamOptionValue> ret = new MassiveMap<>();
+		Map<Option, OptionStatus> ret = new MassiveMap<>();
 		
 		// Fill
-		for (TeamOptionKey key : TeamOptionKey.values())
+		for (Option option : Option.values())
 		{
-			TeamOptionValue value = getTeamOption(team, key);
-			if (value == null) continue;
-			ret.put(key, value);
+			OptionStatus status = getTeamOption(team, option);
+			ret.put(option, status);
 		}
 		
 		// Return
 		return ret;
 	}
 	
-	public static boolean setTeamOptions(Team team, Map<TeamOptionKey, TeamOptionValue> options)
+	public static boolean setTeamOptions(Team team, Map<Option, OptionStatus> options)
 	{
 		if (options == null) return false;
 		
 		boolean ret = false;
-		for (Entry<TeamOptionKey, TeamOptionValue> entry : options.entrySet())
+		for (Entry<Option, OptionStatus> entry : options.entrySet())
 		{
-			TeamOptionKey option = entry.getKey();
-			TeamOptionValue status = entry.getValue();
+			Option option = entry.getKey();
+			OptionStatus status = entry.getValue();
 			ret |= setTeamOption(team, option, status);
 		}
 		return ret;
@@ -802,25 +813,25 @@ public class BoardUtil extends Engine
 	public static boolean addTeamMember(Team team, Object key)
 	{
 		if (isTeamMember(team, key)) return false;
-		NmsBoard.get().addMember(team, getKey(key));
+		team.addEntry(getKey(key));
 		return true;
 	}
 	
 	public static boolean removeTeamMember(Team team, Object key)
 	{
 		if ( ! isTeamMember(team, key)) return false;
-		NmsBoard.get().removeMember(team, getKey(key));
+		team.removeEntry(getKey(key));
 		return true;
 	}
 	
 	public static boolean isTeamMember(Team team, Object key)
 	{
-		return NmsBoard.get().isMember(team, getKey(key));
+		return team.hasEntry(getKey(key));
 	}
 	
 	public static Set<String> getTeamMembers(Team team)
 	{
-		return NmsBoard.get().getMembers(team);
+		return team.getEntries();
 	}
 	
 	public static boolean setTeamMembers(Team team, Set<String> members)
@@ -833,7 +844,7 @@ public class BoardUtil extends Engine
 		for (String member : members)
 		{
 			if (befores.contains(member)) continue;
-			NmsBoard.get().addMember(team, member);
+			team.addEntry(member);
 			ret = true;
 		}
 		
@@ -841,7 +852,7 @@ public class BoardUtil extends Engine
 		for (String before : befores)
 		{
 			if (members.contains(before)) continue;
-			NmsBoard.get().removeMember(team, before);
+			team.removeEntry(before);
 			ret = true;
 		}
 		
@@ -856,7 +867,7 @@ public class BoardUtil extends Engine
 	
 	public static Team getKeyTeam(Scoreboard board, Object key)
 	{
-		return NmsBoard.get().getKeyTeam(board, getKey(key));
+		return board.getEntryTeam(getKey(key));
 	}
 	
 	public static void setKeyTeam(Scoreboard board, Object key, Team team)
@@ -878,12 +889,13 @@ public class BoardUtil extends Engine
 	private static final String PERSONAL_DEFAULT_NAME = null;
 	private static final String PERSONAL_DEFAULT_PREFIX = "";
 	private static final String PERSONAL_DEFAULT_SUFFIX = ChatColor.RESET.toString();
+	private static final ChatColor PERSONAL_DEFAULT_COLOR = ChatColor.RESET;
 	private static final Boolean PERSONAL_DEFAULT_FRIENDLY_FIRE_ENABLED = true;
 	private static final Boolean PERSONAL_DEFAULT_FRIENDLY_TRUESIGHT_ENABLED = false;
-	private static final Map<TeamOptionKey, TeamOptionValue> PERSONAL_DEFAULT_OPTIONS = new MassiveMap<>(
-		TeamOptionKey.COLLISION_RULE, TeamOptionValue.ALWAYS,
-		TeamOptionKey.DEATH_MESSAGE_VISIBILITY, TeamOptionValue.ALWAYS,
-		TeamOptionKey.NAME_TAG_VISIBILITY, TeamOptionValue.ALWAYS
+	private static final Map<Option, OptionStatus> PERSONAL_DEFAULT_OPTIONS = new MassiveMap<>(
+		Option.COLLISION_RULE, OptionStatus.ALWAYS,
+		Option.DEATH_MESSAGE_VISIBILITY, OptionStatus.ALWAYS,
+		Option.NAME_TAG_VISIBILITY, OptionStatus.ALWAYS
 	);
 	
 	public static boolean isPersonalTeam(Scoreboard board, Object key)
@@ -910,12 +922,13 @@ public class BoardUtil extends Engine
 		String name = PERSONAL_DEFAULT_NAME;
 		String prefix = PERSONAL_DEFAULT_PREFIX;
 		String suffix = PERSONAL_DEFAULT_SUFFIX;
+		ChatColor color = PERSONAL_DEFAULT_COLOR;
 		Boolean friendlyFireEnabled = PERSONAL_DEFAULT_FRIENDLY_FIRE_ENABLED;
 		Boolean friendlyTruesightEnabled = PERSONAL_DEFAULT_FRIENDLY_TRUESIGHT_ENABLED;
-		Map<TeamOptionKey, TeamOptionValue> options = PERSONAL_DEFAULT_OPTIONS;
+		Map<Option, OptionStatus> options = PERSONAL_DEFAULT_OPTIONS;
 		Set<String> members = Collections.singleton(id);
 		
-		setTeam(team, persistent, name, prefix, suffix, friendlyFireEnabled, friendlyTruesightEnabled, options, members);
+		setTeam(team, persistent, name, prefix, suffix, color, friendlyFireEnabled, friendlyTruesightEnabled, options, members);
 		
 		// Return
 		return team;

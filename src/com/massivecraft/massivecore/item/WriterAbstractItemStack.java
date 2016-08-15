@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.item;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.nms.NmsItemStackCreate;
+import com.massivecraft.massivecore.nms.NmsItemStack;
 
 public abstract class WriterAbstractItemStack<OB, CB, FA, FB> extends WriterAbstract<DataItemStack, OB, DataItemStack, CB, FA, FB, ItemStack>
 {
@@ -47,7 +47,7 @@ public abstract class WriterAbstractItemStack<OB, CB, FA, FB> extends WriterAbst
 	
 	public ItemStack createItemStack()
 	{
-		ItemStack ret = NmsItemStackCreate.get().create();
+		ItemStack ret = NmsItemStack.get().createItemStack();
 		ret.setType(this.getMaterial());
 		return ret;
 	}
