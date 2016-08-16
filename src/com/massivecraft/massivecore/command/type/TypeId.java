@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.command.type;
 
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
@@ -27,7 +28,7 @@ public class TypeId<T> extends TypeTransformer<T, String>
 	
 
 	@Override
-	public String innerToOuter(T inner)
+	public String innerToOuter(T inner, CommandSender sender)
 	{
 		if (inner == null) return null;
 		return INNER.getId(inner);

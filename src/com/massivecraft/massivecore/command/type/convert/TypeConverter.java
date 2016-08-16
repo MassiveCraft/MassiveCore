@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore.command.type.convert;
 
 
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeTransformer;
 import com.massivecraft.massivecore.item.Converter;
@@ -34,7 +36,7 @@ public class TypeConverter<A, B> extends TypeTransformer<A, B>
 	
 
 	@Override
-	public B innerToOuter(A inner)
+	public B innerToOuter(A inner, CommandSender sender)
 	{
 		return this.getA2b().convert(inner);
 	}

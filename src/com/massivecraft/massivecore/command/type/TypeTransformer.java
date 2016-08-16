@@ -77,7 +77,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	// -------------------------------------------- //
 	// NOTE: These should return null on null input. 
 	
-	public abstract O innerToOuter(I inner);
+	public abstract O innerToOuter(I inner, CommandSender sender) throws MassiveException;
 	public abstract I outerToInner(O outer);
 	
 	// -------------------------------------------- //
@@ -268,7 +268,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	public O read(String arg, CommandSender sender) throws MassiveException
 	{
 		I inner = INNER.read(arg, sender);
-		O outer = innerToOuter(inner);
+		O outer = innerToOuter(inner, sender);
 		return outer;
 	}
 	

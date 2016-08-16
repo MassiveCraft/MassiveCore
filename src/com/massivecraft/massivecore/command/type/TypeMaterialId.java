@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.command.type;
 
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.command.type.enumeration.TypeMaterial;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
@@ -26,7 +27,7 @@ public class TypeMaterialId extends TypeTransformer<Material, Integer>
 	
 
 	@Override
-	public Integer innerToOuter(Material inner)
+	public Integer innerToOuter(Material inner, CommandSender sender)
 	{
 		if (inner == null) return null;
 		return inner.getId();

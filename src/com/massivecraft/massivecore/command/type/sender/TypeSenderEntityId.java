@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.command.type.sender;
 
+import org.bukkit.command.CommandSender;
+
 import com.massivecraft.massivecore.command.type.TypeTransformer;
 import com.massivecraft.massivecore.command.type.primitive.TypeStringId;
 import com.massivecraft.massivecore.store.SenderEntity;
@@ -20,7 +22,7 @@ public class TypeSenderEntityId<I extends SenderEntity<I>> extends TypeTransform
 	// -------------------------------------------- //
 	
 	@Override
-	public String innerToOuter(I inner)
+	public String innerToOuter(I inner, CommandSender sender)
 	{
 		if (inner == null) return null;
 		return inner.getId();

@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.command.type;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.command.type.primitive.TypeObject;
@@ -33,7 +34,7 @@ public class TypeDataItemStack extends TypeTransformer<ItemStack, DataItemStack>
 	// -------------------------------------------- //
 	
 	@Override
-	public DataItemStack innerToOuter(ItemStack inner)
+	public DataItemStack innerToOuter(ItemStack inner, CommandSender sender)
 	{
 		return DataItemStack.fromBukkit(inner);
 	}
