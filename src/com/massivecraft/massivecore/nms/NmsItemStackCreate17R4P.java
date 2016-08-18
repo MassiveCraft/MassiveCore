@@ -56,6 +56,11 @@ public class NmsItemStackCreate17R4P extends NmsItemStackCreate
 	
 	public static Class<?> getClassCraftItemStack() throws ClassNotFoundException
 	{
+		if (ServerType.get() == ServerType.FORGE)
+		{
+			return PackageType.MINECRAFT_ITEM.getClass("ItemStack");
+		}
+		
 		return PackageType.MINECRAFT_SERVER.getClass("ItemStack");
 	}
 	
