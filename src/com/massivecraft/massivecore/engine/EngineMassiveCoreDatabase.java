@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import com.massivecraft.massivecore.Engine;
@@ -41,43 +40,43 @@ public class EngineMassiveCoreDatabase extends Engine
 	
 	public static Map<String, PlayerLoginEvent> idToPlayerLoginEvent = new MassiveMap<String, PlayerLoginEvent>();
 	
-	// This method sets the sender reference to what you decide.
+	// Immediately set the sender reference and cached PlayerLoginEvent.
 	public static void setSenderReferences(CommandSender sender, CommandSender reference, PlayerLoginEvent event)
 	{
+		// Check Sender 
 		if (MUtil.isntSender(sender)) return;
 		
+		// Get and Check Id
 		String id = IdUtil.getId(sender);
-		if (id != null)
+		if (id == null) return;
+		
+		// Avoid Race Condition
+		// Explanation: Deferred removal could potentially happen after a new join.
+		if (reference == null && sender instanceof Player && ((Player)sender).isOnline()) return;
+		
+		// Set References
+		SenderColl.setSenderReferences(id, reference);
+		
+		// Set Event
+		if (event == null)
 		{
-			SenderColl.setSenderReferences(id, reference);
-			if (event == null)
-			{
-				idToPlayerLoginEvent.remove(id);
-			}
-			else
-			{
-				idToPlayerLoginEvent.put(id, event);
-			}
+			idToPlayerLoginEvent.remove(id);
+		}
+		else
+		{
+			idToPlayerLoginEvent.put(id, event);
 		}
 	}
 	
-	// This method sets the sender reference based on it's online state.
-	public static void setSenderReferences(Player player, PlayerLoginEvent event)
-	{
-		Player reference = player;
-		if ( ! player.isOnline()) reference = null;
-		setSenderReferences(player, reference, event);
-	}
-	
 	// Same as above but next tick.
-	public static void setSenderReferencesSoon(final Player player, final PlayerLoginEvent event)
+	public static void setSenderReferencesSoon(final CommandSender sender, final CommandSender reference, final PlayerLoginEvent event)
 	{
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MassiveCore.get(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				setSenderReferences(player, event);
+				setSenderReferences(sender, reference, event);
 			}
 		});
 	}
@@ -85,14 +84,20 @@ public class EngineMassiveCoreDatabase extends Engine
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void setSenderReferencesLoginLowest(PlayerLoginEvent event)
 	{
-		final Player player = event.getPlayer();
-		
 		// We set the reference at LOWEST so that it's present during this PlayerLoginEvent event.
-		setSenderReferences(player, player, event);
-		
-		// And the next tick we update the reference based on it's online state.
-		// Not all players succeed in logging in. They may for example be banned.
-		setSenderReferencesSoon(player, null);
+		setSenderReferences(event.getPlayer(), event.getPlayer(), event);
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void setSenderReferencesLoginMonitor(PlayerLoginEvent event)
+	{
+		// Not all logins are successful.
+		// If the login fails we remove the reference next tick.
+		// This way we have the reference available through all of the MONITOR phase.
+		// NOTE: We previously looked at player.isOnline() to determine login success.
+		// NOTE: This was however not feasible due to Forge reporting successfully logged in players as offline for a random amount of ticks. 
+		if (event.getResult() == PlayerLoginEvent.Result.ALLOWED) return;
+		setSenderReferencesSoon(event.getPlayer(), null, null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -100,7 +105,7 @@ public class EngineMassiveCoreDatabase extends Engine
 	{
 		// PlayerQuitEvents are /probably/ trustworthy.
 		// We check ourselves the next tick just to be on the safe side.
-		setSenderReferencesSoon(event.getPlayer(), null);
+		setSenderReferencesSoon(event.getPlayer(), null, null);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -185,7 +190,7 @@ public class EngineMassiveCoreDatabase extends Engine
 		// long before = System.nanoTime();
 		
 		// If the login was allowed ...
-		if (event.getLoginResult() != Result.ALLOWED) return;
+		if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
 		
 		// ... get player id ...
 		final String playerId = event.getUniqueId().toString();
