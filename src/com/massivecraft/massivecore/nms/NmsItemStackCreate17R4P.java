@@ -60,8 +60,10 @@ public class NmsItemStackCreate17R4P extends NmsItemStackCreate
 		{
 			return PackageType.MINECRAFT_ITEM.getClass("ItemStack");
 		}
-		
-		return PackageType.MINECRAFT_SERVER.getClass("ItemStack");
+		else
+		{
+			return PackageType.MINECRAFT_SERVER.getClass("ItemStack");
+		}
 	}
 	
 	public static Class<?> getClassCraftItemStackCatch()

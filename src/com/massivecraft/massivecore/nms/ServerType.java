@@ -9,6 +9,7 @@ public enum ServerType
 	BUKKIT,
 	FORGE,
 	
+	// END OF LIST
 	;
 	
 	// -------------------------------------------- //
@@ -16,14 +17,13 @@ public enum ServerType
 	// -------------------------------------------- //
 		
 	private static final ServerType type = determineType();
-	
 	public static ServerType get() { return type; }
 	
 	private static ServerType determineType()
 	{
 		try
 		{
-			// this is a class used by ALL forge based servers
+			// This is a class used by ALL forge based servers.
 			Class.forName("cpw.mods.fml.common.FMLCommonHandler");
 			return FORGE;
 		}
