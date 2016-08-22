@@ -33,21 +33,30 @@ public abstract class MassiveCommandToggle extends MassiveCommand
 	}
 	
 	// -------------------------------------------- //
-	// ABSTRACT
+	// VALUE
 	// -------------------------------------------- //
 	
-	public abstract boolean getValue();
+	public abstract boolean getValue() throws MassiveException;
 	
-	public abstract void setValue(boolean value);
+	public abstract void setValue(boolean value) throws MassiveException;
 	
 	// -------------------------------------------- //
-	// GET NAME
+	// NAME
 	// -------------------------------------------- //
 	
-	public String getName()
+	public String getName() throws MassiveException
 	{
 		List<String> aliases = this.getAliases();
 		return Txt.upperCaseFirst(aliases.get(aliases.size() - 1));
+	}
+	
+	// -------------------------------------------- //
+	// TARGET
+	// -------------------------------------------- //
+	
+	public boolean readTarget(boolean before) throws MassiveException
+	{
+		return this.readArg(!before);
 	}
 	
 	// -------------------------------------------- //
@@ -59,7 +68,7 @@ public abstract class MassiveCommandToggle extends MassiveCommand
 	{
 		// Args
 		boolean before = this.getValue();
-		boolean after = this.readArg( ! before);
+		boolean after = this.readTarget(before);
 		String afterDesc = TypeBooleanOn.get().getVisual(after, sender);
 		
 		// NoChange
