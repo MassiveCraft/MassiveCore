@@ -187,6 +187,8 @@ public class Mixin extends Engine
 	// CREATE NAME
 	// -------------------------------------------- //
 	
+	private static final String FORGE = "Forge";
+	
 	private static final Map<String, String> NAME_MAP = new MassiveMap<>(
 		"", "Default",
 		"Fallback", "Fallback (Generic and Weaker)",
@@ -222,8 +224,16 @@ public class Mixin extends Engine
 		String baseName = this.getBaseName();
 		if (ret.startsWith(baseName)) ret = ret.substring(baseName.length());
 		
+		// Forge Pre
+		boolean forge = ret.endsWith(FORGE);
+		if (forge) ret = ret.substring(0, ret.length() - FORGE.length());
+		
+		// Name Map
 		String name = NAME_MAP.get(ret);
 		if (name != null) ret = name;
+		
+		// Forge Post
+		if (forge) ret = FORGE + " " + ret;
 		
 		// Return
 		return ret;
