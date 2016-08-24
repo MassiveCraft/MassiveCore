@@ -63,12 +63,15 @@ public class Triple<A, B, C> implements Cloneable, Serializable
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean equals(Object derpObject)
+	public boolean equals(Object object)
 	{
-		if (derpObject == null) return false;
-		if (!(derpObject instanceof Triple<?, ?, ?>)) return false;
-		Triple<?, ?, ?> derp = (Triple<?, ?, ?>)derpObject;
-		return MUtil.equals(this.getFirst(), derp.getFirst()) && MUtil.equals(this.getSecond(), derp.getSecond()) && MUtil.equals(this.getThird(), derp.getThird());
+		if (!(object instanceof Triple<?, ?, ?>)) return false;
+		Triple<?, ?, ?> that = (Triple<?, ?, ?>)object;
+		return MUtil.equals(
+			this.getFirst(), that.getFirst(),
+			this.getSecond(), that.getSecond(),
+			this.getThird(), that.getThird()
+		);
 	}
 	
 	// -------------------------------------------- //

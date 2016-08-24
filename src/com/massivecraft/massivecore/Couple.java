@@ -18,10 +18,10 @@ public class Couple<A, B> implements Entry<A, B>, Cloneable, Serializable
 	// -------------------------------------------- //
 	
 	private final A first;
-	public A getFirst() { return this.first; };
+	public A getFirst() { return this.first; }
 	
 	private final B second;
-	public B getSecond() { return this.second; };
+	public B getSecond() { return this.second; }
 	
 	// -------------------------------------------- //
 	// FIELDS: WITH
@@ -63,7 +63,7 @@ public class Couple<A, B> implements Entry<A, B>, Cloneable, Serializable
 	}
 
 	@Override
-	public B setValue(B arg0)
+	public B setValue(B value)
 	{
 		throw new IllegalStateException("This entry is a couple which is immutable.");
 	}
@@ -82,12 +82,14 @@ public class Couple<A, B> implements Entry<A, B>, Cloneable, Serializable
 	// -------------------------------------------- //
 	
 	@Override
-	public boolean equals(Object derpObject)
+	public boolean equals(Object object)
 	{
-		if (derpObject == null) return false;
-		if (!(derpObject instanceof Couple<?, ?>)) return false;
-		Couple<?, ?> derp = (Couple<?, ?>)derpObject;
-		return MUtil.equals(this.getFirst(), derp.getFirst()) && MUtil.equals(this.getSecond(), derp.getSecond());
+		if (!(object instanceof Couple<?, ?>)) return false;
+		Couple<?, ?> that = (Couple<?, ?>)object;
+		return MUtil.equals(
+			this.getFirst(), that.getFirst(),
+			this.getSecond(), that.getSecond()
+		);
 	}
 	
 	// -------------------------------------------- //
