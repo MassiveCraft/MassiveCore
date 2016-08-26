@@ -139,16 +139,19 @@ public class EngineMassiveCoreChestGui extends Engine
 			}
 		});
 		
-		// We save the inventory in the map for a little while.
-		// A plugin may want to do something upon the chest gui closing.
-		Bukkit.getScheduler().runTaskLater(this.getPlugin(), new Runnable()
+		if (gui.isAutoremoving())
 		{
-			@Override
-			public void run()
+			// We save the inventory in the map for a little while.
+			// A plugin may want to do something upon the chest gui closing.
+			Bukkit.getScheduler().runTaskLater(this.getPlugin(), new Runnable()
 			{
-				ChestGui.remove(inventory);
-			}
-		}, 20);
+				@Override
+				public void run()
+				{
+					gui.remove();
+				}
+			}, 20);
+		}
 	}
 
 }

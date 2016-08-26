@@ -17,19 +17,51 @@ public class ChestGui
 	// REGISTRY
 	// -------------------------------------------- //
 	
-	private static final Map<Inventory, ChestGui> inventoryToGui = new MassiveMap<>();
+	protected static final Map<Inventory, ChestGui> inventoryToGui = new MassiveMap<>();
 	public static Map<Inventory, ChestGui> getInventoryToGui() { return inventoryToGui; }
-	public static ChestGui remove(Inventory inventory) { return inventoryToGui.remove(inventory); }
-	public static ChestGui set(Inventory inventory, ChestGui gui) { return inventoryToGui.put(inventory, gui); }
+	
 	public static ChestGui get(Inventory inventory) { return inventoryToGui.get(inventory); }
 	public static ChestGui getCreative(Inventory inventory)
 	{
+		if (inventory == null) throw new NullPointerException("inventory");
+		
 		ChestGui gui = get(inventory);
 		if (gui != null) return gui;
+		
 		gui = new ChestGui();
-		set(inventory, gui);
+		gui.setInventory(inventory);
+		gui.add();
+		
 		return gui;
 	}
+	
+	private static void add(Inventory inventory, ChestGui gui) { inventoryToGui.put(inventory, gui); }
+	private static void remove(Inventory inventory) { inventoryToGui.remove(inventory); }
+	
+	// -------------------------------------------- //
+	// ADD & REMOVE
+	// -------------------------------------------- //
+	// Done through instance for override possibilities.
+	
+	public void add()
+	{
+		add(this.getInventory(), this);
+	}
+	
+	public void remove()
+	{
+		remove(this.getInventory());
+	}
+	
+	// -------------------------------------------- //
+	// INVENTORY
+	// -------------------------------------------- //
+	// It is useful to provide a link back from the GUI to the inventory.
+	// This way we have can look up between Inventory and ChestGui both ways.
+	
+	private Inventory inventory = null;
+	public Inventory getInventory() { return this.inventory; }
+	public void setInventory(Inventory inventory) { this.inventory = inventory; }
 	
 	// -------------------------------------------- //
 	// ACTIONS
@@ -88,18 +120,18 @@ public class ChestGui
 	// The sound you should hear when clicking an action slot.
 	private SoundEffect soundClick = MassiveCoreMConf.get().clickSound;
 	public SoundEffect getSoundClick() { return this.soundClick; }
-	public ChestGui setSoundClick(SoundEffect soundClick) { this.soundClick = soundClick; return this; }
+	public void setSoundClick(SoundEffect soundClick) { this.soundClick = soundClick; }
 	
 	// The sound you should hear when opening the GUI.
 	private SoundEffect soundOpen = SoundEffect.valueOf("CHEST_OPEN", 0.75f, 1.0f);
 	public SoundEffect getSoundOpen() { return this.soundOpen; }
-	public ChestGui setSoundOpen(SoundEffect soundOpen) { this.soundOpen = soundOpen; return this; }
+	public void setSoundOpen(SoundEffect soundOpen) { this.soundOpen = soundOpen; }
 	
 	// The sound you should hear when closing the GUI.
 	// This sound will be skipped if another inventory was opened by the GUI action.
 	private SoundEffect soundClose = SoundEffect.valueOf("CHEST_CLOSE", 0.75f, 1.0f);
 	public SoundEffect getSoundClose() { return this.soundClose; }
-	public ChestGui setSoundClose(SoundEffect soundClose) { this.soundClose= soundClose; return this; }
+	public void setSoundClose(SoundEffect soundClose) { this.soundClose= soundClose; }
 	
 	// -------------------------------------------- //
 	// AUTOCLOSING
@@ -108,7 +140,16 @@ public class ChestGui
 	
 	private boolean autoclosing = true;
 	public boolean isAutoclosing() { return this.autoclosing; }
-	public ChestGui setAutoclosing(boolean autoclosing) { this.autoclosing = autoclosing; return this; }
+	public void setAutoclosing(boolean autoclosing) { this.autoclosing = autoclosing; }
+	
+	// -------------------------------------------- //
+	// AUTOREMOVING
+	// -------------------------------------------- //
+	// Should the GUI be automatically removed upon the inventory closing?
+	
+	private boolean autoremoving = true;
+	public boolean isAutoremoving() { return this.autoremoving; }
+	public void setAutoremoving(boolean autoremoving) { this.autoremoving = autoremoving; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

@@ -434,8 +434,6 @@ public class DataItemStack implements Comparable<DataItemStack>
 	{
 		if ( ! (object instanceof DataItemStack)) return false;
 		DataItemStack that = (DataItemStack)object;
-		
-		// TODO: Use compare instead to avoid bugs?
 		return MUtil.equals(
 			this.getId(), that.getId(),
 			this.getCount(), that.getCount(),
@@ -461,6 +459,50 @@ public class DataItemStack implements Comparable<DataItemStack>
 			this.getBannerPatterns(), that.getBannerPatterns(),
 			this.getPotion(), that.getPotion()
 		);
+	}
+	
+	public boolean equalsItem(ItemStack item)
+	{
+		if (item == null) return false;
+		DataItemStack that = DataItemStack.fromBukkit(item);
+		return this.equals(that);
+	}
+	
+	public boolean isSimilar(DataItemStack that)
+	{
+		// Just copy equals and comment out count check.
+		return MUtil.equals(
+			this.getId(), that.getId(),
+			// this.getCount(), that.getCount(),
+			this.getDamage(), that.getDamage(),
+			this.getName(), that.getName(),
+			this.getLore(), that.getLore(),
+			this.getEnchants(), that.getEnchants(),
+			this.getRepaircost(), that.getRepaircost(),
+			this.getTitle(), that.getTitle(),
+			this.getAuthor(), that.getAuthor(),
+			this.getPages(), that.getPages(),
+			this.getColor(), that.getColor(),
+			this.isScaling(), that.isScaling(),
+			this.getPotionEffects(), that.getPotionEffects(),
+			this.getSkull(), that.getSkull(),
+			this.getFireworkEffect(), that.getFireworkEffect(),
+			this.getFireworkEffects(), that.getFireworkEffects(),
+			this.getFireworkFlight(), that.getFireworkFlight(),
+			this.getStoredEnchants(), that.getStoredEnchants(),
+			this.isUnbreakable(), that.isUnbreakable(),
+			this.getFlags(), that.getFlags(),
+			this.getBannerBase(), that.getBannerBase(),
+			this.getBannerPatterns(), that.getBannerPatterns(),
+			this.getPotion(), that.getPotion()
+		);
+	}
+	
+	public boolean isSimilarItem(ItemStack item)
+	{
+		if (item == null) return false;
+		DataItemStack that = DataItemStack.fromBukkit(item);
+		return this.isSimilar(that);
 	}
 	
 	@Override

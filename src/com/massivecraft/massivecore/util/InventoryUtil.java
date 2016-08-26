@@ -583,21 +583,28 @@ public class InventoryUtil
 		TAKE,
 		NONE,
 		BOTH,
-		
 		;
 		
 		public boolean isAltering()
 		{
 			return this != NONE;
 		}
+		
 		public boolean isGiving()
 		{
 			return this == GIVE || this == BOTH;
 		}
+		
 		public boolean isTaking()
 		{
 			return this == TAKE || this == BOTH;
 		}
+		
+		public boolean isNone()
+		{
+			return this == NONE;
+		}
+		
 	}
 	
 	/**
