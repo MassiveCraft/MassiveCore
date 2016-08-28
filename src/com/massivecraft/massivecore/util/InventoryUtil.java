@@ -470,18 +470,20 @@ public class InventoryUtil
 	}
 	
 	// -------------------------------------------- //
-	// EVENT INTERPRETATION
+	// EVENT INTERPRETATION > WHERE
 	// -------------------------------------------- //
 	
 	public static boolean isOutside(int rawSlot)
 	{
 		return rawSlot < 0; 
 	}
+	
 	public static boolean isTopInventory(int rawSlot, Inventory inventory)
 	{
 		if (isOutside(rawSlot)) return false;
 		return rawSlot < inventory.getSize();
 	}
+	
 	public static boolean isBottomInventory(int rawSlot, Inventory inventory)
 	{
 		if (isOutside(rawSlot)) return false;
@@ -492,21 +494,44 @@ public class InventoryUtil
 	{
 		return isOutside(event.getRawSlot());
 	}
+	
 	public static boolean isTopInventory(InventoryClickEvent event)
 	{
 		return isTopInventory(event.getRawSlot(), event.getInventory());
 	}
+	
 	public static boolean isBottomInventory(InventoryClickEvent event)
 	{
 		return isBottomInventory(event.getRawSlot(), event.getInventory());
 	}
 	
-	public static boolean isAltering(InventoryClickEvent event)
+	// -------------------------------------------- //
+	// EVENT INTERPRETATION > ALTER
+	// -------------------------------------------- //
+	
+	public static boolean isAltering(InventoryInteractEvent event)
 	{
 		return getAlter(event).isAltering();
 	}
 	
-	public static InventoryAlter getAlter(InventoryClickEvent event)
+	public static InventoryAlter getAlter(InventoryInteractEvent event)
+	{
+		if (event instanceof InventoryClickEvent)
+		{
+			InventoryClickEvent clickEvent = (InventoryClickEvent)event;
+			return getAlter(clickEvent);
+		}
+		
+		if (event instanceof InventoryDragEvent)
+		{
+			InventoryDragEvent dragEvent = (InventoryDragEvent)event;
+			return getAlter(dragEvent);
+		}
+		
+		throw new IllegalArgumentException("Neither InventoryClickEvent nor InventoryDragEvent: " + event);
+	}
+	
+	private static InventoryAlter getAlter(InventoryClickEvent event)
 	{
 		if (isOutside(event)) return InventoryAlter.NONE;
 		boolean topClicked = isTopInventory(event);
@@ -526,7 +551,7 @@ public class InventoryUtil
 					boolean give = isSomething(hotbar);
 					boolean take = isSomething(current);
 					
-					return getAlter(give, take);
+					return InventoryAlter.get(give, take);
 					
 				// Neither give nor take
 				case NOTHING: return InventoryAlter.NONE;
@@ -569,12 +594,33 @@ public class InventoryUtil
 		}
 	}
 	
-	private static InventoryAlter getAlter(boolean give, boolean take)
+	// Drag events by nature only matters when they affect the top inventory.
+	// What you are holding in the cursor is already yours.
+	// If you drag it into your own inventory you are not really taking anything.
+	// If you drag into the top inventory however, you may both give and take.
+	// You "take" by dragging over an existing item.
+	private static InventoryAlter getAlter(InventoryDragEvent event)
 	{
-		if (give && take) return InventoryAlter.BOTH;
-		if (give) return InventoryAlter.GIVE;
-		if (take) return InventoryAlter.TAKE;
-		return InventoryAlter.NONE;
+		// Create
+		boolean giving = false;
+		boolean taking = false;
+		
+		// Fill
+		final Inventory inventory = event.getInventory();
+		for (Entry<Integer, ItemStack> entry : event.getNewItems().entrySet())
+		{
+			int rawSlot = entry.getKey();
+			if (InventoryUtil.isBottomInventory(rawSlot, inventory)) continue;
+			
+			ItemStack take = inventory.getItem(rawSlot);
+			if (isSomething(take)) taking = true;
+			
+			ItemStack give = entry.getValue();
+			if (isSomething(give)) giving = true;
+		}
+		
+		// Return
+		return InventoryAlter.get(giving, taking);
 	}
 	
 	public enum InventoryAlter
@@ -600,12 +646,24 @@ public class InventoryUtil
 			return this == TAKE || this == BOTH;
 		}
 		
-		public boolean isNone()
+		public boolean isNothing()
 		{
 			return this == NONE;
 		}
 		
+		public static InventoryAlter get(boolean giving, boolean taking)
+		{
+			if (giving && taking) return BOTH;
+			if (giving) return GIVE;
+			if (taking) return TAKE;
+			return NONE;
+		}
+		
 	}
+	
+	// -------------------------------------------- //
+	// EVENT INTERPRETATION > EQUIPPING
+	// -------------------------------------------- //
 	
 	/**
 	 * This method will return the ItemStack the player is trying to equip.

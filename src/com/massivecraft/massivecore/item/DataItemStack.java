@@ -470,7 +470,9 @@ public class DataItemStack implements Comparable<DataItemStack>
 	
 	public boolean isSimilar(DataItemStack that)
 	{
-		// Just copy equals and comment out count check.
+		// A copy of the equals logic above. However we comment out:
+		// * Count
+		// * Repaircost
 		return MUtil.equals(
 			this.getId(), that.getId(),
 			// this.getCount(), that.getCount(),
@@ -478,7 +480,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 			this.getName(), that.getName(),
 			this.getLore(), that.getLore(),
 			this.getEnchants(), that.getEnchants(),
-			this.getRepaircost(), that.getRepaircost(),
+			// this.getRepaircost(), that.getRepaircost(),
 			this.getTitle(), that.getTitle(),
 			this.getAuthor(), that.getAuthor(),
 			this.getPages(), that.getPages(),
