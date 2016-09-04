@@ -21,7 +21,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 
@@ -680,10 +682,10 @@ public class Txt
 	
 	private static Mson setFlipPageCommand(Mson mson, int pageHumanBased, int destinationPage, List<String> args, MassiveCommand command)
 	{
+		// Create the command line
 		String number = String.valueOf(destinationPage);
 		String oldNumber = String.valueOf(pageHumanBased);
 		String commandLine;
-
 		if (args != null && args.contains(oldNumber))
 		{
 			List<String> arguments = new ArrayList<String>(args);
@@ -695,8 +697,21 @@ public class Txt
 		{
 			commandLine = command.getCommandLine(number);
 		}
+		
+		// Render the corresponding tooltip
+		String tooltip = MsonEvent.command(commandLine).createTooltip();
+		
+		// Make command line clicking
+		commandLine = CmdMassiveCore.get().cmdMassiveCoreClick.getCommandLine(commandLine);
 
-		return mson.command(commandLine);
+		// Apply command
+		mson = mson.command(commandLine);
+		
+		// Set tooltip to hide the clicking clutter
+		mson = mson.tooltip(tooltip);
+		
+		// Return
+		return mson;
 	}
 	
 	// -------------------------------------------- //
