@@ -17,14 +17,15 @@
 .*.sw[a-p]
 
 # Maven
-/build.xml
 /target
+/pom.xml
 /dependency-reduced-pom.xml
 
 # various other potential build files
 /build
 /bin
 /dist
+/build.xml
 /manifest.mf
 
 # Mac filesystem dust
