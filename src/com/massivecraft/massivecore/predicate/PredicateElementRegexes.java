@@ -11,8 +11,8 @@ import com.massivecraft.massivecore.collections.MassiveList;
 public class PredicateElementRegexes implements Predicate<StackTraceElement>
 {
 	// -------------------------------------------- //
-    // FIELDS
-    // -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 	
 	private List<Pattern> patterns = Collections.emptyList();
 	public List<Pattern> getPatterns() { return this.patterns; }
@@ -20,8 +20,8 @@ public class PredicateElementRegexes implements Predicate<StackTraceElement>
 	public void setPatterns(Iterable<String> regexes) { this.setPatterns(asPatterns(regexes));}
 	
 	// -------------------------------------------- //
-    // CONSTRUCT
-    // -------------------------------------------- //
+	// CONSTRUCT
+	// -------------------------------------------- //
 	
 	public PredicateElementRegexes(String... regexes)
 	{
@@ -29,8 +29,8 @@ public class PredicateElementRegexes implements Predicate<StackTraceElement>
 	}
 	
 	// -------------------------------------------- //
-    // OVERRIDE
-    // -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
 	
 	@Override
 	public boolean apply(StackTraceElement element)
@@ -45,8 +45,8 @@ public class PredicateElementRegexes implements Predicate<StackTraceElement>
 	}
 	
 	// -------------------------------------------- //
-    // UTIL
-    // -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
 	
 	protected List<Pattern> asPatterns(Iterable<String> regexes)
 	{

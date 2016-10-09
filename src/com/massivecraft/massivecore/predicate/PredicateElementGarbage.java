@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 public class PredicateElementGarbage extends PredicateElementRegexes
 {
 	// -------------------------------------------- //
-    // INSTANCE & CONSTRUCT
-    // -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
 	private static PredicateElementGarbage i = new PredicateElementGarbage();
 	public static PredicateElementGarbage get() { return i; }

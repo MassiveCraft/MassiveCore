@@ -159,10 +159,10 @@ public class EngineMassiveCoreSponsor extends Engine
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
+	public void onPlayerJoin(PlayerJoinEvent event)
+	{
 		Player player = event.getPlayer();
 		this.inform(player);
-    }
+	}
 	
 }

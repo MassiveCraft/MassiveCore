@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import com.massivecraft.massivecore.mixin.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
@@ -66,22 +67,6 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.item.DataBannerPattern;
 import com.massivecraft.massivecore.item.WriterItemStack;
-import com.massivecraft.massivecore.mixin.MixinActionbar;
-import com.massivecraft.massivecore.mixin.MixinActual;
-import com.massivecraft.massivecore.mixin.MixinCommand;
-import com.massivecraft.massivecore.mixin.MixinDisplayName;
-import com.massivecraft.massivecore.mixin.MixinEvent;
-import com.massivecraft.massivecore.mixin.MixinGamemode;
-import com.massivecraft.massivecore.mixin.MixinInventory;
-import com.massivecraft.massivecore.mixin.MixinKick;
-import com.massivecraft.massivecore.mixin.MixinMessage;
-import com.massivecraft.massivecore.mixin.MixinModification;
-import com.massivecraft.massivecore.mixin.MixinPlayed;
-import com.massivecraft.massivecore.mixin.MixinSenderPs;
-import com.massivecraft.massivecore.mixin.MixinTeleport;
-import com.massivecraft.massivecore.mixin.MixinTitle;
-import com.massivecraft.massivecore.mixin.MixinVisibility;
-import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.nms.NmsBasics;
@@ -315,6 +300,7 @@ public class MassiveCore extends MassivePlugin
 			MixinGamemode.class,
 			MixinInventory.class,
 			MixinKick.class,
+			MixinMassiveCraftPremium.class,
 			MixinMessage.class,
 			MixinModification.class,
 			MixinPlayed.class,

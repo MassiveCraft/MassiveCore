@@ -20,17 +20,17 @@ public class MassiveMapDef<K, V> extends MassiveMap<K, V> implements Def
 	
 	public MassiveMapDef(int initialCapacity, float loadFactor)
 	{
-	    super(initialCapacity, loadFactor);
+		super(initialCapacity, loadFactor);
 	}
 
 	public MassiveMapDef(int initialCapacity)
 	{
-	    super(initialCapacity);
+		super(initialCapacity);
 	}
 
 	public MassiveMapDef()
 	{
-	    super();
+		super();
 	}
 
 	public MassiveMapDef(Map<? extends K, ? extends V> m)
@@ -40,7 +40,7 @@ public class MassiveMapDef<K, V> extends MassiveMap<K, V> implements Def
 
 	public MassiveMapDef(int initialCapacity, float loadFactor, boolean accessOrder)
 	{
-	    super(initialCapacity, loadFactor, accessOrder);
+		super(initialCapacity, loadFactor, accessOrder);
 	}
 	
 	public MassiveMapDef(K key1, V value1, Object... objects)

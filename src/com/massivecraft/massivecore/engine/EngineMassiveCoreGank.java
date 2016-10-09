@@ -92,8 +92,8 @@ public class EngineMassiveCoreGank extends Engine
 	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityDamage(EntityDamageByEntityEvent event)
-    {
+	public void onEntityDamage(EntityDamageByEntityEvent event)
+	{
 		// If an entity ...
 		Entity entity = event.getEntity();
 		
@@ -123,6 +123,6 @@ public class EngineMassiveCoreGank extends Engine
 		
 		// ... and set.
 		playerDamages.put(player, playerDamage);
-    }
+	}
 	
 }

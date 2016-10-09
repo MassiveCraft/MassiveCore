@@ -110,7 +110,7 @@ public class SignUtil
 	// Returns true if the result is a special sign of with the specified title.
 	
 	public static boolean handleSpecialPermissionFix(SignChangeEvent event, String title, String permissionId)
-    {
+	{
 		if (event == null) throw new NullPointerException("event");
 		if (title == null) throw new NullPointerException("title");
 		if (permissionId == null) throw new NullPointerException("permissionId");
@@ -135,7 +135,7 @@ public class SignUtil
 		// ... and fix the first line.
 		event.setLine(0, getSpecialLine(title));
 		return true;
-    }
+	}
 	
 	// -------------------------------------------- //
 	// SPECIAL PILLAR

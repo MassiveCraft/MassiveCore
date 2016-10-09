@@ -169,7 +169,7 @@ public class TimeUnit implements Comparable<TimeUnit>
 	@Override
 	public final int hashCode()
 	{
-	    return (int)(this.millis^(this.millis>>>32));
+		return (int)(this.millis^(this.millis>>>32));
 	}
 	
 }

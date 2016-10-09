@@ -186,8 +186,8 @@ public class WebUtil
 	{
 		if ( ! (connection instanceof HttpsURLConnection)) return;
 		HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
-        httpsConnection.setSSLSocketFactory(TRUSTING_SOCKET_FACTORY);
-        httpsConnection.setHostnameVerifier(TRUSTING_HOSTNAME_VERIFIER);
+		httpsConnection.setSSLSocketFactory(TRUSTING_SOCKET_FACTORY);
+		httpsConnection.setHostnameVerifier(TRUSTING_HOSTNAME_VERIFIER);
 	}
 	
 }

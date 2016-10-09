@@ -23,17 +23,17 @@ public class MassiveMap<K, V> extends LinkedHashMap<K, V>
 	
 	public MassiveMap(int initialCapacity, float loadFactor)
 	{
-	    super(initialCapacity, loadFactor);
+		super(initialCapacity, loadFactor);
 	}
 
 	public MassiveMap(int initialCapacity)
 	{
-	    super(initialCapacity);
+		super(initialCapacity);
 	}
 
 	public MassiveMap()
 	{
-	    super();
+		super();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class MassiveMap<K, V> extends LinkedHashMap<K, V>
 
 	public MassiveMap(int initialCapacity, float loadFactor, boolean accessOrder)
 	{
-	    super(initialCapacity, loadFactor, accessOrder);
+		super(initialCapacity, loadFactor, accessOrder);
 	}
 	
 	// -------------------------------------------- //

@@ -347,11 +347,11 @@ public class MUtil
 		
 		String ret = address.toString();
 		String[] parts = ret.split("/");
-        
-        ret = parts[1];
-        parts = ret.split(":");
-        
-        ret = parts[0];
+		
+		ret = parts[1];
+		parts = ret.split(":");
+		
+		ret = parts[0];
 		return ret;
 	}
 	
@@ -367,8 +367,8 @@ public class MUtil
 		
 		String ret = address.toString();
 		String[] parts = ret.split("/");
-        
-        ret = parts[1];
+		
+		ret = parts[1];
 		return ret;
 	}
 	
@@ -1882,11 +1882,11 @@ public class MUtil
 	
 	public static double round(double value, int places)
 	{
-	    if (places < 0) throw new IllegalArgumentException();
+		if (places < 0) throw new IllegalArgumentException();
 
-	    BigDecimal bd = new BigDecimal(value);
-	    bd = bd.setScale(places, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
+		BigDecimal bd = new BigDecimal(value);
+		bd = bd.setScale(places, RoundingMode.HALF_UP);
+		return bd.doubleValue();
 	}
 	
 	// -------------------------------------------- //

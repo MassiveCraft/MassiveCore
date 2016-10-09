@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 public class PredicateElementSignificant extends PredicateElementRegexes
 {
 	// -------------------------------------------- //
-    // INSTANCE & CONSTRUCT
-    // -------------------------------------------- //
+	// INSTANCE & CONSTRUCT
+	// -------------------------------------------- //
 	
 	private static PredicateElementSignificant i = new PredicateElementSignificant();
 	public static PredicateElementSignificant get() { return i; }

@@ -25,8 +25,8 @@ public class ConfServer extends SimpleConfig
 	
 	public static Map<String, String> alias2uri = MUtil.map(
 		"default", "flatfile",
-	    "flatfile", "flatfile://mstore",
-	    "mongodb", "mongodb://localhost:27017/mstore"
+		"flatfile", "flatfile://mstore",
+		"mongodb", "mongodb://localhost:27017/mstore"
 	);
 	
 }
