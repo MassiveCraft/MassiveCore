@@ -356,7 +356,7 @@ public class BoardUtil extends Engine
 	public static Objective getObjective(Scoreboard board, String id, boolean creative)
 	{
 		Objective objective = board.getObjective(id);
-		if (objective == null && creative) createObjective(board, id);
+		if (objective == null && creative) objective = createObjective(board, id);
 		return objective;
 	}
 	
@@ -520,10 +520,11 @@ public class BoardUtil extends Engine
 		}
 		
 		// Remove
-		for (String key : objective.getScoreboard().getEntries())
+		Scoreboard board = objective.getScoreboard();
+		for (String key : board.getEntries())
 		{
 			if (entries.containsKey(key)) continue;
-			ret |= setObjectiveValue(objective, key, 0);
+			board.resetScores(key);
 		}
 		
 		return ret;
