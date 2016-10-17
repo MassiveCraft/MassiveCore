@@ -202,6 +202,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		for (Object object : objects)
 		{
 			Active active = asActive(object);
+			if (active == null) continue;
 			active.setActive(this);
 		}
 	}
@@ -211,6 +212,20 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		if (object instanceof Active)
 		{
 			return (Active)object;
+		}
+		
+		if (object instanceof String)
+		{
+			String string = (String)object;
+			try
+			{
+				object = Class.forName(string);
+			}
+			catch (NoClassDefFoundError | ClassNotFoundException e)
+			{
+				// Silently skip and move on
+				return null;
+			}
 		}
 		
 		if (object instanceof Class<?>)
