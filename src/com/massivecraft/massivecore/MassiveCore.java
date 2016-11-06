@@ -300,6 +300,7 @@ public class MassiveCore extends MassivePlugin
 			MixinGamemode.class,
 			MixinInventory.class,
 			MixinKick.class,
+			MixinLog.class,
 			MixinMassiveCraftPremium.class,
 			MixinMessage.class,
 			MixinModification.class,
