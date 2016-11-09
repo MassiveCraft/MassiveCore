@@ -524,6 +524,7 @@ public class BoardUtil extends Engine
 		for (String key : board.getEntries())
 		{
 			if (entries.containsKey(key)) continue;
+			if (getObjectiveValue(objective, key) == 0) continue;
 			board.resetScores(key);
 		}
 		
