@@ -259,15 +259,19 @@ public class Mson implements Serializable
 	public Mson strikethrough(Boolean strikethrough) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
 	public Mson obfuscated(Boolean obfuscated) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
 	
+	private Mson createTooltip(Boolean override, String created)
+	{
+		if (created == null) override = false;
+		if (override == null) override = (this.getTooltip() == null && this.getItem() == null);
+		return override ? this.tooltip(created) : this;
+	}
+	
 	public Mson event(Boolean tooltip, MsonEventType type, MsonEvent event)
 	{
 		if (type == null) type = event.getType();
 		Mson ret = type.set(this, event);
 		String created = event.createTooltip();
-		if (created == null) tooltip = false;
-		if (tooltip == null) tooltip = (this.getTooltip() == null && this.getItem() == null);
-		if (tooltip) ret = ret.tooltip(created);
-		return ret;
+		return ret.createTooltip(tooltip, created);
 	}
 	public Mson event(Boolean tooltip, MsonEvent event)
 	{
@@ -282,7 +286,13 @@ public class Mson implements Serializable
 		return this.event(null, null, event);
 	}
 	
-	public Mson insertionString(String insertionString) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent); }
+	public Mson insertionString(String insertionString, Boolean tooltip)
+	{
+		String prefix =  Txt.parse("<h>Shift-Click Insert: <c>");
+		Mson ret = Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertionString, extra, parent);
+		return ret.createTooltip(tooltip, prefix + insertionString);
+	}
+	public Mson insertionString (String insertionString) { return this.insertionString(insertionString, null); }
 	public Mson extra(List<Mson> extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
 	public Mson extra(Mson[] extra) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra == null ? null : ImmutableList.copyOf(extra), parent); }
 	public Mson parent(Mson parent) { return Mson.valueOf(text, color, bold, italic, underlined, strikethrough, obfuscated, clickEvent, hoverEvent, insertion, extra, parent); }
