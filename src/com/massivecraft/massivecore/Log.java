@@ -3,7 +3,6 @@ package com.massivecraft.massivecore;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.event.EventMassiveCoreLog;
 import com.massivecraft.massivecore.mixin.MixinLog;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Map;
@@ -17,9 +16,9 @@ public class Log
 	
 	public static final String FIELD_TIMESTAMP = "timestamp";
 	public static final String FIELD_PLUGIN = "plugin";
-	public static final String FIELD_PLAYER = "player";
+	public static final String FIELD_PLAYER_OBJECT = "player_object";
 	public static final String FIELD_LEVEL = "level";
-	public static final String FIELD_CATEGORY = "category";
+	public static final String FIELD_TYPE = "type";
 	public static final String FIELD_MESSAGE = "message";
 	
 	// -------------------------------------------- //
@@ -73,14 +72,14 @@ public class Log
 	public Log plugin(Plugin plugin) { return this.set(FIELD_PLUGIN, plugin); }
 	public Plugin plugin() { return this.get(FIELD_PLUGIN); }
 	
-	public Log player(Player player) { return this.set(FIELD_PLAYER, player); }
-	public Player player() { return this.get(FIELD_PLAYER); }
+	public Log playerObject(Object playerObject) { return this.set(FIELD_PLAYER_OBJECT, playerObject); }
+	public Object playerObject() { return this.get(FIELD_PLAYER_OBJECT); }
 	
 	public Log level(Level level) { return this.set(FIELD_LEVEL, level); }
 	public Level level() { return this.get(FIELD_LEVEL); }
 	
-	public Log category(String category) { return this.set(FIELD_CATEGORY, category); }
-	public String category() { return this.get(FIELD_CATEGORY); }
+	public Log type(String category) { return this.set(FIELD_TYPE, category); }
+	public String type() { return this.get(FIELD_TYPE); }
 	
 	public Log message(String message) { return this.set(FIELD_MESSAGE, message); }
 	public String message() { return this.get(FIELD_MESSAGE); }
