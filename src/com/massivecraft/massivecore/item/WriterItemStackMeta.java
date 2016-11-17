@@ -59,7 +59,10 @@ public class WriterItemStackMeta extends WriterAbstractItemStackMetaMorph<Object
 			WriterItemStackMetaShieldPatterns.class,
 			
 			// POTION
-			WriterItemStackMetaPotion.class
+			WriterItemStackMetaPotion.class,
+				
+			// INVENTORY
+			WriterItemStackMetaInventory.class
 		);
 	}
 	

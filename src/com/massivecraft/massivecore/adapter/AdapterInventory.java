@@ -2,12 +2,14 @@ package com.massivecraft.massivecore.adapter;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Map.Entry;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.item.DataItemStack;
 import com.massivecraft.massivecore.mixin.MixinInventory;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
@@ -84,6 +86,7 @@ public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerial
 		// These variables are used in loops and repetitive logic.
 		ItemStack itemStack = null;
 		JsonElement jsonItemStack = null;
+		String index = null;
 		
 		// Every inventory has a content part.
 		ItemStack[] itemStacks = src.getContents();
@@ -147,12 +150,11 @@ public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerial
 		}
 		
 		// Add the content at the end since we like to have it at the bottom of return json.
-		for (int i = 0; i < itemStacks.length; i++)
+		for (Entry<Integer, DataItemStack> entry : DataItemStack.fromBukkitContents(itemStacks).entrySet())
 		{
-			itemStack = itemStacks[i];
-			jsonItemStack = MassiveCore.gson.toJsonTree(itemStack, ItemStack.class);
-			if (jsonItemStack == null) continue;
-			jsonInventory.add(String.valueOf(i), jsonItemStack);
+			index = String.valueOf(entry.getKey());
+			jsonItemStack = MassiveCore.gson.toJsonTree(entry.getValue());
+			jsonInventory.add(index, jsonItemStack);
 		}
 		
 		return jsonInventory;

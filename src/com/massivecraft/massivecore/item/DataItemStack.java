@@ -19,6 +19,7 @@ import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
+import com.massivecraft.massivecore.command.editor.annotation.EditorVisible;
 import com.massivecraft.massivecore.command.type.TypeMaterialId;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterColor;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterDyeColor;
@@ -27,6 +28,7 @@ import com.massivecraft.massivecore.command.type.convert.TypeConverterItemFlag;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.command.type.primitive.TypeStringParsed;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
+import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
 
@@ -78,6 +80,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public static final transient Integer DEFAULT_BANNER_BASE = null;
 	public static final transient List<DataBannerPattern> DEFAULT_BANNER_PATTERNS = Collections.emptyList();
 	public static final transient String DEFAULT_POTION = "water";
+	public static final transient Map<Integer, DataItemStack> DEFAULT_INVENTORY = Collections.emptyMap();
 	
 	// -------------------------------------------- //
 	// FIELDS > BASIC
@@ -264,6 +267,16 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public DataItemStack setPotion(String potion) { this.potion = set(potion, DEFAULT_POTION); return this; }
 	
 	// -------------------------------------------- //
+	// FIELDS > INVENTORY
+	// -------------------------------------------- //
+	// SINCE: 1.8
+	
+	@EditorVisible(false)
+	private Map<Integer, DataItemStack> inventory = null;
+	public Map<Integer, DataItemStack> getInventory() { return get(this.inventory, DEFAULT_INVENTORY); }
+	public DataItemStack setInventory(Map<Integer, DataItemStack> inventory) { this.inventory = set(inventory, DEFAULT_INVENTORY); return this; }
+	
+	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
@@ -378,6 +391,48 @@ public class DataItemStack implements Comparable<DataItemStack>
 		return ret;
 	}
 	
+	public static Map<Integer, DataItemStack> fromBukkitContents(ItemStack[] contents)
+	{
+		// Catch NullEmpty
+		if (contents == null || contents.length == 0) return null;
+		
+		// Create
+		Map<Integer, DataItemStack> ret = new MassiveMap<>();
+		
+		// Fill
+		for (int i = 0; i < contents.length; i++)
+		{
+			ItemStack itemStack = contents[i];
+			if (InventoryUtil.isNothing(itemStack)) continue;
+			
+			ret.put(i, DataItemStack.fromBukkit(itemStack));
+		}
+		
+		// Return
+		return ret;
+	}
+	
+	public static ItemStack[] toBukkitContents(Map<Integer, DataItemStack> contents)
+	{
+		// Catch NullEmpty
+		if (contents == null || contents.isEmpty()) return null;
+		
+		// Create
+		int max = Collections.max(contents.keySet());
+		ItemStack[] ret = new ItemStack[max+1];
+		
+		// Fill
+		for (Entry<Integer, DataItemStack> entry: contents.entrySet())
+		{
+			int index = entry.getKey();
+			DataItemStack item = entry.getValue();
+			ret[index] = item.toBukkit();
+		}
+		
+		// Return
+		return ret;
+	}
+	
 	// -------------------------------------------- //
 	// UTILITY
 	// -------------------------------------------- //
@@ -425,7 +480,8 @@ public class DataItemStack implements Comparable<DataItemStack>
 			this.getFlags(), that.getFlags(),
 			this.getBannerBase(), that.getBannerBase(),
 			this.getBannerPatterns(), that.getBannerPatterns(),
-			this.getPotion(), that.getPotion()
+			this.getPotion(), that.getPotion(),
+			this.getInventory(), that.getInventory()
 		);
 	}
 	
@@ -457,7 +513,8 @@ public class DataItemStack implements Comparable<DataItemStack>
 			this.getFlags(), that.getFlags(),
 			this.getBannerBase(), that.getBannerBase(),
 			this.getBannerPatterns(), that.getBannerPatterns(),
-			this.getPotion(), that.getPotion()
+			this.getPotion(), that.getPotion(),
+			this.getInventory(), that.getInventory()
 		);
 	}
 	
@@ -496,7 +553,8 @@ public class DataItemStack implements Comparable<DataItemStack>
 			this.getFlags(), that.getFlags(),
 			this.getBannerBase(), that.getBannerBase(),
 			this.getBannerPatterns(), that.getBannerPatterns(),
-			this.getPotion(), that.getPotion()
+			this.getPotion(), that.getPotion(),
+			this.getInventory(), that.getInventory()
 		);
 	}
 	
@@ -533,7 +591,8 @@ public class DataItemStack implements Comparable<DataItemStack>
 			this.getFlags(),
 			this.getBannerBase(),
 			this.getBannerPatterns(),
-			this.getPotion()
+			this.getPotion(),
+			this.getInventory()
 		);
 	}
 	
