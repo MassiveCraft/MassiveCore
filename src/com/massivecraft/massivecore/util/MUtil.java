@@ -847,9 +847,9 @@ public class MUtil
 	@SuppressWarnings("deprecation")
 	public static ChatColor getChatColor(DyeColor dyeColor)
 	{
-		int dyeColorCode = dyeColor.getData();
+		int woolColorCode = dyeColor.getWoolData();
 		
-		switch (dyeColorCode)
+		switch (woolColorCode)
 		{
 			case 0x0: return ChatColor.WHITE;
 			case 0x1: return ChatColor.GOLD;
