@@ -1,14 +1,14 @@
 package com.massivecraft.massivecore.mixin;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class Mixin extends Engine
 {
@@ -211,8 +211,11 @@ public class Mixin extends Engine
 		"19R2", "Minecraft 1.9.4 [1_9_R2]",
 		"19R2P", "Minecraft 1.9.4+ [1_9_R2+]",
 		
-		"110R1", "Minecraft 1.10.0 --> ? [1_10_R1]",
-		"110R1P", "Minecraft 1.10.0+ [1_0_R1+]"
+		"110R1", "Minecraft 1.10.0 --> 1.10.2 [1_10_R1]",
+		"110R1P", "Minecraft 1.10.0+ [1_10_R1+]",
+		
+		"111R1", "Minecraft 1.11.0 --> ? [1_11_R1]",
+		"111R1P", "Minecraft 1.11.0+ [1_11_R1+]"
 	);
 	
 	public String createName()
