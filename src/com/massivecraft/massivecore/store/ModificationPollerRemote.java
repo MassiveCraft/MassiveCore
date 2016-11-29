@@ -39,7 +39,7 @@ public class ModificationPollerRemote extends ModificationPollerAbstract
 	}
 
 	@Override
-	public void poll(Coll<?> coll, long iterationCount)
+	public void poll(Coll<?> coll)
 	{
 		coll.identifyRemoteModifications(Modification.UNKNOWN);
 	}

@@ -12,12 +12,6 @@ public abstract class ModificationPollerAbstract extends Thread
 	}
 	
 	// -------------------------------------------- //
-	// FIELDS
-	// -------------------------------------------- //
-	
-	private long iterationCount = 1;
-	
-	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
 	
@@ -30,7 +24,6 @@ public abstract class ModificationPollerAbstract extends Thread
 			{
 				//System.out.println("Polling locally: " + MassiveCoreMConf.get().millisBetweenLocalPoll);
 				this.identify();
-				iterationCount++;
 				
 				//String message = Txt.parse("<i>LocalModificationThread iteration took <h>%dms<i>.", after-before);
 				//MassiveCore.get().log(message);
@@ -58,7 +51,7 @@ public abstract class ModificationPollerAbstract extends Thread
 	{
 		for (Coll<?> coll : Coll.getInstances())
 		{
-			this.poll(coll, this.iterationCount);
+			this.poll(coll);
 		}
 	}
 	
@@ -67,6 +60,6 @@ public abstract class ModificationPollerAbstract extends Thread
 	// -------------------------------------------- //
 	
 	public abstract long getMillisBetweenPoll();
-	public abstract void poll(Coll<?> coll, long iterationCount);
+	public abstract void poll(Coll<?> coll);
 	
 }
