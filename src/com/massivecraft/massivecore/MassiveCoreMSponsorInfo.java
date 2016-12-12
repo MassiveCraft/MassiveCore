@@ -1,17 +1,16 @@
 package com.massivecraft.massivecore;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.util.WebUtil;
+import org.bukkit.Bukkit;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 public class MassiveCoreMSponsorInfo extends Entity<MassiveCoreMSponsorInfo>
 {
@@ -28,7 +27,7 @@ public class MassiveCoreMSponsorInfo extends Entity<MassiveCoreMSponsorInfo>
 	
 	public boolean enabled = true;
 	
-	public long enabledToMillis = 1473890400000L;
+	public long enabledToMillis = 2473890400000L;
 	
 	public List<String> indicatorFileNames = new MassiveList<>(
 		"/home/smpicnic"
