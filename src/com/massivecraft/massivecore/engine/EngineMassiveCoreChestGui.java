@@ -49,7 +49,17 @@ public class EngineMassiveCoreChestGui extends Engine
 		// ... warn on bottom inventory ...
 		if (InventoryUtil.isBottomInventory(event))
 		{
-			MixinMessage.get().msgOne(event.getWhoClicked(), "<b>Exit the GUI to edit your items.");
+			// ... only if its not allowed.
+			if (gui.isBottomInventoryAllowed())
+			{
+				event.setCancelled(false);
+				event.setResult(Result.DEFAULT);
+			}
+			else
+			{
+				MixinMessage.get().msgOne(event.getWhoClicked(), "<b>Exit the GUI to edit your items.");
+			}
+			
 			return;
 		}
 		

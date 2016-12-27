@@ -152,6 +152,14 @@ public class ChestGui
 	public void setAutoremoving(boolean autoremoving) { this.autoremoving = autoremoving; }
 	
 	// -------------------------------------------- //
+	// ALLOWBOTTOMINVENTORY
+	// -------------------------------------------- //
+	
+	private boolean allowBottomInventory = false;
+	public boolean isBottomInventoryAllowed() { return this.allowBottomInventory; }
+	public void setBottomInventoryAllow(boolean allowBottomInventory) { this.allowBottomInventory = allowBottomInventory; }
+	
+	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
