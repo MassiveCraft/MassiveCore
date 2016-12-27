@@ -1,7 +1,7 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
@@ -10,8 +10,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
-import com.massivecraft.massivecore.util.ReflectionUtil;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class NmsBasics17R4P extends NmsBasics
 {
@@ -56,7 +56,7 @@ public class NmsBasics17R4P extends NmsBasics
 	// org.bukkit.craftbukkit.block.CraftSign
 	private Class<?> classCraftSign;
 	// org.bukkit.craftbukkit.block.CraftSign#sign
-	private Field fieldclassCraftSignHandle;
+	private Field fieldCraftSignHandle;
 	
 	// GET BUKKIT
 	// net.minecraft.server.Entity
@@ -106,7 +106,7 @@ public class NmsBasics17R4P extends NmsBasics
 		this.fieldCraftObjectiveHandle = ReflectionUtil.getField(this.classCraftObjective, "objective");
 		
 		this.classCraftSign = PackageType.CRAFTBUKKIT_BLOCK.getClass("CraftSign");
-		this.fieldclassCraftSignHandle = ReflectionUtil.getField(this.classCraftSign, "sign");
+		this.fieldCraftSignHandle = ReflectionUtil.getField(this.classCraftSign, "sign");
 		
 		// GET BUKKIT
 		this.classNmsEntity = PackageType.MINECRAFT_SERVER.getClass("Entity");
@@ -167,7 +167,7 @@ public class NmsBasics17R4P extends NmsBasics
 	public <T> T getHandle(Sign sign)
 	{
 		if (sign == null) return null;
-		return ReflectionUtil.getField(this.fieldclassCraftSignHandle, sign);
+		return ReflectionUtil.getField(this.fieldCraftSignHandle, sign);
 	}
 	
 	// -------------------------------------------- //
