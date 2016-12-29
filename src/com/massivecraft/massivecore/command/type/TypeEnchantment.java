@@ -1,16 +1,15 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.enchantments.Enchantment;
-
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+import org.bukkit.enchantments.Enchantment;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TypeEnchantment extends TypeAbstractChoice<Enchantment>
 {
@@ -33,12 +32,14 @@ public class TypeEnchantment extends TypeAbstractChoice<Enchantment>
 		7, new MassiveList<>("Thorns", "THORNS"),
 		8, new MassiveList<>("Depth Strider", "DEPTH_STRIDER"),
 		9, new MassiveList<>("Frost Walker", "FROST_WALKER"),
+		10, new MassiveList<>("Curse of Binding", "BINDING_CURSE"),
 		16, new MassiveList<>("Sharpness", "DAMAGE_ALL"),
 		17, new MassiveList<>("Smite", "DAMAGE_UNDEAD"),
 		18, new MassiveList<>("Bane of Arthropods", "DAMAGE_ARTHROPODS", "BaneArthropods", "Arthropods"),
 		19, new MassiveList<>("Knockback", "KNOCKBACK"),
 		20, new MassiveList<>("Fire Aspect", "FIRE_ASPECT"),
 		21, new MassiveList<>("Looting", "LOOT_BONUS_MOBS"),
+		22, new MassiveList<>("Sweeping Edge", "SWEEPING_EDGE"),
 		32, new MassiveList<>("Efficiency", "DIG_SPEED"),
 		33, new MassiveList<>("Silk Touch", "SILK_TOUCH"),
 		34, new MassiveList<>("Unbreaking", "DURABILITY"),
@@ -49,7 +50,8 @@ public class TypeEnchantment extends TypeAbstractChoice<Enchantment>
 		51, new MassiveList<>("Infinity", "ARROW_INFINITE", "ArrowInfinity"),
 		61, new MassiveList<>("Luck of the Sea", "LUCK", "LuckOfSea", "LuckTheSea", "LuckSea"),
 		62, new MassiveList<>("Lure", "LURE"),
-		70, new MassiveList<>("Mending", "MENDING")
+		70, new MassiveList<>("Mending", "MENDING"),
+		71, new MassiveList<>("Curse of Vanishing", "VANISHING_CURSE")
 	);
 	
 	// -------------------------------------------- //
