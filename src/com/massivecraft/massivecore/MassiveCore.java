@@ -1,19 +1,5 @@
 package com.massivecraft.massivecore;
 
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-
-import com.massivecraft.massivecore.mixin.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import com.massivecraft.massivecore.adapter.AdapterBackstringEnumSet;
 import com.massivecraft.massivecore.adapter.AdapterBannerPatterns;
 import com.massivecraft.massivecore.adapter.AdapterEntry;
@@ -49,12 +35,12 @@ import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreCmdurl;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreStore;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCoreUsys;
 import com.massivecraft.massivecore.command.type.RegistryType;
-import com.massivecraft.massivecore.engine.EngineMassiveCoreGank;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreChestGui;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreCollTick;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandRegistration;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDestination;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreGank;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerState;
@@ -67,6 +53,24 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.item.DataBannerPattern;
 import com.massivecraft.massivecore.item.WriterItemStack;
+import com.massivecraft.massivecore.mixin.MixinActionbar;
+import com.massivecraft.massivecore.mixin.MixinActual;
+import com.massivecraft.massivecore.mixin.MixinCommand;
+import com.massivecraft.massivecore.mixin.MixinDisplayName;
+import com.massivecraft.massivecore.mixin.MixinEvent;
+import com.massivecraft.massivecore.mixin.MixinGamemode;
+import com.massivecraft.massivecore.mixin.MixinInventory;
+import com.massivecraft.massivecore.mixin.MixinKick;
+import com.massivecraft.massivecore.mixin.MixinLog;
+import com.massivecraft.massivecore.mixin.MixinMassiveCraftPremium;
+import com.massivecraft.massivecore.mixin.MixinMessage;
+import com.massivecraft.massivecore.mixin.MixinModification;
+import com.massivecraft.massivecore.mixin.MixinPlayed;
+import com.massivecraft.massivecore.mixin.MixinSenderPs;
+import com.massivecraft.massivecore.mixin.MixinTeleport;
+import com.massivecraft.massivecore.mixin.MixinTitle;
+import com.massivecraft.massivecore.mixin.MixinVisibility;
+import com.massivecraft.massivecore.mixin.MixinWorld;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.nms.NmsBasics;
@@ -84,6 +88,7 @@ import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
 import com.massivecraft.massivecore.store.ModificationPollerLocal;
 import com.massivecraft.massivecore.store.ModificationPollerRemote;
+import com.massivecraft.massivecore.test.TestTypeEnchantment;
 import com.massivecraft.massivecore.util.BoardUtil;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
@@ -97,6 +102,18 @@ import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 public class MassiveCore extends MassivePlugin
 {
@@ -309,7 +326,10 @@ public class MassiveCore extends MassivePlugin
 			MixinTeleport.class,
 			MixinTitle.class,
 			MixinVisibility.class,
-			MixinWorld.class
+			MixinWorld.class,
+			
+			// Test
+			TestTypeEnchantment.class
 		);
 		
 		// Start the examine threads

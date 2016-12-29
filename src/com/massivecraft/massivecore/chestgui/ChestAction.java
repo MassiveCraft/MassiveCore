@@ -4,5 +4,5 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public interface ChestAction
 {
-	public boolean onClick(InventoryClickEvent event);
+	boolean onClick(InventoryClickEvent event);
 }

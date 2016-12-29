@@ -1,14 +1,13 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Sound;
-
-import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.Sound;
+
+import java.util.Map;
+import java.util.Set;
 
 public class TypeSound extends TypeEnum<Sound>
 {

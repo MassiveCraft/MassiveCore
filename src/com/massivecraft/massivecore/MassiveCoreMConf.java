@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.permissions.Permissible;
-
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.TypeMillisDiff;
@@ -15,6 +9,11 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
+import org.bukkit.permissions.Permissible;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @EditorName("config")
 public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
@@ -91,7 +90,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// -------------------------------------------- //
 	// Delete certain files for system cleanliness.
 	
-	public List<String> deleteFiles = new ArrayList<String>();
+	public List<String> deleteFiles = new ArrayList<>();
 	
 	// -------------------------------------------- //
 	// VARIABLES
@@ -139,10 +138,11 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public WriteConcern getMongoDbWriteConcernDelete() { return getMongoDbWriteConcern(this.catchingMongoDbErrorsOnDelete); }
 	
 	// -------------------------------------------- //
-	// DEBUG
+	// DEVELOPER
 	// -------------------------------------------- //
 	
 	public boolean debugWriters = false;
+	public boolean testsEnabled = false;
 	
 	// -------------------------------------------- //
 	// SPONSOR

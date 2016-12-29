@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.command.type.container;
 
-import java.util.Collection;
-
 import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
 
 public interface AllAble<T>
 {
-	public Collection<T> getAll(CommandSender sender);
+	Collection<T> getAll(CommandSender sender);
 }
