@@ -41,6 +41,7 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandRegistration;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDestination;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreGank;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreLorePriority;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerState;
@@ -283,6 +284,7 @@ public class MassiveCore extends MassivePlugin
 			EngineMassiveCoreDatabase.class,
 			EngineMassiveCoreDestination.class,
 			EngineMassiveCoreGank.class,
+			EngineMassiveCoreLorePriority.class,
 			EngineMassiveCoreMain.class,
 			EngineMassiveCorePlayerLeave.class,
 			EngineMassiveCorePlayerState.class,

@@ -1,12 +1,13 @@
 package com.massivecraft.massivecore.util;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.AbstractMap.SimpleEntry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +28,9 @@ import org.bukkit.material.MaterialData;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.comparator.ComparatorComparable;
+import com.massivecraft.massivecore.comparator.ComparatorEntryValue;
+import com.massivecraft.massivecore.event.EventMassiveCoreLorePriority;
 import com.massivecraft.massivecore.mixin.MixinInventory;
 
 public class InventoryUtil
@@ -1192,6 +1196,60 @@ public class InventoryUtil
 	public static void setLore(ItemStack item, String... lore)
 	{
 		setLore(item, Arrays.asList(lore));
+	}
+
+	public static void addLore(ItemStack item, Collection<String> lore)
+	{
+		List<String> lines = getLore(item);
+		if (lines == null) lines = new MassiveList<>();
+		lines.addAll(lore);
+		InventoryUtil.setLore(item, lines);
+	}
+
+	public static void addLore(ItemStack item, String... lore)
+	{
+		addLore(item, Arrays.asList(lore));
+	}
+
+	// -------------------------------------------- //
+	// SORT LORE
+	// -------------------------------------------- //
+
+	public static List<String> getSortedLore(ItemStack item)
+	{
+		if ( ! item.getItemMeta().hasLore()) return Collections.emptyList();
+
+		EventMassiveCoreLorePriority event = new EventMassiveCoreLorePriority(item);
+		event.run();
+
+		List<Entry<String, Integer>> entries = event.getLore();
+		// Note: Comparator cast is necessary for Maven to compile, even if the IDE doesn't complain.
+		Comparator<Entry<? super String, ? super Integer>> comparator = (Comparator) ComparatorEntryValue.get(ComparatorComparable.get());
+		Collections.sort(entries, comparator);
+
+		List<String> ret = new MassiveList<>();
+		for (Entry<String, Integer> entry : entries)
+		{
+			ret.add(entry.getKey());
+		}
+		return ret;
+	}
+
+	public static void sortLore(ItemStack item)
+	{
+		if (item == null) return;
+		if ( ! item.getItemMeta().hasLore()) return;
+
+		List<String> lore = getSortedLore(item);
+		InventoryUtil.setLore(item, lore);
+	}
+	public static void sortLore(Iterable<ItemStack> items)
+	{
+		if (items == null) return;
+		for (ItemStack item : items)
+		{
+			sortLore(item);
+		}
 	}
 
 }

@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
-import java.util.Set;
-
-import org.bukkit.Material;
-
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.Material;
+
+import java.util.Set;
 
 public class TypeMaterial extends TypeEnum<Material>
 {
