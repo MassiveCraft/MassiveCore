@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.util;
 
+import static com.massivecraft.massivecore.mson.Mson.mson;
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +29,6 @@ import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 
-import static com.massivecraft.massivecore.mson.Mson.mson;
-
 public class Txt
 {
 	// -------------------------------------------- //
@@ -43,8 +43,9 @@ public class Txt
 	
 	public static final Pattern PATTERN_WHITESPACE = Pattern.compile("\\s+");
 	public static final Pattern PATTERN_NEWLINE = Pattern.compile("\\r?\\n");
+	public static final Pattern PATTERN_NUMBER = Pattern.compile("[0-9]+");
 	private static final Pattern PATTERN_UPPERCASE_ZEROWIDTH = Pattern.compile("(?=[A-Z])"); // NOTE: Use camelsplit instead for Java 6/7 compatibility.
-	
+
 	public static final long millisPerSecond = 1000;
 	public static final long millisPerMinute = 60 * millisPerSecond;
 	public static final long millisPerHour = 60 * millisPerMinute;

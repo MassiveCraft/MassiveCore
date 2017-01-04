@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -32,6 +33,8 @@ import com.massivecraft.massivecore.comparator.ComparatorComparable;
 import com.massivecraft.massivecore.comparator.ComparatorEntryValue;
 import com.massivecraft.massivecore.event.EventMassiveCoreLorePriority;
 import com.massivecraft.massivecore.mixin.MixinInventory;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateStringStartsWith;
 
 public class InventoryUtil
 {
@@ -1250,6 +1253,54 @@ public class InventoryUtil
 		{
 			sortLore(item);
 		}
+	}
+
+	// -------------------------------------------- //
+	// LORE PREFIX
+	// -------------------------------------------- //
+
+	public static void removeLoreMatching(ItemStack item, Predicate<String> predicate)
+	{
+		if (predicate == null) throw new NullPointerException("prefix");
+
+		List<String> lore = getLore(item);
+		if (lore == null) return;
+
+		for (Iterator<String> it = lore.iterator(); it.hasNext();)
+		{
+			String line = it.next();
+			if (!predicate.apply(line)) continue;
+			it.remove();
+		}
+
+		setLore(item, lore);
+	}
+
+	public static void removeLoreWithPrefix(ItemStack item, String prefix)
+	{
+		removeLoreMatching(item, PredicateStringStartsWith.get(prefix));
+	}
+
+	public static List<String> getLoreMatching(ItemStack item, Predicate<String> predicate)
+	{
+		if (predicate == null) throw new NullPointerException("prefix");
+
+		List<String> lore = getLore(item);
+		if (lore == null) return null;
+
+		for (Iterator<String> it = lore.iterator(); it.hasNext();)
+		{
+			String line = it.next();
+			if (predicate.apply(line)) continue;
+			it.remove();
+		}
+
+		return lore;
+	}
+
+	public static List<String> getLoreWithPrefix(ItemStack item, String prefix)
+	{
+		return getLoreMatching(item, PredicateStringStartsWith.get(prefix));
 	}
 
 }
