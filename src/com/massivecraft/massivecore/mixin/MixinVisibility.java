@@ -43,10 +43,10 @@ public class MixinVisibility extends Mixin
 	{
 		Player pwatchee = IdUtil.getPlayer(watcheeObject);
 		Player pwatcher = IdUtil.getPlayer(watcherObject);
-				
+
 		if (pwatchee == null) return true;
 		if (pwatcher == null) return true;
-		
+
 		return pwatcher.canSee(pwatchee);
 	}
 

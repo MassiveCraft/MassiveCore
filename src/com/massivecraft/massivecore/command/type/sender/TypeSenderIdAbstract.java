@@ -110,15 +110,22 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		String senderId = this.getSenderIdFor(arg);
 		// All of our subclasses return null if senderId is null.
 		// Thus we don't need to check for that being null, but only check ret.
-		
+
+		// If presence is online or local ...
+		if (this.presence == SenderPresence.LOCAL || this.presence == SenderPresence.ONLINE)
+		{
+			// ... and the target is not visible for the sender ...
+			if (!MixinVisibility.get().isVisible(senderId, sender))
+			{
+				// .. throw an error.
+				throwError(arg);
+			}
+		}
+
 		// Create & populate Ret
 		T ret = this.getResultForSenderId(senderId);
 		
-		if (ret == null)
-		{
-			// No alternatives found
-			throw new MassiveException().addMessage(this.getErrorMessageForArg(arg));
-		}
+		if (ret == null) throwError(arg);
 	
 		// Return Ret
 		return ret;
@@ -177,7 +184,12 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
-	
+
+	public void throwError(String arg) throws MassiveException
+	{
+		throw new MassiveException().addMessage(this.getErrorMessageForArg(arg));
+	}
+
 	public String getErrorMessageForArg(String arg)
 	{
 		return Txt.parse("<b>No %s matches \"<h>%s<b>\".", this.getName(), arg);
