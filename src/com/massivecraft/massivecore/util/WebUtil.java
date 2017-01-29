@@ -1,5 +1,10 @@
 package com.massivecraft.massivecore.util;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,14 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class WebUtil
 {
@@ -152,11 +149,6 @@ public class WebUtil
 	// SSL TRUST
 	// -------------------------------------------- //
 	
-	public static final HostnameVerifier TRUSTING_HOSTNAME_VERIFIER = new HostnameVerifier()
-	{
-		@Override public boolean verify(String hostname, SSLSession session) { return true; }
-	};
-	
 	public static final X509TrustManager TRUSTING_TRUST_MANAGER = new X509TrustManager()
 	{
 		@Override public X509Certificate[] getAcceptedIssuers() { return null; }
@@ -187,7 +179,6 @@ public class WebUtil
 		if ( ! (connection instanceof HttpsURLConnection)) return;
 		HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
 		httpsConnection.setSSLSocketFactory(TRUSTING_SOCKET_FACTORY);
-		httpsConnection.setHostnameVerifier(TRUSTING_HOSTNAME_VERIFIER);
 	}
 	
 }
