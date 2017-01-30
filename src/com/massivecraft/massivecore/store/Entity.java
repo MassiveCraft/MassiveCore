@@ -186,6 +186,18 @@ public class Entity<E extends Entity<E>> implements Identified
 		this.changed();
 		return Objects.equals(value, standard) ? null : value;
 	}
+
+	public <T> T convertSet(T value, T current, T standard)
+	{
+		// Make comparable
+		value = convertGet(value, standard);
+		current = convertGet(current, standard);
+
+		// Detct nochange
+		if (Objects.equals(value, current)) return current;
+
+		return this.convertSet(value, standard);
+	}
 	
 	// BOOLEAN
 	public boolean convertGet(Boolean value)
@@ -196,6 +208,11 @@ public class Entity<E extends Entity<E>> implements Identified
 	public Boolean convertSet(Boolean value)
 	{
 		return convertSet(value, false);
+	}
+
+	public Boolean convertSet(Boolean value, Boolean current)
+	{
+		return convertSet(value, current, false);
 	}
 	
 	// -------------------------------------------- //
