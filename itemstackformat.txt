@@ -42,6 +42,8 @@
 		author: str
 		pages: [str]
 		map_is_scaling: byte
+		potionColor: int
+		mapColor: int
 		SkullOwner: str
 		CustomPotionEffects:
 		[
