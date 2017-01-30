@@ -1259,26 +1259,31 @@ public class InventoryUtil
 	// LORE PREFIX
 	// -------------------------------------------- //
 
-	public static void removeLoreMatching(ItemStack item, Predicate<String> predicate)
+	// Return true on change
+	public static boolean removeLoreMatching(ItemStack item, Predicate<String> predicate)
 	{
 		if (predicate == null) throw new NullPointerException("prefix");
 
 		List<String> lore = getLore(item);
-		if (lore == null) return;
+		if (lore == null) return false;
 
+		boolean ret = false;
 		for (Iterator<String> it = lore.iterator(); it.hasNext();)
 		{
 			String line = it.next();
 			if (!predicate.apply(line)) continue;
 			it.remove();
+			ret = true;
 		}
 
 		setLore(item, lore);
+
+		return ret;
 	}
 
-	public static void removeLoreWithPrefix(ItemStack item, String prefix)
+	public static boolean removeLoreWithPrefix(ItemStack item, String prefix)
 	{
-		removeLoreMatching(item, PredicateStringStartsWith.get(prefix));
+		return removeLoreMatching(item, PredicateStringStartsWith.get(prefix));
 	}
 
 	public static List<String> getLoreMatching(ItemStack item, Predicate<String> predicate)
