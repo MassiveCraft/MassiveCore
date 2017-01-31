@@ -32,7 +32,7 @@ public class TypeEntityId<I extends Entity<I>> extends TypeTransformer<I, String
 	public I outerToInner(String outer)
 	{
 		if (outer == null) return null;
-		TypeEntity<I> typeEntity = (TypeEntity<I>)INNER;
+		TypeEntity<I> typeEntity = (TypeEntity<I>)this.getInner();
 		return typeEntity.getColl().get(outer, false);
 	}
 

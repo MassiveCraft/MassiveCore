@@ -58,7 +58,9 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	// -------------------------------------------- //
 	
 	public final Type<I> INNER;
+	public Type<I> getInner() { return INNER; }
 	public final Type<O> OUTER;
+	public Type<O> getOuter() { return OUTER; }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -68,8 +70,8 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		super(typeOuter.getClazz());
 		this.setInnerTypes(typeInner, typeOuter);
-		INNER = typeInner;
-		OUTER = typeOuter;
+		this.INNER = typeInner;
+		this.OUTER = typeOuter;
 	}
 	
 	// -------------------------------------------- //
@@ -87,7 +89,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	@Override
 	public String getName()
 	{
-		return INNER.getName();
+		return this.getInner().getName();
 	}
 	
 	// -------------------------------------------- //
@@ -97,13 +99,13 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	@Override
 	public <U extends Property<O, ?>> List<U> getInnerProperties()
 	{
-		return OUTER.getInnerProperties();
+		return this.getOuter().getInnerProperties();
 	}
 	
 	@Override
 	public <U extends Property<O, ?>> void setInnerProperties(Collection<U> innerProperties)
 	{
-		OUTER.setInnerProperties(innerProperties);
+		this.getOuter().setInnerProperties(innerProperties);
 	}
 	
 	// -------------------------------------------- //
@@ -115,7 +117,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		// NOTE: Inner type must NPE evade.
-		return INNER.getVisualColor(inner, sender);
+		return this.getInner().getVisualColor(inner, sender);
 	}
 	
 	@Override
@@ -123,13 +125,13 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		// NOTE: Inner type must NPE evade.
-		return INNER.getVisualColor(inner);
+		return this.getInner().getVisualColor(inner);
 	}
 	
 	@Override
 	public void setVisualColor(ChatColor color)
 	{
-		INNER.setVisualColor(color);
+		this.getInner().setVisualColor(color);
 	}
 	
 	// -------------------------------------------- //
@@ -140,24 +142,24 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	public Mson getVisualMsonInner(O outer, CommandSender sender)
 	{
 		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualMsonInner(outer, sender));
-		return INNER.getVisualMsonInner(inner, sender);
+		if (outer != null && inner == null) return prefix(this.getOuter().getVisualMsonInner(outer, sender));
+		return this.getInner().getVisualMsonInner(inner, sender);
 	}
 	
 	@Override
 	public Mson getVisualMson(O outer, CommandSender sender)
 	{
 		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualMson(outer, sender));
-		return INNER.getVisualMson(inner, sender);
+		if (outer != null && inner == null) return prefix(this.getOuter().getVisualMson(outer, sender));
+		return this.getInner().getVisualMson(inner, sender);
 	}
 	
 	@Override
 	public Mson getVisualMson(O outer)
 	{
 		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualMson(outer));
-		return INNER.getVisualMson(inner);
+		if (outer != null && inner == null) return prefix(this.getOuter().getVisualMson(outer));
+		return this.getInner().getVisualMson(inner);
 	}
 	
 	// -------------------------------------------- //
@@ -168,24 +170,24 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	public String getVisualInner(O outer, CommandSender sender)
 	{
 		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisualInner(outer, sender));
-		return INNER.getVisualInner(inner, sender);
+		if (outer != null && inner == null) return prefix(this.getOuter().getVisualInner(outer, sender));
+		return this.getInner().getVisualInner(inner, sender);
 	}
 	
 	@Override
 	public String getVisual(O outer, CommandSender sender)
 	{
 		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisual(outer, sender));
-		return INNER.getVisual(inner, sender);
+		if (outer != null && inner == null) return prefix(this.getOuter().getVisual(outer, sender));
+		return this.getInner().getVisual(inner, sender);
 	}
 	
 	@Override
 	public String getVisual(O outer)
 	{
 		I inner = outerToInner(outer);
-		if (outer != null && inner == null) return prefix(OUTER.getVisual(outer));
-		return INNER.getVisual(inner);
+		if (outer != null && inner == null) return prefix(this.getOuter().getVisual(outer));
+		return this.getInner().getVisual(inner);
 	}
 	
 	// -------------------------------------------- //
@@ -197,7 +199,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getNameInner(inner);
+		return this.getInner().getNameInner(inner);
 	}
 	
 	@Override
@@ -205,7 +207,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getName(inner);
+		return this.getInner().getName(inner);
 	}
 	
 	@Override
@@ -213,7 +215,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getNamesInner(inner);
+		return this.getInner().getNamesInner(inner);
 	}
 	
 	@Override
@@ -221,7 +223,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getNames(inner);
+		return this.getInner().getNames(inner);
 	}
 	
 	// -------------------------------------------- //
@@ -233,7 +235,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getIdInner(inner);
+		return this.getInner().getIdInner(inner);
 	}
 	
 	@Override
@@ -241,7 +243,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getId(inner);
+		return this.getInner().getId(inner);
 	}
 	
 	@Override
@@ -249,7 +251,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getIdsInner(inner);
+		return this.getInner().getIdsInner(inner);
 	}
 	
 	@Override
@@ -257,7 +259,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	{
 		I inner = outerToInner(outer);
 		if (outer != null && inner == null) throw new NullPointerException("transformer");
-		return INNER.getIds(inner);
+		return this.getInner().getIds(inner);
 	}
 	
 	// -------------------------------------------- //
@@ -267,7 +269,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	@Override
 	public O read(String arg, CommandSender sender) throws MassiveException
 	{
-		I inner = INNER.read(arg, sender);
+		I inner = this.getInner().read(arg, sender);
 		O outer = innerToOuter(inner, sender);
 		return outer;
 	}
@@ -279,7 +281,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	@Override
 	public boolean isValid(String arg, CommandSender sender)
 	{
-		return INNER.isValid(arg, sender);
+		return this.getInner().isValid(arg, sender);
 	}
 	
 	// -------------------------------------------- //
@@ -289,19 +291,19 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		return INNER.getTabList(sender, arg);
+		return this.getInner().getTabList(sender, arg);
 	}
 	
 	@Override
 	public List<String> getTabListFiltered(CommandSender sender, String arg)
 	{
-		return INNER.getTabListFiltered(sender, arg);
+		return this.getInner().getTabListFiltered(sender, arg);
 	}
 	
 	@Override
 	public boolean allowSpaceAfterTab()
 	{
-		return INNER.allowSpaceAfterTab();
+		return this.getInner().allowSpaceAfterTab();
 	}
 	
 	// -------------------------------------------- //
@@ -311,13 +313,13 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	@Override
 	public <S> CommandEditAbstract<S, O> createEditCommand(EditSettings<S> settings, Property<S, O> property)
 	{
-		return OUTER.createEditCommand(settings, property);
+		return this.getOuter().createEditCommand(settings, property);
 	}
 	
 	@Override
 	public O createNewInstance()
 	{
-		return OUTER.createNewInstance();
+		return this.getOuter().createNewInstance();
 	}
 
 }
