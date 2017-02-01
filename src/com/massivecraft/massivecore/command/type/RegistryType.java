@@ -35,6 +35,7 @@ import com.massivecraft.massivecore.command.type.enumeration.TypeGameMode;
 import com.massivecraft.massivecore.command.type.enumeration.TypeHorseColor;
 import com.massivecraft.massivecore.command.type.enumeration.TypeHorseStyle;
 import com.massivecraft.massivecore.command.type.enumeration.TypeHorseVariant;
+import com.massivecraft.massivecore.command.type.enumeration.TypeLlamaColor;
 import com.massivecraft.massivecore.command.type.enumeration.TypeMaterial;
 import com.massivecraft.massivecore.command.type.enumeration.TypeOcelotType;
 import com.massivecraft.massivecore.command.type.enumeration.TypeParticleEffect;
@@ -322,6 +323,15 @@ public class RegistryType
 		try
 		{
 			register(TypeDamageModifier.get());
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		
+		try
+		{
+			register(TypeLlamaColor.get());
 		}
 		catch (Throwable t)
 		{
