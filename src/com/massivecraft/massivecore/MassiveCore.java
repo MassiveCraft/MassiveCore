@@ -1,5 +1,18 @@
 package com.massivecraft.massivecore;
 
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
 import com.massivecraft.massivecore.adapter.AdapterBackstringEnumSet;
 import com.massivecraft.massivecore.adapter.AdapterBannerPatterns;
 import com.massivecraft.massivecore.adapter.AdapterEntry;
@@ -103,18 +116,6 @@ import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 
 public class MassiveCore extends MassivePlugin
 {
@@ -229,7 +230,7 @@ public class MassiveCore extends MassivePlugin
 	public void onLoadInner()
 	{
 		// Attempting to fix a race condition within the class asynchronous class loader.
-		System.out.println("TimeUnit.MILLIS_PER_MINUTE: " + TimeUnit.MILLIS_PER_MINUTE);
+		System.out.println(TimeUnit.DAY);
 	}
 	
 	// -------------------------------------------- //
