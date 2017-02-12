@@ -28,6 +28,7 @@ import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.Type;
+import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
@@ -76,6 +77,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		if (active)
 		{
 			getAllInstances().add(this);
+			if (this.isSetupEnabled()) this.setup();
 		}
 		else
 		{
@@ -183,7 +185,20 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	protected List<?> help = new ArrayList<>();
 	
 	// The visibility of this command in help command.
-	protected Visibility visibility = Visibility.VISIBLE; 
+	protected Visibility visibility = Visibility.VISIBLE;
+
+	// === SETUP ===
+
+	// Determines whether the smart setup process will be used, works for most of commands
+	protected boolean setupEnabled = false;
+
+	// A base prefix such as "CmdFactions" that all names of commands in a plugin start with.
+	// Used for finding the right permission.
+	// Should be set in a super class for all the commands in a plugin.
+	protected String setupPermBaseClassName = null;
+
+	// The Class representing the permissions.
+	protected Class<? extends Enum<?>> setupPermClass = null;
 	
 	// === EXECUTION ===
 	
@@ -888,7 +903,143 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		if (this.getVisibility() == Visibility.INVISIBLE) return false;
 		return this.isRequirementsMet(sender, false);
 	}
-	
+
+	// -------------------------------------------- //
+	// SETUP
+	// -------------------------------------------- //
+
+	public boolean isSetupEnabled() { return this.setupEnabled; }
+	public void setSetupEnabled(boolean setupEnabled) { this.setupEnabled = setupEnabled; }
+
+	public String getSetupPermBaseClassName()
+	{
+		// Use field if present
+		if (this.setupPermBaseClassName != null) return this.setupPermBaseClassName;
+
+		// Otherwise guess
+		return this.getRoot().getClass().getSimpleName();
+	}
+	public void setSetupPermBaseClassName(String setupPermBaseClassName) { this.setupPermBaseClassName = setupPermBaseClassName; }
+
+	public <T extends Enum<T>> Class<T> getSetupPermClass()
+	{
+		// Use field if present
+		if (this.setupPermClass != null) return (Class) this.setupPermClass;
+
+		// Otherwise guess
+		String nameClass = this.getRoot().getPlugin().getClass().getPackage().getName() + ".Perm";
+		try
+		{
+			return (Class) Class.forName(nameClass);
+		}
+		catch (ClassNotFoundException e)
+		{
+			// If setup is enabled but the class is neither specified nor findable
+			// an error should be thrown to notify the developer.
+			throw new RuntimeException(e);
+		}
+	}
+	public <T extends Enum<T>> void setSetupPermClass(Class<T> setupPermClass) { this.setupPermClass = setupPermClass; }
+
+	public void setup()
+	{
+		String name = this.calcName();
+		if (name != null) this.getAliases().add(0, name);
+
+		Object permission = this.calcPerm();
+		if (permission != null) this.addRequirements(RequirementHasPerm.get(permission));
+
+		this.setupChildren();
+	}
+
+	public void setupChildren()
+	{
+		for (MassiveCommand child : this.getChildren())
+		{
+			if (child.isSetupEnabled()) child.setup();
+		}
+	}
+
+	protected String calcName()
+	{
+		// If this is a child command
+		if (this.isRoot()) return null;
+
+		// ... get name of parent ...
+		String parentName = this.getParent().getClass().getSimpleName();
+
+		// ... and only try if the names match ...
+		String name = this.getClass().getSimpleName();
+		if ( ! name.startsWith(parentName)) return null;
+
+		// ... and without parent prefix ...
+		String ret = name.substring(parentName.length());
+
+		// ... and lowercase the first character.
+		ret = Character.toLowerCase(ret.charAt(0)) + ret.substring(1);
+
+		return ret;
+	}
+
+	protected <T extends Enum<T>> T calcPerm()
+	{
+		Class<T> permClass = this.getSetupPermClass();
+		String basePrefix = this.getSetupPermBaseClassName();
+
+		if (permClass == null) return null;
+		if (basePrefix == null) return null;
+
+		// Only try if the name matches with the expected prefix ...
+		String name = this.getClass().getSimpleName();
+		if ( ! name.startsWith(basePrefix)) return null;
+
+		// ... and remove the prefix  ...
+		String permName = name.substring(basePrefix.length());
+
+		// ... split at new words and separate with underscore.
+		permName = Txt.implode(Txt.camelsplit(permName), "_");
+
+		// Enums are alway upper case.
+		permName = permName.toUpperCase();
+
+		// If the name is empty it is the base command
+		if (permName.isEmpty()) permName = "BASECOMMAND";
+
+		// Create ret
+		T ret = null;
+
+		// Try non-lenient
+		ret = getPerm(permName, false, permClass);
+		if (ret != null) return ret;
+
+		// Try lenient
+		ret = getPerm(permName, true, permClass);
+		if (ret != null) return ret;
+
+		throw new RuntimeException("Could not find permission matching: " + permName);
+	}
+
+	protected static <T extends Enum<T>> T getPerm(String permName, boolean lenient, Class<T> permClass)
+	{
+		permName = getPermCompareString(permName, lenient);
+		for (T perm : TypeEnum.getEnumValues(permClass))
+		{
+			String compare = getPermCompareString(perm.name(), lenient);
+			if (compare.equals(permName)) return perm;
+		}
+		return null;
+	}
+
+	protected static String getPermCompareString(String permName, boolean lenient)
+	{
+		if (lenient)
+		{
+			permName = permName.toUpperCase();
+			permName = permName.replace("_", "");
+		}
+		return permName;
+	}
+
 	// -------------------------------------------- //
 	// EXECUTION
 	// -------------------------------------------- //
@@ -1179,6 +1330,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		}
 		
 		// Then ourself
+		if (this.getAliases().isEmpty()) throw new IllegalStateException(this.getClass().getSimpleName() + " has no aliases.");
 		ret.append(this.getAliases().get(0));
 		
 		// Then args
