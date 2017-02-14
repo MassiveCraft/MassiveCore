@@ -1,16 +1,16 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
+import java.util.Map;
 
 import org.bukkit.inventory.ItemStack;
 
-public class CommandEditItemStacks<O> extends CommandEditAbstract<O, List<ItemStack>>
+public class CommandEditItemStackMap<O> extends CommandEditAbstract<O, Map<Integer, ItemStack>>
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CommandEditItemStacks(EditSettings<O> settings, Property<O, List<ItemStack>> property)
+	public CommandEditItemStackMap(EditSettings<O> settings, Property<O, Map<Integer, ItemStack>> property)
 	{
 		// Super
 		super(settings, property, true);
@@ -26,7 +26,7 @@ public class CommandEditItemStacks<O> extends CommandEditAbstract<O, List<ItemSt
 		
 		if (property.isEditable())
 		{
-			this.addChild(new CommandEditItemStacksOpenList<O>(settings, property));
+			this.addChild(new CommandEditItemStacksOpenMap<O>(settings, property));
 		}
 	}
 	

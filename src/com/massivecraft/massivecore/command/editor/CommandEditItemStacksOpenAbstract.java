@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -11,29 +10,35 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.mixin.MixinInventory;
-import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<O> implements Listener
+public abstract class CommandEditItemStacksOpenAbstract<O, V> extends CommandEditAbstract<O, V> implements Listener
 {	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public CommandEditItemStacksOpen(EditSettings<O> settings, Property<O, List<ItemStack>> property)
+	public CommandEditItemStacksOpenAbstract(EditSettings<O> settings, Property<O, V> property)
 	{
-		// Super	
-		super(settings, property);
+		// Super
+		super(settings, property, true);
+		
+		// Aliases
+		String alias = this.createCommandAlias();
+		this.setAliases(alias);
+		
+		// Desc
+		this.setDesc(alias + " " + this.getPropertyName());
 		
 		// Requirements
+		this.addRequirements(RequirementEditorPropertyCreated.get(true));
 		this.addRequirements(RequirementIsPlayer.get());
 		
 		// Listener
@@ -86,7 +91,7 @@ public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<
 		this.setEditing(player, false);
 	
 		// ... load the item stacks into a list ...
-		List<ItemStack> after = asList(event.getInventory());
+		V after = asContainer(event.getInventory());
 		
 		// ... attempt set.
 		this.senderFieldsOuter(player);
@@ -102,7 +107,7 @@ public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<
 	public void perform() throws MassiveException
 	{
 		// Get Before
-		List<ItemStack> before = this.getProperty().getRaw(this.getObject());
+		V before = this.getProperty().getRaw(this.getObject());
 		
 		// Open Chest
 		Inventory chest = asChest(before);
@@ -111,51 +116,19 @@ public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<
 	}
 	
 	// -------------------------------------------- //
-	// CONVERT LIST <--> CHEST
+	// CONVERT CONTAINER <--> CHEST
 	// -------------------------------------------- //
 	
-	public Inventory asChest(List<ItemStack> itemStacks)
+	private Inventory asChest(V itemStacks)
 	{
-		// Dodge Null
-		if (itemStacks == null) return null;
-		
 		// Create Ret
 		Inventory ret = MixinInventory.get().createInventory(me, 54, this.getProperty().getName());
 		
-		// Fill Ret
-		for (int i = 0; i < itemStacks.size(); i++)
-		{
-			ItemStack itemStack = itemStacks.get(i);
-			if (InventoryUtil.isNothing(itemStack)) continue;
-			itemStack = new ItemStack(itemStack);
-			
-			ret.setItem(i, itemStack);
-		}
-		
-		// Return Ret
-		return ret;
+		// Dodge Null
+		return itemStacks == null ? ret : this.asChestInner(itemStacks, ret);
 	}
 	
-	public List<ItemStack> asList(Inventory inventory)
-	{
-		// Dodge Null
-		if (inventory == null) return null;
-		
-		// Create Ret
-		List<ItemStack> ret = new MassiveList<ItemStack>();
-		
-		// Fill Ret
-		for (int i = 0; i < inventory.getSize(); i++)
-		{
-			ItemStack itemStack = inventory.getItem(i);
-			if (InventoryUtil.isNothing(itemStack)) continue;
-			itemStack = new ItemStack(itemStack);
-			
-			ret.add(itemStack);
-		}
-		
-		// Return Ret
-		return ret;
-	}
+	protected abstract Inventory asChestInner(V itemStacks, Inventory inventory);
+	protected abstract V asContainer(Inventory inventory);
 	
 }
