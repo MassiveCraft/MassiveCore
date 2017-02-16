@@ -3,9 +3,13 @@ package com.massivecraft.massivecore.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -486,6 +490,48 @@ public class ReflectionUtil
 		{
 			System.out.println(className);
 		}
+	}
+	
+	// -------------------------------------------- //
+	// TYPE CHECKS
+	// -------------------------------------------- //
+	
+	public static boolean isRawTypeAssignableFromAny(Type goal, Type... subjects)
+	{
+		// Cache this value since it will save us calculations
+		Class<?> classGoal = classify(goal);
+		
+		for (Type t: subjects)
+		{
+			if (isRawTypeAssignableFrom(classGoal, t)) return true;
+		}
+		return false;
+	}
+	
+	public static boolean isRawTypeAssignableFrom(Type a, Type b)
+	{
+		if (a == null || b == null) return false;
+		
+		// Yes, this is a different sense of "Classifying"
+		Class<?> classifiedA = classify(a);
+		Class<?> classifiedB = classify(b);
+		
+		// In case one of the methods failed to retrieve a class
+		if (classifiedA == null || classifiedB == null) return a.equals(b);
+		
+		return classifiedA.isAssignableFrom(classifiedB);
+	}
+	
+	private static Class<?> classify(Type type)
+	{
+		// Use loop structure rather than recursion to avoid stack size issues
+		while (!(type instanceof Class))
+		{
+			// Check for parameterized type
+			if (!(type instanceof ParameterizedType)) return null;
+			type = ((ParameterizedType) type).getRawType();
+		}
+		return (Class) type;
 	}
 	
 }

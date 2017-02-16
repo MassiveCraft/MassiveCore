@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.massivecraft.massivecore.collections.ExceptionSet;
@@ -127,28 +126,28 @@ public class RegistryType
 		{
 			if (fieldType instanceof ParameterizedType)
 			{
-				Class<?> fieldClass = field.getType();
+				Class<?> fieldClass = field == null ? null : field.getType();
 				List<Type<?>> innerTypes;
 				
-				if (List.class.isAssignableFrom(fieldClass))
+				if (ReflectionUtil.isRawTypeAssignableFromAny(List.class, fieldType, fieldClass))
 				{
 					innerTypes = getInnerTypes(field, fieldType, 1);
 					return TypeList.get(innerTypes.get(0));
 				}
 				
-				if (Set.class.isAssignableFrom(fieldClass))
+				if (ReflectionUtil.isRawTypeAssignableFromAny(Set.class, fieldType, fieldClass))
 				{
 					innerTypes = getInnerTypes(field, fieldType, 1);
 					return TypeSet.get(innerTypes.get(0));
 				}
 				
-				if (Entry.class.isAssignableFrom(fieldClass))
+				if (ReflectionUtil.isRawTypeAssignableFromAny(Map.Entry.class, fieldType, fieldClass))
 				{
 					innerTypes = getInnerTypes(field, fieldType, 2);
 					return TypeEntry.get(innerTypes.get(0), innerTypes.get(1));
 				}
 				
-				if (Map.class.isAssignableFrom(fieldClass))
+				if (ReflectionUtil.isRawTypeAssignableFromAny(Map.class, fieldType, fieldClass))
 				{
 					innerTypes = getInnerTypes(field, fieldType, 2);
 					return TypeMap.get(innerTypes.get(0), innerTypes.get(1));
