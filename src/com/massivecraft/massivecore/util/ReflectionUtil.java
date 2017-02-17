@@ -465,4 +465,27 @@ public class ReflectionUtil
 	private static int versionRelease = Integer.valueOf(getVersionRawPart(2).substring(1));
 	public static int getVersionRelease() { return versionRelease; }
 	
+	// -------------------------------------------- //
+	// FORCE LOAD CLASSES
+	// -------------------------------------------- //
+	
+	public static void forceLoadClasses(Class<?>... classes)
+	{
+		for (Class<?> clazz : classes)
+		{
+			forceLoadClass(clazz);
+		}
+	}
+	
+	// We chose this "weird" string in startsWith to avoid getting optimized away by the JIT compiler.
+	// It will never start with this string, but the JIT can't be sure of that.
+	public static void forceLoadClass(Class<?> clazz)
+	{
+		String className = clazz.getSimpleName();
+		if (className.startsWith("Spaces are not allowed in class names."))
+		{
+			System.out.println(className);
+		}
+	}
+	
 }
