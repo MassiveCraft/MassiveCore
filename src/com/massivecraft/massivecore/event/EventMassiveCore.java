@@ -1,11 +1,12 @@
 package com.massivecraft.massivecore.event;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+
+import com.massivecraft.massivecore.collections.MassiveMap;
 
 public abstract class EventMassiveCore extends Event implements Runnable, Cancellable
 {
@@ -13,7 +14,7 @@ public abstract class EventMassiveCore extends Event implements Runnable, Cancel
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final Map<String, Object> customData = new LinkedHashMap<String, Object>();
+	private final transient Map<String, Object> customData = new MassiveMap<>();
 	public Map<String, Object> getCustomData() { return this.customData; }
 	
 	private boolean cancelled = false;
