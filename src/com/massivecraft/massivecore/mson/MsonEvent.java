@@ -11,6 +11,8 @@ import com.massivecraft.massivecore.nms.NmsItemStackTooltip;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public final class MsonEvent implements Serializable
 {
@@ -164,8 +166,29 @@ public final class MsonEvent implements Serializable
 	public static MsonEvent item(ItemStack item)
 	{
 		if (item == null) throw new NullPointerException("item");
+		item = getItemSanitizedForTooltip(item);
 		String value = NmsItemStackTooltip.get().getNbtStringTooltip(item);
 		return MsonEvent.valueOf(MsonEventAction.SHOW_ITEM, value);
+	}
+	
+	private static ItemStack getItemSanitizedForTooltip(ItemStack item)
+	{
+		if (item == null) throw new NullPointerException("item");
+		
+		if (!item.hasItemMeta()) return item;
+		
+		ItemMeta meta = item.getItemMeta();
+		
+		if (meta instanceof BookMeta)
+		{
+			BookMeta book = (BookMeta)meta;
+			book.setPages();
+			item = item.clone();
+			item.setItemMeta(meta);
+			return item;
+		}
+		
+		return item;
 	}
 
 	// -------------------------------------------- //
