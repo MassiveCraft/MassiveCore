@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.massivecraft.massivecore.collections.BackstringEnumSet;
 import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
@@ -17,6 +18,7 @@ import com.massivecraft.massivecore.command.type.combined.TypeDataPotionEffect;
 import com.massivecraft.massivecore.command.type.combined.TypeEntry;
 import com.massivecraft.massivecore.command.type.combined.TypePotionEffectWrap;
 import com.massivecraft.massivecore.command.type.combined.TypeSoundEffect;
+import com.massivecraft.massivecore.command.type.container.TypeBackStringEnumSet;
 import com.massivecraft.massivecore.command.type.container.TypeExceptionSet;
 import com.massivecraft.massivecore.command.type.container.TypeList;
 import com.massivecraft.massivecore.command.type.container.TypeMap;
@@ -128,6 +130,12 @@ public class RegistryType
 			{
 				Class<?> fieldClass = field == null ? null : field.getType();
 				List<Type<?>> innerTypes;
+				
+				if (ReflectionUtil.isRawTypeAssignableFromAny(BackstringEnumSet.class, fieldType, fieldClass))
+				{
+					innerTypes = getInnerTypes(field, fieldType, 1);
+					return TypeBackStringEnumSet.get((Type<? extends Enum>)innerTypes.get(0));
+				}
 				
 				if (ReflectionUtil.isRawTypeAssignableFromAny(List.class, fieldType, fieldClass))
 				{

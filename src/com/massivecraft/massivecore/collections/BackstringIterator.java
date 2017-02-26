@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.collections;
 
 import java.util.Iterator;
 
+@Deprecated
 public class BackstringIterator<E> implements Iterator<E>
 {
 	// -------------------------------------------- //

@@ -1,10 +1,13 @@
 package com.massivecraft.massivecore.collections;
 
 import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public abstract class BackstringSet<T> extends AbstractSet<T>
@@ -22,6 +25,8 @@ public abstract class BackstringSet<T> extends AbstractSet<T>
 	
 	public abstract T convertFromString(String string);
 	public abstract String convertToString(Object t);
+	
+	public abstract Map<String, T> getStringToTypeMap();
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -55,7 +60,21 @@ public abstract class BackstringSet<T> extends AbstractSet<T>
 	@Override
 	public Iterator<T> iterator()
 	{
-		return new BackstringIterator<T>(this.stringSet.iterator(), this);
+		// Create
+		List<T> ret = new ArrayList<>();
+		
+		// Get our conversion map
+		Map<String, T> typeMap = this.getStringToTypeMap();
+		
+		// Fill
+		for (String key: this.getStringSet())
+		{
+			T value = typeMap.get(key);
+			if (value != null) ret.add(value);
+		}
+		
+		// Return
+		return ret.iterator();
 	}
 	
 	@Override

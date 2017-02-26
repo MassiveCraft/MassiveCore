@@ -67,5 +67,11 @@ public class BackstringEnumSet<T extends Enum<?>> extends BackstringSet<T>
 		
 		return t.toString();
 	}
+	
+	@Override
+	public Map<String, T> getStringToTypeMap()
+	{
+		return this.name2enum;
+	}
 
 }
