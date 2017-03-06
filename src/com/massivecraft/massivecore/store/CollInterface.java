@@ -97,6 +97,8 @@ public interface CollInterface<E extends Entity<E>> extends Named, Active, Ident
 	// A default entity will not be saved.
 	// This is often used together with creative collections to save disc space.
 	public boolean isDefault(E entity);
+
+	public int getEntityTargetVersion();
 	
 	// -------------------------------------------- //
 	// COPY AND CREATE

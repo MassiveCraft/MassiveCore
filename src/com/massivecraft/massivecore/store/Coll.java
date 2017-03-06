@@ -26,6 +26,8 @@ import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.mixin.MixinModification;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateEqualsIgnoreCase;
+import com.massivecraft.massivecore.store.migration.VersionMigrationUtil;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -202,6 +204,10 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		return entity.isDefault();
 	}
+
+	// What entity version do we want?
+	protected final int entityTargetVersion;
+	@Override public int getEntityTargetVersion() { return this.entityTargetVersion; }
 
 	// -------------------------------------------- //
 	// COPY AND CREATE
@@ -508,7 +514,17 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		if ( ! this.remoteEntryIsOk(id, remoteEntry)) return;
 		JsonObject raw = remoteEntry.getKey();
 		Long mtime = remoteEntry.getValue();
-		
+
+		int version = VersionMigrationUtil.getVersion(raw);
+		if (version > this.getEntityTargetVersion())
+		{
+			logLoadError(id, String.format("Cannot load entity of entity version %d", version));
+			return;
+		}
+
+		// Migrate if another version is wanted
+		boolean migrated = VersionMigrationUtil.migrate(this.getEntityClass(), raw, this.getEntityTargetVersion());
+
 		// Calculate temp but handle raw cases.
 		E temp;
 		
@@ -547,6 +563,9 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		entity.setLastRaw(raw);
 		entity.setLastMtime(mtime);
 		entity.setLastDefault(false);
+
+		// Now the loading is done. If it was migrated we will have to save it to remote again.
+		if (migrated) this.putIdentifiedModificationFixed(id, Modification.LOCAL_ALTER);
 	}
 	
 	public boolean remoteEntryIsOk(String id, Entry<JsonObject, Long> remoteEntry)
@@ -947,7 +966,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
-	
+
 	public Coll(String id, Class<E> entityClass, Db db, MassivePlugin plugin)
 	{
 		// Plugin
@@ -980,6 +999,18 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		// Collections
 		this.id2entity = new ConcurrentHashMap<String, E>();
 		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
+
+		// Migration
+		int version = 0;
+		try
+		{
+			version = ReflectionUtil.getField(this.getEntityClass(), VersionMigrationUtil.VERSION_FIELD_NAME, this.createNewInstance());
+		}
+		catch (Exception ex)
+		{
+			// The field was not there
+		}
+		this.entityTargetVersion = version;
 		
 		// Tasks
 		this.tickTask = new Runnable()
@@ -1025,7 +1056,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		if (ret == null) throw new RuntimeException("plugin could not be calculated");
 		return ret;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Class<E> calculateEntityClass()
 	{
@@ -1034,7 +1065,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		Type[] typeArguments = superType.getActualTypeArguments();
 		return (Class<E>) typeArguments[0];
 	}
-	
+
 	public String calculateId()
 	{
 		return this.getPlugin().getDescription().getName().toLowerCase() + "_" + this.getEntityClass().getSimpleName().toLowerCase();
@@ -1064,6 +1095,8 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		// TODO: Clean up this stuff below. It branches too late.
 		if (active)
 		{
+			VersionMigrationUtil.validateMigratorsPresent(entityClass, 0, this.getEntityTargetVersion());
+
 			if (this.supportsPusher())
 			{
 				this.getPusher().init();

@@ -56,7 +56,7 @@ public class Entity<E extends Entity<E>> implements Identified
 		this.lastMtime = 0;
 		this.lastDefault = false;
 	}
-	
+
 	// -------------------------------------------- //
 	// ATTACH AND DETACH
 	// -------------------------------------------- //
