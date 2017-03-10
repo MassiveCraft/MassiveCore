@@ -40,6 +40,8 @@ public class CommandEditSingleton<O> extends CommandEditProperties<O, O>
 	@SuppressWarnings("unchecked")
 	private static <O> Type<O> getType(O object)
 	{
+		if (object == null) throw new NullPointerException("object");
+
 		// Get the return value
 		Type<O> ret = TypeSingleton.get(object);
 		

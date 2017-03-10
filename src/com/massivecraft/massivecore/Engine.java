@@ -35,7 +35,7 @@ public abstract class Engine implements Active, Listener, Runnable
 		if (this.hasPlugin()) return;
 		this.plugin = plugin;
 	}
-	
+
 	// -------------------------------------------- //
 	// TASK
 	// -------------------------------------------- //

@@ -1,8 +1,14 @@
 package com.massivecraft.massivecore.util;
 
+
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
+import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateAnd;
 import org.bukkit.Bukkit;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -12,6 +18,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ReflectionUtil
@@ -243,6 +250,19 @@ public class ReflectionUtil
 		}
 		return fallback;
 	}
+	
+	public static boolean isSingleton(Class<?> clazz)
+	{
+		try
+		{
+			Method get = getMethod(clazz, "get");
+			return true;
+		}
+		catch (Exception ex)
+		{
+			return false;
+		}
+	}
 
 	// -------------------------------------------- //
 	// ANNOTATION
@@ -422,7 +442,61 @@ public class ReflectionUtil
 			}
 		});
 	}
-	
+
+	// -------------------------------------------- //
+	// GET PACKAGE CLASSES
+	// -------------------------------------------- //
+
+	@SuppressWarnings("unchecked")
+	public static List<Class<?>> getPackageClasses(String packageName, ClassLoader classLoader, boolean recursive, Predicate<Class<?>>... predicates)
+	{
+		// Create ret
+		List<Class<?>> ret = new MassiveList<>();
+
+		try
+		{
+			// Get info
+			ClassPath classPath = ClassPath.from(classLoader);
+			Predicate<Class<?>> predicateCombined = PredicateAnd.get(predicates);
+
+			Collection<ClassInfo> classes = recursive ? classPath.getTopLevelClassesRecursive(packageName) : classPath.getTopLevelClasses(packageName);
+
+			for (ClassInfo classInfo : classes)
+			{
+				// Get name of class
+				String className = classInfo.getName();
+
+				// Avoid versions created at runtime
+				// Apparently it found a "EngineMassiveCoreCollTick 3" which we don't want
+				if (className.contains(" ")) continue;
+
+				// Try and load it
+				Class<?> clazz;
+				try
+				{
+					clazz = classInfo.load();
+				}
+				catch (NoClassDefFoundError ex)
+				{
+					// This thing couldn't be loaded. Probably has to do with integrations.
+					// Just skip it
+					continue;
+				}
+
+				// And it must not be ignored
+				if (!predicateCombined.apply(clazz)) continue;
+
+				ret.add(clazz);
+			}
+		}
+		catch (IOException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+
+		return ret;
+	}
+
 	// -------------------------------------------- //
 	// AS RUNTIME EXCEPTION
 	// -------------------------------------------- //

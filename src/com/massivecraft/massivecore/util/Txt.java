@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.util;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
+import com.massivecraft.massivecore.cmd.CmdMassiveCore;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.predicate.Predicate;

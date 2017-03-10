@@ -143,6 +143,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// -------------------------------------------- //
 	
 	public boolean debugWriters = false;
+	public boolean debugActives = false;
 	public boolean testsEnabled = false;
 	
 	// -------------------------------------------- //
