@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.massivecraft.massivecore.util.DiscUtil;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonParser;
 
@@ -146,6 +147,43 @@ public class DriverFlatfile extends DriverAbstract
 	{
 		File file = fileFromId(coll, id);
 		return loadFile(file);
+	}
+	
+	@Override
+	public Map<String, Entry<JsonObject, Long>> loadFilter(Coll<?> coll, JsonObject filter){
+		// Create Ret
+		Map<String, Entry<JsonObject, Long>> ret = null;
+		
+		// Get Directory
+		File directory = getDirectory(coll);
+		if ( ! directory.isDirectory()) return ret;
+		
+		// Find All
+		File[] files = directory.listFiles(JsonFileFilter.get());
+		
+		// Create Ret
+		ret = new LinkedHashMap<String, Entry<JsonObject, Long>>(files.length);
+       
+		// Filter rules
+		Set<Map.Entry<String, JsonElement>> filterRules = filter.entrySet();
+		
+		// For Each Found
+		for (File file : files)
+		{
+			// Get ID
+			String id = idFromFile(file);
+			
+			// Get Entry
+			Entry<JsonObject, Long> entry = loadFile(file);
+			
+			Set<Map.Entry<String, JsonElement>> fileEntries = entry.getKey().entrySet();
+			if (fileEntries.containsAll(filterRules)) {
+				// add to filtered
+				ret.put(id, entry);
+			}
+		}
+		
+        return ret;
 	}
 	
 	public Entry<JsonObject, Long> loadFile(File file)

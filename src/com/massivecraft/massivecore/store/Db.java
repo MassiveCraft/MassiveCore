@@ -37,6 +37,7 @@ public interface Db
 	public Collection<String> getIds(Coll<?> coll);
 	public Map<String, Long> getId2mtime(Coll<?> coll);
 	public Entry<JsonObject, Long> load(Coll<?> coll, String id);
+	public Map<String, Entry<JsonObject, Long>> loadFilter(Coll<?> coll, JsonObject filter);
 	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll);
 	public long save(Coll<?> coll, String id, JsonObject data);
 	public void delete(Coll<?> coll, String id);

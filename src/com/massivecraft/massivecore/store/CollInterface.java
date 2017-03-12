@@ -59,6 +59,8 @@ public interface CollInterface<E extends Entity<E>> extends Named, Active, Ident
 	
 	public Collection<E> getAll();
 	
+	public List<E> getAll(JsonObject filter);
+	
 	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Comparator<? super E> orderby, Integer limit, Integer offset);
 	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Comparator<? super E> orderby, Integer limit);
 	public List<E> getAll(Iterable<?> oids, Predicate<? super E> where, Comparator<? super E> orderby);

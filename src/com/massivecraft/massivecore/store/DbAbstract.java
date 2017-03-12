@@ -63,6 +63,10 @@ public abstract class DbAbstract implements Db
 		return this.getDriver().load(coll, id);
 	}
 	
+	public Map<String, Entry<JsonObject, Long>> loadFilter(Coll<?> coll, JsonObject filter){
+		return this.loadFilter(coll, filter);
+	}
+	
 	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll)
 	{
 		return this.getDriver().loadAll(coll);

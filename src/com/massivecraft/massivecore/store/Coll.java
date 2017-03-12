@@ -1136,4 +1136,15 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return this.getByName(str) != null;
 	}
 	
+	@Override
+	public List<E> getAll(JsonObject filter) {
+		List<E> ret = new ArrayList<E>();
+		for(Entry<String, Entry<JsonObject, Long>> idToEntry : this.getDb().loadFilter(this, filter).entrySet()){
+			// Does this load it twice?
+			E e = this.getFixed(idToEntry.getKey());
+			ret.add(e);
+		}
+		return ret;
+	}
+	
 }

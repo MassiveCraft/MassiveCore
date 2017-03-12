@@ -179,6 +179,49 @@ public class DriverMongo extends DriverAbstract
 		return loadRaw(raw);
 	}
 	
+	@Override
+	public Map<String, Entry<JsonObject, Long>> loadFilter(Coll<?> coll, JsonObject filter){
+		DBCollection dbcoll = fixColl(coll);
+		
+		// Declare Ret
+		Map<String, Entry<JsonObject, Long>> ret = null;
+		
+		BasicDBObject ref = GsonMongoConverter.gson2MongoObject(filter);
+		
+		// ref object for which to search
+		// keys fields to return
+		DBCursor cursor = dbcoll.find(ref);
+		
+		try {
+			// Create Ret
+			ret = new LinkedHashMap<String, Entry<JsonObject, Long>>(cursor.count());
+			
+			// For Each Found
+			while (cursor.hasNext())
+			{
+				BasicDBObject raw = (BasicDBObject)cursor.next();
+				
+				// Get ID
+				Object rawId = raw.removeField(ID_FIELD);
+				if (rawId == null) continue;
+				String id = rawId.toString();
+				
+				// Get Entry
+				Entry<JsonObject, Long> entry = loadRaw(raw);
+				// NOTE: The entry can be a failed one with null and 0.
+				// NOTE: We add it anyways since it's an informative failure.
+				// NOTE: This is supported by our defined specification.
+				
+				// Add
+				ret.put(id, entry);
+			}
+		} finally {
+			cursor.close();
+		}
+		
+		return ret;
+	}
+	
 	public Entry<JsonObject, Long> loadRaw(BasicDBObject raw)
 	{
 		if (raw == null) return new SimpleEntry<JsonObject, Long>(null, 0L);

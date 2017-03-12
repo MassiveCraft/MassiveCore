@@ -44,6 +44,12 @@ public interface Driver
 	// return.getKey() == null || return.getValue() == 0 means something failed.
 	public Entry<JsonObject, Long> load(Coll<?> coll, String id);
 	
+	// Download exactly the needed files using filtering at the MongoDB end,
+	// which is originally not possible in MassiveCore since every filtering
+	// is done at the Java end rather than the MongoDB end. Also works for
+	// flatfile, should increase overall performance.
+	public Map<String, Entry<JsonObject, Long>> loadFilter(Coll<?> coll, JsonObject filter);
+	
 	// Load all database content at once
 	// NOTE: This method is assumed to be based on the one above.
 	// NOTE: Values where JsonObject == null and Long == 0 may occur.
