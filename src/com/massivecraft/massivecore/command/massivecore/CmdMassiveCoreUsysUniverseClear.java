@@ -1,15 +1,12 @@
 package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.store.TypeMultiverse;
 
-public class CmdMassiveCoreUsysUniverseClear extends MassiveCommand
+public class CmdMassiveCoreUsysUniverseClear extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -17,15 +14,9 @@ public class CmdMassiveCoreUsysUniverseClear extends MassiveCommand
 	
 	public CmdMassiveCoreUsysUniverseClear()
 	{
-		// Aliases
-		this.addAliases("clear");
-		
 		// Parameters
 		this.addParameter(TypeString.get(), "universe").setDesc("the universe to clear");
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to clear");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE_CLEAR));
 	}
 	
 	// -------------------------------------------- //

@@ -1,14 +1,11 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.store.TypeMultiverse;
 
-public class CmdMassiveCoreUsysWorld extends MassiveCommand
+public class CmdMassiveCoreUsysWorld extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -16,16 +13,10 @@ public class CmdMassiveCoreUsysWorld extends MassiveCommand
 	
 	public CmdMassiveCoreUsysWorld()
 	{
-		// Aliases
-		this.addAliases("w", "world");
-		
 		// Parameters
 		this.addParameter(TypeString.get(), "world").setDesc("the world to move");
 		this.addParameter(TypeString.get(), "universe").setDesc("the universe to move the world ro");
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to move the world to");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_WORLD));
 	}
 	
 	// -------------------------------------------- //

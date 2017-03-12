@@ -1,10 +1,7 @@
 package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.ConfServer;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.store.Coll;
@@ -15,7 +12,7 @@ import com.massivecraft.massivecore.util.Txt;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class CmdMassiveCoreStoreListcolls extends MassiveCommand
+public class CmdMassiveCoreStoreListcolls extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -23,14 +20,8 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 	
 	public CmdMassiveCoreStoreListcolls()
 	{
-		// Aliases
-		this.addAliases("listcolls");
-		
 		// Parameters
 		this.addParameter(TypeString.get(), "db", ConfServer.dburi).setDesc("the database to list colls from");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_LISTCOLLS));
 	}
 	
 	// -------------------------------------------- //

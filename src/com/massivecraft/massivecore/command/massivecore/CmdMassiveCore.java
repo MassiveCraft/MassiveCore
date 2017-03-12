@@ -3,7 +3,6 @@ package com.massivecraft.massivecore.command.massivecore;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassiveCorePerm;
-import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.MassiveCommandVersion;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.CommandEditSingleton;
@@ -11,7 +10,7 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 
 import java.util.List;
 
-public class CmdMassiveCore extends MassiveCommand
+public class CmdMassiveCore extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// INSTANCE
@@ -35,29 +34,6 @@ public class CmdMassiveCore extends MassiveCommand
 	public CmdMassiveCoreSponsor cmdMassiveCoreSponsor = new CmdMassiveCoreSponsor();
 	public CmdMassiveCoreClick cmdMassiveCoreClick = new CmdMassiveCoreClick();
 	public MassiveCommandVersion cmdMassiveCoreVersion = new MassiveCommandVersion(MassiveCore.get()).setAliases("v", "version").addRequirements(RequirementHasPerm.get(MassiveCorePerm.VERSION));
-	
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	public CmdMassiveCore()
-	{
-		// Children
-		this.addChild(this.cmdMassiveCoreUsys);
-		this.addChild(this.cmdMassiveCoreMStore);
-		this.addChild(this.cmdMassiveCoreId);
-		this.addChild(this.cmdMassiveCoreTest);
-		this.addChild(this.cmdMassiveCoreHearsound);
-		this.addChild(this.cmdMassiveCoreBuffer);
-		this.addChild(this.cmdMassiveCoreCmdurl);
-		this.addChild(this.cmdMassiveCoreConfig);
-		this.addChild(this.cmdMassiveCoreSponsor);
-		this.addChild(this.cmdMassiveCoreClick);
-		this.addChild(this.cmdMassiveCoreVersion);
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BASECOMMAND));
-	}
 	
 	// -------------------------------------------- //
 	// OVERRIDE

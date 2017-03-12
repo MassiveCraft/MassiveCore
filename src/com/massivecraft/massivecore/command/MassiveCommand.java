@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.command;
 
+
 import com.massivecraft.massivecore.Active;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveException;
@@ -17,6 +18,7 @@ import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -25,6 +27,8 @@ import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -916,6 +920,25 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		if (this.setupPermBaseClassName != null) return this.setupPermBaseClassName;
 
 		// Otherwise guess
+		// Since some commands such as CmdMassiveCoreUsys aren't the base command
+		// but are still outer/root commands we can't always trust the root command.
+		// Thus we try by using the plugin name first.
+		Plugin plugin = this.getRoot().getPlugin();
+		String pluginName = plugin.getName();
+		String cmdPackageName = plugin.getClass().getName() + ".cmd.";
+
+		// Try Cmd + plugin name
+		String baseCommandName = "Cmd" + pluginName;
+		if (ReflectionUtil.classExists(cmdPackageName + baseCommandName)) return baseCommandName;
+
+		// Try Cmd + plugin name without "Massive prefix"
+		if (pluginName.startsWith("Massive"))
+		{
+			baseCommandName = "Cmd" + pluginName.substring("Massive".length());
+			if (ReflectionUtil.classExists(cmdPackageName + baseCommandName)) return baseCommandName;
+		}
+
+		// Use the name of the root command
 		return this.getRoot().getClass().getSimpleName();
 	}
 	public void setSetupPermBaseClassName(String setupPermBaseClassName) { this.setupPermBaseClassName = setupPermBaseClassName; }
@@ -948,7 +971,25 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		Object permission = this.calcPerm();
 		if (permission != null) this.addRequirements(RequirementHasPerm.get(permission));
 
+		this.setupAddChildren();
 		this.setupChildren();
+	}
+
+	public void setupAddChildren()
+	{
+		String s = this.getClass().getSimpleName();
+
+		for (Field field : this.getClass().getDeclaredFields())
+		{
+			ReflectionUtil.makeAccessible(field);
+			Class<?> fieldType = field.getType();
+
+			if (!MassiveCommand.class.isAssignableFrom(fieldType)) continue;
+			if (Modifier.isStatic(field.getModifiers())) continue;
+
+			MassiveCommand child = ReflectionUtil.getField(field, this);
+			this.addChild(child);
+		}
 	}
 
 	public void setupChildren()

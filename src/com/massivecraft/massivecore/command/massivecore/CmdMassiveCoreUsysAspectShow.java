@@ -1,14 +1,11 @@
 package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.Aspect;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.store.TypeAspect;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
+public class CmdMassiveCoreUsysAspectShow extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -16,14 +13,8 @@ public class CmdMassiveCoreUsysAspectShow extends MassiveCommand
 	
 	public CmdMassiveCoreUsysAspectShow()
 	{
-		// Aliases
-		this.addAliases("show");
-		
 		// Parameters
 		this.addParameter(TypeAspect.get(), "aspect").setDesc("the aspect to show info about");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_SHOW));
 	}
 	
 	// -------------------------------------------- //

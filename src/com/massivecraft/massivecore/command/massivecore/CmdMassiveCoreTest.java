@@ -1,11 +1,8 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.Visibility;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.TypeItemStack;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
@@ -17,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class CmdMassiveCoreTest extends MassiveCommand
+public class CmdMassiveCoreTest extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -25,14 +22,10 @@ public class CmdMassiveCoreTest extends MassiveCommand
 	
 	public CmdMassiveCoreTest()
 	{
-		// Aliases
-		this.addAliases("test");
-		
 		// Parameters
 		this.addParameter(false, TypeBooleanYes.get(), "set", "no");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.TEST));
 		this.addRequirements(RequirementIsPlayer.get());
 		
 		// VisibilityMode

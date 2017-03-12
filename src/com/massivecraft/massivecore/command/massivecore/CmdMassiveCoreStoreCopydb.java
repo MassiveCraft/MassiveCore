@@ -1,10 +1,7 @@
 package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
@@ -16,7 +13,7 @@ import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class CmdMassiveCoreStoreCopydb extends MassiveCommand
+public class CmdMassiveCoreStoreCopydb extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -24,15 +21,9 @@ public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 	
 	public CmdMassiveCoreStoreCopydb()
 	{
-		// Aliases
-		this.addAliases("copydb");
-		
 		// Parameters
 		this.addParameter(TypeString.get(), "from").setDesc("the database to copy from");
 		this.addParameter(TypeString.get(), "to").setDesc("the database to copy to");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_COPYDB));
 	}
 	
 	// -------------------------------------------- //

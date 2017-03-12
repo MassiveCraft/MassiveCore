@@ -1,9 +1,6 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.store.TypeColl;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.util.MUtil;
@@ -11,7 +8,7 @@ import com.massivecraft.massivecore.util.Txt;
 
 import java.util.Map.Entry;
 
-public class CmdMassiveCoreStoreStats extends MassiveCommand
+public class CmdMassiveCoreStoreStats extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -19,14 +16,8 @@ public class CmdMassiveCoreStoreStats extends MassiveCommand
 	
 	public CmdMassiveCoreStoreStats()
 	{
-		// Aliases
-		this.addAliases("stats");
-		
 		// Parameters
 		this.addParameter(TypeColl.get(), "coll", Coll.TOTAL).setDesc("the coll to show info about");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.STORE_STATS));
 	}
 	
 	// -------------------------------------------- //

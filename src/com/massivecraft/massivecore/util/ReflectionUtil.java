@@ -488,6 +488,23 @@ public class ReflectionUtil
 			System.out.println(className);
 		}
 	}
+
+	// -------------------------------------------- //
+	// CLASS EXISTENCE
+	// -------------------------------------------- //
+
+	public static boolean classExists(String className)
+	{
+		try
+		{
+			Class.forName(className);
+			return true;
+		}
+		catch (ClassNotFoundException ex)
+		{
+			return false;
+		}
+	}
 	
 	// -------------------------------------------- //
 	// TYPE CHECKS

@@ -1,14 +1,11 @@
 package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.TypeStringCommand;
 import com.massivecraft.massivecore.mixin.MixinCommand;
 
-public class CmdMassiveCoreClick extends MassiveCommand
+public class CmdMassiveCoreClick extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// INSTANCE
@@ -23,14 +20,8 @@ public class CmdMassiveCoreClick extends MassiveCommand
 	
 	public CmdMassiveCoreClick()
 	{
-		// Aliases
-		this.addAliases("click");
-		
 		// Parameters
 		this.addParameter(null, TypeStringCommand.get(), "command", "none", true).setDesc("the command to perform");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.CLICK));
 	}
 	
 	// -------------------------------------------- //

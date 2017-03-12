@@ -1,25 +1,9 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCorePerm;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 
-public class CmdMassiveCoreBufferPrint extends MassiveCommand
+public class CmdMassiveCoreBufferPrint extends MassiveCoreCommand
 {
-	// -------------------------------------------- //
-	// CONSTRUCT
-	// -------------------------------------------- //
-	
-	public CmdMassiveCoreBufferPrint()
-	{
-		// Aliases
-		this.addAliases("print");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.BUFFER_PRINT));
-	}
-	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //

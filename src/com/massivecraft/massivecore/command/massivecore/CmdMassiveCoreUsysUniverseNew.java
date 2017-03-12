@@ -1,14 +1,11 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.store.TypeMultiverse;
 
-public class CmdMassiveCoreUsysUniverseNew extends MassiveCommand
+public class CmdMassiveCoreUsysUniverseNew extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -16,15 +13,9 @@ public class CmdMassiveCoreUsysUniverseNew extends MassiveCommand
 	
 	public CmdMassiveCoreUsysUniverseNew()
 	{
-		// Aliases
-		this.addAliases("new");
-		
 		// Parameters
 		this.addParameter(TypeString.get(), "universe").setDesc("name of universe to create");
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse of the universe to create");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_UNIVERSE_NEW));
 	}
 	
 	// -------------------------------------------- //

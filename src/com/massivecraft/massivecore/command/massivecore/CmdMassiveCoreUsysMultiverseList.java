@@ -1,17 +1,14 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.MultiverseColl;
-import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
+public class CmdMassiveCoreUsysMultiverseList extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -19,14 +16,8 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 	
 	public CmdMassiveCoreUsysMultiverseList()
 	{
-		// Aliases
-		this.addAliases("list");
-		
 		// Parameters
 		this.addParameter(Parameter.getPage());
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_LIST));
 	}
 	
 	// -------------------------------------------- //

@@ -22,7 +22,7 @@ public class CmdMassiveCoreSponsor extends MassiveCommandToggle
 	{
 		// Aliases
 		this.addAliases("sponsor");
-		
+
 		// Requirements
 		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.SPONSOR));
 	}

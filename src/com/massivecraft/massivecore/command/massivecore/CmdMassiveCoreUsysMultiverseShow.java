@@ -2,18 +2,16 @@ package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Multiverse;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.store.TypeMultiverse;
 import com.massivecraft.massivecore.util.Txt;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
+
+public class CmdMassiveCoreUsysMultiverseShow extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -21,14 +19,8 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 	
 	public CmdMassiveCoreUsysMultiverseShow()
 	{
-		// Aliases
-		this.addAliases("show");
-		
 		// Parameters
 		this.addParameter(TypeMultiverse.get(), "multiverse").setDesc("the multiverse to show info about");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_MULTIVERSE_SHOW));
 	}
 	
 	// -------------------------------------------- //

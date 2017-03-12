@@ -2,16 +2,13 @@ package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.Parameter;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.pager.Pager;
 import com.massivecraft.massivecore.pager.Stringifier;
 import com.massivecraft.massivecore.util.Txt;
 
-public class CmdMassiveCoreUsysAspectList extends MassiveCommand
+public class CmdMassiveCoreUsysAspectList extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -19,14 +16,8 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 	
 	public CmdMassiveCoreUsysAspectList()
 	{
-		// Aliases
-		this.addAliases("list");
-		
 		// Parameters
 		this.addParameter(Parameter.getPage()).setDesc("the page in the aspect list");
-		
-		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.USYS_ASPECT_LIST));
 	}
 	
 	// -------------------------------------------- //

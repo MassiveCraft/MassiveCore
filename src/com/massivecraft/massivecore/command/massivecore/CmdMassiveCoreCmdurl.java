@@ -2,10 +2,7 @@ package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
-import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.mixin.MixinMessage;
@@ -17,7 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class CmdMassiveCoreCmdurl extends MassiveCommand
+public class CmdMassiveCoreCmdurl extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// INSTANCE
@@ -32,14 +29,10 @@ public class CmdMassiveCoreCmdurl extends MassiveCommand
 	
 	public CmdMassiveCoreCmdurl()
 	{
-		// Aliases
-		this.addAliases("cmdurl");
-		
 		// Parameters
 		this.addParameter(TypeString.get(), "url").setDesc("the url to load");
 		
 		// Requirements
-		this.addRequirements(RequirementHasPerm.get(MassiveCorePerm.CMDURL));
 		this.addRequirements(RequirementIsPlayer.get());
 	}
 	
