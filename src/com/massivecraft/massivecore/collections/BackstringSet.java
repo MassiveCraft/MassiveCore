@@ -1,56 +1,98 @@
 package com.massivecraft.massivecore.collections;
 
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.command.type.RegistryType;
+import com.massivecraft.massivecore.command.type.Type;
+
 import java.util.AbstractSet;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-public abstract class BackstringSet<T> extends AbstractSet<T>
+public class BackstringSet<T> extends AbstractSet<T>
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private Set<String> stringSet = new LinkedHashSet<String>();
+	private final Type<T> type;
+	
+	private final Set<String> stringSet;
 	public Set<String> getStringSet() { return this.stringSet; }
 	
 	// -------------------------------------------- //
-	// ABSTRACT CONVERSION
+	// CONVTERT
 	// -------------------------------------------- //
 	
-	public abstract T convertFromString(String string);
-	public abstract String convertToString(Object t);
+	private T convertFromString(String string) throws MassiveException
+	{
+		if (string == null) return null;
+		return this.type.read(string);
+	}
 	
-	public abstract Map<String, T> getStringToTypeMap();
+	@SuppressWarnings("unchecked")
+	private String convertToString(Object object)
+	{
+		if (object == null) return null;
+		
+		if (object instanceof String)
+		{
+			return (String)object;
+		}
+		
+		return this.type.getId((T) object);
+	}
 	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public BackstringSet()
+	public BackstringSet(Type<T> type)
 	{
-		
+		this.type = type;
+		this.stringSet = new MassiveSet<>();
 	}
 	
-	public BackstringSet(Collection<?> c)
+	public BackstringSet(Type<T> type, Collection<?> collection)
 	{
-		if (c != null)
+		this(type);
+		if (collection != null)
 		{
-			for (Object o : c)
+			for (Object object : collection)
 			{
-				this.stringSet.add(this.convertToString(o));
+				String string = this.convertToString(object);
+				this.stringSet.add(string);
 			}
 		}
 	}
 	
-	public BackstringSet(Object... objects)
+	public BackstringSet(Type<T> type, Object... objects)
 	{
-		this(Arrays.asList(objects));
+		this(type, Arrays.asList(objects));
+	}
+	
+	// -------------------------------------------- //
+	// MOAR CONSTRUCT
+	// -------------------------------------------- //
+	
+	@SuppressWarnings("unchecked")
+	public BackstringSet(Class<T> clazz)
+	{
+		this((Type<T>) RegistryType.getType(clazz));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public BackstringSet(Class<T> clazz, Collection<?> collection)
+	{
+		this((Type<T>) RegistryType.getType(clazz), collection);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public BackstringSet(Class<T> clazz, Object... objects)
+	{
+		this((Type<T>) RegistryType.getType(clazz), objects);
 	}
 	
 	// -------------------------------------------- //
@@ -61,20 +103,45 @@ public abstract class BackstringSet<T> extends AbstractSet<T>
 	public Iterator<T> iterator()
 	{
 		// Create
-		List<T> ret = new ArrayList<>();
-		
-		// Get our conversion map
-		Map<String, T> typeMap = this.getStringToTypeMap();
+		List<T> temporaryList = new MassiveList<>();
 		
 		// Fill
-		for (String key: this.getStringSet())
+		for (String string : this.getStringSet())
 		{
-			T value = typeMap.get(key);
-			if (value != null) ret.add(value);
+			try
+			{
+				T value = this.convertFromString(string);
+				if (value != null) temporaryList.add(value);
+			}
+			catch (MassiveException ignored)
+			{
+				// ignored
+			}
 		}
 		
 		// Return
-		return ret.iterator();
+		final Iterator<T> temporaryIterator = temporaryList.iterator();
+		return new Iterator<T>()
+		{
+			@Override
+			public boolean hasNext()
+			{
+				return temporaryIterator.hasNext();
+			}
+			
+			@Override
+			public T next()
+			{
+				return temporaryIterator.next();
+			}
+			
+			@Override
+			public void remove()
+			{
+				String message = String.format("%s iterator does not support removal.", BackstringSet.class.getSimpleName());
+				throw new UnsupportedOperationException(message);
+			}
+		};
 	}
 	
 	@Override
@@ -84,42 +151,34 @@ public abstract class BackstringSet<T> extends AbstractSet<T>
 	}
 
 	@Override
-	public boolean contains(Object o)
+	public boolean contains(Object object)
 	{
-		if (o == null)
-		{
-			return this.stringSet.contains(null);
-		}
-		else
-		{
-			return this.stringSet.contains(this.convertToString(o));
-		}
+		String string = this.convertToString(object);
+		return this.stringSet.contains(string);
 	}
 
 	@Override
-	public boolean add(T e)
+	public boolean add(T object)
 	{
-		if (e == null)
-		{
-			return this.stringSet.add(null);
-		}
-		else
-		{
-			return this.stringSet.add(this.convertToString(e));
-		}
+		return this.addObject(object);
+	}
+	
+	public boolean addString(String string)
+	{
+		return this.addObject(string);
+	}
+	
+	private boolean addObject(Object object)
+	{
+		String string = this.convertToString(object);
+		return this.stringSet.add(string);
 	}
 
 	@Override
-	public boolean remove(Object o)
+	public boolean remove(Object object)
 	{
-		if (o == null)
-		{
-			return this.stringSet.remove(null);
-		}
-		else
-		{
-			return this.stringSet.remove(this.convertToString(o));
-		}
+		String string = this.convertToString(object);
+		return this.stringSet.remove(string);
 	}
 
 	@Override
