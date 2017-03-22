@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.massivecraft.massivecore.collections.BackstringEnumSet;
+import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
@@ -18,7 +18,7 @@ import com.massivecraft.massivecore.command.type.combined.TypeDataPotionEffect;
 import com.massivecraft.massivecore.command.type.combined.TypeEntry;
 import com.massivecraft.massivecore.command.type.combined.TypePotionEffectWrap;
 import com.massivecraft.massivecore.command.type.combined.TypeSoundEffect;
-import com.massivecraft.massivecore.command.type.container.TypeBackStringEnumSet;
+import com.massivecraft.massivecore.command.type.container.TypeBackstringSet;
 import com.massivecraft.massivecore.command.type.container.TypeExceptionSet;
 import com.massivecraft.massivecore.command.type.container.TypeList;
 import com.massivecraft.massivecore.command.type.container.TypeMap;
@@ -43,6 +43,7 @@ import com.massivecraft.massivecore.command.type.enumeration.TypeParticleEffect;
 import com.massivecraft.massivecore.command.type.enumeration.TypeRabbitType;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSkeletonType;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
+import com.massivecraft.massivecore.command.type.enumeration.TypeSpawnReason;
 import com.massivecraft.massivecore.command.type.enumeration.TypeVillagerProfession;
 import com.massivecraft.massivecore.command.type.enumeration.TypeWorldType;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanTrue;
@@ -131,10 +132,10 @@ public class RegistryType
 				Class<?> fieldClass = field == null ? null : field.getType();
 				List<Type<?>> innerTypes;
 				
-				if (ReflectionUtil.isRawTypeAssignableFromAny(BackstringEnumSet.class, fieldType, fieldClass))
+				if (ReflectionUtil.isRawTypeAssignableFromAny(BackstringSet.class, fieldType, fieldClass))
 				{
 					innerTypes = getInnerTypes(field, fieldType, 1);
-					return TypeBackStringEnumSet.get((Type<? extends Enum>)innerTypes.get(0));
+					return TypeBackstringSet.get((Type<? extends Enum>)innerTypes.get(0));
 				}
 				
 				if (ReflectionUtil.isRawTypeAssignableFromAny(List.class, fieldType, fieldClass))
@@ -316,6 +317,7 @@ public class RegistryType
 		register(TypeMaterial.get());
 		register(TypeOcelotType.get());
 		register(TypeParticleEffect.get());
+		register(TypeSpawnReason.get());
 		
 		// 1.7 Compat
 		try

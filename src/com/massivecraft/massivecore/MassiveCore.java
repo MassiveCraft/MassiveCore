@@ -13,7 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.massivecraft.massivecore.adapter.AdapterBackstringEnumSet;
+import com.massivecraft.massivecore.adapter.AdapterBackstringSet;
 import com.massivecraft.massivecore.adapter.AdapterBannerPatterns;
 import com.massivecraft.massivecore.adapter.AdapterEntry;
 import com.massivecraft.massivecore.adapter.AdapterInventory;
@@ -30,7 +30,7 @@ import com.massivecraft.massivecore.adapter.AdapterMsonEvent;
 import com.massivecraft.massivecore.adapter.AdapterPlayerInventory;
 import com.massivecraft.massivecore.adapter.AdapterSound;
 import com.massivecraft.massivecore.adapter.AdapterUUID;
-import com.massivecraft.massivecore.collections.BackstringEnumSet;
+import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.collections.MassiveMap;
@@ -195,7 +195,7 @@ public class MassiveCore extends MassivePlugin
 		ret.registerTypeAdapter(Entry.class, AdapterEntry.get());
 		
 		// Assorted Custom
-		ret.registerTypeAdapter(BackstringEnumSet.class, AdapterBackstringEnumSet.get());
+		ret.registerTypeAdapter(BackstringSet.class, AdapterBackstringSet.get());
 		ret.registerTypeAdapter(PS.class, PSAdapter.get());
 		ret.registerTypeAdapter(Sound.class, AdapterSound.get());
 		ret.registerTypeAdapter(UUID.class, AdapterUUID.get());

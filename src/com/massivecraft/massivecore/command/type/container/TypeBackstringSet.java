@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.command.type.container;
 
-import com.massivecraft.massivecore.collections.BackstringEnumSet;
+import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.command.type.Type;
 
 import java.util.Set;
 
-public class TypeBackStringEnumSet<E extends Enum<E>> extends TypeContainer<Set<E>, E>
+public class TypeBackstringSet<E extends Enum<E>> extends TypeContainer<Set<E>, E>
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -17,14 +17,14 @@ public class TypeBackStringEnumSet<E extends Enum<E>> extends TypeContainer<Set<
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <E extends Enum<E>> TypeBackStringEnumSet<E> get(Type<E> innerType)
+	public static <E extends Enum<E>> TypeBackstringSet<E> get(Type<E> innerType)
 	{
-		return new TypeBackStringEnumSet<E>(innerType);
+		return new TypeBackstringSet<E>(innerType);
 	}
 	
-	public TypeBackStringEnumSet(Type<E> innerType)
+	public TypeBackstringSet(Type<E> innerType)
 	{
-		super(BackstringEnumSet.class, innerType);
+		super(BackstringSet.class, innerType);
 		this.innerTypeClass = innerType.getClazz();
 	}
 	
@@ -33,9 +33,9 @@ public class TypeBackStringEnumSet<E extends Enum<E>> extends TypeContainer<Set<
 	// -------------------------------------------- //
 
 	@Override
-	public BackstringEnumSet<E> createNewInstance()
+	public BackstringSet<E> createNewInstance()
 	{
-		return new BackstringEnumSet<E>((Class<E>) innerTypeClass);
+		return new BackstringSet<E>((Class<E>) innerTypeClass);
 	}
 
 }
