@@ -10,7 +10,7 @@ import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsBoard extends Mixin
+public class NmsBoard extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

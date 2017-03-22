@@ -6,7 +6,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsEntityGet extends Mixin
+public class NmsEntityGet extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

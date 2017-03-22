@@ -5,6 +5,9 @@ import java.io.Serializable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
+import com.massivecraft.massivecore.ActivePriority;
+
+@ActivePriority(5999)
 public class MixinEvent extends Mixin
 {
 	// -------------------------------------------- //

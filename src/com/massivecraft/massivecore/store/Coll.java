@@ -17,6 +17,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import com.massivecraft.massivecore.ActiveIgnore;
+import com.massivecraft.massivecore.ActivePriority;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassivePlugin;
@@ -34,6 +36,8 @@ import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonSyntaxException;
 
+@ActiveIgnore
+@ActivePriority(ActivePriority.PRIORITY_COLL)
 public class Coll<E extends Entity<E>> extends CollAbstract<E>
 {
 	// -------------------------------------------- //

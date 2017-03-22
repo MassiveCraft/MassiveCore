@@ -4,7 +4,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsItemStackTooltip extends Mixin
+public class NmsItemStackTooltip extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

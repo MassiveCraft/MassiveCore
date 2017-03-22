@@ -1,6 +1,8 @@
 package com.massivecraft.massivecore;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -13,9 +15,18 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.comparator.ComparatorActivePriority;
+import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.nms.Nms;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateAnd;
 import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.migration.VersionMigrator;
+import com.massivecraft.massivecore.test.Test;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -196,24 +207,40 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		this.log(Txt.parse("<b>Now I suicide!"));
 		Bukkit.getPluginManager().disablePlugin(this);
 	}
-	
+
 	public void activate(Object... objects)
+	{
+		activate(Arrays.asList(objects), true);
+	}
+	
+	public void activate(Collection<?> objects, boolean strictThrow)
 	{
 		for (Object object : objects)
 		{
 			Active active = asActive(object);
 			if (active == null) continue;
+			int priority = object instanceof Class ? ComparatorActivePriority.getPriority((Class) object) : -1;
+
+			if (active.isActive())
+			{
+				if(strictThrow) throw new IllegalArgumentException(active.getClass().getName() + " is already active");
+				else continue;
+			}
+			//if (this.getName().equals("MassiveCore") || this.getName().equals("Factions"))
+			{
+				log(Txt.parse("<i>Activating <h>%s", active.getClass().getSimpleName()));
+			}
 			active.setActive(this);
 		}
 	}
-	
+
 	private static Active asActive(Object object)
 	{
 		if (object instanceof Active)
 		{
 			return (Active)object;
 		}
-		
+
 		if (object instanceof String)
 		{
 			String string = (String)object;
@@ -227,19 +254,19 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 				return null;
 			}
 		}
-		
+
 		if (object instanceof Class<?>)
 		{
 			Class<?> clazz = (Class<?>)object;
 			if ( ! Active.class.isAssignableFrom(clazz)) throw new IllegalArgumentException("Not Active Class: " + (clazz == null ? "NULL" : clazz));
-			
+
 			Object instance = ReflectionUtil.getSingletonInstance(clazz);
 			if ( ! (instance instanceof Active)) throw new IllegalArgumentException("Not Active Instance: " + (instance == null ? "NULL" : instance) + " for object: " + (object == null ? "NULL" : object));
-			
+
 			Active active = (Active)instance;
 			return active;
 		}
-		
+
 		throw new IllegalArgumentException("Neither Active nor Class: " + object);
 	}
 	
@@ -264,10 +291,175 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 			active.setActive(false);
 		}
 	}
+
+	// -------------------------------------------- //
+	// ACTIVATE AUTO
+	// -------------------------------------------- //
+
+	public void activateAuto()
+	{
+		// Create
+		List<Class<?>> classes = new MassiveList<>();
+
+		// Fill with all kinds of Actives
+		classes.addAll(this.getColls());
+		classes.addAll(this.getNms());
+		classes.addAll(this.getCommands());
+		classes.addAll(this.getEngines());
+		classes.addAll(this.getIntegrations());
+		classes.addAll(this.getTasks());
+		classes.addAll(this.getMixins());
+		classes.addAll(this.getTests());
+		classes.addAll(this.getVersionMigrators());
+
+		// Sort them so they are activated in the right order
+		Collections.sort(classes, ComparatorActivePriority.get());
+
+		// And activate them
+		this.activate(classes, false);
+	}
+
+	public List<Class<?>> getColls()
+	{
+		return getClasses("entity", Coll.class);
+	}
+
+	public List<Class<?>> getNms()
+	{
+		return getClasses(Nms.class, new Predicate<Class<?>>()
+		{
+			@Override public boolean apply(Class<?> clazz)
+			{
+				try
+				{
+					ReflectionUtil.getField(clazz, "d");
+					return true;
+				}
+				catch (Throwable t)
+				{
+					return false;
+				}
+			}
+		});
+	}
+
+	public List<Class<?>> getCommands()
+	{
+		return getClasses("cmd", MassiveCommand.class, new Predicate<Class<?>>()
+		{
+			@Override public boolean apply(Class<?> clazz)
+			{
+				try
+				{
+					ReflectionUtil.getSingletonInstance(clazz);
+					return true;
+				}
+				catch (Exception ex)
+				{
+					return false;
+				}
+			}
+		});
+	}
+
+	public List<Class<?>> getEngines()
+	{
+		return getClasses(Engine.class);
+	}
+
+	public List<Class<?>> getIntegrations()
+	{
+		return getClasses(Integration.class);
+	}
+
+	public List<Class<?>> getTasks()
+	{
+		return getClasses("task", ModuloRepeatTask.class);
+	}
+
+	public List<Class<?>> getMixins()
+	{
+		return getClasses(Mixin.class);
+	}
+
+	public List<Class<?>> getTests()
+	{
+		return getClasses(Test.class);
+	}
+
+	public List<Class<?>> getVersionMigrators()
+	{
+		return getClasses("entity.migration", VersionMigrator.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Class<?>> getClasses(Class<? extends Active> superClass, Predicate<Class<?>>... predicates)
+	{
+		return getClasses(superClass.getSimpleName().toLowerCase(), superClass, predicates);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Class<?>> getClasses(String packageName, Class<?> superClass, Predicate<Class<?>>... predicates)
+	{
+		// Create ret
+		List<Class<?>> ret = new MassiveList<>();
+
+		ClassLoader classLoader = this.getClassLoader();
+		try
+		{
+			// Get info
+			packageName = packageName == null ? "" : "." + packageName;
+			String activePackage = this.getClass().getPackage().getName() + packageName;
+			ClassPath classPath = ClassPath.from(classLoader);
+			Predicate<Class<?>> predicateCombined = PredicateAnd.get(predicates);
+
+			for (ClassInfo classInfo : classPath.getTopLevelClassesRecursive(activePackage))
+			{
+				// Get name of class
+				String className = classInfo.getName();
+
+				// Avoid versions created at runtime
+				// Apparently it found a "EngineMassiveCoreCollTick 3" which we don't want
+				if (className.contains(" ")) continue;
+
+				// Try and load it
+				Class<?> clazz;
+				try
+				{
+					 clazz = classInfo.load();
+				}
+				catch (NoClassDefFoundError ex)
+				{
+					// Probably an integration Engine which we should not have loaded.
+					// Just skip it
+					continue;
+				}
+
+				// The class cannot be abstracy
+				if (Modifier.isAbstract(clazz.getModifiers())) continue;
+
+				// And it must be an instance of what we expect
+				if (!superClass.isAssignableFrom(clazz)) continue;
+
+				// And it must not be ignored
+				if (clazz.getAnnotation(ActiveIgnore.class) != null) continue;
+				if (!predicateCombined.apply(clazz)) continue;
+
+				ret.add(clazz);
+			}
+		}
+		catch (IOException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+
+		return ret;
+	}
 	
 	// -------------------------------------------- //
 	// LOGGING
 	// -------------------------------------------- //
+
 	private String logPrefixColored = null;
 	private String logPrefixPlain = null;
 	public void log(Object... msg)

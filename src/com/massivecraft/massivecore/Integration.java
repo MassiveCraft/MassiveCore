@@ -15,6 +15,7 @@ import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateIntegration;
 import com.massivecraft.massivecore.util.Txt;
 
+@ActivePriority(ActivePriority.PRIORITY_INTEGRATION)
 public class Integration extends Engine
 {
 	// -------------------------------------------- //

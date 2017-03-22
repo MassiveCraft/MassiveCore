@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.massivecraft.massivecore.ActiveIgnore;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
@@ -15,6 +16,7 @@ import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 
+@ActiveIgnore
 public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {
 	// -------------------------------------------- //

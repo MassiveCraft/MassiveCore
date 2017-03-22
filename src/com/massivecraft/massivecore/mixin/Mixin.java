@@ -1,15 +1,19 @@
 package com.massivecraft.massivecore.mixin;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import com.massivecraft.massivecore.ActiveIgnore;
+import com.massivecraft.massivecore.ActivePriority;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+@ActiveIgnore
+@ActivePriority(ActivePriority.PRIORITY_MIXIN)
 public class Mixin extends Engine
 {
 	// -------------------------------------------- //

@@ -10,7 +10,7 @@ import com.massivecraft.massivecore.util.IdData;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 
-public class NmsSkullMeta extends Mixin
+public class NmsSkullMeta extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

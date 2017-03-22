@@ -4,7 +4,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsPlayerInventoryCreate extends Mixin
+public class NmsPlayerInventoryCreate extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

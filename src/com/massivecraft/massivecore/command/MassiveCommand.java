@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.massivecraft.massivecore.Active;
+import com.massivecraft.massivecore.ActivePriority;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.MassivePlugin;
@@ -36,6 +37,7 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.Txt;
 
+@ActivePriority(ActivePriority.PRIORITY_COMMAND)
 public class MassiveCommand implements Active, PluginIdentifiableCommand
 {
 	// -------------------------------------------- //

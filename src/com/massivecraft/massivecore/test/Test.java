@@ -1,5 +1,8 @@
 package com.massivecraft.massivecore.test;
 
+import java.util.List;
+
+import com.massivecraft.massivecore.ActivePriority;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -7,8 +10,7 @@ import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-import java.util.List;
-
+@ActivePriority(ActivePriority.PRIORITY_TEST)
 public abstract class Test extends Engine
 {
 	// -------------------------------------------- //

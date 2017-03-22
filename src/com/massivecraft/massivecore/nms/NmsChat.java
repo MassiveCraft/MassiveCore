@@ -8,7 +8,7 @@ import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
 
-public class NmsChat extends Mixin
+public class NmsChat extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

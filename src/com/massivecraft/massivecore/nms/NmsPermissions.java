@@ -8,7 +8,7 @@ import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.PermissionAttachment;
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsPermissions extends Mixin
+public class NmsPermissions extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

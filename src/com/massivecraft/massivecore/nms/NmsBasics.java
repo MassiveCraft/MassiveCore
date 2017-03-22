@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.nms;
 
-import com.massivecraft.massivecore.mixin.Mixin;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
@@ -9,7 +8,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-public class NmsBasics extends Mixin
+public class NmsBasics extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

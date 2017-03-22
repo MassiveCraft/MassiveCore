@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitTask;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 
+@ActivePriority(ActivePriority.PRIORITY_ENGINE)
 public abstract class Engine implements Active, Listener, Runnable
 {
 	// -------------------------------------------- //
@@ -36,7 +37,7 @@ public abstract class Engine implements Active, Listener, Runnable
 		if (this.hasPlugin()) return;
 		this.plugin = plugin;
 	}
-	
+
 	// -------------------------------------------- //
 	// TASK
 	// -------------------------------------------- //

@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import com.google.common.base.Function;
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsEntityDamageEvent extends Mixin
+public class NmsEntityDamageEvent extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT

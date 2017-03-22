@@ -4,6 +4,7 @@ package com.massivecraft.massivecore;
  * This class will allow you to create non-tps-dependent repeating tasks.
  * It makes use of the Bukkit scheduler internally.
  */
+@ActivePriority(ActivePriority.PRIORITY_TASK)
 public abstract class ModuloRepeatTask extends Engine
 {
 	// -------------------------------------------- //

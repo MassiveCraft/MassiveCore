@@ -3,7 +3,7 @@ package com.massivecraft.massivecore.nms;
 import org.bukkit.inventory.ItemStack;
 import com.massivecraft.massivecore.mixin.Mixin;
 
-public class NmsItemStackCreate extends Mixin
+public class NmsItemStackCreate extends Nms
 {
 	// -------------------------------------------- //
 	// DEFAULT
