@@ -131,8 +131,7 @@ class ServerMonitor {
         private void sendStateChangedEvent(final ServerDescription previousServerDescription,
                                            final ServerDescription currentServerDescription) {
             if (stateHasChanged(previousServerDescription, currentServerDescription)) {
-                serverStateListener.stateChanged(new ChangeEvent<ServerDescription>(previousServerDescription,
-                                                                                    currentServerDescription));
+                serverStateListener.stateChanged(new ChangeEvent<>(previousServerDescription, currentServerDescription));
             }
         }
 
@@ -269,7 +268,7 @@ class ServerMonitor {
         if (list == null || list.isEmpty()) {
             return Collections.emptySet();
         } else {
-            return new HashSet<String>(list);
+            return new HashSet<>(list);
         }
     }
 

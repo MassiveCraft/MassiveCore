@@ -35,7 +35,7 @@ public class MixinWorld extends Mixin
 	public List<String> getWorldIds()
 	{
 		// Create
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		// Fill
 		for (World world : Bukkit.getWorlds())
@@ -50,7 +50,7 @@ public class MixinWorld extends Mixin
 	public List<String> getVisibleWorldIds(Permissible permissible)
 	{
 		// Create
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		// Fill
 		for (String worldId : this.getWorldIds())
@@ -70,7 +70,7 @@ public class MixinWorld extends Mixin
 	
 	public List<String> getWorldAliases(String worldId)
 	{
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 	
 	public String getWorldAliasOrId(String worldId)

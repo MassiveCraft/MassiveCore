@@ -237,7 +237,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public String getName()
 	{
 		// Create
-		List<String> parts = new MassiveList<String>();
+		List<String> parts = new MassiveList<>();
 		
 		// Fill
 		for (Type<?> type : this.getInnerTypes())
@@ -386,7 +386,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 	public List<Object> readParts(String arg, CommandSender sender) throws MassiveException
 	{
 		// Create
-		List<Object> ret = new MassiveList<Object>();
+		List<Object> ret = new MassiveList<>();
 		
 		// Fill
 		List<String> innerArgs = this.getArgs(arg);
@@ -417,7 +417,7 @@ public abstract class TypeCombined<T> extends TypeAbstract<T>
 		String innerArg = this.getLastArg(arg);
 		String prefix = arg.substring(0, arg.length() - innerArg.length());
 		List<String> strings = innerType.getTabListFiltered(sender, innerArg);
-		List<String> ret = new MassiveList<String>();
+		List<String> ret = new MassiveList<>();
 		for (String string : strings)
 		{
 			ret.add(prefix + string);

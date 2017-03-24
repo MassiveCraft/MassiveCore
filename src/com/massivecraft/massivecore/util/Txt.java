@@ -71,7 +71,7 @@ public class Txt
 	static
 	{
 		// Create the parce replacements map
-		parseReplacements = new HashMap<String, String>();
+		parseReplacements = new HashMap<>();
 		
 		// Color by name
 		parseReplacements.put("<empty>", "");
@@ -188,7 +188,7 @@ public class Txt
 	
 	public static ArrayList<String> parse(Collection<String> strings)
 	{
-		ArrayList<String> ret = new ArrayList<String>(strings.size());
+		ArrayList<String> ret = new ArrayList<>(strings.size());
 		for (String string : strings)
 		{
 			ret.add(parse(string));
@@ -203,12 +203,12 @@ public class Txt
 	public static ArrayList<String> wrap(final String string)
 	{
 		if (string == null) return null;
-		return new ArrayList<String>(Arrays.asList(PATTERN_NEWLINE.split(string)));
+		return new ArrayList<>(Arrays.asList(PATTERN_NEWLINE.split(string)));
 	}
 	
 	public static ArrayList<String> wrap(final Collection<String> strings)
 	{
-		ArrayList<String> ret = new ArrayList<String>();
+		ArrayList<String> ret = new ArrayList<>();
 		for (String string : strings)
 		{
 			ret.addAll(wrap(string));
@@ -298,16 +298,16 @@ public class Txt
 	{
 		return implode(list, glue, null);
 	}
-	public static String implode(final Collection<? extends Object> coll, final String glue, final String format)
+	public static String implode(final Collection<?> coll, final String glue, final String format)
 	{
 		return implode(coll.toArray(new Object[0]), glue, format);
 	}
-	public static String implode(final Collection<? extends Object> coll, final String glue)
+	public static String implode(final Collection<?> coll, final String glue)
 	{
 		return implode(coll, glue, null);
 	}
 	
-	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String format, final String comma, final String and, final String dot)
+	public static String implodeCommaAndDot(final Collection<?> objects, final String format, final String comma, final String and, final String dot)
 	{
 		if (objects.size() == 0) return "";
 		if (objects.size() == 1)
@@ -315,7 +315,7 @@ public class Txt
 			return implode(objects, comma, format);
 		}
 		
-		List<Object> ourObjects = new ArrayList<Object>(objects);
+		List<Object> ourObjects = new ArrayList<>(objects);
 		
 		String lastItem = ourObjects.get(ourObjects.size()-1).toString();
 		String nextToLastItem = ourObjects.get(ourObjects.size()-2).toString();
@@ -331,28 +331,28 @@ public class Txt
 		return implode(ourObjects, comma, format)+dot;
 	}
 	
-	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String comma, final String and, final String dot)
+	public static String implodeCommaAndDot(final Collection<?> objects, final String comma, final String and, final String dot)
 	{
 		return implodeCommaAndDot(objects, null, comma, and, dot);
 	}
 	
-	public static String implodeCommaAnd(final Collection<? extends Object> objects, final String comma, final String and)
+	public static String implodeCommaAnd(final Collection<?> objects, final String comma, final String and)
 	{
 		return implodeCommaAndDot(objects, comma, and, "");
 	}
-	public static String implodeCommaAndDot(final Collection<? extends Object> objects, final String color)
+	public static String implodeCommaAndDot(final Collection<?> objects, final String color)
 	{
 		return implodeCommaAndDot(objects, color+", ", color+" and ", color+".");
 	}
-	public static String implodeCommaAnd(final Collection<? extends Object> objects, final String color)
+	public static String implodeCommaAnd(final Collection<?> objects, final String color)
 	{
 		return implodeCommaAndDot(objects, color+", ", color+" and ", "");
 	}
-	public static String implodeCommaAndDot(final Collection<? extends Object> objects)
+	public static String implodeCommaAndDot(final Collection<?> objects)
 	{
 		return implodeCommaAndDot(objects, "");
 	}
-	public static String implodeCommaAnd(final Collection<? extends Object> objects)
+	public static String implodeCommaAnd(final Collection<?> objects)
 	{
 		return implodeCommaAnd(objects, "");
 	}
@@ -387,7 +387,7 @@ public class Txt
 		{
 			second = parts[1];
 		}
-		return new SimpleEntry<String, String>(first, second);
+		return new SimpleEntry<>(first, second);
 	}
 	
 	public static boolean isVowel(String str)
@@ -423,7 +423,7 @@ public class Txt
 	protected static Pattern PATTERN_ENUM_SPLIT = Pattern.compile("[\\s_]+");
 	public static String getNicedEnumString(String str)
 	{
-		List<String> parts = new ArrayList<String>();  
+		List<String> parts = new ArrayList<>();
 		for (String part : PATTERN_ENUM_SPLIT.split(str.toLowerCase()))
 		{
 			parts.add(upperCaseFirst(part));
@@ -688,7 +688,7 @@ public class Txt
 		String commandLine;
 		if (args != null && args.contains(oldNumber))
 		{
-			List<String> arguments = new ArrayList<String>(args);
+			List<String> arguments = new ArrayList<>(args);
 			arguments.set(arguments.indexOf(oldNumber), number);
 
 			commandLine = command.getCommandLine(arguments);
@@ -724,7 +724,7 @@ public class Txt
 		
 		double millisLeft = (double) Math.abs(millis);
 		
-		List<String> unitCountParts = new ArrayList<String>();
+		List<String> unitCountParts = new ArrayList<>();
 		for (Entry<String, Long> entry : unitMillis.entrySet())
 		{
 			if (unitCountParts.size() == 3 ) break;
@@ -835,7 +835,7 @@ public class Txt
 	public static <T> List<T> getFiltered(Iterable<T> elements, Predicate<T> predicate)
 	{
 		// Create Ret
-		List<T> ret = new ArrayList<T>();
+		List<T> ret = new ArrayList<>();
 		
 		// Fill Ret
 		for (T element : elements)
@@ -869,7 +869,7 @@ public class Txt
 	
 	public static List<String> tokenizeArguments(String str)
 	{
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		StringBuilder token = null;
 		boolean escaping = false;
 		boolean citing = false;
@@ -936,10 +936,10 @@ public class Txt
 	public static List<String> prepondfix(String prefix, List<String> strings, String suffix)
 	{
 		// Create
-		List<String> ret = new MassiveList<String>();
+		List<String> ret = new MassiveList<>();
 		
 		// Fill
-		List<String> parts = new MassiveList<String>();
+		List<String> parts = new MassiveList<>();
 		if (prefix != null) parts.add(prefix);
 		if (strings.size() == 1) parts.add(strings.get(0));
 		if (suffix != null) parts.add(suffix);

@@ -25,7 +25,7 @@ public class TypeEntityType extends TypeEnum<EntityType>
 	@Override
 	public Set<String> getNamesInner(EntityType value)
 	{
-		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
+		Set<String> ret = new MassiveSet<>(super.getNamesInner(value));
 		
 		if (value == EntityType.PIG_ZOMBIE)
 		{

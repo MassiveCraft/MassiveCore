@@ -131,7 +131,7 @@ public final class ConstructorConstructor {
       if (SortedSet.class.isAssignableFrom(rawType)) {
         return new ObjectConstructor<T>() {
           public T construct() {
-            return (T) new TreeSet<Object>();
+            return (T) new TreeSet<>();
           }
         };
       } else if (EnumSet.class.isAssignableFrom(rawType)) {
@@ -153,19 +153,19 @@ public final class ConstructorConstructor {
       } else if (Set.class.isAssignableFrom(rawType)) {
         return new ObjectConstructor<T>() {
           public T construct() {
-            return (T) new LinkedHashSet<Object>();
+            return (T) new LinkedHashSet<>();
           }
         };
       } else if (Queue.class.isAssignableFrom(rawType)) {
         return new ObjectConstructor<T>() {
           public T construct() {
-            return (T) new LinkedList<Object>();
+            return (T) new LinkedList<>();
           }
         };
       } else {
         return new ObjectConstructor<T>() {
           public T construct() {
-            return (T) new ArrayList<Object>();
+            return (T) new ArrayList<>();
           }
         };
       }
@@ -175,14 +175,14 @@ public final class ConstructorConstructor {
       if (SortedMap.class.isAssignableFrom(rawType)) {
         return new ObjectConstructor<T>() {
           public T construct() {
-            return (T) new TreeMap<Object, Object>();
+            return (T) new TreeMap<>();
           }
         };
       } else if (type instanceof ParameterizedType && !(String.class.isAssignableFrom(
           TypeToken.get(((ParameterizedType) type).getActualTypeArguments()[0]).getRawType()))) {
         return new ObjectConstructor<T>() {
           public T construct() {
-            return (T) new LinkedHashMap<Object, Object>();
+            return (T) new LinkedHashMap<>();
           }
         };
       } else {

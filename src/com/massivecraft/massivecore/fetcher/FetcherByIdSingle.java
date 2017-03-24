@@ -60,7 +60,7 @@ public class FetcherByIdSingle implements Callable<Map<UUID, IdAndName>>
 	
 	public static Map<UUID, IdAndName> fetch(Collection<UUID> ids) throws Exception
 	{
-		Map<UUID, IdAndName> ret = new HashMap<UUID, IdAndName>();
+		Map<UUID, IdAndName> ret = new HashMap<>();
 		JSONParser jsonParser = new JSONParser();
 		
 		for (UUID id : ids)

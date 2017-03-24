@@ -197,8 +197,8 @@ public abstract class SimplePool<T> {
     protected final String _name;
     protected final int _size;
 
-    protected final List<T> _avail = new ArrayList<T>();
-    protected final Set<T> _out = new HashSet<T>();
+    protected final List<T> _avail = new ArrayList<>();
+    protected final Set<T> _out = new HashSet<>();
     private final Semaphore _sem;
     private boolean _closed;
 }

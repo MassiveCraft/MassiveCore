@@ -27,7 +27,7 @@ public class Multiverse extends Entity<Multiverse>
 	// FIELDS
 	// -------------------------------------------- //
 	
-	protected Map<String, Set<String>> uw = new HashMap<String, Set<String>>();
+	protected Map<String, Set<String>> uw = new HashMap<>();
 	
 	
 	// -------------------------------------------- //
@@ -68,7 +68,7 @@ public class Multiverse extends Entity<Multiverse>
 		Set<String> ret = this.uw.get(universe);
 		if (ret == null)
 		{
-			ret = new HashSet<String>();
+			ret = new HashSet<>();
 			this.uw.put(universe, ret);
 			this.changed();
 		}
@@ -83,7 +83,7 @@ public class Multiverse extends Entity<Multiverse>
 	
 	public Set<String> getUniverses()
 	{
-		Set<String> ret = new TreeSet<String>();
+		Set<String> ret = new TreeSet<>();
 		ret.addAll(this.uw.keySet());
 		ret.add(MassiveCore.DEFAULT);
 		return ret;
@@ -142,7 +142,7 @@ public class Multiverse extends Entity<Multiverse>
 	
 	public Set<String> getWorlds()
 	{
-		Set<String> ret = new TreeSet<String>();
+		Set<String> ret = new TreeSet<>();
 		for (Set<String> uworlds : this.uw.values())
 		{
 			ret.addAll(uworlds);
@@ -155,7 +155,7 @@ public class Multiverse extends Entity<Multiverse>
 		Set<String> orig = this.uw.get(universe);
 		if (orig == null) return null;
 		
-		Set<String> ret = new TreeSet<String>();
+		Set<String> ret = new TreeSet<>();
 		ret.addAll(orig);
 		
 		return ret;

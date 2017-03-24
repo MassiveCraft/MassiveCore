@@ -14,33 +14,33 @@ public interface Db
 	// -------------------------------------------- //
 	
 	// Returns the name of the database.
-	public String getDbName();
+	String getDbName();
 	
 	// Returns the driver running this database.
-	public Driver getDriver();
+	Driver getDriver();
 	
 	// Creates a new collection driver object.
 	// This object will be stored inside the Coll.
-	public Object createCollDriverObject(Coll<?> coll);
+	Object createCollDriverObject(Coll<?> coll);
 	
 	// -------------------------------------------- //
 	// DRIVER
 	// -------------------------------------------- //
 	
-	public String getDriverName();
-	public Db getDb(String uri); // TODO: This seems a bit odd.
-	public boolean dropDb();
-	public Set<String> getCollnames();
-	public boolean renameColl(String from, String to);
-	public boolean containsId(Coll<?> coll, String id);
-	public long getMtime(Coll<?> coll, String id);
-	public Collection<String> getIds(Coll<?> coll);
-	public Map<String, Long> getId2mtime(Coll<?> coll);
-	public Entry<JsonObject, Long> load(Coll<?> coll, String id);
-	public Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll);
-	public long save(Coll<?> coll, String id, JsonObject data);
-	public void delete(Coll<?> coll, String id);
-	public boolean supportsPusher();
-	public PusherColl getPusher(Coll<?> coll);
+	String getDriverName();
+	Db getDb(String uri); // TODO: This seems a bit odd.
+	boolean dropDb();
+	Set<String> getCollnames();
+	boolean renameColl(String from, String to);
+	boolean containsId(Coll<?> coll, String id);
+	long getMtime(Coll<?> coll, String id);
+	Collection<String> getIds(Coll<?> coll);
+	Map<String, Long> getId2mtime(Coll<?> coll);
+	Entry<JsonObject, Long> load(Coll<?> coll, String id);
+	Map<String, Entry<JsonObject, Long>> loadAll(Coll<?> coll);
+	long save(Coll<?> coll, String id, JsonObject data);
+	void delete(Coll<?> coll, String id);
+	boolean supportsPusher();
+	PusherColl getPusher(Coll<?> coll);
 	
 }

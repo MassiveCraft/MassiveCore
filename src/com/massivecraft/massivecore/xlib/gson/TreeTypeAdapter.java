@@ -133,8 +133,9 @@ final class TreeTypeAdapter<T> extends TypeAdapter<T> {
           ? exactType.equals(type) || matchRawType && exactType.getType() == type.getRawType()
           : hierarchyType.isAssignableFrom(type.getRawType());
       return matches
-          ? new TreeTypeAdapter<T>((JsonSerializer<T>) serializer,
-              (JsonDeserializer<T>) deserializer, gson, type, this)
+          ? new TreeTypeAdapter<>((JsonSerializer<T>) serializer,
+									 (JsonDeserializer<T>) deserializer, gson, type, this
+	  )
           : null;
     }
   }

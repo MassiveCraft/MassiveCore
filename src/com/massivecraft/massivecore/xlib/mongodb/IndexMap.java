@@ -45,7 +45,7 @@ abstract class IndexMap {
     abstract int map(int index);
 
     private static class HashBased extends IndexMap {
-        private final Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
+        private final Map<Integer, Integer> indexMap = new HashMap<>();
 
         public HashBased(int startIndex, int count) {
             for (int i = startIndex; i <= count; i++) {

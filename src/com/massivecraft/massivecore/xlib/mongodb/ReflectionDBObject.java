@@ -138,7 +138,7 @@ public abstract class ReflectionDBObject implements DBObject {
             _class = c;
             _name = c.getName();
 
-            _fields = new TreeMap<String,FieldInfo>();
+            _fields = new TreeMap<>();
             for ( Method m : c.getMethods() ){
                 if ( ! ( m.getName().startsWith( "get" ) || m.getName().startsWith( "set" ) ) )
                     continue;
@@ -161,7 +161,7 @@ public abstract class ReflectionDBObject implements DBObject {
                     fi._setter = m;
             }
 
-            Set<String> names = new HashSet<String>( _fields.keySet() );
+            Set<String> names = new HashSet<>(_fields.keySet());
             for ( String name : names )
                 if ( ! _fields.get( name ).ok() )
                     _fields.remove( name );
@@ -277,7 +277,7 @@ public abstract class ReflectionDBObject implements DBObject {
     }
     
     private static final Map<Class,JavaWrapper> _wrappers = Collections.synchronizedMap( new HashMap<Class,JavaWrapper>() );
-    private static final Set<String> IGNORE_FIELDS = new HashSet<String>();
+    private static final Set<String> IGNORE_FIELDS = new HashSet<>();
     static {
         IGNORE_FIELDS.add( "Int" );
     }

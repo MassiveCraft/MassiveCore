@@ -60,7 +60,7 @@ public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 	
 	public void msgAspects(List<Aspect> aspects)
 	{
-		List<String> ids = new ArrayList<String>();
+		List<String> ids = new ArrayList<>();
 		for (Aspect aspect : aspects)
 		{
 			ids.add(aspect.getId());

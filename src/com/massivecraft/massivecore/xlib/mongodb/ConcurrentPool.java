@@ -25,7 +25,7 @@ class ConcurrentPool<T> {
     private final int maxSize;
     private final ItemFactory<T> itemFactory;
 
-    private final Deque<T> available = new ConcurrentLinkedDeque<T>();
+    private final Deque<T> available = new ConcurrentLinkedDeque<>();
     private final Semaphore permits;
     private volatile boolean closed;
 

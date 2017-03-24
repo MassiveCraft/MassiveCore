@@ -24,7 +24,7 @@ public class SenderIdSourceMixinAllSenderIds implements SenderIdSource
 	@Override
 	public Collection<Collection<String>> getSenderIdCollections()
 	{
-		List<Collection<String>> ret = new ArrayList<Collection<String>>();
+		List<Collection<String>> ret = new ArrayList<>();
 		ret.add(IdUtil.getIds(SenderPresence.ANY, SenderType.ANY));
 		return ret;
 	}

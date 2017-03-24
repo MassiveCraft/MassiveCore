@@ -26,7 +26,7 @@ class CompositeServerSelector implements ServerSelector {
         if (serverSelectors.isEmpty()) {
             throw new IllegalArgumentException("Server selectors can not be an empty list");
         }
-        this.serverSelectors = new ArrayList<ServerSelector>(serverSelectors);
+        this.serverSelectors = new ArrayList<>(serverSelectors);
     }
 
     @Override

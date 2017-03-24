@@ -26,7 +26,7 @@ public class RequirementAnd extends RequirementAbstract
 	public static RequirementAnd get(Collection<Requirement> requirements) { return new RequirementAnd(requirements); }
 	public RequirementAnd(Collection<Requirement> requirements)
 	{
-		this.requirements = Collections.unmodifiableList(new ArrayList<Requirement>(requirements));
+		this.requirements = Collections.unmodifiableList(new ArrayList<>(requirements));
 	}
 	
 	// -------------------------------------------- //

@@ -40,7 +40,7 @@ public abstract class TypeTransformer<I, O> extends TypeAbstract<O>
 	public static Set<String> prefix(Set<String> strings)
 	{
 		// Create
-		Set<String> ret = new MassiveSet<String>(strings.size());
+		Set<String> ret = new MassiveSet<>(strings.size());
 		
 		// Fill
 		for (String string : strings)

@@ -97,11 +97,11 @@ public class IdUtil implements Listener, Runnable
 	public static Set<IdData> getDatas() { return datas; }
 	
 	// Id Index
-	private static Map<String, IdData> idToData = new ConcurrentSkipListMap<String, IdData>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, IdData> idToData = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 	public static Map<String, IdData> getIdToData() { return idToData;  }
 	
 	// Name Index
-	private static Map<String, IdData> nameToData = new ConcurrentSkipListMap<String, IdData>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, IdData> nameToData = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 	public static Map<String, IdData> getNameToData() { return nameToData; }
 	
 	// -------------------------------------------- //
@@ -129,10 +129,10 @@ public class IdUtil implements Listener, Runnable
 	// For registering extra custom CommandSender implementations.
 	// It's assumed that the getName() returns the name which is also the id.
 	
-	private static Map<String, CommandSender> registryIdToSender = new ConcurrentHashMap<String, CommandSender>();
+	private static Map<String, CommandSender> registryIdToSender = new ConcurrentHashMap<>();
 	public static Map<String, CommandSender> getRegistryIdToSender() { return Collections.unmodifiableMap(registryIdToSender); }
 	
-	private static Map<CommandSender, String> registrySenderToId = new ConcurrentHashMap<CommandSender, String>();
+	private static Map<CommandSender, String> registrySenderToId = new ConcurrentHashMap<>();
 	public static Map<CommandSender, String> getRegistrySenderToId() { return Collections.unmodifiableMap(registrySenderToId); }
 	
 	public static void register(CommandSender sender)
@@ -177,7 +177,7 @@ public class IdUtil implements Listener, Runnable
 	
 	public static Set<CommandSender> getLocalSenders()
 	{
-		Set<CommandSender> ret = new LinkedHashSet<CommandSender>();
+		Set<CommandSender> ret = new LinkedHashSet<>();
 		
 		// Add Online Players
 		ret.addAll(MUtil.getOnlinePlayers());
@@ -900,9 +900,9 @@ public class IdUtil implements Listener, Runnable
 		{
 			String content = DiscUtil.readCatch(CACHEFILE);
 			
-			if (content == null) return new HashSet<IdData>();
+			if (content == null) return new HashSet<>();
 			content = content.trim();
-			if (content.length() == 0) return new HashSet<IdData>();
+			if (content.length() == 0) return new HashSet<>();
 			
 			Set<IdData> ret = MassiveCore.gson.fromJson(content, CACHEFILE_TYPE);
 			return ret;
@@ -922,7 +922,7 @@ public class IdUtil implements Listener, Runnable
 	
 	public static Set<IdData> getLocalPlayerDatas()
 	{
-		Set<IdData> ret = new LinkedHashSet<IdData>();
+		Set<IdData> ret = new LinkedHashSet<>();
 		
 		long millis = System.currentTimeMillis();
 		

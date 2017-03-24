@@ -68,7 +68,7 @@ public class DriverFlatfile extends DriverAbstract
 	@Override
 	public Set<String> getCollnames(Db db)
 	{
-		Set<String> ret = new LinkedHashSet<String>();
+		Set<String> ret = new LinkedHashSet<>();
 		
 		for (File file : ((DbFlatfile)db).directory.listFiles())
 		{
@@ -105,7 +105,7 @@ public class DriverFlatfile extends DriverAbstract
 	@Override
 	public Collection<String> getIds(Coll<?> coll)
 	{
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		// Scan the collection folder for .json files
 		File collDir = getDirectory(coll);
@@ -122,7 +122,7 @@ public class DriverFlatfile extends DriverAbstract
 	public Map<String, Long> getId2mtime(Coll<?> coll)
 	{
 		// Create Ret
-		Map<String, Long> ret = new HashMap<String, Long>();
+		Map<String, Long> ret = new HashMap<>();
 		
 		// Get Directory
 		File directory = getDirectory(coll);
@@ -153,7 +153,7 @@ public class DriverFlatfile extends DriverAbstract
 		long mtime = file.lastModified();
 		JsonObject raw = loadFileJson(file);
 		
-		return new SimpleEntry<JsonObject, Long>(raw, mtime);
+		return new SimpleEntry<>(raw, mtime);
 	}
 	
 	public JsonObject loadFileJson(File file)
@@ -181,7 +181,7 @@ public class DriverFlatfile extends DriverAbstract
 		File[] files = directory.listFiles(JsonFileFilter.get());
 		
 		// Create Ret
-		ret = new LinkedHashMap<String, Entry<JsonObject, Long>>(files.length);
+		ret = new LinkedHashMap<>(files.length);
 		
 		// For Each Found
 		for (File file : files)

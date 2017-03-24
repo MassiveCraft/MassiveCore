@@ -45,7 +45,7 @@ class QueryResultIterator implements Cursor {
 
     private boolean closed;
 
-    private final List<Integer> _sizes = new ArrayList<Integer>();
+    private final List<Integer> _sizes = new ArrayList<>();
     private int _numGetMores = 0;
     private int _numFetched = 0;
 
@@ -226,7 +226,7 @@ class QueryResultIterator implements Cursor {
             return;
 
         try {
-            _db.killCursors(_host, asList(_cursorId));
+            _db.killCursors(_host, Collections.singletonList(_cursorId));
             _cursorId = 0;
         } catch (MongoException e) {
             _db.addDeadCursor(new DeadCursor(_cursorId, _host));

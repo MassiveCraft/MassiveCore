@@ -24,6 +24,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -399,7 +400,7 @@ public class Mongo {
 
         List l = (List)res.get("databases");
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         for (Object o : l) {
             list.add(((BasicDBObject)o).getString("name"));
@@ -483,7 +484,7 @@ public class Mongo {
     public List<ServerAddress> getAllAddress() {
         List<ServerAddress> result = _connector.getAllAddress();
         if (result == null) {
-            return Arrays.asList(getAddress());
+            return Collections.singletonList(getAddress());
         }
         return result;
     }
@@ -650,7 +651,7 @@ public class Mongo {
             return MongoAuthority.direct(new ServerAddress(uri.getHosts().get(0)), uri.getCredentials());
         }
         else {
-            List<ServerAddress> replicaSetSeeds = new ArrayList<ServerAddress>(uri.getHosts().size());
+            List<ServerAddress> replicaSetSeeds = new ArrayList<>(uri.getHosts().size());
             for ( String host : uri.getHosts() )
                 replicaSetSeeds.add( new ServerAddress( host ) );
             return MongoAuthority.dynamicSet(replicaSetSeeds, uri.getCredentials());
@@ -659,7 +660,7 @@ public class Mongo {
 
     final MongoOptions _options;
     final DBTCPConnector _connector;
-    final ConcurrentMap<String,DB> _dbs = new ConcurrentHashMap<String,DB>();
+    final ConcurrentMap<String,DB> _dbs = new ConcurrentHashMap<>();
     private WriteConcern _concern = WriteConcern.NORMAL;
     private ReadPreference _readPref = ReadPreference.primary();
     final Bytes.OptionHolder _netOptions = new Bytes.OptionHolder( null );
@@ -802,7 +803,7 @@ public class Mongo {
         public static Holder singleton() { return _default; }
 
         private static Holder _default = new Holder();
-        private final ConcurrentMap<String,Mongo> _mongos = new ConcurrentHashMap<String,Mongo>();
+        private final ConcurrentMap<String,Mongo> _mongos = new ConcurrentHashMap<>();
 
     }
 

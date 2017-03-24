@@ -98,12 +98,12 @@ public final class Excluder implements TypeAdapterFactory, Cloneable {
       boolean serialization, boolean deserialization) {
     Excluder result = clone();
     if (serialization) {
-      result.serializationStrategies = new ArrayList<ExclusionStrategy>(serializationStrategies);
+      result.serializationStrategies = new ArrayList<>(serializationStrategies);
       result.serializationStrategies.add(exclusionStrategy);
     }
     if (deserialization) {
       result.deserializationStrategies
-          = new ArrayList<ExclusionStrategy>(deserializationStrategies);
+          = new ArrayList<>(deserializationStrategies);
       result.deserializationStrategies.add(exclusionStrategy);
     }
     return result;

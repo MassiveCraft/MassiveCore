@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 @Deprecated
 public interface ByteStream {
     
-    public boolean hasMore();
-    public int write( ByteBuffer bb );
+    boolean hasMore();
+    int write(ByteBuffer bb);
 
 }

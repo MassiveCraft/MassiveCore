@@ -20,7 +20,7 @@ public class TypeMap<K, V> extends TypeContainer<Map<K, V>, Entry<K, V>>
 	
 	public static <K, V> TypeMap<K, V> get(TypeEntry<K, V> entryType)
 	{
-		return new TypeMap<K, V>(entryType);
+		return new TypeMap<>(entryType);
 	}
 	
 	public TypeMap(TypeEntry<K, V> entryType)
@@ -43,7 +43,7 @@ public class TypeMap<K, V> extends TypeContainer<Map<K, V>, Entry<K, V>>
 	@Override
 	public Map<K, V> createNewInstance()
 	{
-		return new MassiveMap<K, V>();
+		return new MassiveMap<>();
 	}
 
 }

@@ -45,7 +45,7 @@ public class EngineMassiveCorePlayerState extends Engine
 	// STATE STORAGE
 	// -------------------------------------------- //
 	
-	private Map<UUID, PlayerState> idToState = new ConcurrentHashMap<UUID, PlayerState>();
+	private Map<UUID, PlayerState> idToState = new ConcurrentHashMap<>();
 	
 	public PlayerState getState(Player player)
 	{

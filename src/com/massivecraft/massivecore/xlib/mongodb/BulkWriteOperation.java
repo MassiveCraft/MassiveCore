@@ -34,7 +34,7 @@ import static com.massivecraft.massivecore.xlib.bson.util.Assertions.isTrue;
 public class BulkWriteOperation {
     private final boolean ordered;
     private final DBCollection collection;
-    private final List<WriteRequest> requests = new ArrayList<WriteRequest>();
+    private final List<WriteRequest> requests = new ArrayList<>();
     private boolean closed;
 
     BulkWriteOperation(final boolean ordered, final DBCollection collection) {

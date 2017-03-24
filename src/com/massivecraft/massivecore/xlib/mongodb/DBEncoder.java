@@ -20,5 +20,5 @@ import com.massivecraft.massivecore.xlib.bson.BSONObject;
 import com.massivecraft.massivecore.xlib.bson.io.OutputBuffer;
 
 public interface DBEncoder {
-    public int writeObject( OutputBuffer buf, BSONObject o );
+    int writeObject(OutputBuffer buf, BSONObject o);
 }

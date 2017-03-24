@@ -13,7 +13,7 @@ public class TypeList<E> extends TypeContainer<List<E>, E>
 	
 	public static <E> TypeList<E> get(Type<E> innerType)
 	{
-		return new TypeList<E>(innerType);
+		return new TypeList<>(innerType);
 	}
 	
 	public TypeList(Type<E> innerType)
@@ -28,7 +28,7 @@ public class TypeList<E> extends TypeContainer<List<E>, E>
 	@Override
 	public List<E> createNewInstance()
 	{
-		return new MassiveList<E>();
+		return new MassiveList<>();
 	}
 
 }

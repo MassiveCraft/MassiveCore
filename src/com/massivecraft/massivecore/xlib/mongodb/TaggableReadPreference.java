@@ -26,7 +26,7 @@ import java.util.List;
  * @author breinero
  */
 public abstract class TaggableReadPreference extends ReadPreference {
-    private final static List<DBObject> EMPTY = new ArrayList<DBObject>();
+    private final static List<DBObject> EMPTY = new ArrayList<>();
 
     TaggableReadPreference() {
         _tags = EMPTY;
@@ -36,7 +36,7 @@ public abstract class TaggableReadPreference extends ReadPreference {
         if (firstTagSet == null) {
             throw new IllegalArgumentException("Must have at least one tag set");
         }
-        _tags = new ArrayList<DBObject>();
+        _tags = new ArrayList<>();
         _tags.add(firstTagSet);
         Collections.addAll(_tags, remainingTagSets);
     }
@@ -58,7 +58,7 @@ public abstract class TaggableReadPreference extends ReadPreference {
 
 
     public List<DBObject> getTagSets() {
-        List<DBObject> tags = new ArrayList<DBObject>();
+        List<DBObject> tags = new ArrayList<>();
         for (DBObject tagSet : _tags) {
             tags.add(tagSet);
         }

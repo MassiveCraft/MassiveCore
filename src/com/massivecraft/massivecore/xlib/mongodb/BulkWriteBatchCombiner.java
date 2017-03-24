@@ -17,6 +17,7 @@
 package com.massivecraft.massivecore.xlib.mongodb;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -35,19 +36,23 @@ class BulkWriteBatchCombiner {
     private int matchedCount;
     private int removedCount;
     private Integer modifiedCount = 0;
-    private final Set<BulkWriteUpsert> writeUpserts = new TreeSet<BulkWriteUpsert>(new Comparator<BulkWriteUpsert>() {
-        @Override
-        public int compare(final BulkWriteUpsert o1, final BulkWriteUpsert o2) {
-            return (o1.getIndex() < o2.getIndex()) ? -1 : ((o1.getIndex() == o2.getIndex()) ? 0 : 1);
-        }
-    });
-    private final Set<BulkWriteError> writeErrors = new TreeSet<BulkWriteError>(new Comparator<BulkWriteError>() {
-        @Override
-        public int compare(final BulkWriteError o1, final BulkWriteError o2) {
-            return (o1.getIndex() < o2.getIndex()) ? -1 : ((o1.getIndex() == o2.getIndex()) ? 0 : 1);
-        }
-    });
-    private final List<WriteConcernError> writeConcernErrors = new ArrayList<WriteConcernError>();
+    private final Set<BulkWriteUpsert> writeUpserts = new TreeSet<>(new Comparator<BulkWriteUpsert>()
+	{
+		@Override
+		public int compare(final BulkWriteUpsert o1, final BulkWriteUpsert o2)
+		{
+			return (o1.getIndex() < o2.getIndex()) ? -1 : ((o1.getIndex() == o2.getIndex()) ? 0 : 1);
+		}
+	});
+    private final Set<BulkWriteError> writeErrors = new TreeSet<>(new Comparator<BulkWriteError>()
+	{
+		@Override
+		public int compare(final BulkWriteError o1, final BulkWriteError o2)
+		{
+			return (o1.getIndex() < o2.getIndex()) ? -1 : ((o1.getIndex() == o2.getIndex()) ? 0 : 1);
+		}
+	});
+    private final List<WriteConcernError> writeConcernErrors = new ArrayList<>();
 
     public BulkWriteBatchCombiner(final ServerAddress serverAddress, final WriteConcern writeConcern) {
         this.writeConcern = notNull("writeConcern", writeConcern);
@@ -75,7 +80,7 @@ class BulkWriteBatchCombiner {
 
     public void addWriteErrorResult(final BulkWriteError writeError, final IndexMap indexMap) {
         notNull("writeError", writeError);
-        mergeWriteErrors(asList(writeError), indexMap);
+        mergeWriteErrors(Collections.singletonList(writeError), indexMap);
     }
 
     public void addWriteConcernErrorResult(final WriteConcernError writeConcernError) {
@@ -124,7 +129,7 @@ class BulkWriteBatchCombiner {
     private void throwOnError() {
         if (!writeErrors.isEmpty() || !writeConcernErrors.isEmpty()) {
             throw new BulkWriteException(createResult(),
-                                         new ArrayList<BulkWriteError>(writeErrors),
+											new ArrayList<>(writeErrors),
                                          writeConcernErrors.isEmpty() ? null : writeConcernErrors.get(writeConcernErrors.size() - 1),
                                          serverAddress);
         }
@@ -133,7 +138,7 @@ class BulkWriteBatchCombiner {
     private BulkWriteResult createResult() {
         return writeConcern.callGetLastError()
                ? new AcknowledgedBulkWriteResult(insertedCount, matchedCount, removedCount, modifiedCount,
-                                                 new ArrayList<BulkWriteUpsert>(writeUpserts))
+													new ArrayList<>(writeUpserts))
                : new UnacknowledgedBulkWriteResult();
     }
 

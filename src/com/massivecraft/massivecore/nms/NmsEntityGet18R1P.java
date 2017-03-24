@@ -79,7 +79,7 @@ public class NmsEntityGet18R1P extends NmsEntityGet
 	// INTERNAL
 	// -------------------------------------------- //
 	
-	private Map<World, Map<UUID, Object>> worldMaps = new WeakHashMap<World, Map<UUID, Object>>();
+	private Map<World, Map<UUID, Object>> worldMaps = new WeakHashMap<>();
 	
 	private Map<UUID, Object> getWorldMap(Object handle)
 	{

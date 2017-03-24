@@ -29,7 +29,7 @@ import static java.lang.String.format;
 @SuppressWarnings({"deprecation"})
 class JMXConnectionPoolListener implements ConnectionPoolListener {
     private final ConcurrentMap<ClusterIdServerAddressPair, ConnectionPoolStatistics> map =
-    new ConcurrentHashMap<ClusterIdServerAddressPair, ConnectionPoolStatistics>();
+		new ConcurrentHashMap<>();
     private final String clusterDescription;
 
     public JMXConnectionPoolListener(final String clusterDescription) {

@@ -25,7 +25,7 @@ public class TypeWorldType extends TypeEnum<WorldType>
 	@Override
 	public Set<String> getNamesInner(WorldType value)
 	{
-		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
+		Set<String> ret = new MassiveSet<>(super.getNamesInner(value));
 		
 		if (value == WorldType.NORMAL)
 		{

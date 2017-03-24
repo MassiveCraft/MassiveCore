@@ -198,7 +198,7 @@ public class ContainerUtil
 		throw new IllegalArgumentException(container.getClass().getName() + " is not a container.");
 	}
 	
-	public static void setElements(Object container, Iterable<? extends Object> elements)
+	public static void setElements(Object container, Iterable<?> elements)
 	{
 		clear(container);
 		addElements(container, elements);
@@ -228,7 +228,7 @@ public class ContainerUtil
 		throw new IllegalArgumentException(container.getClass().getName() + " is not a container.");
 	}
 	
-	public static void addElements(Object container, Iterable<? extends Object> elements)
+	public static void addElements(Object container, Iterable<?> elements)
 	{
 		if (container == null) throw new NullPointerException("container");
 		if (elements == null) throw new NullPointerException("elements");
@@ -246,7 +246,7 @@ public class ContainerUtil
 	public static <E> Collection<E> getAdditions(Object before, Object after)
 	{
 		Collection<E> elements = ContainerUtil.getElements(after);
-		Set<E> ret = new MassiveSet<E>(elements);
+		Set<E> ret = new MassiveSet<>(elements);
 		ret.removeAll(ContainerUtil.getElements(before));
 		return ret;
 	}
@@ -254,7 +254,7 @@ public class ContainerUtil
 	public static <E> Collection<E> getDeletions(Object before, Object after)
 	{
 		Collection<E> elements = ContainerUtil.getElements(before);
-		Set<E> ret = new MassiveSet<E>(elements);
+		Set<E> ret = new MassiveSet<>(elements);
 		ret.removeAll(ContainerUtil.getElements(after));
 		return ret;
 	}

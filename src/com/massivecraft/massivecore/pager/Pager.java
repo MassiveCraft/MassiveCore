@@ -54,7 +54,7 @@ public class Pager<T>
 		if (ret != null) return ret;
 		
 		MassiveCommand command = this.getCommand();
-		if (command != null) return new ArrayList<String>(command.getArgs());
+		if (command != null) return new ArrayList<>(command.getArgs());
 		
 		return null;
 	}
@@ -199,7 +199,7 @@ public class Pager<T>
 		}
 		else
 		{
-			items = new ArrayList<T>(this.getItems());
+			items = new ArrayList<>(this.getItems());
 		}
 		
 		int index = number - 1;
@@ -223,7 +223,7 @@ public class Pager<T>
 	public List<Mson> get()
 	{
 		// Create ret
-		List<Mson> ret = new ArrayList<Mson>();
+		List<Mson> ret = new ArrayList<>();
 		
 		// Add title
 		ret.add(Txt.titleizeMson(this.getTitle(), this.size(), this.getNumber(), this.getCommand(), this.getArgs()));

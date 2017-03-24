@@ -41,7 +41,7 @@ public class EngineMassiveCoreWorldNameSet extends Engine
 	// FIELDS
 	// -------------------------------------------- //
 	
-	private final TreeSet<String> worldNamesInner = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+	private final TreeSet<String> worldNamesInner = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 	private final Set<String> worldNamesOuter = Collections.unmodifiableSet(this.worldNamesInner);
 	public Set<String> getWorldNames() { return this.worldNamesOuter; }
 	

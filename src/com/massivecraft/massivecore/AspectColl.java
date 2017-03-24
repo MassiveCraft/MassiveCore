@@ -30,7 +30,7 @@ public class AspectColl extends Coll<Aspect>
 	
 	public List<Aspect> getAllRegistered()
 	{
-		List<Aspect> ret = new ArrayList<Aspect>();
+		List<Aspect> ret = new ArrayList<>();
 		for (Aspect aspect : this.getAll())
 		{
 			if (aspect.isRegistered() == false) continue;
@@ -41,7 +41,7 @@ public class AspectColl extends Coll<Aspect>
 	
 	public List<Aspect> getAllRegisteredForMultiverse(Multiverse multiverse, boolean normal)
 	{
-		List<Aspect> ret = new ArrayList<Aspect>();
+		List<Aspect> ret = new ArrayList<>();
 		for (Aspect aspect : this.getAll())
 		{
 			if (aspect.isRegistered() == false) continue;

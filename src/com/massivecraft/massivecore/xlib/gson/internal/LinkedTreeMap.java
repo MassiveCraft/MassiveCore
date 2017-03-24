@@ -49,7 +49,7 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
   int modCount = 0;
 
   // Used to preserve iteration order
-  final Node<K, V> header = new Node<K, V>();
+  final Node<K, V> header = new Node<>();
 
   /**
    * Create a natural order, empty tree map whose keys must be mutually
@@ -163,10 +163,10 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
       if (comparator == NATURAL_ORDER && !(key instanceof Comparable)) {
         throw new ClassCastException(key.getClass().getName() + " is not Comparable");
       }
-      created = new Node<K, V>(nearest, key, header, header.prev);
+      created = new Node<>(nearest, key, header, header.prev);
       root = created;
     } else {
-      created = new Node<K, V>(nearest, key, header, header.prev);
+      created = new Node<>(nearest, key, header, header.prev);
       if (comparison < 0) { // nearest.key is higher
         nearest.left = created;
       } else { // comparison > 0, nearest.key is lower
@@ -622,6 +622,6 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
    * shouldn't use it.
    */
   private Object writeReplace() throws ObjectStreamException {
-    return new LinkedHashMap<K, V>(this);
+    return new LinkedHashMap<>(this);
   }
 }

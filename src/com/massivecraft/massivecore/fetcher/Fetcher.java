@@ -51,11 +51,11 @@ public class Fetcher implements Callable<Set<IdAndName>>
 	// STATIC
 	// -------------------------------------------- //
 	
-	public static Set<IdAndName> fetch(Collection<? extends Object> objects) throws Exception
+	public static Set<IdAndName> fetch(Collection<?> objects) throws Exception
 	{
 		// Separate names and ids
-		final Set<String> names = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		final Set<UUID> ids = new HashSet<UUID>();
+		final Set<String> names = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		final Set<UUID> ids = new HashSet<>();
 		for (Object object : objects)
 		{
 			if (object instanceof UUID)
@@ -83,7 +83,7 @@ public class Fetcher implements Callable<Set<IdAndName>>
 			@Override
 			public Set<IdAndName> call() throws Exception
 			{
-				return new HashSet<IdAndName>(new FetcherByName(names).call().values());
+				return new HashSet<>(new FetcherByName(names).call().values());
 			}
 		};
 		
@@ -92,11 +92,11 @@ public class Fetcher implements Callable<Set<IdAndName>>
 			@Override
 			public Set<IdAndName> call() throws Exception
 			{
-				return new HashSet<IdAndName>(new FetcherById(ids).call().values());
+				return new HashSet<>(new FetcherById(ids).call().values());
 			}
 		};
 		
-		final List<Callable<Set<IdAndName>>> tasks = new ArrayList<Callable<Set<IdAndName>>>();
+		final List<Callable<Set<IdAndName>>> tasks = new ArrayList<>();
 		tasks.add(taskName);
 		tasks.add(taskId);
 		
@@ -104,7 +104,7 @@ public class Fetcher implements Callable<Set<IdAndName>>
 		List<Future<Set<IdAndName>>> futures = ES.invokeAll(tasks);
 		
 		// Merge Return Value
-		Set<IdAndName> ret = new HashSet<IdAndName>();
+		Set<IdAndName> ret = new HashSet<>();
 		for (Future<Set<IdAndName>> future : futures)
 		{
 			Set<IdAndName> set = future.get();

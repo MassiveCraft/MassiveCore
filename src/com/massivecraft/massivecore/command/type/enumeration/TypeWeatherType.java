@@ -46,7 +46,7 @@ public class TypeWeatherType extends TypeEnum<WeatherType>
 	@Override
 	public Set<String> getNamesInner(WeatherType value)
 	{
-		Set<String> ret = new MassiveSet<String>();
+		Set<String> ret = new MassiveSet<>();
 		
 		switch (value)
 		{

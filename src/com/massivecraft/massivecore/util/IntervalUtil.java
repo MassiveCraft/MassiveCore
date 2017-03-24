@@ -50,7 +50,7 @@ public class IntervalUtil
 	{
 		if (interval == null)
 		{
-			return new SimpleEntry<Double, Double>(dmin, dmax);
+			return new SimpleEntry<>(dmin, dmax);
 		}
 		
 		if (interval.contains("to"))
@@ -60,18 +60,18 @@ public class IntervalUtil
 			{
 				Double min = parseDouble(parts[0], dmin);
 				Double max = parseDouble(parts[1], dmax);
-				return new SimpleEntry<Double, Double>(min, max);
+				return new SimpleEntry<>(min, max);
 			}
 		}
 		Double single = parseDouble(interval, dmin);
-		return new SimpleEntry<Double, Double>(single, single);
+		return new SimpleEntry<>(single, single);
 	}
 	
 	public static Entry<Integer, Integer> parseIntegerInterval(String interval, Integer dmin, Integer dmax)
 	{
 		if (interval == null)
 		{
-			return new SimpleEntry<Integer, Integer>(dmin, dmax);
+			return new SimpleEntry<>(dmin, dmax);
 		}
 		
 		if (interval.contains("to"))
@@ -81,11 +81,11 @@ public class IntervalUtil
 			{
 				Integer min = parseInteger(parts[0], dmin);
 				Integer max = parseInteger(parts[1], dmax);
-				return new SimpleEntry<Integer, Integer>(min, max);
+				return new SimpleEntry<>(min, max);
 			}
 		}
 		Integer single = parseInteger(interval, dmin);
-		return new SimpleEntry<Integer, Integer>(single, single);
+		return new SimpleEntry<>(single, single);
 	}
 	
 	// -------------------------------------------- //

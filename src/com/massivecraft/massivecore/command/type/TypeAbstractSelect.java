@@ -52,7 +52,7 @@ public abstract class TypeAbstractSelect<T> extends TypeAbstract<T> implements A
 	
 	public Collection<String> altNames(CommandSender sender)
 	{
-		List<String> names = new ArrayList<String>();
+		List<String> names = new ArrayList<>();
 		for (T value : this.getAll(sender))
 		{
 			String name = this.getVisual(value, sender);
@@ -107,7 +107,7 @@ public abstract class TypeAbstractSelect<T> extends TypeAbstract<T> implements A
 		arg = arg.toLowerCase();
 		
 		// Try Levenshtein
-		List<String> matches = new ArrayList<String>();
+		List<String> matches = new ArrayList<>();
 		
 		for (String alias : this.altNames(sender))
 		{

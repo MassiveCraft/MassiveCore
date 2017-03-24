@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -79,8 +80,8 @@ public class FetcherByNameSingle implements Callable<Map<String, IdAndName>>
 	
 	public static Map<String, IdAndName> fetch(Collection<String> namesCollection, boolean rateLimiting) throws Exception
 	{
-		List<String> names = new ArrayList<String>(namesCollection);
-		Map<String, IdAndName> ret = new TreeMap<String, IdAndName>(String.CASE_INSENSITIVE_ORDER);
+		List<String> names = new ArrayList<>(namesCollection);
+		Map<String, IdAndName> ret = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		JSONParser jsonParser = new JSONParser();
 		
 		int requests = (int) Math.ceil(names.size() / (double) PROFILES_PER_REQUEST);
@@ -172,7 +173,7 @@ public class FetcherByNameSingle implements Callable<Map<String, IdAndName>>
 
 	public static IdAndName get(String name) throws Exception
 	{
-		return fetch(Arrays.asList(name)).get(name);
+		return fetch(Collections.singletonList(name)).get(name);
 	}
 	
 }

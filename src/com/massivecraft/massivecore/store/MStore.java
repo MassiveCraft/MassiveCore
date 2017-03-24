@@ -22,7 +22,7 @@ public class MStore
 	// DRIVER REGISTRY
 	// -------------------------------------------- //
 	
-	private static Map<String, Driver> drivers = new HashMap<String, Driver>();
+	private static Map<String, Driver> drivers = new HashMap<>();
 	public static boolean registerDriver(Driver driver)
 	{
 		if (drivers.containsKey(driver.getDriverName())) return false;
@@ -67,7 +67,7 @@ public class MStore
 	// -------------------------------------------- //
 	
 	// We cache databases here
-	private static Map<String, Db> uri2db = new HashMap<String, Db>();
+	private static Map<String, Db> uri2db = new HashMap<>();
 	
 	public static String resolveAlias(String alias)
 	{

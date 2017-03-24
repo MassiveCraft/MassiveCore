@@ -52,11 +52,11 @@ class ClassAncestry {
      * computeAncestry, starting with children and going back to parents
      */
     private static List<Class<?>> computeAncestry(Class<?> c) {
-        final List<Class<?>> result = new ArrayList<Class<?>>();
+        final List<Class<?>> result = new ArrayList<>();
         result.add(Object.class);
         computeAncestry(c, result);
         Collections.reverse(result);
-        return unmodifiableList(new ArrayList<Class<?>>(result));
+        return unmodifiableList(new ArrayList<>(result));
     }
 
     private static <T> void computeAncestry(Class<T> c, List<Class<?>> result) {

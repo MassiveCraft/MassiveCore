@@ -25,13 +25,13 @@ import java.nio.ByteBuffer;
  */
 @Deprecated
 public interface ByteBufferFactory {
-    public ByteBuffer get();
+    ByteBuffer get();
 
     /**
      * @deprecated This class is NOT a part of public API and will be dropped in 3.x versions.
      */
     @Deprecated
-    public static class SimpleHeapByteBufferFactory implements ByteBufferFactory {
+	class SimpleHeapByteBufferFactory implements ByteBufferFactory {
 	public SimpleHeapByteBufferFactory( int size ){
 	    _size = size;
 	}

@@ -59,8 +59,8 @@ public class ClassMap<T>  {
             }
             return null;
         }
-    };
-
+    }
+    
     private final Map<Class<?>, T> map = CopyOnWriteMap.newHashMap();
     private final Map<Class<?>, T> cache = ComputingMap.create(new ComputeFunction());
 

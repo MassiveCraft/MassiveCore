@@ -178,7 +178,7 @@ public final class MongoCredential {
         this.userName = from.userName;
         this.source = from.source;
         this.password = from.password;
-        this.mechanismProperties = new HashMap<String, Object>(from.mechanismProperties);
+        this.mechanismProperties = new HashMap<>(from.mechanismProperties);
         this.mechanismProperties.put(mechanismPropertyKey, mechanismPropertyValue);
     }
 

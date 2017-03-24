@@ -37,7 +37,7 @@ public class ExceptionSet
 	}
 	
 	@SafeVarargs
-	public <O extends Object> ExceptionSet(boolean standard, O... exceptions)
+	public <O> ExceptionSet(boolean standard, O... exceptions)
 	{
 		this.standard = standard;
 		if (exceptions.length == 0) return;
@@ -49,7 +49,7 @@ public class ExceptionSet
 	// CONTAINS
 	// -------------------------------------------- //
 	
-	public <O extends Object> boolean contains(O object)
+	public <O> boolean contains(O object)
 	{
 		if (object == null) return ! this.standard;
 		String string = stringify(object);

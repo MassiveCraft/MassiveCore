@@ -73,9 +73,9 @@ class Response {
         final MyInputStream user = new MyInputStream( in , _len - b.length );
 
         if ( _num < 2 )
-            _objects = new LinkedList<DBObject>();
+            _objects = new LinkedList<>();
         else
-            _objects = new ArrayList<DBObject>( _num );
+            _objects = new ArrayList<>(_num);
 
         for ( int i=0; i < _num; i++ ){
             if ( user._toGo < 5 )

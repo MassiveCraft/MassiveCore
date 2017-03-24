@@ -39,7 +39,7 @@ public class PusherCollFlatfile extends Thread implements PusherColl
 	private final WatchService watcher;
 	private final Map<WatchKey, Path> keys;
 	private final Coll<?> coll;
-	private final Set<String> handledIds = new HashSet<String>();
+	private final Set<String> handledIds = new HashSet<>();
 	
 	// -------------------------------------------- //
 	// OVERRIDE: THREAD
@@ -215,7 +215,7 @@ public class PusherCollFlatfile extends Thread implements PusherColl
 		if ( ! (db instanceof DbFlatfile)) throw new IllegalArgumentException("Coll doesn't use flatfile database");
 		this.folderUri = db.getDbName() + "/" + coll.getBasename();
 		this.watcher = FileSystems.getDefault().newWatchService();
-		this.keys = new HashMap<WatchKey, Path>();
+		this.keys = new HashMap<>();
 		this.coll = coll;
 		
 		// We must make sure that the paths exists,

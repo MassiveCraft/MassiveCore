@@ -161,7 +161,7 @@ public class SignUtil
 		if (block == null) throw new NullPointerException("block");
 		if (getSpecialTitle(block, true) == null) throw new InvalidParameterException("block");
 		
-		List<Block> ret = new ArrayList<Block>();
+		List<Block> ret = new ArrayList<>();
 		
 		do
 		{
@@ -276,7 +276,7 @@ public class SignUtil
 	{
 		if (blocks == null) throw new NullPointerException("blocks");
 		
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		for (Block block : blocks)
 		{
@@ -305,7 +305,7 @@ public class SignUtil
 		if (sign == null) throw new NullPointerException("sign");
 		
 		// Create
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		// Fill
 		for (String line : sign.getLines())

@@ -23,12 +23,12 @@ import java.io.InputStream;
 
 public interface BSONDecoder {
     
-    public BSONObject readObject( byte[] b );
+    BSONObject readObject(byte[] b);
     
-    public BSONObject readObject( InputStream in ) throws IOException;
+    BSONObject readObject(InputStream in) throws IOException;
     
-    public int decode( byte[] b , BSONCallback callback );
+    int decode(byte[] b, BSONCallback callback);
 
-    public int decode( InputStream in , BSONCallback callback ) throws IOException;
+    int decode(InputStream in, BSONCallback callback) throws IOException;
 
 }

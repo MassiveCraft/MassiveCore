@@ -38,7 +38,7 @@ public enum Modification
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	private Modification(boolean modified, int priority)
+	Modification(boolean modified, int priority)
 	{
 		this.modified = modified;
 		this.priority = priority;

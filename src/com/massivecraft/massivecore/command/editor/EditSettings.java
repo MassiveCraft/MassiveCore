@@ -78,7 +78,7 @@ public class EditSettings<O>
 	}
 	protected EditSettings<CommandSender> createUsedSettings()
 	{
-		return new EditSettings<CommandSender>(TypeSender.get(), new PropertyThis<CommandSender>(TypeSender.get()));
+		return new EditSettings<>(TypeSender.get(), new PropertyThis<>(TypeSender.get()));
 	}
 	
 	// Requirements to edit the used object.
@@ -164,12 +164,12 @@ public class EditSettings<O>
 	
 	public CommandEditUsed<O> createCommandUsed()
 	{
-		return new CommandEditUsed<O>(this);
+		return new CommandEditUsed<>(this);
 	}
 	
 	public CommandEditShow<O, O> createCommandShow()
 	{
-		return new CommandEditShow<O, O>(this, new PropertyThis<>(this.getObjectType()));
+		return new CommandEditShow<>(this, new PropertyThis<>(this.getObjectType()));
 	}
 	
 	public CommandEditAbstract<O, O> createCommandEdit()

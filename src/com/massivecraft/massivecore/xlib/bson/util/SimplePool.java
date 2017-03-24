@@ -58,5 +58,5 @@ public abstract class SimplePool<T> {
     }
     
     final int _max;
-    private Queue<T> _stored = new ConcurrentLinkedQueue<T>();
+    private Queue<T> _stored = new ConcurrentLinkedQueue<>();
 }

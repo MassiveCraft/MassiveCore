@@ -64,7 +64,7 @@ public class MassiveMap<K, V> extends LinkedHashMap<K, V>
 	@SuppressWarnings("unchecked")
 	public static <K, V> MassiveMap<K, V> varargCreate(K key1, V value1, Object... objects)
 	{
-		MassiveMap<K, V> ret = new MassiveMap<K, V>();
+		MassiveMap<K, V> ret = new MassiveMap<>();
 		
 		ret.put(key1, value1);
 		

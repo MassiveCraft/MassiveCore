@@ -61,7 +61,7 @@ public class EventMassiveCoreLorePriority extends EventMassiveCore
 		List<Entry<String, Integer>> ret = new MassiveList<>();
 		for (String line : meta.getLore())
 		{
-			ret.add(new SimpleEntry<String, Integer>(line, PRIORITY_DEFAULT));
+			ret.add(new SimpleEntry<>(line, PRIORITY_DEFAULT));
 		}
 		return ret;
 	}

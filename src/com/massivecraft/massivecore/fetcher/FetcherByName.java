@@ -52,8 +52,8 @@ public class FetcherByName implements Callable<Map<String, IdAndName>>
 	public static Map<String, IdAndName> fetch(Collection<String> names) throws Exception
 	{
 		// Create batches
-		List<List<String>> batches = new ArrayList<List<String>>();
-		names = new ArrayList<String>(names);
+		List<List<String>> batches = new ArrayList<>();
+		names = new ArrayList<>(names);
 		while (names.size() > 0)
 		{
 			List<String> batch = take(names, BATCH_SIZE);
@@ -61,7 +61,7 @@ public class FetcherByName implements Callable<Map<String, IdAndName>>
 		}
 		
 		// Create Tasks
-		final List<Callable<Map<String, IdAndName>>> tasks = new ArrayList<Callable<Map<String, IdAndName>>>();
+		final List<Callable<Map<String, IdAndName>>> tasks = new ArrayList<>();
 		for (List<String> batch : batches)
 		{
 			tasks.add(new FetcherByNameSingle(batch));
@@ -71,7 +71,7 @@ public class FetcherByName implements Callable<Map<String, IdAndName>>
 		List<Future<Map<String, IdAndName>>> futures = ES.invokeAll(tasks);
 		
 		// Merge Return Value
-		Map<String, IdAndName> ret = new TreeMap<String, IdAndName> (String.CASE_INSENSITIVE_ORDER);
+		Map<String, IdAndName> ret = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		for (Future<Map<String, IdAndName>> future : futures)
 		{
 			ret.putAll(future.get());
@@ -82,7 +82,7 @@ public class FetcherByName implements Callable<Map<String, IdAndName>>
 	
 	public static <T> List<T> take(Collection<T> coll, int count)
 	{
-		List<T> ret = new ArrayList<T>();
+		List<T> ret = new ArrayList<>();
 		
 		Iterator<T> iter = coll.iterator();
 		int i = 0;

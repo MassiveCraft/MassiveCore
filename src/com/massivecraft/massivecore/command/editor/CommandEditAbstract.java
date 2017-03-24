@@ -111,7 +111,7 @@ public class CommandEditAbstract<O, V> extends MassiveCommand
 		V before = inherited.getValue();
 		
 		// Event
-		EventMassiveCoreEditorEdit<O, V> event = new EventMassiveCoreEditorEdit<O, V>(this, source, before, after);
+		EventMassiveCoreEditorEdit<O, V> event = new EventMassiveCoreEditorEdit<>(this, source, before, after);
 		event.run();
 		if (event.isCancelled()) return;
 		after = event.getAfter();

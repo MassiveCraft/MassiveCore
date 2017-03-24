@@ -54,7 +54,7 @@ class PooledConnectionProvider  {
         this.serverAddress = notNull("serverAddress", serverAddress);
         this.settings = notNull("settings", settings);
         ConnectionItemFactory connectionItemFactory = new ConnectionItemFactory();
-        pool = new ConcurrentPool<Connection>(settings.getMaxSize(), connectionItemFactory);
+        pool = new ConcurrentPool<>(settings.getMaxSize(), connectionItemFactory);
         maintenanceTask = createMaintenanceTask();
         sizeMaintenanceTimer = createTimer();
         this.connectionPoolListener = notNull("connectionPoolListener", connectionPoolListener);

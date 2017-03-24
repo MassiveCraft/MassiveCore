@@ -21,7 +21,7 @@ package com.massivecraft.massivecore.xlib.mongodb;
  */
 public interface DBCallbackFactory {
 
-    public DBCallback create( DBCollection collection );
+    DBCallback create(DBCollection collection);
 
 }
 

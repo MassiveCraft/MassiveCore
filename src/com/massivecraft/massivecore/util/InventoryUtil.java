@@ -784,7 +784,7 @@ public class InventoryUtil
 			}
 			
 			amount *= -1;
-			ret.add(new SimpleEntry<ItemStack, Integer>(item, amount));
+			ret.add(new SimpleEntry<>(item, amount));
 		}
 		
 		// Take
@@ -796,7 +796,7 @@ public class InventoryUtil
 			if (action == InventoryAction.PICKUP_ONE) amount = 1;
 			if (action == InventoryAction.PICKUP_HALF) amount = (int) Math.ceil(amount / 2.0);
 			
-			ret.add(new SimpleEntry<ItemStack, Integer>(item, amount));			
+			ret.add(new SimpleEntry<>(item, amount));
 		}
 		
 		// Return
@@ -821,10 +821,10 @@ public class InventoryUtil
 			if (InventoryUtil.isBottomInventory(rawSlot, inventory)) continue;
 			
 			ItemStack take = inventory.getItem(rawSlot);
-			if (isSomething(take)) ret.add(new SimpleEntry<ItemStack, Integer>(take, +take.getAmount()));
+			if (isSomething(take)) ret.add(new SimpleEntry<>(take, +take.getAmount()));
 			
 			ItemStack give = entry.getValue();
-			if (isSomething(give)) ret.add(new SimpleEntry<ItemStack, Integer>(give, -give.getAmount()));
+			if (isSomething(give)) ret.add(new SimpleEntry<>(give, -give.getAmount()));
 		}
 		
 		// Return

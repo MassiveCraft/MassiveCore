@@ -34,7 +34,7 @@ public class MapReduceCommand {
      *
      * @mongodb.driver.manual reference/command/mapReduce/#mapreduce-out-cmd Output options
      */
-    public static enum OutputType {
+    public enum OutputType {
         /**
          * Save the job output to a collection, replacing its previous content
          */

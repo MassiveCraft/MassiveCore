@@ -104,7 +104,7 @@ public class LazyWriteableDBObject extends LazyDBObject {
 	 */
 	@Override
 	public Set<String> keySet() {
-		Set<String> combined = new HashSet<String>();
+		Set<String> combined = new HashSet<>();
 		combined.addAll(writeable.keySet());
 		combined.addAll(super.keySet());
 		return combined;
@@ -118,5 +118,5 @@ public class LazyWriteableDBObject extends LazyDBObject {
 		return writeable.isEmpty() || super.isEmpty();
 	}
 
-	final private HashMap<String, Object> writeable = new HashMap<String, Object>();
+	final private HashMap<String, Object> writeable = new HashMap<>();
 }

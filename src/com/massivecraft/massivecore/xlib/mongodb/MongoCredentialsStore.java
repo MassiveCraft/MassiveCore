@@ -38,8 +38,8 @@ import java.util.Set;
 @ThreadSafe
 @SuppressWarnings({"deprecation"})
 class MongoCredentialsStore {
-    private final Map<String, MongoCredential> credentialsMap = new HashMap<String, MongoCredential>();
-    private volatile Set<String> allDatabasesWithCredentials = new HashSet<String>();
+    private final Map<String, MongoCredential> credentialsMap = new HashMap<>();
+    private volatile Set<String> allDatabasesWithCredentials = new HashSet<>();
 
     /**
      * Creates an empty store
@@ -90,7 +90,7 @@ class MongoCredentialsStore {
         }
 
         credentialsMap.put(credentials.getSource(), credentials);
-        allDatabasesWithCredentials = new HashSet<String>(allDatabasesWithCredentials);
+        allDatabasesWithCredentials = new HashSet<>(allDatabasesWithCredentials);
         allDatabasesWithCredentials.add(credentials.getSource());
     }
 
@@ -118,7 +118,7 @@ class MongoCredentialsStore {
      * @return the list of credentials
      */
     public synchronized List<MongoCredential> asList() {
-       return new ArrayList<MongoCredential>(credentialsMap.values());
+       return new ArrayList<>(credentialsMap.values());
     }
 
     @Override

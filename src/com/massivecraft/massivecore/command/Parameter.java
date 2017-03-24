@@ -193,7 +193,7 @@ public class Parameter<T>
 	public static Parameter<Integer> getPage()
 	{
 		// We can't use a singleton because people might want to set a description.
-		return new Parameter<Integer>(1, TypeInteger.get(), "page", "1");
+		return new Parameter<>(1, TypeInteger.get(), "page", "1");
 	}
 	
 }

@@ -42,7 +42,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	public final static String TOTAL = "*total*"; 
 	
 	// All instances registered here are considered inited.
-	private static Map<String, Coll<?>> name2instance = new ConcurrentSkipListMap<String, Coll<?>>(ComparatorNaturalOrder.get());
+	private static Map<String, Coll<?>> name2instance = new ConcurrentSkipListMap<>(ComparatorNaturalOrder.get());
 	
 	private static Map<String, Coll<?>> umap = Collections.unmodifiableMap(name2instance);
 	private static Set<String> unames = Collections.unmodifiableSet(name2instance.keySet());
@@ -53,7 +53,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	public static Collection<Coll<?>> getInstances() { return uinstances; }
 	public static Collection<SenderColl<?>> getSenderInstances()
 	{
-		List<SenderColl<?>> ret = new ArrayList<SenderColl<?>>();
+		List<SenderColl<?>> ret = new ArrayList<>();
 		for (Coll<?> coll : getInstances())
 		{
 			if ( ! (coll instanceof SenderColl)) continue;
@@ -402,8 +402,8 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// -------------------------------------------- //
 
 	// Log database synchronization for display in the "/massivecore mstore stats" command.
-	private Map<String, Long> id2out = new TreeMap<String, Long>();
-	private Map<String, Long> id2in = new TreeMap<String, Long>();
+	private Map<String, Long> id2out = new TreeMap<>();
+	private Map<String, Long> id2in = new TreeMap<>();
 	
 	@Override
 	public Map<String, Long> getSyncMap(boolean in)
@@ -996,8 +996,8 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		this.collDriverObject = db.createCollDriverObject(this);
 		
 		// Collections
-		this.id2entity = new ConcurrentHashMap<String, E>();
-		this.identifiedModifications = new ConcurrentHashMap<String, Modification>();
+		this.id2entity = new ConcurrentHashMap<>();
+		this.identifiedModifications = new ConcurrentHashMap<>();
 
 		// Migration
 		int version = 0;

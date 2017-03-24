@@ -137,7 +137,7 @@ public class EventMassiveCorePlayerUpdate extends EventMassiveCore
 	// -------------------------------------------- //
 	
 	// For backwards version compatibility we use the enumeration names rather than the enumerations themselves.
-	public static Set<String> FLY_DEFAULT_GAME_MODE_NAMES = new MassiveSet<String>(
+	public static Set<String> FLY_DEFAULT_GAME_MODE_NAMES = new MassiveSet<>(
 		"CREATIVE",
 		"SPECTATOR"
 	);

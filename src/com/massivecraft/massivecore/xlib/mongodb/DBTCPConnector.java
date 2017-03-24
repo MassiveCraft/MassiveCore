@@ -351,7 +351,7 @@ public class DBTCPConnector implements DBConnector {
      */
     public List<ServerAddress> getServerAddressList() {
         isTrue("open", !_closed);
-        List<ServerAddress> serverAddressList = new ArrayList<ServerAddress>();
+        List<ServerAddress> serverAddressList = new ArrayList<>();
         ClusterDescription clusterDescription = getClusterDescription();
         for (ServerDescription serverDescription : clusterDescription.getAll()) {
             serverAddressList.add(serverDescription.getAddress());
@@ -543,12 +543,12 @@ public class DBTCPConnector implements DBConnector {
             pinnedRequestStatusThreadLocal.get().requestPort = port;
         }
 
-        private final ThreadLocal<PinnedRequestStatus> pinnedRequestStatusThreadLocal = new ThreadLocal<PinnedRequestStatus>();
+        private final ThreadLocal<PinnedRequestStatus> pinnedRequestStatusThreadLocal = new ThreadLocal<>();
     }
 
     private ServerSelector createServerSelector(final ReadPreference readPreference) {
         if (connectionMode == Multiple) {
-            List<ServerSelector> serverSelectorList = new ArrayList<ServerSelector>();
+            List<ServerSelector> serverSelectorList = new ArrayList<>();
             if (getType() == Sharded) {
                 serverSelectorList.add(getMongosHAServerSelector());
             } else if (getType() == ReplicaSet) {

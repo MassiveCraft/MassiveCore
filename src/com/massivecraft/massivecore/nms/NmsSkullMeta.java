@@ -83,7 +83,7 @@ public class NmsSkullMeta extends Mixin
 		}
 		
 		// Return Ret
-		return new Couple<String, UUID>(retName, retId);
+		return new Couple<>(retName, retId);
 	}
 	
 }

@@ -465,7 +465,7 @@ public class WriteConcern implements Serializable {
      */
     public static WriteConcern valueOf(String name) {
         if (_namedConcerns == null) {
-            HashMap<String, WriteConcern> newMap = new HashMap<String, WriteConcern>( 8 , 1 );
+            HashMap<String, WriteConcern> newMap = new HashMap<>(8, 1);
             for (Field f : WriteConcern.class.getFields())
                 if (Modifier.isStatic( f.getModifiers() ) && f.getType().equals( WriteConcern.class )) {
                     try {

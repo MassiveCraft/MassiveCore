@@ -499,7 +499,7 @@ abstract class AbstractCopyOnWriteMap<K, V, M extends Map<K, V>> implements Conc
         }
 
         public final Iterator<E> iterator() {
-            return new UnmodifiableIterator<E>(getDelegate().iterator());
+            return new UnmodifiableIterator<>(getDelegate().iterator());
         }
 
         public final boolean isEmpty() {

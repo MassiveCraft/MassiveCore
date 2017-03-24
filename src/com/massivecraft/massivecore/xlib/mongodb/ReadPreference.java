@@ -153,7 +153,7 @@ public abstract class ReadPreference {
         }
 
         private static List<DBObject> splitMapIntoMultipleMaps(DBObject tags) {
-            List<DBObject> tagList = new ArrayList<DBObject>(tags.keySet().size());
+            List<DBObject> tagList = new ArrayList<>(tags.keySet().size());
 
             for (String key : tags.keySet()) {
                 tagList.add(new BasicDBObject(key, tags.get(key).toString()));

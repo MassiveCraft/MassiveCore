@@ -37,7 +37,7 @@ public class Test
 		test("ofMson");
 		
 		mson = mson(
-			new MassiveList<String>("hello ", "you!")
+			new MassiveList<>("hello ", "you!")
 		);
 		test("ofCollection");
 		

@@ -103,7 +103,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	@Override
 	public Collection<Collection<String>> getSenderIdCollections()
 	{
-		List<Collection<String>> ret = new ArrayList<Collection<String>>();
+		List<Collection<String>> ret = new ArrayList<>();
 		
 		ret.add(this.getIds());
 		

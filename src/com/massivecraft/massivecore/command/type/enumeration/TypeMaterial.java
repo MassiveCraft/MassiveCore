@@ -26,7 +26,7 @@ public class TypeMaterial extends TypeEnum<Material>
 	@Override
 	public Set<String> getIdsInner(Material value)
 	{
-		Set<String> ret = new MassiveSet<String>(super.getIdsInner(value));
+		Set<String> ret = new MassiveSet<>(super.getIdsInner(value));
 		
 		String id = String.valueOf(value.getId());
 		ret.add(id);

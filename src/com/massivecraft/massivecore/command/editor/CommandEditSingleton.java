@@ -31,7 +31,7 @@ public class CommandEditSingleton<O> extends CommandEditProperties<O, O>
 	{
 		EditSettings<O> ret = new EditSettings<>(typeObject);
 		
-		PropertyUsed<O> usedProperty = new PropertyUsed<O>(ret, object);
+		PropertyUsed<O> usedProperty = new PropertyUsed<>(ret, object);
 		ret.setUsedProperty(usedProperty);
 		
 		return ret;

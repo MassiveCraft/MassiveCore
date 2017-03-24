@@ -60,7 +60,7 @@ public class PlayerUtil extends Engine
 	// LAST MOVE & STAND STILL (MILLIS)
 	// -------------------------------------------- //
 	
-	private static Map<UUID, Long> idToLastMoveMillis = new HashMap<UUID, Long>(); 
+	private static Map<UUID, Long> idToLastMoveMillis = new HashMap<>();
 	
 	public static void setLastMoveMillis(Player player, long millis)
 	{
@@ -118,7 +118,7 @@ public class PlayerUtil extends Engine
 	// LAST DAMAGE & NO DAMAGE (MILLIS)
 	// -------------------------------------------- //
 	
-	private static Map<UUID, Long> idToLastDamageMillis = new HashMap<UUID, Long>(); 
+	private static Map<UUID, Long> idToLastDamageMillis = new HashMap<>();
 	
 	public static void setLastDamageMillis(Player player, long millis)
 	{
@@ -178,7 +178,7 @@ public class PlayerUtil extends Engine
 	// Some times when players die the PlayerDeathEvent is fired twice.
 	// We want to ignore the extra calls.
 	
-	private static Map<UUID, PlayerDeathEvent> idToDeathEvent = new HashMap<UUID, PlayerDeathEvent>();
+	private static Map<UUID, PlayerDeathEvent> idToDeathEvent = new HashMap<>();
 	
 	public static boolean isDuplicateDeathEvent(PlayerDeathEvent event)
 	{
@@ -209,7 +209,7 @@ public class PlayerUtil extends Engine
 	// -------------------------------------------- //
 	// An entity damage by entity event is considered to be a duplicate if the damager already damaged the damagee this tick.
 	
-	private static Map<String, EntityDamageByEntityEvent> idToDamageEvent = new HashMap<String, EntityDamageByEntityEvent>();
+	private static Map<String, EntityDamageByEntityEvent> idToDamageEvent = new HashMap<>();
 	
 	public static boolean isDuplicateDamageEvent(EntityDamageByEntityEvent event)
 	{
@@ -244,7 +244,7 @@ public class PlayerUtil extends Engine
 	// -------------------------------------------- //
 	// An entity damage by entity event is considered to be a duplicate if the damager already damaged the damagee this tick.
 	
-	private static Map<UUID, PlayerAnimationEvent> idToArmSwingEvent = new HashMap<UUID, PlayerAnimationEvent>();
+	private static Map<UUID, PlayerAnimationEvent> idToArmSwingEvent = new HashMap<>();
 	
 	public static boolean isDuplicateArmSwingEvent(PlayerAnimationEvent event)
 	{

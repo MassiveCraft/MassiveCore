@@ -50,7 +50,7 @@ public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 		}
 		
 		// Prepare
-		Set<String> collnames = new TreeSet<String>(ComparatorNaturalOrder.get());
+		Set<String> collnames = new TreeSet<>(ComparatorNaturalOrder.get());
 		collnames.addAll(db.getCollnames());
 		
 		// Do it!

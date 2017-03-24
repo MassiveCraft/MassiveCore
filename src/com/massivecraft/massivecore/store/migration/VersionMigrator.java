@@ -8,6 +8,6 @@ public interface VersionMigrator
 	// MIGRATION
 	// -------------------------------------------- //
 
-	public void migrate(JsonObject entity);
+	void migrate(JsonObject entity);
 
 }

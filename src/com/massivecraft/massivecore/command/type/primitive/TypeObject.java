@@ -21,7 +21,7 @@ public class TypeObject<T> extends TypeAbstract<T>
 	@SuppressWarnings("unchecked")
 	public static <T> TypeObject<T> get() { return (TypeObject<T>) i; }*/
 	
-	public static <T> TypeObject<T> get(Class<T> clazz) { return new TypeObject<T>(clazz); }
+	public static <T> TypeObject<T> get(Class<T> clazz) { return new TypeObject<>(clazz); }
 	
 	public TypeObject(Class<T> clazz)
 	{

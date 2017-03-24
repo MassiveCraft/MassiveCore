@@ -105,7 +105,7 @@ public class PotionEffectWrap
 	public static List<PotionEffectWrap> getEffects(LivingEntity entity)
 	{
 		// Create Ret
-		List<PotionEffectWrap> ret = new MassiveList<PotionEffectWrap>();
+		List<PotionEffectWrap> ret = new MassiveList<>();
 		
 		// Fill Ret
 		for (PotionEffect potionEffect : entity.getActivePotionEffects())

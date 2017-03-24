@@ -66,7 +66,7 @@ public class EngineMassiveCoreMain extends Engine
 		String format = event.getFormat();
 		
 		// Pick the recipients to avoid the message getting sent without canceling the event.
-		Set<Player> players = new HashSet<Player>(event.getRecipients());
+		Set<Player> players = new HashSet<>(event.getRecipients());
 		event.getRecipients().clear();
 		
 		// For each of the players
@@ -121,7 +121,7 @@ public class EngineMassiveCoreMain extends Engine
 		Predicate<String> predicate = PredicateStartsWithIgnoreCase.get(event.getLastToken());
 		
 		// Create a case insensitive set to check for already added stuff
-		Set<String> current = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> current = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		current.addAll(event.getTabCompletions());
 		
 		// Add names of all online senders that match and isn't added yet.
@@ -180,7 +180,7 @@ public class EngineMassiveCoreMain extends Engine
 	// EVENT TOOL: causedByKick
 	// -------------------------------------------- //
 	
-	public static Map<UUID, String> kickedPlayerReasons = new HashMap<UUID, String>();
+	public static Map<UUID, String> kickedPlayerReasons = new HashMap<>();
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void causedByKick(PlayerKickEvent event)

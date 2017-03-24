@@ -40,12 +40,12 @@ public class CmdMassiveCoreUsysAspectList extends MassiveCommand
 		int page = this.readArg();
 		
 		// Pager Create
-		Pager<Aspect> pager = new Pager<Aspect>(this, "Aspect List", page, AspectColl.get().getAllRegistered(), new Stringifier<Aspect>()
+		Pager<Aspect> pager = new Pager<>(this, "Aspect List", page, AspectColl.get().getAllRegistered(), new Stringifier<Aspect>()
 		{
 			@Override
 			public String toString(Aspect aspect, int index)
 			{
-				return Txt.parse("<h>"+aspect.getId()+" <white>--> <h>"+aspect.getMultiverse().getId());
+				return Txt.parse("<h>" + aspect.getId() + " <white>--> <h>" + aspect.getMultiverse().getId());
 			}
 		}); 
 		

@@ -124,7 +124,7 @@ public class DriverMongo extends DriverAbstract
 		DBCursor cursor = dbcoll.find(dboEmpty, dboKeysId);
 		try
 		{
-			ret = new ArrayList<String>(cursor.count());
+			ret = new ArrayList<>(cursor.count());
 			while (cursor.hasNext())
 			{
 				Object remoteId = cursor.next().get(ID_FIELD);
@@ -149,7 +149,7 @@ public class DriverMongo extends DriverAbstract
 		DBCursor cursor = dbcoll.find(dboEmpty, dboKeysIdandMtime);
 		try
 		{
-			ret = new HashMap<String, Long>(cursor.count());
+			ret = new HashMap<>(cursor.count());
 			while (cursor.hasNext())
 			{
 				BasicDBObject raw = (BasicDBObject)cursor.next();
@@ -181,7 +181,7 @@ public class DriverMongo extends DriverAbstract
 	
 	public Entry<JsonObject, Long> loadRaw(BasicDBObject raw)
 	{
-		if (raw == null) return new SimpleEntry<JsonObject, Long>(null, 0L);
+		if (raw == null) return new SimpleEntry<>(null, 0L);
 		
 		// Throw away the id field
 		raw.removeField(ID_FIELD);
@@ -199,7 +199,7 @@ public class DriverMongo extends DriverAbstract
 		// Convert MongoDB --> GSON
 		JsonObject element = GsonMongoConverter.mongo2GsonObject(raw);
 		
-		return new SimpleEntry<JsonObject, Long>(element, mtime);
+		return new SimpleEntry<>(element, mtime);
 	}
 	
 	@Override
@@ -217,7 +217,7 @@ public class DriverMongo extends DriverAbstract
 		try
 		{
 			// Create Ret
-			ret = new LinkedHashMap<String, Entry<JsonObject, Long>>(cursor.count());
+			ret = new LinkedHashMap<>(cursor.count());
 			
 			// For Each Found
 			while (cursor.hasNext())

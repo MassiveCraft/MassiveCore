@@ -55,5 +55,5 @@ public class FastStack<T>{
         return _data.toString();
     }
 
-    private final List<T> _data = new ArrayList<T>();
+    private final List<T> _data = new ArrayList<>();
 }

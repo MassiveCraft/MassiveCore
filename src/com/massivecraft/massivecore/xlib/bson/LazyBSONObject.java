@@ -402,7 +402,7 @@ public class LazyBSONObject implements BSONObject {
      */
     List<ElementRecord> getElements(){
         int offset = _doc_start_offset + FIRST_ELMT_OFFSET;
-        ArrayList<ElementRecord> elements = new ArrayList<LazyBSONObject.ElementRecord>();
+        ArrayList<ElementRecord> elements = new ArrayList<>();
 
         while ( !isElementEmpty( offset ) ){
             int fieldSize = sizeCString( offset + 1 );

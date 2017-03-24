@@ -345,7 +345,7 @@ implements Deque<E>, java.io.Serializable {
                 Node<E> f = getNext();
                 if (f == null || f.isMarker())
                     return null;
-                Node<E> x = new Node<E>(element, f, this);
+                Node<E> x = new Node<>(element, f, this);
                 if (casNext(f, x)) {
                     f.setPrev(x); // optimistically link
                     return x;
@@ -365,7 +365,7 @@ implements Deque<E>, java.io.Serializable {
                 Node<E> b = predecessor();
                 if (b == null)
                     return null;
-                Node<E> x = new Node<E>(element, this, b);
+                Node<E> x = new Node<>(element, this, b);
                 if (b.casNext(this, x)) {
                     setPrev(x); // optimistically link
                     return x;
@@ -383,7 +383,7 @@ implements Deque<E>, java.io.Serializable {
             Node<E> b = getPrev();
             Node<E> f = getNext();
             if (b != null && f != null && !f.isMarker() &&
-                casNext(f, new Node<E>(f))) {
+                casNext(f, new Node<>(f))) {
                 if (b.casNext(this, f))
                     f.setPrev(b);
                 return true;
@@ -410,8 +410,8 @@ implements Deque<E>, java.io.Serializable {
                 Node<E> f = getNext();
                 if (b == null || f == null || f.isMarker())
                     return null;
-                Node<E> x = new Node<E>(newElement, f, b);
-                if (casNext(f, new Node<E>(x))) {
+                Node<E> x = new Node<>(newElement, f, b);
+                if (casNext(f, new Node<>(x))) {
                     b.successor(); // to relink b
                     x.successor(); // to relink f
                     return x;
@@ -463,7 +463,7 @@ implements Deque<E>, java.io.Serializable {
      * @return the array list
      */
     private ArrayList<E> toArrayList() {
-        ArrayList<E> c = new ArrayList<E>();
+        ArrayList<E> c = new ArrayList<>();
         for (Node<E> n = header.forward(); n != null; n = n.forward())
             c.add(n.element);
         return c;
@@ -487,8 +487,8 @@ implements Deque<E>, java.io.Serializable {
      * Constructs an empty deque.
      */
     public ConcurrentLinkedDeque() {
-        Node<E> h = new Node<E>(null, null, null);
-        Node<E> t = new Node<E>(null, null, h);
+        Node<E> h = new Node<>(null, null, null);
+        Node<E> t = new Node<>(null, null, h);
         h.setNext(t);
         header = h;
         trailer = t;

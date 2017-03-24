@@ -44,7 +44,7 @@ final class MultiServerCluster extends BaseCluster {
     private ClusterType clusterType;
     private String replicaSetName;
     private final ConcurrentMap<ServerAddress, ServerTuple> addressToServerTupleMap =
-    new ConcurrentHashMap<ServerAddress, ServerTuple>();
+		new ConcurrentHashMap<>();
 
     private static final class ServerTuple {
         private final ClusterableServer server;
@@ -242,7 +242,7 @@ final class MultiServerCluster extends BaseCluster {
     }
 
     private List<ServerDescription> getNewServerDescriptionList() {
-        List<ServerDescription> serverDescriptions = new ArrayList<ServerDescription>();
+        List<ServerDescription> serverDescriptions = new ArrayList<>();
         for (ServerTuple cur : addressToServerTupleMap.values()) {
             serverDescriptions.add(cur.description);
         }
@@ -292,7 +292,7 @@ final class MultiServerCluster extends BaseCluster {
     }
 
     private Set<ServerAddress> getAllServerAddresses(final ServerDescription serverDescription) {
-        Set<ServerAddress> retVal = new HashSet<ServerAddress>();
+        Set<ServerAddress> retVal = new HashSet<>();
         addHostsToSet(serverDescription.getHosts(), retVal);
         addHostsToSet(serverDescription.getPassives(), retVal);
         addHostsToSet(serverDescription.getArbiters(), retVal);

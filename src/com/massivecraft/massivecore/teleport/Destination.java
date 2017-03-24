@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 public interface Destination extends Serializable
 {
-	public PS getPs(Object watcherObject) throws MassiveException;
-	public boolean hasPs();
-	public String getMessagePsNull(Object watcherObject);
+	PS getPs(Object watcherObject) throws MassiveException;
+	boolean hasPs();
+	String getMessagePsNull(Object watcherObject);
 	
-	public String getDesc(Object watcherObject);
-	public void setDesc(String desc);
+	String getDesc(Object watcherObject);
+	void setDesc(String desc);
 }

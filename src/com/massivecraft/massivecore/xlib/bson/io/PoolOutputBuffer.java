@@ -252,7 +252,7 @@ public class PoolOutputBuffer extends OutputBuffer {
 
     final byte[] _mine = new byte[BUF_SIZE];
     final char[] _chars = new char[BUF_SIZE];
-    final List<byte[]> _fromPool = new ArrayList<byte[]>();
+    final List<byte[]> _fromPool = new ArrayList<>();
     final UTF8Encoding _encoding = new UTF8Encoding();
 
     private static final String DEFAULT_ENCODING_1 = "UTF-8";

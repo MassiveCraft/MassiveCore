@@ -91,7 +91,7 @@ public class EngineMassiveCorePlayerUpdate extends Engine
 	// FIX NO CHEAT PLUS BUG
 	// -------------------------------------------- //
 	
-	public static Map<UUID, Long> idToLastFlyActive = new HashMap<UUID, Long>();
+	public static Map<UUID, Long> idToLastFlyActive = new HashMap<>();
 	public static Long getLastFlyActive(Player player)
 	{
 		return idToLastFlyActive.get(player.getUniqueId());

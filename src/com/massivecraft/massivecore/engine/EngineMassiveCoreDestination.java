@@ -81,12 +81,12 @@ public class EngineMassiveCoreDestination extends Engine
 		event.setCancelled(true);
 	}
 	
-	public static final Set<String> ALIASES_TOP = new MassiveSet<String>("top");
-	public static final Set<String> ALIASES_THERE = new MassiveSet<String>("there");
-	public static final Set<String> ALIASES_THAT = new MassiveSet<String>("that");
-	public static final Set<String> ALIASES_JUMP = new MassiveSet<String>("jump");
-	public static final Set<String> ALIASES_WORLD = new MassiveSet<String>("world", "w", "spawn", "wspawn", "worldspawn");
-	public static final Set<String> ALIASES_PLAYER = new MassiveSet<String>("player", "p", "here", "me", "self");
+	public static final Set<String> ALIASES_TOP = new MassiveSet<>("top");
+	public static final Set<String> ALIASES_THERE = new MassiveSet<>("there");
+	public static final Set<String> ALIASES_THAT = new MassiveSet<>("that");
+	public static final Set<String> ALIASES_JUMP = new MassiveSet<>("jump");
+	public static final Set<String> ALIASES_WORLD = new MassiveSet<>("world", "w", "spawn", "wspawn", "worldspawn");
+	public static final Set<String> ALIASES_PLAYER = new MassiveSet<>("player", "p", "here", "me", "self");
 	
 	public Destination destinationArg(String arg, CommandSender sender) throws MassiveException
 	{

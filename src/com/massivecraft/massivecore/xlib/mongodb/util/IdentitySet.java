@@ -81,5 +81,5 @@ public class IdentitySet<T> implements Iterable<T> {
             remove( t );
     }
 
-    final IdentityHashMap<T,String> _map = new IdentityHashMap<T,String>();
+    final IdentityHashMap<T,String> _map = new IdentityHashMap<>();
 }

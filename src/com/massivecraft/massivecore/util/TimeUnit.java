@@ -34,12 +34,12 @@ public class TimeUnit implements Comparable<TimeUnit>
 	// REGISTRY
 	// -------------------------------------------- //
 		
-	private static final TreeSet<TimeUnit> all = new TreeSet<TimeUnit>();
-	public static TreeSet<TimeUnit> getAll() { return new TreeSet<TimeUnit>(all); }
+	private static final TreeSet<TimeUnit> all = new TreeSet<>();
+	public static TreeSet<TimeUnit> getAll() { return new TreeSet<>(all); }
 	
 	public static TreeSet<TimeUnit> getAllBut(TimeUnit... timeUnits)
 	{
-		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(all);
+		TreeSet<TimeUnit> ret = new TreeSet<>(all);
 		for (TimeUnit timeUnit : timeUnits)
 		{
 			ret.remove(timeUnit);
@@ -64,7 +64,7 @@ public class TimeUnit implements Comparable<TimeUnit>
 	
 	public static TreeSet<TimeUnit> getSpecific(TimeUnit... timeUnits)
 	{
-		TreeSet<TimeUnit> ret = new TreeSet<TimeUnit>(Arrays.asList(timeUnits));
+		TreeSet<TimeUnit> ret = new TreeSet<>(Arrays.asList(timeUnits));
 		return ret;
 	}
 	
@@ -124,7 +124,7 @@ public class TimeUnit implements Comparable<TimeUnit>
 		this.pluralName = pluralName;
 		this.singularUnit = singularUnit;
 		this.pluralUnit = pluralUnit;
-		this.aliases = new ArrayList<String>(Arrays.asList(aliases));
+		this.aliases = new ArrayList<>(Arrays.asList(aliases));
 	}
 	
 	// -------------------------------------------- //

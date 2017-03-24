@@ -30,13 +30,13 @@ public final class SenderMap
 	
 	public SenderMap()
 	{
-		innerMap = new EnumMap<SenderPresence, Map<SenderType, Set<String>>>(SenderPresence.class);
+		innerMap = new EnumMap<>(SenderPresence.class);
 		for (SenderPresence presence : SenderPresence.values())
 		{
-			Map<SenderType, Set<String>> map = new EnumMap<SenderType, Set<String>>(SenderType.class);
+			Map<SenderType, Set<String>> map = new EnumMap<>(SenderType.class);
 			for (SenderType type : SenderType.values())
 			{
-				Set<String> set = new ConcurrentSkipListSet<String>(String.CASE_INSENSITIVE_ORDER);
+				Set<String> set = new ConcurrentSkipListSet<>(String.CASE_INSENSITIVE_ORDER);
 				map.put(type, set);
 			}
 			innerMap.put(presence, map);

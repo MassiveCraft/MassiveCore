@@ -12,8 +12,8 @@ public class PredicateAnd<T> implements Predicate<T>
 	// -------------------------------------------- //
 	
 	@SafeVarargs
-	public static <T> PredicateAnd<T> get(Predicate<? super T>... predicates) { return new PredicateAnd<T>(predicates); }
-	public static <T> PredicateAnd<T> get(Collection<Predicate<? super T>> predicates) { return new PredicateAnd<T>(predicates); }
+	public static <T> PredicateAnd<T> get(Predicate<? super T>... predicates) { return new PredicateAnd<>(predicates); }
+	public static <T> PredicateAnd<T> get(Collection<Predicate<? super T>> predicates) { return new PredicateAnd<>(predicates); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

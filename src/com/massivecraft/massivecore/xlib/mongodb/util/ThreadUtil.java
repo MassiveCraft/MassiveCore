@@ -69,7 +69,7 @@ public class ThreadUtil {
     public static FastStack<String> getStatus( Thread t ){
         FastStack<String> s = _threads.get( t.getId() );
         if ( s == null ){
-            s = new FastStack<String>();
+            s = new FastStack<>();
             _threads.put( t.getId() , s );
         }
         return s;

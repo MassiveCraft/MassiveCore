@@ -27,7 +27,7 @@ import static com.massivecraft.massivecore.xlib.bson.util.Assertions.notNull;
 final class ComputingMap<K, V> implements Map<K, V>, Function<K, V> {
 
     public static <K, V> Map<K, V> create(Function<K, V> function) {
-        return new ComputingMap<K, V>(CopyOnWriteMap.<K, V> newHashMap(), function);
+        return new ComputingMap<>(CopyOnWriteMap.<K, V>newHashMap(), function);
     }
 
     private final ConcurrentMap<K, V> map;

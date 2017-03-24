@@ -131,7 +131,7 @@ public class BSON {
         return buf.toString();
     }
 
-    private static enum RegexFlag {
+    private enum RegexFlag {
         CANON_EQ( Pattern.CANON_EQ, 'c', "Pattern.CANON_EQ" ),
         UNIX_LINES(Pattern.UNIX_LINES, 'd', "Pattern.UNIX_LINES" ),
         GLOBAL( GLOBAL_FLAG, 'g', null ),
@@ -142,7 +142,7 @@ public class BSON {
         UNICODE_CASE( Pattern.UNICODE_CASE, 'u', "Pattern.UNICODE_CASE" ),
         COMMENTS( Pattern.COMMENTS, 'x', null );
 
-        private static final Map<Character, RegexFlag> byCharacter = new HashMap<Character, RegexFlag>();
+        private static final Map<Character, RegexFlag> byCharacter = new HashMap<>();
 
         static {
             for (RegexFlag flag : values()) {
@@ -178,7 +178,7 @@ public class BSON {
         _encodeHooks = true;
         List<Transformer> l = _encodingHooks.get( c );
         if ( l == null ){
-            l = new CopyOnWriteArrayList<Transformer>();
+            l = new CopyOnWriteArrayList<>();
             _encodingHooks.put( c , l );
         }
         l.add( t );
@@ -188,7 +188,7 @@ public class BSON {
         _decodeHooks = true;
         List<Transformer> l = _decodingHooks.get( c );
         if ( l == null ){
-            l = new CopyOnWriteArrayList<Transformer>();
+            l = new CopyOnWriteArrayList<>();
             _decodingHooks.put( c , l );
         }
         l.add( t );
@@ -293,10 +293,10 @@ public class BSON {
     private static boolean _encodeHooks = false;
     private static boolean _decodeHooks = false;
     static ClassMap<List<Transformer>> _encodingHooks =
-	new ClassMap<List<Transformer>>();
+        new ClassMap<>();
 
     static ClassMap<List<Transformer>> _decodingHooks =
-        new ClassMap<List<Transformer>>();
+        new ClassMap<>();
 
     /**
      * @deprecated Use {@link Charset#forName(String)} to create UTF-8 charset.

@@ -32,15 +32,15 @@ public interface DBConnector {
      * Once this has been called, the connector will ensure that the same underlying connection is always used for a given thread.
      * This happens until requestStop() is called.
      */
-    public void requestStart();
+	void requestStart();
     /**
      * terminates the "consistent request".
      */
-    public void requestDone();
+	void requestDone();
     /**
      * Ensures that a connection exists for the "consistent request"
      */
-    public void requestEnsureConnection();
+	void requestEnsureConnection();
     
     /**
      * does a write operation
@@ -50,7 +50,7 @@ public interface DBConnector {
      * @return the write result
      * @throws MongoException
      */
-    public WriteResult say( DB db , OutMessage m , WriteConcern concern );
+	WriteResult say(DB db, OutMessage m, WriteConcern concern);
     /**
      * does a write operation
      * @param db the database
@@ -60,7 +60,7 @@ public interface DBConnector {
      * @return the write result
      * @throws MongoException
      */
-    public WriteResult say( DB db , OutMessage m , WriteConcern concern , ServerAddress hostNeeded );
+	WriteResult say(DB db, OutMessage m, WriteConcern concern, ServerAddress hostNeeded);
     
     /**
      * does a read operation on the database
@@ -72,8 +72,8 @@ public interface DBConnector {
      * @return the read result
      * @throws MongoException
      */
-    public Response call( DB db , DBCollection coll , OutMessage m , 
-                          ServerAddress hostNeeded , DBDecoder decoder );
+	Response call(DB db, DBCollection coll, OutMessage m,
+				  ServerAddress hostNeeded, DBDecoder decoder);
     /**
      *
      * does a read operation on the database
@@ -85,7 +85,7 @@ public interface DBConnector {
      * @return the read result
      * @throws MongoException
      */
-    public Response call( DB db , DBCollection coll , OutMessage m , ServerAddress hostNeeded , int retries );
+	Response call(DB db, DBCollection coll, OutMessage m, ServerAddress hostNeeded, int retries);
 
     /**
      * does a read operation on the database
@@ -99,13 +99,13 @@ public interface DBConnector {
      * @return the read result
      * @throws MongoException
      */
-    public Response call( DB db , DBCollection coll , OutMessage m , ServerAddress hostNeeded , int retries , ReadPreference readPref , DBDecoder decoder );
+	Response call(DB db, DBCollection coll, OutMessage m, ServerAddress hostNeeded, int retries, ReadPreference readPref, DBDecoder decoder);
 
     /**
      * returns true if the connector is in a usable state
      * @return
      */
-    public boolean isOpen();
+	boolean isOpen();
 
     /**
      * Authenticate using the given credentials.
@@ -115,5 +115,5 @@ public interface DBConnector {
      * @throws CommandFailureException if the authentication failed
      * @since 2.11.0
      */
-    public CommandResult authenticate(MongoCredential credentials);
+	CommandResult authenticate(MongoCredential credentials);
 }

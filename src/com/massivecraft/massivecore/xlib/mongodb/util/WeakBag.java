@@ -104,7 +104,7 @@ public class WeakBag<T> implements Iterable<T> {
     
     public List<T> getAll(){
     
-        List<T> l = new ArrayList<T>();
+        List<T> l = new ArrayList<>();
         
         for ( Iterator<MyRef> i = _refs.iterator(); i.hasNext(); ){
             MyRef ref = i.next();
@@ -124,5 +124,5 @@ public class WeakBag<T> implements Iterable<T> {
         }
     }
 
-    private final List<MyRef> _refs = new LinkedList<MyRef>();
+    private final List<MyRef> _refs = new LinkedList<>();
 }

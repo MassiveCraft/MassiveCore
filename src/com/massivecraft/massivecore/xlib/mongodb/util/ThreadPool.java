@@ -48,7 +48,7 @@ public abstract class ThreadPool<T> {
     public ThreadPool( String name , int numThreads , int maxQueueSize ){
         _name = name;
         _maxThreads = numThreads;
-        _queue = new LinkedBlockingQueue<T>( maxQueueSize );
+        _queue = new LinkedBlockingQueue<>(maxQueueSize);
         _myThreadGroup = new MyThreadGroup();
         _threads.add( new MyThread() );
     }
@@ -145,7 +145,7 @@ public abstract class ThreadPool<T> {
     final int _maxThreads;
 
     private final AtomicInteger _inProgress = new AtomicInteger(0);
-    private final List<MyThread> _threads = new Vector<MyThread>();
+    private final List<MyThread> _threads = new Vector<>();
     private final BlockingQueue<T> _queue;
     private final MyThreadGroup _myThreadGroup;
 }

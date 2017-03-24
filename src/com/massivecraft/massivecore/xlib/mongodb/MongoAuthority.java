@@ -119,7 +119,7 @@ class MongoAuthority {
             throw new IllegalArgumentException("credentialsStore can not be null");
         }
 
-        this.serverAddresses = Arrays.asList(serverAddress);
+        this.serverAddresses = Collections.singletonList(serverAddress);
         this.credentialsStore = credentialsStore;
         this.type = Type.Direct;
     }
@@ -149,7 +149,7 @@ class MongoAuthority {
         }
 
         this.type = type;
-        this.serverAddresses = new ArrayList<ServerAddress>(serverAddresses);
+        this.serverAddresses = new ArrayList<>(serverAddresses);
         this.credentialsStore = credentialsStore;
     }
 

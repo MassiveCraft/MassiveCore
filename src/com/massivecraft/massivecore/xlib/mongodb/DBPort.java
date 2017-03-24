@@ -367,7 +367,7 @@ public class DBPort implements Connection {
 
     void checkAuth(Mongo mongo) throws IOException {
         // get the difference between the set of credentialed databases and the set of authenticated databases on this connection
-        Set<String> unauthenticatedDatabases = new HashSet<String>(mongo.getAuthority().getCredentialsStore().getDatabases());
+        Set<String> unauthenticatedDatabases = new HashSet<>(mongo.getAuthority().getCredentialsStore().getDatabases());
         unauthenticatedDatabases.removeAll(authenticatedDatabases);
 
         for (String databaseName : unauthenticatedDatabases) {
@@ -515,7 +515,7 @@ public class DBPort implements Connection {
         @Override
         protected SaslClient createSaslClient() {
             try {
-                Map<String, Object> props = new HashMap<String, Object>();
+                Map<String, Object> props = new HashMap<>();
                 props.put(Sasl.CREDENTIALS, getGSSCredential(credential.getUserName()));
 
                 return Sasl.createSaslClient(new String[]{GSSAPI_MECHANISM}, credential.getUserName(),

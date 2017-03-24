@@ -108,7 +108,7 @@ public class WebUtil
 			isr = new InputStreamReader(is, "UTF-8");
 			br = new BufferedReader(isr);
 			
-			List<String> lines = new ArrayList<String>();
+			List<String> lines = new ArrayList<>();
 			String line = null;
 			while ( (line = br.readLine()) != null )
 			{

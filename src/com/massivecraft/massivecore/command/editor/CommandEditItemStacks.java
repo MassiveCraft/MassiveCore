@@ -16,17 +16,17 @@ public class CommandEditItemStacks<O> extends CommandEditAbstract<O, List<ItemSt
 		super(settings, property, true);
 		
 		// Children
-		this.addChild(new CommandEditShow<O, List<ItemStack>>(settings, property));
+		this.addChild(new CommandEditShow<>(settings, property));
 		
 		if (property.isNullable())
 		{
-			this.addChild(new CommandEditCreate<O, List<ItemStack>>(settings, property));
-			this.addChild(new CommandEditDelete<O, List<ItemStack>>(settings, property));
+			this.addChild(new CommandEditCreate<>(settings, property));
+			this.addChild(new CommandEditDelete<>(settings, property));
 		}
 		
 		if (property.isEditable())
 		{
-			this.addChild(new CommandEditItemStacksOpen<O>(settings, property));	
+			this.addChild(new CommandEditItemStacksOpen<>(settings, property));
 		}
 	}
 	

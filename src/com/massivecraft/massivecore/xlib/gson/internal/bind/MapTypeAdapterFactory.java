@@ -152,9 +152,9 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
         Type valueType, TypeAdapter<V> valueTypeAdapter,
         ObjectConstructor<? extends Map<K, V>> constructor) {
       this.keyTypeAdapter =
-        new TypeAdapterRuntimeTypeWrapper<K>(context, keyTypeAdapter, keyType);
+		  new TypeAdapterRuntimeTypeWrapper<>(context, keyTypeAdapter, keyType);
       this.valueTypeAdapter =
-        new TypeAdapterRuntimeTypeWrapper<V>(context, valueTypeAdapter, valueType);
+		  new TypeAdapterRuntimeTypeWrapper<>(context, valueTypeAdapter, valueType);
       this.constructor = constructor;
     }
 
@@ -213,9 +213,9 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
       }
 
       boolean hasComplexKeys = false;
-      List<JsonElement> keys = new ArrayList<JsonElement>(map.size());
+      List<JsonElement> keys = new ArrayList<>(map.size());
 
-      List<V> values = new ArrayList<V>(map.size());
+      List<V> values = new ArrayList<>(map.size());
       for (Map.Entry<K, V> entry : map.entrySet()) {
         JsonElement keyElement = keyTypeAdapter.toJsonTree(entry.getKey());
         keys.add(keyElement);

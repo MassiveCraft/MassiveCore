@@ -13,7 +13,7 @@ import java.util.Map;
 
 public abstract class Colls<C extends Coll<E>, E extends Entity<E>> implements Active
 {
-	protected Map<String, C> name2coll = new HashMap<String, C>();
+	protected Map<String, C> name2coll = new HashMap<>();
 	
 	public abstract Aspect getAspect();
 	public abstract String getBasename();
@@ -25,7 +25,7 @@ public abstract class Colls<C extends Coll<E>, E extends Entity<E>> implements A
 	
 	public List<C> getColls()
 	{
-		List<C> ret = new ArrayList<C>(); 
+		List<C> ret = new ArrayList<>();
 		Aspect a = this.getAspect();
 		Multiverse m = a.getMultiverse();
 		for (String universe : m.getUniverses())

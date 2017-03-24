@@ -6,7 +6,7 @@ public class ConverterDefault<X, Y> extends Converter<X, Y>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static final ConverterDefault<Object, Object> i = new ConverterDefault<Object, Object>();
+	private static final ConverterDefault<Object, Object> i = new ConverterDefault<>();
 	@SuppressWarnings("unchecked")
 	public static <X, Y> ConverterDefault<X, Y> get() { return (ConverterDefault<X, Y>) i; }
 	@SuppressWarnings("unchecked")

@@ -107,7 +107,7 @@ public class EngineMassiveCoreVariable extends Engine
 	// VARIABLE BUFFER
 	// -------------------------------------------- //
 	
-	public static final Map<String, String> idToBuffer = new HashMap<String, String>();
+	public static final Map<String, String> idToBuffer = new HashMap<>();
 	
 	public static String getBuffer(Object senderObject)
 	{

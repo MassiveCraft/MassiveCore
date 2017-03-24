@@ -21,111 +21,111 @@ public interface Type<T> extends Named
 	// -------------------------------------------- //
 	
 	// Human friendly name
-	public String getName();
+	String getName();
 	
-	public Class<T> getClazz();
+	Class<T> getClazz();
 	
 	// -------------------------------------------- //
 	// INNER TYPE
 	// -------------------------------------------- //
 	
-	public <I extends Type<?>> List<I> getInnerTypes();
-	public <I extends Type<?>> I getInnerType(int index);
-	public <I extends Type<?>> I getInnerType();
+	<I extends Type<?>> List<I> getInnerTypes();
+	<I extends Type<?>> I getInnerType(int index);
+	<I extends Type<?>> I getInnerType();
 	
-	public void setInnerTypes(Collection<Type<?>> innerTypes);
-	public void setInnerTypes(Type<?>... innerTypes);
-	public void setInnerType(Type<?> innerType);
+	void setInnerTypes(Collection<Type<?>> innerTypes);
+	void setInnerTypes(Type<?>... innerTypes);
+	void setInnerType(Type<?> innerType);
 	
-	public void setUserOrder(List<Integer> userOrder);
-	public void setUserOrder(Integer... userOrder);
-	public List<Integer> getUserOrder();
-	public Integer getIndexUser(int indexTechy);
-	public Integer getIndexTech(int indexUser);
+	void setUserOrder(List<Integer> userOrder);
+	void setUserOrder(Integer... userOrder);
+	List<Integer> getUserOrder();
+	Integer getIndexUser(int indexTechy);
+	Integer getIndexTech(int indexUser);
 	
 	// -------------------------------------------- //
 	// INNER PROPERTY
 	// -------------------------------------------- //
 	
-	public boolean hasInnerProperties();
+	boolean hasInnerProperties();
 	
-	public <I extends Property<T, ?>> List<I> getInnerProperties();
-	public <I extends Property<T, ?>> I getInnerProperty(int index);
+	<I extends Property<T, ?>> List<I> getInnerProperties();
+	<I extends Property<T, ?>> I getInnerProperty(int index);
 	
-	public <I extends Property<T, ?>> void setInnerProperties(Collection<I> innerTypes);
+	<I extends Property<T, ?>> void setInnerProperties(Collection<I> innerTypes);
 	@SuppressWarnings("unchecked")
-	public <I extends Property<T, ?>> void setInnerProperties(I... innerTypes);
+	<I extends Property<T, ?>> void setInnerProperties(I... innerTypes);
 
 	// -------------------------------------------- //
 	// WRITE VISUAL COLOR
 	// -------------------------------------------- //
 	
-	public ChatColor getVisualColor(T value, CommandSender sender);
-	public ChatColor getVisualColor(T value);
-	public void setVisualColor(ChatColor color);
+	ChatColor getVisualColor(T value, CommandSender sender);
+	ChatColor getVisualColor(T value);
+	void setVisualColor(ChatColor color);
 	
 	// -------------------------------------------- //
 	// WRITE SHOW
 	// -------------------------------------------- //
 	// A list of property values.
 	
-	public List<Mson> getShowInner(T value, CommandSender sender);
-	public List<Mson> getShow(T value, CommandSender sender);
-	public List<Mson> getShow(T value);
+	List<Mson> getShowInner(T value, CommandSender sender);
+	List<Mson> getShow(T value, CommandSender sender);
+	List<Mson> getShow(T value);
 	
 	// -------------------------------------------- //
 	// WRITE VISUAL MSON
 	// -------------------------------------------- //
 	// A visual mson.
 	
-	public Mson getVisualMsonInner(T value, CommandSender sender);
-	public Mson getVisualMson(T value, CommandSender sender);
-	public Mson getVisualMson(T value);
+	Mson getVisualMsonInner(T value, CommandSender sender);
+	Mson getVisualMson(T value, CommandSender sender);
+	Mson getVisualMson(T value);
 	
 	// -------------------------------------------- //
 	// WRITE VISUAL
 	// -------------------------------------------- //
 	// A visual and colorful representation. Possibly with added detail such as simple ASCII art.
 	
-	public String getVisualInner(T value, CommandSender sender);
-	public String getVisual(T value, CommandSender sender);
-	public String getVisual(T value);
+	String getVisualInner(T value, CommandSender sender);
+	String getVisual(T value, CommandSender sender);
+	String getVisual(T value);
 
 	// -------------------------------------------- //
 	// WRITE NAME
 	// -------------------------------------------- //
 	// A human friendly but simple representation without color and clutter.
 	
-	public String getNameInner(T value);
-	public String getName(T value);
-	public Set<String> getNamesInner(T value);
-	public Set<String> getNames(T value);
+	String getNameInner(T value);
+	String getName(T value);
+	Set<String> getNamesInner(T value);
+	Set<String> getNames(T value);
 	
 	// -------------------------------------------- //
 	// WRITE ID
 	// -------------------------------------------- //
 	// System identification string. Most times unsuitable for humans. 
 	
-	public String getIdInner(T value);
-	public String getId(T value);
-	public Set<String> getIdsInner(T value);
-	public Set<String> getIds(T value);
+	String getIdInner(T value);
+	String getId(T value);
+	Set<String> getIdsInner(T value);
+	Set<String> getIds(T value);
 	
 	// -------------------------------------------- //
 	// READ
 	// -------------------------------------------- //
 	
-	public T read(String arg, CommandSender sender) throws MassiveException;
-	public T read(CommandSender sender) throws MassiveException;
-	public T read(String arg) throws MassiveException;
-	public T read() throws MassiveException;
+	T read(String arg, CommandSender sender) throws MassiveException;
+	T read(CommandSender sender) throws MassiveException;
+	T read(String arg) throws MassiveException;
+	T read() throws MassiveException;
 
 	// -------------------------------------------- //
 	// VALID
 	// -------------------------------------------- //
 	// Used for arbitrary argument order
 	
-	public boolean isValid(String arg, CommandSender sender);
+	boolean isValid(String arg, CommandSender sender);
 	
 	// -------------------------------------------- //
 	// TAB LIST
@@ -133,48 +133,48 @@ public interface Type<T> extends Named
 	
 	// The sender is the one that tried to tab complete.
 	// The arg is beginning the word they are trying to tab complete.
-	public Collection<String> getTabList(CommandSender sender, String arg);
-	public List<String> getTabListFiltered(CommandSender sender, String arg);
+	Collection<String> getTabList(CommandSender sender, String arg);
+	List<String> getTabListFiltered(CommandSender sender, String arg);
 	
 	// Sometimes we put a space after a tab completion.
 	// That would however not make sense with all Types.
 	// Default is true;
-	public boolean allowSpaceAfterTab();
+	boolean allowSpaceAfterTab();
 	
 	// -------------------------------------------- //
 	// CONTAINER > IS
 	// -------------------------------------------- //
 	
-	public boolean isContainer();
-	public boolean isContainerMap();
-	public boolean isContainerCollection();
+	boolean isContainer();
+	boolean isContainerMap();
+	boolean isContainerCollection();
 	
-	public boolean isContainerIndexed();
-	public boolean isContainerOrdered();
-	public boolean isContainerSorted();
+	boolean isContainerIndexed();
+	boolean isContainerOrdered();
+	boolean isContainerSorted();
 	
 	// -------------------------------------------- //
 	// CONTAINER > COMPARATOR
 	// -------------------------------------------- //
 	
-	public <E> Comparator<E> getContainerComparator();
-	public void setContainerComparator(Comparator<?> container);
+	<E> Comparator<E> getContainerComparator();
+	void setContainerComparator(Comparator<?> container);
 	
-	public <E> List<E> getContainerElementsOrdered(Iterable<E> elements);
-	public <E> List<E> getContainerElementsOrdered(T container);
+	<E> List<E> getContainerElementsOrdered(Iterable<E> elements);
+	<E> List<E> getContainerElementsOrdered(T container);
 	
 	// -------------------------------------------- //
 	// EQUALS
 	// -------------------------------------------- //
 	
-	public boolean equals(T type1, T type2);
-	public boolean equalsInner(T type1, T type2);
+	boolean equals(T type1, T type2);
+	boolean equalsInner(T type1, T type2);
 	
 	// -------------------------------------------- //
 	// EDITOR
 	// -------------------------------------------- //
 	
-	public <O> CommandEditAbstract<O, T> createEditCommand(EditSettings<O> settings, Property<O, T> property);
-	public T createNewInstance();
+	<O> CommandEditAbstract<O, T> createEditCommand(EditSettings<O> settings, Property<O, T> property);
+	T createNewInstance();
 	
 }

@@ -20,11 +20,11 @@ import com.massivecraft.massivecore.xlib.bson.io.OutputBuffer;
 
 
 public interface BSONEncoder {
-    public byte[] encode( BSONObject o );
+    byte[] encode(BSONObject o);
 
-    public int putObject( BSONObject o );
+    int putObject(BSONObject o);
 
-    public void done();
+    void done();
 
     void set( OutputBuffer out );
 }

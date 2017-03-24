@@ -81,7 +81,7 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     ObjectConstructor<T> constructor = constructorConstructor.get(type);
-    return new Adapter<T>(constructor, getBoundFields(gson, type, raw));
+    return new Adapter<>(constructor, getBoundFields(gson, type, raw));
   }
 
   private ReflectiveTypeAdapterFactory.BoundField createBoundField(
@@ -124,7 +124,7 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
   }
 
   private Map<String, BoundField> getBoundFields(Gson context, TypeToken<?> type, Class<?> raw) {
-    Map<String, BoundField> result = new LinkedHashMap<String, BoundField>();
+    Map<String, BoundField> result = new LinkedHashMap<>();
     if (raw.isInterface()) {
       return result;
     }

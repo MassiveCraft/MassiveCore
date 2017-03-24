@@ -402,7 +402,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	public Map<String, MassiveCommand> getChildMatches(String token, boolean levenshtein, CommandSender onlyRelevantToSender)
 	{
 		// Create Ret
-		Map<String, MassiveCommand> ret = new MassiveMap<String, MassiveCommand>();
+		Map<String, MassiveCommand> ret = new MassiveMap<>();
 		
 		// Prepare
 		token = token.toLowerCase();
@@ -419,7 +419,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 				// ... consider exact priority ...
 				if (alias.equalsIgnoreCase(token))
 				{
-					return new MassiveMap<String, MassiveCommand>(alias, child);
+					return new MassiveMap<>(alias, child);
 				}
 				
 				// ... matches ...
@@ -500,7 +500,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	public List<String> getAliases() { return this.aliases; }
 	
 	@SuppressWarnings("unchecked")
-	public <T extends MassiveCommand> T setAliases(Collection<String> aliases) { this.aliases = new MassiveList<String>(aliases); return (T) this; }
+	public <T extends MassiveCommand> T setAliases(Collection<String> aliases) { this.aliases = new MassiveList<>(aliases); return (T) this; }
 	public <T extends MassiveCommand> T setAliases(String... aliases) { return this.setAliases(Arrays.asList(aliases)); }
 	
 	@SuppressWarnings("unchecked")
@@ -616,7 +616,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// All
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, boolean requiredFromConsole, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, requiredFromConsole, name, defaultDesc), concatFromHere);
+		return this.addParameter(new Parameter<>(defaultValue, type, requiredFromConsole, name, defaultDesc), concatFromHere);
 	}
 	
 	// WITHOUT 1
@@ -624,25 +624,25 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// Without defaultValue
 	public <T> Parameter<T> addParameter(Type<T> type, boolean requiredFromConsole, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(type, requiredFromConsole, name, defaultDesc), concatFromHere);
+		return this.addParameter(new Parameter<>(type, requiredFromConsole, name, defaultDesc), concatFromHere);
 	}
 	
 	// Without reqFromConsole.
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, name, defaultDesc),  concatFromHere);
+		return this.addParameter(new Parameter<>(defaultValue, type, name, defaultDesc),  concatFromHere);
 	}
 
 	// Without defaultDesc.
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, boolean requiredFromConsole, String name, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, requiredFromConsole, name), concatFromHere);
+		return this.addParameter(new Parameter<>(defaultValue, type, requiredFromConsole, name), concatFromHere);
 	}
 	
 	// Without concat.
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, boolean requiredFromConsole, String name, String defaultDesc)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, requiredFromConsole, name, defaultDesc), false);
+		return this.addParameter(new Parameter<>(defaultValue, type, requiredFromConsole, name, defaultDesc), false);
 	}
 	
 	// WITHOUT 2
@@ -650,37 +650,37 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// Without defaultValue & reqFromConsole
 	public <T> Parameter<T> addParameter(Type<T> type, String name, String defaultDesc, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(type, name, defaultDesc), concatFromHere);
+		return this.addParameter(new Parameter<>(type, name, defaultDesc), concatFromHere);
 	}
 	
 	// Without defaultValue & defaultDesc
 	public <T> Parameter<T> addParameter(Type<T> type, boolean requiredFromConsole, String name, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(type, requiredFromConsole, name), concatFromHere);
+		return this.addParameter(new Parameter<>(type, requiredFromConsole, name), concatFromHere);
 	}
 	
 	// Without defaultValue & concat.
 	public <T> Parameter<T> addParameter(Type<T> type, boolean requiredFromConsole, String name, String defaultDesc)
 	{
-		return this.addParameter(new Parameter<T>(type, requiredFromConsole, name, defaultDesc));
+		return this.addParameter(new Parameter<>(type, requiredFromConsole, name, defaultDesc));
 	}
 
 	// Without reqFromConsole & defaultDesc.
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, String name, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, name), concatFromHere);
+		return this.addParameter(new Parameter<>(defaultValue, type, name), concatFromHere);
 	}
 
 	// Without reqFromConsole & concat.
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, String name, String defaultDesc)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, name, defaultDesc));
+		return this.addParameter(new Parameter<>(defaultValue, type, name, defaultDesc));
 	}
 	
 	// Without defaultDesc & concat.
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, boolean requiredFromConsole, String name)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, requiredFromConsole, name));
+		return this.addParameter(new Parameter<>(defaultValue, type, requiredFromConsole, name));
 	}
 	
 	// WITHOUT 3
@@ -688,25 +688,25 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// Without defaultValue, reqFromConsole & defaultDesc.
 	public <T> Parameter<T> addParameter(Type<T> type, String name, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(type, name), concatFromHere);
+		return this.addParameter(new Parameter<>(type, name), concatFromHere);
 	}
 	
 	// Without defaultValue, reqFromConsole & concat .
 	public <T> Parameter<T> addParameter(Type<T> type, String name, String defaultDesc)
 	{
-		return this.addParameter(new Parameter<T>(type, name, defaultDesc));
+		return this.addParameter(new Parameter<>(type, name, defaultDesc));
 	}
 	
 	// Without defaultValue, defaultDesc & concat .
 	public <T> Parameter<T> addParameter(Type<T> type, boolean requiredFromConsole, String name)
 	{
-		return this.addParameter(new Parameter<T>(type, requiredFromConsole, name));
+		return this.addParameter(new Parameter<>(type, requiredFromConsole, name));
 	}
 	
 	// Without reqFromConsole, defaultDesc & concat .
 	public <T> Parameter<T> addParameter(T defaultValue, Type<T> type, String name)
 	{
-		return this.addParameter(new Parameter<T>(defaultValue, type, name));
+		return this.addParameter(new Parameter<>(defaultValue, type, name));
 	}
 	
 	// WITHOUT 4
@@ -714,13 +714,13 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// Without defaultValue, reqFromConsole, defaultDesc & concat.
 	public <T> Parameter<T> addParameter(Type<T> type, String name)
 	{
-		return this.addParameter(new Parameter<T>(type, name));
+		return this.addParameter(new Parameter<>(type, name));
 	}
 	
 	// Without defaultValue, name, reqFromConsole & defaultDesc.
 	public <T> Parameter<T> addParameter(Type<T> type, boolean concatFromHere)
 	{
-		return this.addParameter(new Parameter<T>(type), concatFromHere);
+		return this.addParameter(new Parameter<>(type), concatFromHere);
 	}
 	
 	// Without 5
@@ -728,7 +728,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// Without defaultValue, name, reqFromConsole, defaultDesc & concat.
 	public <T> Parameter<T> addParameter(Type<T> type)
 	{
-		return this.addParameter(new Parameter<T>(type));
+		return this.addParameter(new Parameter<>(type));
 	}
 	
 	// -------------------------------------------- //
@@ -776,7 +776,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		if ( ! this.isConcatenating()) return args;
 		
 		// Create Ret
-		List<String> ret = new MassiveList<String>();
+		List<String> ret = new MassiveList<>();
 		
 		// Fill Ret
 		final int maxIdx = Math.min(this.getConcatenationIndex(), args.size());
@@ -1276,7 +1276,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	
 	protected List<Mson> getTemplateParameters(CommandSender sender)
 	{
-		List<Mson> ret = new MassiveList<Mson>();
+		List<Mson> ret = new MassiveList<>();
 		
 		for (Parameter<?> parameter : this.getParameters())
 		{
@@ -1384,7 +1384,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		}
 
 		// ... else check the children.
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		String token = args.get(args.size()-1).toLowerCase();
 		for (MassiveCommand child : this.getChildren())
 		{

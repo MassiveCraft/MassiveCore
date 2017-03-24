@@ -117,7 +117,7 @@ class DBCollectionImpl extends DBCollection {
                                         options.getReadPreference());
         res.throwOnError();
 
-        List<Cursor> cursors = new ArrayList<Cursor>();
+        List<Cursor> cursors = new ArrayList<>();
         for (DBObject cursorDocument : (List<DBObject>) res.get("cursors")) {
             cursors.add(new QueryResultIterator(cursorDocument, db, this, options.getBatchSize(), getDecoder(), res.getServerUsed()));
         }
@@ -218,7 +218,8 @@ class DBCollectionImpl extends DBCollection {
         try {
             if (useWriteCommands(concern, port)) {
                 try {
-                    return translateBulkWriteResult(removeWithCommandProtocol(Arrays.asList(new RemoveRequest(query, multi)),
+                    return translateBulkWriteResult(removeWithCommandProtocol(
+						Collections.singletonList(new RemoveRequest(query, multi)),
                                                                               concern,
                                                                               encoder,
                                                                               port), REMOVE, concern, port.getAddress());
@@ -265,7 +266,8 @@ class DBCollectionImpl extends DBCollection {
             if (useWriteCommands(concern, port)) {
                 try {
                     BulkWriteResult bulkWriteResult =
-                    updateWithCommandProtocol(Arrays.<ModifyRequest>asList(new UpdateRequest(query, upsert, o, multi)),
+                    updateWithCommandProtocol(
+						Collections.<ModifyRequest>singletonList(new UpdateRequest(query, upsert, o, multi)),
                                               concern, encoder, port);
                     return translateBulkWriteResult(bulkWriteResult, UPDATE, concern, port.getAddress());
                 } catch (BulkWriteException e) {
@@ -366,7 +368,8 @@ class DBCollectionImpl extends DBCollection {
                     }
                 }
             } else {
-                db.doGetCollection("system.indexes").insertWithWriteProtocol(asList(index), WriteConcern.SAFE,
+                db.doGetCollection("system.indexes").insertWithWriteProtocol(
+					Collections.singletonList(index), WriteConcern.SAFE,
                                                                              DefaultDBEncoder.FACTORY.create(), port, false);
             }
         } finally {
@@ -628,12 +631,14 @@ class DBCollectionImpl extends DBCollection {
         public Iterator<Run> iterator() {
             return new Iterator<Run>() {
                 private final Map<WriteRequest.Type, Run> runs =
-                new TreeMap<WriteRequest.Type, Run>(new Comparator<WriteRequest.Type>() {
-                    @Override
-                    public int compare(final WriteRequest.Type first, final WriteRequest.Type second) {
-                        return first.compareTo(second);
-                    }
-                });
+					new TreeMap<>(new Comparator<WriteRequest.Type>()
+					{
+						@Override
+						public int compare(final WriteRequest.Type first, final WriteRequest.Type second)
+						{
+							return first.compareTo(second);
+						}
+					});
                 private int curIndex;
 
                 @Override
@@ -669,7 +674,7 @@ class DBCollectionImpl extends DBCollection {
     }
 
     private class Run {
-        private final List<WriteRequest> writeRequests = new ArrayList<WriteRequest>();
+        private final List<WriteRequest> writeRequests = new ArrayList<>();
         private final WriteRequest.Type type;
         private final WriteConcern writeConcern;
         private final DBEncoder encoder;
@@ -805,7 +810,7 @@ class DBCollectionImpl extends DBCollection {
             return new RunExecutor(port) {
                 @Override
                 BulkWriteResult executeWriteCommandProtocol() {
-                    List<DBObject> documents = new ArrayList<DBObject>(insertRequests.size());
+                    List<DBObject> documents = new ArrayList<>(insertRequests.size());
                     for (InsertRequest cur : insertRequests) {
                         documents.add(cur.getDocument());
                     }
@@ -814,7 +819,7 @@ class DBCollectionImpl extends DBCollection {
 
                 @Override
                 WriteResult executeWriteProtocol(final int i) {
-                    return insert(asList(insertRequests.get(i).getDocument()), writeConcern, encoder);
+                    return insert(Collections.singletonList(insertRequests.get(i).getDocument()), writeConcern, encoder);
                 }
 
                 @Override
@@ -887,7 +892,7 @@ class DBCollectionImpl extends DBCollection {
             List<BulkWriteUpsert> getUpsertedItems(final WriteResult writeResult) {
                 return writeResult.getUpsertedId() == null
                        ? Collections.<BulkWriteUpsert>emptyList()
-                       : asList(new BulkWriteUpsert(0, writeResult.getUpsertedId()));
+                       : Collections.singletonList(new BulkWriteUpsert(0, writeResult.getUpsertedId()));
             }
 
             private BulkWriteError getBulkWriteError(final WriteConcernException writeException) {

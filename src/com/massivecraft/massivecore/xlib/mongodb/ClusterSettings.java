@@ -66,7 +66,7 @@ final class ClusterSettings {
             if (hosts.isEmpty()) {
                 throw new IllegalArgumentException("hosts list may not be empty");
             }
-            this.hosts = Collections.unmodifiableList(new ArrayList<ServerAddress>(new LinkedHashSet<ServerAddress>(hosts)));
+            this.hosts = Collections.unmodifiableList(new ArrayList<>(new LinkedHashSet<>(hosts)));
             return this;
         }
 

@@ -50,7 +50,7 @@ public class EngineMassiveCoreCommandRegistration extends Engine
 		Map<String, Command> knownCommands = getSimpleCommandMapDotKnownCommands(simpleCommandMap);
 		
 		// Step #2: Create a "name --> target" map that contains the MassiveCommands that /should/ be registered in Bukkit. 
-		Map<String, MassiveCommand> nameTargets = new HashMap<String, MassiveCommand>();
+		Map<String, MassiveCommand> nameTargets = new HashMap<>();
 		// For each MassiveCommand that is supposed to be registered ...
 		for (MassiveCommand massiveCommand : MassiveCommand.getAllInstances())
 		{

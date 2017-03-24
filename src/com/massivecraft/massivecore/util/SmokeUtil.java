@@ -90,7 +90,7 @@ public class SmokeUtil
 		fakeExplosion(location, 4F);
 	}
 	
-	public static MutableBoolean fakeExplosion = new MutableBoolean(false);
+	public static final MutableBoolean fakeExplosion = new MutableBoolean(false);
 	public static void fakeExplosion(Location location, float power)
 	{
 		synchronized (fakeExplosion)

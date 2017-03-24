@@ -21,6 +21,6 @@ package com.massivecraft.massivecore.xlib.mongodb;
  */
 public interface DBEncoderFactory {
 
-    public DBEncoder create();
+    DBEncoder create();
     
 }

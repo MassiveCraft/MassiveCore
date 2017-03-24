@@ -79,7 +79,7 @@ public abstract class CollAbstract<E extends Entity<E>> implements CollInterface
 	@Override public List<E> getAll(Iterable<?> oids)
 	{
 		// Return Create
-		List<E> ret = new ArrayList<E>();
+		List<E> ret = new ArrayList<>();
 		
 		// Return Fill
 		for (Object oid : oids)

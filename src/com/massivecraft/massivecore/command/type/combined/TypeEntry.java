@@ -20,7 +20,7 @@ public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <K, V> TypeEntry<K, V> get(Type<K> keyType, Type<V> valueType) { return new TypeEntry<K, V>(keyType, valueType); }
+	public static <K, V> TypeEntry<K, V> get(Type<K> keyType, Type<V> valueType) { return new TypeEntry<>(keyType, valueType); }
 	public TypeEntry(Type<K> keyType, Type<V> valueType)
 	{
 		super(Entry.class, keyType, valueType);

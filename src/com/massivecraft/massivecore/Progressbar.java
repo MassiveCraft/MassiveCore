@@ -126,7 +126,7 @@ public class Progressbar
 	public static List<String> renderList(double quota, int width, String left, String solid, String between, String empty, String right, double solidsPerEmpty, String colorTag, Map<Double, String> roofToColor)
 	{
 		// Create Ret
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		// Ensure between 0 and 1;
 		quota = limit(quota);

@@ -41,8 +41,8 @@ import java.util.Map;
  * @author OniBait
  */
 public final class AdapterModdedEnumType<T extends Enum<T>> extends TypeAdapter<T> {
-	private final Map<String, T> nameToConstant = new HashMap<String, T>();
-	private final Map<T, String> constantToName = new HashMap<T, String>();
+	private final Map<String, T> nameToConstant = new HashMap<>();
+	private final Map<T, String> constantToName = new HashMap<>();
 
 	public AdapterModdedEnumType(Class<T> classOfT) {
 		for (T constant : classOfT.getEnumConstants()) {

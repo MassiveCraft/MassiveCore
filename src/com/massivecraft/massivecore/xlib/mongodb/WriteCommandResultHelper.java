@@ -46,7 +46,7 @@ final class WriteCommandResultHelper {
 
     @SuppressWarnings("unchecked")
     private static List<BulkWriteError> getWriteErrors(final CommandResult commandResult) {
-        List<BulkWriteError> writeErrors = new ArrayList<BulkWriteError>();
+        List<BulkWriteError> writeErrors = new ArrayList<>();
         List<DBObject> writeErrorsDocuments = (List<DBObject>) commandResult.get("writeErrors");
         if (writeErrorsDocuments != null) {
             for (DBObject cur : writeErrorsDocuments) {
@@ -75,7 +75,7 @@ final class WriteCommandResultHelper {
         if (upsertedValue == null) {
             return Collections.emptyList();
         } else {
-            List<BulkWriteUpsert> bulkWriteUpsertList = new ArrayList<BulkWriteUpsert>();
+            List<BulkWriteUpsert> bulkWriteUpsertList = new ArrayList<>();
             for (DBObject upsertedItem : upsertedValue) {
                 bulkWriteUpsertList.add(new BulkWriteUpsert(((Number) upsertedItem.get("index")).intValue(),
                                                             upsertedItem.get("_id")));

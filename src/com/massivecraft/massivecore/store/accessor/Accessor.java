@@ -20,7 +20,7 @@ public class Accessor
 	private final Class<?> clazz;
 	public Class<?> getClazz() { return this.clazz; }
 		
-	private Map<String, FieldAccessor> fieldToAccessor = new LinkedHashMap<String, FieldAccessor>();
+	private Map<String, FieldAccessor> fieldToAccessor = new LinkedHashMap<>();
 	public Map<String, FieldAccessor> getFieldToAccessor() { return this.fieldToAccessor; }
 	
 	public FieldAccessor getFieldAccessor(String fieldName)
@@ -44,7 +44,7 @@ public class Accessor
 	// CONSTRUCT / FACTORY
 	// -------------------------------------------- //
 	
-	private static Map<Class<?>, Accessor> classToAccessor = new HashMap<Class<?>, Accessor>();
+	private static Map<Class<?>, Accessor> classToAccessor = new HashMap<>();
 	
 	public static Accessor get(Class<?> clazz)
 	{
@@ -126,7 +126,7 @@ public class Accessor
 	
 	public static List<Field> getFieldList(Class<?> clazz)
 	{
-		List<Field> fields = new ArrayList<Field>();
+		List<Field> fields = new ArrayList<>();
 		
 		for (Class<?> c = clazz; c != null; c = c.getSuperclass())
 		{
@@ -138,7 +138,7 @@ public class Accessor
 	
 	public static Map<String, Field> getFieldMap(Class<?> clazz)
 	{
-		Map<String, Field> ret = new LinkedHashMap<String, Field>();
+		Map<String, Field> ret = new LinkedHashMap<>();
 		
 		for (Field field : getFieldList(clazz))
 		{

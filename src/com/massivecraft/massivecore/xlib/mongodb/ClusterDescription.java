@@ -44,11 +44,13 @@ class ClusterDescription {
         notNull("all", serverDescriptions);
         this.connectionMode = notNull("connectionMode", connectionMode);
         this.type = notNull("type", type);
-        Set<ServerDescription> serverDescriptionSet = new TreeSet<ServerDescription>(new Comparator<ServerDescription>() {
-            public int compare(final ServerDescription o1, final ServerDescription o2) {
-                return o1.getAddress().toString().compareTo(o2.getAddress().toString());
-            }
-        });
+        Set<ServerDescription> serverDescriptionSet = new TreeSet<>(new Comparator<ServerDescription>()
+		{
+			public int compare(final ServerDescription o1, final ServerDescription o2)
+			{
+				return o1.getAddress().toString().compareTo(o2.getAddress().toString());
+			}
+		});
         serverDescriptionSet.addAll(serverDescriptions);
         this.all = Collections.unmodifiableSet(serverDescriptionSet);
     }
@@ -201,7 +203,7 @@ class ClusterDescription {
 
     private List<ServerDescription> getServersByPredicate(final Predicate predicate) {
 
-        final List<ServerDescription> membersByTag = new ArrayList<ServerDescription>();
+        final List<ServerDescription> membersByTag = new ArrayList<>();
 
         for (final ServerDescription cur : all) {
             if (predicate.apply(cur)) {

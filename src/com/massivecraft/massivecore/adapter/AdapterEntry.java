@@ -71,7 +71,7 @@ public class AdapterEntry implements JsonDeserializer<Entry<?, ?>>, JsonSerializ
 		Object key = context.deserialize(keyJson, keyType);
 		Object value = context.deserialize(valueJson, valueType);
 		
-		return new SimpleEntry<Object, Object>(key, value);
+		return new SimpleEntry<>(key, value);
 	}
 	
 	// -------------------------------------------- //

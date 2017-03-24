@@ -92,7 +92,7 @@ public class ByteBufferOutputStream extends OutputStream  {
 	return _lst.get( _lst.size() - 1 );
     }
 
-    final List<ByteBuffer> _lst = new ArrayList<ByteBuffer>();
+    final List<ByteBuffer> _lst = new ArrayList<>();
     final ByteBufferFactory _factory;
     
     static final ByteBufferFactory _defaultFactory = new ByteBufferFactory.SimpleHeapByteBufferFactory( 1024 * 4 );

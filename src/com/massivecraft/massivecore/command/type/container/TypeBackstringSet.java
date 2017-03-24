@@ -19,7 +19,7 @@ public class TypeBackstringSet<E extends Enum<E>> extends TypeContainer<Set<E>, 
 	
 	public static <E extends Enum<E>> TypeBackstringSet<E> get(Type<E> innerType)
 	{
-		return new TypeBackstringSet<E>(innerType);
+		return new TypeBackstringSet<>(innerType);
 	}
 	
 	public TypeBackstringSet(Type<E> innerType)
@@ -35,7 +35,7 @@ public class TypeBackstringSet<E extends Enum<E>> extends TypeContainer<Set<E>, 
 	@Override
 	public BackstringSet<E> createNewInstance()
 	{
-		return new BackstringSet<E>((Class<E>) innerTypeClass);
+		return new BackstringSet<>((Class<E>) innerTypeClass);
 	}
 
 }

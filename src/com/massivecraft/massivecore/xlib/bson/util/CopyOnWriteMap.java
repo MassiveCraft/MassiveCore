@@ -89,7 +89,7 @@ abstract class CopyOnWriteMap<K, V> extends AbstractCopyOnWriteMap<K, V, Map<K, 
      * @return a fresh builder
      */
     public static <K, V> Builder<K, V> builder() {
-        return new Builder<K, V>();
+        return new Builder<>();
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class CopyOnWriteMap<K, V> extends AbstractCopyOnWriteMap<K, V, Map<K, 
      */
     public static class Builder<K, V> {
         private View.Type viewType = View.Type.STABLE;
-        private final Map<K, V> initialValues = new HashMap<K, V>();
+        private final Map<K, V> initialValues = new HashMap<>();
 
         Builder() {}
 
@@ -131,11 +131,11 @@ abstract class CopyOnWriteMap<K, V> extends AbstractCopyOnWriteMap<K, V, Map<K, 
         }
 
         public CopyOnWriteMap<K, V> newHashMap() {
-            return new Hash<K, V>(initialValues, viewType);
+            return new Hash<>(initialValues, viewType);
         }
 
         public CopyOnWriteMap<K, V> newLinkedMap() {
-            return new Linked<K, V>(initialValues, viewType);
+            return new Linked<>(initialValues, viewType);
         }
     }
 
@@ -251,7 +251,7 @@ abstract class CopyOnWriteMap<K, V> extends AbstractCopyOnWriteMap<K, V, Map<K, 
 
         @Override
         public <N extends Map<? extends K, ? extends V>> Map<K, V> copy(final N map) {
-            return new HashMap<K, V>(map);
+            return new HashMap<>(map);
         }
     }
 
@@ -267,7 +267,7 @@ abstract class CopyOnWriteMap<K, V> extends AbstractCopyOnWriteMap<K, V, Map<K, 
 
         @Override
         public <N extends Map<? extends K, ? extends V>> Map<K, V> copy(final N map) {
-            return new LinkedHashMap<K, V>(map);
+            return new LinkedHashMap<>(map);
         }
     }
 }

@@ -123,7 +123,7 @@ public class ByteBufferHolder {
         return buf.append( "}" ).toString();
     }
 
-    List<ByteBuffer> _buffers = new ArrayList<ByteBuffer>();
+    List<ByteBuffer> _buffers = new ArrayList<>();
     int _pos = 0;
     final int _max;
 

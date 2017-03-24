@@ -6,7 +6,7 @@ public class PredicateNot<T> implements Predicate<T>
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	public static <T> PredicateNot<T> get(Predicate<? super T> predicate) { return new PredicateNot<T>(predicate); }
+	public static <T> PredicateNot<T> get(Predicate<? super T> predicate) { return new PredicateNot<>(predicate); }
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

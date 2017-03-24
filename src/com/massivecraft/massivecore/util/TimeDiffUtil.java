@@ -70,7 +70,7 @@ public class TimeDiffUtil
 		Matcher matcherFull = patternFull.matcher(formated);
 		if (!matcherFull.matches()) throw new NullPointerException("Invalid time diff format.");
 		
-		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<TimeUnit, Long>();
+		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<>();
 		if (formated.equals("0")) return ret;
 		
 		Matcher matcherPart = patternPart.matcher(formated);
@@ -112,7 +112,7 @@ public class TimeDiffUtil
 		// Create non-negative millis decumulator
 		long millisLeft = Math.abs(millis);
 		
-		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<TimeUnit, Long>();
+		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<>();
 		
 		for (TimeUnit unit : units)
 		{
@@ -132,7 +132,7 @@ public class TimeDiffUtil
 	
 	public static LinkedHashMap<TimeUnit, Long> limit(LinkedHashMap<TimeUnit, Long> unitcounts, int limit)
 	{
-		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<TimeUnit, Long>();
+		LinkedHashMap<TimeUnit, Long> ret = new LinkedHashMap<>();
 		
 		Iterator<Entry<TimeUnit, Long>> iter = unitcounts.entrySet().iterator();
 		int i = 0;
@@ -173,7 +173,7 @@ public class TimeDiffUtil
 			return formated(TimeUnit.SECOND, 0, entryFormat);
 		}
 		
-		List<String> parts = new ArrayList<String>();
+		List<String> parts = new ArrayList<>();
 		for (Entry<TimeUnit, Long> entry : unitcounts.entrySet())
 		{
 			parts.add(formated(entry.getKey(), entry.getValue(), entryFormat));

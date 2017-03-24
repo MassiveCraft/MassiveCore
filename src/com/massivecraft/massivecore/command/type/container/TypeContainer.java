@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
+public abstract class TypeContainer<C, E> extends TypeAbstract<C>
 {
 	// -------------------------------------------- //
 	// CONSTRUCT
@@ -267,7 +267,7 @@ public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 	@Override
 	public <O> CommandEditAbstract<O, C> createEditCommand(EditSettings<O> settings, Property<O, C> property)
 	{
-		return new CommandEditContainer<O, C>(settings, property);
+		return new CommandEditContainer<>(settings, property);
 	}
 	
 	// -------------------------------------------- //

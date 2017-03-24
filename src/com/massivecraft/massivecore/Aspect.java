@@ -26,7 +26,7 @@ public class Aspect extends Entity<Aspect>
 	public boolean isRegistered() { return this.registered; }
 	public void register() { this.registered = true; }
 	
-	private transient Collection<String> desc = new ArrayList<String>();
+	private transient Collection<String> desc = new ArrayList<>();
 	public Collection<String> getDesc() { return this.desc; }
 	public void setDesc(Collection<String> val) { this.desc = val; }
 	public void setDesc(String... val) { this.desc = Arrays.asList(val); }

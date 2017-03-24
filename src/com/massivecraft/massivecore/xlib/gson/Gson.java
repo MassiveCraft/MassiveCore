@@ -109,7 +109,7 @@ public final class Gson {
    * The proxy is wired up once the initial adapter has been created.
    */
   private final ThreadLocal<Map<TypeToken<?>, FutureTypeAdapter<?>>> calls
-      = new ThreadLocal<Map<TypeToken<?>, FutureTypeAdapter<?>>>();
+      = new ThreadLocal<>();
 
   private final Map<TypeToken<?>, TypeAdapter<?>> typeTokenCache
       = Collections.synchronizedMap(new HashMap<TypeToken<?>, TypeAdapter<?>>());
@@ -191,7 +191,7 @@ public final class Gson {
     this.htmlSafe = htmlSafe;
     this.prettyPrinting = prettyPrinting;
 
-    List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
+    List<TypeAdapterFactory> factories = new ArrayList<>();
 
     // built-in type adapters that cannot be overridden
     factories.add(TypeAdapters.JSON_ELEMENT_FACTORY);
@@ -340,7 +340,7 @@ public final class Gson {
     Map<TypeToken<?>, FutureTypeAdapter<?>> threadCalls = calls.get();
     boolean requiresThreadLocalCleanup = false;
     if (threadCalls == null) {
-      threadCalls = new HashMap<TypeToken<?>, FutureTypeAdapter<?>>();
+      threadCalls = new HashMap<>();
       calls.set(threadCalls);
       requiresThreadLocalCleanup = true;
     }
@@ -352,7 +352,7 @@ public final class Gson {
     }
 
     try {
-      FutureTypeAdapter<T> call = new FutureTypeAdapter<T>();
+      FutureTypeAdapter<T> call = new FutureTypeAdapter<>();
       threadCalls.put(type, call);
 
       for (TypeAdapterFactory factory : factories) {

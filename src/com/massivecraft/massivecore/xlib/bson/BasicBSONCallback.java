@@ -211,6 +211,6 @@ public class BasicBSONCallback implements BSONCallback {
     }
 
     private Object _root;
-    private final LinkedList<BSONObject> _stack = new LinkedList<BSONObject>();
-    private final LinkedList<String> _nameStack = new LinkedList<String>();
+    private final LinkedList<BSONObject> _stack = new LinkedList<>();
+    private final LinkedList<String> _nameStack = new LinkedList<>();
 }

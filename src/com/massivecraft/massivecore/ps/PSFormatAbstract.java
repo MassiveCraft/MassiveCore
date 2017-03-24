@@ -84,7 +84,7 @@ public class PSFormatAbstract implements PSFormat
 	
 	public List<String> formatEntries(PS ps)
 	{
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		
 		Object val = null;
 		

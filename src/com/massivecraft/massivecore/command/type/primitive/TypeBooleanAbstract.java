@@ -21,13 +21,13 @@ public abstract class TypeBooleanAbstract extends TypeAbstractChoice<Boolean>
 	public static final String NAME_FALSE = "False";
 	public static final String NAME_OFF = "Off";
 	
-	public static final Set<String> NAMES_TRUE = new MassiveSet<String>(
+	public static final Set<String> NAMES_TRUE = new MassiveSet<>(
 		NAME_YES,
 		NAME_TRUE,
 		NAME_ON
 	);
 	
-	public static final Set<String> NAMES_FALSE = new MassiveSet<String>(
+	public static final Set<String> NAMES_FALSE = new MassiveSet<>(
 		NAME_NO,
 		NAME_FALSE,
 		NAME_OFF
@@ -86,7 +86,7 @@ public abstract class TypeBooleanAbstract extends TypeAbstractChoice<Boolean>
 	public Set<String> getNamesInner(Boolean value)
 	{
 		// Create
-		Set<String> ret = new MassiveSet<String>();
+		Set<String> ret = new MassiveSet<>();
 		
 		// Fill
 		ret.add(this.getNameInner(value));

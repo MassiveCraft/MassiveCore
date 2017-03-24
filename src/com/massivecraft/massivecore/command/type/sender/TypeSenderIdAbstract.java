@@ -166,7 +166,7 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		boolean addIds = (arg.length() >= TAB_LIST_UUID_THRESHOLD);
 		int size = ids.size();
 		if (addIds) size *= 2;
-		Set<String> ret = new MassiveSet<String>(size);
+		Set<String> ret = new MassiveSet<>(size);
 		for (String id : ids)
 		{
 			if ( ! MixinVisibility.get().isVisible(id, sender)) continue;

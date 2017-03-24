@@ -28,7 +28,7 @@ public class EngineMassiveCoreGank extends Engine
 	// -------------------------------------------- //
 	
 	// NOTE: The usage of WeakHashMap here is important. We would create a memory leak otherwise. WeakHashMap works very well for meta data storage.
-	protected WeakHashMap<Entity, WeakHashMap<Player, Double>> entityToPlayerDamages = new WeakHashMap<Entity, WeakHashMap<Player, Double>>();
+	protected WeakHashMap<Entity, WeakHashMap<Player, Double>> entityToPlayerDamages = new WeakHashMap<>();
 	
 	protected Map<Player, Double> getPlayerDamages(Entity entity, boolean store)
 	{
@@ -36,7 +36,7 @@ public class EngineMassiveCoreGank extends Engine
 		
 		if (ret == null)
 		{
-			ret = new WeakHashMap<Player, Double>(4);
+			ret = new WeakHashMap<>(4);
 			if (store)
 			{
 				this.entityToPlayerDamages.put(entity, ret);
@@ -73,7 +73,7 @@ public class EngineMassiveCoreGank extends Engine
 		}
 		
 		// Create Ret
-		Map<Player, Double> ret = new MassiveMap<Player, Double>(playerDamages.size());
+		Map<Player, Double> ret = new MassiveMap<>(playerDamages.size());
 		
 		// Fill Ret
 		for (Entry<Player, Double> playerDamage : playerDamages.entrySet())

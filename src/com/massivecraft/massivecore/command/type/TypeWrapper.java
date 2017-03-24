@@ -78,7 +78,7 @@ public class TypeWrapper<T> extends TypeAbstract<T>
 	@Override
 	public Collection<String> getTabList(CommandSender sender, String arg)
 	{
-		return new MassiveList<String>(this.getInnerType().getTabList(sender, arg));
+		return new MassiveList<>(this.getInnerType().getTabList(sender, arg));
 	}
 	
 	@Override

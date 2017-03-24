@@ -88,6 +88,6 @@ public class EventMassiveCorePlayerLeave extends Event implements Runnable
 	// -------------------------------------------- //
 	// STORING THE ACTIVE PLAYER EVENT
 	// -------------------------------------------- //
-	public static Map<UUID, EventMassiveCorePlayerLeave> player2event = new HashMap<UUID, EventMassiveCorePlayerLeave>();
+	public static Map<UUID, EventMassiveCorePlayerLeave> player2event = new HashMap<>();
 	
 }

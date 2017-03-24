@@ -4,5 +4,5 @@ import com.massivecraft.massivecore.mson.Mson;
 
 public interface Msonifier<T>
 {
-	public Mson toMson(T item, int index);
+	Mson toMson(T item, int index);
 }

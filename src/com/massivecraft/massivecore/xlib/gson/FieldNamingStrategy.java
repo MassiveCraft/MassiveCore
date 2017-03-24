@@ -36,5 +36,5 @@ public interface FieldNamingStrategy {
    * @return the translated field name.
    * @since 1.3
    */
-  public String translateName(Field f);
+  String translateName(Field f);
 }

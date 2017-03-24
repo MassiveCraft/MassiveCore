@@ -104,7 +104,7 @@ public abstract class DBCollection {
      * @dochub insert Insert
      */
     public WriteResult insert(DBObject o , WriteConcern concern ){
-        return insert( Arrays.asList(o) , concern );
+        return insert(Collections.singletonList(o), concern );
     }
 
     /**
@@ -1514,7 +1514,7 @@ public abstract class DBCollection {
      */
     @Deprecated
     public AggregationOutput aggregate(final DBObject firstOp, final DBObject... additionalOps) {
-        List<DBObject> pipeline = new ArrayList<DBObject>();
+        List<DBObject> pipeline = new ArrayList<>();
         pipeline.add(firstOp);
         Collections.addAll(pipeline, additionalOps);
         return aggregate(pipeline);
@@ -1704,7 +1704,7 @@ public abstract class DBCollection {
 
         DBCursor cur = _db.getCollection("system.indexes").find(cmd);
 
-        List<DBObject> list = new ArrayList<DBObject>();
+        List<DBObject> list = new ArrayList<>();
 
         while(cur.hasNext()) {
             list.add(cur.next());
@@ -2136,6 +2136,6 @@ public abstract class DBCollection {
      * @deprecated This will be removed in 3.0
      */
     @Deprecated
-    final private Set<String> _createdIndexes = new HashSet<String>();
+    final private Set<String> _createdIndexes = new HashSet<>();
 
 }

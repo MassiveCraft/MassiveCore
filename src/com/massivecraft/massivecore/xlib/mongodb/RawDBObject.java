@@ -117,7 +117,7 @@ public class RawDBObject implements DBObject {
     }
 
     public Set<String> keySet(){    
-        Set<String> keys = new HashSet<String>();
+        Set<String> keys = new HashSet<>();
         
         ElementIter i = new ElementIter();
         while ( i.hasNext() ){

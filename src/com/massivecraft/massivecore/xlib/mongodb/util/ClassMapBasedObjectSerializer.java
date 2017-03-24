@@ -80,5 +80,5 @@ class ClassMapBasedObjectSerializer extends AbstractObjectSerializer {
         serializer.serialize(obj, buf);
     }
     
-    private ClassMap<ObjectSerializer> _serializers = new ClassMap<ObjectSerializer>();
+    private ClassMap<ObjectSerializer> _serializers = new ClassMap<>();
 }

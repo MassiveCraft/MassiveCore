@@ -48,7 +48,7 @@ public final class JsonTreeReader extends JsonReader {
   };
   private static final Object SENTINEL_CLOSED = new Object();
 
-  private final List<Object> stack = new ArrayList<Object>();
+  private final List<Object> stack = new ArrayList<>();
 
   public JsonTreeReader(JsonElement element) {
     super(UNREADABLE_READER);

@@ -81,6 +81,6 @@ public class Args {
         return s.toString();
     }
 
-    final Map<String,String> _options = new HashMap<String,String>();
-    final List<String> _params = new ArrayList<String>();
+    final Map<String,String> _options = new HashMap<>();
+    final List<String> _params = new ArrayList<>();
 }

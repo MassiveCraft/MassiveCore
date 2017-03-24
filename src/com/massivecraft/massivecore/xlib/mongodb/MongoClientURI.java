@@ -214,7 +214,7 @@ public class MongoClientURI {
             }
 
             { // userName,password,hosts
-                List<String> all = new LinkedList<String>();
+                List<String> all = new LinkedList<>();
 
                 int idx = serverPart.indexOf("@");
 
@@ -259,11 +259,11 @@ public class MongoClientURI {
         }
     }
 
-    static Set<String> generalOptionsKeys = new HashSet<String>();
-    static Set<String> authKeys = new HashSet<String>();
-    static Set<String> readPreferenceKeys = new HashSet<String>();
-    static Set<String> writeConcernKeys = new HashSet<String>();
-    static Set<String> allKeys = new HashSet<String>();
+    static Set<String> generalOptionsKeys = new HashSet<>();
+    static Set<String> authKeys = new HashSet<>();
+    static Set<String> readPreferenceKeys = new HashSet<>();
+    static Set<String> writeConcernKeys = new HashSet<>();
+    static Set<String> allKeys = new HashSet<>();
 
     static {
         generalOptionsKeys.add("minpoolsize");
@@ -386,7 +386,7 @@ public class MongoClientURI {
         Boolean slaveOk = null;
         String readPreferenceType = null;
         DBObject firstTagSet = null;
-        List<DBObject> remainingTagSets = new ArrayList<DBObject>();
+        List<DBObject> remainingTagSets = new ArrayList<>();
 
         for (String key : readPreferenceKeys) {
             String value = getLastValue(optionsMap, key);
@@ -472,7 +472,7 @@ public class MongoClientURI {
     }
 
     private Map<String, List<String>> parseOptions(String optionsPart) {
-        Map<String, List<String>> optionsMap = new HashMap<String, List<String>>();
+        Map<String, List<String>> optionsMap = new HashMap<>();
 
         for (String _part : optionsPart.split("&|;")) {
             int idx = _part.indexOf("=");
@@ -481,7 +481,7 @@ public class MongoClientURI {
                 String value = _part.substring(idx + 1);
                 List<String> valueList = optionsMap.get(key);
                 if (valueList == null) {
-                    valueList = new ArrayList<String>(1);
+                    valueList = new ArrayList<>(1);
                 }
                 valueList.add(value);
                 optionsMap.put(key, valueList);

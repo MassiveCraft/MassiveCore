@@ -64,11 +64,11 @@ public class KeyCachingLazyBSONObject extends LazyBSONObject {
                 offset += ( fieldSize + elementSize );
             }
         } catch (Exception e) {
-            fieldIndex = new HashMap<String, ElementRecord>();
+            fieldIndex = new HashMap<>();
         }
     }
     
     
-    private HashMap<String, ElementRecord> fieldIndex = new HashMap<String, ElementRecord>();
+    private HashMap<String, ElementRecord> fieldIndex = new HashMap<>();
 
 }

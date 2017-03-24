@@ -17,13 +17,13 @@ public class Triple<A, B, C> implements Cloneable, Serializable
 	// -------------------------------------------- //
 	
 	private final A first;
-	public A getFirst() { return this.first; };
+	public A getFirst() { return this.first; }
 	
 	private final B second;
-	public B getSecond() { return this.second; };
+	public B getSecond() { return this.second; }
 	
 	private final C third;
-	public C getThird() { return this.third; };
+	public C getThird() { return this.third; }
 	
 	// -------------------------------------------- //
 	// FIELDS: WITH
@@ -55,7 +55,7 @@ public class Triple<A, B, C> implements Cloneable, Serializable
 	
 	public static <A, B, C> Triple<A, B, C> valueOf(A first, B second, C third)
 	{
-		return new Triple<A, B, C>(first, second, third);
+		return new Triple<>(first, second, third);
 	}
 	
 	// -------------------------------------------- //

@@ -40,12 +40,12 @@ public class CmdMassiveCoreUsysMultiverseList extends MassiveCommand
 		int page = this.readArg();
 		
 		// Pager Create
-		Pager<Multiverse> pager = new Pager<Multiverse>(this, "Multiverse List", page, MultiverseColl.get().getAll(), new Stringifier<Multiverse>()
+		Pager<Multiverse> pager = new Pager<>(this, "Multiverse List", page, MultiverseColl.get().getAll(), new Stringifier<Multiverse>()
 		{
 			@Override
 			public String toString(Multiverse multiverse, int index)
 			{
-				return Txt.parse("<h>"+multiverse.getId()+" <i>has "+Txt.implodeCommaAndDot(multiverse.getUniverses(), "<aqua>%s", "<i>, ", " <i>and ", "<i>."));
+				return Txt.parse("<h>" + multiverse.getId() + " <i>has " + Txt.implodeCommaAndDot(multiverse.getUniverses(), "<aqua>%s", "<i>, ", " <i>and ", "<i>."));
 			}
 		}); 
 		

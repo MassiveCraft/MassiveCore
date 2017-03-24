@@ -76,7 +76,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 		if (this.getMassiveCommand().isUnsmart())
 		{
 			List<String> oldArgList = ret;
-			ret = new ArrayList<String>(oldArgList.size());
+			ret = new ArrayList<>(oldArgList.size());
 			for (String arg : oldArgList)
 			{
 				ret.add(Txt.removeSmartQuotes(arg));
@@ -127,7 +127,7 @@ public class MassiveCoreBukkitCommand extends Command implements PluginIdentifia
 		if (rawArgs == null) throw new IllegalArgumentException("args must not be null");
 		if (alias == null) throw new IllegalArgumentException("args must not be null");
 		
-		List<String> args = new MassiveList<String>();
+		List<String> args = new MassiveList<>();
 		
 		// When several spaces are next to each other, empty elements in the array will occur.
 		// To avoid such whitespace we do the following

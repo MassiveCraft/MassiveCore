@@ -208,7 +208,7 @@ public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbst
 		{
 			Object key = this.readElementInner(0);
 			Object value = this.readElementInner(1);
-			return new SimpleImmutableEntry<Object, Object>(key, value);
+			return new SimpleImmutableEntry<>(key, value);
 		}
 	}
 	

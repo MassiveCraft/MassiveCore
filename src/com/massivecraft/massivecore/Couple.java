@@ -74,7 +74,7 @@ public class Couple<A, B> implements Entry<A, B>, Cloneable, Serializable
 	
 	public static <A, B> Couple<A, B> valueOf(A first, B second)
 	{
-		return new Couple<A, B>(first, second);
+		return new Couple<>(first, second);
 	}
 	
 	// -------------------------------------------- //

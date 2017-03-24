@@ -71,7 +71,7 @@ public class ChestGui
 	// One could have imagined an approach where we looked at the item instead.
 	// That is however not feasible since the Bukkit ItemStack equals method is not reliable.
 	
-	private Map<Integer, ChestAction> indexToAction = new MassiveMap<Integer, ChestAction>();
+	private Map<Integer, ChestAction> indexToAction = new MassiveMap<>();
 	public Map<Integer, ChestAction> getIndexToAction() { return this.indexToAction; }
 	public ChestAction removeAction(ItemStack item) { return this.indexToAction.remove(item); }
 	public ChestAction setAction(int index, ChestAction action) { return this.indexToAction.put(index, action); }

@@ -4,5 +4,5 @@ import java.util.Collection;
 
 public interface SenderIdSource
 {
-	public Collection<Collection<String>> getSenderIdCollections();
+	Collection<Collection<String>> getSenderIdCollections();
 }

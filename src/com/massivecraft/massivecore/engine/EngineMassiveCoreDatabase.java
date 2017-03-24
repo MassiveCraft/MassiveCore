@@ -38,7 +38,7 @@ public class EngineMassiveCoreDatabase extends Engine
 	// PLAYER AND SENDER REFERENCES
 	// -------------------------------------------- //
 	
-	public static Map<String, PlayerLoginEvent> idToPlayerLoginEvent = new MassiveMap<String, PlayerLoginEvent>();
+	public static Map<String, PlayerLoginEvent> idToPlayerLoginEvent = new MassiveMap<>();
 	
 	// Immediately set the sender reference and cached PlayerLoginEvent.
 	public static void setSenderReferences(CommandSender sender, CommandSender reference, PlayerLoginEvent event)
@@ -170,7 +170,7 @@ public class EngineMassiveCoreDatabase extends Engine
 	public Map<SenderColl<?>, Entry<JsonObject, Long>> createRemoteEntries(String playerId)
 	{
 		// Create Ret
-		Map<SenderColl<?>, Entry<JsonObject, Long>> ret = new HashMap<SenderColl<?>, Entry<JsonObject, Long>>();
+		Map<SenderColl<?>, Entry<JsonObject, Long>> ret = new HashMap<>();
 		
 		// Fill Ret
 		for (final SenderColl<?> coll : Coll.getSenderInstances())

@@ -19,7 +19,7 @@ public class IndexUniqueField<F, O>
 	public IndexUniqueField(Map<F, O> map)
 	{
 		this.f2o = map;
-		this.o2f = new HashMap<O, F>();
+		this.o2f = new HashMap<>();
 	}
 	
 	// -------------------------------------------- //

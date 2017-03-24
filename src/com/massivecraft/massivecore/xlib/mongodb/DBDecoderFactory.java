@@ -21,6 +21,6 @@ package com.massivecraft.massivecore.xlib.mongodb;
  */
 public interface DBDecoderFactory {
 
-    public DBDecoder create( );
+    DBDecoder create();
     
 }

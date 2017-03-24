@@ -17,6 +17,7 @@
 package com.massivecraft.massivecore.xlib.mongodb;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,7 +112,7 @@ public class DBApiLayer extends DB {
         return new BasicDBObject(commandName, username)
                .append("pwd", _hash(username, passwd))
                .append("digestPassword", false)
-               .append("roles", Arrays.asList(getUserRoleName(readOnly)));
+               .append("roles", Collections.singletonList(getUserRoleName(readOnly)));
     }
 
 
@@ -143,12 +144,12 @@ public class DBApiLayer extends DB {
 
         Bytes.LOGGER.info( "going to kill cursors : " + sz );
 
-        Map<ServerAddress,List<Long>> m = new HashMap<ServerAddress,List<Long>>();
+        Map<ServerAddress,List<Long>> m = new HashMap<>();
         DeadCursor c;
         while (( c = _deadCursorIds.poll()) != null ){
             List<Long> x = m.get( c.host );
             if ( x == null ){
-                x = new LinkedList<Long>();
+                x = new LinkedList<>();
                 m.put( c.host , x );
             }
             x.add( c.id );
@@ -217,8 +218,8 @@ public class DBApiLayer extends DB {
     final String _root;
     final String _rootPlusDot;
     final DBTCPConnector _connector;
-    final ConcurrentHashMap<String,DBCollectionImpl> _collections = new ConcurrentHashMap<String,DBCollectionImpl>();
+    final ConcurrentHashMap<String,DBCollectionImpl> _collections = new ConcurrentHashMap<>();
 
-    ConcurrentLinkedQueue<DeadCursor> _deadCursorIds = new ConcurrentLinkedQueue<DeadCursor>();
+    ConcurrentLinkedQueue<DeadCursor> _deadCursorIds = new ConcurrentLinkedQueue<>();
 
 }

@@ -23,17 +23,17 @@ public class TypeNullable<T> extends TypeWrapper<T>
 	
 	public static <T> TypeNullable<T> get(Type<T> inner, Collection<String> nulls)
 	{
-		return new TypeNullable<T>(inner, nulls);
+		return new TypeNullable<>(inner, nulls);
 	}
 	
 	public static <T> TypeNullable<T> get(Type<T> inner, String... nulls)
 	{
-		return new TypeNullable<T>(inner, nulls);
+		return new TypeNullable<>(inner, nulls);
 	}
 	
 	public static <T> TypeNullable<T> get(Type<T> inner)
 	{
-		return new TypeNullable<T>(inner);
+		return new TypeNullable<>(inner);
 	}
 	
 	// -------------------------------------------- //

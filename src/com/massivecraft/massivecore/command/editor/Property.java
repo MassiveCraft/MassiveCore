@@ -62,17 +62,17 @@ public abstract class Property<O, V> implements Named
 	// NAME
 	// -------------------------------------------- //
 	
-	protected List<String> names = new MassiveList<String>();
+	protected List<String> names = new MassiveList<>();
 	public List<String> getNames() { return this.names; }
 	@Override public String getName() { return this.getNames().isEmpty() ? null : this.getNames().get(0); }
-	public void setName(String name) { this.names = new MassiveList<String>(name); }
-	public void setNames(String... names) { this.names = new MassiveList<String>(names); }
+	public void setName(String name) { this.names = new MassiveList<>(name); }
+	public void setNames(String... names) { this.names = new MassiveList<>(names); }
 	
 	// -------------------------------------------- //
 	// REQUIREMENTS
 	// -------------------------------------------- //
 	
-	protected List<Requirement> requirements = new ArrayList<Requirement>();
+	protected List<Requirement> requirements = new ArrayList<>();
 	
 	public List<Requirement> getRequirements() { return this.requirements; }
 	public void setRequirements(List<Requirement> requirements) { this.requirements = requirements; }
@@ -87,7 +87,7 @@ public abstract class Property<O, V> implements Named
 	{
 		this.objectType = objectType;
 		this.valueType = valueType;
-		this.names = new MassiveList<String>(names);
+		this.names = new MassiveList<>(names);
 	}
 	
 	public Property(Type<O> objectType, Type<V> valueType, String... names)
@@ -145,9 +145,9 @@ public abstract class Property<O, V> implements Named
 	
 	public Entry<O, V> getInheritedEntry(O object)
 	{
-		if (object == null) return new SimpleEntry<O, V>(null, null);
+		if (object == null) return new SimpleEntry<>(null, null);
 		V value = this.getValue(object);
-		return new SimpleEntry<O, V>(object, value);
+		return new SimpleEntry<>(object, value);
 	}
 	
 	public O getInheritedObject(O object)

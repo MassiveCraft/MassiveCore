@@ -146,7 +146,7 @@ public class DBCursor implements Cursor, Iterable<DBObject> {
     /**
      * Types of cursors: iterator or array.
      */
-    static enum CursorType { ITERATOR , ARRAY }
+	enum CursorType { ITERATOR , ARRAY }
 
     /**
      * Creates a copy of an existing database cursor.
@@ -813,5 +813,5 @@ public class DBCursor implements Cursor, Iterable<DBObject> {
     private DBObject _cur = null;
     private int _num = 0;
 
-    private final ArrayList<DBObject> _all = new ArrayList<DBObject>();
+    private final ArrayList<DBObject> _all = new ArrayList<>();
 }

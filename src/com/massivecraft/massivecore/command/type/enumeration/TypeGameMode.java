@@ -25,7 +25,7 @@ public class TypeGameMode extends TypeEnum<GameMode>
 	@Override
 	public Set<String> getIdsInner(GameMode value)
 	{
-		Set<String> ret = new MassiveSet<String>(super.getIdsInner(value));
+		Set<String> ret = new MassiveSet<>(super.getIdsInner(value));
 		
 		int idInt = getIntegerId(value);
 		String idString = String.valueOf(idInt);

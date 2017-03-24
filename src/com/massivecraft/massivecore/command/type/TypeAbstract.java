@@ -108,7 +108,8 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override public void setInnerTypes(Collection<Type<?>> innerTypes) { this.innerTypes = new MassiveList(innerTypes); }
-	@Override public void setInnerTypes(Type<?>... innerTypes) { this.setInnerTypes(Arrays.asList(innerTypes)); };
+	@Override public void setInnerTypes(Type<?>... innerTypes) { this.setInnerTypes(Arrays.asList(innerTypes)); }
+	
 	@Override public void setInnerType(Type<?> innerType) { this.setInnerTypes(innerType); }
 	
 	private List<Integer> userOrder = null;
@@ -521,7 +522,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	private static List<String> withoutPreAndSuffix(List<String> suggestions, String prefix)
 	{
-		LinkedHashSet<String> ret = new LinkedHashSet<String>(suggestions.size());
+		LinkedHashSet<String> ret = new LinkedHashSet<>(suggestions.size());
 		boolean includesPrefix = false; // Sometimes a suggestion is equal to the prefix.
 		for (String suggestion : suggestions)
 		{
@@ -540,7 +541,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 			ret.add(suggestion.substring(prefix.length(), lastIndex));
 		}
 		
-		return new ArrayList<String>(ret);
+		return new ArrayList<>(ret);
 	}
 	
 	// -------------------------------------------- //
@@ -602,11 +603,11 @@ public abstract class TypeAbstract<T> implements Type<T>
 		List<E> ret;
 		if (elements instanceof Collection<?>)
 		{
-			ret = new MassiveList<E>((Collection<E>)elements);
+			ret = new MassiveList<>((Collection<E>) elements);
 		}
 		else
 		{
-			ret = new MassiveList<E>();
+			ret = new MassiveList<>();
 			for (E element : elements)
 			{
 				ret.add(element);
@@ -653,11 +654,11 @@ public abstract class TypeAbstract<T> implements Type<T>
 	{
 		if (this.hasInnerProperties())
 		{
-			return new CommandEditProperties<O, T>(settings, property);
+			return new CommandEditProperties<>(settings, property);
 		}
 		else
 		{
-			return new CommandEditSimple<O, T>(settings, property);	
+			return new CommandEditSimple<>(settings, property);
 		}
 	}
 	

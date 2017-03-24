@@ -222,14 +222,14 @@ public class TypeToken<T> {
     }
 
     for (Type itype : clazz.getGenericInterfaces()) {
-      if (isAssignableFrom(itype, to, new HashMap<String, Type>(typeVarMap))) {
+      if (isAssignableFrom(itype, to, new HashMap<>(typeVarMap))) {
         return true;
       }
     }
 
     // Interfaces didn't work, try the superclass.
     Type sType = clazz.getGenericSuperclass();
-    return isAssignableFrom(sType, to, new HashMap<String, Type>(typeVarMap));
+    return isAssignableFrom(sType, to, new HashMap<>(typeVarMap));
   }
 
   /**
@@ -301,6 +301,6 @@ public class TypeToken<T> {
    * Gets type literal for the given {@code Class} instance.
    */
   public static <T> TypeToken<T> get(Class<T> type) {
-    return new TypeToken<T>(type);
+    return new TypeToken<>(type);
   }
 }

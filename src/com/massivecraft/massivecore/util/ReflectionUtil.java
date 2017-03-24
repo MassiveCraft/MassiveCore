@@ -343,7 +343,7 @@ public class ReflectionUtil
 	{
 		if (fieldNames == null)
 		{
-			fieldNames = new ArrayList<String>();
+			fieldNames = new ArrayList<>();
 			for (Field field : clazz.getDeclaredFields())
 			{
 				fieldNames.add(field.getName());
@@ -368,7 +368,7 @@ public class ReflectionUtil
 	public static List<Class<?>> getSuperclasses(Class<?> clazz, boolean includeSelf)
 	{
 		// Create
-		List<Class<?>> ret = new ArrayList<Class<?>>();
+		List<Class<?>> ret = new ArrayList<>();
 		
 		// Fill
 		if ( ! includeSelf) clazz = clazz.getSuperclass();

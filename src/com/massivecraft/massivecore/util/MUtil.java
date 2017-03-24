@@ -513,7 +513,7 @@ public class MUtil
 	
 	public static List<String> getStackTraceStrings(List<StackTraceElement> stackTrace, boolean color)
 	{
-		List<String> ret = new MassiveList<String>();
+		List<String> ret = new MassiveList<>();
 		
 		for (StackTraceElement element : stackTrace)
 		{
@@ -638,7 +638,7 @@ public class MUtil
 	
 	public static <T> List<T> repeat(T object, int times)
 	{
-		List<T> ret = new ArrayList<T>(times);
+		List<T> ret = new ArrayList<>(times);
 		for (int i = 1; i <= times; i++)
 		{
 			ret.add(object);
@@ -749,13 +749,13 @@ public class MUtil
 	
 	public static <T> List<List<T>> transpose(List<List<T>> rows)
 	{
-		List<List<T>> ret = new ArrayList<List<T>>();
+		List<List<T>> ret = new ArrayList<>();
 		
 		final int n = rows.get(0).size();
 		
 		for (int i = 0; i < n; i++)
 		{
-			List<T> col = new ArrayList<T>();
+			List<T> col = new ArrayList<>();
 			for (List<T> row : rows)
 			{
 				col.add(row.get(i));
@@ -1014,7 +1014,7 @@ public class MUtil
 	
 	public static List<Block> getBlocks(World world, int xmin, int ymin, int zmin, int xmax, int ymax, int zmax)
 	{
-		List<Block> blocks = new ArrayList<Block>();
+		List<Block> blocks = new ArrayList<>();
 		
 		for (int x = xmin; x <= xmax; x++)
 		{
@@ -1097,7 +1097,7 @@ public class MUtil
 	
 	// FOOD
 	
-	public final static Set<Material> FOOD_MATERIALS = new HashSet<Material>(MUtil.list(
+	public final static Set<Material> FOOD_MATERIALS = new HashSet<>(MUtil.list(
 		Material.APPLE,
 		Material.BREAD,
 		Material.COOKED_BEEF,
@@ -1417,7 +1417,7 @@ public class MUtil
 		if (itemStack == null) return null;
 		if (itemStack.getType() != Material.POTION) return null;
 
-		List<PotionEffect> ret = new ArrayList<PotionEffect>();
+		List<PotionEffect> ret = new ArrayList<>();
 		
 		if (isWaterPotion(itemStack)) return ret;
 		
@@ -1498,11 +1498,11 @@ public class MUtil
 		{
 			if (collection != null)
 			{
-				ret = new ArrayList<T>(collection);
+				ret = new ArrayList<>(collection);
 			}
 			else
 			{
-				ret = new ArrayList<T>();
+				ret = new ArrayList<>();
 				for (T item : items)
 				{
 					ret.add(item);
@@ -1513,11 +1513,11 @@ public class MUtil
 		{
 			if (collection != null)
 			{
-				ret = new ArrayList<T>(collection.size());
+				ret = new ArrayList<>(collection.size());
 			}
 			else
 			{
-				ret = new ArrayList<T>();
+				ret = new ArrayList<>();
 			}
 			
 			for (T item : items)
@@ -1571,7 +1571,7 @@ public class MUtil
 		// No limit?
 		if (fromIndex == 0 && toIndex == ret.size()-1) return ret;
 		
-		return new ArrayList<T>(ret.subList(fromIndex, toIndex));
+		return new ArrayList<>(ret.subList(fromIndex, toIndex));
 	}
 	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where) { return transform(items, where, null, null, null); }
 	public static <T> List<T> transform(Iterable<T> items, Predicate<? super T> where, Comparator<? super T> orderby) { return transform(items, where, orderby, null, null); }
@@ -1591,7 +1591,7 @@ public class MUtil
 	@SafeVarargs
 	public static <T> List<T> list(T... items)
 	{
-		List<T> ret = new MassiveList<T>(items.length);
+		List<T> ret = new MassiveList<>(items.length);
 		Collections.addAll(ret, items);
 		return ret;
 	}
@@ -1599,7 +1599,7 @@ public class MUtil
 	@SafeVarargs
 	public static <T> Set<T> set(T... items)
 	{
-		Set<T> ret = new MassiveSet<T>(items.length);
+		Set<T> ret = new MassiveSet<>(items.length);
 		Collections.addAll(ret, items);
 		return ret;
 	}
@@ -1612,7 +1612,7 @@ public class MUtil
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map<K, V> map(K key1, V value1, Object... objects)
 	{
-		Map<K, V> ret = new LinkedHashMap<K, V>();
+		Map<K, V> ret = new LinkedHashMap<>();
 		
 		ret.put(key1, value1);
 		
@@ -1629,7 +1629,7 @@ public class MUtil
 	
 	public static <K, V> Map<V, K> flippedMap(Map<K, V> map)
 	{
-		Map<V, K> ret = new LinkedHashMap<V, K>();
+		Map<V, K> ret = new LinkedHashMap<>();
 		
 		for(Entry<K, V> entry : map.entrySet())
 		{
@@ -1645,7 +1645,7 @@ public class MUtil
 	
 	public static <K, V> Map<V, Set<K>> reverseIndex(Map<K, V> map)
 	{
-		Map<V, Set<K>> ret = new LinkedHashMap<V, Set<K>>();
+		Map<V, Set<K>> ret = new LinkedHashMap<>();
 		
 		for (Entry<K, V> entry : map.entrySet())
 		{
@@ -1655,7 +1655,7 @@ public class MUtil
 			Set<K> set = ret.get(value);
 			if (set == null)
 			{
-				set = new HashSet<K>();
+				set = new HashSet<>();
 				ret.put(value, set);
 			}
 			set.add(key);
@@ -1710,7 +1710,7 @@ public class MUtil
 		}
 		else
 		{
-			list = new ArrayList<T>(coll);
+			list = new ArrayList<>(coll);
 		}
 		
 		int index = MassiveCore.random.nextInt(list.size());
@@ -1723,7 +1723,7 @@ public class MUtil
 		if (count < 0) count = 0;
 		
 		// Create Ret
-		List<T> ret = new ArrayList<T>(coll);
+		List<T> ret = new ArrayList<>(coll);
 		while (ret.size() > count)
 		{
 			int index = MassiveCore.random.nextInt(ret.size());
@@ -1737,7 +1737,7 @@ public class MUtil
 	public static <E> List<E> random(List<E> list, int count)
 	{
 		// Create Ret
-		List<E> ret = new MassiveList<E>();
+		List<E> ret = new MassiveList<>();
 		
 		// Empty
 		if (list.isEmpty()) return ret;
@@ -1823,10 +1823,11 @@ public class MUtil
 	
 	public static <K,V extends Comparable<? super V>> SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K,V> map, final boolean ascending)
 	{
-		SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<Map.Entry<K,V>>(
-			new Comparator<Map.Entry<K,V>>()
+		SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<>(
+			new Comparator<Map.Entry<K, V>>()
 			{
-				@Override public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2)
+				@Override
+				public int compare(Map.Entry<K, V> e1, Map.Entry<K, V> e2)
 				{
 					int res;
 					if (ascending)
@@ -1892,13 +1893,13 @@ public class MUtil
 	// EXTRACTION
 	// -------------------------------------------- //
 	
-	protected static Map<Class<?>, Map<String, Set<Extractor>>> classesPropertiesExtractors = new HashMap<Class<?>, Map<String, Set<Extractor>>>();
+	protected static Map<Class<?>, Map<String, Set<Extractor>>> classesPropertiesExtractors = new HashMap<>();
 	protected static Map<String, Set<Extractor>> getPropertiesExtractors(Class<?> propertyClass)
 	{
 		Map<String, Set<Extractor>> ret = classesPropertiesExtractors.get(propertyClass);
 		if (ret == null)
 		{
-			ret = new HashMap<String, Set<Extractor>>();
+			ret = new HashMap<>();
 			classesPropertiesExtractors.put(propertyClass, ret);
 		}
 		return ret;
@@ -1910,7 +1911,7 @@ public class MUtil
 		Set<Extractor> ret = propertiesExtractors.get(propertyName);
 		if (ret == null)
 		{
-			ret = new HashSet<Extractor>();
+			ret = new HashSet<>();
 			propertiesExtractors.put(propertyName, ret);
 		}
 		return ret;

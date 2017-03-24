@@ -62,7 +62,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public Collection<T> getAll() { return all; }
 	public void setAll(Collection<T> all)
 	{
-		if (all != null) all = Collections.unmodifiableCollection(new MassiveList<T>(all));
+		if (all != null) all = Collections.unmodifiableCollection(new MassiveList<>(all));
 		this.all = all;
 		
 		if (all == null)
@@ -242,7 +242,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 		if ( ! this.isCanSeeOverridden()) return this.getAll();
 		
 		// Create
-		Set<T> ret = new MassiveSet<T>();
+		Set<T> ret = new MassiveSet<>();
 		
 		// Fill
 		for (T value : this.getAll())
@@ -272,7 +272,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public List<T> getMatches(Map<String, T> options, String arg, boolean levenshtein)
 	{
 		// Create
-		List<T> ret = new MassiveList<T>();
+		List<T> ret = new MassiveList<>();
 		
 		// Prepare
 		arg = this.prepareOptionKey(arg);
@@ -331,7 +331,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public Map<String, T> createOptions(Iterable<T> all)
 	{
 		// Create
-		Map<String, T> ret = new MassiveMap<String, T>();
+		Map<String, T> ret = new MassiveMap<>();
 		
 		// Fill
 		for (T value : all)
@@ -351,7 +351,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public List<String> createOptionKeys(T value)
 	{
 		// Create
-		List<String> ret = new MassiveList<String>();
+		List<String> ret = new MassiveList<>();
 		
 		// Fill
 		String string;
@@ -399,7 +399,7 @@ public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements A
 	public Set<String> createTabs(CommandSender sender)
 	{
 		// Create
-		Set<String> ret = new MassiveSet<String>();
+		Set<String> ret = new MassiveSet<>();
 		
 		// Fill
 		for (T value : this.getAll(sender))

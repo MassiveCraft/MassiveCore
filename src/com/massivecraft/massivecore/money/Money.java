@@ -11,7 +11,8 @@ public class Money
 	// -------------------------------------------- //
 	
 	private static MoneyMixin mixin = null;
-	public static MoneyMixin mixin() { return mixin; };
+	public static MoneyMixin mixin() { return mixin; }
+	
 	public static void mixin(MoneyMixin mixin) { Money.mixin = mixin; }
 	
 	// -------------------------------------------- //

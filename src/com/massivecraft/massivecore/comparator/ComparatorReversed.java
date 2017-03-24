@@ -8,7 +8,7 @@ public class ComparatorReversed<T> extends ComparatorAbstractWrapper<T, T>
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <T> ComparatorReversed<T> get(Comparator<T> comparator) { return new ComparatorReversed<T>(comparator); }
+	public static <T> ComparatorReversed<T> get(Comparator<T> comparator) { return new ComparatorReversed<>(comparator); }
 	public ComparatorReversed(Comparator<T> comparator)
 	{
 		super(comparator);

@@ -73,7 +73,7 @@ public final class LinkedHashTreeMap<K, V> extends AbstractMap<K, V> implements 
     this.comparator = comparator != null
         ? comparator
         : (Comparator) NATURAL_ORDER;
-    this.header = new Node<K, V>();
+    this.header = new Node<>();
     this.table = new Node[16]; // TODO: sizing/resizing policies
     this.threshold = (table.length / 2) + (table.length / 4); // 3/4 capacity
   }
@@ -176,10 +176,10 @@ public final class LinkedHashTreeMap<K, V> extends AbstractMap<K, V> implements 
       if (comparator == NATURAL_ORDER && !(key instanceof Comparable)) {
         throw new ClassCastException(key.getClass().getName() + " is not Comparable");
       }
-      created = new Node<K, V>(nearest, key, hash, header, header.prev);
+      created = new Node<>(nearest, key, hash, header, header.prev);
       table[index] = created;
     } else {
-      created = new Node<K, V>(nearest, key, hash, header, header.prev);
+      created = new Node<>(nearest, key, hash, header, header.prev);
       if (comparison < 0) { // nearest.key is higher
         nearest.left = created;
       } else { // comparison > 0, nearest.key is lower
@@ -568,9 +568,9 @@ public final class LinkedHashTreeMap<K, V> extends AbstractMap<K, V> implements 
     int oldCapacity = oldTable.length;
     @SuppressWarnings("unchecked") // Arrays and generics don't get along.
     Node<K, V>[] newTable = new Node[oldCapacity * 2];
-    AvlIterator<K, V> iterator = new AvlIterator<K, V>();
-    AvlBuilder<K, V> leftBuilder = new AvlBuilder<K, V>();
-    AvlBuilder<K, V> rightBuilder = new AvlBuilder<K, V>();
+    AvlIterator<K, V> iterator = new AvlIterator<>();
+    AvlBuilder<K, V> leftBuilder = new AvlBuilder<>();
+    AvlBuilder<K, V> rightBuilder = new AvlBuilder<>();
 
     // Split each tree into two trees.
     for (int i = 0; i < oldCapacity; i++) {
@@ -856,6 +856,6 @@ public final class LinkedHashTreeMap<K, V> extends AbstractMap<K, V> implements 
    * shouldn't use it.
    */
   private Object writeReplace() throws ObjectStreamException {
-    return new LinkedHashMap<K, V>(this);
+    return new LinkedHashMap<>(this);
   }
 }

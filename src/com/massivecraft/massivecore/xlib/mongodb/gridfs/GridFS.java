@@ -230,7 +230,7 @@ public class GridFS {
      * @throws MongoException 
      */
     public List<GridFSDBFile> find( DBObject query , DBObject sort){
-        List<GridFSDBFile> files = new ArrayList<GridFSDBFile>();
+        List<GridFSDBFile> files = new ArrayList<>();
 
         DBCursor c = null;
         try {

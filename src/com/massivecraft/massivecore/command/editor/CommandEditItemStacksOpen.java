@@ -43,7 +43,7 @@ public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<
 	// EDITING
 	// -------------------------------------------- //
 	
-	protected Set<UUID> playerIds = new MassiveSet<UUID>();
+	protected Set<UUID> playerIds = new MassiveSet<>();
 	
 	public void setEditing(Player player, boolean editing)
 	{
@@ -141,7 +141,7 @@ public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<
 		if (inventory == null) return null;
 		
 		// Create Ret
-		List<ItemStack> ret = new MassiveList<ItemStack>();
+		List<ItemStack> ret = new MassiveList<>();
 		
 		// Fill Ret
 		for (int i = 0; i < inventory.getSize(); i++)

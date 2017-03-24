@@ -9,7 +9,7 @@ public class ComparatorEntryValue<K, V> extends ComparatorAbstractTransformer<En
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	public static <K, V> ComparatorEntryValue<K, V> get(Comparator<V> comparator) { return new ComparatorEntryValue<K, V>(comparator); }
+	public static <K, V> ComparatorEntryValue<K, V> get(Comparator<V> comparator) { return new ComparatorEntryValue<>(comparator); }
 	public ComparatorEntryValue(Comparator<V> comparator)
 	{
 		super(comparator);

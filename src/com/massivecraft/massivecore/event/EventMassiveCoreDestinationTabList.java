@@ -37,7 +37,7 @@ public class EventMassiveCoreDestinationTabList extends EventMassiveCore
 	{
 		this.arg = arg;
 		this.sender = sender;
-		this.suggestions = new MassiveList<String>();
+		this.suggestions = new MassiveList<>();
 	}
 	
 }

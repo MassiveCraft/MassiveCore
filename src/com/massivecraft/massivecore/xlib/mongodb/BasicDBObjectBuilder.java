@@ -34,7 +34,7 @@ public class BasicDBObjectBuilder {
      * creates an empty object
      */
     public BasicDBObjectBuilder(){
-        _stack = new LinkedList<DBObject>();
+        _stack = new LinkedList<>();
         _stack.add( new BasicDBObject() );
     }
 

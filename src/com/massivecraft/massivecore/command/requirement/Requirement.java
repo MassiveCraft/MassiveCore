@@ -6,10 +6,10 @@ import org.bukkit.command.CommandSender;
 
 public interface Requirement extends Predicate<CommandSender>
 {
-	public boolean apply(CommandSender sender, MassiveCommand command);
+	boolean apply(CommandSender sender, MassiveCommand command);
 	
 	// This just composes the error message and does NOT test the requirement at all.
 	
-	public String createErrorMessage(CommandSender sender);
-	public String createErrorMessage(CommandSender sender, MassiveCommand command);
+	String createErrorMessage(CommandSender sender);
+	String createErrorMessage(CommandSender sender, MassiveCommand command);
 }

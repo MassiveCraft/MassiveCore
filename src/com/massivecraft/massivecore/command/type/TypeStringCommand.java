@@ -83,7 +83,7 @@ public class TypeStringCommand extends TypeAbstract<String>
 		List<String> subcompletions = command.tabComplete(sender, alias, Arrays.copyOfRange(args, 1, args.length));
 		
 		String prefix = Txt.implode(Arrays.copyOfRange(args, 0, args.length-1), " ") + " ";
-		List<String> ret = new MassiveList<String>();
+		List<String> ret = new MassiveList<>();
 		
 		for (String subcompletion : subcompletions)
 		{

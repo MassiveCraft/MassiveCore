@@ -39,7 +39,7 @@ public class EngineMassiveCoreScheduledTeleport extends Engine
 	// SCHEDULED TELEPORT INDEX
 	// -------------------------------------------- //
 	
-	protected Map<String, ScheduledTeleport> teleporteeIdToScheduledTeleport = new ConcurrentHashMap<String, ScheduledTeleport>();
+	protected Map<String, ScheduledTeleport> teleporteeIdToScheduledTeleport = new ConcurrentHashMap<>();
 	
 	public boolean isScheduled(ScheduledTeleport st)
 	{

@@ -31,7 +31,7 @@ import java.util.Set;
  */
 public final class JsonObject extends JsonElement {
   private final LinkedTreeMap<String, JsonElement> members =
-      new LinkedTreeMap<String, JsonElement>();
+	  new LinkedTreeMap<>();
 
   @Override
   JsonObject deepCopy() {

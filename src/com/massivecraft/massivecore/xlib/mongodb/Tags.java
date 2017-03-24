@@ -44,18 +44,18 @@ class Tags implements Map<String, String> {
     }
 
     public Tags() {
-        wrapped = new HashMap<String, String>();
+        wrapped = new HashMap<>();
         frozen = false;
     }
 
     public Tags(final String key, final String value) {
-        wrapped = new HashMap<String, String>();
+        wrapped = new HashMap<>();
         wrapped.put(key, value);
         frozen = false;
     }
 
     Tags(final Map<String, String> wrapped) {
-        this.wrapped = new HashMap<String, String>(wrapped);
+        this.wrapped = new HashMap<>(wrapped);
         frozen = true;
     }
 

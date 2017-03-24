@@ -25,7 +25,7 @@ public class TypeEnvironment extends TypeEnum<Environment>
 	@Override
 	public Set<String> getNamesInner(Environment value)
 	{
-		Set<String> ret = new MassiveSet<String>(super.getNamesInner(value));
+		Set<String> ret = new MassiveSet<>(super.getNamesInner(value));
 		
 		if (value == Environment.NORMAL)
 		{

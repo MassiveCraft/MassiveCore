@@ -35,7 +35,7 @@ abstract class BaseCluster implements Cluster {
 
     private static final Logger LOGGER = Loggers.getLogger("cluster");
 
-    private final AtomicReference<CountDownLatch> phase = new AtomicReference<CountDownLatch>(new CountDownLatch(1));
+    private final AtomicReference<CountDownLatch> phase = new AtomicReference<>(new CountDownLatch(1));
     private final ClusterableServerFactory serverFactory;
     private final ThreadLocal<Random> random = new ThreadLocal<Random>() {
         @Override
@@ -78,7 +78,7 @@ abstract class BaseCluster implements Cluster {
                 throwIfIncompatible(curDescription);
 
                 if (!serverDescriptions.isEmpty()) {
-                    ClusterableServer server = getRandomServer(new ArrayList<ServerDescription>(serverDescriptions));
+                    ClusterableServer server = getRandomServer(new ArrayList<>(serverDescriptions));
                     if (server != null) {
                         return new WrappedServer(server);
                     }

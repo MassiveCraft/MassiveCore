@@ -13,7 +13,7 @@ public class TypeSet<E> extends TypeContainer<Set<E>, E>
 
 	public static <E> TypeSet<E> get(Type<E> innerType)
 	{
-		return new TypeSet<E>(innerType);
+		return new TypeSet<>(innerType);
 	}
 	
 	public TypeSet(Type<E> innerType)
@@ -28,7 +28,7 @@ public class TypeSet<E> extends TypeContainer<Set<E>, E>
 	@Override
 	public Set<E> createNewInstance()
 	{
-		return new MassiveSet<E>();
+		return new MassiveSet<>();
 	}
 
 }

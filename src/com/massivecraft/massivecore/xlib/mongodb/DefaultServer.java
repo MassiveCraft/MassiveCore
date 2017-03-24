@@ -30,7 +30,7 @@ class DefaultServer implements ClusterableServer {
     private final ServerMonitor serverMonitor;
     private final PooledConnectionProvider connectionProvider;
     private final Map<ChangeListener<ServerDescription>, Boolean> changeListeners =
-    new ConcurrentHashMap<ChangeListener<ServerDescription>, Boolean>();
+		new ConcurrentHashMap<>();
     private final ChangeListener<ServerDescription> serverStateListener;
     private volatile ServerDescription description;
     private volatile boolean isClosed;
@@ -73,9 +73,7 @@ class DefaultServer implements ClusterableServer {
     public void invalidate() {
         isTrue("open", !isClosed());
 
-        serverStateListener.stateChanged(new ChangeEvent<ServerDescription>(description, ServerDescription.builder()
-                                                                                                          .state(Connecting)
-                                                                                                          .address(serverAddress).build()));
+        serverStateListener.stateChanged(new ChangeEvent<>(description, ServerDescription.builder().state(Connecting).address(serverAddress).build()));
         connectionProvider.invalidate();
     }
 

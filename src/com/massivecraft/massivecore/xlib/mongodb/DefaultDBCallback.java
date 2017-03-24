@@ -145,7 +145,7 @@ public class DefaultDBCallback extends BasicBSONCallback implements DBCallback {
 
     @Override
     public void reset(){
-        _nameStack = new LinkedList<String>();
+        _nameStack = new LinkedList<>();
         super.reset();
     }
 

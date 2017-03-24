@@ -44,7 +44,7 @@ import java.util.Set;
  * @see MongoClient
  */
 public abstract class DB {
-    private static final Set<String> _obedientCommands = new HashSet<String>();
+    private static final Set<String> _obedientCommands = new HashSet<>();
 
     static {
         _obedientCommands.add("group");
@@ -511,9 +511,9 @@ public abstract class DB {
 
         Iterator<DBObject> i = namespaces.find(new BasicDBObject(), null, 0, 0, 0, getOptions(), getReadPreference(), null);
         if (i == null)
-            return new HashSet<String>();
+            return new HashSet<>();
 
-        List<String> tables = new ArrayList<String>();
+        List<String> tables = new ArrayList<>();
 
         for (; i.hasNext();) {
             DBObject o = i.next();
@@ -537,7 +537,7 @@ public abstract class DB {
 
         Collections.sort(tables);
 
-        return new LinkedHashSet<String>(tables);
+        return new LinkedHashSet<>(tables);
     }
 
     /**

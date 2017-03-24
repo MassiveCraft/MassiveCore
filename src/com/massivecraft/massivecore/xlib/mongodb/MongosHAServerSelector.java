@@ -24,7 +24,7 @@ import java.util.Set;
 
 class MongosHAServerSelector implements ServerSelector {
     private ServerAddress stickTo;
-    private Set<ServerAddress> consideredServers = new HashSet<ServerAddress>();
+    private Set<ServerAddress> consideredServers = new HashSet<>();
 
     @Override
     public List<ServerDescription> choose(final ClusterDescription clusterDescription) {
@@ -55,7 +55,7 @@ class MongosHAServerSelector implements ServerSelector {
             if (stickTo == null) {
                 return Collections.emptyList();
             } else {
-                return Arrays.asList(clusterDescription.getByServerAddress(stickTo));
+                return Collections.singletonList(clusterDescription.getByServerAddress(stickTo));
             }
         }
     }
@@ -68,7 +68,7 @@ class MongosHAServerSelector implements ServerSelector {
     }
 
     private Set<ServerAddress> getOkServers(final ClusterDescription clusterDescription) {
-        Set<ServerAddress> okServers = new HashSet<ServerAddress>();
+        Set<ServerAddress> okServers = new HashSet<>();
         for (ServerDescription cur : clusterDescription.getAny()) {
             okServers.add(cur.getAddress());
         }

@@ -26,7 +26,7 @@ public class AdapterLowercaseEnum<T extends Enum<T>> implements JsonDeserializer
 	
 	public static <T extends Enum<T>> AdapterLowercaseEnum<T> get(Class<T> clazz)
 	{
-		return new AdapterLowercaseEnum<T>(clazz);
+		return new AdapterLowercaseEnum<>(clazz);
 	}
 	
 	// -------------------------------------------- //

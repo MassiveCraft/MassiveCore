@@ -29,7 +29,7 @@ public class TypeItemStacks extends TypeList<ItemStack>
 	@Override
 	public <O> CommandEditAbstract<O, List<ItemStack>> createEditCommand(EditSettings<O> settings, Property<O, List<ItemStack>> property)
 	{
-		return new CommandEditItemStacks<O>(settings, property);
+		return new CommandEditItemStacks<>(settings, property);
 	}
 	
 }

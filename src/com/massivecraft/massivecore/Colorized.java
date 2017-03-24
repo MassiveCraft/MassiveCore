@@ -4,5 +4,5 @@ import org.bukkit.ChatColor;
 
 public interface Colorized
 {
-	public ChatColor getColor();
+	ChatColor getColor();
 }

@@ -312,7 +312,7 @@ public class Mson implements Serializable
 	
 	public Mson add(Iterable<?> parts)
 	{
-		List<Mson> extra = new MassiveList<Mson>(this.getExtra());
+		List<Mson> extra = new MassiveList<>(this.getExtra());
 		List<Mson> msons = msons(parts);
 		extra.addAll(msons);
 		return this.extra(extra);
@@ -996,7 +996,7 @@ public class Mson implements Serializable
 		
 		Mson ret = this.text("");
 		
-		List<Mson> msons = new ArrayList<Mson>();
+		List<Mson> msons = new ArrayList<>();
 		StringBuffer currentString = new StringBuffer();
 		Matcher matcher = pattern.matcher(this.getText());
 		while (matcher.find())
@@ -1102,17 +1102,17 @@ public class Mson implements Serializable
 	{
 		return implode(list, glue, null);
 	}
-	public static Mson implode(final Collection<? extends Object> coll, final Mson glue, final Mson format)
+	public static Mson implode(final Collection<?> coll, final Mson glue, final Mson format)
 	{
 		return implode(coll.toArray(new Object[0]), glue, format);
 	}
-	public static Mson implode(final Collection<? extends Object> coll, final Mson glue)
+	public static Mson implode(final Collection<?> coll, final Mson glue)
 	{
 		return implode(coll, glue, null);
 	}
 	
 	// Implode comma and dot
-	public static Mson implodeCommaAndDot(Collection<? extends Object> objects, Mson format, Mson comma, Mson and, Mson dot)
+	public static Mson implodeCommaAndDot(Collection<?> objects, Mson format, Mson comma, Mson and, Mson dot)
 	{
 		if (objects.size() == 0) return mson();
 		if (objects.size() == 1)
@@ -1135,27 +1135,27 @@ public class Mson implements Serializable
 		return implode(ourObjects, comma, format).add(mson(dot));
 	}
 	
-	public static Mson implodeCommaAndDot(final Collection<? extends Object> objects, Mson comma, Mson and, Mson dot)
+	public static Mson implodeCommaAndDot(final Collection<?> objects, Mson comma, Mson and, Mson dot)
 	{
 		return implodeCommaAndDot(objects, null, comma, and, dot);
 	}
-	public static Mson implodeCommaAnd(final Collection<? extends Object> objects, Mson comma, Mson and)
+	public static Mson implodeCommaAnd(final Collection<?> objects, Mson comma, Mson and)
 	{
 		return implodeCommaAndDot(objects, comma, and, mson());
 	}
-	public static Mson implodeCommaAndDot(final Collection<? extends Object> objects, ChatColor color)
+	public static Mson implodeCommaAndDot(final Collection<?> objects, ChatColor color)
 	{
 		return implodeCommaAndDot(objects, mson(", ").color(color), mson(" and ").color(color), mson(".").color(color));
 	}
-	public static Mson implodeCommaAnd(final Collection<? extends Object> objects, ChatColor color)
+	public static Mson implodeCommaAnd(final Collection<?> objects, ChatColor color)
 	{
 		return implodeCommaAndDot(objects, mson(", ").color(color), mson(" and ").color(color), mson());
 	}
-	public static Mson implodeCommaAndDot(final Collection<? extends Object> objects)
+	public static Mson implodeCommaAndDot(final Collection<?> objects)
 	{
 		return implodeCommaAndDot(objects, null);
 	}
-	public static Mson implodeCommaAnd(final Collection<? extends Object> objects)
+	public static Mson implodeCommaAnd(final Collection<?> objects)
 	{
 		return implodeCommaAnd(objects, null);
 	}
