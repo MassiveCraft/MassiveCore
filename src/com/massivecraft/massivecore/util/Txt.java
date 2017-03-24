@@ -70,7 +70,7 @@ public class Txt
 	
 	static
 	{
-		// Create the parce replacements map
+		// Create the parse replacements map
 		parseReplacements = new HashMap<String, String>();
 		
 		// Color by name
