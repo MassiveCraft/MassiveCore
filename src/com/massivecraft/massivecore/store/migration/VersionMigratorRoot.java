@@ -91,13 +91,9 @@ public class VersionMigratorRoot implements VersionMigrator, Active
 	public int getVersion()
 	{
 		String name = this.getClass().getSimpleName();
-		if (!name.startsWith("V")) throw new UnsupportedOperationException(String.format("Name of %s doesn't start with \"V\".", name));
-		if (!Character.isDigit(name.charAt(1))) throw new IllegalStateException(String.format("Second character of %s isn't a digit", name));
-
 		Matcher matcher = Txt.PATTERN_NUMBER.matcher(name);
 		if (!matcher.find()) throw new UnsupportedOperationException(String.format("%s doesn't have a version number.", name));
 		String number = matcher.group();
-
 		return Integer.parseInt(number);
 	}
 
@@ -110,12 +106,12 @@ public class VersionMigratorRoot implements VersionMigrator, Active
 	{
 		if (entity == null) throw new NullPointerException("entity");
 
-		// Get entity version and the expected entity version ...
-		int entityVersion = VersionMigrationUtil.getVersion(entity);
-		int expectedEntityVersion = this.getVersion() - 1;
+		// Get current and expected entity version ...
+		int entityVersionCurrent = VersionMigrationUtil.getVersion(entity);
+		int entityVersionExpected = this.getVersion() - 1;
 
 		// ... make sure they match ...
-		if (entityVersion != expectedEntityVersion) throw new IllegalArgumentException(String.format("Entiy version: %d Expected: %d", entityVersion, expectedEntityVersion));
+		if (entityVersionCurrent != entityVersionExpected) throw new IllegalArgumentException(String.format("Entiy version: %d Expected: %d", entityVersionCurrent, entityVersionExpected));
 
 		// ... do the migration.
 		this.migrateInner(entity);
