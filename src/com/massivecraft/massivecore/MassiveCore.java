@@ -148,10 +148,7 @@ public class MassiveCore extends MassivePlugin
 	
 	private static MassiveCore i;
 	public static MassiveCore get() { return i; }
-	public MassiveCore()
-	{
-		i = this;
-	}
+	public MassiveCore() { i = this; }
 	
 	// -------------------------------------------- //
 	// STATIC

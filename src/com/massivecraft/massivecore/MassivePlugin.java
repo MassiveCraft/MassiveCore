@@ -32,7 +32,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	public Gson getGson() { return this.gson; }
 	public void setGson(Gson gson) { this.gson = gson; }
 	
-	protected boolean versionSynchronized = false;
+	protected boolean versionSynchronized = true;
 	public boolean isVersionSynchronized() { return this.versionSynchronized; }
 	public void setVersionSynchronized(boolean versionSynchronized) { this.versionSynchronized = versionSynchronized; }
 	
@@ -102,6 +102,9 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	{
 		// If this plugin is version synchronized ...
 		if ( ! this.isVersionSynchronized()) return;
+		
+		// ... and it's not MassiveCore itself ...
+		if (this.getClass().equals(MassiveCore.class)) return;
 		
 		// ... and checking is enabled ...
 		if ( ! MassiveCoreMConf.get().versionSynchronizationEnabled) return;
