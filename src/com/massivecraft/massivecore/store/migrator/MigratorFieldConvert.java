@@ -1,11 +1,11 @@
-package com.massivecraft.massivecore.store.migration;
+package com.massivecraft.massivecore.store.migrator;
 
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 
-public abstract class VersionMigratorField implements VersionMigrator
+public abstract class MigratorFieldConvert implements Migrator
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -18,7 +18,7 @@ public abstract class VersionMigratorField implements VersionMigrator
 	// CONSTRUCT
 	// -------------------------------------------- //
 
-	public VersionMigratorField(String fieldName)
+	public MigratorFieldConvert(String fieldName)
 	{
 		if (fieldName == null) throw new NullPointerException("fieldName");
 		this.fieldName = fieldName;

@@ -1,9 +1,9 @@
-package com.massivecraft.massivecore.store.migration;
+package com.massivecraft.massivecore.store.migrator;
 
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-public class VersionMigratorRename implements VersionMigrator
+public class MigratorFieldRename implements Migrator
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -19,8 +19,8 @@ public class VersionMigratorRename implements VersionMigrator
 	// CONSTRUCT
 	// -------------------------------------------- //
 
-	public static VersionMigratorRename get(String from, String to) { return new VersionMigratorRename(from, to); }
-	public VersionMigratorRename(String from, String to)
+	public static MigratorFieldRename get(String from, String to) { return new MigratorFieldRename(from, to); }
+	public MigratorFieldRename(String from, String to)
 	{
 		if (from == null) throw new NullPointerException("from");
 		if (to == null) throw new NullPointerException("to");

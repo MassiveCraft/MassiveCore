@@ -9,7 +9,7 @@ import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.mixin.MixinModification;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateEqualsIgnoreCase;
-import com.massivecraft.massivecore.store.migration.VersionMigrationUtil;
+import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -514,7 +514,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		JsonObject raw = remoteEntry.getKey();
 		Long mtime = remoteEntry.getValue();
 
-		int version = VersionMigrationUtil.getVersion(raw);
+		int version = MigratorUtil.getVersion(raw);
 		if (version > this.getEntityTargetVersion())
 		{
 			logLoadError(id, String.format("Cannot load entity of entity version %d", version));
@@ -522,7 +522,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		}
 
 		// Migrate if another version is wanted
-		boolean migrated = VersionMigrationUtil.migrate(this.getEntityClass(), raw, this.getEntityTargetVersion());
+		boolean migrated = MigratorUtil.migrate(this.getEntityClass(), raw, this.getEntityTargetVersion());
 
 		// Calculate temp but handle raw cases.
 		E temp;
@@ -1003,7 +1003,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		int version = 0;
 		try
 		{
-			version = ReflectionUtil.getField(this.getEntityClass(), VersionMigrationUtil.VERSION_FIELD_NAME, this.createNewInstance());
+			version = ReflectionUtil.getField(this.getEntityClass(), MigratorUtil.VERSION_FIELD_NAME, this.createNewInstance());
 		}
 		catch (Exception ex)
 		{
@@ -1094,7 +1094,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		// TODO: Clean up this stuff below. It branches too late.
 		if (active)
 		{
-			VersionMigrationUtil.validateMigratorsPresent(entityClass, 0, this.getEntityTargetVersion());
+			MigratorUtil.validateMigratorsPresent(entityClass, 0, this.getEntityTargetVersion());
 
 			if (this.supportsPusher())
 			{

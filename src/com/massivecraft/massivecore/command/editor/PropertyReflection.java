@@ -12,7 +12,7 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeWrapper;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils;
-import com.massivecraft.massivecore.store.migration.VersionMigrationUtil;
+import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.ChatColor;
@@ -232,7 +232,7 @@ public class PropertyReflection<O, V> extends Property<O, V>
 		if (Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers) || Modifier.isFinal(modifiers)) ret = false;
 		
 		// Fill > Version
-		if (field.getName().equals(VersionMigrationUtil.VERSION_FIELD_NAME)) ret = false;
+		if (field.getName().equals(MigratorUtil.VERSION_FIELD_NAME)) ret = false;
 		
 		// Fill > Annotation
 		ret = getAnnotationValue(field, EditorEditable.class, ret);

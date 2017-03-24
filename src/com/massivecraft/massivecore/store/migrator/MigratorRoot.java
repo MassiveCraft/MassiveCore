@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore.store.migration;
+package com.massivecraft.massivecore.store.migrator;
 
 import com.massivecraft.massivecore.Active;
 import com.massivecraft.massivecore.MassivePlugin;
@@ -10,16 +10,16 @@ import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import java.util.List;
 import java.util.regex.Matcher;
 
-public class VersionMigratorRoot implements VersionMigrator, Active
+public class MigratorRoot implements Migrator, Active
 {
 	// -------------------------------------------- //
 	// FIELDS
 	// -------------------------------------------- //
 
-	private List<VersionMigrator> innerMigrators = new MassiveList<>();
-	public List<VersionMigrator> getInnerMigrators()  { return innerMigrators; }
-	public void setInnerMigrators(List<VersionMigrator> innerMigrators) { this.innerMigrators = new MassiveList<>(innerMigrators); }
-	public void addInnerMigrator(VersionMigrator innerMigrator)
+	private List<Migrator> innerMigrators = new MassiveList<>();
+	public List<Migrator> getInnerMigrators()  { return innerMigrators; }
+	public void setInnerMigrators(List<Migrator> innerMigrators) { this.innerMigrators = new MassiveList<>(innerMigrators); }
+	public void addInnerMigrator(Migrator innerMigrator)
 	{
 		this.innerMigrators.add(innerMigrator);
 	}
@@ -31,7 +31,7 @@ public class VersionMigratorRoot implements VersionMigrator, Active
 	// CONSTRUCT
 	// -------------------------------------------- //
 
-	public VersionMigratorRoot(Class<? extends Entity<?>> entityClass)
+	public MigratorRoot(Class<? extends Entity<?>> entityClass)
 	{
 		this.entityClass = entityClass;
 	}
@@ -44,7 +44,7 @@ public class VersionMigratorRoot implements VersionMigrator, Active
 	@Override
 	public boolean isActive()
 	{
-		return VersionMigrationUtil.isActive(this);
+		return MigratorUtil.isActive(this);
 	}
 
 	@Override
@@ -52,11 +52,11 @@ public class VersionMigratorRoot implements VersionMigrator, Active
 	{
 		if (active)
 		{
-			VersionMigrationUtil.addMigrator(this);
+			MigratorUtil.addMigrator(this);
 		}
 		else
 		{
-			VersionMigrationUtil.removeMigrator(this);
+			MigratorUtil.removeMigrator(this);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class VersionMigratorRoot implements VersionMigrator, Active
 		if (entity == null) throw new NullPointerException("entity");
 
 		// Get current and expected entity version ...
-		int entityVersionCurrent = VersionMigrationUtil.getVersion(entity);
+		int entityVersionCurrent = MigratorUtil.getVersion(entity);
 		int entityVersionExpected = this.getVersion() - 1;
 
 		// ... make sure they match ...
@@ -120,13 +120,13 @@ public class VersionMigratorRoot implements VersionMigrator, Active
 
 	private void migrateVersion(JsonObject entity)
 	{
-		entity.addProperty(VersionMigrationUtil.VERSION_FIELD_NAME, this.getVersion());
+		entity.addProperty(MigratorUtil.VERSION_FIELD_NAME, this.getVersion());
 	}
 
 	public void migrateInner(JsonObject entity)
 	{
 		// Look over all inner migrators.
-		for (VersionMigrator migrator : this.getInnerMigrators())
+		for (Migrator migrator : this.getInnerMigrators())
 		{
 			migrator.migrate(entity);
 		}

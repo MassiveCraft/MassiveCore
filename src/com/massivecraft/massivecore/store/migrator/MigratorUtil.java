@@ -1,4 +1,4 @@
-package com.massivecraft.massivecore.store.migration;
+package com.massivecraft.massivecore.store.migrator;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VersionMigrationUtil
+public class MigratorUtil
 {
 	// -------------------------------------------- //
 	// CONSTANTS
@@ -24,37 +24,37 @@ public class VersionMigrationUtil
 	// REGISTRY
 	// -------------------------------------------- //
 
-	private static Map<Class<? extends Entity<?>>, Map<Integer, VersionMigratorRoot>> migrators = new HashMap<>();
+	private static Map<Class<? extends Entity<?>>, Map<Integer, MigratorRoot>> migrators = new HashMap<>();
 
-	public static boolean isActive(VersionMigratorRoot migrator)
+	public static boolean isActive(MigratorRoot migrator)
 	{
 		return getMigratorMap(migrator).get(migrator.getVersion()) == migrator;
 	}
 
 	// ADD
-	public static void addMigrator(VersionMigratorRoot migrator)
+	public static void addMigrator(MigratorRoot migrator)
 	{
-		VersionMigratorRoot old = getMigratorMap(migrator).put(migrator.getVersion(), migrator);
+		MigratorRoot old = getMigratorMap(migrator).put(migrator.getVersion(), migrator);
 
 		// If there was an old one and it wasn't this one already: deactivate.
 		if (old != null && old != migrator) old.setActive(false);
 	}
 
 	// REMOVE
-	public static void removeMigrator(VersionMigratorRoot migrator)
+	public static void removeMigrator(MigratorRoot migrator)
 	{
-		VersionMigratorRoot current = getMigratorMap(migrator).get(migrator.getVersion());
+		MigratorRoot current = getMigratorMap(migrator).get(migrator.getVersion());
 
 		// If there wasn't a new one already: remove
 		if (current == migrator) getMigratorMap(migrator).remove(migrator.getVersion());
 	}
 
 	// GET
-	public static VersionMigratorRoot getMigrator(Class<? extends Entity<?>> entityClass, int version)
+	public static MigratorRoot getMigrator(Class<? extends Entity<?>> entityClass, int version)
 	{
-		Map<Integer, VersionMigratorRoot> migratorMap = getMigratorMap(entityClass);
+		Map<Integer, MigratorRoot> migratorMap = getMigratorMap(entityClass);
 
-		VersionMigratorRoot migrator = migratorMap.get(version);
+		MigratorRoot migrator = migratorMap.get(version);
 		if (migrator == null)
 		{
 			throw new RuntimeException(String.format("No VersionMigrator found for %s version %d", entityClass.getName(), version));
@@ -64,14 +64,14 @@ public class VersionMigrationUtil
 	}
 
 	// GET MAP
-	private static Map<Integer, VersionMigratorRoot> getMigratorMap(VersionMigratorRoot migrator)
+	private static Map<Integer, MigratorRoot> getMigratorMap(MigratorRoot migrator)
 	{
 		return getMigratorMap(migrator.getEntityClass());
 	}
 
-	private static Map<Integer, VersionMigratorRoot> getMigratorMap(Class<? extends Entity<?>> entityClass)
+	private static Map<Integer, MigratorRoot> getMigratorMap(Class<? extends Entity<?>> entityClass)
 	{
-		Map<Integer, VersionMigratorRoot> ret = migrators.get(entityClass);
+		Map<Integer, MigratorRoot> ret = migrators.get(entityClass);
 		if (ret == null)
 		{
 			ret = new MassiveMap<>();
@@ -100,7 +100,7 @@ public class VersionMigrationUtil
 			// When downgrading we need the migrator we are downgrading from.
 			// This is done to preserve the same logic within the same class.
 			// That is why when updating we don't use entityVersion and when downgrading we do.
-			VersionMigrator migrator = getMigrator(entityClass, entityVersion+1);
+			Migrator migrator = getMigrator(entityClass, entityVersion+1);
 			migrator.migrate(entity);
 		}
 
@@ -113,7 +113,7 @@ public class VersionMigrationUtil
 
 	public static void validateMigratorsPresent(Class<? extends Entity<?>> entityClass, int from, int to)
 	{
-		List<Integer> missingMigrators = VersionMigrationUtil.getMissingMigratorVersions(entityClass, from, to);
+		List<Integer> missingMigrators = MigratorUtil.getMissingMigratorVersions(entityClass, from, to);
 		if (missingMigrators.isEmpty()) return;
 
 		String versions = Txt.implodeCommaAndDot(missingMigrators);
@@ -125,7 +125,7 @@ public class VersionMigrationUtil
 	{
 		if (from == to) return Collections.emptyList();
 		if (from > to) throw new IllegalArgumentException(String.format("from: %d to: %d", from, to));
-		Map<Integer, VersionMigratorRoot> migrators = getMigratorMap(entityClass);
+		Map<Integer, MigratorRoot> migrators = getMigratorMap(entityClass);
 
 		// We need not the from but we need the to.
 		from++;
