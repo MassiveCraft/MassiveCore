@@ -1,8 +1,6 @@
 package com.massivecraft.massivecore.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import com.massivecraft.massivecore.Engine;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +14,10 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import com.massivecraft.massivecore.Engine;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class PlayerUtil extends Engine
 {

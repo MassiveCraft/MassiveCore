@@ -1,15 +1,15 @@
 package com.massivecraft.massivecore.mson;
 
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.util.Txt;
+
+import java.util.List;
+
 import static com.massivecraft.massivecore.mson.Mson.mson;
 import static org.bukkit.ChatColor.BLUE;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
 import static org.bukkit.ChatColor.YELLOW;
-
-import java.util.List;
-
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.util.Txt;
 
 public class Test
 {

@@ -1,13 +1,12 @@
 package com.massivecraft.massivecore.mixin;
 
-import java.util.UUID;
-
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.UUID;
 
 public class MixinPlayed extends Mixin
 {

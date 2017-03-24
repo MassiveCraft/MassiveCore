@@ -1,14 +1,13 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.collections.MassiveTreeSet;
+import com.massivecraft.massivecore.mixin.Mixin;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.collections.MassiveTreeSet;
-import com.massivecraft.massivecore.mixin.Mixin;
+import java.util.Set;
 
 public class NmsBoard extends Mixin
 {

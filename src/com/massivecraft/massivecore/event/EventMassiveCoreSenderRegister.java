@@ -1,9 +1,8 @@
 package com.massivecraft.massivecore.event;
 
+import com.massivecraft.massivecore.util.IdData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
-
-import com.massivecraft.massivecore.util.IdData;
 
 public class EventMassiveCoreSenderRegister extends EventMassiveCoreSenderRegistry
 {	

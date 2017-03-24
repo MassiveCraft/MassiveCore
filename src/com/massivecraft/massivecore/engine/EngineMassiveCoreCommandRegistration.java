@@ -1,21 +1,20 @@
 package com.massivecraft.massivecore.engine;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.MassiveCoreBukkitCommand;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.MassiveCoreBukkitCommand;
-import com.massivecraft.massivecore.util.ReflectionUtil;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class EngineMassiveCoreCommandRegistration extends Engine
 {

@@ -1,8 +1,13 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
+import com.massivecraft.massivecore.mixin.MixinActual;
+import com.massivecraft.massivecore.mixin.MixinMessage;
+import com.massivecraft.massivecore.teleport.ScheduledTeleport;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.TimeUnit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -13,14 +18,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
-import com.massivecraft.massivecore.mixin.MixinActual;
-import com.massivecraft.massivecore.mixin.MixinMessage;
-import com.massivecraft.massivecore.teleport.ScheduledTeleport;
-import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.TimeUnit;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EngineMassiveCoreScheduledTeleport extends Engine
 {

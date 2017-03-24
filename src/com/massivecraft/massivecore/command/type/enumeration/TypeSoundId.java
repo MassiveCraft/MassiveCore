@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
-import org.bukkit.Sound;
-
 import com.massivecraft.massivecore.command.type.TypeId;
+import org.bukkit.Sound;
 
 public class TypeSoundId extends TypeId<Sound>
 {

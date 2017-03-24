@@ -1,9 +1,13 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
+import com.massivecraft.massivecore.mixin.MixinInventory;
+import com.massivecraft.massivecore.util.InventoryUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,14 +17,9 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
-import com.massivecraft.massivecore.mixin.MixinInventory;
-import com.massivecraft.massivecore.util.InventoryUtil;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class CommandEditItemStacksOpen<O> extends CommandEditItemStacksAbstract<O> implements Listener
 {	

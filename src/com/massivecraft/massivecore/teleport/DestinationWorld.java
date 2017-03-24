@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.teleport;
 
+import com.massivecraft.massivecore.mixin.MixinWorld;
+import com.massivecraft.massivecore.ps.PS;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.massivecraft.massivecore.mixin.MixinWorld;
-import com.massivecraft.massivecore.ps.PS;
 
 public class DestinationWorld extends DestinationAbstract
 {

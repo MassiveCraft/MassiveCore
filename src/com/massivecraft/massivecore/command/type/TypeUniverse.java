@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.Multiverse;
+
+import java.util.Collection;
 
 public class TypeUniverse extends TypeAbstractChoice<String>
 {

@@ -1,15 +1,15 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassiveCore;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.MassiveCore;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EngineMassiveCoreTeleportMixinCause extends Engine
 {

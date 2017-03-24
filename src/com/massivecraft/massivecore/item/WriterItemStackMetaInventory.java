@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.Map;
-
+import com.massivecraft.massivecore.util.InventoryUtil;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.Inventory;
@@ -9,7 +8,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 
-import com.massivecraft.massivecore.util.InventoryUtil;
+import java.util.Map;
 
 // NOTE: We take ItemStack[] (inventory contents) instead of Inventories to accommodate the different sizes of inventories better.
 // It is not possible to create an inventory with less then 9 slots, but hoppers or brewing stands only have 5.

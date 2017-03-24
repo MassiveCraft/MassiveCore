@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.requirement;
 
-import org.bukkit.command.CommandSender;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
 
 public class RequirementEditorUse extends RequirementAbstract
 {

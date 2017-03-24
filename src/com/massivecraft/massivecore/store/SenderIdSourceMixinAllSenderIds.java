@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.store;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.util.IdUtil;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class SenderIdSourceMixinAllSenderIds implements SenderIdSource
 {

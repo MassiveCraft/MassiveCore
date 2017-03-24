@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.util;
 
+import org.bukkit.Bukkit;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.Bukkit;
 
 public class PeriodUtil
 {

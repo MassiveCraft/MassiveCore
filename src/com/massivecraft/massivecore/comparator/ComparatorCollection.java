@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.comparator;
 
+import com.massivecraft.massivecore.collections.MassiveList;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import com.massivecraft.massivecore.collections.MassiveList;
 
 public class ComparatorCollection extends ComparatorAbstract<Object>
 {

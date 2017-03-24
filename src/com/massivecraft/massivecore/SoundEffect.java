@@ -1,19 +1,18 @@
 package com.massivecraft.massivecore;
 
-import java.io.Serializable;
-import java.util.Collection;
-
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorNullable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSoundId;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 public final class SoundEffect implements Serializable
 {

@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.chestgui;
 
-import java.security.InvalidParameterException;
-
+import com.massivecraft.massivecore.mixin.MixinCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import com.massivecraft.massivecore.mixin.MixinCommand;
+import java.security.InvalidParameterException;
 
 public class ChestActionCommand extends ChestActionAbstract
 {

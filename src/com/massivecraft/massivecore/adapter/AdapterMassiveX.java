@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore.adapter;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-
 import com.massivecraft.massivecore.collections.Def;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
@@ -15,6 +9,12 @@ import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Types;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * This is the abstract adapter for all "Massive structures".

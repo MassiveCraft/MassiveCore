@@ -1,8 +1,9 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
+
+import java.util.Collection;
 
 public class TypePermission extends TypeAbstractChoice<Permission>
 {

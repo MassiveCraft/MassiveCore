@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.type.container;
 
-import java.util.Set;
-
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.type.Type;
+
+import java.util.Set;
 
 public class TypeSet<E> extends TypeContainer<Set<E>, E>
 {

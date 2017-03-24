@@ -1,16 +1,5 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.collections.MassiveMap;
@@ -31,6 +20,16 @@ import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * This class makes use of primitives, collections and maps only.

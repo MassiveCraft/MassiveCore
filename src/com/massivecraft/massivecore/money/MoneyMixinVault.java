@@ -1,13 +1,11 @@
 package com.massivecraft.massivecore.money;
 
-import java.util.Collection;
-
+import com.massivecraft.massivecore.util.MUtil;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import com.massivecraft.massivecore.util.MUtil;
-
-import net.milkbowl.vault.economy.Economy;
+import java.util.Collection;
 
 @SuppressWarnings("deprecation")
 public class MoneyMixinVault extends MoneyMixinAbstract

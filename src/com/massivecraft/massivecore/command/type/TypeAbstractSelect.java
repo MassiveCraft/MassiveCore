@@ -1,16 +1,15 @@
 package com.massivecraft.massivecore.command.type;
 
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.command.type.container.AllAble;
+import com.massivecraft.massivecore.util.Txt;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.command.CommandSender;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.container.AllAble;
-import com.massivecraft.massivecore.util.Txt;
 
 public abstract class TypeAbstractSelect<T> extends TypeAbstract<T> implements AllAble<T>
 {

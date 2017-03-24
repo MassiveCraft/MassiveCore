@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.MassiveSet;
 import org.bukkit.ChatColor;
 import org.bukkit.WeatherType;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.collections.MassiveSet;
+import java.util.Set;
 
 public class TypeWeatherType extends TypeEnum<WeatherType>
 {

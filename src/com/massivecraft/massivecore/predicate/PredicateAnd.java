@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.predicate;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.Collection;
 import java.util.List;
-
-import com.google.common.collect.ImmutableList;
 
 public class PredicateAnd<T> implements Predicate<T>
 {

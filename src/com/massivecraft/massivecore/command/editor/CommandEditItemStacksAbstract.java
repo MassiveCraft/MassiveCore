@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
-
+import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
+import java.util.List;
 
 public abstract class CommandEditItemStacksAbstract<O> extends CommandEditAbstract<O, List<ItemStack>>
 {

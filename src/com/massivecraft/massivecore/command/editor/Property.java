@@ -1,16 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map.Entry;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.requirement.Requirement;
@@ -18,6 +7,16 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map.Entry;
 
 public abstract class Property<O, V> implements Named
 {

@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import com.massivecraft.massivecore.ConfServer;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
@@ -14,6 +11,9 @@ import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 public class CmdMassiveCoreStoreListcolls extends MassiveCommand
 {

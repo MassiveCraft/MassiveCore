@@ -1,16 +1,15 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.UUID;
-import java.util.WeakHashMap;
-
+import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
-import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
-import com.massivecraft.massivecore.util.ReflectionUtil;
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.UUID;
+import java.util.WeakHashMap;
 
 public class NmsEntityGet18R1P extends NmsEntityGet
 {

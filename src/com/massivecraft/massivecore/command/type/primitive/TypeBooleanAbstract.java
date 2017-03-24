@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.command.type.primitive;
 
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.command.type.TypeAbstractChoice;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.command.type.TypeAbstractChoice;
+import java.util.Set;
 
 public abstract class TypeBooleanAbstract extends TypeAbstractChoice<Boolean>
 {

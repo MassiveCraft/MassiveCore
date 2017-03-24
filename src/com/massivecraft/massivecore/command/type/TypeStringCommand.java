@@ -1,20 +1,19 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandRegistration;
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 
-import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandRegistration;
-import com.massivecraft.massivecore.util.Txt;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 // We operate without the leading slash as much as possible.
 // We return the command without leading slash.

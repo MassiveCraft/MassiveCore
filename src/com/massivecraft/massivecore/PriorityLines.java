@@ -1,14 +1,14 @@
 package com.massivecraft.massivecore;
 
+import com.massivecraft.massivecore.comparator.ComparatorIdentity;
+import com.massivecraft.massivecore.comparator.ComparatorPrioritized;
+import com.massivecraft.massivecore.util.MUtil;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-
-import com.massivecraft.massivecore.comparator.ComparatorIdentity;
-import com.massivecraft.massivecore.comparator.ComparatorPrioritized;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class PriorityLines implements Prioritized, Comparable<PriorityLines>
 {

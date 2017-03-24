@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.nms;
 
-import org.bukkit.command.CommandSender;
-import org.json.simple.JSONObject;
-
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
+import org.json.simple.JSONObject;
 
 public class NmsChat extends Mixin
 {

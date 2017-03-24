@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.Map;
-
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class ConverterFromInventoryContents extends Converter<ItemStack[], Map<Integer, DataItemStack>>
 {

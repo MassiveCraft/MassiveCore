@@ -1,5 +1,13 @@
 package com.massivecraft.massivecore.particleeffect;
 
+import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.ReflectionUtil;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -8,15 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-
-import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.ReflectionUtil;
 
 /**
  * <b>ParticleEffect Library</b>

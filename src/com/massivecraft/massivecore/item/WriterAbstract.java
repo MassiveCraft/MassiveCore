@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -10,6 +7,9 @@ import com.massivecraft.massivecore.command.type.primitive.TypeBooleanOn;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.Arrays;
+import java.util.List;
 
 // A = What we are writing from.
 // B = What we are writing to.

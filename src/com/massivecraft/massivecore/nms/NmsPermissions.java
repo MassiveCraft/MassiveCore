@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.List;
-import java.util.Map;
-
+import com.massivecraft.massivecore.mixin.Mixin;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.PermissionAttachment;
-import com.massivecraft.massivecore.mixin.Mixin;
+
+import java.util.List;
+import java.util.Map;
 
 public class NmsPermissions extends Mixin
 {

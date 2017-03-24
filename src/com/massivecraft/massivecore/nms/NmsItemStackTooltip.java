@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.nms;
 
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.mixin.Mixin;
+import org.bukkit.inventory.ItemStack;
 
 public class NmsItemStackTooltip extends Mixin
 {

@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.store.accessor;
 
-import java.lang.reflect.Field;
-
 import com.massivecraft.massivecore.util.ReflectionUtil;
+
+import java.lang.reflect.Field;
 
 public class FieldAccessor
 {

@@ -1,13 +1,12 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.UUID;
-
+import com.massivecraft.massivecore.Couple;
+import com.massivecraft.massivecore.nms.NmsSkullMeta;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.massivecraft.massivecore.Couple;
-import com.massivecraft.massivecore.nms.NmsSkullMeta;
+import java.util.UUID;
 
 public class WriterItemStackMetaSkull extends WriterAbstractItemStackMetaField<SkullMeta, String, String>
 {

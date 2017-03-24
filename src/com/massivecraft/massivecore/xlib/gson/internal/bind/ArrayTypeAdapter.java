@@ -16,13 +16,6 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal.bind;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
 import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
@@ -31,6 +24,13 @@ import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapt an array of objects.

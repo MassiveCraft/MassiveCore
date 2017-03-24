@@ -1,5 +1,9 @@
 package com.massivecraft.massivecore.util;
 
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -9,10 +13,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
-
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.collections.MassiveMap;
-import com.massivecraft.massivecore.collections.MassiveSet;
 
 /**
  * The ContainerUtil provides an imaginary super class to Collection and Map.

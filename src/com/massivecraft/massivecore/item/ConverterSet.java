@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.Set;
-
 import com.massivecraft.massivecore.collections.MassiveSet;
+
+import java.util.Set;
 
 public class ConverterSet<EX, EY> extends Converter<Iterable<EX>, Set<EY>>
 {

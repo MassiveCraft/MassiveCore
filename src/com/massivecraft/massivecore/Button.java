@@ -1,12 +1,5 @@
 package com.massivecraft.massivecore;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
@@ -15,6 +8,12 @@ import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import static com.massivecraft.massivecore.mson.Mson.mson;
 

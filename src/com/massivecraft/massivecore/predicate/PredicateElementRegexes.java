@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.predicate;
 
+import com.massivecraft.massivecore.collections.MassiveList;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import com.massivecraft.massivecore.collections.MassiveList;
 
 public class PredicateElementRegexes implements Predicate<StackTraceElement>
 {

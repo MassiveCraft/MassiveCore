@@ -1,9 +1,8 @@
 package com.massivecraft.massivecore.command.requirement;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.util.PermissionUtil;
+import org.bukkit.command.CommandSender;
 
 public class RequirementHasPerm extends RequirementAbstract
 {

@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.command.editor;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.command.type.sender.TypeSender;
+import org.bukkit.command.CommandSender;
 
 public class PropertyUsed<V> extends Property<CommandSender, V>
 {

@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.predicate;
-import java.lang.ref.WeakReference;
-
-import org.bukkit.command.CommandSender;
 
 import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.util.IdUtil;
+import org.bukkit.command.CommandSender;
+
+import java.lang.ref.WeakReference;
 
 public class PredicateVisibleTo implements Predicate<Object>
 {

@@ -1,16 +1,16 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
-
+import com.massivecraft.massivecore.Engine;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
-import com.massivecraft.massivecore.Engine;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class EngineMassiveCoreWorldNameSet extends Engine
 {

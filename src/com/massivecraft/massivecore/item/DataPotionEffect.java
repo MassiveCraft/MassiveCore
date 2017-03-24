@@ -1,18 +1,17 @@
 package com.massivecraft.massivecore.item;
 
-import static com.massivecraft.massivecore.item.DataItemStack.get;
-import static com.massivecraft.massivecore.item.DataItemStack.set;
-
-import java.util.Objects;
-
-import org.bukkit.potion.PotionEffect;
-
 import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterColor;
 import com.massivecraft.massivecore.command.type.convert.TypeConverterPotionEffectType;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.potion.PotionEffect;
+
+import java.util.Objects;
+
+import static com.massivecraft.massivecore.item.DataItemStack.get;
+import static com.massivecraft.massivecore.item.DataItemStack.set;
 
 @EditorMethods(true)
 public class DataPotionEffect implements Comparable<DataPotionEffect>

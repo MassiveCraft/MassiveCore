@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Field;
-import java.util.UUID;
-
-import org.bukkit.inventory.meta.SkullMeta;
-
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.lang.reflect.Field;
+import java.util.UUID;
 
 public abstract class NmsSkullMetaAbstract extends NmsSkullMeta
 {

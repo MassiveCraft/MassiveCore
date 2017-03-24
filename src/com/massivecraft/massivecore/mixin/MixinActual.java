@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.mixin;
 
-import org.bukkit.event.player.PlayerJoinEvent;
-
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public class MixinActual extends Mixin
 {

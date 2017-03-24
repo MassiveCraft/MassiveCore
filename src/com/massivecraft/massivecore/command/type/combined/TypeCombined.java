@@ -1,15 +1,5 @@
 package com.massivecraft.massivecore.command.type.combined;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.editor.Property;
@@ -18,6 +8,15 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeAbstract;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 public abstract class TypeCombined<T> extends TypeAbstract<T>
 {	

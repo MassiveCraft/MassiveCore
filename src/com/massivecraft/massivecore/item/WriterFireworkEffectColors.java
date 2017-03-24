@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 public class WriterFireworkEffectColors extends WriterAbstractFireworkEffect<List<Integer>, ImmutableList<Color>>
 {

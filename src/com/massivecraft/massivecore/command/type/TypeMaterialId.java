@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type;
 
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.command.type.enumeration.TypeMaterial;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 
 @SuppressWarnings("deprecation")
 public class TypeMaterialId extends TypeTransformer<Material, Integer> 

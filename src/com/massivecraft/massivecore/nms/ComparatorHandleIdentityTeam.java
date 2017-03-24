@@ -1,9 +1,8 @@
 package com.massivecraft.massivecore.nms;
 
-import org.bukkit.scoreboard.Team;
-
 import com.massivecraft.massivecore.comparator.ComparatorAbstractTransformer;
 import com.massivecraft.massivecore.comparator.ComparatorIdentity;
+import org.bukkit.scoreboard.Team;
 
 public class ComparatorHandleIdentityTeam extends ComparatorAbstractTransformer<Team, Object>
 {

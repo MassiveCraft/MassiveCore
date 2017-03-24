@@ -1,7 +1,7 @@
 package com.massivecraft.massivecore;
 
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -11,8 +11,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
+import java.util.Set;
 
 public abstract class Engine implements Active, Listener, Runnable
 {

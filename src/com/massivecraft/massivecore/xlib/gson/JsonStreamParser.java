@@ -15,17 +15,17 @@
  */
 package com.massivecraft.massivecore.xlib.gson;
 
+import com.massivecraft.massivecore.xlib.gson.internal.Streams;
+import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
+import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
+import com.massivecraft.massivecore.xlib.gson.stream.MalformedJsonException;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import com.massivecraft.massivecore.xlib.gson.internal.Streams;
-import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
-import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
-import com.massivecraft.massivecore.xlib.gson.stream.MalformedJsonException;
 
 /**
  * A streaming parser that allows reading of multiple {@link JsonElement}s from the specified reader

@@ -1,13 +1,13 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
-
-import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 
 public abstract class CollAbstract<E extends Entity<E>> implements CollInterface<E>

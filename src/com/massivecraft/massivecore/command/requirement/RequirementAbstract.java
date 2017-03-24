@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.requirement;
 
-import java.io.Serializable;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mixin.MixinMessage;
+import org.bukkit.command.CommandSender;
+
+import java.io.Serializable;
 
 public abstract class RequirementAbstract implements Requirement, Serializable
 {

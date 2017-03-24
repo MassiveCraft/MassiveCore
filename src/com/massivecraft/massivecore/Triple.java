@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore;
 
-import java.io.Serializable;
-
 import com.massivecraft.massivecore.util.MUtil;
+
+import java.io.Serializable;
 
 public class Triple<A, B, C> implements Cloneable, Serializable
 {

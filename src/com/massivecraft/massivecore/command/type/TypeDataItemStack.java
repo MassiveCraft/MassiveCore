@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.command.type.primitive.TypeObject;
 import com.massivecraft.massivecore.item.DataItemStack;
+import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 
 public class TypeDataItemStack extends TypeTransformer<ItemStack, DataItemStack>
 {

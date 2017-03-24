@@ -1,12 +1,5 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassiveCorePerm;
@@ -17,6 +10,12 @@ import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.WebUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 public class CmdMassiveCoreCmdurl extends MassiveCommand
 {

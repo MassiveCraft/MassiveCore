@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore;
 
+import com.massivecraft.massivecore.mson.Mson;
 import org.bukkit.ChatColor;
 
-import com.massivecraft.massivecore.mson.Mson;
 import static com.massivecraft.massivecore.mson.Mson.mson;
 
 public class Lang

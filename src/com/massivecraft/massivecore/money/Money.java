@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.money;
 
-import java.util.Collection;
-
 import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.Collection;
 
 public class Money
 {

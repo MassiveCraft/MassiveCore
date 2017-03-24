@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore;
 
-import org.bukkit.permissions.Permissible;
-
 import com.massivecraft.massivecore.util.PermissionUtil;
+import org.bukkit.permissions.Permissible;
 
 public enum MassiveCorePerm implements Identified
 {

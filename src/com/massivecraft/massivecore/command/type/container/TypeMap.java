@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.command.type.container;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.combined.TypeEntry;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class TypeMap<K, V> extends TypeContainer<Map<K, V>, Entry<K, V>>
 {

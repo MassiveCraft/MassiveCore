@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Method;
-
+import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
-import com.massivecraft.massivecore.util.ReflectionUtil;
+import java.lang.reflect.Method;
 
 public class NmsItemStackTooltip18R1P extends NmsItemStackTooltip
 {

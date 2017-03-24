@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -58,6 +52,12 @@ import com.massivecraft.massivecore.command.type.sender.TypeSender;
 import com.massivecraft.massivecore.command.type.store.TypeAspect;
 import com.massivecraft.massivecore.command.type.store.TypeMultiverse;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class RegistryType
 {

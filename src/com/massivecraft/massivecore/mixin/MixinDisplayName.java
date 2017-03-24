@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.mixin;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class MixinDisplayName extends Mixin
 {

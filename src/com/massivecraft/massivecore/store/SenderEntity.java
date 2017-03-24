@@ -1,13 +1,5 @@
 package com.massivecraft.massivecore.store;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import org.bukkit.GameMode;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-
 import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.PlayerState;
@@ -19,6 +11,13 @@ import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
+import org.bukkit.GameMode;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.UUID;
 
 public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> implements Named
 {

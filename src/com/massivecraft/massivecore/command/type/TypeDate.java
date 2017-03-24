@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.command.type;
 
+import org.bukkit.command.CommandSender;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-
-import org.bukkit.command.CommandSender;
 
 public class TypeDate extends TypeAbstractSimple<Date>
 {

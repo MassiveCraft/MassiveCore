@@ -1,15 +1,14 @@
 package com.massivecraft.massivecore.chestgui;
 
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.SoundEffect;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
+import java.util.Map;
 
 public class ChestGui
 {

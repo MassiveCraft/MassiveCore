@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.event;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.teleport.Destination;
+import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
 
 public class EventMassiveCoreDestination extends EventMassiveCore
 {

@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+
+import java.util.UUID;
 
 public class NmsEntityGetFallback extends NmsEntityGet
 {

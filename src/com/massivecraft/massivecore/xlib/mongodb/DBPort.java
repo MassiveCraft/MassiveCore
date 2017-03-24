@@ -19,7 +19,6 @@
 package com.massivecraft.massivecore.xlib.mongodb;
 
 import com.massivecraft.massivecore.xlib.mongodb.util.ThreadUtil;
-
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSManager;
@@ -34,7 +33,6 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.sasl.Sasl;
 import javax.security.sasl.SaslClient;
 import javax.security.sasl.SaslException;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;

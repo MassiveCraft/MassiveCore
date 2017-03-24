@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
-
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class CommandEditItemStacks<O> extends CommandEditAbstract<O, List<ItemStack>>
 {

@@ -1,13 +1,12 @@
 package com.massivecraft.massivecore.command;
 
-import static com.massivecraft.massivecore.mson.Mson.mson;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.mson.Mson;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import static com.massivecraft.massivecore.mson.Mson.mson;
 
 public class Parameter<T>
 {

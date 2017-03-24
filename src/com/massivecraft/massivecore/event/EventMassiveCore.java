@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.event;
 
-import java.util.Map;
-
+import com.massivecraft.massivecore.collections.MassiveMap;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
-import com.massivecraft.massivecore.collections.MassiveMap;
+import java.util.Map;
 
 public abstract class EventMassiveCore extends Event implements Runnable, Cancellable
 {

@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.convert;
 
-import org.bukkit.Color;
-
 import com.massivecraft.massivecore.command.type.TypeColor;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.item.ConverterFromColor;
 import com.massivecraft.massivecore.item.ConverterToColor;
+import org.bukkit.Color;
 
 public class TypeConverterColor extends TypeConverter<Color, Integer> 
 {

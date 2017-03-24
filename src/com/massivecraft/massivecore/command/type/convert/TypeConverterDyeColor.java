@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.convert;
 
-import org.bukkit.DyeColor;
-
 import com.massivecraft.massivecore.command.type.enumeration.TypeDyeColor;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.item.ConverterFromDyeColor;
 import com.massivecraft.massivecore.item.ConverterToDyeColor;
+import org.bukkit.DyeColor;
 
 public class TypeConverterDyeColor extends TypeConverter<DyeColor, Integer> 
 {

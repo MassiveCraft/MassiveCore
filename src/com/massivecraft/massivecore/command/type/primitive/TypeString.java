@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.primitive;
 
-import java.util.Collection;
-import java.util.Collections;
-
+import com.massivecraft.massivecore.command.type.TypeAbstract;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.command.type.TypeAbstract;
+import java.util.Collection;
+import java.util.Collections;
 
 public class TypeString extends TypeAbstract<String>
 {

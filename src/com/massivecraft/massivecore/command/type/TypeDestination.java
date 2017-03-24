@@ -1,13 +1,12 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.event.EventMassiveCoreDestination;
 import com.massivecraft.massivecore.event.EventMassiveCoreDestinationTabList;
 import com.massivecraft.massivecore.teleport.Destination;
+import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
 
 public class TypeDestination extends TypeAbstract<Destination>
 {

@@ -1,7 +1,5 @@
 package com.massivecraft.massivecore.command;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.sender.TypeSenderId;
@@ -10,6 +8,8 @@ import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.List;
 
 public abstract class MassiveCommandSet<T> extends MassiveCommand
 {

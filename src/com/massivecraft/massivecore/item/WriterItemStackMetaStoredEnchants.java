@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class WriterItemStackMetaStoredEnchants extends WriterAbstractItemStackMetaField<EnchantmentStorageMeta, Map<Integer, Integer>, Map<Enchantment, Integer>>
 {

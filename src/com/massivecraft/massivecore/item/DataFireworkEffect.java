@@ -1,14 +1,5 @@
 package com.massivecraft.massivecore.item;
 
-import static com.massivecraft.massivecore.item.DataItemStack.get;
-import static com.massivecraft.massivecore.item.DataItemStack.set;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import org.bukkit.FireworkEffect;
-
 import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
@@ -18,6 +9,14 @@ import com.massivecraft.massivecore.command.type.convert.TypeConverterFireworkEf
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
+import org.bukkit.FireworkEffect;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import static com.massivecraft.massivecore.item.DataItemStack.get;
+import static com.massivecraft.massivecore.item.DataItemStack.set;
 
 @EditorMethods(true)
 public class DataFireworkEffect implements Comparable<DataFireworkEffect>

@@ -1,15 +1,14 @@
 package com.massivecraft.massivecore;
 
-import java.util.Collection;
-import java.util.List;
-
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.command.editor.annotation.EditorType;
+import com.massivecraft.massivecore.command.type.convert.TypeConverterPotionEffectType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.command.editor.annotation.EditorType;
-import com.massivecraft.massivecore.command.type.convert.TypeConverterPotionEffectType;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * This class wraps the Bukkit PotionEffect class by reimplementing storage of the data.

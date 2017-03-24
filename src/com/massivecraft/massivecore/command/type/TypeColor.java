@@ -1,17 +1,16 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.enumeration.TypeDyeColor;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
 
 public class TypeColor extends TypeAbstract<Color>
 {

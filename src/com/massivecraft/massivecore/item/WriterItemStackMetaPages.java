@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+
+import java.util.List;
 
 public class WriterItemStackMetaPages extends WriterAbstractItemStackMetaField<BookMeta, List<String>, List<String>>
 {

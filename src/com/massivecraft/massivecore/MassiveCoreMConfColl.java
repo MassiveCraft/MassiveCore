@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore;
 
-import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
 
 public class MassiveCoreMConfColl extends Coll<MassiveCoreMConf>

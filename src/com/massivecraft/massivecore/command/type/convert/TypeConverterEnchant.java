@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.convert;
 
-import org.bukkit.enchantments.Enchantment;
-
 import com.massivecraft.massivecore.command.type.TypeEnchantment;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.item.ConverterFromEnchant;
 import com.massivecraft.massivecore.item.ConverterToEnchant;
+import org.bukkit.enchantments.Enchantment;
 
 public class TypeConverterEnchant extends TypeConverter<Enchantment, Integer> 
 {

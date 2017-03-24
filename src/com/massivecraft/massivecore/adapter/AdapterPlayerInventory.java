@@ -1,15 +1,14 @@
 package com.massivecraft.massivecore.adapter;
 
-import java.lang.reflect.Type;
-
-import org.bukkit.inventory.PlayerInventory;
-
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
+import org.bukkit.inventory.PlayerInventory;
+
+import java.lang.reflect.Type;
 
 public class AdapterPlayerInventory implements JsonDeserializer<PlayerInventory>, JsonSerializer<PlayerInventory>
 {

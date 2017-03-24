@@ -1,15 +1,14 @@
 package com.massivecraft.massivecore.store;
 
-import java.util.Map.Entry;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.internal.LazilyParsedNumber;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Map.Entry;
 
 public class GsonEqualsChecker
 {

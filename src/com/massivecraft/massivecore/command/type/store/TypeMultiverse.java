@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type.store;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.Multiverse;
 import com.massivecraft.massivecore.MultiverseColl;
+import org.bukkit.command.CommandSender;
 
 public class TypeMultiverse extends TypeEntity<Multiverse>
 {

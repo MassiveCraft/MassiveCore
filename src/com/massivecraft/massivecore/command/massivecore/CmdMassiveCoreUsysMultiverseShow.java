@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCorePerm;
@@ -12,6 +9,9 @@ import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.store.TypeMultiverse;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CmdMassiveCoreUsysMultiverseShow extends MassiveCommand
 {

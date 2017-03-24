@@ -1,11 +1,9 @@
 package com.massivecraft.massivecore.command.type.convert;
 
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.TypeTransformer;
 import com.massivecraft.massivecore.item.Converter;
+import org.bukkit.command.CommandSender;
 
 public class TypeConverter<A, B> extends TypeTransformer<A, B> 
 {

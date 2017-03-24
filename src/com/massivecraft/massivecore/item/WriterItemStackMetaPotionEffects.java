@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
+
+import java.util.List;
 
 public class WriterItemStackMetaPotionEffects extends WriterAbstractItemStackMetaField<PotionMeta, List<DataPotionEffect>, List<PotionEffect>>
 {

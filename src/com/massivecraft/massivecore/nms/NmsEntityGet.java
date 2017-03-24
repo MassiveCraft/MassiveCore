@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.UUID;
-
+import com.massivecraft.massivecore.mixin.Mixin;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import com.massivecraft.massivecore.mixin.Mixin;
+
+import java.util.UUID;
 
 public class NmsEntityGet extends Mixin
 {

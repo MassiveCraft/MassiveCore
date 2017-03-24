@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
+
+import java.util.Collections;
+import java.util.List;
 
 public class CommandEditContainerSwap<O, V> extends CommandEditContainerAbstract<O, V>
 {	

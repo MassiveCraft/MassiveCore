@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.predicate;
 
-import java.util.Collection;
+import com.massivecraft.massivecore.Integration;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.Integration;
+import java.util.Collection;
 
 public class PredicateIntegration implements Predicate<Integration>
 {

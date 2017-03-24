@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.sender;
 
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.util.IdUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissibleBase;
-
-import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.util.IdUtil;
 
 public class BasicCommandSender extends PermissibleBase implements CommandSender
 {

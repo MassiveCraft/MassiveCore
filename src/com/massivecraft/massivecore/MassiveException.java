@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore;
 
+import com.massivecraft.massivecore.mson.Mson;
+
 import java.util.Arrays;
 import java.util.Collection;
-
-import com.massivecraft.massivecore.mson.Mson;
 
 
 public class MassiveException extends Exception

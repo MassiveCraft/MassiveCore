@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.command.type;
 
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.MassiveException;
+import org.bukkit.command.CommandSender;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.MassiveException;
 
 public class TypeNullable<T> extends TypeWrapper<T>
 {

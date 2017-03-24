@@ -1,17 +1,16 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
 
 public class TypeItemStack extends TypeAbstract<ItemStack>
 {

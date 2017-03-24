@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore;
 
+import com.massivecraft.massivecore.util.MUtil;
+
 import java.io.Serializable;
 import java.util.Map.Entry;
-
-import com.massivecraft.massivecore.util.MUtil;
 
 public class Couple<A, B> implements Entry<A, B>, Cloneable, Serializable
 {

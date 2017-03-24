@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.UUID;
-
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.UUID;
 
 public class NmsSkullMetaFallback extends NmsSkullMeta
 {

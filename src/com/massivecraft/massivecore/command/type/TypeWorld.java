@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-
+import com.massivecraft.massivecore.mixin.MixinWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.mixin.MixinWorld;
+import java.util.Collection;
 
 public class TypeWorld extends TypeAbstractChoice<World>
 {

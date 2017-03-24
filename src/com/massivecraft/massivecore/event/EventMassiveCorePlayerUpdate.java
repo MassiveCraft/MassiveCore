@@ -1,13 +1,12 @@
 package com.massivecraft.massivecore.event;
 
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.Set;
 
 /**
  * The purpose of this event is to allow multiple plugins to have a say about these player properties.

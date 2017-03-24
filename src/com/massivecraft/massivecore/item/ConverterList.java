@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.collections.MassiveList;
+
+import java.util.List;
 
 public class ConverterList<EX, EY> extends Converter<Iterable<EX>, List<EY>>
 {

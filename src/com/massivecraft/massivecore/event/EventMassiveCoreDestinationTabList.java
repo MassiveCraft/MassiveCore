@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.event;
 
-import java.util.List;
-
+import com.massivecraft.massivecore.collections.MassiveList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.massivecore.collections.MassiveList;
+import java.util.List;
 
 public class EventMassiveCoreDestinationTabList extends EventMassiveCore
 {

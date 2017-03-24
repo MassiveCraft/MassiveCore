@@ -1,18 +1,17 @@
 package com.massivecraft.massivecore.event;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.predicate.Predicate;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.predicate.Predicate;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 public class EventMassiveCoreLorePriority extends EventMassiveCore
 {

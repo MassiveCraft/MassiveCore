@@ -1,12 +1,5 @@
 package com.massivecraft.massivecore.command.type.container;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
@@ -18,6 +11,12 @@ import com.massivecraft.massivecore.command.type.TypeAbstract;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public abstract class TypeContainer<C extends Object, E> extends TypeAbstract<C>
 {

@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.Set;
-
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
+
+import java.util.Set;
 
 public class NmsBoard19R1P extends NmsBoard
 {

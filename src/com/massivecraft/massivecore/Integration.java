@@ -1,19 +1,18 @@
 package com.massivecraft.massivecore;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateIntegration;
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.predicate.PredicateIntegration;
-import com.massivecraft.massivecore.util.Txt;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class Integration extends Engine
 {

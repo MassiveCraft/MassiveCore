@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-import java.util.Collections;
-
+import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Named;
 import org.bukkit.command.CommandSender;
 
-import com.massivecraft.massivecore.MassiveException;
+import java.util.Collection;
+import java.util.Collections;
 
 public abstract class TypeNameAbstract extends TypeAbstract<String>
 {

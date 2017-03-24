@@ -1,12 +1,5 @@
 package com.massivecraft.massivecore.mixin;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.util.Vector;
-
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreTeleportMixinCause;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerPSTeleport;
@@ -15,6 +8,12 @@ import com.massivecraft.massivecore.teleport.Destination;
 import com.massivecraft.massivecore.teleport.ScheduledTeleport;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.permissions.Permissible;
+import org.bukkit.util.Vector;
 
 public class MixinTeleport extends Mixin
 {

@@ -1,17 +1,17 @@
 package com.massivecraft.massivecore.store;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.massivecraft.massivecore.Active;
 import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public interface CollInterface<E extends Entity<E>> extends Named, Active, Identified
 {

@@ -1,13 +1,13 @@
 package com.massivecraft.massivecore.collections;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.type.container.TypeMassiveTreeSetInsensitive;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 
 public class ExceptionSet
 {

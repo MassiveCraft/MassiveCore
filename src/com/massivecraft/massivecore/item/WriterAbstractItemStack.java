@@ -1,9 +1,8 @@
 package com.massivecraft.massivecore.item;
 
+import com.massivecraft.massivecore.nms.NmsItemStackCreate;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import com.massivecraft.massivecore.nms.NmsItemStackCreate;
 
 public abstract class WriterAbstractItemStack<OB, CB, FA, FB> extends WriterAbstract<DataItemStack, OB, DataItemStack, CB, FA, FB, ItemStack>
 {

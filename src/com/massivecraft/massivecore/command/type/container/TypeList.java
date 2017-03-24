@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.type.container;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.type.Type;
+
+import java.util.List;
 
 public class TypeList<E> extends TypeContainer<List<E>, E>
 {

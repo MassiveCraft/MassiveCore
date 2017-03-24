@@ -1,18 +1,17 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.mson.Mson;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 // The INNER type controls all ways the type behaves and seems.
 // It is used for visuals, names, ids and when reading from a command argument.

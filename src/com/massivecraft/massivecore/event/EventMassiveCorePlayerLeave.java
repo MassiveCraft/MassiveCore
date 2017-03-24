@@ -1,15 +1,14 @@
 package com.massivecraft.massivecore.event;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * The EventMassiveCorePlayerLeave is a non-cancellable event.

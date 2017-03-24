@@ -1,20 +1,5 @@
 package com.massivecraft.massivecore.mson;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang.mutable.MutableInt;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.ItemStack;
-
 import com.google.common.collect.ImmutableList;
 import com.massivecraft.massivecore.adapter.AdapterLowercaseEnum;
 import com.massivecraft.massivecore.adapter.AdapterMsonEventFix;
@@ -29,6 +14,20 @@ import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
+import org.apache.commons.lang.mutable.MutableInt;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Mson implements Serializable
 {

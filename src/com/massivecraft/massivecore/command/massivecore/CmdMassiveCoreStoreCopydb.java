@@ -1,9 +1,5 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import java.util.Collection;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
@@ -15,6 +11,10 @@ import com.massivecraft.massivecore.store.Db;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.store.MStore;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
+
+import java.util.Collection;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class CmdMassiveCoreStoreCopydb extends MassiveCommand
 {

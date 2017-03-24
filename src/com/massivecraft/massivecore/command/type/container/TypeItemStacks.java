@@ -1,14 +1,13 @@
 package com.massivecraft.massivecore.command.type.container;
 
-import java.util.List;
-
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.CommandEditItemStacks;
 import com.massivecraft.massivecore.command.editor.EditSettings;
 import com.massivecraft.massivecore.command.editor.Property;
 import com.massivecraft.massivecore.command.type.TypeItemStack;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class TypeItemStacks extends TypeList<ItemStack>
 {

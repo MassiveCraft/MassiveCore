@@ -1,7 +1,6 @@
 package com.massivecraft.massivecore.teleport;
 
-import java.util.Iterator;
-
+import com.massivecraft.massivecore.MassiveException;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -10,7 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
-import com.massivecraft.massivecore.MassiveException;
+import java.util.Iterator;
 
 public class DestinationUtil
 {

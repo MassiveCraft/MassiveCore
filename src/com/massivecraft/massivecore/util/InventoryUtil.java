@@ -1,15 +1,13 @@
 package com.massivecraft.massivecore.util;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.comparator.ComparatorComparable;
+import com.massivecraft.massivecore.comparator.ComparatorEntryValue;
+import com.massivecraft.massivecore.event.EventMassiveCoreLorePriority;
+import com.massivecraft.massivecore.mixin.MixinInventory;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateStringStartsWith;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -27,14 +25,15 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.comparator.ComparatorComparable;
-import com.massivecraft.massivecore.comparator.ComparatorEntryValue;
-import com.massivecraft.massivecore.event.EventMassiveCoreLorePriority;
-import com.massivecraft.massivecore.mixin.MixinInventory;
-import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.predicate.PredicateStringStartsWith;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class InventoryUtil
 {

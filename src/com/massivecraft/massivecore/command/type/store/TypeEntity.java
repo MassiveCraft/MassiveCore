@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.command.type.store;
 
-import java.util.Collection;
-
 import com.massivecraft.massivecore.command.type.TypeAbstractChoice;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.Entity;
+
+import java.util.Collection;
 
 public class TypeEntity<T extends Entity<T>> extends TypeAbstractChoice<T>
 {

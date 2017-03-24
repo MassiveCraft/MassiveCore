@@ -1,7 +1,5 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.SoundEffect;
@@ -10,6 +8,8 @@ import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import com.massivecraft.massivecore.command.type.combined.TypeSoundEffect;
 import com.massivecraft.massivecore.command.type.container.TypeList;
+
+import java.util.List;
 
 public class CmdMassiveCoreHearsound extends MassiveCommand
 {

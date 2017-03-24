@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.List;
-
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+
+import java.util.List;
 
 public class WriterItemStackMetaFireworkEffects extends WriterAbstractItemStackMetaField<FireworkMeta, List<DataFireworkEffect>, List<FireworkEffect>>
 {

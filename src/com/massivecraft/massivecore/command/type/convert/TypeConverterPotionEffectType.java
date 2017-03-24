@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.convert;
 
-import org.bukkit.potion.PotionEffectType;
-
 import com.massivecraft.massivecore.command.type.TypePotionEffectType;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.item.ConverterFromPotionEffectType;
 import com.massivecraft.massivecore.item.ConverterToPotionEffectType;
+import org.bukkit.potion.PotionEffectType;
 
 public class TypeConverterPotionEffectType extends TypeConverter<PotionEffectType, Integer> 
 {

@@ -16,6 +16,23 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal.bind;
 
+import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.JsonArray;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+import com.massivecraft.massivecore.xlib.gson.JsonIOException;
+import com.massivecraft.massivecore.xlib.gson.JsonNull;
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
+import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
+import com.massivecraft.massivecore.xlib.gson.JsonSyntaxException;
+import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
+import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
+import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
+import com.massivecraft.massivecore.xlib.gson.internal.LazilyParsedNumber;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
+import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
+import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -33,23 +50,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.UUID;
-
-import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.JsonArray;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonIOException;
-import com.massivecraft.massivecore.xlib.gson.JsonNull;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
-import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
-import com.massivecraft.massivecore.xlib.gson.JsonSyntaxException;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
-import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
-import com.massivecraft.massivecore.xlib.gson.internal.LazilyParsedNumber;
-import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
-import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
-import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
-import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
 
 /**
  * Type adapters for basic types.

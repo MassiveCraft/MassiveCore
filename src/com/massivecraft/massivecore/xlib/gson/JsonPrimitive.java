@@ -16,11 +16,11 @@
 
 package com.massivecraft.massivecore.xlib.gson;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions;
 import com.massivecraft.massivecore.xlib.gson.internal.LazilyParsedNumber;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * A class representing a Json primitive value. A primitive value

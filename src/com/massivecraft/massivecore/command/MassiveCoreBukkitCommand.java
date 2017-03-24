@@ -1,20 +1,19 @@
 package com.massivecraft.massivecore.command;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginIdentifiableCommand;
-import org.bukkit.plugin.Plugin;
-
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginIdentifiableCommand;
+import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MassiveCoreBukkitCommand extends Command implements PluginIdentifiableCommand
 {

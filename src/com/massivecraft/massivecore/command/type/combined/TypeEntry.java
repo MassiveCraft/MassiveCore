@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.command.type.combined;
 
+import com.massivecraft.massivecore.command.type.Type;
+
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
-
-import com.massivecraft.massivecore.command.type.Type;
 
 public class TypeEntry<K, V> extends TypeCombined<Entry<K, V>>
 {

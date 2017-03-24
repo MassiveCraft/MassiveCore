@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.event;
 
-import org.bukkit.event.HandlerList;
-
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
+import org.bukkit.event.HandlerList;
 
 public class EventMassiveCoreEditorEdit<O, V> extends EventMassiveCore
 {

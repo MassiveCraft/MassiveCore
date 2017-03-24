@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore.store;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
@@ -14,6 +8,11 @@ import com.massivecraft.massivecore.command.type.sender.TypeSenderId;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.command.CommandSender;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {

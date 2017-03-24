@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.nms;
 
-import org.bukkit.inventory.PlayerInventory;
-
 import com.massivecraft.massivecore.mixin.Mixin;
+import org.bukkit.inventory.PlayerInventory;
 
 public class NmsPlayerInventoryCreate extends Mixin
 {

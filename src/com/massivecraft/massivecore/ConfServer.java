@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore;
 
+import com.massivecraft.massivecore.util.MUtil;
+
 import java.util.Map;
 import java.util.UUID;
-
-import com.massivecraft.massivecore.util.MUtil;
 
 public class ConfServer extends SimpleConfig
 {

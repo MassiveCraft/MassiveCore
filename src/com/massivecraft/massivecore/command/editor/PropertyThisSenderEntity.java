@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.editor;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.command.type.sender.TypeSender;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
+import org.bukkit.command.CommandSender;
 
 public class PropertyThisSenderEntity<O extends SenderEntity<O>> extends Property<CommandSender, O>
 {

@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.item;
 
+import com.massivecraft.massivecore.collections.MassiveMap;
+
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.massivecraft.massivecore.collections.MassiveMap;
 
 public class ConverterMap<KX, VX, KY, VY> extends Converter<Map<KX, VX>, Map<KY, VY>>
 {

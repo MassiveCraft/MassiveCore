@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.teleport;
 
-import java.io.Serializable;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.ps.PS;
+
+import java.io.Serializable;
 
 public interface Destination extends Serializable
 {

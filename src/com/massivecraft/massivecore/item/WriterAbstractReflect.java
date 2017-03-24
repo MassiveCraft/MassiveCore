@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.item;
 
-import java.lang.reflect.Field;
-
 import com.massivecraft.massivecore.util.ReflectionUtil;
+
+import java.lang.reflect.Field;
 
 public abstract class WriterAbstractReflect<OA, OB, CA, CB, FA, FB> extends WriterAbstract<OA, OB, CA, CB, FA, FB, Object>
 {

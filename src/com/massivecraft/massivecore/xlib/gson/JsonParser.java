@@ -15,14 +15,14 @@
  */
 package com.massivecraft.massivecore.xlib.gson;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
 import com.massivecraft.massivecore.xlib.gson.internal.Streams;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
 import com.massivecraft.massivecore.xlib.gson.stream.MalformedJsonException;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * A parser to parse Json into a parse tree of {@link JsonElement}s

@@ -1,5 +1,8 @@
 package com.massivecraft.massivecore.util;
 
+import com.massivecraft.massivecore.predicate.Predicate;
+import org.bukkit.Bukkit;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -10,10 +13,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.Bukkit;
-
-import com.massivecraft.massivecore.predicate.Predicate;
 
 public class ReflectionUtil
 {

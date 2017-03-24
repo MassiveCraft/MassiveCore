@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -17,6 +11,11 @@ import com.massivecraft.massivecore.command.type.TypeItemStack;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanYes;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.InventoryUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class CmdMassiveCoreTest extends MassiveCommand
 {

@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.mixin;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.massivecore.ps.PSFormatDesc;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,9 +10,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permissible;
 
-import com.massivecraft.massivecore.ps.PS;
-import com.massivecraft.massivecore.ps.PSFormatDesc;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MixinWorld extends Mixin
 {

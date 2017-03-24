@@ -1,5 +1,9 @@
 package com.massivecraft.massivecore;
 
+import com.massivecraft.massivecore.command.type.TypeUniverse;
+import com.massivecraft.massivecore.store.Entity;
+import com.massivecraft.massivecore.util.MUtil;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -7,10 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
-
-import com.massivecraft.massivecore.command.type.TypeUniverse;
-import com.massivecraft.massivecore.store.Entity;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class Multiverse extends Entity<Multiverse>
 {	

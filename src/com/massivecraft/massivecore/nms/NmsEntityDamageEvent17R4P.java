@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import com.google.common.base.Function;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
+
+import java.lang.reflect.Field;
+import java.util.Map;
 
 public class NmsEntityDamageEvent17R4P extends NmsEntityDamageEvent
 {

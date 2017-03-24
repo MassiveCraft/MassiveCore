@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.xlib.gson.JsonObject;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
 public interface Db
 {

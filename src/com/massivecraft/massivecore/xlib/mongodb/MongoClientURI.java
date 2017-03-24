@@ -17,7 +17,6 @@
 package com.massivecraft.massivecore.xlib.mongodb;
 
 import javax.net.ssl.SSLSocketFactory;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;

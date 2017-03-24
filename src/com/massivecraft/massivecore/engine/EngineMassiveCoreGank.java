@@ -1,18 +1,18 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.WeakHashMap;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.collections.MassiveMap;
-import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 public class EngineMassiveCoreGank extends Engine
 {

@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
-import java.util.Map.Entry;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
@@ -16,6 +10,11 @@ import com.massivecraft.massivecore.event.EventMassiveCoreEditorEdit;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.List;
+import java.util.Map.Entry;
 
 public class CommandEditAbstract<O, V> extends MassiveCommand
 {

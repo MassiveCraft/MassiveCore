@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.collections;
 
+import com.massivecraft.massivecore.ps.PS;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-
-import com.massivecraft.massivecore.ps.PS;
 
 public class WorldExceptionSet extends ExceptionSet
 {

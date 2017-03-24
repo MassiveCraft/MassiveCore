@@ -1,14 +1,5 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveSet;
@@ -27,6 +18,15 @@ import com.massivecraft.massivecore.teleport.DestinationTop;
 import com.massivecraft.massivecore.teleport.DestinationUtil;
 import com.massivecraft.massivecore.teleport.DestinationWorld;
 import com.massivecraft.massivecore.util.IdUtil;
+import org.bukkit.World;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class EngineMassiveCoreDestination extends Engine
 {

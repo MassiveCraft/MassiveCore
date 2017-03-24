@@ -1,7 +1,5 @@
 package com.massivecraft.massivecore.command.massivecore;
 
-import java.util.Map.Entry;
-
 import com.massivecraft.massivecore.MassiveCorePerm;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.MassiveCommand;
@@ -10,6 +8,8 @@ import com.massivecraft.massivecore.command.type.store.TypeColl;
 import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.Map.Entry;
 
 public class CmdMassiveCoreStoreStats extends MassiveCommand
 {

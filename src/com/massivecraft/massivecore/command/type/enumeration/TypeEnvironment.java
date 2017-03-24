@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.MassiveSet;
 import org.bukkit.World.Environment;
 
-import com.massivecraft.massivecore.collections.MassiveSet;
+import java.util.Set;
 
 public class TypeEnvironment extends TypeEnum<Environment>
 {

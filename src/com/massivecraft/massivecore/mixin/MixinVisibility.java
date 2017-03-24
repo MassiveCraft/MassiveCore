@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.mixin;
 
-import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.entity.Player;
 
 public class MixinVisibility extends Mixin
 {

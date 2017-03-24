@@ -1,8 +1,7 @@
 package com.massivecraft.massivecore.command.type.primitive;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
 
 public class TypeStringParsed extends TypeString
 {

@@ -1,13 +1,13 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.ConfServer;
+import com.massivecraft.massivecore.xlib.gson.JsonElement;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import com.massivecraft.massivecore.ConfServer;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 public class MStore
 {

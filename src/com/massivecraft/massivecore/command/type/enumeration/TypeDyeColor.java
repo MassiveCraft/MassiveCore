@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.command.CommandSender;
-
-import com.massivecraft.massivecore.util.MUtil;
 
 public class TypeDyeColor extends TypeEnum<DyeColor>
 {

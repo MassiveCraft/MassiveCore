@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.adapter;
 
-import java.lang.reflect.Type;
-import java.util.Iterator;
-
 import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.item.DataBannerPattern;
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
@@ -12,6 +9,9 @@ import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
+
+import java.lang.reflect.Type;
+import java.util.Iterator;
 
 public class AdapterBannerPatterns implements JsonDeserializer<MassiveListDef<DataBannerPattern>>
 {

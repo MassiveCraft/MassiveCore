@@ -1,8 +1,6 @@
 package com.massivecraft.massivecore.mixin;
 
 import com.massivecraft.massivecore.Log;
-import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 public class MixinLog extends Mixin
 {

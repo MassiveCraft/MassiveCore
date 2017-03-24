@@ -1,19 +1,5 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.Colorized;
 import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.MassiveException;
@@ -32,6 +18,19 @@ import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 
 public abstract class TypeAbstract<T> implements Type<T>
 {

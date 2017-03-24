@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.command;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanOn;
 import com.massivecraft.massivecore.util.Txt;
+
+import java.util.List;
 
 public abstract class MassiveCommandToggle extends MassiveCommand
 {

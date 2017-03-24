@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type.store;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassiveCorePerm;
+import org.bukkit.command.CommandSender;
 
 public class TypeAspect extends TypeEntity<Aspect>
 {

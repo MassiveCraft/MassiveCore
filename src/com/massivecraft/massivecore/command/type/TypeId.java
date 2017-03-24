@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type;
 
-import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
 import com.massivecraft.massivecore.command.type.primitive.TypeStringId;
+import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 
 public class TypeId<T> extends TypeTransformer<T, String> 
 {

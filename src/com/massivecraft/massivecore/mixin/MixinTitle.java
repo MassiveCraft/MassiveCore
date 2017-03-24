@@ -1,9 +1,8 @@
 package com.massivecraft.massivecore.mixin;
 
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.nms.NmsChat;
+import org.bukkit.entity.Player;
 
 public class MixinTitle extends Mixin
 {

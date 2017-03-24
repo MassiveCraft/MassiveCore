@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command;
 
-import java.util.List;
-
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import com.massivecraft.massivecore.util.Txt;
+import java.util.List;
 
 public class MassiveCommandVersion extends MassiveCommand
 {

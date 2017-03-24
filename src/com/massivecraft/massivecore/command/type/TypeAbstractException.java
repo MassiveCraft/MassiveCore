@@ -1,9 +1,8 @@
 package com.massivecraft.massivecore.command.type;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
 
 public abstract class TypeAbstractException<T> extends TypeAbstract<T>
 {

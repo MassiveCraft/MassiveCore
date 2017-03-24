@@ -16,9 +16,6 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal;
 
-import static com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions.checkArgument;
-import static com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions.checkNotNull;
-
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
@@ -33,6 +30,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+
+import static com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions.checkArgument;
+import static com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions.checkNotNull;
 
 /**
  * Static methods for working with types.

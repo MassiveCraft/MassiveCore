@@ -1,14 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.editor.annotation.EditorEditable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorInheritable;
@@ -23,6 +14,14 @@ import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.List;
 
 public class PropertyReflection<O, V> extends Property<O, V>
 {

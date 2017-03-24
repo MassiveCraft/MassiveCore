@@ -1,14 +1,13 @@
 package com.massivecraft.massivecore.teleport;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.mixin.MixinPlayed;
 import com.massivecraft.massivecore.mixin.MixinSenderPs;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class DestinationPlayer extends DestinationAbstract
 {

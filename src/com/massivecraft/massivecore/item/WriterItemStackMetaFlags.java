@@ -1,10 +1,10 @@
 package com.massivecraft.massivecore.item;
 
-import java.util.Set;
-
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Set;
 
 public class WriterItemStackMetaFlags extends WriterAbstractItemStackMetaField<ItemMeta, Set<String>, Set<ItemFlag>>
 {

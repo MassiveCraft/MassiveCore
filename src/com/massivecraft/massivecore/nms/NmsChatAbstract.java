@@ -1,15 +1,15 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 public abstract class NmsChatAbstract extends NmsChat
 {

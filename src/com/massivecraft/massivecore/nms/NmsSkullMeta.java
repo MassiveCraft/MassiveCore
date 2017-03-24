@@ -1,14 +1,13 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.UUID;
-
-import org.bukkit.inventory.meta.SkullMeta;
-
 import com.massivecraft.massivecore.Couple;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.util.IdData;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.UUID;
 
 public class NmsSkullMeta extends Mixin
 {

@@ -1,14 +1,14 @@
 package com.massivecraft.massivecore.store.migration;
 
-import java.util.List;
-import java.util.regex.Matcher;
-
 import com.massivecraft.massivecore.Active;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
+
+import java.util.List;
+import java.util.regex.Matcher;
 
 public class VersionMigratorRoot implements VersionMigrator, Active
 {

@@ -1,16 +1,17 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.UUID;
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
-import com.massivecraft.massivecore.util.MUtil;
+
+import java.util.UUID;
 
 public class EngineMassiveCorePlayerLeave extends Engine
 {

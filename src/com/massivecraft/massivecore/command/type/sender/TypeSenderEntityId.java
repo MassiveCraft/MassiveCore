@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type.sender;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.command.type.TypeTransformer;
 import com.massivecraft.massivecore.command.type.primitive.TypeStringId;
 import com.massivecraft.massivecore.store.SenderEntity;
+import org.bukkit.command.CommandSender;
 
 public class TypeSenderEntityId<I extends SenderEntity<I>> extends TypeTransformer<I, String>
 {

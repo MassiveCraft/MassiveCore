@@ -1,13 +1,5 @@
 package com.massivecraft.massivecore.adapter;
 
-import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Map.Entry;
-
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.item.DataItemStack;
 import com.massivecraft.massivecore.mixin.MixinInventory;
@@ -19,6 +11,13 @@ import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Map.Entry;
 
 /**
  * This is my Gson adapter for Inventories.

@@ -1,6 +1,18 @@
 package com.massivecraft.massivecore.util;
 
-import static com.massivecraft.massivecore.mson.Mson.mson;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.command.MassiveCommand;
+import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
+import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.mson.MsonEvent;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -14,20 +26,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.command.MassiveCommand;
-import com.massivecraft.massivecore.command.massivecore.CmdMassiveCore;
-import com.massivecraft.massivecore.mson.Mson;
-import com.massivecraft.massivecore.mson.MsonEvent;
-import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
+import static com.massivecraft.massivecore.mson.Mson.mson;
 
 public class Txt
 {

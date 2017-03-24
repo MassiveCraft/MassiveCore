@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore;
 
+import com.massivecraft.massivecore.store.Coll;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.massivecraft.massivecore.store.Coll;
 
 public class AspectColl extends Coll<Aspect>
 {

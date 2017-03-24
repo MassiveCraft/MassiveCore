@@ -17,7 +17,6 @@
 package com.massivecraft.massivecore.xlib.mongodb;
 
 import javax.net.SocketFactory;
-
 import java.util.concurrent.TimeUnit;
 
 import static com.massivecraft.massivecore.xlib.bson.util.Assertions.notNull;

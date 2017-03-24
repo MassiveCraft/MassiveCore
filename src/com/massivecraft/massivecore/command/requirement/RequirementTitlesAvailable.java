@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.requirement;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
 
 public class RequirementTitlesAvailable extends RequirementAbstract
 {

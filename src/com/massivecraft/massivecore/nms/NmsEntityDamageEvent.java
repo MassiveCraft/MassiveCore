@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.nms;
 
-import java.util.Map;
-
+import com.google.common.base.Function;
+import com.massivecraft.massivecore.mixin.Mixin;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
-import com.google.common.base.Function;
-import com.massivecraft.massivecore.mixin.Mixin;
+import java.util.Map;
 
 public class NmsEntityDamageEvent extends Mixin
 {

@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.convert;
 
-import org.bukkit.FireworkEffect.Type;
-
 import com.massivecraft.massivecore.command.type.enumeration.TypeFireworkEffectType;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.item.ConverterFromFireworkEffectType;
 import com.massivecraft.massivecore.item.ConverterToFireworkEffectType;
+import org.bukkit.FireworkEffect.Type;
 
 public class TypeConverterFireworkEffectType extends TypeConverter<Type, String> 
 {

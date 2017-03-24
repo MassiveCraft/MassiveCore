@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.fetcher;
 
+import com.massivecraft.massivecore.util.MUtil;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,8 +13,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import com.massivecraft.massivecore.util.MUtil;
 
 public class Fetcher implements Callable<Set<IdAndName>>
 {

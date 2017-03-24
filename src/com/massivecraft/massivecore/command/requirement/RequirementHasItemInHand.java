@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.requirement;
 
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.type.TypeItemStack;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 
 public class RequirementHasItemInHand extends RequirementAbstract
 {

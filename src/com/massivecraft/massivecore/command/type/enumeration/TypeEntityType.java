@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore.command.type.enumeration;
 
-import java.util.Set;
-
+import com.massivecraft.massivecore.collections.MassiveSet;
 import org.bukkit.entity.EntityType;
 
-import com.massivecraft.massivecore.collections.MassiveSet;
+import java.util.Set;
 
 public class TypeEntityType extends TypeEnum<EntityType>
 {

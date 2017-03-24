@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore.command.type.sender;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
@@ -17,6 +11,11 @@ import com.massivecraft.massivecore.store.SenderIdSource;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 {

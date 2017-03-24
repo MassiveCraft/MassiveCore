@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Constructor;
-
-import org.bukkit.inventory.PlayerInventory;
-
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+import org.bukkit.inventory.PlayerInventory;
+
+import java.lang.reflect.Constructor;
 
 public class NmsPlayerInventoryCreate17R4P extends NmsPlayerInventoryCreate
 {

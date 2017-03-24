@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.List;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
+
+import java.util.List;
 
 public class CommandEditContainerRemoveIndex<O, V> extends CommandEditContainerAbstract<O, V>
 {	

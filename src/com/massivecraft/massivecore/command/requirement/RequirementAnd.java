@@ -1,14 +1,13 @@
 package com.massivecraft.massivecore.command.requirement;
 
+import com.massivecraft.massivecore.command.MassiveCommand;
+import org.bukkit.command.CommandSender;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.bukkit.command.CommandSender;
-
-import com.massivecraft.massivecore.command.MassiveCommand;
 
 public class RequirementAnd extends RequirementAbstract
 {

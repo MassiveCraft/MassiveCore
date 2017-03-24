@@ -16,6 +16,11 @@
 
 package com.massivecraft.massivecore.xlib.gson;
 
+import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions;
+import com.massivecraft.massivecore.xlib.gson.internal.Excluder;
+import com.massivecraft.massivecore.xlib.gson.internal.bind.TypeAdapters;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -25,11 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions;
-import com.massivecraft.massivecore.xlib.gson.internal.Excluder;
-import com.massivecraft.massivecore.xlib.gson.internal.bind.TypeAdapters;
-import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 
 /**
  * <p>Use this builder to construct a {@link Gson} instance when you need to set configuration

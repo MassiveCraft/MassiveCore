@@ -1,11 +1,5 @@
 package com.massivecraft.massivecore;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.permissions.Permissible;
-
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
@@ -16,6 +10,11 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.xlib.mongodb.WriteConcern;
+import org.bukkit.permissions.Permissible;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @EditorName("config")
 public class MassiveCoreMConf extends Entity<MassiveCoreMConf>

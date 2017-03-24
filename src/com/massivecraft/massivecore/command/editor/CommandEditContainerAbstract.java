@@ -1,13 +1,5 @@
 package com.massivecraft.massivecore.command.editor;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-
-import org.bukkit.ChatColor;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.requirement.RequirementEditorPropertyCreated;
@@ -16,6 +8,12 @@ import com.massivecraft.massivecore.command.type.TypeNullable;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
+
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class CommandEditContainerAbstract<O, V> extends CommandEditAbstract<O, V>
 {

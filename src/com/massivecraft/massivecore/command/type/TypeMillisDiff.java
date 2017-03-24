@@ -1,14 +1,13 @@
 package com.massivecraft.massivecore.command.type;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.util.TimeDiffUtil;
 import com.massivecraft.massivecore.util.TimeUnit;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 
 public class TypeMillisDiff extends TypeAbstractException<Long>
 {

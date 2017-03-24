@@ -1,12 +1,12 @@
 package com.massivecraft.massivecore.command.editor;
 
+import com.massivecraft.massivecore.MassiveException;
+import com.massivecraft.massivecore.util.MUtil;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.util.MUtil;
 
 public class CommandEditContainerRemove<O, V> extends CommandEditContainerAbstract<O, V>
 {	

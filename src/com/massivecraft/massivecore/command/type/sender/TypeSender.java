@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.type.sender;
 
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
 import com.massivecraft.massivecore.store.SenderIdSourceMixinAllSenderIds;
 import com.massivecraft.massivecore.util.IdUtil;
+import org.bukkit.command.CommandSender;
 
 public class TypeSender extends TypeSenderIdAbstract<CommandSender>
 {

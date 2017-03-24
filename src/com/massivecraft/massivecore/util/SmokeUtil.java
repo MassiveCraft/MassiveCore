@@ -1,11 +1,11 @@
 package com.massivecraft.massivecore.util;
 
-import java.util.Collection;
-import java.util.Random;
-
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+
+import java.util.Collection;
+import java.util.Random;
 
 // http://mc.kev009.com/Protocol
 // -----------------------------

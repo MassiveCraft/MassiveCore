@@ -1,9 +1,10 @@
 package com.massivecraft.massivecore.util;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.massivecraft.massivecore.Identified;
+import com.massivecraft.massivecore.Lang;
+import com.massivecraft.massivecore.MassiveCore;
+import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
+import com.massivecraft.massivecore.nms.NmsPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permissible;
@@ -13,11 +14,9 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 
-import com.massivecraft.massivecore.Identified;
-import com.massivecraft.massivecore.Lang;
-import com.massivecraft.massivecore.MassiveCore;
-import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
-import com.massivecraft.massivecore.nms.NmsPermissions;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class PermissionUtil
 {

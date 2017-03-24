@@ -1,15 +1,14 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.Set;
-
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
-
 import com.google.common.collect.ImmutableSet;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Set;
 
 public class NmsBoard17R4 extends NmsBoard
 {

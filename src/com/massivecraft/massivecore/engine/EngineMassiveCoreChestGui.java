@@ -1,9 +1,14 @@
 package com.massivecraft.massivecore.engine;
 
-import org.bukkit.event.Event.Result;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.SoundEffect;
+import com.massivecraft.massivecore.chestgui.ChestAction;
+import com.massivecraft.massivecore.chestgui.ChestGui;
+import com.massivecraft.massivecore.mixin.MixinMessage;
+import com.massivecraft.massivecore.util.InventoryUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -11,12 +16,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.SoundEffect;
-import com.massivecraft.massivecore.chestgui.ChestAction;
-import com.massivecraft.massivecore.chestgui.ChestGui;
-import com.massivecraft.massivecore.mixin.MixinMessage;
-import com.massivecraft.massivecore.util.InventoryUtil;
 
 public class EngineMassiveCoreChestGui extends Engine
 {

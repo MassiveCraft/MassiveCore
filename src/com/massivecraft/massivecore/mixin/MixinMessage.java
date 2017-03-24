@@ -1,16 +1,15 @@
 package com.massivecraft.massivecore.mixin;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
-import org.bukkit.command.CommandSender;
-
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.nms.NmsChat;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.command.CommandSender;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class MixinMessage extends Mixin
 {

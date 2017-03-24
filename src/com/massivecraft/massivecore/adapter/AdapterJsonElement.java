@@ -1,13 +1,13 @@
 package com.massivecraft.massivecore.adapter;
 
-import java.lang.reflect.Type;
-
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
 
 public class AdapterJsonElement implements JsonDeserializer<JsonElement>, JsonSerializer<JsonElement>
 {

@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.util;
 
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -11,6 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.AuthorNagException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
+
+import java.lang.reflect.Field;
+import java.util.logging.Level;
 
 public class EventUtil
 {

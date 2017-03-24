@@ -1,9 +1,5 @@
 package com.massivecraft.massivecore.adapter;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Set;
-
 import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
@@ -13,6 +9,10 @@ import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Set;
 
 public class AdapterBackstringSet implements JsonDeserializer<BackstringSet<?>>, JsonSerializer<BackstringSet<?>>
 {

@@ -16,21 +16,6 @@
 
 package com.massivecraft.massivecore.xlib.gson;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.massivecraft.massivecore.xlib.gson.internal.ConstructorConstructor;
 import com.massivecraft.massivecore.xlib.gson.internal.Excluder;
 import com.massivecraft.massivecore.xlib.gson.internal.Primitives;
@@ -52,6 +37,21 @@ import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
 import com.massivecraft.massivecore.xlib.gson.stream.MalformedJsonException;
+
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is the main class for using Gson. Gson is typically used by first constructing a

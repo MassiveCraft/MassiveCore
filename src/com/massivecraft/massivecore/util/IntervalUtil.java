@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.util;
 
+import com.massivecraft.massivecore.MassiveCore;
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
-
-import com.massivecraft.massivecore.MassiveCore;
 
 public class IntervalUtil
 {	

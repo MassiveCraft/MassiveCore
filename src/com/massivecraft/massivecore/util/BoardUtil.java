@@ -1,12 +1,13 @@
 package com.massivecraft.massivecore.util;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.event.EventMassiveCoreBoardEnsure;
+import com.massivecraft.massivecore.nms.NmsBoard;
+import com.massivecraft.massivecore.nms.TeamOptionKey;
+import com.massivecraft.massivecore.nms.TeamOptionValue;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -20,14 +21,12 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.collections.MassiveMap;
-import com.massivecraft.massivecore.collections.MassiveSet;
-import com.massivecraft.massivecore.event.EventMassiveCoreBoardEnsure;
-import com.massivecraft.massivecore.nms.NmsBoard;
-import com.massivecraft.massivecore.nms.TeamOptionKey;
-import com.massivecraft.massivecore.nms.TeamOptionValue;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
 
 // # RESEARCH > CLEANUP
 // The main server scoreboard is the only one that is saved to NBT.

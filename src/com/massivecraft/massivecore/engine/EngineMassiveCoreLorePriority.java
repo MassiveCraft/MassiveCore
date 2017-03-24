@@ -1,7 +1,10 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.Map.Entry;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassiveCoreMConf;
+import com.massivecraft.massivecore.event.EventMassiveCoreLorePriority;
+import com.massivecraft.massivecore.util.InventoryUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,11 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.MassiveCoreMConf;
-import com.massivecraft.massivecore.event.EventMassiveCoreLorePriority;
-import com.massivecraft.massivecore.util.InventoryUtil;
-import com.massivecraft.massivecore.util.MUtil;
+import java.util.Map.Entry;
 
 public class EngineMassiveCoreLorePriority extends Engine
 {

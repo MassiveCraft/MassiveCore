@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.mixin;
 
+import com.massivecraft.massivecore.util.IdUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import com.massivecraft.massivecore.util.IdUtil;
 
 public class MixinCommand extends Mixin
 {

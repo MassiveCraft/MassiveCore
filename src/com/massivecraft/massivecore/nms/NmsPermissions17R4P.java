@@ -1,16 +1,15 @@
 package com.massivecraft.massivecore.nms;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-
+import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
+import com.massivecraft.massivecore.util.ReflectionUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.PermissionAttachment;
 
-import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
-import com.massivecraft.massivecore.util.ReflectionUtil;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 public class NmsPermissions17R4P extends NmsPermissions
 {

@@ -1,10 +1,9 @@
 package com.massivecraft.massivecore;
 
-import java.util.UUID;
-
+import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerState;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.massivecore.engine.EngineMassiveCorePlayerState;
+import java.util.UUID;
 
 /**
  * This enumeration is used to keep track of where a player currently is within the login --> join --> play --> leave cycle.

@@ -1,9 +1,12 @@
 package com.massivecraft.massivecore.engine;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassiveCoreMConf;
+import com.massivecraft.massivecore.MassiveCorePerm;
+import com.massivecraft.massivecore.util.IdUtil;
+import com.massivecraft.massivecore.util.InventoryUtil;
+import com.massivecraft.massivecore.util.MUtil;
+import com.massivecraft.massivecore.util.Txt;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -15,13 +18,10 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import com.massivecraft.massivecore.Engine;
-import com.massivecraft.massivecore.MassiveCoreMConf;
-import com.massivecraft.massivecore.MassiveCorePerm;
-import com.massivecraft.massivecore.util.IdUtil;
-import com.massivecraft.massivecore.util.InventoryUtil;
-import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.Txt;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EngineMassiveCoreVariable extends Engine
 {

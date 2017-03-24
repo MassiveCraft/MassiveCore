@@ -1,8 +1,5 @@
 package com.massivecraft.massivecore.adapter;
 
-import java.lang.reflect.Type;
-import java.util.UUID;
-
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -10,6 +7,9 @@ import com.massivecraft.massivecore.xlib.gson.JsonParseException;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
+
+import java.lang.reflect.Type;
+import java.util.UUID;
 
 public class AdapterUUID implements JsonDeserializer<UUID>, JsonSerializer<UUID>
 {

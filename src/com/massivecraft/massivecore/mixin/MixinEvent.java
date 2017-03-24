@@ -1,9 +1,9 @@
 package com.massivecraft.massivecore.mixin;
 
-import java.io.Serializable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+
+import java.io.Serializable;
 
 public class MixinEvent extends Mixin
 {
