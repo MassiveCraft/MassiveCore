@@ -85,6 +85,11 @@ public class EventMassiveCorePlayerUpdate extends EventMassiveCore
 		
 		EventMassiveCorePlayerUpdate event = new EventMassiveCorePlayerUpdate(player, current);
 		event.run();
+
+		// If fly allowed is false, then fly active may not be true.
+		// Because fly active uses current=true and everything else current=false
+		// Then fly allowed might be reset when fly active doesn't get reset. That we do here.
+		if (!event.isFlyAllowed()) event.setFlyActive(false);
 		
 		setMaxHealth(player, event.getMaxHealth());
 		setFlyAllowed(player, event.isFlyAllowed());

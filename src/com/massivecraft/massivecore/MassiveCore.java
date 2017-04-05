@@ -38,6 +38,7 @@ import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreChestGui;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreCollTick;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandRegistration;
+import com.massivecraft.massivecore.engine.EngineMassiveCoreCommandSet;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDestination;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreGank;
@@ -302,6 +303,7 @@ public class MassiveCore extends MassivePlugin
 			EngineMassiveCoreChestGui.class,
 			EngineMassiveCoreCollTick.class,
 			EngineMassiveCoreCommandRegistration.class,
+			EngineMassiveCoreCommandSet.class,
 			EngineMassiveCoreDatabase.class,
 			EngineMassiveCoreDestination.class,
 			EngineMassiveCoreGank.class,
