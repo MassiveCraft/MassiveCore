@@ -48,10 +48,10 @@ public abstract class TypeNameAbstract extends TypeAbstract<String>
 		if (arg == null) throw new NullPointerException("arg");
 
 		// Allow changing capitalization of the current name if lenient.
-		String current = this.getCurrentName(sender);
+		String current = this.getCurrentName(sender, arg);
 		if (current != null && current.equalsIgnoreCase(arg) && this.isLenient()) return arg;
 
-		if (this.isNameTaken(arg)) throw new MassiveException().addMsg("<b>The name \"<h>%s<b>\" is already in use.",arg);
+		if (this.isNameTaken(sender, arg)) throw new MassiveException().addMsg("<b>The name \"<h>%s<b>\" is already in use.",arg);
 		
 		Integer lengthMin = this.getLengthMin();
 		if (lengthMin != null && arg.length() < lengthMin)
@@ -92,9 +92,9 @@ public abstract class TypeNameAbstract extends TypeAbstract<String>
 	// METHODS
 	// -------------------------------------------- //
 	
-	public String getCurrentName(CommandSender sender)
+	public String getCurrentName(CommandSender sender, String arg) throws MassiveException
 	{
-		Named named = this.getCurrent(sender);
+		Named named = this.getCurrent(sender, arg);
 		if (named == null) return null;
 		return named.getName();
 	}
@@ -106,8 +106,8 @@ public abstract class TypeNameAbstract extends TypeAbstract<String>
 	// ABSTRACT
 	// -------------------------------------------- //
 	
-	public abstract Named getCurrent(CommandSender sender);
+	public abstract Named getCurrent(CommandSender sender, String arg) throws MassiveException;
 	
-	public abstract boolean isNameTaken(String name);
+	public abstract boolean isNameTaken(CommandSender sender, String name) throws MassiveException;
 	
 }
