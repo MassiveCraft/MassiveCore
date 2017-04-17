@@ -51,6 +51,7 @@ import com.massivecraft.massivecore.engine.EngineMassiveCoreSponsor;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreTeleportMixinCause;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreVariable;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
+import com.massivecraft.massivecore.integration.liability.IntegrationLiabilityAreaEffectCloud;
 import com.massivecraft.massivecore.integration.vault.IntegrationVault;
 import com.massivecraft.massivecore.item.DataBannerPattern;
 import com.massivecraft.massivecore.item.WriterItemStack;
@@ -321,6 +322,7 @@ public class MassiveCore extends MassivePlugin
 			
 			// Integration
 			IntegrationVault.class,
+			IntegrationLiabilityAreaEffectCloud.class,
 			
 			// Command
 			CmdMassiveCore.class,

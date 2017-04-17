@@ -9,6 +9,7 @@ import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreDatabase;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreMain;
 import com.massivecraft.massivecore.engine.EngineMassiveCoreWorldNameSet;
+import com.massivecraft.massivecore.integration.liability.IntegrationLiabilityAreaEffectCloud;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.nms.NmsEntityGet;
 import com.massivecraft.massivecore.predicate.Predicate;
@@ -1353,18 +1354,19 @@ public class MUtil
 	
 	public static Entity getLiableDamager(EntityDamageEvent event)
 	{
-		if ( ! (event instanceof EntityDamageByEntityEvent)) return null;
+		if (!(event instanceof EntityDamageByEntityEvent)) return null;
 		EntityDamageByEntityEvent edbeEvent = (EntityDamageByEntityEvent)event;
 		Entity ret = edbeEvent.getDamager();
 		if (ret instanceof Projectile)
 		{
 			Projectile projectile = (Projectile)ret;
 			ProjectileSource projectileSource = projectile.getShooter();
-			if (projectileSource instanceof Entity)
-			{
-				ret = (Entity)projectileSource;
-			}
+			if (projectileSource instanceof Entity) ret = (Entity)projectileSource;
 		}
+		
+		Entity cloudBasedDamager = IntegrationLiabilityAreaEffectCloud.get().getLiableDamager(edbeEvent);
+		if (cloudBasedDamager != null) ret = cloudBasedDamager;
+		
 		return ret;
 	}
 	
