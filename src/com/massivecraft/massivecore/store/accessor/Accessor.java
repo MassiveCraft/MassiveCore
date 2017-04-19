@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.store.accessor;
 
+import com.massivecraft.massivecore.store.EntityInternalMap;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -72,8 +74,20 @@ public class Accessor
 		{
 			String fieldName = entry.getKey();
 			Field field = entry.getValue();
-			FieldAccessor fieldAccessor = new FieldAccessor(field);
+			FieldAccessor fieldAccessor = createFieldAccessor(field);
 			this.setFieldAccessor(fieldName, fieldAccessor);
+		}
+	}
+	
+	public static FieldAccessor createFieldAccessor(Field field)
+	{
+		if (EntityInternalMap.class.isAssignableFrom(field.getType()))
+		{
+			return new FieldAccessorInternalEntityMap(field);
+		}
+		else
+		{
+			return new FieldAccessorSimple(field);
 		}
 	}
 	

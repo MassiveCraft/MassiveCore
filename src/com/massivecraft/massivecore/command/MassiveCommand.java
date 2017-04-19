@@ -854,17 +854,17 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	}
 	
 	public void setDescPermission(String descPermission) { this.descPermission = descPermission; }
-	public String getDescPermission()
-	{
-		if (this.descPermission != null) return this.descPermission;
-		// Otherwise we try to find one.
-		for (Requirement requirement : this.getRequirements())
+		public String getDescPermission()
 		{
-			if ( ! (requirement instanceof RequirementHasPerm)) continue;
-			return ((RequirementHasPerm)requirement).getPermissionId();
+			if (this.descPermission != null) return this.descPermission;
+			// Otherwise we try to find one.
+			for (Requirement requirement : this.getRequirements())
+			{
+				if ( ! (requirement instanceof RequirementHasPerm)) continue;
+				return ((RequirementHasPerm)requirement).getPermissionId();
+			}
+			return null;
 		}
-		return null;
-	}
 		
 	public void setHelp(List<?> val) { this.help = val; }
 	public void setHelp(Object... val) { this.help = Arrays.asList(val); }

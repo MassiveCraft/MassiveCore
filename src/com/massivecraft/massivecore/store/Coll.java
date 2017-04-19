@@ -3,12 +3,9 @@ package com.massivecraft.massivecore.store;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassivePlugin;
-import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.mixin.MixinModification;
-import com.massivecraft.massivecore.predicate.Predicate;
-import com.massivecraft.massivecore.predicate.PredicateEqualsIgnoreCase;
 import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -131,248 +128,19 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// -------------------------------------------- //
 	
 	// Loaded
-	protected Map<String, E> id2entity;
+	protected Map<String, E> idToEntity;
 	
-	@Override
-	public String fixId(Object oid)
-	{
-		if (oid == null) return null;
-		
-		String ret = null;
-		if (oid instanceof String) ret = (String) oid;
-		else if (oid.getClass() == this.getEntityClass()) ret = ((Entity<?>) oid).getId();
-		if (ret == null) return null;
-		
-		return this.isLowercasing() ? ret.toLowerCase() : ret;
-	}
+	@Override public Map<String, E> getIdToEntityRaw() { return this.idToEntity; }
 	
-	@Override public Map<String, E> getId2entity() { return Collections.unmodifiableMap(this.id2entity); } 
-	@Override
-	public E getFixed(String id, boolean creative)
-	{
-		return this.getFixed(id, creative, true);
-	}
-	protected E getFixed(String id, boolean creative, boolean noteModification)
-	{
-		if (id == null) return null;
-		E ret = this.id2entity.get(id);
-		if (ret != null) return ret;
-		if ( ! creative) return null;
-		return this.create(id, noteModification);
-	}
-	
-	@Override public Collection<String> getIds() { return Collections.unmodifiableCollection(this.id2entity.keySet()); }
 	@Override public Collection<String> getIdsRemote() { return this.getDb().getIds(this); }
-	@Override
-	public boolean containsIdFixed(String id)
-	{
-		if (id == null) return false;
-		return this.id2entity.containsKey(id);
-	}
-	
-	@Override
-	public boolean containsEntity(Object entity)
-	{
-		return this.id2entity.containsValue(entity);
-	}
-	
-	@Override public Collection<E> getAll()
-	{
-		return Collections.unmodifiableCollection(this.id2entity.values());
-	}
 	
 	// -------------------------------------------- //
 	// BEHAVIOR
 	// -------------------------------------------- //
 	
-	protected boolean creative;
-	@Override public boolean isCreative() { return this.creative; }
-	@Override public void setCreative(boolean creative) { this.creative = creative; }
-	
-	// "Lowercasing" means that the ids are always converted to lower case when fixed.
-	// This is highly recommended for sender colls.
-	// The senderIds are case insensitive by nature and some times you simply can't know the correct casing.
-	protected boolean lowercasing;
-	@Override public boolean isLowercasing() { return this.lowercasing; }
-	@Override public void setLowercasing(boolean lowercasing) { this.lowercasing = lowercasing; }
-	
-	// Should that instance be saved or not?
-	// If it is default it should not be saved.
-	@Override
-	public boolean isDefault(E entity)
-	{
-		return entity.isDefault();
-	}
-
 	// What entity version do we want?
 	protected final int entityTargetVersion;
 	@Override public int getEntityTargetVersion() { return this.entityTargetVersion; }
-
-	// -------------------------------------------- //
-	// COPY AND CREATE
-	// -------------------------------------------- //
-	
-	@Override
-	public void copy(E efrom, E eto)
-	{
-		if (efrom == null) throw new NullPointerException("efrom");
-		if (eto == null) throw new NullPointerException("eto");
-		
-		eto.load(efrom);
-	}
-	
-	// This simply creates and returns a new instance
-	// It does not detach/attach or anything. Just creates a new instance.
-	@Override
-	public E createNewInstance()
-	{
-		try
-		{
-			return this.getEntityClass().newInstance();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			
-			return null;
-		}
-	}
-	
-	// Create new instance with the requested id
-	@Override
-	public synchronized E create(Object oid)
-	{
-		return this.create(oid, true);
-	}
-	
-	public synchronized E create(Object oid, boolean noteModification)
-	{
-		E entity = this.createNewInstance();
-		if (this.attach(entity, oid, noteModification) == null) return null;
-		return entity;
-	}
-	
-	// -------------------------------------------- //
-	// ATTACH AND DETACH
-	// -------------------------------------------- //
-	
-	@Override
-	public String attach(E entity, Object oid)
-	{
-		return this.attach(entity, oid, true);
-	}
-
-	protected synchronized String attach(E entity, Object oid, boolean noteModification)
-	{
-		// Check entity
-		if (entity == null) return null;
-		if (entity.attached()) return entity.getId();
-		
-		String id;
-		// Check/Fix id
-		if (oid == null)
-		{
-			id = MStore.createId();
-		}
-		else
-		{
-			id = this.fixId(oid);
-			if (id == null) return null;
-			if (this.id2entity.containsKey(id)) return null;
-		}
-		
-		// PRE
-		this.preAttach(entity, id);
-		
-		// Add entity reference info
-		entity.setColl(this);
-		entity.setId(id);
-		
-		// Attach
-		this.id2entity.put(id, entity);
-		
-		// Identify Modification
-		if (noteModification)
-		{
-			this.identifiedModifications.put(id, Modification.LOCAL_ATTACH);
-		}
-		
-		// POST
-		this.postAttach(entity, id);
-		
-		return id;
-	}
-	
-	@Override
-	public E detachEntity(E entity)
-	{
-		if (entity == null) throw new NullPointerException("entity");
-
-		String id = entity.getId();
-		if (id == null)
-		{
-			// It seems the entity is already detached.
-			// In such case just silently return it.
-			return entity;
-		}
-		
-		this.detachFixed(entity, id);
-		return entity;
-	}
-	
-	@Override
-	public E detachIdFixed(String id)
-	{
-		if (id == null) throw new NullPointerException("id");
-		
-		E e = this.get(id, false);
-		if (e == null) return null;
-		
-		this.detachFixed(e, id);
-		return e;
-	}
-	
-	private void detachFixed(E entity, String id)
-	{
-		if (entity == null) throw new NullPointerException("entity");
-		if (id == null) throw new NullPointerException("id");
-		
-		// PRE
-		this.preDetach(entity, id);
-		
-		// Remove @ local
-		this.removeAtLocalFixed(id);
-		
-		// Identify Modification
-		this.identifiedModifications.put(id, Modification.LOCAL_DETACH);
-		
-		// POST
-		this.postDetach(entity, id);
-	}
-	
-	@Override
-	public void preAttach(E entity, String id)
-	{
-		entity.preAttach(id);
-	}
-	
-	@Override
-	public void postAttach(E entity, String id)
-	{
-		entity.postAttach(id);
-	}
-	
-	@Override
-	public void preDetach(E entity, String id)
-	{
-		entity.preDetach(id);
-	}
-	
-	@Override
-	public void postDetach(E entity, String id)
-	{
-		entity.postDetach(id);
-	}
 	
 	// -------------------------------------------- //
 	// IDENTIFIED MODIFICATIONS
@@ -438,12 +206,12 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		
 		this.removeIdentifiedModificationFixed(id);
 		
-		E entity = this.id2entity.remove(id);
+		E entity = this.idToEntity.remove(id);
 		if (entity == null) return null;
 		entity.clearSyncLogFields();
 		
 		// Remove entity reference info
-		entity.setColl(null);
+		entity.setContainer(null);
 		entity.setId(null);
 		
 		return entity;
@@ -467,7 +235,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		
 		this.removeIdentifiedModificationFixed(id);
 		
-		E entity = this.id2entity.get(id);
+		E entity = this.idToEntity.get(id);
 		if (entity == null) return;
 		entity.clearSyncLogFields();
 		
@@ -623,7 +391,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		// }
 		if (current != null && current.hasTopPriority()) return current;
 		
-		E localEntity = this.id2entity.get(id);
+		E localEntity = this.idToEntity.get(id);
 		if (remoteMtime == null && remote)
 		{
 			// TODO: This is slow
@@ -713,7 +481,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			Modification actualModification = this.examineIdFixed(id, remoteMtime, true, true);
 			if (MassiveCoreMConf.get().warnOnLocalAlter && modification == Modification.UNKNOWN_LOG && actualModification.isModified())
 			{
-				E entity = this.id2entity.get(id);
+				E entity = this.idToEntity.get(id);
 				if (entity != null)
 				{
 					this.logModification(entity, actualModification);	
@@ -831,10 +599,10 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		Map<String, Long> id2RemoteMtime = this.getDb().getId2mtime(this);
 		
 		// Java 8
-		//this.id2entity.keySet().forEach(id -> id2RemoteMtime.putIfAbsent(id, 0));
+		//this.idToEntity.keySet().forEach(id -> id2RemoteMtime.putIfAbsent(id, 0));
 		
 		// Java 8 >
-		for (String id : this.id2entity.keySet())
+		for (String id : this.idToEntity.keySet())
 		{
 			if (id2RemoteMtime.containsKey(id)) continue;
 			id2RemoteMtime.put(id,  0L);
@@ -859,7 +627,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override
 	public void identifyLocalModifications(Modification veto)
 	{
-		for (String id : id2entity.keySet())
+		for (String id : idToEntity.keySet())
 		{
 			this.identifyLocalModificationFixed(id, veto);
 		}
@@ -883,10 +651,10 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		//Note: We must also check local ids, in case of remote detach.
 		
 		// Java 8
-		//this.id2entity.keySet().forEach(id -> id2RemoteMtime.putIfAbsent(id, 0));
+		//this.idToEntity.keySet().forEach(id -> id2RemoteMtime.putIfAbsent(id, 0));
 		
 		// Java 8 >
-		for (String id : this.id2entity.keySet())
+		for (String id : this.idToEntity.keySet())
 		{
 			if (id2RemoteMtime.containsKey(id)) continue;
 			id2RemoteMtime.put(id,  0L);
@@ -996,7 +764,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		this.collDriverObject = db.createCollDriverObject(this);
 		
 		// Collections
-		this.id2entity = new ConcurrentHashMap<>();
+		this.idToEntity = new ConcurrentHashMap<>();
 		this.identifiedModifications = new ConcurrentHashMap<>();
 
 		// Migration
@@ -1075,6 +843,12 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return MStore.getDb();
 	}
 	
+	@Override
+	public Coll<E> getColl()
+	{
+		return this;
+	}
+	
 	// -------------------------------------------- //
 	// ACTIVE
 	// -------------------------------------------- //
@@ -1084,6 +858,8 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		return name2instance.containsKey(this.getName());
 	}
+	
+	@Override public boolean isLive() { return this.isActive(); }
 	
 	@Override
 	public void setActive(boolean active)
@@ -1140,32 +916,5 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		this.setActivePlugin(plugin);
 		this.setActive(plugin != null);
 	}
-	
-	// -------------------------------------------- //
-	// NAME UTILITIES
-	// -------------------------------------------- //
-	
-	public E getByName(String name)
-	{
-		if (name == null) throw new NullPointerException("name");
-		
-		Predicate<String> predicate = PredicateEqualsIgnoreCase.get(name);
-		for (E entity : this.getAll())
-		{
-			if (entity == null) continue;
-			
-			if ( ! (entity instanceof Named)) continue;
-			Named named = (Named)entity;
-			
-			if (predicate.apply(named.getName())) return entity;
-		}
-		
-		return null;
-	}
-	
-	public boolean isNameTaken(String str)
-	{
-		return this.getByName(str) != null;
-	}
-	
+
 }

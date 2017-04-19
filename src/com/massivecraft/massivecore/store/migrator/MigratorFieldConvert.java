@@ -44,7 +44,7 @@ public abstract class MigratorFieldConvert implements Migrator
 		else if (object instanceof Boolean) return new JsonPrimitive((Boolean) object);
 		else if (object instanceof Character) return new JsonPrimitive((Character) object);
 		else if (object instanceof Number) return new JsonPrimitive((Number) object);
-
+		
 		throw new IllegalArgumentException("Unvalid JsonElement: " + object);
 	}
 

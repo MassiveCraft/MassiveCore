@@ -3,6 +3,7 @@ package com.massivecraft.massivecore;
 import com.massivecraft.massivecore.adapter.AdapterBackstringSet;
 import com.massivecraft.massivecore.adapter.AdapterBannerPatterns;
 import com.massivecraft.massivecore.adapter.AdapterEntry;
+import com.massivecraft.massivecore.adapter.AdapterEntityInternalMap;
 import com.massivecraft.massivecore.adapter.AdapterInventory;
 import com.massivecraft.massivecore.adapter.AdapterItemStack;
 import com.massivecraft.massivecore.adapter.AdapterJsonElement;
@@ -38,6 +39,7 @@ import com.massivecraft.massivecore.nms.NmsItemStackCreate17R4P;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
 import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.store.ModificationPollerLocal;
 import com.massivecraft.massivecore.store.ModificationPollerRemote;
 import com.massivecraft.massivecore.util.BoardUtil;
@@ -164,6 +166,9 @@ public class MassiveCore extends MassivePlugin
 		// Inventory
 		ret.registerTypeAdapter(Inventory.class, AdapterInventory.get());
 		ret.registerTypeAdapter(PlayerInventory.class, AdapterPlayerInventory.get());
+		
+		// Storage
+		ret.registerTypeAdapter(EntityInternalMap.class, AdapterEntityInternalMap.get());
 		
 		// Return
 		return ret;
