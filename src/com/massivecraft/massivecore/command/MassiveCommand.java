@@ -6,7 +6,6 @@ import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.MassivePlugin;
 import com.massivecraft.massivecore.collections.MassiveList;
-import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.requirement.Requirement;
 import com.massivecraft.massivecore.command.requirement.RequirementAbstract;
@@ -15,12 +14,13 @@ import com.massivecraft.massivecore.command.type.Type;
 import com.massivecraft.massivecore.command.type.enumeration.TypeEnum;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.predicate.Predicate;
+import com.massivecraft.massivecore.predicate.PredicateLevenshteinClose;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
@@ -35,8 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class MassiveCommand implements Active, PluginIdentifiableCommand
@@ -392,66 +390,58 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// -------------------------------------------- //
 	// CHILDREN > GET
 	// -------------------------------------------- //
-		
+	
 	// The full version of the child matcher method.
-	// Returns a map from alias to command.
+	// Returns a set of child commands with similar aliases.
 	//
 	// token - the full alias or an alias prefix.
 	// levenshtein - should we use levenshtein instead of starts with?
-	// prioritizeExact - return single entry map on full match.
+	// prioritizeExact - return single element set on full match.
 	// 
-	// An empty map means no child was found.
-	// A single entry map means we found an unambiguous match.
-	// A larger map means the token was ambiguous.
-	public Map<String, MassiveCommand> getChildMatches(String token, boolean levenshtein, CommandSender onlyRelevantToSender)
+	// An empty set means no child was found.
+	// A single element set means we found an unambiguous match.
+	// A larger set means the token was ambiguous.
+	private Set<MassiveCommand> getChildren(String token, boolean levenshtein, CommandSender onlyRelevantToSender)
 	{
 		// Create Ret
-		Map<String, MassiveCommand> ret = new MassiveMap<>();
+		Set<MassiveCommand> ret = new MassiveSet<>();
 		
 		// Prepare
 		token = token.toLowerCase();
-		PredicateStartsWithIgnoreCase predicate = PredicateStartsWithIgnoreCase.get(token);
+		Predicate<String> predicate = levenshtein ? PredicateLevenshteinClose.get(token) : PredicateStartsWithIgnoreCase.get(token);
 		
 		// Fill Ret
+		// Go through each child command
 		for (MassiveCommand child : this.getChildren())
 		{
+			// See if any of the aliases has a match or close enough
+			// If there is a direct match, return that
 			for (String alias : child.getAliases())
 			{
-				// If this alias has not already been reserved ...
-				if (ret.containsKey(alias)) continue;
-				
 				// ... consider exact priority ...
 				if (alias.equalsIgnoreCase(token))
 				{
-					return new MassiveMap<>(alias, child);
+					return Collections.singleton(child);
 				}
+				
+				if (ret.contains(child)) continue;
 				
 				// ... matches ...
-				if (levenshtein)
-				{
-					// ... is levenshteinish ...
-					if ( ! this.isLevenshteinClose(token, alias)) continue;
-				}
-				else
-				{
-					// ... the alias startsWithIgnoreCase the token ...
-					if ( ! predicate.apply(alias)) continue;
-				}
+				if (!predicate.apply(alias)) continue;
 				
 				// ... and put in ret.
-				ret.put(alias, child);
+				ret.add(child);
 			}
 		}
 		
 		// Only Relevant
 		if (onlyRelevantToSender != null)
 		{
-			Iterator<Entry<String, MassiveCommand>> iter = ret.entrySet().iterator();
-			while (iter.hasNext())
+			for  (Iterator<MassiveCommand> iterator = ret.iterator(); iterator.hasNext(); )
 			{
-				Entry<String, MassiveCommand> entry = iter.next();
-				if (entry.getValue().isRelevant(onlyRelevantToSender)) continue;
-				iter.remove();
+				MassiveCommand command = iterator.next();
+				if (command.isRelevant(onlyRelevantToSender)) continue;
+				iterator.remove();
 			}
 		}
 		
@@ -462,39 +452,21 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	// A simplified version returning null on ambiguity and nothing found.
 	public MassiveCommand getChild(String token)
 	{
-		Map<String, MassiveCommand> childMatches = this.getChildMatches(token, false, null);
+		Set<MassiveCommand> children = this.getChildren(token, false, null);
 		
-		if (childMatches.isEmpty()) return null;
-		if (childMatches.size() > 1) return null;
-		
-		return childMatches.entrySet().iterator().next().getValue();
+		if (children.isEmpty()) return null;
+		if (children.size() > 1) return null;
+		return children.iterator().next();
 	}
 	
 	protected boolean isRelevant(CommandSender sender)
 	{
 		if (sender == null) return true;
 		
-		if ( ! this.isVisibleTo(sender)) return false;
-		if ( ! this.isRequirementsMet(sender, false)) return false;
+		if (!this.isVisibleTo(sender)) return false;
+		if (!this.isRequirementsMet(sender, false)) return false;
 		
 		return true;
-	}
-	
-	public boolean isLevenshteinClose(String argument, String alias)
-	{
-		int levenshteinDistanceMax = this.getLevenshteinMax(argument);
-		int distance = StringUtils.getLevenshteinDistance(argument, alias);
-		return distance <= levenshteinDistanceMax;
-	}
-	
-	public int getLevenshteinMax(String argument)
-	{
-		if (argument == null) return 0;
-		if (argument.length() <= 1) return 0; // When dealing with 1 character aliases, there is way too many options. So we don't suggest.
-		if (argument.length() <= 4) return 1; // When dealing with low length aliases, there too many options. So we won't suggest much
-		if (argument.length() <= 7) return 2; // 2 is default.
-		
-		return 3; // If it were 8 characters or more, we end up here. Because many characters allow for more typos.
 	}
 	
 	// -------------------------------------------- //
@@ -1103,19 +1075,20 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 			this.setArgs(args);
 			
 			// Requirements
-			if ( ! this.isRequirementsMet(sender, true)) return;
+			if (!this.isRequirementsMet(sender, true)) return;
 			
 			// Child Execution
 			if (this.isParent() && args.size() > 0)
 			{
 				// Get matches
 				String token = args.get(0);
-				Map<String, MassiveCommand> matches = this.getChildMatches(token, false, null);
+				
+				Set<MassiveCommand> matches = this.getChildren(token, false, null);
 				
 				// Score!
 				if (matches.size() == 1)
 				{
-					MassiveCommand child = matches.entrySet().iterator().next().getValue();
+					MassiveCommand child = matches.iterator().next();
 					args.remove(0);
 					child.execute(sender, args);
 				}
@@ -1128,12 +1101,12 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 					if (matches.isEmpty())
 					{
 						base = Lang.COMMAND_CHILD_NONE;
-						suggestions = this.getChildMatches(token, true, sender).values();
+						suggestions = this.getChildren(token, true, sender);
 					}
 					else
 					{
 						base = Lang.COMMAND_CHILD_AMBIGUOUS;
-						suggestions = this.getChildMatches(token, false, sender).values();
+						suggestions = this.getChildren(token, false, sender);
 					}
 					
 					// Message: "The sub command X couldn't be found."
@@ -1158,7 +1131,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 			}
 			
 			// Self Execution > Arguments Valid
-			if ( ! this.isArgsValid(this.getArgs(), this.sender)) return;
+			if (!this.isArgsValid(this.getArgs(), this.sender)) return;
 			
 			// Self Execution > Perform
 			this.perform();
