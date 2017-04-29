@@ -16,6 +16,7 @@
 
 package com.massivecraft.massivecore.xlib.gson.annotations;
 
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
 import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
 
@@ -73,7 +74,7 @@ import java.lang.annotation.Target;
  * </pre>
  *
  * It's possible to specify different type adapters on a field, that
- * field's type, and in the {@link com.massivecraft.massivecore.xlib.gson.GsonBuilder}. Field
+ * field's type, and in the {@link GsonBuilder}. Field
  * annotations take precedence over {@code GsonBuilder}-registered type
  * adapters, which in turn take precedence over annotated types.
  *
@@ -94,5 +95,8 @@ public @interface JsonAdapter {
 
   /** Either a {@link TypeAdapter} or {@link TypeAdapterFactory}. */
   Class<?> value();
+
+  /** false, to be able to handle {@code null} values within the adapter, default value is true. */
+  boolean nullSafe() default true;
 
 }

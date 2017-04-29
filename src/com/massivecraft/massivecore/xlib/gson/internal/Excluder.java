@@ -16,11 +16,7 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal;
 
-import com.massivecraft.massivecore.xlib.gson.ExclusionStrategy;
-import com.massivecraft.massivecore.xlib.gson.FieldAttributes;
-import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
+import com.massivecraft.massivecore.xlib.gson.*;
 import com.massivecraft.massivecore.xlib.gson.annotations.Expose;
 import com.massivecraft.massivecore.xlib.gson.annotations.Since;
 import com.massivecraft.massivecore.xlib.gson.annotations.Until;
@@ -63,7 +59,7 @@ public final class Excluder implements TypeAdapterFactory, Cloneable {
     try {
       return (Excluder) super.clone();
     } catch (CloneNotSupportedException e) {
-      throw new AssertionError();
+      throw new AssertionError(e);
     }
   }
 

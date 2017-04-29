@@ -16,16 +16,7 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal.bind;
 
-import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.JsonArray;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonIOException;
-import com.massivecraft.massivecore.xlib.gson.JsonNull;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
-import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
-import com.massivecraft.massivecore.xlib.gson.JsonSyntaxException;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
+import com.massivecraft.massivecore.xlib.gson.*;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
 import com.massivecraft.massivecore.xlib.gson.internal.LazilyParsedNumber;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
@@ -41,21 +32,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.BitSet;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
  * Type adapters for basic types.
  */
 public final class TypeAdapters {
-  private TypeAdapters() {}
+  private TypeAdapters() {
+    throw new UnsupportedOperationException();
+  }
 
   @SuppressWarnings("rawtypes")
   public static final TypeAdapter<Class> CLASS = new TypeAdapter<Class>() {
@@ -82,7 +70,7 @@ public final class TypeAdapters {
   public static final TypeAdapterFactory CLASS_FACTORY = newFactory(Class.class, CLASS);
 
   public static final TypeAdapter<BitSet> BIT_SET = new TypeAdapter<BitSet>() {
-    public BitSet read(JsonReader in) throws IOException {
+    @Override public BitSet read(JsonReader in) throws IOException {
       if (in.peek() == JsonToken.NULL) {
         in.nextNull();
         return null;
@@ -123,7 +111,7 @@ public final class TypeAdapters {
       return bitset;
     }
 
-    public void write(JsonWriter out, BitSet src) throws IOException {
+    @Override public void write(JsonWriter out, BitSet src) throws IOException {
       if (src == null) {
         out.nullValue();
         return;
@@ -154,10 +142,6 @@ public final class TypeAdapters {
     }
     @Override
     public void write(JsonWriter out, Boolean value) throws IOException {
-      if (value == null) {
-        out.nullValue();
-        return;
-      }
       out.value(value);
     }
   };
@@ -246,9 +230,65 @@ public final class TypeAdapters {
       out.value(value);
     }
   };
-
   public static final TypeAdapterFactory INTEGER_FACTORY
       = newFactory(int.class, Integer.class, INTEGER);
+
+  public static final TypeAdapter<AtomicInteger> ATOMIC_INTEGER = new TypeAdapter<AtomicInteger>() {
+    @Override public AtomicInteger read(JsonReader in) throws IOException {
+      try {
+        return new AtomicInteger(in.nextInt());
+      } catch (NumberFormatException e) {
+        throw new JsonSyntaxException(e);
+      }
+    }
+    @Override public void write(JsonWriter out, AtomicInteger value) throws IOException {
+      out.value(value.get());
+    }
+  }.nullSafe();
+  public static final TypeAdapterFactory ATOMIC_INTEGER_FACTORY =
+      newFactory(AtomicInteger.class, TypeAdapters.ATOMIC_INTEGER);
+
+  public static final TypeAdapter<AtomicBoolean> ATOMIC_BOOLEAN = new TypeAdapter<AtomicBoolean>() {
+    @Override public AtomicBoolean read(JsonReader in) throws IOException {
+      return new AtomicBoolean(in.nextBoolean());
+    }
+    @Override public void write(JsonWriter out, AtomicBoolean value) throws IOException {
+      out.value(value.get());
+    }
+  }.nullSafe();
+  public static final TypeAdapterFactory ATOMIC_BOOLEAN_FACTORY =
+      newFactory(AtomicBoolean.class, TypeAdapters.ATOMIC_BOOLEAN);
+
+  public static final TypeAdapter<AtomicIntegerArray> ATOMIC_INTEGER_ARRAY = new TypeAdapter<AtomicIntegerArray>() {
+    @Override public AtomicIntegerArray read(JsonReader in) throws IOException {
+        List<Integer> list = new ArrayList<>();
+        in.beginArray();
+        while (in.hasNext()) {
+          try {
+            int integer = in.nextInt();
+            list.add(integer);
+          } catch (NumberFormatException e) {
+            throw new JsonSyntaxException(e);
+          }
+        }
+        in.endArray();
+        int length = list.size();
+        AtomicIntegerArray array = new AtomicIntegerArray(length);
+        for (int i = 0; i < length; ++i) {
+          array.set(i, list.get(i));
+        }
+        return array;
+    }
+    @Override public void write(JsonWriter out, AtomicIntegerArray value) throws IOException {
+      out.beginArray();
+      for (int i = 0, length = value.length(); i < length; i++) {
+        out.value(value.get(i));
+      }
+      out.endArray();
+    }
+  }.nullSafe();
+  public static final TypeAdapterFactory ATOMIC_INTEGER_ARRAY_FACTORY =
+      newFactory(AtomicIntegerArray.class, TypeAdapters.ATOMIC_INTEGER_ARRAY);
 
   public static final TypeAdapter<Number> LONG = new TypeAdapter<Number>() {
     @Override
@@ -513,9 +553,21 @@ public final class TypeAdapters {
 
   public static final TypeAdapterFactory UUID_FACTORY = newFactory(UUID.class, UUID);
 
+  public static final TypeAdapter<Currency> CURRENCY = new TypeAdapter<Currency>() {
+    @Override
+    public Currency read(JsonReader in) throws IOException {
+      return Currency.getInstance(in.nextString());
+    }
+    @Override
+    public void write(JsonWriter out, Currency value) throws IOException {
+      out.value(value.getCurrencyCode());
+    }
+  }.nullSafe();
+  public static final TypeAdapterFactory CURRENCY_FACTORY = newFactory(Currency.class, CURRENCY);
+
   public static final TypeAdapterFactory TIMESTAMP_FACTORY = new TypeAdapterFactory() {
     @SuppressWarnings("unchecked") // we use a runtime check to make sure the 'T's equal
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+    @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
       if (typeToken.getRawType() != Timestamp.class) {
         return null;
       }
@@ -725,15 +777,18 @@ public final class TypeAdapters {
           SerializedName annotation = classOfT.getField(name).getAnnotation(SerializedName.class);
           if (annotation != null) {
             name = annotation.value();
+            for (String alternate : annotation.alternate()) {
+              nameToConstant.put(alternate, constant);
+            }
           }
           nameToConstant.put(name, constant);
           constantToName.put(constant, name);
         }
       } catch (NoSuchFieldException e) {
-        throw new AssertionError();
+        throw new AssertionError(e);
       }
     }
-    public T read(JsonReader in) throws IOException {
+    @Override public T read(JsonReader in) throws IOException {
       if (in.peek() == JsonToken.NULL) {
         in.nextNull();
         return null;
@@ -741,14 +796,14 @@ public final class TypeAdapters {
       return nameToConstant.get(in.nextString());
     }
 
-    public void write(JsonWriter out, T value) throws IOException {
+    @Override public void write(JsonWriter out, T value) throws IOException {
       out.value(value == null ? null : constantToName.get(value));
     }
   }
 
   public static final TypeAdapterFactory ENUM_FACTORY = new TypeAdapterFactory() {
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+    @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
       Class<? super T> rawType = typeToken.getRawType();
       if (!Enum.class.isAssignableFrom(rawType) || rawType == Enum.class) {
         return null;
@@ -764,7 +819,7 @@ public final class TypeAdapters {
       final TypeToken<TT> type, final TypeAdapter<TT> typeAdapter) {
     return new TypeAdapterFactory() {
       @SuppressWarnings("unchecked") // we use a runtime check to make sure the 'T's equal
-      public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+      @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
         return typeToken.equals(type) ? (TypeAdapter<T>) typeAdapter : null;
       }
     };
@@ -774,7 +829,7 @@ public final class TypeAdapters {
       final Class<TT> type, final TypeAdapter<TT> typeAdapter) {
     return new TypeAdapterFactory() {
       @SuppressWarnings("unchecked") // we use a runtime check to make sure the 'T's equal
-      public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+      @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
         return typeToken.getRawType() == type ? (TypeAdapter<T>) typeAdapter : null;
       }
       @Override public String toString() {
@@ -787,7 +842,7 @@ public final class TypeAdapters {
       final Class<TT> unboxed, final Class<TT> boxed, final TypeAdapter<? super TT> typeAdapter) {
     return new TypeAdapterFactory() {
       @SuppressWarnings("unchecked") // we use a runtime check to make sure the 'T's equal
-      public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+      @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
         Class<? super T> rawType = typeToken.getRawType();
         return (rawType == unboxed || rawType == boxed) ? (TypeAdapter<T>) typeAdapter : null;
       }
@@ -802,7 +857,7 @@ public final class TypeAdapters {
       final Class<? extends TT> sub, final TypeAdapter<? super TT> typeAdapter) {
     return new TypeAdapterFactory() {
       @SuppressWarnings("unchecked") // we use a runtime check to make sure the 'T's equal
-      public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+      @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
         Class<? super T> rawType = typeToken.getRawType();
         return (rawType == base || rawType == sub) ? (TypeAdapter<T>) typeAdapter : null;
       }
@@ -813,12 +868,33 @@ public final class TypeAdapters {
     };
   }
 
-  public static <TT> TypeAdapterFactory newTypeHierarchyFactory(
-      final Class<TT> clazz, final TypeAdapter<TT> typeAdapter) {
+  /**
+   * Returns a factory for all subtypes of {@code typeAdapter}. We do a runtime check to confirm
+   * that the deserialized type matches the type requested.
+   */
+  public static <T1> TypeAdapterFactory newTypeHierarchyFactory(
+      final Class<T1> clazz, final TypeAdapter<T1> typeAdapter) {
     return new TypeAdapterFactory() {
       @SuppressWarnings("unchecked")
-      public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
-        return clazz.isAssignableFrom(typeToken.getRawType()) ? (TypeAdapter<T>) typeAdapter : null;
+      @Override public <T2> TypeAdapter<T2> create(Gson gson, TypeToken<T2> typeToken) {
+        final Class<? super T2> requestedType = typeToken.getRawType();
+        if (!clazz.isAssignableFrom(requestedType)) {
+          return null;
+        }
+        return (TypeAdapter<T2>) new TypeAdapter<T1>() {
+          @Override public void write(JsonWriter out, T1 value) throws IOException {
+            typeAdapter.write(out, value);
+          }
+
+          @Override public T1 read(JsonReader in) throws IOException {
+            T1 result = typeAdapter.read(in);
+            if (result != null && !requestedType.isInstance(result)) {
+              throw new JsonSyntaxException("Expected a " + requestedType.getName()
+                  + " but was " + result.getClass().getName());
+            }
+            return result;
+          }
+        };
       }
       @Override public String toString() {
         return "Factory[typeHierarchy=" + clazz.getName() + ",adapter=" + typeAdapter + "]";

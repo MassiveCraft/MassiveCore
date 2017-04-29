@@ -33,7 +33,7 @@ public interface JsonSerializationContext {
    * @param src the object that needs to be serialized.
    * @return a tree of {@link JsonElement}s corresponding to the serialized form of {@code src}.
    */
-  JsonElement serialize(Object src);
+  public JsonElement serialize(Object src);
 
   /**
    * Invokes default serialization on the specified object passing the specific type information.
@@ -45,5 +45,5 @@ public interface JsonSerializationContext {
    * @param typeOfSrc the actual genericized type of src object.
    * @return a tree of {@link JsonElement}s corresponding to the serialized form of {@code src}.
    */
-  JsonElement serialize(Object src, Type typeOfSrc);
+  public JsonElement serialize(Object src, Type typeOfSrc);
 }

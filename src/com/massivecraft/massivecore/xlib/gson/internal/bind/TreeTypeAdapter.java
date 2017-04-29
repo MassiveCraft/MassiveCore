@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.massivecraft.massivecore.xlib.gson;
+package com.massivecraft.massivecore.xlib.gson.internal.bind;
 
+import com.massivecraft.massivecore.xlib.gson.*;
 import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions;
 import com.massivecraft.massivecore.xlib.gson.internal.Streams;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
@@ -23,24 +24,26 @@ import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * Adapts a Gson 1.x tree-style adapter as a streaming TypeAdapter. Since the
  * tree adapter may be serialization-only or deserialization-only, this class
  * has a facility to lookup a delegate type adapter on demand.
  */
-final class TreeTypeAdapter<T> extends TypeAdapter<T> {
+public final class TreeTypeAdapter<T> extends TypeAdapter<T> {
   private final JsonSerializer<T> serializer;
   private final JsonDeserializer<T> deserializer;
   private final Gson gson;
   private final TypeToken<T> typeToken;
   private final TypeAdapterFactory skipPast;
+  private final GsonContextImpl context = new GsonContextImpl();
 
   /** The delegate is lazily created because it may not be needed, and creating it may fail. */
   private TypeAdapter<T> delegate;
 
-  private TreeTypeAdapter(JsonSerializer<T> serializer, JsonDeserializer<T> deserializer,
-      Gson gson, TypeToken<T> typeToken, TypeAdapterFactory skipPast) {
+  public TreeTypeAdapter(JsonSerializer<T> serializer, JsonDeserializer<T> deserializer,
+                         Gson gson, TypeToken<T> typeToken, TypeAdapterFactory skipPast) {
     this.serializer = serializer;
     this.deserializer = deserializer;
     this.gson = gson;
@@ -56,7 +59,7 @@ final class TreeTypeAdapter<T> extends TypeAdapter<T> {
     if (value.isJsonNull()) {
       return null;
     }
-    return deserializer.deserialize(value, typeToken.getType(), gson.deserializationContext);
+    return deserializer.deserialize(value, typeToken.getType(), context);
   }
 
   @Override public void write(JsonWriter out, T value) throws IOException {
@@ -68,7 +71,7 @@ final class TreeTypeAdapter<T> extends TypeAdapter<T> {
       out.nullValue();
       return;
     }
-    JsonElement tree = serializer.serialize(value, typeToken.getType(), gson.serializationContext);
+    JsonElement tree = serializer.serialize(value, typeToken.getType(), context);
     Streams.write(tree, out);
   }
 
@@ -106,14 +109,14 @@ final class TreeTypeAdapter<T> extends TypeAdapter<T> {
     return new SingleTypeFactory(typeAdapter, null, false, hierarchyType);
   }
 
-  private static class SingleTypeFactory implements TypeAdapterFactory {
+  private static final class SingleTypeFactory implements TypeAdapterFactory {
     private final TypeToken<?> exactType;
     private final boolean matchRawType;
     private final Class<?> hierarchyType;
     private final JsonSerializer<?> serializer;
     private final JsonDeserializer<?> deserializer;
 
-    private SingleTypeFactory(Object typeAdapter, TypeToken<?> exactType, boolean matchRawType,
+    SingleTypeFactory(Object typeAdapter, TypeToken<?> exactType, boolean matchRawType,
         Class<?> hierarchyType) {
       serializer = typeAdapter instanceof JsonSerializer
           ? (JsonSerializer<?>) typeAdapter
@@ -128,15 +131,28 @@ final class TreeTypeAdapter<T> extends TypeAdapter<T> {
     }
 
     @SuppressWarnings("unchecked") // guarded by typeToken.equals() call
+    @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
       boolean matches = exactType != null
           ? exactType.equals(type) || matchRawType && exactType.getType() == type.getRawType()
           : hierarchyType.isAssignableFrom(type.getRawType());
       return matches
           ? new TreeTypeAdapter<>((JsonSerializer<T>) serializer,
-									 (JsonDeserializer<T>) deserializer, gson, type, this
-	  )
+              (JsonDeserializer<T>) deserializer, gson, type, this)
           : null;
     }
   }
+
+  private final class GsonContextImpl implements JsonSerializationContext, JsonDeserializationContext {
+    @Override public JsonElement serialize(Object src) {
+      return gson.toJsonTree(src);
+    }
+    @Override public JsonElement serialize(Object src, Type typeOfSrc) {
+      return gson.toJsonTree(src, typeOfSrc);
+    }
+    @SuppressWarnings("unchecked")
+    @Override public <R> R deserialize(JsonElement json, Type typeOfT) throws JsonParseException {
+      return (R) gson.fromJson(json, typeOfT);
+    }
+  };
 }

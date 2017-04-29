@@ -29,5 +29,5 @@ public interface ObjectConstructor<T> {
   /**
    * Returns a new instance.
    */
-  T construct();
+  public T construct();
 }

@@ -16,9 +16,7 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal.bind;
 
-import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
+import com.massivecraft.massivecore.xlib.gson.*;
 import com.massivecraft.massivecore.xlib.gson.annotations.JsonAdapter;
 import com.massivecraft.massivecore.xlib.gson.internal.ConstructorConstructor;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
@@ -30,7 +28,6 @@ import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
  * @since 2.3
  */
 public final class JsonAdapterAnnotationTypeAdapterFactory implements TypeAdapterFactory {
-
   private final ConstructorConstructor constructorConstructor;
 
   public JsonAdapterAnnotationTypeAdapterFactory(ConstructorConstructor constructorConstructor) {
@@ -38,30 +35,44 @@ public final class JsonAdapterAnnotationTypeAdapterFactory implements TypeAdapte
   }
 
   @SuppressWarnings("unchecked")
+  @Override
   public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> targetType) {
-    JsonAdapter annotation = targetType.getRawType().getAnnotation(JsonAdapter.class);
+    Class<? super T> rawType = targetType.getRawType();
+    JsonAdapter annotation = rawType.getAnnotation(JsonAdapter.class);
     if (annotation == null) {
       return null;
     }
     return (TypeAdapter<T>) getTypeAdapter(constructorConstructor, gson, targetType, annotation);
   }
 
-  @SuppressWarnings("unchecked") // Casts guarded by conditionals.
-  static TypeAdapter<?> getTypeAdapter(ConstructorConstructor constructorConstructor, Gson gson,
-      TypeToken<?> fieldType, JsonAdapter annotation) {
-    Class<?> value = annotation.value();
-    if (TypeAdapter.class.isAssignableFrom(value)) {
-          Class<TypeAdapter<?>> typeAdapter = (Class<TypeAdapter<?>>) value;
-      return constructorConstructor.get(TypeToken.get(typeAdapter)).construct();
-    }
-    if (TypeAdapterFactory.class.isAssignableFrom(value)) {
-          Class<TypeAdapterFactory> typeAdapterFactory = (Class<TypeAdapterFactory>) value;
-      return constructorConstructor.get(TypeToken.get(typeAdapterFactory))
-          .construct()
-          .create(gson, fieldType);
+  @SuppressWarnings({ "unchecked", "rawtypes" }) // Casts guarded by conditionals.
+  TypeAdapter<?> getTypeAdapter(ConstructorConstructor constructorConstructor, Gson gson,
+      TypeToken<?> type, JsonAdapter annotation) {
+    Object instance = constructorConstructor.get(TypeToken.get(annotation.value())).construct();
+
+    TypeAdapter<?> typeAdapter;
+    if (instance instanceof TypeAdapter) {
+      typeAdapter = (TypeAdapter<?>) instance;
+    } else if (instance instanceof TypeAdapterFactory) {
+      typeAdapter = ((TypeAdapterFactory) instance).create(gson, type);
+    } else if (instance instanceof JsonSerializer || instance instanceof JsonDeserializer) {
+      JsonSerializer<?> serializer = instance instanceof JsonSerializer
+          ? (JsonSerializer) instance
+          : null;
+      JsonDeserializer<?> deserializer = instance instanceof JsonDeserializer
+          ? (JsonDeserializer) instance
+          : null;
+      typeAdapter = new TreeTypeAdapter(serializer, deserializer, gson, type, null);
+    } else {
+      throw new IllegalArgumentException(
+          "@JsonAdapter value must be TypeAdapter, TypeAdapterFactory, "
+              + "JsonSerializer or JsonDeserializer reference.");
     }
 
-    throw new IllegalArgumentException(
-        "@JsonAdapter value must be TypeAdapter or TypeAdapterFactory reference.");
+    if (typeAdapter != null && annotation.nullSafe()) {
+      typeAdapter = typeAdapter.nullSafe();
+    }
+
+    return typeAdapter;
   }
 }

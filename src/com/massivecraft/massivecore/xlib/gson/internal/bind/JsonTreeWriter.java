@@ -16,11 +16,7 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal.bind;
 
-import com.massivecraft.massivecore.xlib.gson.JsonArray;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonNull;
-import com.massivecraft.massivecore.xlib.gson.JsonObject;
-import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
+import com.massivecraft.massivecore.xlib.gson.*;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
 
 import java.io.IOException;
@@ -156,6 +152,14 @@ public final class JsonTreeWriter extends JsonWriter {
   }
 
   @Override public JsonWriter value(boolean value) throws IOException {
+    put(new JsonPrimitive(value));
+    return this;
+  }
+
+  @Override public JsonWriter value(Boolean value) throws IOException {
+    if (value == null) {
+      return nullValue();
+    }
     put(new JsonPrimitive(value));
     return this;
   }

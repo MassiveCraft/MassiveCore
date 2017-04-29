@@ -16,17 +16,8 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal.bind;
 
-import com.massivecraft.massivecore.xlib.gson.Gson;
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
-import com.massivecraft.massivecore.xlib.gson.JsonSyntaxException;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapter;
-import com.massivecraft.massivecore.xlib.gson.TypeAdapterFactory;
-import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Types;
-import com.massivecraft.massivecore.xlib.gson.internal.ConstructorConstructor;
-import com.massivecraft.massivecore.xlib.gson.internal.JsonReaderInternalAccess;
-import com.massivecraft.massivecore.xlib.gson.internal.ObjectConstructor;
-import com.massivecraft.massivecore.xlib.gson.internal.Streams;
+import com.massivecraft.massivecore.xlib.gson.*;
+import com.massivecraft.massivecore.xlib.gson.internal.*;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
@@ -61,7 +52,7 @@ import java.util.Map;
  * But GSON is unable to deserialize this value because the JSON string name is
  * just the {@link Object#toString() toString()} of the map key. Attempting to
  * convert the above JSON to an object fails with a parse exception:
- * <pre>com.google.gson.JsonParseException: Expecting object found: "(5,6)"
+ * <pre>JsonParseException: Expecting object found: "(5,6)"
  *   at com.google.gson.JsonObjectDeserializationVisitor.visitFieldUsingCustomHandler
  *   at com.google.gson.ObjectNavigator.navigateClassFields
  *   ...</pre>
@@ -105,15 +96,15 @@ import java.util.Map;
  */
 public final class MapTypeAdapterFactory implements TypeAdapterFactory {
   private final ConstructorConstructor constructorConstructor;
-  private final boolean complexMapKeySerialization;
+  final boolean complexMapKeySerialization;
 
   public MapTypeAdapterFactory(ConstructorConstructor constructorConstructor,
-      boolean complexMapKeySerialization) {
+                               boolean complexMapKeySerialization) {
     this.constructorConstructor = constructorConstructor;
     this.complexMapKeySerialization = complexMapKeySerialization;
   }
 
-  public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+  @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
     Type type = typeToken.getType();
 
     Class<? super T> rawType = typeToken.getRawType();
@@ -149,16 +140,16 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
     private final ObjectConstructor<? extends Map<K, V>> constructor;
 
     public Adapter(Gson context, Type keyType, TypeAdapter<K> keyTypeAdapter,
-        Type valueType, TypeAdapter<V> valueTypeAdapter,
-        ObjectConstructor<? extends Map<K, V>> constructor) {
+                   Type valueType, TypeAdapter<V> valueTypeAdapter,
+                   ObjectConstructor<? extends Map<K, V>> constructor) {
       this.keyTypeAdapter =
-		  new TypeAdapterRuntimeTypeWrapper<>(context, keyTypeAdapter, keyType);
+              new TypeAdapterRuntimeTypeWrapper<>(context, keyTypeAdapter, keyType);
       this.valueTypeAdapter =
-		  new TypeAdapterRuntimeTypeWrapper<>(context, valueTypeAdapter, valueType);
+              new TypeAdapterRuntimeTypeWrapper<>(context, valueTypeAdapter, valueType);
       this.constructor = constructor;
     }
 
-    public Map<K, V> read(JsonReader in) throws IOException {
+    @Override public Map<K, V> read(JsonReader in) throws IOException {
       JsonToken peek = in.peek();
       if (peek == JsonToken.NULL) {
         in.nextNull();
@@ -196,7 +187,7 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
       return map;
     }
 
-    public void write(JsonWriter out, Map<K, V> map) throws IOException {
+    @Override public void write(JsonWriter out, Map<K, V> map) throws IOException {
       if (map == null) {
         out.nullValue();
         return;

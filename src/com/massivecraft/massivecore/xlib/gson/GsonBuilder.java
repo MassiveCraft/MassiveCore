@@ -16,20 +16,18 @@
 
 package com.massivecraft.massivecore.xlib.gson;
 
+import com.massivecraft.massivecore.xlib.gson.annotations.Expose;
 import com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions;
 import com.massivecraft.massivecore.xlib.gson.internal.Excluder;
+import com.massivecraft.massivecore.xlib.gson.internal.bind.TreeTypeAdapter;
 import com.massivecraft.massivecore.xlib.gson.internal.bind.TypeAdapters;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
+import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>Use this builder to construct a {@link Gson} instance when you need to set configuration
@@ -74,15 +72,16 @@ public final class GsonBuilder {
   private final List<TypeAdapterFactory> factories = new ArrayList<>();
   /** tree-style hierarchy factories. These come after factories for backwards compatibility. */
   private final List<TypeAdapterFactory> hierarchyFactories = new ArrayList<>();
-  private boolean serializeNulls;
+  private boolean serializeNulls = Gson.DEFAULT_SERIALIZE_NULLS;
   private String datePattern;
   private int dateStyle = DateFormat.DEFAULT;
   private int timeStyle = DateFormat.DEFAULT;
-  private boolean complexMapKeySerialization;
-  private boolean serializeSpecialFloatingPointValues;
-  private boolean escapeHtmlChars = true;
-  private boolean prettyPrinting;
-  private boolean generateNonExecutableJson;
+  private boolean complexMapKeySerialization = Gson.DEFAULT_COMPLEX_MAP_KEYS;
+  private boolean serializeSpecialFloatingPointValues = Gson.DEFAULT_SPECIALIZE_FLOAT_VALUES;
+  private boolean escapeHtmlChars = Gson.DEFAULT_ESCAPE_HTML;
+  private boolean prettyPrinting = Gson.DEFAULT_PRETTY_PRINT;
+  private boolean generateNonExecutableJson = Gson.DEFAULT_JSON_NON_EXECUTABLE;
+  private boolean lenient = Gson.DEFAULT_LENIENT;
 
   /**
    * Creates a GsonBuilder instance that can be used to build Gson with various configuration
@@ -137,7 +136,7 @@ public final class GsonBuilder {
 
   /**
    * Configures Gson to exclude all fields from consideration for serialization or deserialization
-   * that do not have the {@link com.massivecraft.massivecore.xlib.gson.annotations.Expose} annotation.
+   * that do not have the {@link Expose} annotation.
    *
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
    */
@@ -293,7 +292,7 @@ public final class GsonBuilder {
    * Configures Gson to apply a set of exclusion strategies during both serialization and
    * deserialization. Each of the {@code strategies} will be applied as a disjunction rule.
    * This means that if one of the {@code strategies} suggests that a field (or class) should be
-   * skipped then that field (or object) is skipped during serializaiton/deserialization.
+   * skipped then that field (or object) is skipped during serialization/deserialization.
    *
    * @param strategies the set of strategy object to apply during object (de)serialization.
    * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
@@ -348,6 +347,19 @@ public final class GsonBuilder {
    */
   public GsonBuilder setPrettyPrinting() {
     prettyPrinting = true;
+    return this;
+  }
+
+  /**
+   * By default, Gson is strict and only accepts JSON as specified by
+   * <a href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627</a>. This option makes the parser
+   * liberal in what it accepts.
+   *
+   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
+   * @see JsonReader#setLenient(boolean)
+   */
+  public GsonBuilder setLenient() {
+    lenient = true;
     return this;
   }
 
@@ -544,7 +556,7 @@ public final class GsonBuilder {
 
     return new Gson(excluder, fieldNamingPolicy, instanceCreators,
         serializeNulls, complexMapKeySerialization,
-        generateNonExecutableJson, escapeHtmlChars, prettyPrinting,
+        generateNonExecutableJson, escapeHtmlChars, prettyPrinting, lenient,
         serializeSpecialFloatingPointValues, longSerializationPolicy, factories);
   }
 

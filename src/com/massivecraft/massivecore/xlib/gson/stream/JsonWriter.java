@@ -21,16 +21,10 @@ import java.io.Flushable;
 import java.io.IOException;
 import java.io.Writer;
 
-import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.DANGLING_NAME;
-import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.EMPTY_ARRAY;
-import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.EMPTY_DOCUMENT;
-import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.EMPTY_OBJECT;
-import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.NONEMPTY_ARRAY;
-import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
-import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.*;
 
 /**
- * Writes a JSON (<a href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627</a>)
+ * Writes a JSON (<a href="http://www.ietf.org/rfc/rfc7159.txt">RFC 7159</a>)
  * encoded value to a stream, one token at a time. The stream includes both
  * literal values (strings, numbers, booleans and nulls) as well as the begin
  * and end delimiters of objects and arrays.
@@ -77,7 +71,7 @@ import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.NONEMPTY_O
  * This code encodes the above structure: <pre>   {@code
  *   public void writeJsonStream(OutputStream out, List<Message> messages) throws IOException {
  *     JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
- *     writer.setIndentSpaces(4);
+ *     writer.setIndent("    ");
  *     writeMessagesArray(writer, messages);
  *     writer.close();
  *   }
@@ -130,7 +124,7 @@ import static com.massivecraft.massivecore.xlib.gson.stream.JsonScope.NONEMPTY_O
 public class JsonWriter implements Closeable, Flushable {
 
   /*
-   * From RFC 4627, "All Unicode characters may be placed within the
+   * From RFC 7159, "All Unicode characters may be placed within the
    * quotation marks except for the characters that must be escaped:
    * quotation mark, reverse solidus, and the control characters
    * (U+0000 through U+001F)."
@@ -222,7 +216,7 @@ public class JsonWriter implements Closeable, Flushable {
   /**
    * Configure this writer to relax its syntax rules. By default, this writer
    * only emits well-formed JSON as specified by <a
-   * href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627</a>. Setting the writer
+   * href="http://www.ietf.org/rfc/rfc7159.txt">RFC 7159</a>. Setting the writer
    * to lenient permits the following:
    * <ul>
    *   <li>Top-level values of any type. With strict writing, the top-level
@@ -322,7 +316,7 @@ public class JsonWriter implements Closeable, Flushable {
    * bracket.
    */
   private JsonWriter open(int empty, String openBracket) throws IOException {
-    beforeValue(true);
+    beforeValue();
     push(empty);
     out.write(openBracket);
     return this;
@@ -415,8 +409,25 @@ public class JsonWriter implements Closeable, Flushable {
       return nullValue();
     }
     writeDeferredName();
-    beforeValue(false);
+    beforeValue();
     string(value);
+    return this;
+  }
+
+  /**
+   * Writes {@code value} directly to the writer without quoting or
+   * escaping.
+   *
+   * @param value the literal string value, or null to encode a null literal.
+   * @return this writer.
+   */
+  public JsonWriter jsonValue(String value) throws IOException {
+    if (value == null) {
+      return nullValue();
+    }
+    writeDeferredName();
+    beforeValue();
+    out.append(value);
     return this;
   }
 
@@ -434,7 +445,7 @@ public class JsonWriter implements Closeable, Flushable {
         return this; // skip the name and the value
       }
     }
-    beforeValue(false);
+    beforeValue();
     out.write("null");
     return this;
   }
@@ -446,7 +457,22 @@ public class JsonWriter implements Closeable, Flushable {
    */
   public JsonWriter value(boolean value) throws IOException {
     writeDeferredName();
-    beforeValue(false);
+    beforeValue();
+    out.write(value ? "true" : "false");
+    return this;
+  }
+
+  /**
+   * Encodes {@code value}.
+   *
+   * @return this writer.
+   */
+  public JsonWriter value(Boolean value) throws IOException {
+    if (value == null) {
+      return nullValue();
+    }
+    writeDeferredName();
+    beforeValue();
     out.write(value ? "true" : "false");
     return this;
   }
@@ -463,7 +489,7 @@ public class JsonWriter implements Closeable, Flushable {
       throw new IllegalArgumentException("Numeric values must be finite, but was " + value);
     }
     writeDeferredName();
-    beforeValue(false);
+    beforeValue();
     out.append(Double.toString(value));
     return this;
   }
@@ -475,7 +501,7 @@ public class JsonWriter implements Closeable, Flushable {
    */
   public JsonWriter value(long value) throws IOException {
     writeDeferredName();
-    beforeValue(false);
+    beforeValue();
     out.write(Long.toString(value));
     return this;
   }
@@ -498,7 +524,7 @@ public class JsonWriter implements Closeable, Flushable {
         && (string.equals("-Infinity") || string.equals("Infinity") || string.equals("NaN"))) {
       throw new IllegalArgumentException("Numeric values must be finite, but was " + value);
     }
-    beforeValue(false);
+    beforeValue();
     out.append(string);
     return this;
   }
@@ -591,12 +617,9 @@ public class JsonWriter implements Closeable, Flushable {
    * Inserts any necessary separators and whitespace before a literal value,
    * inline array, or inline object. Also adjusts the stack to expect either a
    * closing bracket or another element.
-   *
-   * @param root true if the value is a new array or object, the two values
-   *     permitted as top-level elements.
    */
   @SuppressWarnings("fallthrough")
-  private void beforeValue(boolean root) throws IOException {
+  private void beforeValue() throws IOException {
     switch (peek()) {
     case NONEMPTY_DOCUMENT:
       if (!lenient) {
@@ -605,10 +628,6 @@ public class JsonWriter implements Closeable, Flushable {
       }
       // fall-through
     case EMPTY_DOCUMENT: // first in document
-      if (!lenient && !root) {
-        throw new IllegalStateException(
-            "JSON must start with an array or an object.");
-      }
       replaceTop(NONEMPTY_DOCUMENT);
       break;
 

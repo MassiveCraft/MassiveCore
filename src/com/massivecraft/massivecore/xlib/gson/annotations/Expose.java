@@ -16,18 +16,18 @@
 
 package com.massivecraft.massivecore.xlib.gson.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
+
+import java.lang.annotation.*;
 
 /**
  * An annotation that indicates this member should be exposed for JSON
  * serialization or deserialization.
  *
- * <p>This annotation has no effect unless you build {@link com.massivecraft.massivecore.xlib.gson.Gson}
- * with a {@link com.massivecraft.massivecore.xlib.gson.GsonBuilder} and invoke
- * {@link com.massivecraft.massivecore.xlib.gson.GsonBuilder#excludeFieldsWithoutExposeAnnotation()}
+ * <p>This annotation has no effect unless you build {@link Gson}
+ * with a {@link GsonBuilder} and invoke
+ * {@link GsonBuilder#excludeFieldsWithoutExposeAnnotation()}
  * method.</p>
  *
  * <p>Here is an example of how this annotation is meant to be used:
@@ -57,6 +57,7 @@ import java.lang.annotation.Target;
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Expose {
@@ -67,7 +68,7 @@ public @interface Expose {
    * serialized output. Defaults to {@code true}.
    * @since 1.4
    */
-  boolean serialize() default true;
+  public boolean serialize() default true;
 
   /**
    * If {@code true}, the field marked with this annotation is deserialized from the JSON.
@@ -75,5 +76,5 @@ public @interface Expose {
    * Defaults to {@code true}.
    * @since 1.4
    */
-  boolean deserialize() default true;
+  public boolean deserialize() default true;
 }

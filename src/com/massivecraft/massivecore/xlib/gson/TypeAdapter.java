@@ -22,11 +22,7 @@ import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonToken;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * Converts Java objects to and from JSON.
@@ -132,7 +128,7 @@ public abstract class TypeAdapter<T> {
    * Unlike Gson's similar {@link Gson#toJson(JsonElement, Appendable) toJson}
    * method, this write is strict. Create a {@link
    * JsonWriter#setLenient(boolean) lenient} {@code JsonWriter} and call
-   * {@link #write(com.massivecraft.massivecore.xlib.gson.stream.JsonWriter, Object)} for lenient
+   * {@link #write(JsonWriter, Object)} for lenient
    * writing.
    *
    * @param value the Java object to convert. May be null.
@@ -206,15 +202,19 @@ public abstract class TypeAdapter<T> {
    * Converts {@code value} to a JSON document. Unlike Gson's similar {@link
    * Gson#toJson(Object) toJson} method, this write is strict. Create a {@link
    * JsonWriter#setLenient(boolean) lenient} {@code JsonWriter} and call
-   * {@link #write(com.massivecraft.massivecore.xlib.gson.stream.JsonWriter, Object)} for lenient
+   * {@link #write(JsonWriter, Object)} for lenient
    * writing.
    *
    * @param value the Java object to convert. May be null.
    * @since 2.2
    */
-  public final String toJson(T value) throws IOException {
+  public final String toJson(T value) {
     StringWriter stringWriter = new StringWriter();
-    toJson(stringWriter, value);
+    try {
+      toJson(stringWriter, value);
+    } catch (IOException e) {
+      throw new AssertionError(e); // No I/O writing to a StringWriter.
+    }
     return stringWriter.toString();
   }
 

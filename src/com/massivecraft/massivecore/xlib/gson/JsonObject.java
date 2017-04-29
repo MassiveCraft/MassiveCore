@@ -31,7 +31,7 @@ import java.util.Set;
  */
 public final class JsonObject extends JsonElement {
   private final LinkedTreeMap<String, JsonElement> members =
-	  new LinkedTreeMap<>();
+          new LinkedTreeMap<>();
 
   @Override
   JsonObject deepCopy() {
@@ -130,6 +130,15 @@ public final class JsonObject extends JsonElement {
    */
   public Set<Map.Entry<String, JsonElement>> entrySet() {
     return members.entrySet();
+  }
+
+  /**
+   * Returns the number of key/value pairs in the object.
+   *
+   * @return the number of key/value pairs in the object.
+   */
+  public int size() {
+    return members.size();
   }
 
   /**

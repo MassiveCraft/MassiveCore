@@ -16,11 +16,7 @@
 
 package com.massivecraft.massivecore.xlib.gson.internal;
 
-import com.massivecraft.massivecore.xlib.gson.JsonElement;
-import com.massivecraft.massivecore.xlib.gson.JsonIOException;
-import com.massivecraft.massivecore.xlib.gson.JsonNull;
-import com.massivecraft.massivecore.xlib.gson.JsonParseException;
-import com.massivecraft.massivecore.xlib.gson.JsonSyntaxException;
+import com.massivecraft.massivecore.xlib.gson.*;
 import com.massivecraft.massivecore.xlib.gson.internal.bind.TypeAdapters;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonReader;
 import com.massivecraft.massivecore.xlib.gson.stream.JsonWriter;
@@ -34,6 +30,10 @@ import java.io.Writer;
  * Reads and writes GSON parse trees over streams.
  */
 public final class Streams {
+  private Streams() {
+    throw new UnsupportedOperationException();
+  }
+
   /**
    * Takes a reader in any state and returns the next value as a JsonElement.
    */
@@ -81,7 +81,7 @@ public final class Streams {
     private final Appendable appendable;
     private final CurrentWrite currentWrite = new CurrentWrite();
 
-    private AppendableWriter(Appendable appendable) {
+    AppendableWriter(Appendable appendable) {
       this.appendable = appendable;
     }
 

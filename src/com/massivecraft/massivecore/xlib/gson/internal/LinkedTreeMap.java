@@ -19,14 +19,7 @@ package com.massivecraft.massivecore.xlib.gson.internal;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Comparator;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A map of comparable keys to values. Unlike {@code TreeMap}, this class uses
@@ -527,6 +520,9 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
     Node<K, V> next = header.next;
     Node<K, V> lastReturned = null;
     int expectedModCount = modCount;
+
+    LinkedTreeMapIterator() {
+    }
 
     public final boolean hasNext() {
       return next != header;

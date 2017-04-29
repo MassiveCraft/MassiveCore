@@ -17,19 +17,8 @@
 package com.massivecraft.massivecore.xlib.gson.internal;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.GenericDeclaration;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Properties;
+import java.lang.reflect.*;
+import java.util.*;
 
 import static com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions.checkArgument;
 import static com.massivecraft.massivecore.xlib.gson.internal.$Gson$Preconditions.checkNotNull;
@@ -43,7 +32,9 @@ import static com.massivecraft.massivecore.xlib.gson.internal.$Gson$Precondition
 public final class $Gson$Types {
   static final Type[] EMPTY_TYPE_ARRAY = new Type[] {};
 
-  private $Gson$Types() {}
+  private $Gson$Types() {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * Returns a new parameterized type, applying {@code typeArguments} to
@@ -210,7 +201,7 @@ public final class $Gson$Types {
     }
   }
 
-  private static int hashCodeOrZero(Object o) {
+  static int hashCodeOrZero(Object o) {
     return o != null ? o.hashCode() : 0;
   }
 
@@ -428,7 +419,7 @@ public final class $Gson$Types {
         : null;
   }
 
-  private static void checkNotPrimitive(Type type) {
+  static void checkNotPrimitive(Type type) {
     checkArgument(!(type instanceof Class<?>) || !((Class<?>) type).isPrimitive());
   }
 

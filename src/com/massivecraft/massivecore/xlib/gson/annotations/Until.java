@@ -16,10 +16,10 @@
 
 package com.massivecraft.massivecore.xlib.gson.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.massivecraft.massivecore.xlib.gson.Gson;
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
+
+import java.lang.annotation.*;
 
 /**
  * An annotation that indicates the version number until a member or a type should be present.
@@ -28,9 +28,9 @@ import java.lang.annotation.Target;
  * is useful to manage versioning of your JSON classes for a web-service.
  *
  * <p>
- * This annotation has no effect unless you build {@link com.massivecraft.massivecore.xlib.gson.Gson} with a
- * {@link com.massivecraft.massivecore.xlib.gson.GsonBuilder} and invoke
- * {@link com.massivecraft.massivecore.xlib.gson.GsonBuilder#setVersion(double)} method.
+ * This annotation has no effect unless you build {@link Gson} with a
+ * {@link GsonBuilder} and invoke
+ * {@link GsonBuilder#setVersion(double)} method.
  *
  * <p>Here is an example of how this annotation is meant to be used:</p>
  * <pre>
@@ -54,6 +54,7 @@ import java.lang.annotation.Target;
  * @author Joel Leitch
  * @since 1.3
  */
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface Until {
