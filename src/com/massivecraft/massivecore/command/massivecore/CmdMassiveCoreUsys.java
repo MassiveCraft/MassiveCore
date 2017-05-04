@@ -1,11 +1,10 @@
 package com.massivecraft.massivecore.command.massivecore;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
-import com.massivecraft.massivecore.command.MassiveCommand;
 
 import java.util.List;
 
-public class CmdMassiveCoreUsys extends MassiveCommand
+public class CmdMassiveCoreUsys extends MassiveCoreCommand
 {
 	// -------------------------------------------- //
 	// INSTANCE
