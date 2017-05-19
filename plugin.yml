@@ -18,6 +18,7 @@ permissions:
   massivecore.store.stats: {description: show mstore statistics, default: false}
   massivecore.store.listcolls: {description: list collections in a database, default: false}
   massivecore.store.copydb: {description: copy database content, default: false}
+  massivecore.store.playerclean: {description: clean inactive players, default: false}
   massivecore.usys: {description: use the usys command, default: false}
   massivecore.usys.multiverse: {description: manage multiverses, default: false}
   massivecore.usys.multiverse.list: {description: list multiverses, default: false}
@@ -62,6 +63,7 @@ permissions:
       massivecore.store.stats: true
       massivecore.store.listcolls: true
       massivecore.store.copydb: true
+      massivecore.store.playerclean: true
       massivecore.usys: true
       massivecore.usys.multiverse: true
       massivecore.usys.multiverse.list: true
@@ -101,6 +103,7 @@ permissions:
   massivecore.kit.rank3:
     default: false
     children:
+      massivecore.store.playerclean: true
       massivecore.kit.rank2: true
   massivecore.kit.rank2:
     default: false

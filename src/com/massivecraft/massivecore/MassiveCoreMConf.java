@@ -128,6 +128,27 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public boolean warnOnLocalAlter = false;
 	
 	// -------------------------------------------- //
+	// PLAYERCLEAN
+	// -------------------------------------------- //
+	
+	// How often should the task run?
+	// When set to 0 this feature is disabled. Meaning no cleaning will be done.
+	// Default: 1 day (Per default once a day.)
+	public long playercleanPeriodMillis = TimeUnit.MILLIS_PER_DAY;
+	
+	// This is used to decide at what time of the day the task will run.
+	// For Example: If the taskPeriodMillis is 24 hours:
+	// Set it to 0 for UTC midnight.
+	// Set it to 3600000 for UTC midnight + 1 hour.
+	public long playercleanOffsetMillis = 0;
+	
+	// When did the task last run?
+	// This need not be modified by the server owner.
+	// It will be set for you automatically.
+	// 0 means it never ran before.
+	public long playercleanLastMillis = 0;
+	
+	// -------------------------------------------- //
 	// MONGODB
 	// -------------------------------------------- //
 	// The database system MongoDB driver.
