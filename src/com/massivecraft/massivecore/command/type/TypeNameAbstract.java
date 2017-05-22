@@ -2,10 +2,13 @@ package com.massivecraft.massivecore.command.type;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Named;
+import com.massivecraft.massivecore.collections.MassiveSet;
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 public abstract class TypeNameAbstract extends TypeAbstract<String>
 {
@@ -62,6 +65,20 @@ public abstract class TypeNameAbstract extends TypeAbstract<String>
 			throw new MassiveException().addMsg("<b>The name must be at most <h>%d<b> characters.", lengthMax);
 		}
 		
+		Set<Character> disallowed = new MassiveSet<>();
+		for (char character : arg.toCharArray())
+		{
+			if (!this.isCharacterAllowed(character)) disallowed.add(character);
+		}
+		
+		// We found some disallowed characters
+		if (!disallowed.isEmpty())
+		{
+			String characterViolations = Txt.implode(disallowed, "");
+			String pluralityResolution = disallowed.size() == 1 ? " is" : "s are";
+			throw new MassiveException().addMsg("<b>The following character%s not allowed: <h>%s<b>.", pluralityResolution, characterViolations);
+		}
+		
 		return arg;
 	}
 	
@@ -70,7 +87,6 @@ public abstract class TypeNameAbstract extends TypeAbstract<String>
 	{
 		return Collections.emptyList();
 	}
-	
 	
 	// -------------------------------------------- //
 	// METHODS
@@ -82,6 +98,9 @@ public abstract class TypeNameAbstract extends TypeAbstract<String>
 		if (named == null) return null;
 		return named.getName();
 	}
+	
+	// Override this if you want to specify what characters may be used
+	public boolean isCharacterAllowed(char character) { return true; }
 	
 	// -------------------------------------------- //
 	// ABSTRACT
