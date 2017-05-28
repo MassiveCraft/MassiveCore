@@ -175,7 +175,7 @@ public class EntityInternalMap<E extends EntityInternal<E>> extends EntityContai
 		
 		this.removeIdentifiedModificationFixed(id);
 		
-		E entity = this.getIdToEntity().remove(id);
+		E entity = this.getIdToEntityRaw().remove(id);
 		if (entity == null) return null;
 		
 		// Remove entity reference info
