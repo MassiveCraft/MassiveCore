@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -187,7 +186,10 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	
 	// The visibility of this command in help command.
 	protected Visibility visibility = Visibility.VISIBLE;
-
+	
+	// The priority of this command when aliases are ambiguous.
+	protected long priority = 0;
+	
 	// === SETUP ===
 
 	// Determines whether the smart setup process will be used, works for most of commands
@@ -396,12 +398,14 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 	//
 	// token - the full alias or an alias prefix.
 	// levenshtein - should we use levenshtein instead of starts with?
-	// prioritizeExact - return single element set on full match.
+	// onlyRelevantToSender - if non null only returns commands relevant to specific sender
+	// prioritize - only return commands with the highest priority
+	
 	// 
 	// An empty set means no child was found.
 	// A single element set means we found an unambiguous match.
 	// A larger set means the token was ambiguous.
-	private Set<MassiveCommand> getChildren(String token, boolean levenshtein, CommandSender onlyRelevantToSender)
+	private Set<MassiveCommand> getChildren(String token, boolean levenshtein, CommandSender onlyRelevantToSender, boolean prioritize)
 	{
 		// Create Ret
 		Set<MassiveCommand> ret = new MassiveSet<>();
@@ -435,24 +439,50 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		}
 		
 		// Only Relevant
-		if (onlyRelevantToSender != null)
-		{
-			for  (Iterator<MassiveCommand> iterator = ret.iterator(); iterator.hasNext(); )
-			{
-				MassiveCommand command = iterator.next();
-				if (command.isRelevant(onlyRelevantToSender)) continue;
-				iterator.remove();
-			}
-		}
+		if (onlyRelevantToSender != null) ret = getRelevantCommands(ret, onlyRelevantToSender);
+		
+		// Priority
+		if (prioritize) ret = getPrioritizedCommands(ret);
 		
 		// Return Ret
+		return ret;
+	}
+	
+	private static Set<MassiveCommand> getRelevantCommands(Iterable<MassiveCommand> commands, CommandSender sender)
+	{
+		Set<MassiveCommand> ret = new MassiveSet<>();
+		for (MassiveCommand command : commands)
+		{
+			if (!command.isRelevant(sender)) continue;
+			ret.add(command);
+		}
+		return ret;
+	}
+	
+	private static Set<MassiveCommand> getPrioritizedCommands(Iterable<MassiveCommand> commands)
+	{
+		Set<MassiveCommand> ret = new MassiveSet<>();
+		long highestPriority = Long.MIN_VALUE;
+		
+		for (MassiveCommand command : commands)
+		{
+			long priority = command.getPriority();
+			if (priority < highestPriority) continue;
+			
+			if (priority > highestPriority)
+			{
+				ret.clear();
+				highestPriority = priority;
+			}
+			ret.add(command);
+		}
 		return ret;
 	}
 	
 	// A simplified version returning null on ambiguity and nothing found.
 	public MassiveCommand getChild(String token)
 	{
-		Set<MassiveCommand> children = this.getChildren(token, false, null);
+		Set<MassiveCommand> children = this.getChildren(token, false, null, true);
 		
 		if (children.isEmpty()) return null;
 		if (children.size() > 1) return null;
@@ -878,7 +908,10 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		if (this.getVisibility() == Visibility.INVISIBLE) return false;
 		return this.isRequirementsMet(sender, false);
 	}
-
+	
+	public long getPriority() { return priority; }
+	public void setPriority(long priority) { this.priority = priority; }
+	
 	// -------------------------------------------- //
 	// SETUP
 	// -------------------------------------------- //
@@ -1088,7 +1121,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 				// Get matches
 				String token = args.get(0);
 				
-				Set<MassiveCommand> matches = this.getChildren(token, false, null);
+				Set<MassiveCommand> matches = this.getChildren(token, false, null, true);
 				
 				// Score!
 				if (matches.size() == 1)
@@ -1106,12 +1139,12 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 					if (matches.isEmpty())
 					{
 						base = Lang.COMMAND_CHILD_NONE;
-						suggestions = this.getChildren(token, true, sender);
+						suggestions = this.getChildren(token, true, sender, false);
 					}
 					else
 					{
 						base = Lang.COMMAND_CHILD_AMBIGUOUS;
-						suggestions = this.getChildren(token, false, sender);
+						suggestions = this.getChildren(token, false, sender, false);
 					}
 					
 					// Message: "The sub command X couldn't be found."

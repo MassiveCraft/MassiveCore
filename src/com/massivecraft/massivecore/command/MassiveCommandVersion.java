@@ -32,6 +32,9 @@ public class MassiveCommandVersion extends MassiveCommand
 		this.setAliases("version");
 		
 		this.setDesc("display plugin version");
+		
+		// Priority
+		this.setPriority(-1);
 	}
 
 	// -------------------------------------------- //

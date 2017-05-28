@@ -25,6 +25,9 @@ public class MassiveCommandDeprecated extends MassiveCommand
 		
 		// Visibility
 		this.setVisibility(Visibility.INVISIBLE);
+		
+		// Priority
+		this.setPriority(-1);
 	}
 	
 	// -------------------------------------------- //
