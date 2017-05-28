@@ -7,6 +7,7 @@ import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateAnd;
 import com.massivecraft.massivecore.predicate.PredicateIsClassSingleton;
 import com.massivecraft.massivecore.store.Coll;
+import com.massivecraft.massivecore.store.Colls;
 import com.massivecraft.massivecore.store.migrator.MigratorRoot;
 import com.massivecraft.massivecore.test.Test;
 import com.massivecraft.massivecore.util.ReflectionUtil;
@@ -244,7 +245,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		{
 			if (debug) log(Txt.parse("<h>%s <b>is already active.", active.getClass().getSimpleName()));
 		}
-
+		
 		active.setActive(this);
 		if (debug) log(Txt.parse("<i>Activating <h>%s<i>.", active.getClass().getSimpleName()));
 
@@ -281,9 +282,11 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 
 			Object instance = ReflectionUtil.getSingletonInstance(clazz);
 			if ( ! (instance instanceof Active)) throw new IllegalArgumentException("Not Active Instance: " + (instance == null ? "NULL" : instance) + " for object: " + (object == null ? "NULL" : object));
-
+				
 			Active active = (Active)instance;
 			return active;
+			
+			
 		}
 
 		// No success
@@ -329,6 +332,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		// Fill with all kinds of Actives
 		ret.addAll(this.getClassesActiveMigrators());
 		ret.addAll(this.getClassesActiveColls());
+		ret.addAll(this.getClassesActiveCollss());
 		ret.addAll(this.getClassesActiveNms());
 		ret.addAll(this.getClassesActiveCommands());
 		ret.addAll(this.getClassesActiveEngines());
@@ -344,6 +348,11 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	{
 		return getClassesActive("entity", Coll.class);
 	}
+	
+	public List<Class<?>> getClassesActiveCollss()
+	{
+		return getClassesActive("entity", Colls.class);
+	}
 
 	public List<Class<?>> getClassesActiveNms()
 	{
@@ -357,7 +366,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 						ReflectionUtil.getField(clazz, "d");
 						return true;
 					}
-					catch (Exception ex)
+					catch (Throwable e)
 					{
 						return false;
 					}

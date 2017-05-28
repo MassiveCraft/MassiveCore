@@ -256,6 +256,7 @@ public class ReflectionUtil
 		try
 		{
 			Method get = getMethod(clazz, "get");
+			if ( ! Modifier.isStatic(get.getModifiers())) return false;
 			return true;
 		}
 		catch (Exception ex)
