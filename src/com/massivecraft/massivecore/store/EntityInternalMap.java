@@ -203,13 +203,7 @@ public class EntityInternalMap<E extends EntityInternal<E>> extends EntityContai
 		Objects.requireNonNull(id, "id");
 		return this.getIdToEntityRaw().containsKey(id);
 	}
-	
-	public E remove(String id)
-	{
-		Objects.requireNonNull(id, "id");
-		return this.getIdToEntityRaw().remove(id);
-	}
-	
+
 	public int size()
 	{
 		return this.getIdToEntityRaw().size();
@@ -218,11 +212,6 @@ public class EntityInternalMap<E extends EntityInternal<E>> extends EntityContai
 	public boolean isEmpty()
 	{
 		return this.getIdToEntityRaw().isEmpty();
-	}
-	
-	public void clear()
-	{
-		this.getIdToEntityRaw().clear();
 	}
 	
 }
