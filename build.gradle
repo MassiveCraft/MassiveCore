@@ -1,0 +1,68 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+group = "com.massivecraft"
+version = "6.3.1-SNAPSHOT"
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+	maven {
+		url "http://repo.bukkit.org/content/groups/public"
+    }
+	maven {
+		url "http://repo.comphenix.net/content/groups/public"
+    }
+	maven {
+		url "http://ci.herocraftonline.com/plugin/repository/everything"
+    }
+	maven {
+		url "http://omwah.sdf.org/maven/repo/snapshots/"
+    }
+	maven {
+		url "http://repo.greatmancode.com/content/groups/public/"
+    }
+	maven {
+		url "http://files.krinsoft.net:8085/nexus/content/groups/public"
+	}
+}
+
+dependencies {
+	compile 'org.bukkit:bukkit:1.5.2-R0.2-SNAPSHOT'
+	compile 'org.bukkit:craftbukkit:1.5.2-R0.2-SNAPSHOT'
+	compile 'com.comphenix.protocol:ProtocolLib:2.4.3'
+	compile ('net.milkbowl.vault:Vault:1.2.26-SNAPSHOT') {
+		exclude module: 'Multiverse-Inventories'
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src'
+		}
+		resources {
+			file 'plugin.yml'
+		}
+	}
+}
+
+processResources  {
+	filter ReplaceTokens, tokens: [
+		version: project.version,
+	]
+}
+
+//include dependencies for a "fat jar"
+//http://docs.codehaus.org/display/GRADLE/Cookbook#Cookbook-Creatingafatjar
+//jar {
+//	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+//}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.6'
+}
