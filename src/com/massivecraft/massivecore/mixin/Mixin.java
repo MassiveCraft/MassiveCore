@@ -93,8 +93,8 @@ public class Mixin extends Engine
 		}
 		catch (Throwable t)
 		{
-			t.printStackTrace();
-			//throw ReflectionUtil.asRuntimeException(t);
+			//t.printStackTrace();
+			throw ReflectionUtil.asRuntimeException(t);
 		}
 	}
 	
