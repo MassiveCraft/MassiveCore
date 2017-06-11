@@ -240,14 +240,17 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 		Active active = asActive(object);
 		if (active == null) return;
 
-		if (active.isActive())
+		if (active.isActive() && debug)
 		{
-			if (debug) log(Txt.parse("<h>%s <b>is already active.", active.getClass().getSimpleName()));
+			log(Txt.parse("<h>%s<b> is already active.", active.getClass().getName()));
 		}
 
 		active.setActive(this);
-		if (debug) log(Txt.parse("<i>Activating <h>%s<i>.", active.getClass().getSimpleName()));
-
+		
+		if (debug)
+		{
+			log(Txt.parse("<i>Activating <h>%s<i>.", active.getClass().getName()));
+		}
 	}
 
 	private static Active asActive(Object object)
