@@ -4,6 +4,8 @@ package com.massivecraft.massivecore.util;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.comparator.ComparatorAbstractTransformer;
+import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateAnd;
 import org.bukkit.Bukkit;
@@ -19,6 +21,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ReflectionUtil
@@ -459,9 +463,9 @@ public class ReflectionUtil
 			ClassPath classPath = ClassPath.from(classLoader);
 			Predicate<Class<?>> predicateCombined = PredicateAnd.get(predicates);
 
-			Collection<ClassInfo> classes = recursive ? classPath.getTopLevelClassesRecursive(packageName) : classPath.getTopLevelClasses(packageName);
+			Collection<ClassInfo> classInfos = recursive ? classPath.getTopLevelClassesRecursive(packageName) : classPath.getTopLevelClasses(packageName);
 
-			for (ClassInfo classInfo : classes)
+			for (ClassInfo classInfo : classInfos)
 			{
 				// Get name of class
 				String className = classInfo.getName();
@@ -493,6 +497,15 @@ public class ReflectionUtil
 		{
 			throw new RuntimeException(ex);
 		}
+		
+		Collections.sort(ret, new Comparator<Class<?>>()
+		{
+			@Override
+			public int compare(Class<?> class1, Class<?> class2)
+			{
+				return ComparatorNaturalOrder.get().compare(class1.getName(), class2.getName());
+			}
+		});
 
 		return ret;
 	}
