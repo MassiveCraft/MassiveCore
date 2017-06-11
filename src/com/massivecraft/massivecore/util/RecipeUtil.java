@@ -1,16 +1,51 @@
 package com.massivecraft.massivecore.util;
 
+import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.predicate.Predicate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+
 // NOTE: This utility targets 1.9 and will crash on older servers.
 public class RecipeUtil
-{	
+{
+	// ------------------------------------------- //
+	// REMOVE
+	// -------------------------------------------- //
+	
+	public static void remove(Predicate<Recipe> removePredicate)
+	{
+		Objects.requireNonNull(removePredicate);
+		
+		List<Recipe> recipesToRemove = new MassiveList<>();
+		List<Recipe> recipesToKeep = new MassiveList<>();
+		
+		Iterator<Recipe> iterator = Bukkit.recipeIterator();
+		while (iterator.hasNext())
+		{
+			Recipe recipe = iterator.next();
+			List<Recipe> recipes = removePredicate.apply(recipe) ? recipesToRemove : recipesToKeep;
+			recipes.add(recipe);
+		}
+		
+		if (recipesToRemove.isEmpty()) return;
+		
+		Bukkit.clearRecipes();
+		for (Recipe recipe : recipesToKeep) {
+			Bukkit.addRecipe(recipe);
+		}
+	}
+	
 	// ------------------------------------------- //
 	// POTION
 	// -------------------------------------------- //

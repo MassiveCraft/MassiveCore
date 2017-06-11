@@ -13,16 +13,18 @@ public class NmsChat18R2P extends NmsChatAbstract
 	public static NmsChat18R2P get() { return i; }
 	
 	// -------------------------------------------- //
-	// SETUP SPECIFIC
+	// SETUP
 	// -------------------------------------------- //
 	
 	@Override
-	public void setupSpecific() throws Throwable
+	public void setup() throws Throwable
 	{
 		this.classChatSerializer = PackageType.MINECRAFT_SERVER.getClass("IChatBaseComponent$ChatSerializer");
 		this.methodChatSerializer = ReflectionUtil.getMethod(this.classChatSerializer, "a", String.class);
-		
 		this.classEnumTitleAction = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutTitle$EnumTitleAction");
+		
+		setupCommon();
+		
+		this.constructorPacketPlayOutChatType = ReflectionUtil.getConstructor(this.classPacketPlayOutChat, this.classIChatBaseComponent, Byte.TYPE);
 	}
-	
 }

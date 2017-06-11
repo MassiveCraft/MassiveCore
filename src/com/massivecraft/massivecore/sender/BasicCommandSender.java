@@ -7,7 +7,7 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissibleBase;
 
-public class BasicCommandSender extends PermissibleBase implements CommandSender
+public abstract class BasicCommandSender extends PermissibleBase implements CommandSender
 {
 	public final String name;
 	
@@ -32,17 +32,11 @@ public class BasicCommandSender extends PermissibleBase implements CommandSender
 	{
 		return this.name;
 	}
-
+	
 	@Override
 	public Server getServer()
 	{
 		return Bukkit.getServer();
-	}
-
-	@Override
-	public void sendMessage(String message)
-	{
-		// Nothing per default
 	}
 
 	@Override

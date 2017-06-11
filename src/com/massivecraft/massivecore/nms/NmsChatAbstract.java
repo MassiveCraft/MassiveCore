@@ -61,8 +61,14 @@ public abstract class NmsChatAbstract extends NmsChat
 	@Override
 	public void setup() throws Throwable
 	{
-		this.setupSpecific();
-		
+		throw notImplemented();
+	}
+	
+	// -------------------------------------------- //
+	// SETUP COMMON
+	// -------------------------------------------- //
+	
+	protected void setupCommon() throws Throwable {
 		for (Object object : this.classEnumTitleAction.getEnumConstants())
 		{
 			Enum<?> e = (Enum<?>) object;
@@ -70,26 +76,19 @@ public abstract class NmsChatAbstract extends NmsChat
 			else if (e.name().equalsIgnoreCase("SUBTITLE")) this.enumEnumTitleActionSub = e;
 			else if (e.name().equalsIgnoreCase("TIMES")) this.enumEnumTitleActionTimes = e;
 		}
-
+		
 		this.classIChatBaseComponent = PackageType.MINECRAFT_SERVER.getClass("IChatBaseComponent");
-
+		
 		// Get title packet and it's constructor
 		this.classPacketPlayOutTitle = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutTitle");
 		this.constructorPacketPlayOutTitle = ReflectionUtil.getConstructor(this.classPacketPlayOutTitle, this.classEnumTitleAction, this.classIChatBaseComponent);
 		
 		this.constructorPacketPlayOutTitleTimes = ReflectionUtil.getConstructor(this.classPacketPlayOutTitle, this.classEnumTitleAction, this.classIChatBaseComponent, int.class, int.class, int.class);
-
+		
 		// Get Chat packet and it's constructor
 		this.classPacketPlayOutChat = PackageType.MINECRAFT_SERVER.getClass("PacketPlayOutChat");
 		this.constructorPacketPlayOutChat = ReflectionUtil.getConstructor(this.classPacketPlayOutChat, this.classIChatBaseComponent);
-		this.constructorPacketPlayOutChatType = ReflectionUtil.getConstructor(this.classPacketPlayOutChat, this.classIChatBaseComponent, Byte.TYPE);
 	}
-	
-	// -------------------------------------------- //
-	// SETUP SPECIFIC
-	// -------------------------------------------- //
-	
-	public abstract void setupSpecific() throws Throwable;
 	
 	// -------------------------------------------- //
 	// TO COMPONENT
@@ -173,8 +172,12 @@ public abstract class NmsChatAbstract extends NmsChat
 		if (player == null) return;
 		
 		Object component = toComponent(raw);
-		Object packet = ReflectionUtil.invokeConstructor(this.constructorPacketPlayOutChatType, component, (byte)2);
+		Object packet = this.constructActionBarPacket(component);
 		NmsBasics.get().sendPacket(player, packet);
+	}
+	
+	public <T> T constructActionBarPacket(Object component) {
+		return ReflectionUtil.invokeConstructor(this.constructorPacketPlayOutChatType, component, (byte)2);
 	}
 	
 }

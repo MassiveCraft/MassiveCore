@@ -35,6 +35,7 @@ import com.massivecraft.massivecore.item.WriterItemStack;
 import com.massivecraft.massivecore.mixin.MixinEvent;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
+import com.massivecraft.massivecore.nms.NmsBasics;
 import com.massivecraft.massivecore.nms.NmsItemStackCreate17R4P;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSAdapter;
@@ -261,7 +262,18 @@ public class MassiveCore extends MassivePlugin
 
 		return ret;
 	}
-
+	
+	@Override
+	public List<Class<?>> getClassesActiveNms()
+	{
+		List<Class<?>> ret = super.getClassesActiveNms();
+		
+		ret.remove(NmsBasics.class);
+		ret.add(0, NmsBasics.class);
+		
+		return ret;
+	}
+	
 	@Override
 	public List<Class<?>> getClassesActiveMixins()
 	{
