@@ -171,8 +171,8 @@ public class MixinMessage extends Mixin
 		{
 			if (message instanceof String)
 			{
-				String string = (String)message;
-				sendee.sendMessage(string);
+				String plain = (String)message;
+				NmsChat.get().sendChatPlain(sendee, plain);
 			}
 			else if (message instanceof Mson)
 			{

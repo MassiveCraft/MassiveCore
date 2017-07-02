@@ -46,6 +46,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public boolean versionSynchronizationEnabled = true;
 	public int tabCompletionLimit = 100;
 	public boolean recipientChatEventEnabled = true;
+	public boolean consoleColorsEnabled = true;
 	
 	// -------------------------------------------- //
 	// PERMISSIONS FORMATS
@@ -142,9 +143,7 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	// DEVELOPER
 	// -------------------------------------------- //
 	
-	public boolean debugWriters = false;
-	public boolean debugActives = false;
-	public boolean testsEnabled = false;
+	public boolean debugEnabled = false;
 	
 	// -------------------------------------------- //
 	// SPONSOR

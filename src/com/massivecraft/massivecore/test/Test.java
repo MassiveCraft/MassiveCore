@@ -29,7 +29,7 @@ public abstract class Test extends Engine
 	@Override
 	public void setActiveInner(boolean active)
 	{
-		if (!MassiveCoreMConf.get().testsEnabled) return;
+		if (!MassiveCoreMConf.get().debugEnabled) return;
 		
 		this.test();
 		

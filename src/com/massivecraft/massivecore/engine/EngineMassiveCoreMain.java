@@ -9,6 +9,7 @@ import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerRespawn;
 import com.massivecraft.massivecore.event.EventMassiveCoreAfterPlayerTeleport;
 import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerToRecipientChat;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateStartsWithIgnoreCase;
@@ -78,7 +79,7 @@ public class EngineMassiveCoreMain extends Engine
 			
 			// Format and send with the format and message from this recipient's own event. 
 			String recipientMessage = String.format(recipientEvent.getFormat(), sender.getDisplayName(), recipientEvent.getMessage());
-			recipient.sendMessage(recipientMessage);
+			MixinMessage.get().messageOne(recipient, recipientMessage);
 		}
 		
 		// For the console

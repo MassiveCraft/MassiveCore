@@ -119,8 +119,8 @@ public abstract class NmsChatAbstract extends NmsChat
 		}
 		else
 		{
-			String message = mson.toPlain(true);
-			sendee.sendMessage(message);
+			String plain = mson.toPlain(true);
+			this.sendChatPlain(sendee, plain);
 		}
 	}
 	

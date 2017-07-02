@@ -105,7 +105,7 @@ public abstract class WriterAbstract<OA, OB, CA, CB, FA, FB, D> extends Engine
 	
 	public void reportSuccess(boolean success, String name, Throwable t)
 	{
-		if ( ! MassiveCoreMConf.get().debugWriters) return;
+		if ( ! MassiveCoreMConf.get().debugEnabled) return;
 		
 		// Create
 		List<String> messages = new MassiveList<>();

@@ -4,6 +4,7 @@ import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.Lang;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.event.EventMassiveCorePermissionDeniedFormat;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.nms.NmsPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -390,7 +391,7 @@ public class PermissionUtil
 		{
 			CommandSender sender = (CommandSender)permissible;
 			String message = getPermissionDeniedMessage(permission);
-			sender.sendMessage(message);
+			MixinMessage.get().messageOne(sender, message);
 		}
 		
 		return false;

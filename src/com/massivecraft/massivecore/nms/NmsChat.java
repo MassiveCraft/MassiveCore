@@ -1,10 +1,13 @@
 package com.massivecraft.massivecore.nms;
 
+import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.mixin.Mixin;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.Txt;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.json.simple.JSONObject;
 
 public class NmsChat extends Mixin
@@ -36,8 +39,20 @@ public class NmsChat extends Mixin
 		CommandSender sendee = IdUtil.getSender(sendeeObject);
 		if (sendee == null) return;
 		
-		String message = mson.toPlain(true);
-		sendee.sendMessage(message);
+		String plain = mson.toPlain(true);
+		sendChatPlain(sendee, plain);
+	}
+	
+	public void sendChatPlain(Object sendeeObject, String plain) {
+		CommandSender sendee = IdUtil.getSender(sendeeObject);
+		if (sendee == null) return;
+		
+		MassiveCoreMConf mconf = MassiveCoreMConf.get();
+		if (mconf != null && !mconf.consoleColorsEnabled && sendee instanceof ConsoleCommandSender) {
+			plain = ChatColor.stripColor(plain);
+		}
+		
+		sendee.sendMessage(plain);
 	}
 	
 	// -------------------------------------------- //

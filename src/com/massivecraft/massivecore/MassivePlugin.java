@@ -3,6 +3,7 @@ package com.massivecraft.massivecore;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.mixin.Mixin;
+import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateAnd;
 import com.massivecraft.massivecore.predicate.PredicateIsClassSingleton;
@@ -216,7 +217,7 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	// can only happen after others have been initialised.
 	public void activateOne(Object object)
 	{
-		boolean debug = MassiveCoreMConf.get() != null && MassiveCoreMConf.get().debugActives;
+		boolean debug = MassiveCoreMConf.get() != null && MassiveCoreMConf.get().debugEnabled;
 
 		// Try collection
 		if (object instanceof Iterable)
@@ -460,14 +461,15 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	public void log(Level level, Object... msg)
 	{
 		String imploded = Txt.implode(msg, " ");
-		ConsoleCommandSender sender = Bukkit.getConsoleSender();
-		if (level == Level.INFO && sender != null)
+		ConsoleCommandSender console = Bukkit.getConsoleSender();
+		if (level == Level.INFO && console != null)
 		{
-			Bukkit.getConsoleSender().sendMessage(this.logPrefixColored + imploded);
+			MixinMessage.get().messageOne(console, this.logPrefixColored + imploded);
 		}
 		else
 		{
 			Logger.getLogger("Minecraft").log(level, this.logPrefixPlain + imploded);
 		}
 	}
+	
 }
