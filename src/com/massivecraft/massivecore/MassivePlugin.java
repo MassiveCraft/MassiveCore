@@ -360,8 +360,16 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 						ReflectionUtil.getField(clazz, "d");
 						return true;
 					}
-					catch (Exception ex)
+					catch (Throwable throwable)
 					{
+						// We need to catch throwable here.
+						// NoClassDefFoundError will happen for NmsMixins targeting incompatible versions.
+						// On Minecraft 1.8 we did for example get this error:
+						// > java.lang.NoClassDefFoundError: org/bukkit/scoreboard/Team$Option
+						// > at java.lang.Class.getDeclaredFields0(Native Method) ~[?:1.8.0_111]
+						// > at java.lang.Class.privateGetDeclaredFields(Class.java:2583) ~[?:1.8.0_111]
+						// > at java.lang.Class.getDeclaredField(Class.java:2068) ~[?:1.8.0_111]
+						// The Java reflection itself is simply not careful enough.
 						return false;
 					}
 				}
