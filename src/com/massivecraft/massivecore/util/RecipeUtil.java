@@ -20,33 +20,6 @@ import java.util.Objects;
 public class RecipeUtil
 {
 	// ------------------------------------------- //
-	// REMOVE
-	// -------------------------------------------- //
-	
-	public static void remove(Predicate<Recipe> removePredicate)
-	{
-		Objects.requireNonNull(removePredicate);
-		
-		List<Recipe> recipesToRemove = new MassiveList<>();
-		List<Recipe> recipesToKeep = new MassiveList<>();
-		
-		Iterator<Recipe> iterator = Bukkit.recipeIterator();
-		while (iterator.hasNext())
-		{
-			Recipe recipe = iterator.next();
-			List<Recipe> recipes = removePredicate.apply(recipe) ? recipesToRemove : recipesToKeep;
-			recipes.add(recipe);
-		}
-		
-		if (recipesToRemove.isEmpty()) return;
-		
-		Bukkit.clearRecipes();
-		for (Recipe recipe : recipesToKeep) {
-			Bukkit.addRecipe(recipe);
-		}
-	}
-	
-	// ------------------------------------------- //
 	// POTION
 	// -------------------------------------------- //
 	
