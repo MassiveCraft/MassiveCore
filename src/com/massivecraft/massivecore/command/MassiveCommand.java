@@ -949,9 +949,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 
 	public void setupAddChildren()
 	{
-		String s = this.getClass().getSimpleName();
-
-		for (Field field : this.getClass().getDeclaredFields())
+		for (Field field : this.getClassOrEnclosing(this).getDeclaredFields())
 		{
 			ReflectionUtil.makeAccessible(field);
 			Class<?> fieldType = field.getType();
@@ -971,6 +969,13 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 			if (child.isSetupEnabled()) child.setup();
 		}
 	}
+	
+	private Class<?> getClassOrEnclosing(Object object)
+	{
+		Class<?> clazz =  object.getClass();
+		Class<?> enclosingClass = clazz.getEnclosingClass();
+		return enclosingClass == null ? clazz : enclosingClass;
+	}
 
 	protected String calcName()
 	{
@@ -978,7 +983,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		if (this.isRoot()) return null;
 
 		// ... get name of parent ...
-		String parentName = this.getParent().getClass().getSimpleName();
+		String parentName = this.getClassOrEnclosing(this.getParent()).getSimpleName();
 
 		// ... and only try if the names match ...
 		String name = this.getClass().getSimpleName();
@@ -1011,7 +1016,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		// ... split at new words and separate with underscore.
 		permName = Txt.implode(Txt.camelsplit(permName), "_");
 
-		// Enums are alway upper case.
+		// Enums are always upper case.
 		permName = permName.toUpperCase();
 
 		// If the name is empty it is the base command
