@@ -38,6 +38,7 @@ import com.massivecraft.massivecore.command.type.enumeration.TypeRabbitType;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSkeletonType;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSpawnReason;
+import com.massivecraft.massivecore.command.type.enumeration.TypeVariant;
 import com.massivecraft.massivecore.command.type.enumeration.TypeVillagerProfession;
 import com.massivecraft.massivecore.command.type.enumeration.TypeWorldType;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanTrue;
@@ -345,6 +346,15 @@ public class RegistryType
 		catch (Throwable t)
 		{
 			
+		}
+		
+		try
+		{
+			register(TypeVariant.get());
+		}
+		catch (Throwable t)
+		{
+		
 		}
 		
 		register(TypeSkeletonType.get());
