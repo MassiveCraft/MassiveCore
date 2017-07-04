@@ -2,15 +2,15 @@ package com.massivecraft.massivecore.command.type.enumeration;
 
 import org.bukkit.entity.Parrot;
 
-public class TypeVariant extends TypeEnum<Parrot.Variant>
+public class TypeParrotVariant extends TypeEnum<Parrot.Variant>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
 	
-	private static TypeVariant i = new TypeVariant();
-	public static TypeVariant get() { return i; }
-	public TypeVariant()
+	private static TypeParrotVariant i = new TypeParrotVariant();
+	public static TypeParrotVariant get() { return i; }
+	public TypeParrotVariant()
 	{
 		super(Parrot.Variant.class);
 	}
