@@ -43,6 +43,9 @@ public class WriterItemStackMetaFireworkFlight extends WriterAbstractItemStackMe
 	@Override
 	public void setB(FireworkMeta cb, Integer fb, ItemStack d)
 	{
+		fb = Math.min(fb, 127);
+		fb = Math.max(fb, 0);
+		
 		cb.setPower(fb);
 	}
 	
