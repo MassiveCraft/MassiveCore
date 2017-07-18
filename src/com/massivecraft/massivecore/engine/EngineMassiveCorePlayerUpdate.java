@@ -88,18 +88,31 @@ public class EngineMassiveCorePlayerUpdate extends Engine
 	}
 	
 	// -------------------------------------------- //
-	// FIX NO CHEAT PLUS BUG
+	// LAST FLY ACTIVE
 	// -------------------------------------------- //
 	
 	public static Map<UUID, Long> idToLastFlyActive = new HashMap<>();
+	
 	public static Long getLastFlyActive(Player player)
 	{
 		return idToLastFlyActive.get(player.getUniqueId());
 	}
+	
 	public static void setLastFlyActive(Player player, Long millis)
 	{
 		idToLastFlyActive.put(player.getUniqueId(), millis);
 	}
+	
+	public static boolean isFlyActiveRecently(Player player)
+	{
+		Long lastActive = getLastFlyActive(player);
+		if (lastActive == null) return false;
+		return (System.currentTimeMillis() - lastActive < 2000);
+	}
+	
+	// -------------------------------------------- //
+	// FIX NO CHEAT PLUS BUG
+	// -------------------------------------------- //
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void fixNoCheatPlusBug(EntityDamageEvent event)
@@ -111,10 +124,8 @@ public class EngineMassiveCorePlayerUpdate extends Engine
 		// ... is taking fall damage ...
 		if (event.getCause() != DamageCause.FALL) return;
 		
-		// ... within 2 seconds of flying ...
-		Long lastActive = getLastFlyActive(player);
-		if (lastActive == null) return;
-		if (System.currentTimeMillis() - lastActive > 2000) return;
+		// ... after recently flying ...
+		if (!isFlyActiveRecently(player)) return;
 		
 		// ... cancel the event.
 		event.setCancelled(true);
