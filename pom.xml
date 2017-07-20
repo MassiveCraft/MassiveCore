@@ -50,6 +50,14 @@
                 <directory>${project.build.sourceDirectory}</directory>
                 <filtering>false</filtering>
             </resource>
+            <!-- Sponsor Disable Code -->
+            <resource>
+                <directory>${project.basedir}</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>sponsor-disable-code</include>
+                </includes>
+            </resource>
         </resources>
     </build>
     

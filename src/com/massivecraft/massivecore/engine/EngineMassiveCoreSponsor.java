@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.engine;
 
 import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassiveCoreMSponsorInfo;
 import com.massivecraft.massivecore.SoundEffect;
@@ -18,10 +19,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Scanner;
 
 public class EngineMassiveCoreSponsor extends Engine
 {
+	// -------------------------------------------- //
+	// CONSTANT
+	// -------------------------------------------- //
+	
+	private static final String DISABLE_CODE = readDisableCode();
+	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
@@ -62,8 +71,8 @@ public class EngineMassiveCoreSponsor extends Engine
 	@Override
 	public void run()
 	{
-		// If enabled by mconf ...
-		if ( ! MassiveCoreMConf.get().sponsorEnabled) return;
+		// If enabled ...
+		if ( ! this.isEnabled()) return;
 		
 		// ... update sponsor info.
 		MassiveCoreMSponsorInfo.update();
@@ -73,13 +82,25 @@ public class EngineMassiveCoreSponsor extends Engine
 	// ENABLED
 	// -------------------------------------------- //
 	
-	public boolean isEnabled(final CommandSender sender)
+	private static String readDisableCode() {
+		InputStream inputStream = MassiveCore.get().getResource("sponsor-disable-code");
+		Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
+		return scanner.hasNext() ? scanner.next().trim() : "";
+	}
+	
+	private boolean isEnabled()
+	{
+		// NOTE: Uncomment to make use of disable code system.
+		return MassiveCoreMConf.get().sponsorEnabled;// && DISABLE_CODE.hashCode() != 644515031;
+	}
+	
+	private boolean isEnabled(final CommandSender sender)
 	{
 		// If there is a sender ...
 		if (sender == null) return false;
 		
-		// ... and enabled by mconf ...
-		if ( ! MassiveCoreMConf.get().sponsorEnabled) return false;
+		// ... and enabled ...
+		if ( ! this.isEnabled()) return false;
 		
 		// ... and enabled by info base ...
 		if ( ! MassiveCoreMSponsorInfo.get().enabled) return false;
