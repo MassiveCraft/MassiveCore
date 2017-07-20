@@ -4,7 +4,6 @@ import com.massivecraft.massivecore.event.EventMassiveCorePlayercleanToleranceMi
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
-import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collection;
@@ -44,7 +43,10 @@ public class InactiveUtil
 		long time = System.currentTimeMillis() - start;
 		for (CommandSender recipient : recipients)
 		{
-			MixinMessage.get().msgOne(recipient, "<i>Removed <h>%d <i>players from <h>%s <i>took <v>%dms<i>.", count, coll.getName(), time);
+			int current = coll.getIds().size();
+			int total = current + count;
+			double percentage = (((double) count) / total) * 100D;
+			MixinMessage.get().msgOne(recipient, "<i>Removed <h>%d<i>/<h>%d (%.2f%%) <i>players from <h>%s <i>took <v>%dms<i>.", count, total, percentage, coll.getName(), time);
 		}
 	}
 	
@@ -56,12 +58,7 @@ public class InactiveUtil
 		// Consider
 		if (!shouldBeRemoved(now, entity)) return false;
 		
-		String message = Txt.parse("<i>Player <h>%s<i> with id %s was removed due to inactivity.", entity.getName(), entity.getId());
-		
-		for (CommandSender recipient : recipients)
-		{
-			MixinMessage.get().messageOne(recipient, message);
-		}
+		//String message = Txt.parse("<i>Player <h>%s<i> with id %s was removed due to inactivity.", entity.getName(), entity.getId());
 		
 		// Apply
 		entity.detach();
