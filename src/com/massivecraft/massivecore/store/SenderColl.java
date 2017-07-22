@@ -16,13 +16,6 @@ import java.util.List;
 
 public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements SenderIdSource
 {
-	// This should be false under most circumstances.
-	// In some cases such as Factions we want it though.
-	// Especially so we don't change the years old way Factions does it.
-	private boolean playercleanTaskEnabled = false;
-	public boolean isPlayercleanTaskEnabled() { return this.playercleanTaskEnabled; }
-	public void setPlayercleanTaskEnabled(boolean playercleanTaskEnabled) { this.playercleanTaskEnabled = playercleanTaskEnabled; }
-	
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
@@ -203,11 +196,11 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 	}
 	
 	// -------------------------------------------- //
-	// ACTIVITY MILLIS
+	// CLEAN
 	// -------------------------------------------- //
 
 	// Must be overriden if they want to use it.
-	public long getPlayercleanToleranceMillis()
+	public long getCleanInactivityToleranceMillis()
 	{
 		return -1;
 	}

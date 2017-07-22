@@ -20,6 +20,6 @@ public class CmdMassiveCoreStore extends MassiveCoreCommand
 	public CmdMassiveCoreStoreStats cmdMassiveCoreStoreStats = new CmdMassiveCoreStoreStats();
 	public CmdMassiveCoreStoreListcolls cmdMassiveCoreStoreListcolls = new CmdMassiveCoreStoreListcolls();
 	public CmdMassiveCoreStoreCopydb cmdMassiveCoreStoreCopydb = new CmdMassiveCoreStoreCopydb();
-	public CmdMassiveCoreStorePlayerclean cmdMassiveCoreStorePlayerclean = new CmdMassiveCoreStorePlayerclean();
+	public CmdMassiveCoreStoreClean cmdMassiveCoreStoreClean = new CmdMassiveCoreStoreClean();
 	
 }

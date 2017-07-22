@@ -2,13 +2,12 @@ package com.massivecraft.massivecore.event;
 
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
-import com.massivecraft.massivecore.store.inactive.Inactive;
 import org.bukkit.event.HandlerList;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class EventMassiveCorePlayercleanToleranceMillis extends EventMassiveCore
+public class EventMassiveCorePlayerCleanInactivityToleranceMillis extends EventMassiveCore
 {
 	// -------------------------------------------- //
 	// REQUIRED EVENT CODE
@@ -21,6 +20,9 @@ public class EventMassiveCorePlayercleanToleranceMillis extends EventMassiveCore
 	// -------------------------------------------- //
 	// FIELD
 	// -------------------------------------------- //
+	
+	private final long lastActivityMillis;
+	public long getLastActivityMillis() { return lastActivityMillis; }
 	
 	private final long now;
 	public long getNow() { return now; }
@@ -37,13 +39,14 @@ public class EventMassiveCorePlayercleanToleranceMillis extends EventMassiveCore
 	// CONSTRUCT
 	// -------------------------------------------- //
 	
-	public EventMassiveCorePlayercleanToleranceMillis(SenderEntity entity)
+	public EventMassiveCorePlayerCleanInactivityToleranceMillis(long lastActivityMillis, SenderEntity entity)
 	{
-		this(System.currentTimeMillis(), entity);
+		this(lastActivityMillis, System.currentTimeMillis(), entity);
 	}
 	
-	public EventMassiveCorePlayercleanToleranceMillis(long now, SenderEntity entity)
+	public EventMassiveCorePlayerCleanInactivityToleranceMillis(long lastActivityMillis, long now, SenderEntity entity)
 	{
+		this.lastActivityMillis = lastActivityMillis;
 		this.now = now;
 		this.entity = entity;
 	}
@@ -64,12 +67,15 @@ public class EventMassiveCorePlayercleanToleranceMillis extends EventMassiveCore
 		return ret;
 	}
 	
-	public boolean shouldBeRemoved()
+	public boolean shouldBeCleaned()
 	{
 		long toleranceMillis = getToleranceMillis();
 		
 		long now = this.getNow();
-		long lastActivityMillis = ((Inactive)this.getEntity()).getLastActivityMillis();
+		long lastActivityMillis = this.getLastActivityMillis();
+		
+		// If unknown don't remove
+		if (lastActivityMillis <= 0) return false;
 		
 		long removeTime = lastActivityMillis + toleranceMillis;
 		

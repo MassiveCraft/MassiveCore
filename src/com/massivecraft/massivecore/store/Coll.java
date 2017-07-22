@@ -142,6 +142,13 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	protected final int entityTargetVersion;
 	@Override public int getEntityTargetVersion() { return this.entityTargetVersion; }
 	
+	// This should be false under most circumstances.
+	// In some cases such as Factions we want it though.
+	// Especially so we don't change the years old way Factions does it.
+	private boolean cleanTaskEnabled = false;
+	public boolean isCleanTaskEnabled() { return this.cleanTaskEnabled; }
+	public void setCleanTaskEnabled(boolean cleanTaskEnabled) { this.cleanTaskEnabled = cleanTaskEnabled; }
+	
 	// -------------------------------------------- //
 	// IDENTIFIED MODIFICATIONS
 	// -------------------------------------------- //

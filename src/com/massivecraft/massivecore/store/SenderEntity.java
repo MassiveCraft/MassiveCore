@@ -4,11 +4,13 @@ import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.PlayerState;
 import com.massivecraft.massivecore.event.EventMassiveCoreAknowledge;
+import com.massivecraft.massivecore.event.EventMassiveCorePlayerCleanInactivityToleranceMillis;
 import com.massivecraft.massivecore.mixin.MixinDisplayName;
 import com.massivecraft.massivecore.mixin.MixinMessage;
 import com.massivecraft.massivecore.mixin.MixinPlayed;
 import com.massivecraft.massivecore.mixin.MixinVisibility;
 import com.massivecraft.massivecore.mson.Mson;
+import com.massivecraft.massivecore.store.cleanable.Cleanable;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
 import org.bukkit.GameMode;
@@ -19,7 +21,7 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.UUID;
 
-public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> implements Named
+public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> implements Named, Cleanable
 {
 	// -------------------------------------------- //
 	// FIELDS
@@ -63,6 +65,40 @@ public abstract class SenderEntity<E extends SenderEntity<E>> extends Entity<E> 
 	public SenderColl<E> getColl()
 	{
 		return (SenderColl<E>) super.getColl();
+	}
+	
+	// -------------------------------------------- //
+	// OVERRIDE: CLEANABLE
+	// -------------------------------------------- //
+	
+	@Override
+	public boolean shouldBeCleaned(long now)
+	{
+		// If unknown don't clean
+		Long lastActivityMillis = this.getLastPlayed();
+		if (lastActivityMillis == null) return false;
+		
+		return this.shouldBeCleaned(now, lastActivityMillis);
+	}
+	
+	protected boolean shouldBeCleaned(long now, long lastActivityMillis)
+	{
+		// This means it is disabled for this coll
+		if (this.getColl().getCleanInactivityToleranceMillis() < 0) return false;
+		
+		EventMassiveCorePlayerCleanInactivityToleranceMillis event = new EventMassiveCorePlayerCleanInactivityToleranceMillis(lastActivityMillis, now, this);
+		event.run();
+		return event.shouldBeCleaned();
+	}
+	
+	public void preClean()
+	{
+	
+	}
+	
+	public void postClean()
+	{
+	
 	}
 	
 	// -------------------------------------------- //
