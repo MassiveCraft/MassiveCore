@@ -110,15 +110,17 @@ public abstract class TypeSenderIdAbstract<T> extends TypeAbstract<T>
 		// All of our subclasses return null if senderId is null.
 		// Thus we don't need to check for that being null, but only check ret.
 
-		// If presence is online or local ...
-		if (this.presence == SenderPresence.LOCAL || this.presence == SenderPresence.ONLINE)
+		// If presence is online or local and the target is not visible for the sender then throw an error.
+		if
+		(
+			(this.presence == SenderPresence.LOCAL || this.presence == SenderPresence.ONLINE)
+			&&
+			senderId != null
+			&&
+			!MixinVisibility.get().isVisible(senderId, sender)
+		)
 		{
-			// ... and the target is not visible for the sender ...
-			if (!MixinVisibility.get().isVisible(senderId, sender))
-			{
-				// .. throw an error.
-				throwError(arg);
-			}
+			throwError(arg);
 		}
 
 		// Create & populate Ret
