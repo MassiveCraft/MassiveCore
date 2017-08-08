@@ -53,10 +53,17 @@ public class NmsBasics17R4P extends NmsBasics
 	// org.bukkit.craftbukkit.scoreboard.CraftObjective#objective
 	private Field fieldCraftObjectiveHandle;
 	
+	// SIGN for 1.12.0 and below
 	// org.bukkit.craftbukkit.block.CraftSign
 	private Class<?> classCraftSign;
 	// org.bukkit.craftbukkit.block.CraftSign#sign
 	private Field fieldCraftSignHandle;
+	
+	// SIGN for 1.12.1 and above
+	// org.bukkit.craftbukkit.block.CraftBlockEntityState
+	private Class<?> classCraftBlockEntityState;
+	// org.bukkit.craftbukkit.block.CraftBlockEntityState#tileEntity
+	private Field fieldCraftBlockEntityStateHandle;
 	
 	// GET BUKKIT
 	// net.minecraft.server.Entity
@@ -89,7 +96,6 @@ public class NmsBasics17R4P extends NmsBasics
 	public void setup() throws Throwable
 	{
 		// GET HANDLE
-		
 		this.classCraftEntity = PackageType.CRAFTBUKKIT_ENTITY.getClass("CraftEntity");
 		this.methodCraftEntityGetHandle = ReflectionUtil.getMethod(this.classCraftEntity, "getHandle");
 		
@@ -105,8 +111,18 @@ public class NmsBasics17R4P extends NmsBasics
 		this.classCraftObjective = PackageType.CRAFTBUKKIT_SCOREBOARD.getClass("CraftObjective");
 		this.fieldCraftObjectiveHandle = ReflectionUtil.getField(this.classCraftObjective, "objective");
 		
-		this.classCraftSign = PackageType.CRAFTBUKKIT_BLOCK.getClass("CraftSign");
-		this.fieldCraftSignHandle = ReflectionUtil.getField(this.classCraftSign, "sign");
+		try
+		{
+			// SIGN for 1.12.0 and below
+			this.classCraftSign = PackageType.CRAFTBUKKIT_BLOCK.getClass("CraftSign");
+			this.fieldCraftSignHandle = ReflectionUtil.getField(this.classCraftSign, "sign");
+		}
+		catch (Throwable t)
+		{
+			// SIGN for 1.12.1 and above
+			this.classCraftBlockEntityState = PackageType.CRAFTBUKKIT_BLOCK.getClass("CraftBlockEntityState");
+			this.fieldCraftBlockEntityStateHandle = ReflectionUtil.getField(this.classCraftBlockEntityState, "tileEntity");
+		}
 		
 		// GET BUKKIT
 		this.classNmsEntity = PackageType.MINECRAFT_SERVER.getClass("Entity");
@@ -167,7 +183,21 @@ public class NmsBasics17R4P extends NmsBasics
 	public <T> T getHandle(Sign sign)
 	{
 		if (sign == null) return null;
-		return ReflectionUtil.getField(this.fieldCraftSignHandle, sign);
+		
+		Field field;
+		
+		if (this.fieldCraftSignHandle != null)
+		{
+			// SIGN for 1.12.0 and below
+			field = this.fieldCraftSignHandle;
+		}
+		else
+		{
+			// SIGN for 1.12.1 and above
+			field = this.fieldCraftBlockEntityStateHandle;
+		}
+		
+		return ReflectionUtil.getField(field, sign);
 	}
 	
 	// -------------------------------------------- //
