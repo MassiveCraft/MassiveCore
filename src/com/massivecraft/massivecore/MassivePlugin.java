@@ -20,7 +20,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
@@ -152,14 +151,13 @@ public abstract class MassivePlugin extends JavaPlugin implements Listener, Name
 	public void onEnablePost()
 	{
 		// Metrics
-		if (MassiveCoreMConf.get().mcstatsEnabled)
+		if (MassiveCoreMConf.get().metricsEnabled)
 		{
 			try
 			{
-				MetricsLite metrics = new MetricsLite(this);
-				metrics.start();
+				new Metrics(this);
 			}
-			catch (IOException e)
+			catch (RuntimeException e)
 			{
 				String message = Txt.parse("<b>Metrics Initialization Failed :'(");
 				log(message);

@@ -175,11 +175,11 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public boolean sponsorEnabled = true;
 	
 	// -------------------------------------------- //
-	// MCSTATS
+	// METRICS
 	// -------------------------------------------- //
-	// URL connections to http://mcstats.org/
+	// URL connections to https://bstats.org
 	
-	public boolean mcstatsEnabled = true;
+	public boolean metricsEnabled = true;
 
 	// -------------------------------------------- //
 	// LORE SORTING
