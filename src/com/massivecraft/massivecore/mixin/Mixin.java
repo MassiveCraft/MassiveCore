@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.mixin;
 
 import com.massivecraft.massivecore.Engine;
+import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.util.ReflectionUtil;
@@ -138,7 +139,8 @@ public class Mixin extends Engine
 	@Override
 	public void setActive(boolean active)
 	{
-		this.setActiveVerboose(active, true);
+		boolean verbose = MassiveCoreMConf.get() != null && MassiveCoreMConf.get().debugEnabled;
+		this.setActiveVerboose(active, verbose);
 	}
 	
 	public void setActiveVerboose(boolean active, boolean verbose)
