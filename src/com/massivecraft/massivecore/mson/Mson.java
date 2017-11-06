@@ -50,6 +50,9 @@ public class Mson implements Serializable
 	public static final transient Mson EMPTY = mson("");
 	public static final transient Mson NEWLINE = mson("\n");
 	public static final transient Mson DOT = mson(".");
+	public static final transient Mson NULL = mson("NULL");
+	public static final transient Mson SPACE_AND_SPACE = mson(" and ");
+	public static final transient Mson COMMA_SPACE = mson(", ");
 	
 	// -------------------------------------------- //
 	// GSON
@@ -1082,7 +1085,7 @@ public class Mson implements Serializable
 		for (int i = 0; i < list.length; i++)
 		{
 			Object item = list[i];
-			Mson part = (item == null ? mson("NULL") : Mson.mson(item));
+			Mson part = (item == null ? NULL : Mson.mson(item));
 			
 			if (i != 0)
 			{
@@ -1145,11 +1148,11 @@ public class Mson implements Serializable
 	}
 	public static Mson implodeCommaAndDot(final Collection<?> objects, ChatColor color)
 	{
-		return implodeCommaAndDot(objects, mson(", ").color(color), mson(" and ").color(color), mson(".").color(color));
+		return implodeCommaAndDot(objects, COMMA_SPACE.color(color), SPACE_AND_SPACE.color(color), DOT.color(color));
 	}
 	public static Mson implodeCommaAnd(final Collection<?> objects, ChatColor color)
 	{
-		return implodeCommaAndDot(objects, mson(", ").color(color), mson(" and ").color(color), mson());
+		return implodeCommaAndDot(objects, COMMA_SPACE.color(color), SPACE_AND_SPACE.color(color), mson());
 	}
 	public static Mson implodeCommaAndDot(final Collection<?> objects)
 	{
