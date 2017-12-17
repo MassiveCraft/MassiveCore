@@ -4,7 +4,8 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateAnd;
-import com.massivecraft.massivecore.util.XClassPath.XClassInfo;
+import com.massivecraft.massivecore.xlib.guava.reflect.ClassPath;
+import com.massivecraft.massivecore.xlib.guava.reflect.ClassPath.ClassInfo;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;
@@ -457,12 +458,12 @@ public class ReflectionUtil
 		try
 		{
 			// Get info
-			XClassPath classPath = XClassPath.from(classLoader);
+			ClassPath classPath = ClassPath.from(classLoader);
 			Predicate<Class<?>> predicateCombined = PredicateAnd.get(predicates);
 
-			Collection<XClassInfo> classInfos = recursive ? classPath.getTopLevelClassesRecursive(packageName) : classPath.getTopLevelClasses(packageName);
+			Collection<ClassInfo> classInfos = recursive ? classPath.getTopLevelClassesRecursive(packageName) : classPath.getTopLevelClasses(packageName);
 
-			for (XClassInfo classInfo : classInfos)
+			for (ClassInfo classInfo : classInfos)
 			{
 				// Get name of class
 				String className = classInfo.getName();
