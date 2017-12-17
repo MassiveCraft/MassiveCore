@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.util;
 
-import com.google.common.collect.ImmutableList;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
+import com.massivecraft.massivecore.xlib.guava.collect.ImmutableList;
 
 import java.util.Collections;
 import java.util.EnumMap;

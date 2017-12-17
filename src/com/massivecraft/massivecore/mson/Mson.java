@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.mson;
 
-import com.google.common.collect.ImmutableList;
 import com.massivecraft.massivecore.adapter.AdapterLowercaseEnum;
 import com.massivecraft.massivecore.adapter.AdapterMsonEventFix;
 import com.massivecraft.massivecore.collections.MassiveList;
@@ -14,6 +13,7 @@ import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
 import com.massivecraft.massivecore.xlib.gson.JsonPrimitive;
+import com.massivecraft.massivecore.xlib.guava.collect.ImmutableList;
 import org.apache.commons.lang.mutable.MutableInt;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

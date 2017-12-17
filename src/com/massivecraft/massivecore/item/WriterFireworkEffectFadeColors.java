@@ -1,12 +1,11 @@
 package com.massivecraft.massivecore.item;
 
-import com.google.common.collect.ImmutableList;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 
 import java.util.List;
 
-public class WriterFireworkEffectFadeColors extends WriterAbstractFireworkEffect<List<Integer>, ImmutableList<Color>>
+public class WriterFireworkEffectFadeColors extends WriterAbstractFireworkEffect<List<Integer>, List<Color>>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -38,9 +37,9 @@ public class WriterFireworkEffectFadeColors extends WriterAbstractFireworkEffect
 	}
 	
 	@Override
-	public ImmutableList<Color> getB(FireworkEffect cb, Object d)
+	public List<Color> getB(FireworkEffect cb, Object d)
 	{
-		return (ImmutableList<Color>) cb.getFadeColors();
+		return cb.getFadeColors();
 	}
 	
 }

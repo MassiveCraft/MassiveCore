@@ -1,6 +1,5 @@
 package com.massivecraft.massivecore.store;
 
-import com.google.common.base.Objects;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.PlayerState;
 import com.massivecraft.massivecore.event.EventMassiveCoreAknowledge;
@@ -13,6 +12,7 @@ import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.store.cleanable.Cleanable;
 import com.massivecraft.massivecore.util.IdUtil;
 import com.massivecraft.massivecore.util.PermissionUtil;
+import com.massivecraft.massivecore.xlib.guava.base.Objects;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;

@@ -1,7 +1,7 @@
 package com.massivecraft.massivecore.item;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
+import com.massivecraft.massivecore.xlib.guava.collect.BiMap;
+import com.massivecraft.massivecore.xlib.guava.collect.ImmutableBiMap;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;

@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.nms;
 
-import com.google.common.collect.ImmutableSet;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+import com.massivecraft.massivecore.xlib.guava.collect.ImmutableSet;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
