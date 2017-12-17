@@ -27,6 +27,12 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public static MassiveCoreMConf get() { return i; }
 	
 	// -------------------------------------------- //
+	// VERSION
+	// -------------------------------------------- //
+	
+	public int version = 1;
+	
+	// -------------------------------------------- //
 	// ALIASES
 	// -------------------------------------------- //
 	// Base command aliases.
