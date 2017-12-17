@@ -2,7 +2,7 @@ package com.massivecraft.massivecore.item;
 
 import org.bukkit.Color;
 
-public class ConverterToColors extends ConverterList<Integer, Color>
+public class ConverterToColors extends ConverterListImmutable<Integer, Color>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
