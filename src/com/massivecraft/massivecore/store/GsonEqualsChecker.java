@@ -124,12 +124,14 @@ public class GsonEqualsChecker
 		// Boolean check
 		if (one.isBoolean())
 		{
+			if (!two.isBoolean()) return false;
 			return one.getAsBoolean() == two.getAsBoolean();
 		}
 		
 		// Number check
 		if (one.isNumber())
 		{
+			if (!two.isNumber()) return false;
 			Number oneNumber = one.getAsNumber();
 			Number twoNumber = two.getAsNumber();
 			
@@ -149,6 +151,7 @@ public class GsonEqualsChecker
 		// String check
 		if (one.isString())
 		{
+			if (!two.isString()) return false;
 			return one.getAsString().equals(two.getAsString());
 		}
 		
