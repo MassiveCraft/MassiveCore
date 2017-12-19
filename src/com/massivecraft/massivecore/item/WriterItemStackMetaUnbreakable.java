@@ -35,13 +35,13 @@ public class WriterItemStackMetaUnbreakable extends WriterAbstractItemStackMetaF
 	@Override
 	public Boolean getB(ItemMeta cb, ItemStack d)
 	{
-		return cb.spigot().isUnbreakable();
+		return cb.isUnbreakable();
 	}
 
 	@Override
 	public void setB(ItemMeta cb, Boolean fb, ItemStack d)
 	{
-		cb.spigot().setUnbreakable(fb);
+		cb.setUnbreakable(fb);
 	}
 	
 }
