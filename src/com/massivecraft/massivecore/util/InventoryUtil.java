@@ -10,7 +10,9 @@ import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateStringStartsWith;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -18,6 +20,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -68,6 +71,11 @@ public class InventoryUtil
 	public static PlayerInventory asPlayerInventory(Inventory inventory)
 	{
 		return (inventory instanceof PlayerInventory) ? (PlayerInventory)inventory : null;
+	}
+	
+	public static LivingEntity asLivingEntity(Entity entity)
+	{
+		return (entity instanceof LivingEntity) ? (LivingEntity) entity : null;
 	}
 	
 	// This is a modified copyOfRange implementation.
@@ -247,18 +255,32 @@ public class InventoryUtil
 		playerInventory.setItemInHand(weapon);
 	}
 	@SuppressWarnings("deprecation")
-	public static ItemStack getWeapon(HumanEntity human)
+	public static ItemStack getWeapon(Entity entity)
 	{
-		if (human == null) return null;
-		ItemStack ret = human.getItemInHand();
+		LivingEntity lentity = asLivingEntity(entity);
+		if (lentity == null) return null;
+		return getWeapon(lentity.getEquipment());
+	}
+	@SuppressWarnings("deprecation")
+	public static void setWeapon(Entity entity, ItemStack weapon)
+	{
+		LivingEntity lentity = asLivingEntity(entity);
+		if (lentity == null) return;
+		setWeapon(lentity.getEquipment(), weapon);
+	}
+	@SuppressWarnings("deprecation")
+	public static ItemStack getWeapon(EntityEquipment equipment)
+	{
+		if (equipment == null) return null;
+		ItemStack ret = equipment.getItemInHand();
 		ret = clean(ret);
 		return ret;
 	}
 	@SuppressWarnings("deprecation")
-	public static void setWeapon(HumanEntity human, ItemStack weapon)
+	public static void setWeapon(EntityEquipment equipment, ItemStack weapon)
 	{
-		if (human == null) return;
-		human.setItemInHand(weapon);
+		if (equipment == null) return;
+		equipment.setItemInHand(weapon);
 	}
 	
 	// SHIELD

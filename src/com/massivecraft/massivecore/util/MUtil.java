@@ -1159,10 +1159,7 @@ public class MUtil
 	
 	public static boolean isSword(Entity entity)
 	{
-		if (entity == null) return false;
-		if (!(entity instanceof LivingEntity)) return false;
-		LivingEntity lentity = (LivingEntity)entity;
-		return isSword(lentity.getEquipment().getItemInHand());
+		return isSword(InventoryUtil.getWeapon(entity));
 	}
 	
 	public static boolean isSword(EntityDamageByEntityEvent event)
@@ -1199,10 +1196,7 @@ public class MUtil
 	
 	public static boolean isAxe(Entity entity)
 	{
-		if (entity == null) return false;
-		if (!(entity instanceof LivingEntity)) return false;
-		LivingEntity lentity = (LivingEntity)entity;
-		return isAxe(lentity.getEquipment().getItemInHand());
+		return isAxe(InventoryUtil.getWeapon(entity));
 	}
 	
 	public static boolean isAxe(EntityDamageByEntityEvent event)
@@ -1229,7 +1223,7 @@ public class MUtil
 		if (entity == null) return false;
 		if (!(entity instanceof LivingEntity)) return false;
 		LivingEntity lentity = (LivingEntity)entity;
-		return isUnarmed(lentity.getEquipment().getItemInHand());
+		return isUnarmed(InventoryUtil.getWeapon(lentity));
 	}
 	
 	public static boolean isUnarmed(EntityDamageByEntityEvent event)
@@ -1271,10 +1265,7 @@ public class MUtil
 		
 	public static boolean isPickaxe(Entity entity)
 	{
-		if (entity == null) return false;
-		if (!(entity instanceof LivingEntity)) return false;
-		LivingEntity lentity = (LivingEntity)entity;
-		return isPickaxe(lentity.getEquipment().getItemInHand());
+		return isPickaxe(InventoryUtil.getWeapon(entity));
 	}
 		
 	public static boolean isPickaxe(BlockBreakEvent event)
@@ -1305,10 +1296,7 @@ public class MUtil
 			
 	public static boolean isSpade(Entity entity)
 	{
-		if (entity == null) return false;
-		if (!(entity instanceof LivingEntity)) return false;
-		LivingEntity lentity = (LivingEntity)entity;
-		return isSpade(lentity.getEquipment().getItemInHand());
+		return isSpade(InventoryUtil.getWeapon(entity));
 	}
 			
 	public static boolean isSpade(BlockBreakEvent event)
