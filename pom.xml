@@ -21,10 +21,10 @@
 
     <!-- Dependencies -->
     <dependencies>
-        <!-- MassiveXlib -->
+        <!-- MassiveCoreXlib -->
         <dependency>
             <groupId>com.massivecraft.massivecore</groupId>
-            <artifactId>MassiveXlib</artifactId>
+            <artifactId>MassiveCoreXlib</artifactId>
         </dependency>
         <!-- Spigot -->
         <dependency>
@@ -65,7 +65,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.massivecraft.massivecore:MassiveXlib</include>
+                                    <include>com.massivecraft.massivecore:MassiveCoreXlib</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
