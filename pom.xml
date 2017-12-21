@@ -83,6 +83,11 @@
                     <include>*.yml</include>
                 </includes>
             </resource>
+            <!-- OpenSource -->
+            <resource>
+                <directory>${project.build.sourceDirectory}</directory>
+                <filtering>false</filtering>
+            </resource>
             <!-- Sponsor Disable Code -->
             <resource>
                 <directory>${project.basedir}</directory>
