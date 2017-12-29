@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.item;
 
+import com.massivecraft.massivecore.collections.MassiveList;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Banner;
@@ -54,7 +55,11 @@ public class WriterItemStackMetaShieldPatterns extends WriterAbstractItemStackMe
 		if (banner == null) return null;
 		
 		// Return
-		return banner.getPatterns();
+		try {
+			return banner.getPatterns();
+		} catch (NullPointerException e) {
+			return new MassiveList<>();
+		}
 	}
 	
 	@Override
