@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
+import java.util.Map;
 import java.util.Map.Entry;
 
 
@@ -45,6 +46,11 @@ public abstract class CollAbstract<E extends Entity<E>> extends EntityContainerA
 	{
 		if (oid == null) throw new NullPointerException("oid");
 		this.saveToRemoteFixed(this.fixIdOrThrow(oid));
+	}
+
+	@Override public Map<String, E> getTempRegistry()
+	{
+		return null;
 	}
 	
 	@Override

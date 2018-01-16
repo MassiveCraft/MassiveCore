@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.adapter;
 
 import com.massivecraft.massivecore.item.DataItemStack;
+import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;

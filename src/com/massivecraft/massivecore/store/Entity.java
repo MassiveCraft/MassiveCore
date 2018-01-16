@@ -2,12 +2,6 @@ package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-/**
- * Usage of this class is highly optional. You may persist anything. If you are 
- * creating the class to be persisted yourself, it might be handy to extend this
- * Entity class. It just contains a set of shortcut methods.  
- */
-
 // Self referencing generic.
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
 public class Entity<E extends Entity<E>> extends EntityInternal<E>

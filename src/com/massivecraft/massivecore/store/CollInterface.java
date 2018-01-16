@@ -40,12 +40,6 @@ public interface CollInterface<E extends Entity<E>> extends Named, Active, Ident
 	// -------------------------------------------- //
 	
 	Collection<String> getIdsRemote();
-		
-	// -------------------------------------------- //
-	// BEHAVIOR
-	// -------------------------------------------- //
-
-	int getEntityTargetVersion();
 
 	// -------------------------------------------- //
 	// SYNC LOG
@@ -68,7 +62,9 @@ public interface CollInterface<E extends Entity<E>> extends Named, Active, Ident
 	void removeAtRemoteFixed(String id);
 	void saveToRemoteFixed(String id);
 	void loadFromRemoteFixed(String id, Entry<JsonObject, Long> remoteEntry);
-	
+
+	Map<String, E> getTempRegistry();
+
 	// -------------------------------------------- //
 	// SYNC EXAMINE AND DO
 	// -------------------------------------------- //

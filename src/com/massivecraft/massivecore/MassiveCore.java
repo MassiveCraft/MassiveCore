@@ -31,6 +31,7 @@ import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
 import com.massivecraft.massivecore.command.type.RegistryType;
 import com.massivecraft.massivecore.item.DataBannerPattern;
+import com.massivecraft.massivecore.item.DataItemStack;
 import com.massivecraft.massivecore.item.WriterItemStack;
 import com.massivecraft.massivecore.mixin.MixinEvent;
 import com.massivecraft.massivecore.mson.Mson;
@@ -43,6 +44,7 @@ import com.massivecraft.massivecore.store.Coll;
 import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.store.ModificationPollerLocal;
 import com.massivecraft.massivecore.store.ModificationPollerRemote;
+import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.util.BoardUtil;
 import com.massivecraft.massivecore.util.ContainerUtil;
 import com.massivecraft.massivecore.util.EventUtil;
@@ -230,6 +232,10 @@ public class MassiveCore extends MassivePlugin
 		
 		// Setup RegistryType
 		RegistryType.registerAll();
+		
+		MigratorUtil.addJsonRepresentation(ItemStack.class, DataItemStack.class);
+		MigratorUtil.addJsonRepresentation(Inventory.class, null);
+		MigratorUtil.setTargetVersion(Inventory.class, MigratorUtil.getTargetVersion(DataItemStack.class));
 		
 		// Activate
 		this.activateAuto();

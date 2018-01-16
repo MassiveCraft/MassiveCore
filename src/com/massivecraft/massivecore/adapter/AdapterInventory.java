@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.adapter;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.item.DataItemStack;
 import com.massivecraft.massivecore.mixin.MixinInventory;
+import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializationContext;
 import com.massivecraft.massivecore.xlib.gson.JsonDeserializer;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -156,6 +157,10 @@ public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerial
 			jsonInventory.add(index, jsonItemStack);
 		}
 		
+		// Add version
+		int version = MigratorUtil.getTargetVersion(DataItemStack.class);
+		jsonInventory.addProperty(MigratorUtil.VERSION_FIELD_NAME, version);
+		
 		return jsonInventory;
 	}
 	
@@ -191,16 +196,14 @@ public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerial
 			// Helmet
 			if (jsonInventory.has(HELMET))
 			{
-				jsonItemStack = jsonInventory.get(HELMET);
-				itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
+				itemStack = getItemStack(jsonInventory, HELMET);
 				pret.setHelmet(itemStack);
 			}
 			
 			// Chestplate
 			if (jsonInventory.has(CHESTPLATE))
 			{
-				jsonItemStack = jsonInventory.get(CHESTPLATE);
-				itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
+				itemStack = getItemStack(jsonInventory, CHESTPLATE);
 				pret.setChestplate(itemStack);
 			}
 			
@@ -215,16 +218,14 @@ public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerial
 			// Boots
 			if (jsonInventory.has(BOOTS))
 			{
-				jsonItemStack = jsonInventory.get(BOOTS);
-				itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
+				itemStack = getItemStack(jsonInventory, BOOTS);
 				pret.setBoots(itemStack);
 			}
 			
 			// Shield (Minecraft 1.9)
 			if (jsonInventory.has(SHIELD) && INDEX_PLAYER_SHIELD < pret.getSize())
 			{
-				jsonItemStack = jsonInventory.get(SHIELD);
-				itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
+				itemStack = getItemStack(jsonInventory, SHIELD);
 				pret.setItem(INDEX_PLAYER_SHIELD, itemStack);
 			}
 		}
@@ -241,13 +242,21 @@ public class AdapterInventory implements JsonDeserializer<Inventory>, JsonSerial
 		for (int i = 0; i < size; i++)
 		{
 			String stackIdx = String.valueOf(i);
-			jsonItemStack = jsonInventory.get(stackIdx);
-			if (jsonItemStack == null) continue;
-			itemStack = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
+			itemStack = getItemStack(jsonInventory, stackIdx);
 			if (itemStack == null) continue;
 			ret.setItem(i, itemStack);
 		}
 		
+		return ret;
+	}
+	
+	private static ItemStack getItemStack(JsonObject jsonInventory, String idx)
+	{
+		// Get jsonItemStack
+		JsonElement jsonItemStack = jsonInventory.get(idx);
+		if (jsonItemStack == null) return null;
+		
+		ItemStack ret = MassiveCore.gson.fromJson(jsonItemStack, ItemStack.class);
 		return ret;
 	}
 	

@@ -5,6 +5,7 @@ import com.massivecraft.massivecore.collections.MassiveListDef;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveTreeMapDef;
 import com.massivecraft.massivecore.collections.MassiveTreeSetDef;
+import com.massivecraft.massivecore.command.editor.annotation.EditorEditable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
 import com.massivecraft.massivecore.command.editor.annotation.EditorType;
 import com.massivecraft.massivecore.command.editor.annotation.EditorTypeInner;
@@ -21,6 +22,7 @@ import com.massivecraft.massivecore.util.InventoryUtil;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -56,7 +58,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	// Since Bukkit doesn't NPE evade much we save ourselves a lot of trouble that way.
 	// Especially note how all collections default to empty immutables instead of null.
 	
-	public static final transient Integer DEFAULT_ID = 0;
+	public static final transient String DEFAULT_ID = Material.AIR.name();
 	public static final transient Integer DEFAULT_COUNT = 1;
 	public static final transient Integer DEFAULT_DAMAGE = 0;
 	public static final transient String DEFAULT_NAME = null;
@@ -84,13 +86,21 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public static final transient Integer DEFAULT_MAP_COLOR = null;
 	
 	// -------------------------------------------- //
+	// FIELDS > VERSION
+	// -------------------------------------------- //
+	
+	@EditorEditable(false)
+	@EditorVisible(false)
+	private int version = 1;
+	
+	// -------------------------------------------- //
 	// FIELDS > BASIC
 	// -------------------------------------------- //
 	
 	@EditorType(value = TypeMaterialId.class)
-	private Integer id = null;
-	public int getId() { return get(this.id, DEFAULT_ID); }
-	public DataItemStack setId(int id) { this.id = set(id, DEFAULT_ID); return this; }
+	private String id = null;
+	public String getId() { return get(this.id, DEFAULT_ID); }
+	public DataItemStack setId(String id) { this.id = set(id, DEFAULT_ID); return this; }
 	
 	private Integer count = null;
 	public int getCount() { return get(this.count, DEFAULT_COUNT); }
@@ -461,7 +471,7 @@ public class DataItemStack implements Comparable<DataItemStack>
 	public static boolean isSomething(DataItemStack dataItemStack)
 	{
 		if (dataItemStack == null) return false;
-		if (dataItemStack.getId() == 0) return false;
+		if (dataItemStack.getId().equals(DEFAULT_ID)) return false;
 		// In Minecraft 1.9 zero quantity is a thing.
 		return true;
 	}

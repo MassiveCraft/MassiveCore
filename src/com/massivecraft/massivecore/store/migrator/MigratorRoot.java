@@ -24,16 +24,16 @@ public class MigratorRoot implements Migrator, Active
 		this.innerMigrators.add(innerMigrator);
 	}
 
-	private final Class<? extends Entity<?>> entityClass;
-	public Class<? extends Entity<?>> getEntityClass() { return entityClass; }
+	private final Class<?> clazz;
+	public Class<?> getClazz() { return clazz; }
 
 	// -------------------------------------------- //
 	// CONSTRUCT
 	// -------------------------------------------- //
 
-	public MigratorRoot(Class<? extends Entity<?>> entityClass)
+	public MigratorRoot(Class<?> clazz)
 	{
-		this.entityClass = entityClass;
+		this.clazz = clazz;
 	}
 
 	// -------------------------------------------- //
