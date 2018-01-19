@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.store.accessor;
 
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.store.EntityInternalMap;
 
 import java.lang.reflect.Field;
@@ -22,7 +23,7 @@ public class Accessor
 	private final Class<?> clazz;
 	public Class<?> getClazz() { return this.clazz; }
 		
-	private Map<String, FieldAccessor> fieldToAccessor = new LinkedHashMap<>();
+	private Map<String, FieldAccessor> fieldToAccessor = new MassiveMap<>();
 	public Map<String, FieldAccessor> getFieldToAccessor() { return this.fieldToAccessor; }
 	
 	public FieldAccessor getFieldAccessor(String fieldName)
@@ -152,7 +153,7 @@ public class Accessor
 	
 	public static Map<String, Field> getFieldMap(Class<?> clazz)
 	{
-		Map<String, Field> ret = new LinkedHashMap<>();
+		Map<String, Field> ret = new MassiveMap<>();
 		
 		for (Field field : getFieldList(clazz))
 		{

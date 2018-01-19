@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.util;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.SenderPresence;
 import com.massivecraft.massivecore.SenderType;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.event.EventMassiveCorePlayerLeave;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderRegister;
 import com.massivecraft.massivecore.event.EventMassiveCoreSenderUnregister;
@@ -177,7 +178,7 @@ public class IdUtil implements Listener, Runnable
 	
 	public static Set<CommandSender> getLocalSenders()
 	{
-		Set<CommandSender> ret = new LinkedHashSet<>();
+		Set<CommandSender> ret = new MassiveSet<>();
 		
 		// Add Online Players
 		ret.addAll(MUtil.getOnlinePlayers());
@@ -922,7 +923,7 @@ public class IdUtil implements Listener, Runnable
 	
 	public static Set<IdData> getLocalPlayerDatas()
 	{
-		Set<IdData> ret = new LinkedHashSet<>();
+		Set<IdData> ret = new MassiveSet<>();
 		
 		long millis = System.currentTimeMillis();
 		

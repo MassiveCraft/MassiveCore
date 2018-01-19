@@ -5,6 +5,8 @@ import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.Named;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.editor.CommandEditAbstract;
 import com.massivecraft.massivecore.command.editor.CommandEditProperties;
 import com.massivecraft.massivecore.command.editor.CommandEditSimple;
@@ -522,7 +524,7 @@ public abstract class TypeAbstract<T> implements Type<T>
 	
 	private static List<String> withoutPreAndSuffix(List<String> suggestions, String prefix)
 	{
-		LinkedHashSet<String> ret = new LinkedHashSet<>(suggestions.size());
+		MassiveSet<String> ret = new MassiveSet<>(suggestions.size());
 		boolean includesPrefix = false; // Sometimes a suggestion is equal to the prefix.
 		for (String suggestion : suggestions)
 		{

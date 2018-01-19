@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.util;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.collections.ExceptionSet;
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.collections.MassiveTreeSet;
 import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
@@ -1614,7 +1615,7 @@ public class MUtil
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map<K, V> map(K key1, V value1, Object... objects)
 	{
-		Map<K, V> ret = new LinkedHashMap<>();
+		Map<K, V> ret = new MassiveMap<>();
 		
 		ret.put(key1, value1);
 		
@@ -1631,7 +1632,7 @@ public class MUtil
 	
 	public static <K, V> Map<V, K> flippedMap(Map<K, V> map)
 	{
-		Map<V, K> ret = new LinkedHashMap<>();
+		Map<V, K> ret = new MassiveMap<>();
 		
 		for(Entry<K, V> entry : map.entrySet())
 		{
@@ -1647,7 +1648,7 @@ public class MUtil
 	
 	public static <K, V> Map<V, Set<K>> reverseIndex(Map<K, V> map)
 	{
-		Map<V, Set<K>> ret = new LinkedHashMap<>();
+		Map<V, Set<K>> ret = new MassiveMap<>();
 		
 		for (Entry<K, V> entry : map.entrySet())
 		{

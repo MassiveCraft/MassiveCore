@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.util.DiscUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.JsonParser;
@@ -68,7 +70,7 @@ public class DriverFlatfile extends DriverAbstract
 	@Override
 	public Set<String> getCollnames(Db db)
 	{
-		Set<String> ret = new LinkedHashSet<>();
+		Set<String> ret = new MassiveSet<>();
 		
 		for (File file : ((DbFlatfile)db).directory.listFiles())
 		{
@@ -181,7 +183,7 @@ public class DriverFlatfile extends DriverAbstract
 		File[] files = directory.listFiles(JsonFileFilter.get());
 		
 		// Create Ret
-		ret = new LinkedHashMap<>(files.length);
+		ret = new MassiveMap<>(files.length);
 		
 		// For Each Found
 		for (File file : files)

@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.event;
 
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.store.SenderColl;
 import com.massivecraft.massivecore.store.SenderEntity;
 import org.bukkit.event.HandlerList;
@@ -32,7 +33,7 @@ public class EventMassiveCorePlayerCleanInactivityToleranceMillis extends EventM
 	
 	public SenderColl<?> getColl() { return entity.getColl(); }
 	
-	private final Map<String, Long> toleranceCauseMillis = new LinkedHashMap<>();
+	private final Map<String, Long> toleranceCauseMillis = new MassiveMap<>();
 	public Map<String, Long> getToleranceCauseMillis() { return this.toleranceCauseMillis; }
 	
 	// -------------------------------------------- //

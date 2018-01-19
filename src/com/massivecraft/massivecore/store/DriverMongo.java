@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.MassiveCoreMConf;
+import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.mongodb.BasicDBObject;
 import com.massivecraft.massivecore.xlib.mongodb.DB;
@@ -217,7 +218,7 @@ public class DriverMongo extends DriverAbstract
 		try
 		{
 			// Create Ret
-			ret = new LinkedHashMap<>(cursor.count());
+			ret = new MassiveMap<>(cursor.count());
 			
 			// For Each Found
 			while (cursor.hasNext())

@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.ps;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.Multiverse;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.comparator.ComparatorSmart;
 import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -863,7 +864,7 @@ public final class PS implements Serializable, Comparable<PS>
 	
 	public static Set<PS> getDistinctChunks(Collection<PS> pss)
 	{
-		Set<PS> ret = new LinkedHashSet<>();
+		Set<PS> ret = new MassiveSet<>();
 		for (PS ps : pss)
 		{
 			ret.add(ps.getChunk(true));
@@ -873,7 +874,7 @@ public final class PS implements Serializable, Comparable<PS>
 	
 	public static Set<String> getDistinctWorlds(Collection<PS> pss)
 	{
-		Set<String> ret = new LinkedHashSet<>();
+		Set<String> ret = new MassiveSet<>();
 		for (PS ps : pss)
 		{
 			ret.add(ps.getWorld());
