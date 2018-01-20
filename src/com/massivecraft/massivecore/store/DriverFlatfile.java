@@ -28,7 +28,7 @@ public class DriverFlatfile extends DriverAbstract
 	// -------------------------------------------- //
 	
 	private static final String DOTJSON = ".json";
-	public static final String NAME = "flatfile";
+	private static final String NAME = "flatfile";
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
@@ -150,7 +150,7 @@ public class DriverFlatfile extends DriverAbstract
 		return loadFile(file);
 	}
 	
-	public Entry<JsonObject, Long> loadFile(File file)
+	private Entry<JsonObject, Long> loadFile(File file)
 	{
 		long mtime = file.lastModified();
 		JsonObject raw = loadFileJson(file);
@@ -158,7 +158,7 @@ public class DriverFlatfile extends DriverAbstract
 		return new SimpleEntry<>(raw, mtime);
 	}
 	
-	public JsonObject loadFileJson(File file)
+	private JsonObject loadFileJson(File file)
 	{
 		String content = DiscUtil.readCatch(file);
 		if (content == null) return null;
@@ -275,19 +275,19 @@ public class DriverFlatfile extends DriverAbstract
 	// UTIL
 	// -------------------------------------------- //
 	
-	public static File getDirectory(Coll<?> coll)
+	private static File getDirectory(Coll<?> coll)
 	{
 		return (File) coll.getCollDriverObject();
 	}
 	
-	public static String idFromFile(File file)
+	private static String idFromFile(File file)
 	{
 		if (file == null) return null;
 		String name = file.getName();
 		return name.substring(0, name.length() - 5);
 	}
 	
-	public static File fileFromId(Coll<?> coll, String id)
+	private static File fileFromId(Coll<?> coll, String id)
 	{
 		File collDir = getDirectory(coll);
 		File idFile = new File(collDir, id + DOTJSON);

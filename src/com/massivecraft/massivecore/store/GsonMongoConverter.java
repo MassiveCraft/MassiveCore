@@ -20,17 +20,17 @@ public final class GsonMongoConverter
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public static final String DOT_NORMAL = ".";
-	public static final String DOT_MONGO = "<dot>";
+	private static final String DOT_NORMAL = ".";
+	private static final String DOT_MONGO = "<dot>";
 	
-	public static final String DOLLAR_NORMAL = "$";
-	public static final String DOLLAR_MONGO = "<dollar>";
+	private static final String DOLLAR_NORMAL = "$";
+	private static final String DOLLAR_MONGO = "<dollar>";
 	
 	// -------------------------------------------- //
 	// GSON 2 MONGO
 	// -------------------------------------------- //
 	
-	public static String gson2MongoKey(String key)
+	private static String gson2MongoKey(String key)
 	{
 		key = StringUtils.replace(key, DOT_NORMAL, DOT_MONGO);
 		key = StringUtils.replace(key, DOLLAR_NORMAL, DOLLAR_MONGO);
@@ -60,12 +60,12 @@ public final class GsonMongoConverter
 		return out;
 	}
 	
-	public static BasicDBObject gson2MongoObject(JsonElement inElement)
+	private static BasicDBObject gson2MongoObject(JsonElement inElement)
 	{
 		return gson2MongoObject(inElement, new BasicDBObject());
 	}
 	
-	public static BasicDBList gson2MongoArray(JsonElement inElement)
+	private static BasicDBList gson2MongoArray(JsonElement inElement)
 	{
 		JsonArray in = inElement.getAsJsonArray();
 		BasicDBList out = new BasicDBList();
@@ -88,7 +88,7 @@ public final class GsonMongoConverter
 		return out;
 	}
 	
-	public static Object gson2MongoPrimitive(JsonElement inElement)
+	private static Object gson2MongoPrimitive(JsonElement inElement)
 	{
 		if (inElement.isJsonNull()) return null;
 		JsonPrimitive in = inElement.getAsJsonPrimitive();
@@ -135,7 +135,7 @@ public final class GsonMongoConverter
 	// MONGO 2 GSON
 	// -------------------------------------------- //
 	
-	public static String mongo2GsonKey(String key)
+	private static String mongo2GsonKey(String key)
 	{
 		key = StringUtils.replace(key, DOT_MONGO, DOT_NORMAL);
 		key = StringUtils.replace(key, DOLLAR_MONGO, DOLLAR_NORMAL);
@@ -168,7 +168,7 @@ public final class GsonMongoConverter
 		return jsonObject;
 	}
 	
-	public static JsonArray mongo2GsonArray(DBObject inObject)
+	private static JsonArray mongo2GsonArray(DBObject inObject)
 	{
 		if (!(inObject instanceof BasicDBList)) throw new IllegalArgumentException("Expected BasicDBList as argument type!");
 		BasicDBList in = (BasicDBList)inObject;
@@ -192,7 +192,7 @@ public final class GsonMongoConverter
 		return jsonArray;
 	}
 
-	public static JsonElement mongo2GsonPrimitive(Object inObject)
+	private static JsonElement mongo2GsonPrimitive(Object inObject)
 	{
 		if (inObject == null) return JsonNull.INSTANCE;
 		if (inObject instanceof Boolean) return new JsonPrimitive((Boolean) inObject);

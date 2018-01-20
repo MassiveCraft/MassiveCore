@@ -47,7 +47,7 @@ public abstract class ModificationPollerAbstract extends Thread
 	// CORE
 	// -------------------------------------------- //
 	
-	public void identify() throws InterruptedException
+	private void identify()
 	{
 		for (Coll<?> coll : Coll.getInstances())
 		{

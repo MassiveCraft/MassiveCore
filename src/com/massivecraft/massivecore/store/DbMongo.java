@@ -8,10 +8,14 @@ public class DbMongo extends DbAbstract
 	// FIELDS
 	// -------------------------------------------- //
 
-	public DB db;
+	public final DB db;
 	
-	protected DriverMongo driver;
-	@Override public DriverMongo getDriver() { return driver; }
+	private final DriverMongo driver;
+	@Override
+	public DriverMongo getDriver()
+	{
+		return driver;
+	}
 	
 	// -------------------------------------------- //
 	// CONSTRUCTORS

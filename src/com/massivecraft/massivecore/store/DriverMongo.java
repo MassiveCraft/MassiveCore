@@ -26,13 +26,13 @@ public class DriverMongo extends DriverAbstract
 	// CONSTANTS
 	// -------------------------------------------- //
 	
-	public final static String ID_FIELD = "_id";
-	public final static String MTIME_FIELD = "_mtime";
+	private final static String ID_FIELD = "_id";
+	private final static String MTIME_FIELD = "_mtime";
 	
-	public final static BasicDBObject dboEmpty = new BasicDBObject();
-	public final static BasicDBObject dboKeysId = new BasicDBObject().append(ID_FIELD, 1);
-	public final static BasicDBObject dboKeysMtime = new BasicDBObject().append(MTIME_FIELD, 1);
-	public final static BasicDBObject dboKeysIdandMtime = new BasicDBObject().append(ID_FIELD, 1).append(MTIME_FIELD, 1);
+	private final static BasicDBObject dboEmpty = new BasicDBObject();
+	private final static BasicDBObject dboKeysId = new BasicDBObject().append(ID_FIELD, 1);
+	private final static BasicDBObject dboKeysMtime = new BasicDBObject().append(MTIME_FIELD, 1);
+	private final static BasicDBObject dboKeysIdandMtime = new BasicDBObject().append(ID_FIELD, 1).append(MTIME_FIELD, 1);
 	
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

@@ -36,24 +36,36 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// GLOBAL REGISTRY
 	// -------------------------------------------- //
 	
-	public final static String TOTAL = "*total*"; 
+	public static final String TOTAL = "*total*";
 	
 	// All instances registered here are considered inited.
-	private static Map<String, Coll<?>> name2instance = new ConcurrentSkipListMap<>(ComparatorNaturalOrder.get());
+	private static final Map<String, Coll<?>> name2instance = new ConcurrentSkipListMap<>(ComparatorNaturalOrder.get());
 	
-	private static Map<String, Coll<?>> umap = Collections.unmodifiableMap(name2instance);
-	private static Set<String> unames = Collections.unmodifiableSet(name2instance.keySet());
-	private static Collection<Coll<?>> uinstances = Collections.unmodifiableCollection(name2instance.values());
+	private static final Map<String, Coll<?>> umap = Collections.unmodifiableMap(name2instance);
+	private static final Set<String> unames = Collections.unmodifiableSet(name2instance.keySet());
+	private static final Collection<Coll<?>> uinstances = Collections.unmodifiableCollection(name2instance.values());
 	
-	public static Map<String, Coll<?>> getMap() { return umap; }
-	public static Set<String> getNames() { return unames; }
-	public static Collection<Coll<?>> getInstances() { return uinstances; }
+	public static Map<String, Coll<?>> getMap()
+	{
+		return umap;
+	}
+	
+	public static Set<String> getNames()
+	{
+		return unames;
+	}
+	
+	public static Collection<Coll<?>> getInstances()
+	{
+		return uinstances;
+	}
+	
 	public static Collection<SenderColl<?>> getSenderInstances()
 	{
 		List<SenderColl<?>> ret = new ArrayList<>();
 		for (Coll<?> coll : getInstances())
 		{
-			if ( ! (coll instanceof SenderColl)) continue;
+			if (!(coll instanceof SenderColl)) continue;
 			SenderColl<?> senderColl = (SenderColl<?>)coll;
 			ret.add(senderColl);
 		}
@@ -64,24 +76,45 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// WHAT DO WE HANDLE?
 	// -------------------------------------------- //
 	
-	protected final String id;
-	@Override public String getId() { return this.id; }
+	private final String id;
+	@Override
+	public String getId()
+	{
+		return this.id;
+	}
 	
-	protected final String basename;
-	@Override public String getBasename() { return this.basename; }
+	private final String basename;
+	@Override
+	public String getBasename()
+	{
+		return this.basename;
+	}
 	
-	protected final String universe;
-	@Override public String getUniverse() { return this.universe; }
+	private final String universe;
+	@Override
+	public String getUniverse()
+	{
+		return this.universe;
+	}
 	
-	protected final Class<E> entityClass;
-	@Override public Class<E> getEntityClass() { return this.entityClass; }
+	private final Class<E> entityClass;
+	@Override
+	public Class<E> getEntityClass()
+	{
+		return this.entityClass;
+	}
 	
 	// -------------------------------------------- //
 	// SUPPORTING SYSTEM
 	// -------------------------------------------- //
 	
-	protected MassivePlugin plugin;
-	@Override public MassivePlugin getPlugin() { return this.plugin; }
+	private MassivePlugin plugin;
+	@Override
+	public MassivePlugin getPlugin()
+	{
+		return this.plugin;
+	}
+	
 	public Gson getGson()
 	{
 		MassivePlugin plugin = this.getPlugin();
@@ -90,10 +123,18 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	}
 	
 	protected final Db db;
-	@Override public Db getDb() { return this.db; }
+	@Override
+	public Db getDb()
+	{
+		return this.db;
+	}
 	
-	protected final Object collDriverObject;
-	@Override public Object getCollDriverObject() { return this.collDriverObject; }
+	private final Object collDriverObject;
+	@Override
+	public Object getCollDriverObject()
+	{
+		return this.collDriverObject;
+	}
 	
 	@Override
 	public boolean supportsPusher()
@@ -101,12 +142,14 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return this.getDb().supportsPusher();
 	}
 	
-	protected PusherColl pusher;
-	
+	private PusherColl pusher;
 	@Override
 	public PusherColl getPusher()
 	{
-		if (this.pusher == null) this.pusher = this.getDb().getPusher(this);
+		if (this.pusher == null)
+		{
+			this.pusher = this.getDb().getPusher(this);
+		}
 		return this.pusher;
 	}
 	
@@ -128,11 +171,19 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// -------------------------------------------- //
 	
 	// Loaded
-	protected Map<String, E> idToEntity;
+	private Map<String, E> idToEntity;
 	
-	@Override public Map<String, E> getIdToEntityRaw() { return this.idToEntity; }
+	@Override
+	public Map<String, E> getIdToEntityRaw()
+	{
+		return this.idToEntity;
+	}
 	
-	@Override public Collection<String> getIdsRemote() { return this.getDb().getIds(this); }
+	@Override
+	public Collection<String> getIdsRemote()
+	{
+		return this.getDb().getIds(this);
+	}
 	
 	// -------------------------------------------- //
 	// BEHAVIOR
@@ -153,7 +204,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// IDENTIFIED MODIFICATIONS
 	// -------------------------------------------- //
 	
-	protected Map<String, Modification> identifiedModifications;
+	private Map<String, Modification> identifiedModifications;
 	
 	@Override
 	public synchronized void putIdentifiedModificationFixed(String id, Modification modification)
@@ -342,7 +393,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		if (migrated) this.putIdentifiedModificationFixed(id, Modification.LOCAL_ALTER);
 	}
 	
-	public boolean remoteEntryIsOk(String id, Entry<JsonObject, Long> remoteEntry)
+	protected boolean remoteEntryIsOk(String id, Entry<JsonObject, Long> remoteEntry)
 	{
 		Long mtime = remoteEntry.getValue();
 		if (mtime == null)
@@ -372,7 +423,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return true;
 	}
 	
-	public void logLoadError(String entityId, String error)
+	protected void logLoadError(String entityId, String error)
 	{
 		MassiveCore.get().log(Txt.parse("<b>Database could not load entity. You edited a file manually and made wrong JSON?"));
 		MassiveCore.get().log(Txt.parse("<k>Entity: <v>%s", entityId));
@@ -455,7 +506,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return Modification.NONE;
 	}
 	
-	protected boolean examineHasLocalAlterFixed(String id, E entity)
+	private boolean examineHasLocalAlterFixed(String id, E entity)
 	{
 		JsonObject lastRaw = entity.getLastRaw();
 		JsonObject currentRaw = null;
@@ -546,7 +597,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return modification;
 	}
 	
-	protected void logModification(E entity, Modification modification)
+	private void logModification(E entity, Modification modification)
 	{
 		JsonObject lastRaw = entity.getLastRaw();
 		
@@ -729,8 +780,14 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	// SYNC RUNNABLES / SCHEDULING
 	// -------------------------------------------- //
 	
-	protected Runnable tickTask;
-	@Override public Runnable getTickTask() { return this.tickTask; }
+	private Runnable tickTask;
+	
+	@Override
+	public Runnable getTickTask()
+	{
+		return this.tickTask;
+	}
+	
 	@Override
 	public void onTick()
 	{
@@ -803,7 +860,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		this(null, null, null, null);
 	}
 	
-	public MassivePlugin calculatePlugin()
+	private MassivePlugin calculatePlugin()
 	{
 		// Create
 		int retlength = 0;
@@ -832,7 +889,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	}
 
 	@SuppressWarnings("unchecked")
-	public Class<E> calculateEntityClass()
+	private Class<E> calculateEntityClass()
 	{
 		Class<?> clazz = this.getClass();
 		ParameterizedType superType = (ParameterizedType) clazz.getGenericSuperclass();
@@ -840,12 +897,12 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return (Class<E>) typeArguments[0];
 	}
 
-	public String calculateId()
+	private String calculateId()
 	{
 		return this.getPlugin().getDescription().getName().toLowerCase() + "_" + this.getEntityClass().getSimpleName().toLowerCase();
 	}
 	
-	public Db calculateDb()
+	private Db calculateDb()
 	{
 		return MStore.getDb();
 	}

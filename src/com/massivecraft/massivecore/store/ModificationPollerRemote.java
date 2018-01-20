@@ -18,7 +18,6 @@ public class ModificationPollerRemote extends ModificationPollerAbstract
 		return i;
 	}
 	
-	
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //

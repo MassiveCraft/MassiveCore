@@ -69,7 +69,7 @@ public class MStore
 	// We cache databases here
 	private static Map<String, Db> uri2db = new HashMap<>();
 	
-	public static String resolveAlias(String alias)
+	private static String resolveAlias(String alias)
 	{
 		String uri = ConfServer.alias2uri.get(alias);
 		if (uri == null) return alias;

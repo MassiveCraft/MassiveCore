@@ -2,12 +2,6 @@ package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 
-/**
- * Usage of this class is highly optional. You may persist anything. If you are 
- * creating the class to be persisted yourself, it might be handy to extend this
- * Entity class. It just contains a set of shortcut methods.  
- */
-
 // Self referencing generic.
 // http://www.angelikalanger.com/GenericsFAQ/FAQSections/ProgrammingIdioms.html#FAQ206
 public class Entity<E extends Entity<E>> extends EntityInternal<E>
@@ -16,7 +10,10 @@ public class Entity<E extends Entity<E>> extends EntityInternal<E>
 	// FIELDS
 	// -------------------------------------------- //
 	
-	public Coll<?> getColl() { return (Coll<?>) this.getContainer(); }
+	public Coll<?> getColl()
+	{
+		return (Coll<?>) this.getContainer();
+	}
 	
 	public String getUniverse()
 	{
@@ -52,7 +49,12 @@ public class Entity<E extends Entity<E>> extends EntityInternal<E>
 	@SuppressWarnings("unchecked")
 	public String attach(EntityContainer<E> container)
 	{
-		if (!(container instanceof Coll)) throw new IllegalArgumentException(container.getClass().getName() + " is not a Coll.");
+		if (!(container instanceof Coll))
+		{
+			String message = String.format("%s is not a %s.", container.getClass().getName(), Coll.class.getSimpleName());
+			throw new IllegalArgumentException(message);
+		}
+		
 		return container.attach((E) this);
 	}
 	
@@ -73,20 +75,6 @@ public class Entity<E extends Entity<E>> extends EntityInternal<E>
 	{
 		if (!this.isLive()) return Modification.UNKNOWN;
 		return this.getColl().syncIdFixed(id);
-	}
-	
-	public void saveToRemote()
-	{
-		if (!this.isLive()) return;
-		
-		this.getColl().saveToRemoteFixed(id);
-	}
-	
-	public void loadFromRemote()
-	{
-		if (!this.isLive()) return;
-		
-		this.getColl().loadFromRemoteFixed(id, null);
 	}
 	
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 public abstract class Colls<C extends Coll<E>, E extends Entity<E>> implements Active
 {
-	protected Map<String, C> name2coll = new HashMap<>();
+	private Map<String, C> name2coll = new HashMap<>();
 	
 	public abstract Aspect getAspect();
 	public abstract String getBasename();
@@ -84,12 +84,12 @@ public abstract class Colls<C extends Coll<E>, E extends Entity<E>> implements A
 	// UTIL
 	// -------------------------------------------- //
 	
-	public String collnameForUniverse(String universe)
+	private String collnameForUniverse(String universe)
 	{
 		return this.getBasename() + "@" + universe;
 	}
 	
-	public String universeFromWorldName(String worldName)
+	private String universeFromWorldName(String worldName)
 	{
 		if (worldName == null) throw new IllegalArgumentException("worldName may not be null.");
 		
@@ -113,7 +113,7 @@ public abstract class Colls<C extends Coll<E>, E extends Entity<E>> implements A
 		return this.getForCollname(collname);
 	}
 	
-	public C getForCollname(String collname)
+	private C getForCollname(String collname)
 	{
 		C ret = this.name2coll.get(collname);
 		if (ret == null)

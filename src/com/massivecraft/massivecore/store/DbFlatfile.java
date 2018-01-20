@@ -10,8 +10,12 @@ public class DbFlatfile extends DbAbstract
 
 	public File directory;
 	
-	protected DriverFlatfile driver;
-	@Override public DriverFlatfile getDriver() { return driver; }
+	private DriverFlatfile driver;
+	@Override
+	public DriverFlatfile getDriver()
+	{
+		return driver;
+	}
 	
 	// -------------------------------------------- //
 	// CONSTRUCT

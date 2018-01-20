@@ -77,7 +77,7 @@ public class SenderColl<E extends SenderEntity<E>> extends Coll<E> implements Se
 		{
 			ret = (String)oid;
 		}
-		else if (oid.getClass() == this.entityClass)
+		else if (oid.getClass() == this.getEntityClass())
 		{
 			ret = ((Entity<?>) oid).getId();
 		}
