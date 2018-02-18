@@ -99,7 +99,7 @@ public abstract class CollAbstract<E extends Entity<E>> extends EntityContainerA
 	public Modification syncIdFixed(String id)
 	{
 		if (id == null) throw new NullPointerException("id");
-		return this.syncIdFixed(id, null);
+		return this.syncIdFixed(id, this.getIdentifiedModificationFixed(id));
 	}
 	
 	@Override
@@ -107,6 +107,13 @@ public abstract class CollAbstract<E extends Entity<E>> extends EntityContainerA
 	{
 		if (id == null) throw new NullPointerException("id");
 		return this.syncIdFixed(id, modification, null);
+	}
+	
+	@Override
+	public Modification getIdentifiedModification(Object oid)
+	{
+		if (oid == null) throw new NullPointerException("oid");
+		return this.getIdentifiedModificationFixed(this.fixIdOrThrow(oid));
 	}
 	
 }

@@ -7,22 +7,26 @@ public enum Modification
 	// ENUM
 	// -------------------------------------------- //
 	
-	LOCAL_ALTER (true, 4),
-	LOCAL_ATTACH (true, 8),
-	LOCAL_DETACH (true, 9),
-	REMOTE_ALTER (true, 5),
-	REMOTE_ATTACH (true, 6),
-	REMOTE_DETACH (true, 7),
-	NONE (false, 1),
-	UNKNOWN (false, 3),
-	UNKNOWN_LOG(false, 2),
+	LOCAL_ALTER (true, 40),
+	LOCAL_ATTACH (true, 80),
+	LOCAL_DETACH (true, 90),
+	REMOTE_ALTER (true, 50),
+	REMOTE_ATTACH (true, 60),
+	REMOTE_DETACH (true, 70),
+	NONE (false, 10),
+	UNKNOWN (false, 30),
+	UNKNOWN_LOG(false, 20),
+	UNKNOWN_CHANGED(false, 35),
 	;
 	
 	// -------------------------------------------- //
 	// CONSTANTS
 	// -------------------------------------------- //
-	
-	public static final int TOP_PRIORITY = 7;
+
+	// The modifications take priority over all others.
+	// It is local attach and local detach, because otherwise
+	// the system would think it was a remote attach or remote detach.
+	public static final int TOP_PRIORITY = 80;
 	
 	// -------------------------------------------- //
 	// FIELDS
@@ -83,6 +87,6 @@ public enum Modification
 	
 	public boolean isUnknown()
 	{
-		return this == Modification.UNKNOWN || this == Modification.UNKNOWN_LOG;
+		return this == Modification.UNKNOWN || this == Modification.UNKNOWN_LOG || this == Modification.UNKNOWN_CHANGED;
 	}
 }

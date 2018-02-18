@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.ConfServer;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 
 /*
@@ -32,6 +33,6 @@ public class ModificationPollerLocal extends ModificationPollerAbstract
 	public void poll(Coll<?> coll)
 	{
 		coll.identifyLocalModifications(Modification.UNKNOWN_LOG);
-	}
 
+	}
 }

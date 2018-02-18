@@ -931,7 +931,7 @@ public class MUtil
 		if ( ! isFinite(factor)) throw new IllegalStateException("not finite factor: " + factor);
 		
 		// No Change?
-		if (equalsish(factor, 1)) return;
+		if (equalsishNumber(factor, 1)) return;
 		
 		for (DamageModifier modifier : DamageModifier.values())
 		{
@@ -1766,6 +1766,8 @@ public class MUtil
 		
 		return object1.equals(object2);
 	}
+
+
 	
 	public static boolean equals(Object... objects)
 	{
@@ -1791,13 +1793,32 @@ public class MUtil
 	// -------------------------------------------- //
 	
 	public static final double EQUALSISH_EPSILON = 0.0001;
-	
-	public static boolean equalsish(Number number1, Number number2)
+
+	public static boolean equalsishObject(Object o1, Object o2)
+	{
+		if (o1 instanceof Number && o2 instanceof Number)
+		{
+			return equalsishNumber((Number) o1, (Number) o2);
+		}
+
+		return equals(o1, o2);
+	}
+
+	public static boolean equalsishNumber(Number number1, Number number2)
 	{
 		if (number1 == null) return number2 == null;
 		if (number2 == null) return false;
-		
+
 		return Math.abs(number1.doubleValue() - number2.doubleValue()) < EQUALSISH_EPSILON;
+	}
+
+	/**
+	 * @deprecated use equalsishNumber
+	 */
+	@Deprecated
+	public static boolean equalsish(Number number1, Number number2)
+	{
+		return equalsishNumber(number1, number2);
 	}
 	
 	// -------------------------------------------- //

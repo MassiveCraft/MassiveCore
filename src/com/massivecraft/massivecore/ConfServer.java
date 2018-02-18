@@ -19,6 +19,8 @@ public class ConfServer extends SimpleConfig
 	// FIELDS
 	// -------------------------------------------- //
 	
+	public static boolean localPollingEnabled = true;
+	
 	public static String serverid = UUID.randomUUID().toString();
 	
 	public static String dburi = "default";

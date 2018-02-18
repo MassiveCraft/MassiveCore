@@ -1,5 +1,7 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.ConfServer;
+
 public abstract class ModificationPollerAbstract extends Thread
 {
 	// -------------------------------------------- //
@@ -54,7 +56,7 @@ public abstract class ModificationPollerAbstract extends Thread
 			this.poll(coll);
 		}
 	}
-	
+
 	// -------------------------------------------- //
 	// ABSTRACT
 	// -------------------------------------------- //

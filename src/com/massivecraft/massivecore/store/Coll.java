@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.ConfServer;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.MassivePlugin;
@@ -7,6 +8,7 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.mixin.MixinModification;
 import com.massivecraft.massivecore.store.migrator.MigratorUtil;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
@@ -156,6 +158,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		if (id == null) throw new NullPointerException("id");
 		if (modification == null) throw new NullPointerException("modification");
+		
 		Modification old = this.identifiedModifications.get(id);
 		if (old != null && modification.getPriority() <= old.getPriority()) return;
 		this.identifiedModifications.put(id, modification);
@@ -166,6 +169,13 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		if (id == null) throw new NullPointerException("id");
 		this.identifiedModifications.remove(id);
+	}
+	
+	@Override
+	public Modification getIdentifiedModificationFixed(String id)
+	{
+		if (id == null) throw new NullPointerException("id");
+		return this.identifiedModifications.get(id);
 	}
 	
 	// -------------------------------------------- //
@@ -243,7 +253,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		entity.clearSyncLogFields();
 		
 		JsonObject raw = this.getGson().toJsonTree(entity, this.getEntityClass()).getAsJsonObject();
-		entity.setLastRaw(raw);
+		if (ConfServer.localPollingEnabled) entity.setLastRaw(raw);
 		
 		if (this.isDefault(entity))
 		{
@@ -341,7 +351,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			// this.putIdentifiedModificationFixed(id, Modification.UNKNOWN);
 		}
 		
-		entity.setLastRaw(raw);
+		if (ConfServer.localPollingEnabled) entity.setLastRaw(raw);
 		entity.setLastMtime(mtime);
 		entity.setLastDefault(false);
 
@@ -429,11 +439,11 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 				// ...and it was modified remotely.
 				if ( ! remoteMtime.equals(lastMtime)) return Modification.REMOTE_ALTER;	
 			}
-			// ...and we are looking for local changes
+			// ...and we are looking for local changes ...
 			if (local)
 			{
-				// ...and it was modified locally.
-				if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;	
+				// ... and it was modified locally.
+				if (this.examineHasLocalAlterFixed(id, localEntity)) return Modification.LOCAL_ALTER;
 			}
 		}
 		// Otherwise, if we only have it locally...
@@ -464,6 +474,16 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	
 	protected boolean examineHasLocalAlterFixed(String id, E entity)
 	{
+		if (!ConfServer.localPollingEnabled)
+		{
+			if (MStore.DEBUG_ENABLED)
+			{
+				this.getPlugin().log("Attempted examineHasLocalAlterFixed in " + this.getDebugName() + " for " + id);
+				MUtil.stackTraceDebug("examineHasLocalAlterFixed");
+			}
+			return false;
+		}
+		
 		JsonObject lastRaw = entity.getLastRaw();
 		JsonObject currentRaw = null;
 		
@@ -479,32 +499,18 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 			MassiveCore.get().log(Txt.parse("<k>Collection: <v>%s", this.getName()));
 			throw new RuntimeException(e);
 		}
-		
+
 		return !MStore.equal(lastRaw, currentRaw);
 	}
 
 	@Override
-	public Modification syncIdFixed(String id, Modification modification, Entry<JsonObject, Long> remoteEntry)
+	public Modification syncIdFixed(String id, final Modification suppliedModification, Entry<JsonObject, Long> remoteEntry)
 	{
 		if (id == null) throw new NullPointerException("id");
-		if (modification == null || modification.isUnknown())
-		{
-			Long remoteMtime = null;
-			if (remoteEntry != null) remoteMtime = remoteEntry.getValue();
-			
-			Modification actualModification = this.examineIdFixed(id, remoteMtime, true, true);
-			if (MassiveCoreMConf.get().warnOnLocalAlter && modification == Modification.UNKNOWN_LOG && actualModification.isModified())
-			{
-				E entity = this.idToEntity.get(id);
-				if (entity != null)
-				{
-					this.logModification(entity, actualModification);	
-				}
-			}
-			modification = actualModification;
-		}
-		if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " syncronising " + modification + " on " + id);
 		
+		Modification modification = getActualModification(id, suppliedModification, remoteEntry);
+		
+		if (MStore.DEBUG_ENABLED) this.getPlugin().log((this.getDebugName() + " syncronising " + modification + " (" + suppliedModification + ") on " + id));
 		
 		// DEBUG
 		// MassiveCore.get().log(Txt.parse("<a>syncId <k>Coll: <v>%s <k>Entity: <v>%s <k>Modification: <v>%s", this.getName(), id, modification));
@@ -553,9 +559,65 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		return modification;
 	}
 	
+	private Modification getActualModification(String id, Modification modification,  Entry<JsonObject, Long> remoteEntry)
+	{
+		if (id == null) throw new NullPointerException("id");
+		
+		if (modification != null && !modification.isUnknown())
+		{
+			return modification;
+		}
+		
+		Long remoteMtime = null;
+		if (remoteEntry != null) remoteMtime = remoteEntry.getValue();
+		
+		// We look only remotely for changes, because local ones should be caught by .changed()
+		// or by the poller. This way we are certain, that all local changes where .changed() is not called
+		// they are found by the poller and then reported appropriately.
+		Modification actualModification = this.examineIdFixed(id, remoteMtime, false, true);
+		
+		if (actualModification == Modification.NONE && (modification == Modification.UNKNOWN_CHANGED || modification == Modification.UNKNOWN_LOG))
+		{
+			actualModification = Modification.LOCAL_ALTER;
+			checkActuallyModifiedFixed(id);
+		}
+		
+		if (MassiveCoreMConf.get().warnOnLocalAlter && modification == Modification.UNKNOWN_LOG && actualModification.isModified())
+		{
+			E entity = this.idToEntity.get(id);
+			if (entity != null)
+			{
+				this.logModification(entity, actualModification);
+			}
+		}
+		return actualModification;
+	}
+	
+	private void checkActuallyModifiedFixed(String id)
+	{
+		if (!ConfServer.localPollingEnabled || !MassiveCoreMConf.get().warnOnLocalAlter) return;
+		
+		E entity = this.getFixed(id);
+		boolean modified = this.examineHasLocalAlterFixed(id, entity);
+		if (modified) return;
+		
+		List<String> messages = new MassiveList<>();
+		messages.add(Txt.parse("<pink>%s", this.getDebugName()));
+		messages.add(Txt.parse("<aqua>%s", entity.getId()));
+		String change = Txt.implode(messages, Txt.parse("<silver> | "));
+		String message = Txt.parse("<b>[No Modification] %s", change);
+		this.getPlugin().log(message);
+	}
+	
 	protected void logModification(E entity, Modification modification)
 	{
 		JsonObject lastRaw = entity.getLastRaw();
+		
+		if (!ConfServer.localPollingEnabled)
+		{
+			if (MStore.DEBUG_ENABLED) this.getPlugin().log("Attempted logModification in " + this.getDebugName() + " for " + entity.getId());
+			return;
+		}
 		
 		if (lastRaw == null)
 		{
@@ -603,7 +665,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		String change = Txt.implode(changes, Txt.parse("<silver> | "));
 		String message = Txt.parse("<b>[Unreported Modification] %s", change);
 		
-		MassiveCore.get().log(message);
+		this.getPlugin().log(message);
 	}
 	
 	@Override
@@ -694,7 +756,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	{
 		if (modification.isModified())
 		{
-			if (MStore.DEBUG_ENABLED) System.out.println(this.getDebugName() + " identified " + modification + " on " + id);
+			if (MStore.DEBUG_ENABLED) this.getPlugin().log(this.getDebugName() + " identified " + modification + " on " + id);
 			if (veto != null && ! modification.isSafe()) modification = veto;
 			this.putIdentifiedModificationFixed(id, modification);
 		}
@@ -714,7 +776,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	@Override
 	public void syncAll()
 	{
-		this.identifyModifications(null);
+		this.identifyRemoteModifications(null);
 		this.syncIdentified();
 	}
 	
@@ -891,8 +953,10 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 				this.getPusher().deinit();
 			}
 			
-			// TODO: Save outwards only? We may want to avoid loads at this stage...
-			this.syncAll();
+			// syncIdentified is probably good enough. We need not load, and when
+			// lastRaw is not present we can't identify local modifications anyway.
+			//this.syncAll();
+			this.syncIdentified();
 			
 			name2instance.remove(this.getName());
 		}

@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.store;
 
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonNull;
@@ -139,7 +140,7 @@ public class GsonEqualsChecker
 			if (floating)
 			{
 				// Our epsilon is pretty big in order to see float and double as the same.
-				return Math.abs(oneNumber.doubleValue() - twoNumber.doubleValue()) < 0.0001D;
+				return MUtil.equalsishNumber(oneNumber, twoNumber);
 			}
 			else
 			{

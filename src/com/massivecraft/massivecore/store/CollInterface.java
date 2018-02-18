@@ -98,6 +98,9 @@ public interface CollInterface<E extends Entity<E>> extends Named, Active, Ident
 	void identifyRemoteModifications(Modification veto);
 	void identifyRemoteModificationFixed(String id, Long remoteMtime, Modification veto);
 	
+	Modification getIdentifiedModification(Object oid);
+	Modification getIdentifiedModificationFixed(String id);
+	
 	// Init
 	void initLoadAllFromRemote();
 	

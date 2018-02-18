@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.store;
 import com.massivecraft.massivecore.Identified;
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.accessor.Accessor;
+import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 
 import java.lang.ref.WeakReference;
@@ -96,7 +97,7 @@ public class EntityInternal<E extends EntityInternal<E>> implements Identified
 		
 		//System.out.println(this.getColl().getName() + ": " +this.getId() + " was modified locally");
 		
-		this.getContainer().putIdentifiedModificationFixed(this.getId(), Modification.UNKNOWN);
+		this.getContainer().putIdentifiedModificationFixed(this.getId(), Modification.UNKNOWN_CHANGED);
 	}
 	
 	// -------------------------------------------- //
@@ -130,6 +131,19 @@ public class EntityInternal<E extends EntityInternal<E>> implements Identified
 	{
 		this.changed();
 		return Objects.equals(value, standard) ? null : value;
+	}
+	
+	public <T> T convertSet(T value, T current, T standard)
+	{
+		current = this.convertGet(current, standard);
+		this.changed(value, current);
+		return Objects.equals(value, standard) ? null : value;
+	}
+	
+	public void changed(Object o1, Object o2)
+	{
+		if (MUtil.equalsishObject(o1, o2)) return;
+		changed();
 	}
 	
 	// BOOLEAN
