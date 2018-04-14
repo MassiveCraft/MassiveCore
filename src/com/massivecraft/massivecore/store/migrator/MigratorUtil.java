@@ -5,6 +5,7 @@ import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
+import com.massivecraft.massivecore.xlib.gson.JsonArray;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
@@ -169,9 +170,11 @@ public class MigratorUtil
 		if (jsonElement.isJsonPrimitive()) return false;
 		
 		Type jsonType = getJsonRepresentation(realType);
-		
+
+		// JsonObject is if it is an object or a map
 		if (jsonElement.isJsonObject())
 		{
+			// For maps we loop over all the content and migrate the values
 			if (jsonType != null && Map.class.isAssignableFrom(getClassType(jsonType)))
 			{
 				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
@@ -187,7 +190,8 @@ public class MigratorUtil
 				}
 				return migrated;
 			}
-			
+
+			// For objects we update the object itself and its fields
 			boolean migrated = false;
 			JsonObject object = jsonElement.getAsJsonObject();
 			Type classType = jsonType != null ? jsonType : realType;
@@ -196,20 +200,53 @@ public class MigratorUtil
 			return migrated;
 			
 		}
+		// Arrays are for arrays, collections and maps where the key is complex
 		if (jsonElement.isJsonArray())
 		{
+
+			if (jsonType == null) throw new RuntimeException("jsonType is null");
 			Class<?> clazz = getClassType(jsonType);
-			
+			if (clazz == null) throw new RuntimeException("clazz is null");
+
+			// So if it is a map with a complex key it is represented as an array
+			if (Map.class.isAssignableFrom(clazz))
+			{
+				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
+				Type keyType = parameterizedType.getActualTypeArguments()[0];
+				Type valueType = parameterizedType.getActualTypeArguments()[1];
+
+				JsonArray array = jsonElement.getAsJsonArray();
+
+				boolean migrated = false;
+				for (JsonElement element : array)
+				{
+					// And all of the contents are arrays with the key as 0 and the value as 1
+					JsonArray innerArray = element.getAsJsonArray();
+					JsonElement key = innerArray.get(0);
+					JsonElement value = innerArray.get(1);
+
+					migrated = migrate(keyType, key) | migrated;
+					migrated = migrate(valueType, value) | migrated;
+				}
+				return migrated;
+			}
+
 			Type elementType = null;
 			
 			if (clazz.isArray())
 			{
 				elementType =  clazz.getComponentType();
+				if (elementType == null) throw new RuntimeException("elementType is null");
 			}
 			else if (Collection.class.isAssignableFrom(clazz))
 			{
 				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
 				elementType = parameterizedType.getActualTypeArguments()[0];
+				if (elementType == null) throw new RuntimeException("elementType is null");
+			}
+			else
+			{
+				throw new RuntimeException("no elementType specified");
 			}
 			
 			boolean migrated = false;
@@ -279,6 +316,13 @@ public class MigratorUtil
 			}
 			if (superClass == null) throw new RuntimeException(type.getTypeName() + " : " + name);
 			Type elementType = ReflectionUtil.getField(superClass, name).getGenericType();
+			try
+			{
+				migrated = migrate(elementType, element) | migrated;
+			} catch (RuntimeException e) {
+				System.out.println("FAILURE FOR FIELD: " + name);
+				throw e;
+			}
 			migrated = migrate(elementType, element) | migrated;
 		}
 		
