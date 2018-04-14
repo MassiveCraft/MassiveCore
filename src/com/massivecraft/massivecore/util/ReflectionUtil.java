@@ -293,6 +293,8 @@ public class ReflectionUtil
 	
 	public static Field getField(Class<?> clazz, String name)
 	{
+		if (clazz == null) throw new NullPointerException("clazz");
+		if (name == null) throw new NullPointerException("name");
 		try
 		{
 			Field ret = clazz.getDeclaredField(name);

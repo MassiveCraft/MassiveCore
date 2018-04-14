@@ -2,11 +2,13 @@ package com.massivecraft.massivecore.store.migrator;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 import com.massivecraft.massivecore.xlib.gson.JsonObject;
 import com.massivecraft.massivecore.xlib.gson.annotations.SerializedName;
+import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
 import org.bukkit.inventory.Inventory;
 
 import java.lang.reflect.Field;
@@ -138,6 +140,15 @@ public class MigratorUtil
 	// GET
 	public static Type getJsonRepresentation(Type actualType)
 	{
+		if (actualType instanceof ParameterizedType && ((ParameterizedType) actualType).getRawType().equals(EntityInternalMap.class))
+		{
+			ParameterizedType parameterizedType = (ParameterizedType) actualType;
+			Type valueType = parameterizedType.getActualTypeArguments()[0];
+			Type keyType = String.class;
+			return TypeToken.getParameterized(Map.class, keyType, valueType).getType();
+		}
+
+
 		if (!jsonRepresentation.containsKey(actualType))
 		{
 			return actualType;
@@ -237,13 +248,13 @@ public class MigratorUtil
 	
 	public static boolean migrateFields(Type type, JsonObject object)
 	{
-		if (type == null) throw new NullPointerException("entityClass");
+		if (type == null) throw new NullPointerException("type");
 		if (object == null) throw new NullPointerException("object");
 		
 		Class<?> entityClass = getClassType(type);
 		
 		// We can't lookup the generic type of a map, so trying to convert the fields is useless
-		// Furthermore maps are stored as jsopnobjects, and we can't treat them like other objects
+		// Furthermore maps are stored as jsonobjects, and we can't treat them like other objects
 		// because their "fields" are dynamically made and can't be looked up with reflection
 		if (Map.class.isAssignableFrom(entityClass)) return false;
 		
@@ -266,6 +277,7 @@ public class MigratorUtil
 					superClass = entityClass;
 				}
 			}
+			if (superClass == null) throw new RuntimeException(type.getTypeName() + " : " + name);
 			Type elementType = ReflectionUtil.getField(superClass, name).getGenericType();
 			migrated = migrate(elementType, element) | migrated;
 		}
