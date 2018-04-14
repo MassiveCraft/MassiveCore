@@ -231,6 +231,24 @@ public class MigratorUtil
 				return migrated;
 			}
 
+			// Entries are also serialised as list
+			if (Entry.class.isAssignableFrom(clazz))
+			{
+				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
+				Type keyType = parameterizedType.getActualTypeArguments()[0];
+				Type valueType = parameterizedType.getActualTypeArguments()[1];
+
+				JsonArray array = jsonElement.getAsJsonArray();
+
+				JsonElement key = array.get(0);
+				JsonElement value = array.get(1);
+
+				boolean migrated = false;
+				migrated = migrate(keyType, key) | migrated;
+				migrated = migrate(valueType, value) | migrated;
+				return migrated;
+			}
+
 			Type elementType = null;
 			
 			if (clazz.isArray())
