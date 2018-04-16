@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.store.migrator;
 
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
+import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.store.EntityInternalMap;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
@@ -141,7 +142,7 @@ public class MigratorUtil
 	// GET
 	public static Type getJsonRepresentation(Type actualType)
 	{
-		if (actualType instanceof ParameterizedType && ((ParameterizedType) actualType).getRawType().equals(EntityInternalMap.class))
+		if (isParameterizedInternalMap(actualType))
 		{
 			ParameterizedType parameterizedType = (ParameterizedType) actualType;
 			Type valueType = parameterizedType.getActualTypeArguments()[0];
@@ -156,7 +157,15 @@ public class MigratorUtil
 		}
 		return jsonRepresentation.get(actualType);
 	}
-	
+
+	private static boolean isParameterizedInternalMap(Type type)
+	{
+		if (!(type instanceof ParameterizedType)) return false;
+
+		ParameterizedType parameterizedType = (ParameterizedType) type;
+		return parameterizedType.getRawType().equals(EntityInternalMap.class);
+
+	}
 	
 	// -------------------------------------------- //
 	// MIGRATE
@@ -174,108 +183,126 @@ public class MigratorUtil
 		// JsonObject is if it is an object or a map
 		if (jsonElement.isJsonObject())
 		{
+			JsonObject object = jsonElement.getAsJsonObject();
+
 			// For maps we loop over all the content and migrate the values
 			if (jsonType != null && Map.class.isAssignableFrom(getClassType(jsonType)))
 			{
-				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
-				Type keyType = parameterizedType.getActualTypeArguments()[0];
-				Type valueType = parameterizedType.getActualTypeArguments()[1];
-				
-				JsonObject object = jsonElement.getAsJsonObject();
-				
-				boolean migrated = false;
-				for (Entry<String, JsonElement> entry : object.entrySet())
-				{
-					migrated = migrate(valueType, entry.getValue()) | migrated;
-				}
-				return migrated;
+				return migrateSimpleMap(getParameterizedType(jsonType), jsonElement.getAsJsonObject());
 			}
 
 			// For objects we update the object itself and its fields
-			boolean migrated = false;
-			JsonObject object = jsonElement.getAsJsonObject();
-			Type classType = jsonType != null ? jsonType : realType;
-			migrated = migrateClass(classType, object) | migrated;
-			if (jsonType != null) migrated = migrateFields(jsonType, object) | migrated;
-			return migrated;
-			
+			return migrateObject(realType, jsonType, object);
 		}
+
 		// Arrays are for arrays, collections and maps where the key is complex
 		if (jsonElement.isJsonArray())
 		{
-
 			if (jsonType == null) throw new RuntimeException("jsonType is null");
 			Class<?> clazz = getClassType(jsonType);
 			if (clazz == null) throw new RuntimeException("clazz is null");
 
+			JsonArray array = jsonElement.getAsJsonArray();
+
 			// So if it is a map with a complex key it is represented as an array
 			if (Map.class.isAssignableFrom(clazz))
 			{
-				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
-				Type keyType = parameterizedType.getActualTypeArguments()[0];
-				Type valueType = parameterizedType.getActualTypeArguments()[1];
-
-				JsonArray array = jsonElement.getAsJsonArray();
-
-				boolean migrated = false;
-				for (JsonElement element : array)
-				{
-					// And all of the contents are arrays with the key as 0 and the value as 1
-					JsonArray innerArray = element.getAsJsonArray();
-					JsonElement key = innerArray.get(0);
-					JsonElement value = innerArray.get(1);
-
-					migrated = migrate(keyType, key) | migrated;
-					migrated = migrate(valueType, value) | migrated;
-				}
-				return migrated;
+				return migrateComplexMap(getParameterizedType(jsonType), array);
 			}
 
 			// Entries are also serialised as list
 			if (Entry.class.isAssignableFrom(clazz))
 			{
-				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
-				Type keyType = parameterizedType.getActualTypeArguments()[0];
-				Type valueType = parameterizedType.getActualTypeArguments()[1];
-
-				JsonArray array = jsonElement.getAsJsonArray();
-
-				JsonElement key = array.get(0);
-				JsonElement value = array.get(1);
-
-				boolean migrated = false;
-				migrated = migrate(keyType, key) | migrated;
-				migrated = migrate(valueType, value) | migrated;
-				return migrated;
+				return migrateEntry(getParameterizedType(jsonType), array);
 			}
 
-			Type elementType = null;
-			
-			if (clazz.isArray())
-			{
-				elementType =  clazz.getComponentType();
-				if (elementType == null) throw new RuntimeException("elementType is null");
-			}
-			else if (Collection.class.isAssignableFrom(clazz))
-			{
-				ParameterizedType parameterizedType = (ParameterizedType) jsonType;
-				elementType = parameterizedType.getActualTypeArguments()[0];
-				if (elementType == null) throw new RuntimeException("elementType is null");
-			}
-			else
-			{
-				throw new RuntimeException("no elementType specified");
-			}
-			
-			boolean migrated = false;
-			for (JsonElement element1 : jsonElement.getAsJsonArray())
-			{
-				migrated = migrate(elementType, element1) | migrated;
-			}
-			return migrated;
+			return migrateList(clazz, jsonType, array);
 		}
 		
 		throw new RuntimeException();
+	}
+
+	private static boolean migrateSimpleMap(ParameterizedType parameterizedType, JsonObject map)
+	{
+		Type valueType = parameterizedType.getActualTypeArguments()[1];
+
+		boolean migrated = false;
+		for (Entry<String, JsonElement> entry : map.entrySet())
+		{
+			migrated = migrate(valueType, entry.getValue()) | migrated;
+		}
+		return migrated;
+	}
+
+	private static boolean migrateObject(Type realType, Type jsonType, JsonObject object)
+	{
+		boolean migrated = false;
+		Type classType = jsonType != null ? jsonType : realType;
+		migrated = migrateClass(classType, object) | migrated;
+		if (jsonType != null) migrated = migrateFields(jsonType, object) | migrated;
+		return migrated;
+	}
+
+	private static boolean migrateComplexMap(ParameterizedType parameterizedType, JsonArray array)
+	{
+		Type keyType = parameterizedType.getActualTypeArguments()[0];
+		Type valueType = parameterizedType.getActualTypeArguments()[1];
+
+		boolean migrated = false;
+		for (JsonElement element : array)
+		{
+			// And all of the contents are arrays with the key as 0 and the value as 1
+			JsonArray innerArray = element.getAsJsonArray();
+			JsonElement key = innerArray.get(0);
+			JsonElement value = innerArray.get(1);
+
+			migrated = migrate(keyType, key) | migrated;
+			migrated = migrate(valueType, value) | migrated;
+		}
+		return migrated;
+	}
+
+	private static boolean migrateEntry(ParameterizedType parameterizedType, JsonArray array)
+	{
+		Type keyType = parameterizedType.getActualTypeArguments()[0];
+		Type valueType = parameterizedType.getActualTypeArguments()[1];
+
+		JsonElement key = array.get(0);
+		JsonElement value = array.get(1);
+
+		boolean migrated = false;
+		migrated = migrate(keyType, key) | migrated;
+		migrated = migrate(valueType, value) | migrated;
+		return migrated;
+	}
+
+	private static boolean migrateList(Class<?> clazz, Type jsonType, JsonArray array)
+	{
+
+		Type elementType = null;
+
+		if (clazz.isArray())
+		{
+			elementType = clazz.getComponentType();
+			if (elementType == null) throw new RuntimeException("elementType is null");
+		}
+		else if (Collection.class.isAssignableFrom(clazz))
+		{
+			ParameterizedType parameterizedType = getParameterizedType(jsonType);
+			elementType = parameterizedType.getActualTypeArguments()[0];
+			if (elementType == null) throw new RuntimeException("elementType is null");
+		}
+		else
+		{
+			throw new RuntimeException("no elementType found");
+		}
+
+		boolean migrated = false;
+		for (JsonElement element1 : array)
+		{
+			migrated = migrate(elementType, element1) | migrated;
+		}
+		return migrated;
 	}
 
 	public static boolean migrateClass(Type type, JsonObject entity)
@@ -422,6 +449,38 @@ public class MigratorUtil
 		{
 			throw new RuntimeException(type.getTypeName());
 		}
+	}
+
+	public static ParameterizedType getParameterizedType(Type jsonType)
+	{
+		if (jsonType instanceof ParameterizedType) return (ParameterizedType) jsonType;
+
+		if (jsonType instanceof Class<?>)
+		{
+			Class<?> clazz = (Class<?>) jsonType;
+			Type superClass = clazz.getGenericSuperclass();
+
+			// The exception throwing and catching is in order to catch the inheritance structure
+			// in case something is more complex than expected.
+			if (superClass == null)
+			{
+				System.out.println("Failed for: " + jsonType.getTypeName());
+				throw new RuntimeException();
+			}
+
+			try
+			{
+				ParameterizedType ret = getParameterizedType(superClass);
+				return ret;
+			}
+			catch (RuntimeException ex)
+			{
+				System.out.println("Failed for: " + jsonType.getTypeName());
+				throw ex;
+			}
+		}
+
+		throw new RuntimeException("Neither ParameterizedType nor Class: " + jsonType.getTypeName());
 	}
 
 }
