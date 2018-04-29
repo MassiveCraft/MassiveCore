@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.store;
 
 import com.massivecraft.massivecore.ConfServer;
+import com.massivecraft.massivecore.MassiveCoreMConf;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
 
 import java.net.URI;
@@ -75,13 +76,13 @@ public class MStore
 		if (uri == null) return alias;
 		return resolveAlias(uri);
 	}
-	
+
 	public static Db getDb(String alias)
 	{
 		String uri = resolveAlias(alias);
 		Db db = uri2db.get(uri);
 		if (db != null) return db;
-		
+
 		try
 		{
 			db = getDb(new URI(uri));
@@ -91,17 +92,17 @@ public class MStore
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		uri2db.put(uri, db);
-		
+
 		return db;
 	}
-	
+
 	public static Db getDb()
 	{
 		return getDb(ConfServer.dburi);
 	}
-	
+
 	public static Db getDb(URI uri)
 	{
 		String scheme = uri.getScheme();
@@ -109,5 +110,15 @@ public class MStore
 		if (driver == null) return null;
 		return driver.getDb(uri.toString());
 	}
-	
+
+	// -------------------------------------------- //
+	// OTHER
+	// -------------------------------------------- //
+
+	public static boolean isLocalPollingDebugEnabled()
+	{
+		return ConfServer.localPollingEnabled && MassiveCoreMConf.get().warnOnLocalAlter;
+	}
+
+
 }

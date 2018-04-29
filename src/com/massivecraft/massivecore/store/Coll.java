@@ -9,7 +9,6 @@ import com.massivecraft.massivecore.comparator.ComparatorNaturalOrder;
 import com.massivecraft.massivecore.mixin.MixinModification;
 import com.massivecraft.massivecore.store.migrator.MigratorUtil;
 import com.massivecraft.massivecore.util.MUtil;
-import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
 import com.massivecraft.massivecore.xlib.gson.Gson;
 import com.massivecraft.massivecore.xlib.gson.JsonElement;
@@ -555,7 +554,13 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 				this.removeIdentifiedModificationFixed(id);
 			break;
 		}
-		
+
+		E entity = this.getFixed(id);
+		if (entity != null)
+		{
+			entity.setLastStackTraceChanged(null);
+		}
+
 		return modification;
 	}
 	
@@ -595,7 +600,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 	
 	private void checkActuallyModifiedFixed(String id)
 	{
-		if (!ConfServer.localPollingEnabled || !MassiveCoreMConf.get().warnOnLocalAlter) return;
+		if (!MStore.isLocalPollingDebugEnabled()) return;
 		
 		E entity = this.getFixed(id);
 		boolean modified = this.examineHasLocalAlterFixed(id, entity);
@@ -607,6 +612,7 @@ public class Coll<E extends Entity<E>> extends CollAbstract<E>
 		String change = Txt.implode(messages, Txt.parse("<silver> | "));
 		String message = Txt.parse("<b>[No Modification] %s", change);
 		this.getPlugin().log(message);
+		if (entity.getLastStackTraceChanged() != null) this.getPlugin().log(MUtil.getStackTraceString(entity.getLastStackTraceChanged(), true));
 	}
 	
 	protected void logModification(E entity, Modification modification)
