@@ -132,6 +132,9 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	
 	@EditorType(TypeBooleanOn.class)
 	public boolean warnOnLocalAlter = false;
+
+	@EditorType(TypeBooleanOn.class)
+	public boolean advancedLocalPollingDebug = false;
 	
 	// -------------------------------------------- //
 	// CLEAN
