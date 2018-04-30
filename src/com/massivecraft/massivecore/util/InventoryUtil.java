@@ -5,6 +5,7 @@ import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.comparator.ComparatorComparable;
 import com.massivecraft.massivecore.comparator.ComparatorEntryValue;
 import com.massivecraft.massivecore.event.EventMassiveCoreLorePriority;
+import com.massivecraft.massivecore.item.DataItemStack;
 import com.massivecraft.massivecore.mixin.MixinInventory;
 import com.massivecraft.massivecore.predicate.Predicate;
 import com.massivecraft.massivecore.predicate.PredicateStringStartsWith;
@@ -1023,7 +1024,10 @@ public class InventoryUtil
 	{
 		if (isNothing(one)) return isNothing(two);
 		if (isNothing(two)) return false;
-		return one.equals(two);
+		
+		DataItemStack dataOne = DataItemStack.fromBukkit(one);
+		DataItemStack dataTwo = DataItemStack.fromBukkit(two);
+		return dataOne.equals(dataTwo);
 	}
 	
 	public static boolean equals(ItemStack[] one, ItemStack[] two)
