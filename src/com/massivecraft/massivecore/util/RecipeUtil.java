@@ -1,8 +1,8 @@
 package com.massivecraft.massivecore.util;
 
+import com.massivecraft.massivecore.mixin.MixinRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -72,7 +72,7 @@ public class RecipeUtil
 	@SuppressWarnings("deprecation")
 	public static ShapelessRecipe createShapeless(ItemStack result, Object... objects)
 	{
-		ShapelessRecipe recipe = new ShapelessRecipe(NamespacedKey.randomKey(), result);
+		ShapelessRecipe recipe = MixinRecipe.get().createShapeless(result);
 		
 		int quantity = 1;
 		int data = 0;
