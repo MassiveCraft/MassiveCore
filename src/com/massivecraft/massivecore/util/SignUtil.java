@@ -281,10 +281,8 @@ public class SignUtil
 		for (Block block : blocks)
 		{
 			List<String> lines = getLines(block);
-			if (lines != null)
-			{
-				ret.addAll(lines);
-			}
+			if (lines == null) continue;
+			ret.addAll(lines);
 		}
 		
 		return ret;
