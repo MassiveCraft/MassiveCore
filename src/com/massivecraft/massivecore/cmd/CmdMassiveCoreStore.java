@@ -10,7 +10,7 @@ public class CmdMassiveCoreStore extends MassiveCoreCommand
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	private static CmdMassiveCoreStore i = new CmdMassiveCoreStore() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesMstore; } };
+	private static CmdMassiveCoreStore i = new CmdMassiveCoreStore();
 	public static CmdMassiveCoreStore get() { return i; }
 	
 	// -------------------------------------------- //
@@ -22,4 +22,13 @@ public class CmdMassiveCoreStore extends MassiveCoreCommand
 	public CmdMassiveCoreStoreCopydb cmdMassiveCoreStoreCopydb = new CmdMassiveCoreStoreCopydb();
 	public CmdMassiveCoreStoreClean cmdMassiveCoreStoreClean = new CmdMassiveCoreStoreClean();
 	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MassiveCoreMConf.get().aliasesMstore;
+	}
 }

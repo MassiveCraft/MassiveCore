@@ -10,7 +10,7 @@ public class CmdMassiveCoreBuffer extends MassiveCoreCommand
 	// INSTANCE
 	// -------------------------------------------- //
 	
-	private static CmdMassiveCoreBuffer i = new CmdMassiveCoreBuffer() { public List<String> getAliases() { return MassiveCoreMConf.get().aliasesBuffer; } };
+	private static CmdMassiveCoreBuffer i = new CmdMassiveCoreBuffer();
 	public static CmdMassiveCoreBuffer get() { return i; }
 	
 	// -------------------------------------------- //
@@ -23,4 +23,13 @@ public class CmdMassiveCoreBuffer extends MassiveCoreCommand
 	public CmdMassiveCoreBufferAdd cmdMassiveCoreBufferAdd = new CmdMassiveCoreBufferAdd();
 	public CmdMassiveCoreBufferWhitespace cmdMassiveCoreBufferWhitespace = new CmdMassiveCoreBufferWhitespace();
 	
+	// -------------------------------------------- //
+	// OVERRIDE
+	// -------------------------------------------- //
+	
+	@Override
+	public List<String> getAliases()
+	{
+		return MassiveCoreMConf.get().aliasesBuffer;
+	}
 }
