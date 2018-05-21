@@ -1040,7 +1040,7 @@ public class MassiveCommand implements Active, PluginIdentifiableCommand
 		if (basePrefix == null) return null;
 
 		// Only try if the name matches with the expected prefix ...
-		String name = this.getClass().getSimpleName();
+		String name = getClassOrEnclosing(this).getSimpleName(); //this.getClass().getSimpleName();
 		if ( ! name.startsWith(basePrefix)) return null;
 
 		// ... and remove the prefix  ...
