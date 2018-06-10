@@ -1,9 +1,12 @@
 package com.massivecraft.massivecore.nms;
 
+import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.particleeffect.ReflectionUtils.PackageType;
 import com.massivecraft.massivecore.util.ReflectionUtil;
+import com.massivecraft.massivecore.util.Txt;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
@@ -23,8 +26,10 @@ public abstract class NmsSkullMetaAbstract extends NmsSkullMeta
 	public Class<?> classGameProfile;
 	// ...#id
 	public Field fieldGameProfileId;
-	// ..#name
+	// ...#name
 	public Field fieldGameProfileName;
+	// ...(UUID id, String name);
+	public Constructor<?> constructorGameProfile;
 	
 	// -------------------------------------------- //
 	// GAME PROFILE CLASS NAME
@@ -45,6 +50,7 @@ public abstract class NmsSkullMetaAbstract extends NmsSkullMeta
 		this.classGameProfile = Class.forName(this.getGameProfileClassName());
 		this.fieldGameProfileId = ReflectionUtil.getField(this.classGameProfile, "id");
 		this.fieldGameProfileName = ReflectionUtil.getField(this.classGameProfile, "name");
+		this.constructorGameProfile = ReflectionUtil.getConstructor(this.classGameProfile, UUID.class, String.class);
 	}
 	
 	// -------------------------------------------- //
@@ -62,16 +68,17 @@ public abstract class NmsSkullMetaAbstract extends NmsSkullMeta
 	@Override
 	public void set(SkullMeta meta, String name, UUID id)
 	{
-		meta.setOwner(name != null ? name : "asdf");
-		
-		Object gameProfile = getGameProfile(meta);
-		setGameProfileName(gameProfile, name);
-		setGameProfileId(gameProfile, id);		
+		final Object gameProfile = createGameProfile(id, name);
+		setGameProfile(meta, gameProfile);
 	}
 	
 	// -------------------------------------------- //
 	// GAMEPROFILE
 	// -------------------------------------------- //
+	
+	protected <T> T createGameProfile(UUID id, String name) {
+		return ReflectionUtil.invokeConstructor(this.constructorGameProfile, id, name);
+	}
 	
 	protected <T> T getGameProfile(SkullMeta meta)
 	{
