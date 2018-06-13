@@ -44,12 +44,11 @@ public class MassiveCoreMSponsorInfo extends Entity<MassiveCoreMSponsorInfo>
 	public List<String> consoleMsgs = new MassiveList<>(
 		"",
 		"<pink>____----====[ <aqua>Sponsored by ServerMiner<pink> ]====----____",
-		"<lime>Get <gold>20% off<lime> a Premium Minecraft Server at ServerMiner:",
-		"<aqua>https://ServerMiner.com/?p=MassiveCraft",
+		"<lime>Get <gold>20% off<lime> a Premium Factions Server at ServerMiner:",
+		"<aqua>https://ServerMiner.com/plugins/Factions-Server-Hosting?p=MassiveCraft",
 		"",
 		"<lime>Factions and MassiveCore is sponsored by ServerMiner.com!",
 		"<lime>They help us fund the development of new plugin features.",
-		"<lime>Use the promo code <gold>MassiveCraft<lime> to get a <gold>20% discount<lime>.",
 		"",
 		"<i>Only server operators get this message, not regular players.",
 		"<i>Type <c>/mcore sponsor<i> to disable it.",
@@ -67,12 +66,11 @@ public class MassiveCoreMSponsorInfo extends Entity<MassiveCoreMSponsorInfo>
 	public List<String> ingameMsgs = new MassiveList<>(
 		"",
 		"<pink>____----====[ <aqua>Sponsored by ServerMiner<pink> ]====----____",
-		"<lime>Get <gold>20% off<lime> a Premium Minecraft Server at ServerMiner:",
-		"<aqua>https://ServerMiner.com/?p=MassiveCraft",
+		"<lime>Get <gold>20% off<lime> a Premium Factions Server at ServerMiner:",
+		"<aqua>https://ServerMiner.com/plugins/Factions-Server-Hosting?p=MassiveCraft",
 		"",
 		"<lime>Factions and MassiveCore is sponsored by ServerMiner.com!",
 		"<lime>They help us fund the development of new plugin features.",
-		"<lime>Use the promo code <gold>MassiveCraft<lime> to get a <gold>20% discount<lime>.",
 		"",
 		"<i>Only server operators get this message, not regular players.",
 		"<i>Type <c>/mcore sponsor<i> to disable it."
@@ -91,7 +89,7 @@ public class MassiveCoreMSponsorInfo extends Entity<MassiveCoreMSponsorInfo>
 		)
 	);
 	
-	public String ingameLink = "https://ServerMiner.com/?p=MassiveCraft";
+	public String ingameLink = "https://ServerMiner.com/plugins/Factions-Server-Hosting?p=MassiveCraft";
 
 	// -------------------------------------------- //
 	// UPDATE
