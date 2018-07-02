@@ -13,7 +13,7 @@ public class EngineMassiveCoreCollTick extends Engine
 	public static EngineMassiveCoreCollTick get() { return i; }
 	public EngineMassiveCoreCollTick()
 	{
-		this.setPeriod(1L);
+		this.setPeriod(500L);
 	}
 	
 	// -------------------------------------------- //
