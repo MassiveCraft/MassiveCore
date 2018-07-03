@@ -3,6 +3,7 @@ package com.massivecraft.massivecore.util;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.cmd.CmdMassiveCore;
+import com.massivecraft.massivecore.command.Parameter;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.mson.MsonEvent;
 import com.massivecraft.massivecore.predicate.Predicate;
@@ -686,10 +687,20 @@ public class Txt
 		String number = String.valueOf(destinationPage);
 		String oldNumber = String.valueOf(pageHumanBased);
 		String commandLine;
-		if (args != null && args.contains(oldNumber))
+		if (args != null)
 		{
+			int pageParamIndex = command.getPageParameterIndex();
+			
 			List<String> arguments = new ArrayList<>(args);
-			arguments.set(arguments.indexOf(oldNumber), number);
+			
+			// If unable to identify the page parameter, try to use the argument matching the oldNumber
+			if (pageParamIndex == -1) pageParamIndex = arguments.indexOf(oldNumber);
+			
+			// If a valid index has been identified, Set the new page number there
+			if (pageParamIndex > -1 && pageParamIndex < arguments.size()) arguments.set(pageParamIndex, number);
+			
+			// If unable to find valid page parameter, add the new page as a leading argument (fallback)
+			else arguments.add(0, number);
 
 			commandLine = command.getCommandLine(arguments);
 		}
