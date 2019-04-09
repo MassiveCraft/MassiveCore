@@ -244,7 +244,6 @@ public class SignUtil
 		if (material == null) throw new NullPointerException("material");
 		
 		if (material == Material.SIGN) return true;
-		if (material == Material.SIGN_POST) return true;
 		if (material == Material.WALL_SIGN) return true;
 		
 		return false;

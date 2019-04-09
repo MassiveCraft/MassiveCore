@@ -16,7 +16,7 @@ public class WriterItemStackMetaFireworkEffect extends WriterAbstractItemStackMe
 	public WriterItemStackMetaFireworkEffect()
 	{
 		super(FireworkEffectMeta.class);
-		this.setMaterial(Material.FIREWORK_CHARGE);
+		this.setMaterial(Material.FIREWORK_STAR);
 		this.setConverterTo(ConverterToFireworkEffect.get());
 		this.setConverterFrom(ConverterFromFireworkEffect.get());
 		this.addDependencyClasses(
