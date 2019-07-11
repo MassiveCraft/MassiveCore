@@ -1,5 +1,6 @@
 package com.massivecraft.massivecore.nms;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class NmsItemStackCreateFallback extends NmsItemStackCreate
@@ -19,7 +20,7 @@ public class NmsItemStackCreateFallback extends NmsItemStackCreate
 	@Override
 	public ItemStack create()
 	{
-		return new ItemStack(0);
+		return new ItemStack(Material.AIR);
 	}
 	
 }

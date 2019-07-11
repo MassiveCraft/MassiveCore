@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.mixin;
 
 import com.massivecraft.massivecore.nms.NmsPlayerInventoryCreate;
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.PlayerInventory;
@@ -27,6 +28,11 @@ public class MixinInventory extends Mixin
 		return nmsPlayerInventory.create();
 	}
 	
+	public Inventory createInventory(InventoryHolder holder, InventoryType type)
+	{
+		return Bukkit.createInventory(holder, type);
+	}
+
 	public Inventory createInventory(InventoryHolder holder, int size, String title)
 	{
 		return Bukkit.createInventory(holder, size, title);

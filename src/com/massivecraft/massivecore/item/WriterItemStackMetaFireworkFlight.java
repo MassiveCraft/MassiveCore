@@ -15,7 +15,7 @@ public class WriterItemStackMetaFireworkFlight extends WriterAbstractItemStackMe
 	public WriterItemStackMetaFireworkFlight()
 	{
 		super(FireworkMeta.class);
-		this.setMaterial(Material.FIREWORK);
+		this.setMaterial(Material.FIREWORK_ROCKET);
 	}
 	
 	// -------------------------------------------- //

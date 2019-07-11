@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.item;
 
 import org.bukkit.enchantments.Enchantment;
+import com.massivecraft.massivecore.command.type.TypeEnchantment;
 
 public class ConverterFromEnchant extends Converter<Enchantment, Integer>
 {
@@ -20,7 +21,7 @@ public class ConverterFromEnchant extends Converter<Enchantment, Integer>
 	public Integer convert(Enchantment x)
 	{
 		if (x == null) return null;
-		return x.getId();
+		return TypeEnchantment.KEY_TO_ID.get(x.getKey().getKey());
 	}
 
 }

@@ -30,7 +30,7 @@ public class TestTypeEnchantment extends Test
 		for (Iterator<Enchantment> iterator = enchantments.iterator(); iterator.hasNext();)
 		{
 			Enchantment enchantment = iterator.next();
-			if (TypeEnchantment.ID_TO_RAWNAMES.containsKey(enchantment.getId()))
+			if (TypeEnchantment.ID_TO_RAWNAMES.containsKey(TypeEnchantment.KEY_TO_ID.get(enchantment.getKey().getKey())))
 			{
 				iterator.remove();
 			}
@@ -38,7 +38,7 @@ public class TestTypeEnchantment extends Test
 		
 		for (Enchantment enchantment : enchantments)
 		{
-			String issue = Txt.parse("<i>The enchantment <h>%s (%d)<i> lacks nicename in TypeEnchantment.", enchantment.getName(), enchantment.getId());
+			String issue = Txt.parse("<i>The enchantment <h>%s (%d)<i> lacks nicename in TypeEnchantment.", enchantment.getKey().getKey(), TypeEnchantment.KEY_TO_ID.get(enchantment.getKey().getKey()));
 			this.addIssue(issue);
 		}
 		

@@ -24,7 +24,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -932,17 +932,21 @@ public class InventoryUtil
 		// http://minecraft.gamepedia.com/Data_values
 		if (material == Material.COAL) return false;
 		if (material == Material.GOLDEN_APPLE) return false;
-		if (material == Material.RAW_FISH) return false;
-		if (material == Material.COOKED_FISH) return false;
-		if (material == Material.INK_SACK) return false;
+		if (material == Material.COD) return false;
+		if (material == Material.COOKED_COD) return false;
+		if (material == Material.SALMON) return false;
+		if (material == Material.COOKED_SALMON) return false;
+		if (material == Material.PUFFERFISH) return false;
+		if (material == Material.INK_SAC) return false;
 		if (material == Material.MAP) return false;
 		if (material == Material.POTION) return false;
-		if (material == Material.MONSTER_EGG) return false;
-		if (material == Material.SKULL_ITEM) return false;
+		if (material == Material.LEGACY_MONSTER_EGG) return false;
+		if (material == Material.SKELETON_SKULL) return false;
+		if (material == Material.WITHER_SKELETON_SKULL) return false;
 		
 		// This lines actually catches most of the specific lines above.
 		// However we add this in anyways for future compatibility.
-		if ( ! material.getData().equals(MaterialData.class)) return false;
+		if ( ! material.getData().equals(BlockData.class)) return false;
 		
 		// We may also not repair things that can not take any damage.
 		// NOTE: MaxDurability should be renamed to MaxDamage.
@@ -1003,8 +1007,8 @@ public class InventoryUtil
 			InventoryHolder holder = inventory.getHolder();
 			int size = inventory.getSize();
 			if (inventory instanceof PlayerInventory) size = SIZE_PLAYER_STORAGE;
-			String title = inventory.getTitle();
-			ret = MixinInventory.get().createInventory(holder, size, title);
+			InventoryType type = inventory.getType();
+			ret = MixinInventory.get().createInventory(holder, type);
 		}
 		
 		// Fill
