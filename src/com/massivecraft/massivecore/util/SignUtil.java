@@ -243,8 +243,18 @@ public class SignUtil
 	{
 		if (material == null) throw new NullPointerException("material");
 		
-		if (material == Material.SIGN) return true;
-		if (material == Material.WALL_SIGN) return true;
+		if (material == Material.SPRUCE_SIGN) return true;
+		if (material == Material.SPRUCE_WALL_SIGN) return true;
+		if (material == Material.ACACIA_SIGN) return true;
+		if (material == Material.ACACIA_WALL_SIGN) return true;
+		if (material == Material.BIRCH_SIGN) return true;
+		if (material == Material.BIRCH_WALL_SIGN) return true;
+		if (material == Material.DARK_OAK_SIGN) return true;
+		if (material == Material.DARK_OAK_WALL_SIGN) return true;
+		if (material == Material.JUNGLE_SIGN) return true;
+		if (material == Material.JUNGLE_WALL_SIGN) return true;
+		if (material == Material.OAK_SIGN) return true;
+		if (material == Material.OAK_WALL_SIGN) return true;
 		
 		return false;
 	}

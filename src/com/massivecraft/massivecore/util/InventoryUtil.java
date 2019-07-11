@@ -1007,8 +1007,8 @@ public class InventoryUtil
 			InventoryHolder holder = inventory.getHolder();
 			int size = inventory.getSize();
 			if (inventory instanceof PlayerInventory) size = SIZE_PLAYER_STORAGE;
-			String title = inventory.getTitle();
-			ret = MixinInventory.get().createInventory(holder, size, title);
+			InventoryType type = inventory.getType();
+			ret = MixinInventory.get().createInventory(holder, type);
 		}
 		
 		// Fill
